@@ -250,3 +250,6 @@ paket-files/
 # JetBrains Rider
 .idea/
 *.sln.iml
+/QMUSolution/QMUSolution.sln
+/QMUSolution/QMU/QMU.vcxproj.filters
+/QMUSolution/QMU/QMU.vcxproj
