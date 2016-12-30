@@ -3,7 +3,7 @@
 
 
 
-namespace QLog {
+namespace qmu {
 
 
 

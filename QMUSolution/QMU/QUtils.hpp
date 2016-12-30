@@ -21,7 +21,7 @@ namespace qmu {
 //	(T &&) &&	=>	T&&
 // so basically, along with std::forward, the return type is guaranteed to match
 // the input type. So min(myObj1, myObj2) would be min(T &, T &) and would
-// return T & or MyObj &. On the other hand, min(myInt1, myInt2) would be
+// return T & or MyObj &. On the other hand, min(literal1, literal2) would be
 // min(T &&, T &&) and would return T && or int &&.
 // std::forward is the same as static_cast<T&&>(thing) and basically casts T to
 // T &&, T & to T &, and T && to T&&. std::move, on the other hand, will cast

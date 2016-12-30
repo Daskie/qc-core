@@ -6,7 +6,7 @@
 
 
 
-namespace QLog {
+namespace qmu {
 
 
 
