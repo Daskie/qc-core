@@ -17,7 +17,7 @@ namespace qmu {
 
 
 
-template <typename T, int N>
+template <typename T, int t_n>
 struct tvec;
 
 
@@ -92,7 +92,7 @@ template <typename T>
 struct tvec<T, 1> {
 
 	using type = T;
-	static constexpr int N = 1;
+	static constexpr int t_n = 1;
 
 	union {
 		struct { T x; };
@@ -218,7 +218,7 @@ template <typename T>
 struct tvec<T, 2> {
 
 	using type = T;
-	static constexpr int N = 2;
+	static constexpr int t_n = 2;
 
 	union {
 		struct { T x, y; };
@@ -347,7 +347,7 @@ template <typename T>
 struct tvec<T, 3> {
 
 	using type = T;
-	static constexpr int N = 3;
+	static constexpr int t_n = 3;
 
 	union {
 		struct { T x, y, z; };
@@ -492,7 +492,7 @@ template <typename T>
 struct tvec<T, 4> {
 
 	using type = T;
-	static constexpr int N = 4;
+	static constexpr int t_n = 4;
 	
 	union {
 		struct { T x, y, z, w; };

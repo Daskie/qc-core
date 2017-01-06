@@ -20,7 +20,7 @@ namespace qmu {
 
 
 
-template <int M, int N>
+template <int t_m, int t_n>
 struct mat;
 
 
@@ -39,7 +39,7 @@ using mat4 = mat<4, 4>;
 template <>
 struct mat<2, 2> {
 
-	static constexpr int M = 2, N = 2;
+	static constexpr int t_m = 2, t_n = 2;
 
 	union {
 		struct {
@@ -145,7 +145,7 @@ struct mat<2, 2> {
 template <>
 struct mat<3, 3> {
 
-	static constexpr int M = 3, N = 3;
+	static constexpr int t_m = 3, t_n = 3;
 
 	union {
 		struct {
@@ -255,7 +255,7 @@ struct mat<3, 3> {
 template <>
 struct mat<4, 4> {
 
-	static constexpr int M = 4, N = 4;
+	static constexpr int t_m = 4, t_n = 4;
 
 	union {
 		struct {
