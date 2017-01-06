@@ -10,6 +10,7 @@
 #include <limits>
 #include <iostream>
 #include <string>
+#include <sstream>
 
 
 
@@ -79,7 +80,9 @@ using bvec3 = tvec3<bool>;
 using bvec4 = tvec4<bool>;
 
 template <typename T> using point = tvec2<T>;
-template <typename T> using rect = tvec4<T>;
+template <typename T> using bound1 = tvec2<T>;
+template <typename T> using bound2 = tvec4<T>;
+template <typename T> using bound3 = tvec<T, 6>;
 
 
 
@@ -91,7 +94,7 @@ template <typename T> using rect = tvec4<T>;
 template <typename T>
 struct tvec<T, 1> {
 
-	using type = T;
+	using Type = T;
 	static constexpr int t_n = 1;
 
 	union {
@@ -217,7 +220,7 @@ struct tvec<T, 1> {
 template <typename T>
 struct tvec<T, 2> {
 
-	using type = T;
+	using Type = T;
 	static constexpr int t_n = 2;
 
 	union {
@@ -346,7 +349,7 @@ struct tvec<T, 2> {
 template <typename T>
 struct tvec<T, 3> {
 
-	using type = T;
+	using Type = T;
 	static constexpr int t_n = 3;
 
 	union {
@@ -491,7 +494,7 @@ struct tvec<T, 3> {
 template <typename T>
 struct tvec<T, 4> {
 
-	using type = T;
+	using Type = T;
 	static constexpr int t_n = 4;
 	
 	union {
@@ -630,6 +633,53 @@ struct tvec<T, 4> {
 	std::string toString() const;
 
 	template <typename T> friend std::ostream & operator<<(std::ostream & os, const tvec4<T> & v);
+
+};
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// VEC6 ----------------------------------------------------------------------------------------------------------------
+
+
+
+template <typename T>
+struct tvec<T, 6> {
+
+	using Type = T;
+	static constexpr int t_n = 6;
+
+	T x, y, z, width, height, depth;
+
+	//--- constructors ---
+
+	constexpr tvec();
+	constexpr tvec(const bound3<T> & v);
+	constexpr tvec(bound3<T> && v);
+
+	constexpr tvec(const tvec3<T> & v1, const tvec3<T> & v2);
+	constexpr tvec(const T & v1, const T & v2, const T & v3, const T & v4, const T & v5, const T & v6);
+
+	//--- assignment operators ---
+
+	bound3<T> & operator=(const bound3<T> & v);
+	bound3<T> & operator=(bound3<T> && v);
+
+	//--- access operators ---
+
+	T operator[](int i);
+
+	//--- comparison operators ---
+
+	template <typename T> friend bool operator==(const bound3<T> & v1, const bound3<T> & v2);
+
+	template <typename T> friend bool operator!=(const bound3<T> & v1, const bound3<T> & v2);
+
+	//--- other ---
+
+	std::string toString() const;
+
+	template <typename T> friend std::ostream & operator<<(std::ostream & os, const bound3<T> & v);
 
 };
 
@@ -1137,7 +1187,9 @@ inline bool operator>=(const T & v1, const tvec1<T> & v2) {
 
 template <typename T>
 inline std::string tvec<T, 1>::toString() const {
-	return "(" + std::to_string(x) + ")";
+	std::stringstream ss;
+	ss << "(" << x << ")";
+	return ss.str();
 }
 
 
@@ -1623,7 +1675,9 @@ inline bool operator>=(const T & v1, const tvec2<T> & v2) {
 
 template <typename T>
 inline std::string tvec<T, 2>::toString() const {
-	return "(" + std::to_string(x) + ", " + std::to_string(y) + ")";
+	std::stringstream ss;
+	ss << "(" << x << ", " << y << ")";
+	return ss.str();
 }
 
 
@@ -2149,7 +2203,9 @@ inline bool operator>=(const T & v1, const tvec3<T> & v2) {
 
 template <typename T>
 inline std::string tvec<T, 3>::toString() const {
-	return "(" + std::to_string(x) + ", " + std::to_string(y) + ", " + std::to_string(z) + ")";
+	std::stringstream ss;
+	ss << "(" << x << ", " << y << ", " << z << ")";
+	return ss.str();
 }
 
 
@@ -2722,6 +2778,116 @@ inline std::string tvec<T, 4>::toString() const {
 
 template <typename T>
 inline std::ostream & operator<<(std::ostream & os, const tvec4<T> & v) {
+	return os << v.toString();
+}
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// VEC6 IMPLEMENTATION -------------------------------------------------------------------------------------------------
+
+
+
+//------------------------------------------------------------------------------
+// Constructors
+
+
+
+template <typename T>
+constexpr tvec<T, 6>::tvec() :
+	x(static_cast<T>(0)), y(static_cast<T>(0)), z(static_cast<T>(0)), width(static_cast<T>(0)), height(static_cast<T>(0)), depth(static_cast<T>(0))
+{}
+
+template <typename T>
+constexpr tvec<T, 6>::tvec(const bound3<T> & v) :
+	x(v.x), y(v.y), z(v.z), width(v.width), height(v.height), depth(v.depth)
+{}
+
+template <typename T>
+constexpr tvec<T, 6>::tvec(bound3<T> && v) :
+	x(v.x), y(v.y), z(v.z), width(v.width), height(v.height), depth(v.depth)
+{}
+
+template <typename T>
+constexpr tvec<T, 6>::tvec(const tvec3<T> & v1, const tvec3<T> & v2) :
+	x(v1.x), y(v1.y), z(v1.z), width(v2.x), height(v2.y), depth(v2.z)
+{}
+
+template <typename T>
+constexpr tvec<T, 6>::tvec(const T & v1, const T & v2, const T & v3, const T & v4, const T & v5, const T & v6) :
+	x(v1), y(v2), z(v3), width(v4), height(v5), depth(v6)
+{}
+
+
+
+//------------------------------------------------------------------------------
+// Assignment Operators
+
+
+
+template <typename T>
+bound3<T> & tvec<T, 6>::operator=(const bound3<T> & v) {
+	x = v.x; y = v.y; z = v.z; width = v.width; height = v.height; depth = v.depth;
+	return *this;
+}
+
+template <typename T>
+bound3<T> & tvec<T, 6>::operator=(bound3<T> && v) {
+	x = v.x; y = v.y; z = v.z; width = v.width; height = v.height; depth = v.depth;
+	return *this;
+}
+
+
+
+//------------------------------------------------------------------------------
+// Access Operators
+
+
+
+template <typename T>
+T tvec<T, 6>::operator[](int i) {
+	return *(&x + i);
+}
+
+
+
+//------------------------------------------------------------------------------
+// Comparison Operators
+
+
+
+//--- equal to ---
+
+template <typename T>
+inline bool operator==(const bound3<T> & v1, const bound3<T> & v2) {
+	return v1.x == v2.x && v1.y == v2.y && v1.z == v2.z && v1.width = v2.width && v1.height == v2.height;
+}
+
+//--- not equal to ---
+
+template <typename T>
+inline bool operator!=(const bound3<T> & v1, const bound3<T> & v2) {
+	return v1.x != v2.x || v1.y != v2.y || v1.z != v2.z || v1.width != v2.width || v1.height != v2.height || v1.depth != v2.depth;
+}
+
+
+
+//------------------------------------------------------------------------------
+// Other
+
+
+
+template <typename T>
+inline std::string tvec<T, 6>::toString() const {
+	std::stringstream ss;
+	ss << "(" << x << ", " << y << ", " << z << ", " << width << ", " << height << ", " << depth << ")";
+	return ss.str();
+}
+
+
+
+template <typename T>
+inline std::ostream & operator<<(std::ostream & os, const bound3<T> & v) {
 	return os << v.toString();
 }
 
