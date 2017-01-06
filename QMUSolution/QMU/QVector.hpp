@@ -227,6 +227,7 @@ struct tvec<T, 2> {
 		struct { T x, y; };
 		struct { T r, g; };
 		struct { T s, t; };
+		struct { T x, width; };
 	};
 
 	//--- constructors ---
