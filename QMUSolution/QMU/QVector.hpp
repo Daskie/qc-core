@@ -986,9 +986,7 @@ inline tvec1<T> & operator++(tvec1<T> & v) {
 
 template <typename T>
 inline tvec1<T> operator++(tvec1<T> & v, int) {
-	tvec1<T> temp(v);
-	++v.x;
-	return temp;
+	return tvec1<T>(v.x++);
 }
 
 //--- pre decrement ---
@@ -1003,9 +1001,7 @@ inline tvec1<T> & operator--(tvec1<T> & v) {
 
 template <typename T>
 inline tvec1<T> operator--(tvec1<T> & v, int) {
-	tvec1<T> temp(v);
-	--v.x;
-	return temp;
+	return tvec1<T>(v.x--);
 }
 
 //--- positive ---
@@ -1434,9 +1430,7 @@ inline tvec2<T> & operator++(tvec2<T> & v) {
 
 template <typename T>
 inline tvec2<T> operator++(tvec2<T> & v, int) {
-	tvec2<T> temp(v);
-	++v.x; ++v.y;
-	return temp;
+	return tvec2<T>(v.x++, v.y++);
 }
 
 //--- pre decrement ---
@@ -1451,9 +1445,7 @@ inline tvec2<T> & operator--(tvec2<T> & v) {
 
 template <typename T>
 inline tvec2<T> operator--(tvec2<T> & v, int) {
-	tvec2<T> temp(v);
-	--v.x; --v.y;
-	return temp;
+	return tvec2<T>(v.x--, v.y--);
 }
 
 //--- positive ---
@@ -1922,9 +1914,7 @@ inline tvec3<T> & operator++(tvec3<T> & v) {
 
 template <typename T>
 inline tvec3<T> operator++(tvec3<T> & v, int) {
-	tvec3<T> temp(v);
-	++v.x; ++v.y; ++v.z;
-	return temp;
+	return tvec3<T>(v.x++, v.y++, v.z++);
 }
 
 //--- pre decrement ---
@@ -1939,9 +1929,7 @@ inline tvec3<T> & operator--(tvec3<T> & v) {
 
 template <typename T>
 inline tvec3<T> operator--(tvec3<T> & v, int) {
-	tvec3<T> temp(v);
-	--v.x; --v.y; --v.z;
-	return temp;
+	return tvec3<T>(v.x--, v.y--, v.z--);
 }
 
 //--- positive ---
@@ -2450,9 +2438,7 @@ inline tvec4<T> & operator++(tvec4<T> & v) {
 
 template <typename T>
 inline tvec4<T> operator++(tvec4<T> & v, int) {
-	tvec4<T> temp(v);
-	++v.x; ++v.y; ++v.z; ++v.w;
-	return temp;
+	return tvec4<T>(v.x++, v.y++, v.z++, v.w++);
 }
 
 //--- pre decrement ---
@@ -2467,9 +2453,7 @@ inline tvec4<T> & operator--(tvec4<T> & v) {
 
 template <typename T>
 inline tvec4<T> operator--(tvec4<T> & v, int) {
-	tvec4<T> temp(v);
-	--v.x; --v.y; --v.z; --v.w;
-	return temp;
+	return tvec4<T>(v.x--, v.y--, v.z--, v.w--);
 }
 
 //--- positive ---
