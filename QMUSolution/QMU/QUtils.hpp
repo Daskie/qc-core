@@ -1,5 +1,7 @@
 #pragma once
 
+
+
 #include <memory>
 #include <fstream>
 #include <random>
@@ -11,6 +13,8 @@
 #include <sstream>
 
 #include "QMath.hpp"
+
+
 
 namespace qmu {
 
@@ -58,34 +62,34 @@ constexpr const T & clamp(const T & v, const T & min, const T & max) {
 }
 
 template <typename T>
-inline std::unique_ptr<T[]> make_unique_init(int size, const T & val) {
+inline std::unique_ptr<T[]> make_unique_init(nat size, const T & val) {
 	std::unique_ptr<T[]> arr = std::make_unique<T[]>(size);
-	for (int i = 0; i < size; ++i) {
+	for (nat i(0); i < size; ++i) {
 		arr[i] = val;
 	}
 	return std::move(arr);
 }
 
 template <typename T>
-inline void fill(T * arr, int n, const T & val) {
-	for (int i = 0; i < n; ++i) {
+inline void fill(T * arr, nat n, const T & val) {
+	for (nat i(0); i < n; ++i) {
 		arr[i] = val;
 	}
 }
 
 template <typename T>
-inline void copy(const T * src, T * dest, int n) {
+inline void copy(const T * src, T * dest, nat n) {
 	memcpy(dest, src, n * sizeof(T));
 }
 
 template <typename T>
-inline void copy(const T * src, T * dest, int n, int offset, int stride, int grouping) {
+inline void copy(const T * src, T * dest, nat n, nat offset, nat stride, nat grouping) {
 	if (stride <= grouping) {
 		memcpy(dest + offset, src, n * sizeof(T));
 		return;
 	}
 
-	int i = 0, j, k = offset;
+	nat i = 0, j, k = offset;
 	while (i < n) {
 		for (j = 0; j < grouping; ++j, ++i) {
 			dest[k + j] = src[i];
@@ -100,11 +104,11 @@ inline bool fileExists(const std::string & path) {
 	return stat(path.c_str(), &buffer) == 0;
 }
 
-inline int detFileSize(std::ifstream & ifs) {
-	int initpos = (int)ifs.tellg();
+inline nat detFileSize(std::ifstream & ifs) {
+	nat initpos = (nat)ifs.tellg();
 	ifs.seekg(0, std::ios::end);
-	int size = (int)ifs.tellg();
-	ifs.seekg(0, initpos);
+	nat size = (nat)ifs.tellg();
+	ifs.seekg(0, static_cast<int>(initpos));
 	return size;
 }
 
@@ -130,11 +134,11 @@ const unsigned char trail_table[256]{
 };
 }
 
-inline unsigned char trailingZeroes(std::uint8_t x) {
+inline unsigned char trailingZeroes(ui8 x) {
 	return trail_table[x];
 }
 
-inline unsigned char trailingZeroes(std::uint32_t x) {
+inline unsigned char trailingZeroes(ui32 x) {
 	unsigned char count = 0;
 	count += trail_table[x & 0xFF];
 	if (count < 8) {
@@ -172,17 +176,17 @@ constexpr unsigned char toByte(double x) {
 
 //generates n random values between min and 1, the sum of which equals 1
 //if min * n > 1, min will be scaled down so that min * n == 1
-inline void randomDistribution(int n, float * dest, float min) {
+inline void randomDistribution(nat n, float * dest, float min) {
 	if (min * n > 1.0f) {
 		min = 1.0f / n;
 	}
 	float total = 0.0f;
 	float excess = max(1.0f - n * min, 0.0f);
-	for (int i = 0; i < n; ++i) {
+	for (nat i(0); i < n; ++i) {
 		dest[i] = rand(0.0f, 1.0f);
 		total += dest[i];
 	}
-	for (int i = 0; i < n; ++i) {
+	for (nat i(0); i < n; ++i) {
 		dest[i] = dest[i] / total * excess + min;
 	}
 }
@@ -192,22 +196,22 @@ class TriGrid {
 
 	public:
 
-	TriGrid(int size) :
+	TriGrid(nat size) :
 		size_(size),
 		mapSize_((size + 1) * (size + 2) / 2),
 		map_(new T[mapSize_]) {
 	}
 
-	T & at(int a, int b, int c) const {
+	T & at(nat a, nat b, nat c) const {
 		return map_[abc2i(a, b, c)];
 	}
 
-	int abc2i(int a, int b, int c) const {
+	nat abc2i(nat a, nat b, nat c) const {
 		return (size_ - a) * (size_ - a + 1) / 2 + (size_ - a - b);
 	}
 
-	void i2abc(int i, int * a, int * b, int * c) const {
-		int n = int((sqrt(1 + 8 * i) - 1) / 2);
+	void i2abc(nat i, nat * a, nat * b, nat * c) const {
+		nat n = nat((sqrt(1 + 8 * i) - 1) / 2);
 		*a = size_ - n;
 		*b = n - (i - n * (n + 1) / 2);
 		*c = size_ - *a - *b;
@@ -217,18 +221,18 @@ class TriGrid {
 		return map_.get();
 	}
 
-	int size() const {
+	nat size() const {
 		return size_;
 	}
 
-	int mapSize() const {
+	nat mapSize() const {
 		return mapSize_;
 	}
 
 	private:
 
-	const int size_;
-	const int mapSize_;
+	const nat size_;
+	const nat mapSize_;
 	const std::unique_ptr<T[]> map_;
 
 };
@@ -240,21 +244,21 @@ class TriWeb {
 
 	enum class Side { AB, BC, CA };
 
-	TriWeb(int nTris, int size) :
+	TriWeb(nat nTris, nat size) :
 		tris_(new TriGrid<T>[nTris]),
 		size_(size)	{
 	}
 
-	TriGrid<T> & tri(int i) {
+	TriGrid<T> & tri(nat i) {
 		return tris_[i];
 	}
 
-	void bind(int i1, Side s1, int i2, Side s2) {
+	void bind(nat i1, Side s1, nat i2, Side s2) {
 		TriGrid<T> & tg1 = tris_.at(i1);
 		TriGrid<T> & tg2 = tris_.at(i2);
 
-		int a1, b1, c1, a2, b2, c2;
-		int * toInc1, * toDec1, * toInc2 *toDec2;
+		nat a1, b1, c1, a2, b2, c2;
+		nat * toInc1, * toDec1, * toInc2 *toDec2;
 		switch (s1) {
 			case AB: a1 = size; b1 = 0; c1 = 0; toInc1 = &b1; toDec1 = &a1; break;
 			case BC: a1 = 0; b1 = size; c1 = 0; toInc1 = &c1; toDec1 = &b1; break;
@@ -265,7 +269,7 @@ class TriWeb {
 			case BC: a1 = 0; b1 = 0; c1 = size; toInc2 = &b2; toDec2 = &c2; break;
 			case CA: a1 = size; b1 = 0; c1 = 0; toInc2 = &c2; toDec2 = &a2; break;
 		}
-		for (int i = 0; i <= size; ++i) {
+		for (nat i(0); i <= size; ++i) {
 			tris_[i1].at(a1, b1, c1) = tris_[i2].at(a2, b2, c2);
 			++toInc1; --toDec1;
 			++toInc2; --toDec2;
@@ -274,18 +278,18 @@ class TriWeb {
 
 	private:
 
-	int size_;
+	nat size_;
 	std::unique_ptr<TriGrid<T>[]> tris_;
 };
 
 //selection sort
 template <typename T>
-inline void sortAsc(T * arr, int n) {
-	int min_i;
+inline void sortAsc(T * arr, nat n) {
+	nat min_i;
 	T temp;
-	for (int i = 0; i < n - 1; ++i) {
+	for (nat i(0); i < n - 1; ++i) {
 		min_i = i;
-		for (int j = i + 1; j < n; ++j) {
+		for (nat j(i + 1); j < n; ++j) {
 			if (arr[j] < arr[min_i]) {
 				min_i = j;
 			}
@@ -300,12 +304,12 @@ inline void sortAsc(T * arr, int n) {
 
 //selection sort
 template <typename T>
-inline void sortDesc(T * arr, int n) {
-	int max_i;
+inline void sortDesc(T * arr, nat n) {
+	nat max_i;
 	T temp;
-	for (int i = 0; i < n - 1; ++i) {
+	for (nat i(0); i < n - 1; ++i) {
 		max_i = i;
-		for (int j = i + 1; j < n; ++j) {
+		for (nat j(i + 1); j < n; ++j) {
 			if (arr[j] > arr[max_i]) {
 				max_i = j;
 			}
@@ -326,13 +330,47 @@ inline bool is0(double v) {
 	return abs(v) < std::numeric_limits<double>::min();
 }
 
-inline int log2(uint32_t x) {
-	int log = 0;
-	if (x & 0xffff0000) { x >>= 16; log = 16; }
-	if (x >= 256) { x >>= 8; log += 8; }
-	if (x >= 16) { x >>= 4; log += 4; }
-	if (x >= 4) { x >>= 2; log += 2; }
-	return log + (x >> 1);
+inline nat log2(ui8 x) {
+	nat log(0);
+	if (x & 0x000000F0) { x >>=  4; log +=  4; }
+	if (x & 0x0000000C) { x >>=  2; log +=  2; }
+	if (x & 0x00000002) {			log +=  1; }
+	return log;
+}
+
+inline nat log2(ui16 x) {
+	nat log(0);
+	if (x & 0x0000FF00) { x >>=  8; log +=  8; }
+	if (x & 0x000000F0) { x >>=  4; log +=  4; }
+	if (x & 0x0000000C) { x >>=  2; log +=  2; }
+	if (x & 0x00000002) {			log +=  1; }
+	return log;
+}
+
+inline nat log2(ui32 x) {
+	nat log(0);
+	if (x & 0xFFFF0000) { x >>= 16; log += 16; }
+	if (x & 0x0000FF00) { x >>=  8; log +=  8; }
+	if (x & 0x000000F0) { x >>=  4; log +=  4; }
+	if (x & 0x0000000C) { x >>=  2; log +=  2; }
+	if (x & 0x00000002) {			log +=  1; }
+	return log;
+}
+
+inline nat log2(ui64 x) {
+	nat log(0);
+	if (x & 0xFFFFFFFF00000000) { x >>= 32; log += 32; }
+	if (x & 0x00000000FFFF0000) { x >>= 16; log += 16; }
+	if (x & 0x000000000000FF00) { x >>=  8; log +=  8; }
+	if (x & 0x00000000000000F0) { x >>=  4; log +=  4; }
+	if (x & 0x000000000000000C) { x >>=  2; log +=  2; }
+	if (x & 0x0000000000000002) {			log +=  1; }
+	return log;
+}
+
+template <typename T, typename = std::enable_if_t<std::is_integral<T>::value>>
+inline bool isPow2(const T & v) {
+	return (v & (v - 1)) == 0;
 }
 
 inline std::string convert(const std::wstring & wstr) {
@@ -355,9 +393,9 @@ inline qmu::vec3 rgb2hsl(const qmu::vec3 & color) {
 	float rgb[3]{ color.r, color.g, color.b };
 	qmu::vec3 hsl(0.0f, 0.0f, 0.0f);
 
-	int minI = color.r < color.g ? 0 : 1;
+	nat minI = color.r < color.g ? 0 : 1;
 	if (color.b < rgb[minI]) minI = 2;
-	int maxI = color.r > color.g ? 0 : 1;
+	nat maxI = color.r > color.g ? 0 : 1;
 	if (color.b > rgb[maxI]) maxI = 2;
 
 	//lightness
@@ -377,7 +415,7 @@ inline qmu::vec3 rgb2hsl(const qmu::vec3 & color) {
 			hsl.x = maxI / 3.0f;
 			hsl.x += (rgb[(maxI + 1) % 3] - rgb[((maxI + 2) % 3)]) / (rgb[maxI] - rgb[minI]) * (1.0f / 6.0f);
 			hsl.x += 1.0f;
-			hsl.x -= (int)hsl.x;
+			hsl.x -= (nat)hsl.x;
 		}
 	}
 
@@ -394,11 +432,11 @@ inline qmu::vec3 hsl2rgb(const qmu::vec3 & color) {
 
 	//process hue
 	temp = round(color.x * 3.0f);
-	int maxI = (int)temp % 3;
+	nat maxI = (nat)temp % 3;
 	rgb[maxI] = 1.0f;
 	float secondaryWeight = (color.x * 3.0f - temp) * 2.0f;
 	if (secondaryWeight != 0) {
-		int midI = (maxI + int(secondaryWeight > 0 ? ceil(secondaryWeight) : floor(secondaryWeight)) + 3) % 3;
+		nat midI = (maxI + nat(secondaryWeight > 0 ? ceil(secondaryWeight) : floor(secondaryWeight)) + 3) % 3;
 		rgb[midI] = abs(secondaryWeight);
 	}
 

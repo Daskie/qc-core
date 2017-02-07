@@ -253,3 +253,5 @@ paket-files/
 /QMUSolution/QMUSolution.sln
 /QMUSolution/QMU/QMU.vcxproj.filters
 /QMUSolution/QMU/QMU.vcxproj
+*.vcxproj
+*.filters

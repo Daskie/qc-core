@@ -1,8 +1,16 @@
 #pragma once
 
-#include "QMU.h"
+#ifdef QMU_EXPORTS
+#define QMU_API __declspec(dllexport)
+#else
+#define QMU_API __declspec(dllimport)
+#endif
+
+
 
 #include <iostream>
+
+#include "QMU.hpp"
 
 
 

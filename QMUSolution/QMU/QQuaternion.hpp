@@ -1,6 +1,7 @@
 #pragma once
 
-#include "QVector.hpp"
+
+
 #include "QMatrix.hpp"
 
 
@@ -46,7 +47,7 @@ struct quat {
 
 	//--- access operators ---
 
-	float operator[](int i);
+	float operator[](nat i);
 
 	//--- arithmetic assignment operators ---
 
@@ -206,7 +207,7 @@ inline quat & quat::operator=(quat && o) {
 
 
 
-inline float quat::operator[](int i) {
+inline float quat::operator[](nat i) {
 	return *(&x + i);
 }
 

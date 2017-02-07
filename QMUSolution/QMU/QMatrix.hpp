@@ -20,7 +20,7 @@ namespace qmu {
 
 
 
-template <int t_m, int t_n>
+template <nat t_m, nat t_n>
 struct mat;
 
 
@@ -39,7 +39,7 @@ using mat4 = mat<4, 4>;
 template <>
 struct mat<2, 2> {
 
-	static constexpr int t_m = 2, t_n = 2;
+	static constexpr nat t_m = 2, t_n = 2;
 
 	union {
 		struct {
@@ -79,7 +79,7 @@ struct mat<2, 2> {
 
 	//--- access operators ---
 
-	float & operator[](int i);
+	float & operator[](nat i);
 
 	//--- arithmetic assignment operators ---
 
@@ -145,7 +145,7 @@ struct mat<2, 2> {
 template <>
 struct mat<3, 3> {
 
-	static constexpr int t_m = 3, t_n = 3;
+	static constexpr nat t_m = 3, t_n = 3;
 
 	union {
 		struct {
@@ -188,7 +188,7 @@ struct mat<3, 3> {
 
 	//--- access operators ---
 
-	float & operator[](int i);
+	float & operator[](nat i);
 
 	//--- arithmetic assignment operators ---
 
@@ -255,7 +255,7 @@ struct mat<3, 3> {
 template <>
 struct mat<4, 4> {
 
-	static constexpr int t_m = 4, t_n = 4;
+	static constexpr nat t_m = 4, t_n = 4;
 
 	union {
 		struct {
@@ -301,7 +301,7 @@ struct mat<4, 4> {
 
 	//--- access operators ---
 
-	float & operator[](int i);
+	float & operator[](nat i);
 
 	//--- arithmetic assignment operators ---
 
@@ -543,7 +543,7 @@ inline mat2 & mat<2, 2>::operator=(const mat4 & m) {
 
 
 
-inline float & mat<2, 2>::operator[](int i) {
+inline float & mat<2, 2>::operator[](nat i) {
 	return *(&x1 + i);
 }
 
@@ -900,7 +900,7 @@ inline mat3 & mat<3, 3>::operator=(const mat4 & m) {
 
 
 
-inline float & mat<3, 3>::operator[](int i) {
+inline float & mat<3, 3>::operator[](nat i) {
 	return *(&x1 + i);
 }
 
@@ -1294,7 +1294,7 @@ inline mat4 & mat<4, 4>::operator=(const mat3 & m) {
 
 
 
-inline float & mat<4, 4>::operator[](int i) {
+inline float & mat<4, 4>::operator[](nat i) {
 	return *(&x1 + i);
 }
 

@@ -12,13 +12,15 @@
 #include <string>
 #include <sstream>
 
+#include "QMU.hpp"
+
 
 
 namespace qmu {
 
 
 
-template <typename T, int t_n>
+template <typename T, nat t_n>
 struct tvec;
 
 
@@ -38,41 +40,41 @@ using dvec2 = tvec2<double>;
 using dvec3 = tvec3<double>;
 using dvec4 = tvec4<double>;
 
-using cvec1 = tvec1<int8_t>;
-using cvec2 = tvec2<int8_t>;
-using cvec3 = tvec3<int8_t>;
-using cvec4 = tvec4<int8_t>;
-using ucvec1 = tvec1<uint8_t>;
-using ucvec2 = tvec2<uint8_t>;
-using ucvec3 = tvec3<uint8_t>;
-using ucvec4 = tvec4<uint8_t>;
+using cvec1 = tvec1<i8>;
+using cvec2 = tvec2<i8>;
+using cvec3 = tvec3<i8>;
+using cvec4 = tvec4<i8>;
+using ucvec1 = tvec1<ui8>;
+using ucvec2 = tvec2<ui8>;
+using ucvec3 = tvec3<ui8>;
+using ucvec4 = tvec4<ui8>;
 
-using svec1 = tvec1<int16_t>;
-using svec2 = tvec2<int16_t>;
-using svec3 = tvec3<int16_t>;
-using svec4 = tvec4<int16_t>;
-using usvec1 = tvec1<uint16_t>;
-using usvec2 = tvec2<uint16_t>;
-using usvec3 = tvec3<uint16_t>;
-using usvec4 = tvec4<uint16_t>;
+using svec1 = tvec1<i16>;
+using svec2 = tvec2<i16>;
+using svec3 = tvec3<i16>;
+using svec4 = tvec4<i16>;
+using usvec1 = tvec1<ui16>;
+using usvec2 = tvec2<ui16>;
+using usvec3 = tvec3<ui16>;
+using usvec4 = tvec4<ui16>;
 
-using ivec1 = tvec1<int32_t>;
-using ivec2 = tvec2<int32_t>;
-using ivec3 = tvec3<int32_t>;
-using ivec4 = tvec4<int32_t>;
-using uivec1 = tvec1<uint32_t>;
-using uivec2 = tvec2<uint32_t>;
-using uivec3 = tvec3<uint32_t>;
-using uivec4 = tvec4<uint32_t>;
+using ivec1 = tvec1<i32>;
+using ivec2 = tvec2<i32>;
+using ivec3 = tvec3<i32>;
+using ivec4 = tvec4<i32>;
+using uivec1 = tvec1<ui32>;
+using uivec2 = tvec2<ui32>;
+using uivec3 = tvec3<ui32>;
+using uivec4 = tvec4<ui32>;
 
-using lvec1 = tvec1<int64_t>;
-using lvec2 = tvec2<int64_t>;
-using lvec3 = tvec3<int64_t>;
-using lvec4 = tvec4<int64_t>;
-using ulvec1 = tvec1<uint64_t>;
-using ulvec2 = tvec2<uint64_t>;
-using ulvec3 = tvec3<uint64_t>;
-using ulvec4 = tvec4<uint64_t>;
+using lvec1 = tvec1<i64>;
+using lvec2 = tvec2<i64>;
+using lvec3 = tvec3<i64>;
+using lvec4 = tvec4<i64>;
+using ulvec1 = tvec1<ui64>;
+using ulvec2 = tvec2<ui64>;
+using ulvec3 = tvec3<ui64>;
+using ulvec4 = tvec4<ui64>;
 
 using bvec1 = tvec1<bool>;
 using bvec2 = tvec2<bool>;
@@ -95,7 +97,7 @@ template <typename T>
 struct tvec<T, 1> {
 
 	using Type = T;
-	static constexpr int t_n = 1;
+	static constexpr nat t_n = 1;
 
 	union {
 		struct { T x; };
@@ -126,7 +128,7 @@ struct tvec<T, 1> {
 
 	//--- access operators ---
 
-	T operator[](int i);
+	T operator[](nat i);
 
 	//--- arithmetic operators ---
 
@@ -221,7 +223,7 @@ template <typename T>
 struct tvec<T, 2> {
 
 	using Type = T;
-	static constexpr int t_n = 2;
+	static constexpr nat t_n = 2;
 
 	union {
 		struct { T x, y; };
@@ -254,7 +256,7 @@ struct tvec<T, 2> {
 
 	//--- access operators ---
 
-	T operator[](int i);
+	T operator[](nat i);
 
 	//--- arithmetic operators ---
 
@@ -351,7 +353,7 @@ template <typename T>
 struct tvec<T, 3> {
 
 	using Type = T;
-	static constexpr int t_n = 3;
+	static constexpr nat t_n = 3;
 
 	union {
 		struct { T x, y, z; };
@@ -385,7 +387,7 @@ struct tvec<T, 3> {
 
 	//--- access operators ---
 
-	T operator[](int i);
+	T operator[](nat i);
 
 	//--- arithmetic operators ---
 
@@ -496,7 +498,7 @@ template <typename T>
 struct tvec<T, 4> {
 
 	using Type = T;
-	static constexpr int t_n = 4;
+	static constexpr nat t_n = 4;
 	
 	union {
 		struct { T x, y, z, w; };
@@ -529,7 +531,7 @@ struct tvec<T, 4> {
 
 	//--- access operators ---
 	
-	T operator[](int i);
+	T operator[](nat i);
 
 	//--- arithmetic operators ---
 
@@ -648,7 +650,7 @@ template <typename T>
 struct tvec<T, 6> {
 
 	using Type = T;
-	static constexpr int t_n = 6;
+	static constexpr nat t_n = 6;
 
 	T x, y, z, width, height, depth;
 
@@ -668,7 +670,7 @@ struct tvec<T, 6> {
 
 	//--- access operators ---
 
-	T operator[](int i);
+	T operator[](nat i);
 
 	//--- comparison operators ---
 
@@ -855,7 +857,7 @@ tvec1<T> & tvec<T, 1>::operator=(const tvec4<T> & v) {
 
 
 template <typename T>
-T tvec<T, 1>::operator[](int i) {
+T tvec<T, 1>::operator[](nat i) {
 	return *(&x + i);
 }
 
@@ -1299,7 +1301,7 @@ tvec2<T> & tvec<T, 2>::operator=(const tvec4<T> & v) {
 
 
 template <typename T>
-T tvec<T, 2>::operator[](int i) {
+T tvec<T, 2>::operator[](nat i) {
 	return *(&x + i);
 }
 
@@ -1783,7 +1785,7 @@ tvec3<T> & tvec<T, 3>::operator=(const tvec4<T> & v) {
 
 
 template <typename T>
-T tvec<T, 3>::operator[](int i) {
+T tvec<T, 3>::operator[](nat i) {
 	return *(&x + i);
 }
 
@@ -2307,7 +2309,7 @@ tvec4<T> & tvec<T, 4>::operator=(const tvec3<T> & v) {
 
 
 template <typename T>
-T tvec<T, 4>::operator[](int i) {
+T tvec<T, 4>::operator[](nat i) {
 	return *(&x + i);
 }
 
@@ -2830,7 +2832,7 @@ bound3<T> & tvec<T, 6>::operator=(bound3<T> && v) {
 
 
 template <typename T>
-T tvec<T, 6>::operator[](int i) {
+T tvec<T, 6>::operator[](nat i) {
 	return *(&x + i);
 }
 
