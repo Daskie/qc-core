@@ -381,8 +381,8 @@ inline T floor2(T v) {
 
 template <typename T, typename = std::enable_if_t<std::is_unsigned<T>::value>>
 inline T ceil2(T v) {
-	if (v * 2 < v) return 1 << log2(v);
-	return 1 << log2(v * 2);
+	if (v == 0) return 0;
+	return floor2(v * 2 - 1);
 }
 
 
