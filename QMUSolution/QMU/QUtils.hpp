@@ -368,10 +368,23 @@ inline nat log2(ui64 x) {
 	return log;
 }
 
-template <typename T, typename = std::enable_if_t<std::is_integral<T>::value>>
-inline bool isPow2(const T & v) {
+template <typename T, typename = std::enable_if_t<std::is_unsigned<T>::value>>
+constexpr bool isPow2(T v) {
 	return (v & (v - 1)) == 0;
 }
+
+template <typename T, typename = std::enable_if_t<std::is_unsigned<T>::value>>
+inline T floor2(T v) {
+	if (v == 0) return 0;
+	return 1 << log2(v);
+}
+
+template <typename T, typename = std::enable_if_t<std::is_unsigned<T>::value>>
+inline T ceil2(T v) {
+	if (v * 2 < v) return 1 << log2(v);
+	return 1 << log2(v * 2);
+}
+
 
 inline std::string convert(const std::wstring & wstr) {
 	static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;

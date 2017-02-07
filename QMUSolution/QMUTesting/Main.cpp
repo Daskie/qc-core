@@ -7,7 +7,7 @@
 using namespace qmu;
 
 int main(void) {
-	Q_LOG(isPow2(-9));
+	Q_LOG((floor2(unsigned(9))));
 
 	std::cin.get();
 	return 0;
