@@ -4,10 +4,11 @@
 #include "QLog.hpp"
 #include "QUtils.hpp"
 
-using namespace qmu;
-
 int main(void) {
-	Q_LOG((floor2(unsigned(7))));
+	char a = 3;
+	unsigned short b = 8;
+	float j;
+	auto c = qmu::log2(j);
 
 	std::cin.get();
 	return 0;

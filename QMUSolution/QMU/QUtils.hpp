@@ -330,25 +330,31 @@ inline bool is0(double v) {
 	return abs(v) < std::numeric_limits<double>::min();
 }
 
-inline nat log2(ui8 x) {
-	nat log(0);
-	if (x & 0x000000F0) { x >>=  4; log +=  4; }
-	if (x & 0x0000000C) { x >>=  2; log +=  2; }
-	if (x & 0x00000002) {			log +=  1; }
+template <typename T1, typename T2>
+using sign_match_t = std::conditional_t<std::is_signed<T2>::value, std::make_signed_t<T1>, std::make_unsigned_t<T1>>;
+
+template <typename T, std::enable_if_t<std::is_integral<T>::value && sizeof(T) == 1, int> = 0>
+inline sign_match_t<nat, T> log2(T x) {
+	sign_match_t<nat, T> log(0);
+	if (x & 0xF0) { x >>=  4; log +=  4; }
+	if (x & 0x0C) { x >>=  2; log +=  2; }
+	if (x & 0x02) {			  log +=  1; }
 	return log;
 }
 
-inline nat log2(ui16 x) {
-	nat log(0);
-	if (x & 0x0000FF00) { x >>=  8; log +=  8; }
-	if (x & 0x000000F0) { x >>=  4; log +=  4; }
-	if (x & 0x0000000C) { x >>=  2; log +=  2; }
-	if (x & 0x00000002) {			log +=  1; }
+template <typename T, std::enable_if_t<std::is_integral<T>::value && sizeof(T) == 2, int> = 0>
+inline sign_match_t<nat, T> log2(T x) {
+	sign_match_t<nat, T> log(0);
+	if (x & 0xFF00) { x >>=  8; log +=  8; }
+	if (x & 0x00F0) { x >>=  4; log +=  4; }
+	if (x & 0x000C) { x >>=  2; log +=  2; }
+	if (x & 0x0002) {			log +=  1; }
 	return log;
 }
 
-inline nat log2(ui32 x) {
-	nat log(0);
+template <typename T, std::enable_if_t<std::is_integral<T>::value && sizeof(T) == 4, int> = 0>
+inline sign_match_t<nat, T> log2(T x) {
+	sign_match_t<nat, T> log(0);
 	if (x & 0xFFFF0000) { x >>= 16; log += 16; }
 	if (x & 0x0000FF00) { x >>=  8; log +=  8; }
 	if (x & 0x000000F0) { x >>=  4; log +=  4; }
@@ -357,8 +363,9 @@ inline nat log2(ui32 x) {
 	return log;
 }
 
-inline nat log2(ui64 x) {
-	nat log(0);
+template <typename T, std::enable_if_t<std::is_integral<T>::value && sizeof(T) == 8, int> = 0>
+inline sign_match_t<nat, T> log2(T x) {
+	sign_match_t<nat, T> log(0);
 	if (x & 0xFFFFFFFF00000000) { x >>= 32; log += 32; }
 	if (x & 0x00000000FFFF0000) { x >>= 16; log += 16; }
 	if (x & 0x000000000000FF00) { x >>=  8; log +=  8; }
@@ -368,18 +375,26 @@ inline nat log2(ui64 x) {
 	return log;
 }
 
-template <typename T, typename = std::enable_if_t<std::is_unsigned<T>::value>>
+inline float log2(float v) {
+	return std::log2f(v);
+}
+
+inline double log2(double v) {
+	return std::log2(v);
+}
+
+template <typename T, std::enable_if_t<std::is_integral<T>::value, int> = 0>
 constexpr bool isPow2(T v) {
 	return (v & (v - 1)) == 0;
 }
 
-template <typename T, typename = std::enable_if_t<std::is_unsigned<T>::value>>
+template <typename T, std::enable_if_t<std::is_integral<T>::value, int> = 0>
 inline T floor2(T v) {
 	if (v == 0) return 0;
-	return 1 << log2(v);
+	return 1LL << log2(v);
 }
 
-template <typename T, typename = std::enable_if_t<std::is_unsigned<T>::value>>
+template <typename T, std::enable_if_t<std::is_integral<T>::value, int> = 0>
 inline T ceil2(T v) {
 	if (v == 0) return 0;
 	return floor2(v * 2 - 1);

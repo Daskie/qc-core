@@ -28,14 +28,14 @@ using    i64 =  int64_t;
 using   ui64 = uint64_t;
 struct  i128 {
 	union {
-		struct { i32 i32_1, i32_2, i32_3, i32_4; };
 		struct { i64 i64_1, i64_2; };
+		struct { i32 i32_1, i32_2, i32_3, i32_4; };
 	};
 };
 struct ui128 {
 	union {
-		struct { ui32 ui32_1, ui32_2, ui32_3, ui32_4; };
 		struct { ui64 ui64_1, ui64_2; };
+		struct { ui32 ui32_1, ui32_2, ui32_3, ui32_4; };
 	};
 };
 
