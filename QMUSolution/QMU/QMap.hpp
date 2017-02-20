@@ -19,7 +19,7 @@ namespace qmu {
 
 
 
-constexpr ui32 gk_defSeed = 0;
+constexpr u32 gk_defSeed = 0;
 constexpr nat gk_defNSlots = 8;
 
 
@@ -90,10 +90,14 @@ class Map {
 	using MIterator = Iterator<E>;
 	using CIterator = Iterator<const E>;
 
-	// Creates an Iterator for the map.
+	// Creates an iterator at the beginning of the map.
 	MIterator begin();
-	// Creates a const iterator for the map.
+	// Creates a const iterator at the beginning of the map.
 	CIterator cbegin() const;
+	// Creates an iterator at one past the end of the map.
+	MIterator end();
+	// Creates a const iterator at one past the end of map.
+	CIterator cend() const;
 
 
 
@@ -298,6 +302,7 @@ class Map {
 	public:
 
 	nat size() const;
+	bool empty() const;
 
 	nat nSlots() const;
 
@@ -546,6 +551,8 @@ template <typename E, nat t_p>
 template <typename I_E> // may be E or const E
 class Map<E, t_p>::Iterator {
 
+	friend Map<E, t_p>;
+
 	//--------------------------------------------------------------------------
 	// Special Types
 
@@ -557,9 +564,9 @@ class Map<E, t_p>::Iterator {
 
 	private:
 
-	const Map<E, t_p> & m_map;
+	const Map<E, t_p> * m_map;
 	nat m_slot;
-	typename Slot::Node * m_node;
+	typename Map<E, t_p>::Slot::Node * m_node;
 
 
 
@@ -572,6 +579,14 @@ class Map<E, t_p>::Iterator {
 	public:
 
 	Iterator(const Map<E, t_p> & map);
+	
+	private:
+
+	Iterator(const Map<E, t_p> & map, nat slot, typename Map<E, t_p>::Slot::Node * node);
+
+	public:
+
+	Iterator(const Iterator<I_E> & iterator);
 
 
 
@@ -718,7 +733,7 @@ namespace tech {
 
 template <typename T>
 constexpr nat hashMod(const T & h, nat v);
-constexpr nat hashMod(const ui128 & h, nat v);
+constexpr nat hashMod(const u128 & h, nat v);
 
 
 
@@ -730,7 +745,7 @@ constexpr nat hashMod(const ui128 & h, nat v);
 
 template <typename T>
 constexpr bool hashEqual(const T & h1, const T & h2);
-constexpr bool hashEqual(const ui128 & h1, const ui128 & h2);
+constexpr bool hashEqual(const u128 & h1, const u128 & h2);
 
 
 
@@ -742,7 +757,7 @@ constexpr bool hashEqual(const ui128 & h1, const ui128 & h2);
 
 template <typename T>
 constexpr bool hashLess(const T & h1, const T & h2);
-constexpr bool hashLess(const ui128 & h1, const ui128 & h2);
+constexpr bool hashLess(const u128 & h1, const u128 & h2);
 
 
 
@@ -754,7 +769,7 @@ constexpr bool hashLess(const ui128 & h1, const ui128 & h2);
 
 template <typename T>
 constexpr bool hashGreater(const T & h1, const T & h2);
-constexpr bool hashGreater(const ui128 & h1, const ui128 & h2);
+constexpr bool hashGreater(const u128 & h1, const u128 & h2);
 
 
 
@@ -1194,12 +1209,45 @@ typename Map<E, t_p>::CIterator Map<E, t_p>::cbegin() const {
 
 
 //==============================================================================
+// end
+//------------------------------------------------------------------------------
+
+template <typename E, nat t_p>
+typename Map<E, t_p>::MIterator Map<E, t_p>::end() {
+	return MIterator(*this, m_nSlots, nullptr);
+}
+
+
+
+//==============================================================================
+// cend
+//------------------------------------------------------------------------------
+
+template <typename E, nat t_p>
+typename Map<E, t_p>::CIterator Map<E, t_p>::cend() const {
+	return CIterator(*this, m_nSlots, nullptr);
+}
+
+
+
+//==============================================================================
 // size
 //------------------------------------------------------------------------------
 
 template <typename E, nat t_p>
 nat Map<E, t_p>::size() const {
 	return m_size;
+}
+
+
+
+//==============================================================================
+// empty
+//------------------------------------------------------------------------------
+
+template <typename E, nat t_p>
+bool Map<E, t_p>::empty() const {
+	return m_size == 0;
 }
 
 
@@ -1693,13 +1741,29 @@ void Map<E, t_p>::Slot::printContents(std::ostream & os, bool value, bool hash, 
 template <typename E, nat t_p>
 template <typename I_E>
 Map<E, t_p>::Iterator<I_E>::Iterator(const Map<E, t_p> & map) :
-	m_map(map),
+	m_map(&map),
 	m_slot(0),
 	m_node(nullptr)
 {
-	while (!m_map.m_slots[m_slot].m_first) ++m_slot;
-	if (m_slot < m_map.m_nSlots) m_node = m_map.m_slots[m_slot].m_first;
+	while (!m_map->m_slots[m_slot].m_first) ++m_slot;
+	if (m_slot < m_map->m_nSlots) m_node = m_map->m_slots[m_slot].m_first;
 }
+
+template <typename E, nat t_p>
+template <typename I_E>
+Map<E, t_p>::Iterator<I_E>::Iterator(const Map<E, t_p> & map, nat slot, typename Map<E, t_p>::Slot::Node * node) :
+	m_map(&map),
+	m_slot(slot),
+	m_node(node)
+{}
+
+template <typename E, nat t_p>
+template <typename I_E>
+Map<E, t_p>::Iterator<I_E>::Iterator(typename const Map<E, t_p>::Iterator<I_E> & iterator) :
+	m_map(iterator.m_map),
+	m_slot(iterator.m_slot),
+	m_node(iterator.m_node)
+{}
 
 
 
@@ -1713,6 +1777,7 @@ typename Map<E, t_p>::Iterator<I_E> & Map<E, t_p>::Iterator<I_E>::operator=(type
 	m_map = o.m_map;
 	m_slot = o.m_slot;
 	m_node = o.m_node;
+	return *this;
 }
 
 
@@ -1738,9 +1803,9 @@ template <typename I_E>
 typename Map<E, t_p>::Iterator<I_E> & Map<E, t_p>::Iterator<I_E>::operator++() {
 	m_node = m_node->next;
 	if (!m_node) {
-		while (++m_slot < m_map.m_nSlots) {
-			if (m_map.m_slots[m_slot].m_size > 0) {
-				m_node = m_map.m_slots[m_slot].m_first;
+		while (++m_slot < m_map->m_nSlots) {
+			if (m_map->m_slots[m_slot].m_size > 0) {
+				m_node = m_map->m_slots[m_slot].m_first;
 				break;
 			}
 		}
@@ -1829,8 +1894,8 @@ constexpr nat hashMod(const T & h, nat v) {
 	return h % v;
 }
 
-constexpr nat hashMod(const ui128 & h, nat v) {
-	return (h.ui64_1 ^ h.ui64_2) % v;
+constexpr nat hashMod(const u128 & h, nat v) {
+	return (h.u64_1 ^ h.u64_2) % v;
 }
 
 
@@ -1844,8 +1909,8 @@ constexpr bool hashEqual(const T & h1, const T & h2) {
 	return h1 == h2;
 }
 
-constexpr bool hashEqual(const ui128 & h1, const ui128 & h2) {
-	return h1.ui64_1 == h2.ui64_1 && h1.ui64_2 == h2.ui64_2;
+constexpr bool hashEqual(const u128 & h1, const u128 & h2) {
+	return h1.u64_1 == h2.u64_1 && h1.u64_2 == h2.u64_2;
 }
 
 
@@ -1859,8 +1924,8 @@ constexpr bool hashLess(const T & h1, const T & h2) {
 	return h1 < h2;
 }
 
-constexpr bool hashLess(const ui128 & h1, const ui128 & h2) {
-	return (h1.ui64_1 ^ h1.ui64_2) < (h2.ui64_1 ^ h2.ui64_2);
+constexpr bool hashLess(const u128 & h1, const u128 & h2) {
+	return (h1.u64_1 ^ h1.u64_2) < (h2.u64_1 ^ h2.u64_2);
 }
 
 
@@ -1874,8 +1939,8 @@ constexpr bool hashGreater(const T & h1, const T & h2) {
 	return h1 > h2;
 }
 
-constexpr bool hashGreater(const ui128 & h1, const ui128 & h2) {
-	return (h1.ui64_1 ^ h1.ui64_2) > (h2.ui64_1 ^ h2.ui64_2);
+constexpr bool hashGreater(const u128 & h1, const u128 & h2) {
+	return (h1.u64_1 ^ h1.u64_2) > (h2.u64_1 ^ h2.u64_2);
 }
 
 

@@ -46,26 +46,26 @@ constexpr double degrees(double radians) {
 }
 
 //r is radius, theta is angle on xy plane, phi is angle from z axis
-inline qmu::vec3 sphericalToCartesian(const qmu::vec3 & v) {
+inline vec3 sphericalToCartesian(const vec3 & v) {
 	float sinTheta = sin(v.theta);
 	float cosTheta = cos(v.theta);
 	float sinPhi = sin(v.phi);
 	float cosPhi = cos(v.phi);
 
-	return qmu::vec3(
+	return vec3(
 		v.rad * sinPhi * cosTheta,
 		v.rad * sinPhi * sinTheta,
 		v.rad * cosPhi
 	);
 }
 
-inline qmu::vec3 sphericalToCartesian(float rad, float theta, float phi) {
+inline vec3 sphericalToCartesian(float rad, float theta, float phi) {
 	float sinTheta = sin(theta);
 	float cosTheta = cos(theta);
 	float sinPhi = sin(phi);
 	float cosPhi = cos(phi);
 
-	return qmu::vec3(
+	return vec3(
 		rad * sinPhi * cosTheta,
 		rad * sinPhi * sinTheta,
 		rad * cosPhi
@@ -73,9 +73,9 @@ inline qmu::vec3 sphericalToCartesian(float rad, float theta, float phi) {
 }
 
 //r is radius, theta is angle on xy plane, phi is angle from z axis
-inline qmu::vec3 cartesianToSpherical(const qmu::vec3 & v) {
+inline vec3 cartesianToSpherical(const vec3 & v) {
 	float rad = sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
-	return qmu::vec3(
+	return vec3(
 		rad,
 		atan2(v.y, v.x),
 		acos(v.z / rad)
@@ -83,20 +83,20 @@ inline qmu::vec3 cartesianToSpherical(const qmu::vec3 & v) {
 }
 
 //a is distance from vertex A in range [0, 1] (can be outside range and outside triangle), AX, AY, and AZ define cartesian location of A
-inline qmu::vec2 barycentricToCartesian(const qmu::vec3 & v, const qmu::vec2 & A, const qmu::vec2 & B, const qmu::vec2 & C) {
-	return qmu::vec2(
+inline vec2 barycentricToCartesian(const vec3 & v, const vec2 & A, const vec2 & B, const vec2 & C) {
+	return vec2(
 		v.lamA * A.x + v.lamB * B.x + v.lamC * C.x,
 		v.lamA * A.y + v.lamB * B.y + v.lamC * C.y
 	);
 }
 
-inline qmu::vec3 cartesianToBarycentric(const qmu::vec2 & v, const qmu::vec2 & A, const qmu::vec2 & B, const qmu::vec2 & C) {
-	qmu::mat2 mat(
+inline vec3 cartesianToBarycentric(const vec2 & v, const vec2 & A, const vec2 & B, const vec2 & C) {
+	mat2 mat(
 		A.x - C.x, A.y - C.y,
 		B.x - C.x, B.y - C.y
 	);
-	mat = qmu::inv(mat);
-	qmu::vec3 bary(mat * (v - C));
+	mat = inv(mat);
+	vec3 bary(mat * (v - C));
 	bary.lamC = 1.0f - bary.lamA - bary.lamB;
 	return bary;
 }
@@ -104,49 +104,49 @@ inline qmu::vec3 cartesianToBarycentric(const qmu::vec2 & v, const qmu::vec2 & A
 //maps a point in cartesian space to the surface of a sphere and returns cartesian coordinates
 //the point's x and y components, along with thetaPerUnit, determine the distance in radians from the origin
 //the point's z component determines the radius
-inline qmu::vec3 mapToSphere(const qmu::vec3 & v, float thetaPerUnit) {
-	static const qmu::mat2 perpMat = qmu::rotate(PI_2);
+inline vec3 mapToSphere(const vec3 & v, float thetaPerUnit) {
+	static const mat2 perpMat = rotate(PI_2);
 
-	qmu::vec2 perp = perpMat * qmu::vec2(v);
-	float theta = qmu::mag(qmu::vec2(v)) * thetaPerUnit;
-	qmu::mat3 rot = qmu::rotate(theta, qmu::vec3(perp.x, perp.y, 0.0f));
+	vec2 perp = perpMat * vec2(v);
+	float theta = mag(vec2(v)) * thetaPerUnit;
+	mat3 rot = rotate(theta, vec3(perp.x, perp.y, 0.0f));
 
-	return rot * qmu::vec3(0.0f, 0.0f, v.z);
+	return rot * vec3(0.0f, 0.0f, v.z);
 }
 
 //draw a line from v to A; gets the angle of this line w/ respect to the A bisector
 //possible angles range from -1 (along AB side) to 1 (along AC side), w/ linear-ness
-inline float baryToAngleA(const qmu::vec3 & v) {
+inline float baryToAngleA(const vec3 & v) {
 	return (v.lamC - v.lamB) / v.lamA;
 }
 
-inline float baryToAngleB(const qmu::vec3 & v) {
+inline float baryToAngleB(const vec3 & v) {
 	return (v.lamA - v.lamC) / v.lamB;
 }
 
-inline float baryToAngleC(const qmu::vec3 & v) {
+inline float baryToAngleC(const vec3 & v) {
 	return (v.lamB - v.lamA) / v.lamC;
 }
 
 //given a bary angle, return point along given a corresponding to angle
-inline qmu::vec3 baryFromAngleA(float angle, float a) {
-	qmu::vec3 v;
+inline vec3 baryFromAngleA(float angle, float a) {
+	vec3 v;
 	v.lamA = a;
 	v.lamC = (angle - 1) * (a - 1);
 	v.lamB = 1 - v.lamA - v.lamC;
 	return v;
 }
 
-inline qmu::vec3 baryFromAngleB(float angle, float b) {
-	qmu::vec3 v;
+inline vec3 baryFromAngleB(float angle, float b) {
+	vec3 v;
 	v.lamB = b;
 	v.lamA = (angle - 1) * (b - 1);
 	v.lamC = 1 - v.lamB - v.lamA;
 	return v;
 }
 
-inline qmu::vec3 baryFromAngleC(float angle, float c) {
-	qmu::vec3 v;
+inline vec3 baryFromAngleC(float angle, float c) {
+	vec3 v;
 	v.lamC = c;
 	v.lamB = (angle - 1) * (c - 1);
 	v.lamA = 1 - v.lamC - v.lamB;

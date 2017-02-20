@@ -18,31 +18,31 @@ using fnat = std::conditional_t<sizeof(nat) == 4,
 			    double,
 			      void>>;
 
-using     i8 =   int8_t;
-using    ui8 =  uint8_t;
-using    i16 =  int16_t;
-using   ui16 = uint16_t;
-using    i32 =  int32_t;
-using   ui32 = uint32_t;
-using    i64 =  int64_t;
-using   ui64 = uint64_t;
-struct  i128 {
+using   s08 =   int8_t;
+using   u08 =  uint8_t;
+using   s16 =  int16_t;
+using   u16 = uint16_t;
+using   s32 =  int32_t;
+using   u32 = uint32_t;
+using   s64 =  int64_t;
+using   u64 = uint64_t;
+struct  s128 {
 	union {
-		struct { i64 i64_1, i64_2; };
-		struct { i32 i32_1, i32_2, i32_3, i32_4; };
+		struct { s64 s64_1, s64_2; };
+		struct { s32 s32_1, s32_2, s32_3, s32_4; };
 	};
 };
-struct ui128 {
+struct u128 {
 	union {
-		struct { ui64 ui64_1, ui64_2; };
-		struct { ui32 ui32_1, ui32_2, ui32_3, ui32_4; };
+		struct { u64 u64_1, u64_2; };
+		struct { u32 u32_1, u32_2, u32_3, u32_4; };
 	};
 };
 
 template <nat t_p> struct precision;
-template        <> struct precision< 32> { using type =  i32; using utype =  ui32; };
-template        <> struct precision< 64> { using type =  i64; using utype =  ui64; };
-template        <> struct precision<128> { using type = i128; using utype = ui128; };
+template        <> struct precision< 32> { using type =  s32; using utype = u32; };
+template        <> struct precision< 64> { using type =  s64; using utype = u64; };
+template        <> struct precision<128> { using type = s128; using utype = u128; };
 
 template <nat t_p> using precision_t  = typename precision<t_p>::type;
 template <nat t_p> using precision_ut = typename precision<t_p>::utype;

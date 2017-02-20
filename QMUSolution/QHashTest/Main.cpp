@@ -711,44 +711,53 @@ bool testIterator() {
 	}
 
 	//cout << "conversion..." << endl;
-	Map<Test>::MIterator mit = m1.begin();
-	Map<Test>::CIterator cit = m1.cbegin();
-	//cit = mit;
+	Map<Test>::MIterator mit1 = m1.begin();
+	Map<Test>::CIterator cit1 = m1.cbegin();
+	//mit1 = cit1;
+
+	Map<Test>::MIterator mit2(mit1);
+	mit2 = mit1;
+	Map<Test>::CIterator cit2(cit1);
+	cit2 = cit1;
+	Map<Test>::MIterator mit3(std::move(mit1));
+	mit3 = std::move(mit1);
+	Map<Test>::CIterator cit3(std::move(cit1));
+	cit3 = std::move(cit1);
 
 	return true;
 }
 
 bool testHashTypeOptimizations() {
-	cout << "i8..." <<  endl;
-	for (i8 i = 0; i < 100; ++i) {
-		if (hash< 32>(i, 0)        != hash< 32>(&i, 1, 0)       ) return false;
-		if (hash< 64>(i, 0)        != hash< 64>(&i, 1, 0)       ) return false;
-		if (hash<128>(i, 0).ui64_1 != hash<128>(&i, 1, 0).ui64_1) return false;
-		if (hash<128>(i, 0).ui64_2 != hash<128>(&i, 1, 0).ui64_2) return false;
+	cout << "s08..." <<  endl;
+	for (s08 i = 0; i < 100; ++i) {
+		if (hash< 32>(i, 0)       != hash< 32>(&i, 1, 0)      ) return false;
+		if (hash< 64>(i, 0)       != hash< 64>(&i, 1, 0)      ) return false;
+		if (hash<128>(i, 0).u64_1 != hash<128>(&i, 1, 0).u64_1) return false;
+		if (hash<128>(i, 0).u64_2 != hash<128>(&i, 1, 0).u64_2) return false;
 	}
 
-	cout << "i16..." <<  endl;
-	for (i16 i = 0; i < 100; ++i) {
-		if (hash< 32>(i, 0)        != hash< 32>(&i, 1, 0)       ) return false;
-		if (hash< 64>(i, 0)        != hash< 64>(&i, 1, 0)       ) return false;
-		if (hash<128>(i, 0).ui64_1 != hash<128>(&i, 1, 0).ui64_1) return false;
-		if (hash<128>(i, 0).ui64_2 != hash<128>(&i, 1, 0).ui64_2) return false;
+	cout << "s16..." <<  endl;
+	for (s16 i = 0; i < 100; ++i) {
+		if (hash< 32>(i, 0)       != hash< 32>(&i, 1, 0)      ) return false;
+		if (hash< 64>(i, 0)       != hash< 64>(&i, 1, 0)      ) return false;
+		if (hash<128>(i, 0).u64_1 != hash<128>(&i, 1, 0).u64_1) return false;
+		if (hash<128>(i, 0).u64_2 != hash<128>(&i, 1, 0).u64_2) return false;
 	}
 
-	cout << "i32..." <<  endl;
-	for (i32 i = 0; i < 100; ++i) {
-		if (hash< 32>(i, 0)        != hash< 32>(&i, 1, 0)       ) return false;
-		if (hash< 64>(i, 0)        != hash< 64>(&i, 1, 0)       ) return false;
-		if (hash<128>(i, 0).ui64_1 != hash<128>(&i, 1, 0).ui64_1) return false;
-		if (hash<128>(i, 0).ui64_2 != hash<128>(&i, 1, 0).ui64_2) return false;
+	cout << "s32..." <<  endl;
+	for (s32 i = 0; i < 100; ++i) {
+		if (hash< 32>(i, 0)       != hash< 32>(&i, 1, 0)      ) return false;
+		if (hash< 64>(i, 0)       != hash< 64>(&i, 1, 0)      ) return false;
+		if (hash<128>(i, 0).u64_1 != hash<128>(&i, 1, 0).u64_1) return false;
+		if (hash<128>(i, 0).u64_2 != hash<128>(&i, 1, 0).u64_2) return false;
 	}
 
-	cout << "i64..." <<  endl;
-	for (i64 i = 0; i < 100; ++i) {
-		if (hash< 32>(i, 0)        != hash< 32>(&i, 1, 0)       ) return false;
-		if (hash< 64>(i, 0)        != hash< 64>(&i, 1, 0)       ) return false;
-		if (hash<128>(i, 0).ui64_1 != hash<128>(&i, 1, 0).ui64_1) return false;
-		if (hash<128>(i, 0).ui64_2 != hash<128>(&i, 1, 0).ui64_2) return false;
+	cout << "s64..." <<  endl;
+	for (s64 i = 0; i < 100; ++i) {
+		if (hash< 32>(i, 0)       != hash< 32>(&i, 1, 0)      ) return false;
+		if (hash< 64>(i, 0)       != hash< 64>(&i, 1, 0)      ) return false;
+		if (hash<128>(i, 0).u64_1 != hash<128>(&i, 1, 0).u64_1) return false;
+		if (hash<128>(i, 0).u64_2 != hash<128>(&i, 1, 0).u64_2) return false;
 	}
 
 	return true;
@@ -804,28 +813,28 @@ bool testStats() {
 }
 
 template <typename T> struct Generator;
-template <> struct Generator<i8> {
-	i8 v;
+template <> struct Generator<s08> {
+	s08 v;
 	void next() { ++v; }
 	void reset() { v = 0; }
 };
-template <> struct Generator<i16> {
-	i16 v;
+template <> struct Generator<s16> {
+	s16 v;
 	void next() { ++v; }
 	void reset() { v = 0; }
 };
-template <> struct Generator<i32> {
-	i32 v;
+template <> struct Generator<s32> {
+	s32 v;
 	void next() { ++v; }
 	void reset() { v = 0; } };
-template <> struct Generator<i64> {
-	i64 v;
+template <> struct Generator<s64> {
+	s64 v;
 	void next() { ++v; }
 	void reset() { v = 0; }
 };
-template <> struct Generator<i128> {
-	i128 v;
-	void next() { v = i128{ ++v.i64_1, ++v.i64_2 }; }
+template <> struct Generator<s128> {
+	s128 v;
+	void next() { v = s128{ ++v.s64_1, ++v.s64_2 }; }
 	void reset() { v = { 0, 0 }; }
 };
 template <> struct Generator<string> {
@@ -879,6 +888,22 @@ bool testPerformance(int n, Generator<T> g) {
 	timeU = std::chrono::high_resolution_clock::now() - thenU;
 	cout << timeU.count() / timeM.count() * 100.0 << "% faster" << endl;
 	cout << endl;
+	timeU = std::chrono::high_resolution_clock::now() - thenU;
+	cout << timeU.count() / timeM.count() * 100.0 << "% faster" << endl;
+	cout << endl;
+
+	cout << "iterator..." << endl;
+	thenM = std::chrono::high_resolution_clock::now();
+	for (auto it = m1.begin(); it != m1.end(); ++it) {
+	}
+	timeM = std::chrono::high_resolution_clock::now() - thenM;
+	cout << "switch..." << endl;
+	thenU = std::chrono::high_resolution_clock::now();
+	for (auto it = u1.begin(); it != u1.end(); ++it) {
+	}
+	timeU = std::chrono::high_resolution_clock::now() - thenU;
+	cout << timeU.count() / timeM.count() * 100.0 << "% faster" << endl;
+	cout << endl;
 
 	cout << "checking and removing..." << endl;
 	g.reset();
@@ -903,17 +928,17 @@ bool testPerformance(int n, Generator<T> g) {
 }
 
 bool testPerformanceSuite() {
-	cout << "k:     i8, n: 1000000" << endl;
-	if (!testPerformance<    i8>(1000000, Generator<    i8>())) return false;
+	cout << "k:    s08, n: 1000000" << endl;
+	if (!testPerformance<   s08>(1000000, Generator<   s08>())) return false;
 	cout << endl;
-	cout << "k:    i16, n:  500000" << endl;
-	if (!testPerformance<   i16>( 500000, Generator<   i16>())) return false;
+	cout << "k:    s16, n:  500000" << endl;
+	if (!testPerformance<   s16>( 500000, Generator<   s16>())) return false;
 	cout << endl;
-	cout << "k:    i32, n:  250000" << endl;
-	if (!testPerformance<   i32>( 250000, Generator<   i32>())) return false;
+	cout << "k:    s32, n:  250000" << endl;
+	if (!testPerformance<   s32>( 250000, Generator<   s32>())) return false;
 	cout << endl;
-	cout << "k:    i64, n:  125000" << endl;
-	if (!testPerformance<   i64>( 125000, Generator<   i64>())) return false;
+	cout << "k:    s64, n:  125000" << endl;
+	if (!testPerformance<   s64>( 125000, Generator<   s64>())) return false;
 	cout << endl;
 	cout << "k: string, n: 100000" << endl;
 	if (!testPerformance<string>( 100000, Generator<string>())) return false;

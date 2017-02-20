@@ -134,11 +134,11 @@ const unsigned char trail_table[256]{
 };
 }
 
-inline unsigned char trailingZeroes(ui8 x) {
+inline unsigned char trailingZeroes(u08 x) {
 	return trail_table[x];
 }
 
-inline unsigned char trailingZeroes(ui32 x) {
+inline unsigned char trailingZeroes(u32 x) {
 	unsigned char count = 0;
 	count += trail_table[x & 0xFF];
 	if (count < 8) {
