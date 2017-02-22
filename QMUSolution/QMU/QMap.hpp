@@ -54,12 +54,19 @@ class Map {
 
 
 
+	//==========================================================================
+	// Node
 	//--------------------------------------------------------------------------
-	// Static Variables
+	// Serves as a node for Slot as a basic linked list.
+	//--------------------------------------------------------------------------
 
-	public:
+	private:
 
-	static constexpr nat sk_p = t_p; // precision of the map
+	struct Node {
+		H hashKey;
+		E element;
+		Node * next;
+	};
 
 
 
@@ -72,7 +79,10 @@ class Map {
 
 	private:
 
-	class Slot;
+	struct Slot {
+		Node * first;
+		nat size;
+	};
 
 
 
@@ -102,6 +112,15 @@ class Map {
 
 
 	//--------------------------------------------------------------------------
+	// Static Variables
+
+	public:
+
+	static constexpr nat sk_p = t_p; // precision of the map
+
+
+
+	//--------------------------------------------------------------------------
 	// Instance Variables
 
 	private:
@@ -110,7 +129,7 @@ class Map {
 	nat m_nSlots;						// number of slots
 	std::unique_ptr<Slot[]> m_slots;	// the slots
 	nat m_seed;							// the seed to use for hashing operations
-	bool m_resizing;					// the map is currently resizing
+	bool m_rehashing;					// the map is currently rehashing
 
 
 
@@ -157,7 +176,7 @@ class Map {
 
 
 	//==========================================================================
-	// add
+	// insert
 	//--------------------------------------------------------------------------
 	// 
 	//--------------------------------------------------------------------------
@@ -165,17 +184,17 @@ class Map {
 	public:
 
 	template <typename K>
-	void add(const K & key, const E & element);
+	std::pair<MIterator, bool> insert(const K & key, const E & element);
 	template <typename K>
-	void add(const K * key, nat nElements, const E & element);
-	void add(const std::string & key, const E & element);
+	std::pair<MIterator, bool> insert(const K * key, nat nElements, const E & element);
+	std::pair<MIterator, bool> insert(const std::string & key, const E & element);
 
-	void addByHash(H hashKey, const E & element);
+	std::pair<MIterator, bool> insertByHash(const H & hashKey, const E & element);
 
 
 
 	//==========================================================================
-	// get
+	// at
 	//--------------------------------------------------------------------------
 	// 
 	//--------------------------------------------------------------------------
@@ -183,17 +202,17 @@ class Map {
 	public:
 
 	template <typename K>
-	E & get(const K & key) const;
+	E & at(const K & key) const;
 	template <typename K>
-	E & get(const K * key, nat nElements) const;
-	E & get(const std::string & key) const;
+	E & at(const K * key, nat nElements) const;
+	E & at(const std::string & key) const;
 
-	E & getByHash(H hashKey) const;
+	E & atByHash(const H & hashKey) const;
 
 
 
 	//==========================================================================
-	// set
+	// operator[]
 	//--------------------------------------------------------------------------
 	// 
 	//--------------------------------------------------------------------------
@@ -201,12 +220,10 @@ class Map {
 	public:
 
 	template <typename K>
-	void set(const K & key, const E & element);
-	template <typename K>
-	void set(const K * key, nat nElements, const E & element);
-	void set(const std::string & key, const E & element);
+	E & operator[](const K & key);
+	E & operator[](const std::string & key);
 
-	void setByHash(H hashKey, const E & element);
+	E & accessByHash(const H & hashKey);
 
 
 
@@ -219,12 +236,12 @@ class Map {
 	public:
 
 	template <typename K>
-	E remove(const K & key);
+	E erase(const K & key);
 	template <typename K>
-	E remove(const K * key, nat nElements);
-	E remove(const std::string & key);
+	E erase(const K * key, nat nElements);
+	E erase(const std::string & key);
 
-	E removeByHash(H hashKey);
+	E eraseByHash(const H & hashKey);
 
 
 
@@ -237,30 +254,42 @@ class Map {
 	public:
 
 	template <typename K>
-	bool has(const K & key) const;
+	nat count(const K & key) const;
 	template <typename K>
-	bool has(const K * key, nat nElements) const;
-	bool has(const std::string & key) const;
+	nat count(const K * key, nat nElements) const;
+	nat count(const std::string & key) const;
 
-	bool hasByHash(H hashKey) const;
+	nat countByHash(const H & hashKey) const;
 
 
 
 	//==========================================================================
-	// contains
+	// find
 	//--------------------------------------------------------------------------
 	// 
 	//--------------------------------------------------------------------------
 
 	public:
 
-	// Returns if the map contains the element, and sets keyDest to the hashkey.
-	bool contains(const E & element, H * keyDest = nullptr) const;
+	// Returns if the map contains the element
+	MIterator find(const E & element);
 
 
 
 	//==========================================================================
-	// resize
+	// findByHash
+	//--------------------------------------------------------------------------
+	// 
+	//--------------------------------------------------------------------------
+
+	public:
+
+	MIterator findByHash(const H & hashKey);
+
+
+
+	//==========================================================================
+	// rehash
 	//--------------------------------------------------------------------------
 	// Resizes the map so that there are nSlots slots.
 	// All elements are re-organized.
@@ -268,7 +297,7 @@ class Map {
 	//--------------------------------------------------------------------------
 
 	public:
-	void resize(nat nSlots);
+	void rehash(nat nSlots);
 
 
 
@@ -373,174 +402,6 @@ class Map {
 
 
 //======================================================================================================================
-// Slot ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//======================================================================================================================
-// A linked-list bucket for the hashmap.
-//------------------------------------------------------------------------------
-
-template <typename E, nat t_p>
-class Map<E, t_p>::Slot {
-
-	friend Map;
-
-
-
-	//==========================================================================
-	// Node
-	//--------------------------------------------------------------------------
-	// Serves as a node for Slot as a basic linked list.
-	//--------------------------------------------------------------------------
-
-	private:
-
-	struct Node {
-		H hashKey;
-		E element;
-		Node * next;
-	};
-
-	//--------------------------------------------------------------------------
-	// Instance Variables
-
-	private:
-
-	Node * m_first;
-	nat m_size;
-
-
-
-	//==========================================================================
-	// Slot
-	//--------------------------------------------------------------------------
-	// 
-	//--------------------------------------------------------------------------
-
-	private:
-
-	Slot();
-
-	Slot(const Slot & other);
-
-
-
-	//==========================================================================
-	// ~Slot
-	//--------------------------------------------------------------------------
-	// 
-	//--------------------------------------------------------------------------
-
-	public:
-
-	~Slot();
-
-
-
-	//==========================================================================
-	// operator=
-	//--------------------------------------------------------------------------
-	// 
-	//--------------------------------------------------------------------------
-
-	private:
-
-	Slot & operator=(const Slot & o);
-
-
-
-	//==========================================================================
-	// push
-	//--------------------------------------------------------------------------
-	// Creates a new node for element and stores it in ascending order by
-	// hashkey if an element already exists, does nothing and returns false.
-	//--------------------------------------------------------------------------
-
-	bool push(H hashKey, const E & element);
-
-
-
-	//==========================================================================
-	// peek
-	//--------------------------------------------------------------------------
-	// Transverses node sequence and sets dest to element at hashkey.
-	// Returns false if no element is found.
-	//--------------------------------------------------------------------------
-
-	bool peek(H hashKey, E ** dest) const;
-
-
-
-	//==========================================================================
-	// pop
-	//--------------------------------------------------------------------------
-	// Transverses node sequence until it finds node with hashkey.
-	// "Removes" node by assigning its successor as the successor of its
-	// predecessor. Sets dest to element replaced and returns false if no
-	// element is found with hashkey.
-	//--------------------------------------------------------------------------
-
-	bool pop(H hashKey, E * dest);
-
-
-
-	//==========================================================================
-	// set
-	//--------------------------------------------------------------------------
-	// Transverses node sequence...
-	// ...if it finds a corresponding node, replaces that node with a new node
-	// with element and hashkey, then sets dest to element that was replaced and
-	// returns true. If it does not find a node with hashkey, it adds the
-	// element and returns false.
-	//--------------------------------------------------------------------------
-
-	bool set(H hashKey, const E & element, E * dest);
-
-
-
-	//==========================================================================
-	// contains
-	//--------------------------------------------------------------------------
-	// Returns if the slot contains the element, and sets *keyDest to the
-	// hashkey.
-	//--------------------------------------------------------------------------
-
-	bool contains(const E & element, H * keyDest) const;
-
-
-
-	//==========================================================================
-	// clear
-	//--------------------------------------------------------------------------
-	// Empties the slot. Afterwards, m_first == nullptr and size == 0.
-	//--------------------------------------------------------------------------
-
-	void clear();
-
-
-
-	//==========================================================================
-	// equals
-	//--------------------------------------------------------------------------
-	// Returns whether the two slots are equivalent, with the same number of
-	// elements, and the same objects stored.
-	//--------------------------------------------------------------------------
-
-	bool equals(const Slot & other) const;
-
-
-
-	//==========================================================================
-	// printContents
-	//--------------------------------------------------------------------------
-	// Will attempt to os << *element, hashkey, and address based on bool keys.
-	//--------------------------------------------------------------------------
-
-	void printContents(std::ostream & os, bool value, bool hash, bool address) const;
-
-};
-
-
-
-//======================================================================================================================
 // Iterator ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //======================================================================================================================
 // Basic iterator used to iterate forwards over the map.
@@ -566,7 +427,7 @@ class Map<E, t_p>::Iterator {
 
 	const Map<E, t_p> * m_map;
 	nat m_slot;
-	typename Map<E, t_p>::Slot::Node * m_node;
+	typename Map<E, t_p>::Node * m_node;
 
 
 
@@ -582,7 +443,7 @@ class Map<E, t_p>::Iterator {
 	
 	private:
 
-	Iterator(const Map<E, t_p> & map, nat slot, typename Map<E, t_p>::Slot::Node * node);
+	Iterator(const Map<E, t_p> & map, nat slot, typename Map<E, t_p>::Node * node);
 
 	public:
 
@@ -682,39 +543,6 @@ class Map<E, t_p>::Iterator {
 
 
 
-//==============================================================================
-// ElementNotFoundException
-//------------------------------------------------------------------------------
-// Cosmetic exception to be thrown when an element can not be found with given
-// hash. Equivalent of index-out-of-bounds exception.
-//------------------------------------------------------------------------------
-
-class ElementNotFoundException : public std::exception {};
-
-
-
-//==============================================================================
-// PreexistingElementException
-//------------------------------------------------------------------------------
-// Cosmetic exception to be thrown when trying to add an element with a hashkey
-// already in use.
-//------------------------------------------------------------------------------
-
-class PreexistingElementException : public std::exception {};
-
-
-
-//==============================================================================
-// HashKeyCollisionException
-//------------------------------------------------------------------------------
-// Cosmetic exception to be thrown when two data keys generate the same
-// hashKey. Should be an extremely rare scenario. Not currently implemented.
-//------------------------------------------------------------------------------
-
-class HashKeyCollisionException : public std::exception {};
-
-
-
 //======================================================================================================================
 // TECH ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //======================================================================================================================
@@ -800,49 +628,60 @@ Map<E, t_p>::Map() :
 	m_size(0),
 	m_nSlots(gk_defNSlots),
 	m_slots(new Slot[m_nSlots]),
-	m_resizing(false)
-{}
+	m_rehashing(false)
+{
+	memset(m_slots.get(), 0, m_nSlots * sizeof(Slot));
+}
 
 template <typename E, nat t_p>
 Map<E, t_p>::Map(nat nSlots) :
 	m_size(0),
 	m_nSlots(nSlots < 1 ? 1 : nSlots),
 	m_slots(new Slot[m_nSlots]),
-	m_resizing(false)
-{}
+	m_rehashing(false)
+{
+	memset(m_slots.get(), 0, m_nSlots * sizeof(Slot));
+}
 
 template <typename E, nat t_p>
-Map<E, t_p>::Map(const Map<E, t_p> & other) :
-	m_size(other.m_size),
-	m_nSlots(other.m_nSlots),
+Map<E, t_p>::Map(const Map<E, t_p> & map) :
+	m_size(map.m_size),
+	m_nSlots(map.m_nSlots),
 	m_slots(new Slot[m_nSlots]),
-	m_resizing(false)
+	m_rehashing(false)
 {
-	for (nat i = 0; i < m_nSlots; ++i) {
-		m_slots[i] = other.m_slots[i];
+	for (nat i(0); i < m_nSlots; ++i) {
+		m_slots[i].size = map.m_slots[i].size;
+		m_slots[i].first = map.m_slots[i].first;
+
+		Node ** node = &m_slots[i].first;
+		while (*node) {
+			*node = new Node(**node);
+			node = &(*node)->next;
+		}
 	}
 }
 
 template <typename E, nat t_p>
-Map<E, t_p>::Map(Map<E, t_p> && other) :
-	m_size(other.m_size),
-	m_nSlots(other.m_nSlots),
-	m_slots(std::move(other.m_slots)),
-	m_resizing(false)
+Map<E, t_p>::Map(Map<E, t_p> && map) :
+	m_size(map.m_size),
+	m_nSlots(map.m_nSlots),
+	m_slots(std::move(map.m_slots)),
+	m_rehashing(false)
 {
-	other.m_size = 0;
-	other.m_nSlots = 0;
+	map.m_size = 0;
+	map.m_nSlots = 0;
 }
 
 //helpers for variadic constructor
 template <typename E, nat t_p, typename K>
-void setMany(Map<E, t_p> & ht, const K & key, const E & element) {
-	ht.set(key, element);
+void insertMany(Map<E, t_p> & ht, const K & key, const E & element) {
+	ht.insert(key, element);
 }
 template <typename E, nat t_p, typename K, typename... Pairs>
-void setMany(Map<E, t_p> & ht, const K & key, const E & element, const Pairs &... pairs) {
-	ht.set(key, element);
-	setMany(ht, pairs...);
+void insertMany(Map<E, t_p> & ht, const K & key, const E & element, const Pairs &... pairs) {
+	ht.insert(key, element);
+	insertMany(ht, pairs...);
 }
 
 template <typename E, nat t_p>
@@ -851,9 +690,10 @@ Map<E, t_p>::Map(const K & key, const E & element, const Pairs &... pairs) :
 	m_size(0),
 	m_nSlots((2 + sizeof...(Pairs) + 1) / 2),
 	m_slots(new Slot[m_nSlots]),
-	m_resizing(false)
+	m_rehashing(false)
 {
-	setMany(*this, key, element, pairs...);
+	memset(m_slots.get(), 0, m_nSlots * sizeof(Slot));
+	insertMany(*this, key, element, pairs...);
 }
 
 
@@ -864,6 +704,15 @@ Map<E, t_p>::Map(const K & key, const E & element, const Pairs &... pairs) :
 
 template <typename E, nat t_p>
 Map<E, t_p>::~Map() {
+	for (nat i(0); i < m_nSlots; ++i) {
+		Node * node = m_slots[i].first, * next;
+		while (node) {
+			next = node->next;
+			delete node;
+			node = next;
+		}
+	}
+
 	m_slots.reset();
 }
 
@@ -874,29 +723,37 @@ Map<E, t_p>::~Map() {
 //------------------------------------------------------------------------------
 
 template <typename E, nat t_p>
-Map<E, t_p> & Map<E, t_p>::operator=(const Map<E, t_p> & other) {
-	if (&other == this) {
+Map<E, t_p> & Map<E, t_p>::operator=(const Map<E, t_p> & map) {
+	if (&map == this) {
 		return *this;
 	}
 
-	m_size = other.m_size;
-	m_nSlots = other.m_nSlots;
+	m_size = map.m_size;
+	m_nSlots = map.m_nSlots;
 	m_slots = std::make_unique<Slot[]>(m_nSlots);
-	for (nat i = 0; i < m_nSlots; ++i) {
-		m_slots[i] = other.m_slots[i];
+
+	for (nat i(0); i < m_nSlots; ++i) {
+		m_slots[i].size = map.m_slots[i].size;
+		m_slots[i].first = map.m_slots[i].first;
+
+		Node ** node = &m_slots[i].first;
+		while (*node) {
+			*node = new Node(**node);
+			node = &(*node)->next;
+		}
 	}
 
 	return *this;
 }
 
 template <typename E, nat t_p>
-Map<E, t_p> & Map<E, t_p>::operator=(Map<E, t_p> && other) {
-	m_size = other.m_size;
-	m_nSlots = other.m_nSlots;
-	m_slots = std::move(other.m_slots);
+Map<E, t_p> & Map<E, t_p>::operator=(Map<E, t_p> && map) {
+	m_size = map.m_size;
+	m_nSlots = map.m_nSlots;
+	m_slots = std::move(map.m_slots);
 
-	other.m_size = 0;
-	other.m_nSlots = 0;
+	map.m_size = 0;
+	map.m_nSlots = 0;
 
 	return *this;
 }
@@ -904,201 +761,237 @@ Map<E, t_p> & Map<E, t_p>::operator=(Map<E, t_p> && other) {
 
 
 //==============================================================================
-// add
+// insert
 //------------------------------------------------------------------------------
 
 template <typename E, nat t_p> template <typename K>
-void Map<E, t_p>::add(const K & key, const E & element) {
-	addByHash(hash<t_p>(key, m_seed), element);
+std::pair<typename Map<E, t_p>::MIterator, bool> Map<E, t_p>::insert(const K & key, const E & element) {
+	return insertByHash(hash<t_p>(key, m_seed), element);
 }
 
 template <typename E, nat t_p> template <typename K>
-void Map<E, t_p>::add(const K * key, nat nElements, const E & element) {
-	addByHash(hash<t_p>(key, nElements, m_seed), element);
+std::pair<typename Map<E, t_p>::MIterator, bool> Map<E, t_p>::insert(const K * key, nat nElements, const E & element) {
+	return insertByHash(hash<t_p>(key, nElements, m_seed), element);
 }
 
 template <typename E, nat t_p>
-void Map<E, t_p>::add(const std::string & key, const E & element) {
-	addByHash(hash<t_p>(key, m_seed), element);
+std::pair<typename Map<E, t_p>::MIterator, bool> Map<E, t_p>::insert(const std::string & key, const E & element) {
+	return insertByHash(hash<t_p>(key, m_seed), element);
 }
 
 
 
 //==============================================================================
-// addByHash
+// insertByHash
 //------------------------------------------------------------------------------
 
 template <typename E, nat t_p>
-void Map<E, t_p>::addByHash(H hashKey, const E & element) {
-	if (!m_resizing && m_size + 1 > m_nSlots) {
-		resize(floor2(m_nSlots * 2));
-	}
-	if (m_slots[tech::hashMod(hashKey, m_nSlots)].push(hashKey, element)) {
+std::pair<typename Map<E, t_p>::MIterator, bool> Map<E, t_p>::insertByHash(const H & hashKey, const E & element) {
+	nat slotI(tech::hashMod(hashKey, m_nSlots));
+	Slot & slot(m_slots[slotI]);
+
+	if (!slot.first || tech::hashLess(hashKey, slot.first->hashKey)) {
+		slot.first = new Node{ hashKey, element, slot.first };
+		++slot.size;
 		++m_size;
+		if (!m_rehashing && m_size > m_nSlots) {
+			rehash(floor2(m_nSlots * 2));
+			return { findByHash(hashKey), true };
+		}
+		else {
+			return { MIterator(*this, slotI, slot.first), true };
+		}
+	}
+	if (tech::hashEqual(hashKey, slot.first->hashKey)) {
+		return { MIterator(*this, slotI, slot.first), false };
+	}
+	
+	Node * node(slot.first);
+	while (node->next && tech::hashLess(node->next->hashKey, hashKey)) {
+		node = node->next;
+	}
+	if (node->next && tech::hashEqual(node->next->hashKey, hashKey)) {
+		return { MIterator(*this, slotI, node->next), false };
+	}
+	node->next = new Node{ hashKey, element, node->next };
+	++slot.size;
+	++m_size;
+	if (!m_rehashing && m_size > m_nSlots) {
+		rehash(floor2(m_nSlots * 2));
+		return { findByHash(hashKey), true };
 	}
 	else {
-		throw PreexistingElementException();
+		return { MIterator(*this, slotI, node->next), true };
 	}
 }
 
 
 
 //==============================================================================
-// get
+// at
 //------------------------------------------------------------------------------
 
 template <typename E, nat t_p> template <typename K>
-E & Map<E, t_p>::get(const K & key) const {
-	return getByHash(hash<t_p>(key, m_seed));
+E & Map<E, t_p>::at(const K & key) const {
+	return atByHash(hash<t_p>(key, m_seed));
 }
 
 template <typename E, nat t_p> template <typename K>
-E & Map<E, t_p>::get(const K * key, nat nElements) const {
-	return getByHash(hash<t_p>(key, nElements, m_seed));
+E & Map<E, t_p>::at(const K * key, nat nElements) const {
+	return atByHash(hash<t_p>(key, nElements, m_seed));
 }
 
 template <typename E, nat t_p>
-E & Map<E, t_p>::get(const std::string & key) const {
-	return getByHash(hash<t_p>(key, m_seed));
+E & Map<E, t_p>::at(const std::string & key) const {
+	return atByHash(hash<t_p>(key, m_seed));
 }
 
 
 
 //==============================================================================
-// getByHash
+// atByHash
 //------------------------------------------------------------------------------
 
 template <typename E, nat t_p>
-E & Map<E, t_p>::getByHash(H hashKey) const {
-	E * element;
-	if (!m_slots[tech::hashMod(hashKey, m_nSlots)].peek(hashKey, &element)) {
-		throw ElementNotFoundException();
+E & Map<E, t_p>::atByHash(const H & hashKey) const {
+	Slot & slot(m_slots[tech::hashMod(hashKey, m_nSlots)]);
+
+	Node * node(slot.first);
+	while (node && tech::hashLess(node->hashKey, hashKey)) {
+		node = node->next;
 	}
-	return *element;
+	if (node && tech::hashEqual(node->hashKey, hashKey)) {
+		return node->element;
+	}	
+	throw std::out_of_range("key not found");
 }
 
 
 
 //==============================================================================
-// set
+// operator[]
 //------------------------------------------------------------------------------
 
 template <typename E, nat t_p> template <typename K>
-void Map<E, t_p>::set(const K & key, const E & element) {
-	setByHash(hash<t_p>(key, m_seed), element);
-}
-
-template <typename E, nat t_p> template <typename K>
-void Map<E, t_p>::set(const K * key, nat nElements, const E & element) {
-	setByHash(hash<t_p>(key, nElements, m_seed), element);
+E & Map<E, t_p>::operator[](const K & key) {
+	return accessByHash(hash<t_p>(key, m_seed));
 }
 
 template <typename E, nat t_p>
-void Map<E, t_p>::set(const std::string & key, const E & element) {
-	setByHash(hash<t_p>(key, m_seed), element);
+E & Map<E, t_p>::operator[](const std::string & key) {
+	return accessByHash(hash<t_p>(key, m_seed));
 }
 
 
 
 //==============================================================================
-// setByHash
+// accessByHash
 //------------------------------------------------------------------------------
 
 template <typename E, nat t_p>
-void Map<E, t_p>::setByHash(H hashKey, const E & element) {
-	if (!m_resizing && m_size + 1 > m_nSlots) {
-		resize(floor2(m_nSlots * 2));
-	}
-	E replaced;
-	if (!m_slots[tech::hashMod(hashKey, m_nSlots)].set(hashKey, element, &replaced)) {
-		++m_size;
-	}
+E & Map<E, t_p>::accessByHash(const H & hashKey) {
+	return *insertByHash(hashKey, E()).first;
 }
 
 
 
 //==============================================================================
-// remove
+// erase
 //------------------------------------------------------------------------------
 
 template <typename E, nat t_p> template <typename K>
-E Map<E, t_p>::remove(const K & key) {
-	return removeByHash(hash<t_p>(key, m_seed));
+E Map<E, t_p>::erase(const K & key) {
+	return eraseByHash(hash<t_p>(key, m_seed));
 }
 
 template <typename E, nat t_p> template <typename K>
-E Map<E, t_p>::remove(const K * key, nat nElements) {
-	return removeByHash(hash<t_p>(key, nElements, m_seed));
+E Map<E, t_p>::erase(const K * key, nat nElements) {
+	return eraseByHash(hash<t_p>(key, nElements, m_seed));
 }
 
 template <typename E, nat t_p>
-E Map<E, t_p>::remove(const std::string & key) {
-	return removeByHash(hash<t_p>(key, m_seed));
+E Map<E, t_p>::erase(const std::string & key) {
+	return eraseByHash(hash<t_p>(key, m_seed));
 }
 
 
 
 //==============================================================================
-// removeByHash
+// eraseByHash
 //------------------------------------------------------------------------------
 
 template <typename E, nat t_p>
-E Map<E, t_p>::removeByHash(H hashKey) {
+E Map<E, t_p>::eraseByHash(const H & hashKey) {
+	Slot & slot(m_slots[tech::hashMod(hashKey, m_nSlots)]);
 	E element;
-	if (m_slots[tech::hashMod(hashKey, m_nSlots)].pop(hashKey, &element)) {
-		m_size--;
+	
+	if (!slot.first) {
+		throw std::out_of_range("key not found");
+	}
+	if (tech::hashEqual(slot.first->hashKey, hashKey)) {
+		element = slot.first->element;
+		Node * temp(slot.first);
+		slot.first = slot.first->next;
+		delete temp;
 	}
 	else {
-		throw ElementNotFoundException();
+		Node * node = slot.first;
+		while (node->next && tech::hashLess(node->next->hashKey, hashKey)) {
+			node = node->next;
+		}
+		if (node->next && tech::hashEqual(node->next->hashKey, hashKey)) {
+			element = node->next->element;
+			Node * temp(node->next);
+			node->next = node->next->next;
+			delete temp;
+		}
+		else {
+			throw std::out_of_range("key not found");
+		}
 	}
+
+	--slot.size;
+	--m_size;
 	return element;
 }
 
 
 
 //==============================================================================
-// has
+// count
 //------------------------------------------------------------------------------
 
 template <typename E, nat t_p> template <typename K>
-bool Map<E, t_p>::has(const K & key) const {
-	return hasByHash(hash<t_p>(key, m_seed));
+nat Map<E, t_p>::count(const K & key) const {
+	return countByHash(hash<t_p>(key, m_seed));
 }
 
 template <typename E, nat t_p> template <typename K>
-bool Map<E, t_p>::has(const K * key, nat nElements) const {
-	return hasByHash(hash<t_p>(key, nElements, m_seed));
+nat Map<E, t_p>::count(const K * key, nat nElements) const {
+	return countByHash(hash<t_p>(key, nElements, m_seed));
 }
 
 template <typename E, nat t_p>
-bool Map<E, t_p>::has(const std::string & key) const {
-	return hasByHash(hash<t_p>(key, m_seed));
+nat Map<E, t_p>::count(const std::string & key) const {
+	return countByHash(hash<t_p>(key, m_seed));
 }
 
 
 
 //==============================================================================
-// hasByHash
+// countByHash
 //------------------------------------------------------------------------------
 
 template <typename E, nat t_p>
-bool Map<E, t_p>::hasByHash(H hashKey) const {
-	E * element;
-	return m_slots[tech::hashMod(hashKey, m_nSlots)].peek(hashKey, &element);
-}
+nat Map<E, t_p>::countByHash(const H & hashKey) const {
+	Slot & slot(m_slots[tech::hashMod(hashKey, m_nSlots)]);
 
-
-
-//==============================================================================
-// contains
-//------------------------------------------------------------------------------
-
-template <typename E, nat t_p>
-bool Map<E, t_p>::contains(const E & element, H * keyDest) const {
-	for (nat i = 0; i < m_nSlots; ++i) {
-		if (m_slots[i].contains(element, keyDest)) {
-			return true;
-		}
+	Node * node = slot.first;
+	while (node && tech::hashLess(node->hashKey, hashKey)) {
+		node = node->next;
+	}
+	if (node && tech::hashEqual(node->hashKey, hashKey)) {
+		return true;
 	}
 	return false;
 }
@@ -1106,12 +999,49 @@ bool Map<E, t_p>::contains(const E & element, H * keyDest) const {
 
 
 //==============================================================================
-// resize
+// find
 //------------------------------------------------------------------------------
 
 template <typename E, nat t_p>
-void Map<E, t_p>::resize(nat nSlots) {
-	if (m_resizing) {
+typename Map<E, t_p>::MIterator Map<E, t_p>::find(const E & element) {
+	for (MIterator it(begin()); it; ++it) {
+		if (*it == element) {
+			return it;
+		}
+	}
+
+	return end();
+}
+
+
+
+//==============================================================================
+// findByHash
+//------------------------------------------------------------------------------
+
+template <typename E, nat t_p>
+typename Map<E, t_p>::MIterator Map<E, t_p>::findByHash(const H & hashKey) {
+	nat slotI = tech::hashMod(hashKey, m_nSlots);
+
+	Node * node(m_slots[slotI].first);
+	while (node && tech::hashLess(node->hashKey, hashKey)) {
+		node = node->next;
+	}
+	if (node && tech::hashEqual(node->hashKey, hashKey)) {
+		return MIterator(*this, slotI, node);
+	}	
+	throw std::out_of_range("key not found");
+}
+
+
+
+//==============================================================================
+// rehash
+//------------------------------------------------------------------------------
+
+template <typename E, nat t_p>
+void Map<E, t_p>::rehash(nat nSlots) {
+	if (m_rehashing) {
 		return;
 	}
 	if (nSlots == m_nSlots) {
@@ -1123,20 +1053,20 @@ void Map<E, t_p>::resize(nat nSlots) {
 
 
 	Map<E, t_p> map(nSlots);
-	m_resizing = true;
-	map.m_resizing = true;
+	m_rehashing = true;
+	map.m_rehashing = true;
 
-	const Slot::Node * node;
-	for (nat i = 0; i < m_nSlots; ++i) {
-		node = m_slots[i].m_first;
+	const Node * node;
+	for (nat i(0); i < m_nSlots; ++i) {
+		node = m_slots[i].first;
 		while (node) {
-			map.addByHash(node->hashKey, node->element);
+			map.insertByHash(node->hashKey, node->element);
 			node = node->next;
 		}
 	}
 
-	map.m_resizing = false;
-	m_resizing = false;
+	map.m_rehashing = false;
+	m_rehashing = false;
 	*this = std::move(map);
 }
 
@@ -1153,7 +1083,15 @@ void Map<E, t_p>::clear() {
 	}
 
 	for (nat i = 0; i < m_nSlots; ++i) {
-		m_slots[i].clear();
+		Node * node = m_slots[i].first, * temp;
+		while (node) {
+			temp = node->next;
+			delete node;
+			node = temp;
+		}
+
+		m_slots[i].first = nullptr;
+		m_slots[i].size = 0;
 	}
 
 	m_size = 0;
@@ -1166,17 +1104,30 @@ void Map<E, t_p>::clear() {
 //------------------------------------------------------------------------------
 
 template <typename E, nat t_p>
-bool Map<E, t_p>::equals(const Map<E, t_p> & other) const {
-	if (&other == this) {
+bool Map<E, t_p>::equals(const Map<E, t_p> & map) const {
+	if (&map == this) {
 		return true;
 	}
 
-	if (other.m_nSlots != m_nSlots || other.m_size != m_size) {
+	if (map.m_nSlots != m_nSlots || map.m_size != m_size) {
 		return false;
 	}
 
 	for (nat i = 0; i < m_nSlots; ++i) {
-		if (!m_slots[i].equals(other.m_slots[i])) {
+		if (m_slots[i].size != map.m_slots[i].size) {
+			return false;
+		}
+
+		Node * next1 = m_slots[i].first;
+		Node * next2 = map.m_slots[i].first;
+		while (next1 && next2) {
+			if (next1->element != next2->element) {
+				return false;
+			}
+			next1 = next1->next;
+			next2 = next2->next;
+		}
+		if (next1 != next2) {
 			return false;
 		}
 	}
@@ -1285,16 +1236,48 @@ void Map<E, t_p>::seed(nat seed) {
 
 template <typename E, nat t_p>
 void Map<E, t_p>::printContents(std::ostream & os, bool value, bool hash, bool address) const {
-	static const nat k_nSlotsThreshold = 50;
+	static const nat k_nSlotsThreshold(50);
+	static const nat k_nElementsThreshold(10);
 
 	if (m_nSlots > k_nSlotsThreshold) {
 		os << "[S:" << m_nSlots << "][N:" << m_size << "](too large to print)";
 		return;
 	}
 
-	for (nat s = 0; s < m_nSlots; ++s) {
-		os << "[" << s << "]";
-		m_slots[s].printContents(os, value, hash, address);
+	for (nat i = 0; i < m_nSlots; ++i) {
+		os << "[" << i << "]";
+
+		Node * node = m_slots[i].first;
+
+		os << "[N:" << m_slots[i].size << "]";
+
+		if (m_slots[i].size > k_nElementsThreshold) {
+			os << "(too large to print)" << std::endl;
+			break;
+		}
+
+		while (node) {
+			os << "(";
+			if (value) {
+				os << node->element;
+			}
+			if (hash) {
+				if (value) {
+					os << ", ";
+				}
+				os << node->hashKey;
+			}
+			if (address) {
+				if (value || hash) {
+					os << ", ";
+				}
+				os << std::hex << &node->element << std::dec;
+			}
+			os << ")";
+
+			node = node->next;
+		}
+
 		os << std::endl;
 	}
 }
@@ -1307,31 +1290,31 @@ void Map<E, t_p>::printContents(std::ostream & os, bool value, bool hash, bool a
 
 template <typename E, nat t_p>
 typename Map<E, t_p>::MapStats Map<E, t_p>::stats() const {
-	nat min = m_slots[0].m_size;
-	nat max = m_slots[0].m_size;
-	nat median = m_slots[0].m_size;
-	fnat mean = fnat(m_slots[0].m_size);
+	nat min = m_slots[0].size;
+	nat max = m_slots[0].size;
+	nat median = m_slots[0].size;
+	fnat mean = fnat(m_slots[0].size);
 	fnat stddev = 0.0f;
 
 	nat total = 0;
 	for (nat i = 0; i < m_nSlots; ++i) {
-		if (m_slots[i].m_size < min) {
-			min = m_slots[i].m_size;
+		if (m_slots[i].size < min) {
+			min = m_slots[i].size;
 		}
-		else if (m_slots[i].m_size > max) {
-			max = m_slots[i].m_size;
+		else if (m_slots[i].size > max) {
+			max = m_slots[i].size;
 		}
 
-		total += m_slots[i].m_size;
+		total += m_slots[i].size;
 	}
 	mean = (fnat)total / m_nSlots;
 
 	nat * sizeCounts = new nat[max - min + 1];
 	memset(sizeCounts, 0, (max - min + 1) * sizeof(nat));
 	for (nat i = 0; i < m_nSlots; ++i) {
-		++sizeCounts[m_slots[i].m_size - min];
+		++sizeCounts[m_slots[i].size - min];
 
-		stddev += (m_slots[i].m_size - mean) * (m_slots[i].m_size - mean);
+		stddev += (m_slots[i].size - mean) * (m_slots[i].size - mean);
 	}
 	stddev /= m_nSlots;
 	stddev = sqrt(stddev);
@@ -1381,354 +1364,6 @@ void Map<E, t_p>::printHisto(const MapStats & stats, std::ostream & os) {
 
 
 //======================================================================================================================
-// SLOT IMPLEMENTATION /////////////////////////////////////////////////////////////////////////////////////////////////
-//======================================================================================================================
-
-
-
-//==============================================================================
-// Slot
-//------------------------------------------------------------------------------
-
-template <typename E, nat t_p>
-Map<E, t_p>::Slot::Slot() :
-	m_first(nullptr),
-	m_size(0)
-{}
-
-template <typename E, nat t_p>
-Map<E, t_p>::Slot::Slot(const Slot & other) {
-	if (&other == this) {
-		return;
-	}
-
-	m_size = other.m_size;
-	if (other.m_first) {
-		m_first = new Node(*other.m_first);
-
-		Node * node = m_first;
-		while (node->next) {
-			node->next = new Node(*node->next);
-			node = node->next;
-		}
-	}
-	else {
-		m_first = nullptr;
-	}
-}
-
-
-
-//==============================================================================
-// ~Slot
-//------------------------------------------------------------------------------
-
-template <typename E, nat t_p>
-Map<E, t_p>::Slot::~Slot() {
-	Node * node = m_first, * next;
-	while (node) {
-		next = node->next;
-		delete node;
-		node = next;
-	}
-}
-
-
-
-//==============================================================================
-// operator=
-//------------------------------------------------------------------------------
-
-template <typename E, nat t_p>
-typename Map<E, t_p>::Slot & Map<E, t_p>::Slot::operator=(const Slot & other) {
-	if (&other == this) {
-		return *this;
-	}
-
-	m_size = other.m_size;
-	if (other.m_first) {
-		m_first = new Node(*other.m_first);
-
-		Node * node = m_first;
-		while (node->next) {
-			node->next = new Node(*node->next);
-			node = node->next;
-		}
-	}
-	else {
-		m_first = nullptr;
-	}
-
-	return *this;
-}
-
-
-
-//==============================================================================
-// push
-//------------------------------------------------------------------------------
-
-template <typename E, nat t_p>
-bool Map<E, t_p>::Slot::push(H hashKey, const E & element) {
-	if (!m_first) {
-		m_first = new Node{ hashKey, element, nullptr };
-		++m_size;
-		return true;
-	}
-
-	if (tech::hashLess(hashKey, m_first->hashKey)) {
-		m_first = new Node{ hashKey, element, m_first };
-		++m_size;
-		return true;
-	}
-	if (tech::hashEqual(hashKey, m_first->hashKey)) {
-		return false;
-	}
-
-	Node * node = m_first;
-	while (node->next && tech::hashLess(node->next->hashKey, hashKey)) {
-		node = node->next;
-	}
-
-	if (node->next) {
-		if (tech::hashEqual(node->next->hashKey, hashKey)) {
-			return false;
-		}
-		node->next = new Node{ hashKey, element, node->next };
-	}
-	else {
-		node->next = new Node{ hashKey, element };
-	}
-
-	++m_size;
-	return true;
-}
-
-
-
-//==============================================================================
-// peek
-//------------------------------------------------------------------------------
-
-template <typename E, nat t_p>
-bool Map<E, t_p>::Slot::peek(H hashKey, E ** dest) const {
-	Node * node = m_first;
-	while (node && tech::hashLess(node->hashKey, hashKey)) {
-		node = node->next;
-	}
-	if (node && tech::hashEqual(node->hashKey, hashKey)) {
-		*dest = &node->element;
-		return true;
-	}
-	return false;
-}
-
-
-
-//==============================================================================
-// pop
-//------------------------------------------------------------------------------
-
-template <typename E, nat t_p>
-bool Map<E, t_p>::Slot::pop(H hashKey, E * dest) {
-	if (!m_first) {
-		return false;
-	}
-
-	if (tech::hashEqual(m_first->hashKey, hashKey)) {
-		*dest = m_first->element;
-		Node * temp = m_first;
-		m_first = m_first->next;
-		delete temp;
-		--m_size;
-		return true;
-	}
-
-	Node * node = m_first;
-	while (node->next && tech::hashLess(node->next->hashKey, hashKey)) {
-		node = node->next;
-	}
-	if (node->next && tech::hashEqual(node->next->hashKey, hashKey)) {
-		*dest = node->next->element;
-		Node * temp = node->next;
-		node->next = node->next->next;
-		delete temp;
-		--m_size;
-		return true;
-	}
-
-	return false;
-}
-
-
-
-//==============================================================================
-// set
-//------------------------------------------------------------------------------
-
-template <typename E, nat t_p>
-bool Map<E, t_p>::Slot::set(H hashKey, const E & element, E * dest) {
-	if (!m_first) {
-		m_first = new Node{ hashKey, element };
-		++m_size;
-		return false;
-	}
-
-	if (tech::hashEqual(m_first->hashKey, hashKey)) {
-		*dest = m_first->element;
-		Node * tempN = m_first->next;
-		delete m_first;
-		m_first = new Node{ hashKey, element, tempN };
-		return true;
-	}
-
-	if (tech::hashGreater(m_first->hashKey, hashKey)) {
-		m_first = new Node{ hashKey, element, m_first };
-		++m_size;
-		return false;
-	}
-
-	Node * node = m_first;
-	while (node->next && tech::hashLess(node->next->hashKey, hashKey)) {
-		node = node->next;
-	}
-	if (node->next) {
-		if (tech::hashEqual(node->next->hashKey, hashKey)) {
-			*dest = node->next->element;
-			Node * tempN = node->next->next;
-			delete node->next;
-			node->next = new Node{ hashKey, element, tempN };
-			return true;
-		}
-		node->next = new Node{ hashKey, element, node->next };
-		++m_size;
-		return false;
-	}
-	node->next = new Node{ hashKey, element, nullptr };
-	++m_size;
-	return false;
-}
-
-
-
-//==============================================================================
-// contains
-//------------------------------------------------------------------------------
-
-template <typename E, nat t_p>
-bool Map<E, t_p>::Slot::contains(const E & element, H * keyDest) const {
-	Node * node = m_first;
-	while (node) {
-		if (node->element == element) {
-			if (keyDest) {
-				*keyDest = node->hashKey;
-			}
-			return true;
-		}
-		node = node->next;
-	}
-	return false;
-}
-
-
-
-//==============================================================================
-// clear
-//------------------------------------------------------------------------------
-
-template <typename E, nat t_p>
-void Map<E, t_p>::Slot::clear() {
-	if (!m_first) {
-		return;
-	}
-
-	Node * node = m_first, * temp;
-	while (node) {
-		temp = node->next;
-		delete node;
-		node = temp;
-	}
-
-	m_first = nullptr;
-	m_size = 0;
-}
-
-
-
-//==============================================================================
-// equals
-//------------------------------------------------------------------------------
-
-template <typename E, nat t_p>
-bool Map<E, t_p>::Slot::equals(const Slot & other) const {
-	if (&other == this) {
-		return true;
-	}
-
-	if (other.m_size != m_size) {
-		return false;
-	}
-
-	Node * next1 = m_first;
-	Node * next2 = other.m_first;
-	while (next1 && next2) {
-		if (next1->element != next2->element) {
-			return false;
-		}
-		next1 = next1->next;
-		next2 = next2->next;
-	}
-	if (next1 != next2) {
-		return false;
-	}
-	return true;
-}
-
-
-
-//==============================================================================
-// printContents
-//------------------------------------------------------------------------------
-
-template <typename E, nat t_p>
-void Map<E, t_p>::Slot::printContents(std::ostream & os, bool value, bool hash, bool address) const {
-	static const nat PHRESHOLD = 10;
-
-	Node * node = m_first;
-
-	os << "[N:" << m_size << "]";
-
-	if (m_size > PHRESHOLD) {
-		os << "(too large to print)";
-		return;
-	}
-
-	while (node) {
-		os << "(";
-		if (value) {
-			os << node->element;
-		}
-		if (hash) {
-			if (value) {
-				os << ", ";
-			}
-			os << node->hashKey;
-		}
-		if (address) {
-			if (value || hash) {
-				os << ", ";
-			}
-			os << std::hex << &node->element << std::dec;
-		}
-		os << ")";
-
-		node = node->next;
-	}
-}
-
-
-
-//======================================================================================================================
 // Iterator Implementation /////////////////////////////////////////////////////////////////////////////////////////////
 //======================================================================================================================
 
@@ -1745,13 +1380,13 @@ Map<E, t_p>::Iterator<I_E>::Iterator(const Map<E, t_p> & map) :
 	m_slot(0),
 	m_node(nullptr)
 {
-	while (!m_map->m_slots[m_slot].m_first) ++m_slot;
-	if (m_slot < m_map->m_nSlots) m_node = m_map->m_slots[m_slot].m_first;
+	while (!m_map->m_slots[m_slot].first) ++m_slot;
+	if (m_slot < m_map->m_nSlots) m_node = m_map->m_slots[m_slot].first;
 }
 
 template <typename E, nat t_p>
 template <typename I_E>
-Map<E, t_p>::Iterator<I_E>::Iterator(const Map<E, t_p> & map, nat slot, typename Map<E, t_p>::Slot::Node * node) :
+Map<E, t_p>::Iterator<I_E>::Iterator(const Map<E, t_p> & map, nat slot, typename Map<E, t_p>::Node * node) :
 	m_map(&map),
 	m_slot(slot),
 	m_node(node)
@@ -1804,8 +1439,8 @@ typename Map<E, t_p>::Iterator<I_E> & Map<E, t_p>::Iterator<I_E>::operator++() {
 	m_node = m_node->next;
 	if (!m_node) {
 		while (++m_slot < m_map->m_nSlots) {
-			if (m_map->m_slots[m_slot].m_size > 0) {
-				m_node = m_map->m_slots[m_slot].m_first;
+			if (m_map->m_slots[m_slot].size > 0) {
+				m_node = m_map->m_slots[m_slot].first;
 				break;
 			}
 		}

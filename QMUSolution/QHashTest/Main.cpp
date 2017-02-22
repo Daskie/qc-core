@@ -21,12 +21,12 @@ Map<char> sk_map4;
 
 void setupMaps() {
 	for (int i = 0; i < 10; ++i) {
-		sk_map1.addByHash(i, i);
-		sk_map2.addByHash(i, "" + i);
-		sk_map3.addByHash(i, new int(i));
+		sk_map1.insertByHash(i, i);
+		sk_map2.insertByHash(i, "" + i);
+		sk_map3.insertByHash(i, new int(i));
 	}
 	for (int i = 0; i < 1000000; ++i) {
-		sk_map4.addByHash(i, i % 256);
+		sk_map4.insertByHash(i, i % 256);
 	}
 }
 
@@ -78,19 +78,23 @@ bool testCopyConstructor() {
 
 bool testCopyAssignment() {
 	cout << "int..." << endl;
-	Map<int> m1 = sk_map1;
+	Map<int> m1;
+	m1 = sk_map1;
 	if (&m1 == &sk_map1 || !m1.equals(sk_map1)) return false;
 
 	cout << "string..." << endl;
-	Map<string> m2 = sk_map2;
+	Map<string> m2;
+	m2 = sk_map2;
 	if (&m2 == &sk_map2 || !m2.equals(sk_map2)) return false;
 
 	cout << "int *..." << endl;
-	Map<int *> m3 = sk_map3;
+	Map<int *> m3;
+	m3 = sk_map3;
 	if (&m3 == &sk_map3 || !m3.equals(sk_map3)) return false;
 
 	cout << "huge..." << endl;
-	Map<char> m4 = sk_map4;
+	Map<char> m4;
+	m4 = sk_map4;
 	if (&m4 == &sk_map4 || !m4.equals(sk_map4)) return false;
 
 	return true;
@@ -127,25 +131,29 @@ bool testMoveConstructor() {
 bool testMoveAssignment() {
 	cout << "int..." << endl;
 	Map<int> h1(sk_map1);
-	Map<int> m1 = std::move(h1);
+	Map<int> m1;
+	m1 = std::move(h1);
 	if (&m1 == &sk_map1 || !m1.equals(sk_map1)) return false;
 	if (h1.nSlots() != 0 || h1.size() != 0) return false;
 
 	cout << "string..." << endl;
 	Map<string> h2(sk_map2);
-	Map<string> m2 = std::move(h2);
+	Map<string> m2;
+	m2 = std::move(h2);
 	if (&m2 == &sk_map2 || !m2.equals(sk_map2)) return false;
 	if (h2.nSlots() != 0 || h2.size() != 0) return false;
 
 	cout << "int *..." << endl;
 	Map<int *> h3(sk_map3);
-	Map<int *> m3 = std::move(h3);
+	Map<int *> m3;
+	m3 = std::move(h3);
 	if (&m3 == &sk_map3 || !m3.equals(sk_map3)) return false;
 	if (h3.nSlots() != 0 || h3.size() != 0) return false;
 
 	cout << "huge..." << endl;
 	Map<char> h4(sk_map4);
-	Map<char> m4 = std::move(h4);
+	Map<char> m4;
+	m4 = std::move(h4);
 	if (&m4 == &sk_map4 || !m4.equals(sk_map4)) return false;
 	if (h4.nSlots() != 0 || h4.size() != 0) return false;
 
@@ -163,7 +171,7 @@ bool testVariadicConstructor() {
 		5, 0
 	);
 	for (int i = 0; i < 6; ++i) {
-		if (m1.get(i) != 5 - i) return false;
+		if (m1.at(i) != 5 - i) return false;
 	}
 
 	cout << "varying..." << endl;
@@ -174,16 +182,16 @@ bool testVariadicConstructor() {
 		7.0f, 4,
 		std::string("five"), 5
 	);
-	if (m2.get(7) != 0 ||
-		m2.get('d') != 2 ||
-		m2.get(9.9) != 3 ||
-		m2.get(7.0f) != 4 ||
-		m2.get(std::string("five")) != 5)
+	if (m2.at(7) != 0 ||
+		m2.at('d') != 2 ||
+		m2.at(9.9) != 3 ||
+		m2.at(7.0f) != 4 ||
+		m2.at(std::string("five")) != 5)
 		return false;
 
 	cout << "single pair..." << endl;
 	Map<int> m3(77, 777);
-	if (m3.get(77) != 777) return false;
+	if (m3.at(77) != 777) return false;
 
 	return true;
 }
@@ -191,13 +199,13 @@ bool testVariadicConstructor() {
 bool testDestructor() {
 	Map<long long> * m1 = new Map<long long>(1000);
 	for (int i = 0; i < 10000; ++i) {
-		m1->addByHash(i, i);
+		m1->insertByHash(i, i);
 	}
 	delete m1;
 	return true;
 }
 
-bool testAdd() {
+bool testInsert() {
 	int arr[100];
 	for (int i = 0; i < 100; ++i) {
 		arr[i] = i;
@@ -207,88 +215,99 @@ bool testAdd() {
 
 	cout << "int *..." << endl;
 	for (int i = 0; i < 10; ++i) {
-		m1.add(arr + i, 1, arr[i]);
+		auto res = m1.insert(arr + i, 1, arr[i]);
+		if (*res.first != arr[i] || !res.second) return false;
+		res = m1.insert(arr + i, 1, arr[i]);
+		if (*res.first != arr[i] || res.second) return false;
 	}
 	if (m1.size() != 10) return false;
 
 	cout << "int..." << endl;
 	for (int i = 10; i < 20; ++i) {
-		m1.add(arr[i], arr[i]);
+		auto res = m1.insert(arr[i], arr[i]);
+		if (*res.first != arr[i] || !res.second) return false;
+		res = m1.insert(arr[i], arr[i]);
+		if (*res.first != arr[i] || res.second) return false;
 	}
 	if (m1.size() != 20) return false;
 
 	cout << "string..." << endl;
 	for (int i = 20; i < 30; ++i) {
-		m1.add(string(1, char(i)), arr[i]);
+		auto res = m1.insert(string(1, char(i)), arr[i]);
+		if (*res.first != arr[i] || !res.second) return false;
+		res = m1.insert(string(1, char(i)), arr[i]);
+		if (*res.first != arr[i] || res.second) return false;
 	}
 	if (m1.size() != 30) return false;
 
 	cout << "by hash..." << endl;
 	for (int i = 30; i < 40; ++i) {
-		m1.addByHash(i, arr[i]);
+		auto res = m1.insertByHash(i, arr[i]);
+		if (*res.first != arr[i] || !res.second) return false;
+		res = m1.insertByHash(i, arr[i]);
+		if (*res.first != arr[i] || res.second) return false;
 	}
 	if (m1.size() != 40) return false;
 
 	return true;
 }
 
-bool testGet() {
+bool testAt() {
 	int arr[100];
 	Map<int> m1;
 	for (int i = 0; i < 100; ++i) {
 		arr[i] = i;
-		m1.add(i, arr[i]);
+		m1.insert(i, arr[i]);
 	}
 
 	cout << "int *..." << endl;
 	for (int i = 0; i < 10; ++i) {
-		if (m1.get(arr + i, 1) != i) return false;
+		if (m1.at(arr + i, 1) != i) return false;
 	}
 
 	cout << "int..." << endl;
 	for (int i = 10; i < 20; ++i) {
-		if (m1.get(i) != i) return false;
+		if (m1.at(i) != i) return false;
 	}
 
 	cout << "string..." << endl;
 	int x = 777;
-	m1.add("okay", x);
-	if (m1.get("okay") != 777) return false;
+	m1.insert("okay", x);
+	if (m1.at("okay") != 777) return false;
 
 	cout << "by hash..." << endl;
-	m1.addByHash(12345, arr[20]);
-	if (m1.getByHash(12345) != arr[20]) return false;
+	m1.insertByHash(12345, arr[20]);
+	if (m1.atByHash(12345) != arr[20]) return false;
 
 	return true;
 }
 
-bool testSet() {
+bool testAccess() {
 	int arr[100];
+	Map<int> m1;
 	for (int i = 0; i < 100; ++i) {
 		arr[i] = i;
+		m1[i] = arr[i];
 	}
-	Map<int> m1;
-
-	cout << "int *..." << endl;
-	m1.set(arr + 10, 1, arr[10]);
-	if (m1.get(arr + 10, 1) != arr[10]) return false;
 
 	cout << "int..." << endl;
-	m1.set(arr[20], arr[20]);
-	if (m1.get(arr[20]) != arr[20]) return false;
+	for (int i = 10; i < 20; ++i) {
+		if (m1[i] != i) return false;
+	}
 
 	cout << "string..." << endl;
-	m1.set("okay", arr[30]);
-	if (m1.get("okay") != arr[30]) return false;
+	int x = 777;
+	m1["okay"] = x;
+	if (m1["okay"] != 777) return false;
 
 	cout << "by hash..." << endl;
-	m1.setByHash(777, arr[50]);
-	if (m1.getByHash(777) != arr[50]) return false;
+	m1.accessByHash(12345) = arr[20];
+	if (m1.accessByHash(12345) != arr[20]) return false;
 
 	return true;
 }
 
-bool testRemove() {
+bool testErase() {
 	int arr[100];
 	for (int i = 0; i < 100; ++i) {
 		arr[i] = i;
@@ -296,66 +315,66 @@ bool testRemove() {
 
 	Map<int> m1;
 	for (int i = 0; i < 100; ++i) {
-		m1.add(i, arr[i]);
+		m1.insert(i, arr[i]);
 	}
 
 	cout << "int *..." << endl;
 	for (int i = 0; i < 10; ++i) {
-		if (m1.remove(arr + i, 1) != i) return false;
+		if (m1.erase(arr + i, 1) != i) return false;
 	}
 	if (m1.size() != 90) return false;
 
 	cout << "int..." << endl;
 	for (int i = 10; i < 20; ++i) {
-		if (m1.remove(i) != i) return false;
+		if (m1.erase(i) != i) return false;
 	}
 	if (m1.size() != 80) return false;
 
 	cout << "string..." << endl;
-	m1.add("okay", arr[25]);
-	if (m1.remove("okay") != arr[25]) return false;
+	m1.insert("okay", arr[25]);
+	if (m1.erase("okay") != arr[25]) return false;
 	if (m1.size() != 80) return false;
 
 	cout << "by hash..." << endl;
 	for (int i = 30; i < 40; ++i) {
-		if (m1.removeByHash(hash<m1.sk_p>(i, 0)) != i) return false;
+		if (m1.eraseByHash(hash<m1.sk_p>(i, 0)) != i) return false;
 	}
 	if (m1.size() != 70) return false;
 
 	return true;
 }
 
-bool testHas() {
+bool testCount() {
 	int arr[100];
 	Map<int> m1;
 	for (int i = 0; i < 100; ++i) {
 		arr[i] = i;
-		m1.add(i, arr[i]);
+		m1.insert(i, arr[i]);
 	}
 
 	cout << "int *..." << endl;
 	for (int i = 0; i < 10; ++i) {
-		if (!m1.has(arr + i, 1)) return false;
+		if (!m1.count(arr + i, 1)) return false;
 	}
 
 	cout << "int..." << endl;
 	for (int i = 10; i < 20; ++i) {
-		if (!m1.has(i)) return false;
+		if (!m1.count(i)) return false;
 	}
 
 	cout << "string..." << endl;
 	int x = 777;
-	m1.add("okay", x);
-	if (!m1.has("okay")) return false;
+	m1.insert("okay", x);
+	if (!m1.count("okay")) return false;
 
 	cout << "by hash..." << endl;
-	m1.addByHash(12345, arr[20]);
-	if (!m1.hasByHash(12345)) return false;
+	m1.insertByHash(12345, arr[20]);
+	if (!m1.countByHash(12345)) return false;
 
 	return true;
 }
 
-bool testContains() {
+bool testFind() {
 	int arr[100];
 	for (int i = 0; i < 100; ++i) {
 		arr[i] = i;
@@ -364,21 +383,21 @@ bool testContains() {
 	Map<int> m1;
 
 	for (int i = 0; i < 10; ++i) {
-		if (m1.contains(arr[i])) return false;
-		m1.add(i, arr[i]);
+		if (m1.find(arr[i]) != m1.end()) return false;
+		m1.insert(i, arr[i]);
 	}
 	for (int i = 0; i < 10; ++i) {
-		if (!m1.contains(arr[i])) return false;
-		m1.remove(i);
+		if (m1.find(arr[i]) == m1.end()) return false;
+		m1.erase(i);
 	}
 	for (int i = 0; i < 10; ++i) {
-		if (m1.contains(arr[i])) return false;
+		if (m1.find(arr[i]) != m1.end()) return false;
 	}
 
 	return true;
 }
 
-bool testResize() {
+bool testRehash() {
 	int arr[100];
 	for (int i = 0; i < 100; ++i) {
 		arr[i] = i;
@@ -387,28 +406,28 @@ bool testResize() {
 	cout << "powers of two..." << endl;
 	Map<int> m1(10);
 	for (int i = 0; i < 10; ++i) {
-		m1.add(i, arr[i]);
+		m1.insert(i, arr[i]);
 	}
 	if (m1.nSlots() != 10) return false;
-	m1.add(10, arr[10]);
+	m1.insert(10, arr[10]);
 	if (m1.nSlots() != 16) return false;
 	for (int i = 11; i < 100; ++i) {
-		m1.add(i, arr[i]);
+		m1.insert(i, arr[i]);
 	}
 	if (m1.nSlots() != 128) return false;
 
 	cout << "larger..." << endl;
-	m1.resize(500);
+	m1.rehash(500);
 	if (m1.nSlots() != 500 || m1.size() != 100) return false;
 	for (int i = 0; i < 100; ++i) {
-		if (m1.get(i) != arr[i]) return false;
+		if (m1.at(i) != arr[i]) return false;
 	}
 
 	cout << "smaller..." << endl;
-	m1.resize(10);
+	m1.rehash(10);
 	if (m1.nSlots() != 10 || m1.size() != 100) return false;
 	for (int i = 0; i < 100; ++i) {
-		if (m1.get(i) != arr[i]) return false;
+		if (m1.at(i) != arr[i]) return false;
 	}
 
 	return true;
@@ -419,14 +438,14 @@ bool testClear() {
 
 	Map<int> m1;
 	for (int i = 0; i < 100; ++i) {
-		m1.addByHash(i, arr[i]);
+		m1.insertByHash(i, arr[i]);
 	}
 
 	cout << "standard..." << endl;
 	m1.clear();
 	if (m1.size() != 0) return false;
 	for (int i = 0; i < 100; ++i) {
-		if (m1.contains(arr[i])) return false;
+		if (m1.find(arr[i])) return false;
 	}
 
 	cout << "empty..." << endl;
@@ -444,7 +463,7 @@ bool testEquals() {
 	
 	Map<int> m1;
 	for (int i = 0; i < 100; ++i) {
-		m1.addByHash(i, arr[i]);
+		m1.insertByHash(i, arr[i]);
 	}
 
 	cout << "equality..." << endl;
@@ -452,7 +471,7 @@ bool testEquals() {
 	if (!m2.equals(m1)) return false;
 
 	cout << "inequality..." << endl;
-	m2.removeByHash(0);
+	m2.eraseByHash(0);
 	if (m2.equals(m1)) return false;
 
 	return true;
@@ -473,89 +492,75 @@ bool testAllPrimitiveTypes() {
 	float f = 10;
 	double d = 11;
 
-	cout << "add..." << endl;
-	m.add(c, 0);
-	m.add(uc, 0);
-	m.add(s, 0);
-	m.add(us, 0);
-	m.add(i, 0);
-	m.add(ui, 0);
-	m.add(l, 0);
-	m.add(ul, 0);
-	m.add(ll, 0);
-	m.add(ull, 0);
-	m.add(f, 0);
-	m.add(d, 0);
+	cout << "insert..." << endl;
+	m.insert(c, 0);
+	m.insert(uc, 0);
+	m.insert(s, 0);
+	m.insert(us, 0);
+	m.insert(i, 0);
+	m.insert(ui, 0);
+	m.insert(l, 0);
+	m.insert(ul, 0);
+	m.insert(ll, 0);
+	m.insert(ull, 0);
+	m.insert(f, 0);
+	m.insert(d, 0);
 
-	cout << "get..." << endl;
-	m.get(c);
-	m.get(uc);
-	m.get(s);
-	m.get(us);
-	m.get(i);
-	m.get(ui);
-	m.get(l);
-	m.get(ul);
-	m.get(ll);
-	m.get(ull);
-	m.get(f);
-	m.get(d);
+	cout << "at..." << endl;
+	m.at(c);
+	m.at(uc);
+	m.at(s);
+	m.at(us);
+	m.at(i);
+	m.at(ui);
+	m.at(l);
+	m.at(ul);
+	m.at(ll);
+	m.at(ull);
+	m.at(f);
+	m.at(d);
 
-	cout << "set..." << endl;
-	m.set(c, 0);
-	m.set(uc, 0);
-	m.set(s, 0);
-	m.set(us, 0);
-	m.set(i, 0);
-	m.set(ui, 0);
-	m.set(l, 0);
-	m.set(ul, 0);
-	m.set(ll, 0);
-	m.set(ull, 0);
-	m.set(f, 0);
-	m.set(d, 0);
+	cout << "erase..." << endl;
+	m.erase(c);
+	m.erase(uc);
+	m.erase(s);
+	m.erase(us);
+	m.erase(i);
+	m.erase(ui);
+	m.erase(l);
+	m.erase(ul);
+	m.erase(ll);
+	m.erase(ull);
+	m.erase(f);
+	m.erase(d);
 
-	cout << "remove..." << endl;
-	m.remove(c);
-	m.remove(uc);
-	m.remove(s);
-	m.remove(us);
-	m.remove(i);
-	m.remove(ui);
-	m.remove(l);
-	m.remove(ul);
-	m.remove(ll);
-	m.remove(ull);
-	m.remove(f);
-	m.remove(d);
-
-	cout << "has..." << endl;
-	m.has(c);
-	m.has(uc);
-	m.has(s);
-	m.has(us);
-	m.has(i);
-	m.has(ui);
-	m.has(l);
-	m.has(ul);
-	m.has(ll);
-	m.has(ull);
-	m.has(f);
-	m.has(d);
+	cout << "count..." << endl;
+	m.count(c);
+	m.count(uc);
+	m.count(s);
+	m.count(us);
+	m.count(i);
+	m.count(ui);
+	m.count(l);
+	m.count(ul);
+	m.count(ll);
+	m.count(ull);
+	m.count(f);
+	m.count(d);
 
 	return true;
 }
 
 bool testReferenceNature() {
 	Map<int> m1;
-	m1.add(777, 7);
-	m1.get(777) = 8;
-	if (m1.get(777) != 8) {
+	m1.insert(777, 7);
+	m1.at(777) = 8;
+	if (m1.at(777) != 8) {
 		return false;
 	}
-	int * ip = &m1.get(777);
+	int * ip = &m1.at(777);
 	*ip = 9;
-	if (m1.get(777) != 9) {
+	if (m1.at(777) != 9) {
 		return false;
 	}
 
@@ -565,25 +570,17 @@ bool testReferenceNature() {
 bool testErrorThrows() {
 	Map<int> m1;
 
-	cout << "ElementNotFound..." << endl;
+	cout << "out_of_range..." << endl;
 	try {
-		m1.get(0);
+		m1.at(0);
 		return false;
 	}
-	catch (ElementNotFoundException ex) {}
+	catch (const std::out_of_range &) {}
 	try {
-		m1.remove(0);
+		m1.erase(0);
 		return false;
 	}
-	catch (ElementNotFoundException ex) {}
-
-	cout << "PreexistingElement..." << endl;
-	try {
-		m1.add(0, 0);
-		m1.add(0, 1);
-		return false;
-	}
-	catch (PreexistingElementException ex) {}
+	catch (const std::out_of_range &) {}
 
 	return true;
 }
@@ -591,24 +588,19 @@ bool testErrorThrows() {
 bool testSeedNature() {
 	Map<int> m1;
 
-	try {
-		for (int i = 0; i < 100; ++i) {
-			m1.seed(i * i);
-			m1.add(0, i);
-		}
-	}
-	catch (PreexistingElementException ex) {
-		return false;
+	for (int i = 0; i < 100; ++i) {
+		m1.seed(i * i);
+		if (!m1.insert(0, i).second) return false;
 	}
 	try {
 		for (int i = 0; i < 100; ++i) {
 			m1.seed(i * i);
-			if (m1.get(0) != i) {
+			if (m1.at(0) != i) {
 				return false;
 			}
 		}
 	}
-	catch (ElementNotFoundException ex) {
+	catch (std::out_of_range ex) {
 		return false;
 	}
 
@@ -618,21 +610,21 @@ bool testSeedNature() {
 bool testPrecisions() {
 	cout << "x32..." << endl;
 	Map<int, 32> m1;
-	m1.add(99, 7);
-	if (m1.get(99) != 7) return false;
-	if (!m1.getByHash(hash<32, int>(99, gk_defSeed))) return false;
+	m1.insert(99, 7);
+	if (m1.at(99) != 7) return false;
+	if (!m1.atByHash(hash<32, int>(99, gk_defSeed))) return false;
 
 	cout << "x64..." << endl;
 	Map<int, 64> m2;
-	m2.add(99, 7);
-	if (m2.get(99) != 7) return false;
-	if (!m2.hasByHash(hash<64, int>(99, gk_defSeed))) return false;
+	m2.insert(99, 7);
+	if (m2.at(99) != 7) return false;
+	if (!m2.countByHash(hash<64, int>(99, gk_defSeed))) return false;
 
 	cout << "x128..." << endl;
 	Map<int, 128> m3;
-	m3.add(99, 7);
-	if (m3.get(99) != 7) return false;
-	if (!m3.hasByHash(hash<128, int>(99, gk_defSeed))) return false;
+	m3.insert(99, 7);
+	if (m3.at(99) != 7) return false;
+	if (!m3.countByHash(hash<128, int>(99, gk_defSeed))) return false;
 
 	return true;
 }
@@ -646,7 +638,7 @@ bool testPrintContents() {
 	cout << "standard..." << endl;
 	Map<int> m1;
 	for (int i = 0; i < 30; ++i) {
-		m1.addByHash(i, arr[i]);
+		m1.insertByHash(i, arr[i]);
 	}
 	cout << "value..." << endl;
 	m1.printContents(cout, true, false, false);
@@ -670,14 +662,14 @@ bool testPrintContents() {
 	cout << "too many elements..." << endl;
 	Map<int> m3;
 	for (int i = 0; i < 100; ++i) {
-		m3.addByHash(i, arr[i]);
+		m3.insertByHash(i, arr[i]);
 	}
 	m3.printContents(cout, true, true, true);
 
 	cout << "too many slots..." << endl;
 	Map<int> m4(100);
 	for (unsigned int i = 0; i < 100; ++i) {
-		m4.addByHash(i, arr[i]);
+		m4.insertByHash(i, arr[i]);
 	}
 	m4.printContents(cout, true, true, true);
 
@@ -689,9 +681,9 @@ bool testIterator() {
 	cout << "standard..." << endl;
 	Map<Test> m1;
 	for (int i = 0; i < 100; ++i) {
-		m1.addByHash(i, { i });
+		m1.insertByHash(i, { i });
 	}
-	m1.resize(10);
+	m1.rehash(10);
 	int i = 0;
 	for (auto it = m1.begin(); it; ++it) {
 		if (it->v != i % 10 * 10 + i / 10) return false;
@@ -771,9 +763,9 @@ bool testStats() {
 	}
 	Map<int> m1;
 	for (int i = 0; i < 1000; ++i) {
-		m1.add(i, arr[i]);
+		m1.insert(i, arr[i]);
 	}
-	m1.resize(100);
+	m1.rehash(100);
 
 	Map<int>::MapStats stats1 = m1.stats();
 	cout << "min:" << stats1.min << ", ";
@@ -798,7 +790,7 @@ bool testStats() {
 	cout << "huge..." << endl;
 	Map<char> m3(1000000);
 	for (int i = 0; i < 10000000; ++i) {
-		m3.add(i, 0);
+		m3.insert(i, 0);
 	}
 	Map<char>::MapStats stats3 = m3.stats();
 	cout << "min:" << stats3.min << ", ";
@@ -851,11 +843,11 @@ bool testPerformance(int n, Generator<T> g) {
 	std::chrono::time_point<std::chrono::high_resolution_clock> thenM, thenU;
 	std::chrono::duration<double> timeM, timeU;
 
-	cout << "setting..." << endl;
+	cout << "accessing..." << endl;
 	g.reset();
 	thenM = std::chrono::high_resolution_clock::now();
 	for (int i = 0; i < n; ++i) {
-		m1.set(g.v, i);
+		m1[g.v] = i;
 		g.next();
 	}
 	timeM = std::chrono::high_resolution_clock::now() - thenM;
@@ -870,11 +862,11 @@ bool testPerformance(int n, Generator<T> g) {
 	cout << timeU.count() / timeM.count() * 100.0 << "% faster" << endl;
 	cout << endl;
 
-	cout << "getting..." << endl;
+	cout << "at-ing..." << endl;
 	g.reset();
 	thenM = std::chrono::high_resolution_clock::now();
 	for (int i = 0; i < n; ++i) {
-		m1.get(g.v);
+		m1.at(g.v);
 		g.next();
 	}
 	timeM = std::chrono::high_resolution_clock::now() - thenM;
@@ -905,11 +897,11 @@ bool testPerformance(int n, Generator<T> g) {
 	cout << timeU.count() / timeM.count() * 100.0 << "% faster" << endl;
 	cout << endl;
 
-	cout << "checking and removing..." << endl;
+	cout << "counting and erasing..." << endl;
 	g.reset();
 	thenM = std::chrono::high_resolution_clock::now();
 	for (int i = 0; i < n; ++i) {
-		if (m1.has(g.v)) m1.remove(g.v);
+		if (m1.count(g.v)) m1.erase(g.v);
 		g.next();
 	}
 	timeM = std::chrono::high_resolution_clock::now() - thenM;
@@ -1005,51 +997,58 @@ bool runTests() {
 	}
 	cout << endl;
 
-	cout << "Testing Add..." << endl << endl;
-	if (!testAdd()) {
-		cout << "Add Test Failed!" << endl;
+	cout << "Testing Access..." << endl << endl;
+	if (!testAccess()) {
+		cout << "Access Test Failed!" << endl;
 		return false;
 	}
 	cout << endl;
 
-	cout << "Testing Get..." << endl << endl;
-	if (!testGet()) {
-		cout << "Get Test Failed!" << endl;
+	cout << "Testing Insert..." << endl << endl;
+	if (!testInsert()) {
+		cout << "Insert Test Failed!" << endl;
 		return false;
 	}
 	cout << endl;
 
-	cout << "Testing Set..." << endl << endl;
-	if (!testSet()) {
-		cout << "Set Test Failed!" << endl;
+	cout << "Testing At..." << endl << endl;
+	if (!testAt()) {
+		cout << "At Test Failed!" << endl;
 		return false;
 	}
 	cout << endl;
 
-	cout << "Testing Remove..." << endl << endl;
-	if (!testRemove()) {
-		cout << "Remove Test Failed!" << endl;
+	cout << "Testing Access..." << endl << endl;
+	if (!testAccess()) {
+		cout << "Access Test Failed!" << endl;
 		return false;
 	}
 	cout << endl;
 
-	cout << "Testing Has..." << endl << endl;
-	if (!testHas()) {
-		cout << "Has Test Failed!" << endl;
+	cout << "Testing Erase..." << endl << endl;
+	if (!testErase()) {
+		cout << "Erase Test Failed!" << endl;
 		return false;
 	}
 	cout << endl;
 
-	cout << "Testing Contains..." << endl << endl;
-	if (!testContains()) {
-		cout << "Contains Test Failed!" << endl;
+	cout << "Testing Count..." << endl << endl;
+	if (!testCount()) {
+		cout << "Count Test Failed!" << endl;
 		return false;
 	}
 	cout << endl;
 
-	cout << "Testing Resize..." << endl << endl;
-	if (!testResize()) {
-		cout << "Resize Test Failed!" << endl;
+	cout << "Testing Find..." << endl << endl;
+	if (!testFind()) {
+		cout << "Find Test Failed!" << endl;
+		return false;
+	}
+	cout << endl;
+
+	cout << "Testing Rehash..." << endl << endl;
+	if (!testRehash()) {
+		cout << "Rehash Test Failed!" << endl;
 		return false;
 	}
 	cout << endl;
@@ -1130,13 +1129,14 @@ bool runTests() {
 		return false;
 	}
 	cout << endl;
-
-	cout << "Testing Performance..." << endl << endl;
-	if (!testPerformanceSuite()) {
-		cout << "Performance Test Failed!" << endl;
-		return false;
+	if (false) {
+		cout << "Testing Performance..." << endl << endl;
+		if (!testPerformanceSuite()) {
+			cout << "Performance Test Failed!" << endl;
+			return false;
+		}
+		cout << endl;
 	}
-	cout << endl;
 
 	return true;
 }

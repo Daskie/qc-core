@@ -30,56 +30,56 @@ template <typename T> using tvec2 = tvec<T, 2>;
 template <typename T> using tvec3 = tvec<T, 3>;
 template <typename T> using tvec4 = tvec<T, 4>;
 
-using vec1 = tvec<float, 1>;
-using vec2 = tvec<float, 2>;
-using vec3 = tvec<float, 3>;
-using vec4 = tvec<float, 4>;
+using   vec1 = tvec1<float>;
+using   vec2 = tvec2<float>;
+using   vec3 = tvec3<float>;
+using   vec4 = tvec4<float>;
 
-using dvec1 = tvec1<double>;
-using dvec2 = tvec2<double>;
-using dvec3 = tvec3<double>;
-using dvec4 = tvec4<double>;
+using  dvec1 = tvec1<double>;
+using  dvec2 = tvec2<double>;
+using  dvec3 = tvec3<double>;
+using  dvec4 = tvec4<double>;
 
-using cvec1 = tvec1<s08>;
-using cvec2 = tvec2<s08>;
-using cvec3 = tvec3<s08>;
-using cvec4 = tvec4<s08>;
+using  cvec1 = tvec1<s08>;
+using  cvec2 = tvec2<s08>;
+using  cvec3 = tvec3<s08>;
+using  cvec4 = tvec4<s08>;
 using ucvec1 = tvec1<u08>;
 using ucvec2 = tvec2<u08>;
 using ucvec3 = tvec3<u08>;
 using ucvec4 = tvec4<u08>;
 
-using svec1 = tvec1<s16>;
-using svec2 = tvec2<s16>;
-using svec3 = tvec3<s16>;
-using svec4 = tvec4<s16>;
+using  svec1 = tvec1<s16>;
+using  svec2 = tvec2<s16>;
+using  svec3 = tvec3<s16>;
+using  svec4 = tvec4<s16>;
 using usvec1 = tvec1<u16>;
 using usvec2 = tvec2<u16>;
 using usvec3 = tvec3<u16>;
 using usvec4 = tvec4<u16>;
 
-using ivec1 = tvec1<s32>;
-using ivec2 = tvec2<s32>;
-using ivec3 = tvec3<s32>;
-using ivec4 = tvec4<s32>;
+using  ivec1 = tvec1<s32>;
+using  ivec2 = tvec2<s32>;
+using  ivec3 = tvec3<s32>;
+using  ivec4 = tvec4<s32>;
 using uivec1 = tvec1<u32>;
 using uivec2 = tvec2<u32>;
 using uivec3 = tvec3<u32>;
 using uivec4 = tvec4<u32>;
 
-using lvec1 = tvec1<s64>;
-using lvec2 = tvec2<s64>;
-using lvec3 = tvec3<s64>;
-using lvec4 = tvec4<s64>;
+using  lvec1 = tvec1<s64>;
+using  lvec2 = tvec2<s64>;
+using  lvec3 = tvec3<s64>;
+using  lvec4 = tvec4<s64>;
 using ulvec1 = tvec1<u64>;
 using ulvec2 = tvec2<u64>;
 using ulvec3 = tvec3<u64>;
 using ulvec4 = tvec4<u64>;
 
-using bvec1 = tvec1<bool>;
-using bvec2 = tvec2<bool>;
-using bvec3 = tvec3<bool>;
-using bvec4 = tvec4<bool>;
+using  bvec1 = tvec1<bool>;
+using  bvec2 = tvec2<bool>;
+using  bvec3 = tvec3<bool>;
+using  bvec4 = tvec4<bool>;
 
 template <typename T> using point = tvec2<T>;
 template <typename T> using bound1 = tvec2<T>;
