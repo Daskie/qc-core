@@ -32,7 +32,7 @@ void setupMaps() {
 
 bool testDefaultConstructor() {
 	Map<int> m;
-	if (m.nSlots() != gk_defNSlots || m.size() != 0) return false;	
+	if (m.nSlots() != Map<int>::sk_defNSlots || m.size() != 0) return false;	
 	return true;
 }
 
@@ -162,35 +162,35 @@ bool testMoveAssignment() {
 
 bool testVariadicConstructor() {
 	cout << "uniform..." << endl;
-	Map<int> m1(
-		0, 5,
-		1, 4,
-		2, 3,
-		3, 2,
-		4, 1,
-		5, 0
-	);
+	Map<int> m1(std::initializer_list<std::pair<const int &, const int &>>{
+		{ 0, 5 },
+		{ 1, 4 },
+		{ 2, 3 },
+		{ 3, 2 },
+		{ 4, 1 },
+		{ 5, 0 }
+	});
 	for (int i = 0; i < 6; ++i) {
 		if (m1.at(i) != 5 - i) return false;
 	}
 
-	cout << "varying..." << endl;
-	Map<int> m2(
-		7, 0,
-		'd', 2,
-		9.9, 3,
-		7.0f, 4,
-		std::string("five"), 5
-	);
+	/*cout << "varying..." << endl;
+	Map<int> m2( std::initializer_list<std::pair<const int &, const int &>>{
+		{ 7, 0 },
+		{ 'd', 2 },
+		{ 9.9, 3 },
+		{ 7.0f, 4 },
+		{ std::string("five"), 5 }
+	});
 	if (m2.at(7) != 0 ||
 		m2.at('d') != 2 ||
 		m2.at(9.9) != 3 ||
 		m2.at(7.0f) != 4 ||
 		m2.at(std::string("five")) != 5)
-		return false;
+		return false;*/
 
 	cout << "single pair..." << endl;
-	Map<int> m3(77, 777);
+	Map<int> m3(std::initializer_list<std::pair<const int &, const int &>>{ { 77, 777 } });
 	if (m3.at(77) != 777) return false;
 
 	return true;
@@ -249,6 +249,13 @@ bool testInsert() {
 	}
 	if (m1.size() != 40) return false;
 
+	cout << "initializer list..." << endl;
+	for (int i = 40; i < 50; i += 2) {
+		m1.insert<int>({ { i, arr[i] }, { i + 1, arr[i + 1] } });
+		if (m1.at(i) != arr[i] || m1.at(i + 1) != arr[i + 1]) return false;
+	}
+	if (m1.size() != 50) return false;
+
 	return true;
 }
 
@@ -272,12 +279,55 @@ bool testAt() {
 
 	cout << "string..." << endl;
 	int x = 777;
-	m1.insert("okay", x);
-	if (m1.at("okay") != 777) return false;
+	m1.insert(string("okay"), x);
+	if (m1.at(string("okay")) != 777) return false;
 
 	cout << "by hash..." << endl;
 	m1.insertByHash(12345, arr[20]);
 	if (m1.atByHash(12345) != arr[20]) return false;
+
+	return true;
+}
+
+bool testIteratorAccess() {
+	int arr[100];
+	Map<int> m1;
+	for (int i = 0; i < 100; ++i) {
+		arr[i] = i;
+		m1.insert(i, arr[i]);
+	}
+	const Map<int> & m2(m1);
+
+	cout << "int *..." << endl;
+	for (int i = 0; i < 10; ++i) {
+		auto res(m1.iterator(arr + i, 1));
+		if (res.hashKey() != hash(i, gk_defSeed) || res.element() != i) return false;
+		if (res != m2.citerator(arr + i, 1)) return false;
+	}
+
+	cout << "int..." << endl;
+	for (int i = 10; i < 20; ++i) {
+		auto res(m1.iterator(i));
+		if (res.hashKey() != hash(i, gk_defSeed) || res.element() != i) return false;
+		if (res != m2.citerator(i)) return false;
+	}
+
+	cout << "string..." << endl;
+	{
+		m1.insert(string("okay"), 777);
+		auto res(m1.iterator(string("okay")));
+		if (res.hashKey() != hash(string("okay"), gk_defSeed) || res.element() != 777) return false;
+		if (res != m2.citerator(string("okay"))) return false;
+	}
+	if (m1.at(string("okay")) != 777) return false;
+
+	cout << "by hash..." << endl;
+	{
+		m1.insertByHash(12345, 54321);
+		auto res(m1.iteratorByHash(12345));
+		if (res.hashKey() != 12345 || res.element() != 54321) return false;
+		if (res != m2.citeratorByHash(12345)) return false;
+	}
 
 	return true;
 }
@@ -331,8 +381,8 @@ bool testErase() {
 	if (m1.size() != 80) return false;
 
 	cout << "string..." << endl;
-	m1.insert("okay", arr[25]);
-	if (m1.erase("okay") != arr[25]) return false;
+	m1.insert(string("okay"), arr[25]);
+	if (m1.erase(string("okay")) != arr[25]) return false;
 	if (m1.size() != 80) return false;
 
 	cout << "by hash..." << endl;
@@ -364,8 +414,8 @@ bool testCount() {
 
 	cout << "string..." << endl;
 	int x = 777;
-	m1.insert("okay", x);
-	if (!m1.count("okay")) return false;
+	m1.insert(string("okay"), x);
+	if (!m1.count(string("okay"))) return false;
 
 	cout << "by hash..." << endl;
 	m1.insertByHash(12345, arr[20]);
@@ -383,15 +433,21 @@ bool testFind() {
 	Map<int> m1;
 
 	for (int i = 0; i < 10; ++i) {
-		if (m1.find(arr[i]) != m1.end()) return false;
+		auto res(m1.find(arr[i]));
+		if (res != m1.end()) return false;
+		if (res != m1.cfind(arr[i])) return false;
 		m1.insert(i, arr[i]);
 	}
 	for (int i = 0; i < 10; ++i) {
-		if (m1.find(arr[i]) == m1.end()) return false;
+		auto res(m1.find(arr[i]));
+		if (res == m1.end()) return false;
+		if (res != m1.cfind(arr[i])) return false;
 		m1.erase(i);
 	}
 	for (int i = 0; i < 10; ++i) {
-		if (m1.find(arr[i]) != m1.end()) return false;
+		auto res(m1.find(arr[i]));
+		if (res != m1.end()) return false;
+		if (res != m1.cfind(arr[i])) return false;
 	}
 
 	return true;
@@ -429,6 +485,54 @@ bool testRehash() {
 	for (int i = 0; i < 100; ++i) {
 		if (m1.at(i) != arr[i]) return false;
 	}
+
+	cout << "bonus..." << endl;
+	Map<int> m2(1);
+	if (m2.nSlots() != 1) return false;
+	m2.insert(0, 0);
+	if (m2.nSlots() != 1) return false;
+	m2.insert(1, 1);
+	if (m2.nSlots() != 2) return false;
+	m2.insert(2, 2);
+	if (m2.nSlots() != 4) return false;
+	m2.insert(3, 3);
+	if (m2.nSlots() != 4) return false;
+	m2.insert(4, 4);
+	if (m2.nSlots() != 8) return false;
+	m2.clear();
+	m2.rehash(1);
+	m2.factor(3);
+	if (m2.nSlots() != 1) return false;
+	m2.insert(0, 0);
+	if (m2.nSlots() != 1) return false;
+	m2.insert(1, 1);
+	if (m2.nSlots() != 1) return false;
+	m2.insert(2, 2);
+	if (m2.nSlots() != 1) return false;
+	m2.insert(3, 3);
+	if (m2.nSlots() != 2) return false;
+	m2.insert(4, 4);
+	if (m2.nSlots() != 2) return false;
+	m2.insert(5, 5);
+	if (m2.nSlots() != 2) return false;
+	m2.insert(6, 6);
+	if (m2.nSlots() != 4) return false;
+	m2.clear();
+	m2.rehash(1);
+	m2.factor(1.0 / 3.0);
+	if (m2.nSlots() != 1) return false;
+	m2.insert(0, 0);
+	if (m2.nSlots() != 4) return false;
+	m2.insert(1, 1);
+	if (m2.nSlots() != 8) return false;
+	m2.insert(2, 2);
+	if (m2.nSlots() != 16) return false;
+	m2.insert(3, 3);
+	if (m2.nSlots() != 16) return false;
+	m2.insert(4, 4);
+	if (m2.nSlots() != 16) return false;
+	m2.insert(5, 5);
+	if (m2.nSlots() != 32) return false;
 
 	return true;
 }
@@ -473,6 +577,20 @@ bool testEquals() {
 	cout << "inequality..." << endl;
 	m2.eraseByHash(0);
 	if (m2.equals(m1)) return false;
+
+	return true;
+}
+
+bool testFixed() {
+	Map<int> m1(1, false);
+	m1.insert(0, 0);
+	m1.insert(1, 1);
+	if (m1.nSlots() != 2) return false;
+
+	Map<int> m2(1, true);
+	m2.insert(0, 0);
+	m2.insert(1, 1);
+	if (m2.nSlots() != 1) return false;
 
 	return true;
 }
@@ -688,6 +806,8 @@ bool testIterator() {
 	for (auto it = m1.begin(); it; ++it) {
 		if (it->v != i % 10 * 10 + i / 10) return false;
 		if ((*it).v != it->v) return false;
+		if (it.element().v != it->v) return false;
+		if (it.hashKey() != i % 10 * 10 + i / 10) return false;
 		(*it).v *= 2;
 		++i;
 	}
@@ -702,16 +822,16 @@ bool testIterator() {
 		++i;
 	}
 
-	//cout << "conversion..." << endl;
-	Map<Test>::MIterator mit1 = m1.begin();
+	cout << "conversion..." << endl;
+	Map<Test>::Iterator mit1 = m1.begin();
 	Map<Test>::CIterator cit1 = m1.cbegin();
-	//mit1 = cit1;
+	mit1 = cit1;
 
-	Map<Test>::MIterator mit2(mit1);
+	Map<Test>::Iterator mit2(mit1);
 	mit2 = mit1;
 	Map<Test>::CIterator cit2(cit1);
 	cit2 = cit1;
-	Map<Test>::MIterator mit3(std::move(mit1));
+	Map<Test>::Iterator mit3(std::move(mit1));
 	mit3 = std::move(mit1);
 	Map<Test>::CIterator cit3(std::move(cit1));
 	cit3 = std::move(cit1);
@@ -761,11 +881,10 @@ bool testStats() {
 	for (int i = 0; i < 1000; ++i) {
 		arr[i] = i;
 	}
-	Map<int> m1;
+	Map<int> m1(100, true);
 	for (int i = 0; i < 1000; ++i) {
 		m1.insert(i, arr[i]);
 	}
-	m1.rehash(100);
 
 	Map<int>::MapStats stats1 = m1.stats();
 	cout << "min:" << stats1.min << ", ";
@@ -788,7 +907,7 @@ bool testStats() {
 
 	/*
 	cout << "huge..." << endl;
-	Map<char> m3(1000000);
+	Map<char> m3(1000000, true);
 	for (int i = 0; i < 10000000; ++i) {
 		m3.insert(i, 0);
 	}
@@ -1018,6 +1137,13 @@ bool runTests() {
 	}
 	cout << endl;
 
+	cout << "Testing Iterator Access..." << endl << endl;
+	if (!testIteratorAccess()) {
+		cout << "Iterator Access Test Failed!" << endl;
+		return false;
+	}
+	cout << endl;
+
 	cout << "Testing Access..." << endl << endl;
 	if (!testAccess()) {
 		cout << "Access Test Failed!" << endl;
@@ -1063,6 +1189,13 @@ bool runTests() {
 	cout << "Testing Equals..." << endl << endl;
 	if (!testEquals()) {
 		cout << "Equals Test Failed!" << endl;
+		return false;
+	}
+	cout << endl;
+
+	cout << "Testing Fixed..." << endl << endl;
+	if (!testFixed()) {
+		cout << "Fixed Test Failed!" << endl;
 		return false;
 	}
 	cout << endl;

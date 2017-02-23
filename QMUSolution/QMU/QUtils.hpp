@@ -413,13 +413,13 @@ inline std::wstring convert(const std::string & str) {
 	return converter.from_bytes(str);
 }
 
-constexpr float avgCol(const qmu::vec4 & color) {
+constexpr float avgCol(const fvec4 & color) {
 	return (color.r + color.g + color.b) / 3.0f;
 }
 
-inline qmu::vec3 rgb2hsl(const qmu::vec3 & color) {
+inline fvec3 rgb2hsl(const fvec3 & color) {
 	float rgb[3]{ color.r, color.g, color.b };
-	qmu::vec3 hsl(0.0f, 0.0f, 0.0f);
+	fvec3 hsl(0.0f, 0.0f, 0.0f);
 
 	nat minI = color.r < color.g ? 0 : 1;
 	if (color.b < rgb[minI]) minI = 2;
@@ -450,9 +450,9 @@ inline qmu::vec3 rgb2hsl(const qmu::vec3 & color) {
 	return hsl;
 }
 
-inline qmu::vec3 hsl2rgb(const qmu::vec3 & color) {
+inline fvec3 hsl2rgb(const fvec3 & color) {
 	if (color.y == 0) {
-		return qmu::vec3(color.z, color.z, color.z);
+		return fvec3(color.z, color.z, color.z);
 	}
 
 	float rgb[3]{ 0.0f, 0.0f, 0.0f };
@@ -487,7 +487,7 @@ inline qmu::vec3 hsl2rgb(const qmu::vec3 & color) {
 		rgb[2] += rgb[2] * temp;
 	}
 
-	return qmu::vec3(rgb[0], rgb[1], rgb[2]);
+	return fvec3(rgb[0], rgb[1], rgb[2]);
 }
 
 inline bool readTextFile(const std::string & filepath, std::string & str_dst) {

@@ -20,7 +20,6 @@ namespace qmu {
 
 
 constexpr u32 gk_defSeed = 0;
-constexpr nat gk_defNSlots = 8;
 
 
 
@@ -92,20 +91,22 @@ class Map {
 	// Used to iterate through the map. Comes in mutable and const varieties.
 	//--------------------------------------------------------------------------
 
-	public:
+	private:
 
 	template <typename I_E = E> //E_ may be E or const E
-	class Iterator;
+	class TIterator;
 
-	using MIterator = Iterator<E>;
-	using CIterator = Iterator<const E>;
+	public:
+
+	using Iterator = TIterator<E>;
+	using CIterator = TIterator<const E>;
 
 	// Creates an iterator at the beginning of the map.
-	MIterator begin();
+	Iterator begin();
 	// Creates a const iterator at the beginning of the map.
 	CIterator cbegin() const;
 	// Creates an iterator at one past the end of the map.
-	MIterator end();
+	Iterator end();
 	// Creates a const iterator at one past the end of map.
 	CIterator cend() const;
 
@@ -117,6 +118,8 @@ class Map {
 	public:
 
 	static constexpr nat sk_p = t_p; // precision of the map
+	static constexpr nat sk_defNSlots = 8;
+	static constexpr fnat sk_defFactor = 1;
 
 
 
@@ -129,6 +132,8 @@ class Map {
 	nat m_nSlots;						// number of slots
 	std::unique_ptr<Slot[]> m_slots;	// the slots
 	nat m_seed;							// the seed to use for hashing operations
+	bool m_fixed;						// the map will automatically adjust its number of slots
+	fnat m_factor;						// the ideal number of elements per slot
 	bool m_rehashing;					// the map is currently rehashing
 
 
@@ -144,9 +149,11 @@ class Map {
 	Map();
 	Map(const Map & other);
 	Map(Map && other);
-	explicit Map(nat nSlots);
-	template <typename K, typename... Pairs>
-	Map(const K & key, const E & element, const Pairs &... pairs);
+	explicit Map(nat nSlots, bool fixed = false);
+	/*template <typename K, typename... Pairs>
+	Map(const std::pair<const K &, const E &> & pair, const Pairs &... pairs);*/
+	template <typename K>
+	explicit Map(std::initializer_list<std::pair<const K &, const E &>> pairs, bool fixed = false);
 
 
 
@@ -184,12 +191,14 @@ class Map {
 	public:
 
 	template <typename K>
-	std::pair<MIterator, bool> insert(const K & key, const E & element);
+	std::pair<Iterator, bool> insert(const K & key, const E & element);
 	template <typename K>
-	std::pair<MIterator, bool> insert(const K * key, nat nElements, const E & element);
-	std::pair<MIterator, bool> insert(const std::string & key, const E & element);
+	std::pair<Iterator, bool> insert(const K * key, nat nElements, const E & element);
+	std::pair<Iterator, bool> insert(const std::string & key, const E & element);
+	template <typename K>
+	void insert(std::initializer_list<std::pair<const K &, const E &>> pairs);
 
-	std::pair<MIterator, bool> insertByHash(const H & hashKey, const E & element);
+	std::pair<Iterator, bool> insertByHash(const H & hashKey, const E & element);
 
 
 
@@ -212,6 +221,42 @@ class Map {
 
 
 	//==========================================================================
+	// iterator
+	//--------------------------------------------------------------------------
+	// 
+	//--------------------------------------------------------------------------
+
+	public:
+
+	template <typename K>
+	Iterator iterator(const K & key);
+	template <typename K>
+	Iterator iterator(const K * key, nat nElements);
+	Iterator iterator(const std::string & key);
+
+	Iterator iteratorByHash(const H & hashKey);
+
+
+
+	//==========================================================================
+	// citerator
+	//--------------------------------------------------------------------------
+	// 
+	//--------------------------------------------------------------------------
+
+	public:
+
+	template <typename K>
+	CIterator citerator(const K & key) const;
+	template <typename K>
+	CIterator citerator(const K * key, nat nElements) const;
+	CIterator citerator(const std::string & key) const;
+
+	CIterator citeratorByHash(const H & hashKey) const;
+
+
+
+	//==========================================================================
 	// operator[]
 	//--------------------------------------------------------------------------
 	// 
@@ -228,7 +273,7 @@ class Map {
 
 
 	//==========================================================================
-	// remove
+	// erase
 	//--------------------------------------------------------------------------
 	// 
 	//--------------------------------------------------------------------------
@@ -271,20 +316,19 @@ class Map {
 
 	public:
 
-	// Returns if the map contains the element
-	MIterator find(const E & element);
+	Iterator find(const E & element);
 
 
 
 	//==========================================================================
-	// findByHash
+	// cfind
 	//--------------------------------------------------------------------------
 	// 
 	//--------------------------------------------------------------------------
 
 	public:
 
-	MIterator findByHash(const H & hashKey);
+	CIterator cfind(const E & element) const;
 
 
 
@@ -337,6 +381,12 @@ class Map {
 
 	nat seed() const;
 	void seed(nat seed);
+
+	bool fixed() const;
+	void fixed(bool fixed);
+
+	fnat factor() const;
+	void factor(fnat factor);
 
 
 
@@ -410,7 +460,7 @@ class Map {
 
 template <typename E, nat t_p>
 template <typename I_E> // may be E or const E
-class Map<E, t_p>::Iterator {
+class Map<E, t_p>::TIterator {
 
 	friend Map<E, t_p>;
 
@@ -439,15 +489,16 @@ class Map<E, t_p>::Iterator {
 
 	public:
 
-	Iterator(const Map<E, t_p> & map);
+	TIterator(const Map<E, t_p> & map);
 	
 	private:
 
-	Iterator(const Map<E, t_p> & map, nat slot, typename Map<E, t_p>::Node * node);
+	TIterator(const Map<E, t_p> & map, nat slot, typename Map<E, t_p>::Node * node);
 
 	public:
 
-	Iterator(const Iterator<I_E> & iterator);
+	template <typename I_E_o>
+	TIterator(const TIterator<I_E_o> & iterator);
 
 
 
@@ -457,7 +508,7 @@ class Map<E, t_p>::Iterator {
 	// 
 	//--------------------------------------------------------------------------
 
-	~Iterator() = default;
+	~TIterator() = default;
 
 
 
@@ -467,7 +518,8 @@ class Map<E, t_p>::Iterator {
 	// 
 	//--------------------------------------------------------------------------
 
-	Iterator & operator=(const Iterator & o);
+	template <typename I_E_o>
+	TIterator<I_E> & operator=(const TIterator<I_E_o> & iterator);
 
 
 
@@ -487,7 +539,7 @@ class Map<E, t_p>::Iterator {
 	// 
 	//--------------------------------------------------------------------------
 
-	Iterator & operator++();
+	TIterator<I_E> & operator++();
 
 
 
@@ -495,9 +547,10 @@ class Map<E, t_p>::Iterator {
 	// operator++ int
 	//--------------------------------------------------------------------------
 	// 
+
 	//--------------------------------------------------------------------------
 
-	Iterator operator++(int);
+	TIterator<I_E> operator++(int);
 
 
 
@@ -507,7 +560,8 @@ class Map<E, t_p>::Iterator {
 	// 
 	//--------------------------------------------------------------------------
 
-	bool operator==(const Iterator & o) const;
+	template <typename I_E_o>
+	bool operator==(const TIterator<I_E_o> & o) const;
 
 
 
@@ -517,7 +571,8 @@ class Map<E, t_p>::Iterator {
 	// 
 	//--------------------------------------------------------------------------
 
-	bool operator!=(const Iterator & o) const;
+	template <typename I_E_o>
+	bool operator!=(const TIterator<I_E_o> & o) const;
 
 
 
@@ -538,6 +593,26 @@ class Map<E, t_p>::Iterator {
 	//--------------------------------------------------------------------------
 
 	I_E_ptr operator->() const;
+
+
+
+	//==========================================================================
+	// hashKey
+	//--------------------------------------------------------------------------
+	// 
+	//--------------------------------------------------------------------------
+
+	typename const Map<E, t_p>::H & hashKey() const;
+
+
+
+	//==========================================================================
+	// element
+	//--------------------------------------------------------------------------
+	// 
+	//--------------------------------------------------------------------------
+
+	I_E_ref element() const;
 
 };
 
@@ -626,18 +701,22 @@ constexpr bool hashGreater(const u128 & h1, const u128 & h2);
 template <typename E, nat t_p>
 Map<E, t_p>::Map() :
 	m_size(0),
-	m_nSlots(gk_defNSlots),
+	m_nSlots(sk_defNSlots),
 	m_slots(new Slot[m_nSlots]),
+	m_fixed(false),
+	m_factor(sk_defFactor),
 	m_rehashing(false)
 {
 	memset(m_slots.get(), 0, m_nSlots * sizeof(Slot));
 }
 
 template <typename E, nat t_p>
-Map<E, t_p>::Map(nat nSlots) :
+Map<E, t_p>::Map(nat nSlots, bool fixed) :
 	m_size(0),
 	m_nSlots(nSlots < 1 ? 1 : nSlots),
 	m_slots(new Slot[m_nSlots]),
+	m_fixed(fixed),
+	m_factor(sk_defFactor),
 	m_rehashing(false)
 {
 	memset(m_slots.get(), 0, m_nSlots * sizeof(Slot));
@@ -648,6 +727,8 @@ Map<E, t_p>::Map(const Map<E, t_p> & map) :
 	m_size(map.m_size),
 	m_nSlots(map.m_nSlots),
 	m_slots(new Slot[m_nSlots]),
+	m_fixed(map.m_fixed),
+	m_factor(map.m_factor),
 	m_rehashing(false)
 {
 	for (nat i(0); i < m_nSlots; ++i) {
@@ -667,33 +748,26 @@ Map<E, t_p>::Map(Map<E, t_p> && map) :
 	m_size(map.m_size),
 	m_nSlots(map.m_nSlots),
 	m_slots(std::move(map.m_slots)),
+	m_fixed(map.m_fixed),
+	m_factor(map.m_factor),
 	m_rehashing(false)
 {
 	map.m_size = 0;
 	map.m_nSlots = 0;
 }
 
-//helpers for variadic constructor
-template <typename E, nat t_p, typename K>
-void insertMany(Map<E, t_p> & ht, const K & key, const E & element) {
-	ht.insert(key, element);
-}
-template <typename E, nat t_p, typename K, typename... Pairs>
-void insertMany(Map<E, t_p> & ht, const K & key, const E & element, const Pairs &... pairs) {
-	ht.insert(key, element);
-	insertMany(ht, pairs...);
-}
-
 template <typename E, nat t_p>
-template <typename K, typename... Pairs>
-Map<E, t_p>::Map(const K & key, const E & element, const Pairs &... pairs) :
+template <typename K>
+Map<E, t_p>::Map(std::initializer_list<std::pair<const K &, const E &>> pairs, bool fixed) :
 	m_size(0),
-	m_nSlots((2 + sizeof...(Pairs) + 1) / 2),
+	m_nSlots(pairs.size()),
 	m_slots(new Slot[m_nSlots]),
+	m_fixed(fixed),
+	m_factor(sk_defFactor),
 	m_rehashing(false)
 {
 	memset(m_slots.get(), 0, m_nSlots * sizeof(Slot));
-	insertMany(*this, key, element, pairs...);
+	insert(pairs);
 }
 
 
@@ -765,18 +839,26 @@ Map<E, t_p> & Map<E, t_p>::operator=(Map<E, t_p> && map) {
 //------------------------------------------------------------------------------
 
 template <typename E, nat t_p> template <typename K>
-std::pair<typename Map<E, t_p>::MIterator, bool> Map<E, t_p>::insert(const K & key, const E & element) {
+std::pair<typename Map<E, t_p>::Iterator, bool> Map<E, t_p>::insert(const K & key, const E & element) {
 	return insertByHash(hash<t_p>(key, m_seed), element);
 }
 
 template <typename E, nat t_p> template <typename K>
-std::pair<typename Map<E, t_p>::MIterator, bool> Map<E, t_p>::insert(const K * key, nat nElements, const E & element) {
+std::pair<typename Map<E, t_p>::Iterator, bool> Map<E, t_p>::insert(const K * key, nat nElements, const E & element) {
 	return insertByHash(hash<t_p>(key, nElements, m_seed), element);
 }
 
 template <typename E, nat t_p>
-std::pair<typename Map<E, t_p>::MIterator, bool> Map<E, t_p>::insert(const std::string & key, const E & element) {
+std::pair<typename Map<E, t_p>::Iterator, bool> Map<E, t_p>::insert(const std::string & key, const E & element) {
 	return insertByHash(hash<t_p>(key, m_seed), element);
+}
+
+template <typename E, nat t_p>
+template <typename K>
+void Map<E, t_p>::insert(std::initializer_list<std::pair<const K &, const E &>> pairs) {
+	for (auto & pair : pairs) {
+		insertByHash(hash<t_p>(pair.first, m_seed), pair.second);
+	}
 }
 
 
@@ -786,42 +868,26 @@ std::pair<typename Map<E, t_p>::MIterator, bool> Map<E, t_p>::insert(const std::
 //------------------------------------------------------------------------------
 
 template <typename E, nat t_p>
-std::pair<typename Map<E, t_p>::MIterator, bool> Map<E, t_p>::insertByHash(const H & hashKey, const E & element) {
+std::pair<typename Map<E, t_p>::Iterator, bool> Map<E, t_p>::insertByHash(const H & hashKey, const E & element) {
 	nat slotI(tech::hashMod(hashKey, m_nSlots));
-	Slot & slot(m_slots[slotI]);
 
-	if (!slot.first || tech::hashLess(hashKey, slot.first->hashKey)) {
-		slot.first = new Node{ hashKey, element, slot.first };
-		++slot.size;
-		++m_size;
-		if (!m_rehashing && m_size > m_nSlots) {
-			rehash(floor2(m_nSlots * 2));
-			return { findByHash(hashKey), true };
-		}
-		else {
-			return { MIterator(*this, slotI, slot.first), true };
-		}
+	Node ** node(&m_slots[slotI].first);
+	while (*node && tech::hashLess((*node)->hashKey, hashKey)) {
+		node = &(*node)->next;
 	}
-	if (tech::hashEqual(hashKey, slot.first->hashKey)) {
-		return { MIterator(*this, slotI, slot.first), false };
+	if (*node && tech::hashEqual((*node)->hashKey, hashKey)) {
+		return { Iterator(*this, slotI, *node), false };
 	}
-	
-	Node * node(slot.first);
-	while (node->next && tech::hashLess(node->next->hashKey, hashKey)) {
-		node = node->next;
-	}
-	if (node->next && tech::hashEqual(node->next->hashKey, hashKey)) {
-		return { MIterator(*this, slotI, node->next), false };
-	}
-	node->next = new Node{ hashKey, element, node->next };
-	++slot.size;
+	*node = new Node{ hashKey, element, *node };
+
+	++m_slots[slotI].size;
 	++m_size;
-	if (!m_rehashing && m_size > m_nSlots) {
-		rehash(floor2(m_nSlots * 2));
-		return { findByHash(hashKey), true };
+	if (m_size > m_nSlots * m_factor && !m_fixed) {
+		rehash(ceil2(static_cast<nat>(ceil(m_size / m_factor))));
+		return { iteratorByHash(hashKey), true };
 	}
 	else {
-		return { MIterator(*this, slotI, node->next), true };
+		return { Iterator(*this, slotI, *node), true };
 	}
 }
 
@@ -854,16 +920,91 @@ E & Map<E, t_p>::at(const std::string & key) const {
 
 template <typename E, nat t_p>
 E & Map<E, t_p>::atByHash(const H & hashKey) const {
-	Slot & slot(m_slots[tech::hashMod(hashKey, m_nSlots)]);
+	nat slotI(tech::hashMod(hashKey, m_nSlots));
 
-	Node * node(slot.first);
+	Node * node(m_slots[slotI].first);
 	while (node && tech::hashLess(node->hashKey, hashKey)) {
 		node = node->next;
 	}
 	if (node && tech::hashEqual(node->hashKey, hashKey)) {
 		return node->element;
-	}	
+	}
+
 	throw std::out_of_range("key not found");
+}
+
+
+
+//==============================================================================
+// iterator
+//------------------------------------------------------------------------------
+
+template <typename E, nat t_p> template <typename K>
+typename Map<E, t_p>::Iterator Map<E, t_p>::iterator(const K & key) {
+	return iteratorByHash(hash<t_p>(key, m_seed));
+}
+
+template <typename E, nat t_p> template <typename K>
+typename Map<E, t_p>::Iterator Map<E, t_p>::iterator(const K * key, nat nElements) {
+	return iteratorByHash(hash<t_p>(key, nElements, m_seed));
+}
+
+template <typename E, nat t_p>
+typename Map<E, t_p>::Iterator Map<E, t_p>::iterator(const std::string & key) {
+	return iteratorByHash(hash<t_p>(key, m_seed));
+}
+
+
+
+//==============================================================================
+// iteratorByHash
+//------------------------------------------------------------------------------
+
+template <typename E, nat t_p>
+typename Map<E, t_p>::Iterator Map<E, t_p>::iteratorByHash(const H & hashKey) {
+	return citeratorByHash(hashKey);
+}
+
+
+
+//==============================================================================
+// citerator
+//------------------------------------------------------------------------------
+
+template <typename E, nat t_p> template <typename K>
+typename Map<E, t_p>::CIterator Map<E, t_p>::citerator(const K & key) const {
+	return citeratorByHash(hash<t_p>(key, m_seed));
+}
+
+template <typename E, nat t_p> template <typename K>
+typename Map<E, t_p>::CIterator Map<E, t_p>::citerator(const K * key, nat nElements) const {
+	return citeratorByHash(hash<t_p>(key, nElements, m_seed));
+}
+
+template <typename E, nat t_p>
+typename Map<E, t_p>::CIterator Map<E, t_p>::citerator(const std::string & key) const {
+	return citeratorByHash(hash<t_p>(key, m_seed));
+}
+
+
+
+//==============================================================================
+// citeratorByHash
+//------------------------------------------------------------------------------
+
+template <typename E, nat t_p>
+typename Map<E, t_p>::CIterator Map<E, t_p>::citeratorByHash(const H & hashKey) const {
+	nat slotI(tech::hashMod(hashKey, m_nSlots));
+
+	Node * node(m_slots[slotI].first);
+	while (node && tech::hashLess(node->hashKey, hashKey)) {
+		node = node->next;
+	}
+	if (node && tech::hashEqual(node->hashKey, hashKey)) {
+		return CIterator(*this, slotI, node);
+	}
+
+	return cend();
 }
 
 
@@ -890,7 +1031,26 @@ E & Map<E, t_p>::operator[](const std::string & key) {
 
 template <typename E, nat t_p>
 E & Map<E, t_p>::accessByHash(const H & hashKey) {
-	return *insertByHash(hashKey, E()).first;
+	nat slotI(tech::hashMod(hashKey, m_nSlots));
+
+	Node ** node(&m_slots[slotI].first);
+	while (*node && tech::hashLess((*node)->hashKey, hashKey)) {
+		node = &(*node)->next;
+	}
+	if (*node && tech::hashEqual((*node)->hashKey, hashKey)) {
+		return (*node)->element;
+	}
+	*node = new Node{ hashKey, E(), *node };
+
+	++m_slots[slotI].size;
+	++m_size;
+	if (m_size > m_nSlots * m_factor && !m_fixed) {
+		rehash(ceil2(static_cast<nat>(ceil(m_size / m_factor))));
+		return atByHash(hashKey);
+	}
+	else {
+		return (*node)->element;
+	}
 }
 
 
@@ -922,35 +1082,23 @@ E Map<E, t_p>::erase(const std::string & key) {
 
 template <typename E, nat t_p>
 E Map<E, t_p>::eraseByHash(const H & hashKey) {
-	Slot & slot(m_slots[tech::hashMod(hashKey, m_nSlots)]);
+	nat slotI(tech::hashMod(hashKey, m_nSlots));
+
 	E element;
-	
-	if (!slot.first) {
+
+	Node ** node(&m_slots[slotI].first);
+	while (*node && tech::hashLess((*node)->hashKey, hashKey)) {
+		node = &(*node)->next;
+	}
+	if (!*node || !tech::hashEqual((*node)->hashKey, hashKey)) {
 		throw std::out_of_range("key not found");
 	}
-	if (tech::hashEqual(slot.first->hashKey, hashKey)) {
-		element = slot.first->element;
-		Node * temp(slot.first);
-		slot.first = slot.first->next;
-		delete temp;
-	}
-	else {
-		Node * node = slot.first;
-		while (node->next && tech::hashLess(node->next->hashKey, hashKey)) {
-			node = node->next;
-		}
-		if (node->next && tech::hashEqual(node->next->hashKey, hashKey)) {
-			element = node->next->element;
-			Node * temp(node->next);
-			node->next = node->next->next;
-			delete temp;
-		}
-		else {
-			throw std::out_of_range("key not found");
-		}
-	}
+	element = (*node)->element;
+	Node * next((*node)->next);
+	delete *node;
+	*node = next;
 
-	--slot.size;
+	--m_slots[slotI].size;
 	--m_size;
 	return element;
 }
@@ -984,9 +1132,9 @@ nat Map<E, t_p>::count(const std::string & key) const {
 
 template <typename E, nat t_p>
 nat Map<E, t_p>::countByHash(const H & hashKey) const {
-	Slot & slot(m_slots[tech::hashMod(hashKey, m_nSlots)]);
+	nat slotI(tech::hashMod(hashKey, m_nSlots));
 
-	Node * node = slot.first;
+	Node * node = m_slots[slotI].first;
 	while (node && tech::hashLess(node->hashKey, hashKey)) {
 		node = node->next;
 	}
@@ -1003,34 +1151,25 @@ nat Map<E, t_p>::countByHash(const H & hashKey) const {
 //------------------------------------------------------------------------------
 
 template <typename E, nat t_p>
-typename Map<E, t_p>::MIterator Map<E, t_p>::find(const E & element) {
-	for (MIterator it(begin()); it; ++it) {
-		if (*it == element) {
-			return it;
-		}
-	}
-
-	return end();
+typename Map<E, t_p>::Iterator Map<E, t_p>::find(const E & element) {
+	return cfind(element);
 }
 
 
 
 //==============================================================================
-// findByHash
+// cfind
 //------------------------------------------------------------------------------
 
 template <typename E, nat t_p>
-typename Map<E, t_p>::MIterator Map<E, t_p>::findByHash(const H & hashKey) {
-	nat slotI = tech::hashMod(hashKey, m_nSlots);
-
-	Node * node(m_slots[slotI].first);
-	while (node && tech::hashLess(node->hashKey, hashKey)) {
-		node = node->next;
+typename Map<E, t_p>::CIterator Map<E, t_p>::cfind(const E & element) const {
+	for (CIterator it(cbegin()); it; ++it) {
+		if (*it == element) {
+			return it;
+		}
 	}
-	if (node && tech::hashEqual(node->hashKey, hashKey)) {
-		return MIterator(*this, slotI, node);
-	}	
-	throw std::out_of_range("key not found");
+
+	return cend();
 }
 
 
@@ -1044,25 +1183,19 @@ void Map<E, t_p>::rehash(nat nSlots) {
 	if (m_rehashing) {
 		return;
 	}
-	if (nSlots == m_nSlots) {
-		return;
-	}
 	if (nSlots < 1) {
 		nSlots = 1;
 	}
+	if (nSlots == m_nSlots) {
+		return;
+	}
 
-
-	Map<E, t_p> map(nSlots);
+	Map<E, t_p> map(nSlots, m_fixed);
 	m_rehashing = true;
 	map.m_rehashing = true;
 
-	const Node * node;
-	for (nat i(0); i < m_nSlots; ++i) {
-		node = m_slots[i].first;
-		while (node) {
-			map.insertByHash(node->hashKey, node->element);
-			node = node->next;
-		}
+	for (CIterator it(cbegin()); it; ++it) {
+		map.insertByHash(it.hashKey(), it.element());
 	}
 
 	map.m_rehashing = false;
@@ -1078,16 +1211,12 @@ void Map<E, t_p>::rehash(nat nSlots) {
 
 template <typename E, nat t_p>
 void Map<E, t_p>::clear() {
-	if (m_size == 0) {
-		return;
-	}
-
 	for (nat i = 0; i < m_nSlots; ++i) {
-		Node * node = m_slots[i].first, * temp;
+		Node * node(m_slots[i].first), * next;
 		while (node) {
-			temp = node->next;
+			next = node->next;
 			delete node;
-			node = temp;
+			node = next;
 		}
 
 		m_slots[i].first = nullptr;
@@ -1113,26 +1242,13 @@ bool Map<E, t_p>::equals(const Map<E, t_p> & map) const {
 		return false;
 	}
 
-	for (nat i = 0; i < m_nSlots; ++i) {
-		if (m_slots[i].size != map.m_slots[i].size) {
-			return false;
-		}
-
-		Node * next1 = m_slots[i].first;
-		Node * next2 = map.m_slots[i].first;
-		while (next1 && next2) {
-			if (next1->element != next2->element) {
-				return false;
-			}
-			next1 = next1->next;
-			next2 = next2->next;
-		}
-		if (next1 != next2) {
+	CIterator it1(cbegin()), it2(map.cbegin());
+	for (; it1 && it2; ++it1, ++it2) {
+		if (*it1 != *it2) {
 			return false;
 		}
 	}
-
-	return true;
+	return it1 == it2;
 }
 
 
@@ -1142,8 +1258,8 @@ bool Map<E, t_p>::equals(const Map<E, t_p> & map) const {
 //------------------------------------------------------------------------------
 
 template <typename E, nat t_p>
-typename Map<E, t_p>::MIterator Map<E, t_p>::begin() {
-	return MIterator(*this);
+typename Map<E, t_p>::Iterator Map<E, t_p>::begin() {
+	return Iterator(*this);
 }
 
 
@@ -1164,8 +1280,8 @@ typename Map<E, t_p>::CIterator Map<E, t_p>::cbegin() const {
 //------------------------------------------------------------------------------
 
 template <typename E, nat t_p>
-typename Map<E, t_p>::MIterator Map<E, t_p>::end() {
-	return MIterator(*this, m_nSlots, nullptr);
+typename Map<E, t_p>::Iterator Map<E, t_p>::end() {
+	return Iterator(*this, m_nSlots, nullptr);
 }
 
 
@@ -1226,6 +1342,38 @@ nat Map<E, t_p>::seed() const {
 template <typename E, nat t_p>
 void Map<E, t_p>::seed(nat seed) {
 	m_seed = seed;
+}
+
+
+
+//==============================================================================
+// fixed
+//------------------------------------------------------------------------------
+
+template <typename E, nat t_p>
+bool Map<E, t_p>::fixed() const {
+	return m_fixed;
+}
+
+template <typename E, nat t_p>
+void Map<E, t_p>::fixed(bool fixed) {
+	m_fixed = fixed;
+}
+
+
+
+//==============================================================================
+// factor
+//------------------------------------------------------------------------------
+
+template <typename E, nat t_p>
+fnat Map<E, t_p>::factor() const {
+	return m_factor;
+}
+
+template <typename E, nat t_p>
+void Map<E, t_p>::factor(fnat factor) {
+	m_factor = factor;
 }
 
 
@@ -1375,7 +1523,7 @@ void Map<E, t_p>::printHisto(const MapStats & stats, std::ostream & os) {
 
 template <typename E, nat t_p>
 template <typename I_E>
-Map<E, t_p>::Iterator<I_E>::Iterator(const Map<E, t_p> & map) :
+Map<E, t_p>::TIterator<I_E>::TIterator(const Map<E, t_p> & map) :
 	m_map(&map),
 	m_slot(0),
 	m_node(nullptr)
@@ -1386,7 +1534,7 @@ Map<E, t_p>::Iterator<I_E>::Iterator(const Map<E, t_p> & map) :
 
 template <typename E, nat t_p>
 template <typename I_E>
-Map<E, t_p>::Iterator<I_E>::Iterator(const Map<E, t_p> & map, nat slot, typename Map<E, t_p>::Node * node) :
+Map<E, t_p>::TIterator<I_E>::TIterator(const Map<E, t_p> & map, nat slot, typename Map<E, t_p>::Node * node) :
 	m_map(&map),
 	m_slot(slot),
 	m_node(node)
@@ -1394,7 +1542,8 @@ Map<E, t_p>::Iterator<I_E>::Iterator(const Map<E, t_p> & map, nat slot, typename
 
 template <typename E, nat t_p>
 template <typename I_E>
-Map<E, t_p>::Iterator<I_E>::Iterator(typename const Map<E, t_p>::Iterator<I_E> & iterator) :
+template <typename I_E_o>
+Map<E, t_p>::TIterator<I_E>::TIterator(typename const Map<E, t_p>::TIterator<I_E_o> & iterator) :
 	m_map(iterator.m_map),
 	m_slot(iterator.m_slot),
 	m_node(iterator.m_node)
@@ -1408,10 +1557,11 @@ Map<E, t_p>::Iterator<I_E>::Iterator(typename const Map<E, t_p>::Iterator<I_E> &
 
 template <typename E, nat t_p>
 template <typename I_E>
-typename Map<E, t_p>::Iterator<I_E> & Map<E, t_p>::Iterator<I_E>::operator=(typename const Map<E, t_p>::Iterator<I_E> & o) {
-	m_map = o.m_map;
-	m_slot = o.m_slot;
-	m_node = o.m_node;
+template <typename I_E_o>
+typename Map<E, t_p>::TIterator<I_E> & Map<E, t_p>::TIterator<I_E>::operator=(typename const Map<E, t_p>::TIterator<I_E_o> & iterator) {
+	m_map = iterator.m_map;
+	m_slot = iterator.m_slot;
+	m_node = iterator.m_node;
 	return *this;
 }
 
@@ -1423,7 +1573,7 @@ typename Map<E, t_p>::Iterator<I_E> & Map<E, t_p>::Iterator<I_E>::operator=(type
 
 template <typename E, nat t_p>
 template <typename I_E>
-Map<E, t_p>::Iterator<I_E>::operator bool() const {
+Map<E, t_p>::TIterator<I_E>::operator bool() const {
 	return m_node != nullptr;
 }
 
@@ -1435,7 +1585,7 @@ Map<E, t_p>::Iterator<I_E>::operator bool() const {
 
 template <typename E, nat t_p>
 template <typename I_E>
-typename Map<E, t_p>::Iterator<I_E> & Map<E, t_p>::Iterator<I_E>::operator++() {
+typename Map<E, t_p>::TIterator<I_E> & Map<E, t_p>::TIterator<I_E>::operator++() {
 	m_node = m_node->next;
 	if (!m_node) {
 		while (++m_slot < m_map->m_nSlots) {
@@ -1456,8 +1606,8 @@ typename Map<E, t_p>::Iterator<I_E> & Map<E, t_p>::Iterator<I_E>::operator++() {
 
 template <typename E, nat t_p>
 template <typename I_E>
-typename Map<E, t_p>::Iterator<I_E> Map<E, t_p>::Iterator<I_E>::operator++(int) {
-	Map<E, t_p>::Iterator<I_E> temp(*this);
+typename Map<E, t_p>::TIterator<I_E> Map<E, t_p>::TIterator<I_E>::operator++(int) {
+	Map<E, t_p>::TIterator<I_E> temp(*this);
 	operator++();
 	return temp;
 }
@@ -1470,7 +1620,8 @@ typename Map<E, t_p>::Iterator<I_E> Map<E, t_p>::Iterator<I_E>::operator++(int) 
 
 template <typename E, nat t_p>
 template <typename I_E>
-bool Map<E, t_p>::Iterator<I_E>::operator==(typename const Map<E, t_p>::Iterator<I_E> & o) const {
+template <typename I_E_o>
+bool Map<E, t_p>::TIterator<I_E>::operator==(typename const Map<E, t_p>::TIterator<I_E_o> & o) const {
 	return m_node == o.m_node;
 }
 
@@ -1482,7 +1633,8 @@ bool Map<E, t_p>::Iterator<I_E>::operator==(typename const Map<E, t_p>::Iterator
 
 template <typename E, nat t_p>
 template <typename I_E>
-bool Map<E, t_p>::Iterator<I_E>::operator!=(typename const Map<E, t_p>::Iterator<I_E> & o) const {
+template <typename I_E_o>
+bool Map<E, t_p>::TIterator<I_E>::operator!=(typename const Map<E, t_p>::TIterator<I_E_o> & o) const {
 	return m_node != o.m_node;
 }
 
@@ -1494,7 +1646,7 @@ bool Map<E, t_p>::Iterator<I_E>::operator!=(typename const Map<E, t_p>::Iterator
 
 template <typename E, nat t_p>
 template <typename I_E>
-typename Map<E, t_p>::Iterator<I_E>::I_E_ref Map<E, t_p>::Iterator<I_E>::operator*() const {
+typename Map<E, t_p>::TIterator<I_E>::I_E_ref Map<E, t_p>::TIterator<I_E>::operator*() const {
 	return m_node->element;
 }
 
@@ -1506,8 +1658,32 @@ typename Map<E, t_p>::Iterator<I_E>::I_E_ref Map<E, t_p>::Iterator<I_E>::operato
 
 template <typename E, nat t_p>
 template <typename I_E>
-typename Map<E, t_p>::Iterator<I_E>::I_E_ptr Map<E, t_p>::Iterator<I_E>::operator->() const {
+typename Map<E, t_p>::TIterator<I_E>::I_E_ptr Map<E, t_p>::TIterator<I_E>::operator->() const {
 	return &m_node->element;
+}
+
+
+
+//==============================================================================
+// hashKey
+//------------------------------------------------------------------------------
+
+template <typename E, nat t_p>
+template <typename I_E>
+typename const Map<E, t_p>::H & Map<E, t_p>::TIterator<I_E>::hashKey() const {
+	return m_node->hashKey;
+}
+
+
+
+//==============================================================================
+// element
+//------------------------------------------------------------------------------
+
+template <typename E, nat t_p>
+template <typename I_E>
+typename Map<E, t_p>::TIterator<I_E>::I_E_ref Map<E, t_p>::TIterator<I_E>::element() const {
+	return m_node->element;
 }
 
 

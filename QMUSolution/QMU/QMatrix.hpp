@@ -61,13 +61,16 @@ struct mat<2, 2> {
 	constexpr explicit mat(const mat3 & m);
 	constexpr explicit mat(const mat4 & m);
 	constexpr mat(
-		const vec2 & v1,
-		const vec2 & v2
+		const fvec2 & v1,
+		const fvec2 & v2
 	);
 
 	//--- destructor ---
 
-	~mat() = default;
+	~mat() {
+		static_assert(std::is_standard_layout<mat<2, 2>>::value, "mat<2, 2> must be of standard layout");
+		static_assert(sizeof(mat<2, 2>) == 4 * sizeof(float), "mat<2, 2> must be equal in size to 4 floats");
+	}
 
 	//--- assignment operators ---
 
@@ -117,7 +120,7 @@ struct mat<2, 2> {
 	friend mat2 operator*(const mat2 & m1, const mat2 & m2);
 	friend mat2 operator*(const mat2 & m1, float v);
 	friend mat2 operator*(float v, const mat2 & m1);
-	friend vec2 operator*(const mat2 & m1, const vec2 & v);
+	friend fvec2 operator*(const mat2 & m1, const fvec2 & v);
 
 	friend mat2 operator/(const mat2 & m1, float v);
 	friend mat2 operator/(float v, const mat2 & m);
@@ -169,14 +172,17 @@ struct mat<3, 3> {
 	constexpr explicit mat(const mat2 & m);
 	constexpr explicit mat(const mat4 & m);
 	constexpr mat(
-		const vec3 & v1,
-		const vec3 & v2,
-		const vec3 & v
+		const fvec3 & v1,
+		const fvec3 & v2,
+		const fvec3 & v
 	);
 
 	//--- destructor ---
 
-	~mat() = default;
+	~mat() {
+		static_assert(std::is_standard_layout<mat<3, 3>>::value, "mat<3, 3> must be of standard layout");
+		static_assert(sizeof(mat<3, 3>) == 9 * sizeof(float), "mat<3, 3> must be equal in size to 9 floats");
+	}
 
 	//--- assignment operators ---
 
@@ -226,7 +232,7 @@ struct mat<3, 3> {
 	friend mat3 operator*(const mat3 & m1, const mat3 & m2);
 	friend mat3 operator*(const mat3 & m1, float v);
 	friend mat3 operator*(float v, const mat3 & m1);
-	friend vec3 operator*(const mat3 & m1, const vec3 & v);
+	friend fvec3 operator*(const mat3 & m1, const fvec3 & v);
 
 	friend mat3 operator/(const mat3 & m1, float v);
 	friend mat3 operator/(float v, const mat3 & m1);
@@ -281,15 +287,18 @@ struct mat<4, 4> {
 	constexpr explicit mat(const mat2 & m);
 	constexpr explicit mat(const mat3 & m);
 	constexpr mat(
-		const vec4 & v1,
-		const vec4 & v2,
-		const vec4 & v3,
-		const vec4 & v4
+		const fvec4 & v1,
+		const fvec4 & v2,
+		const fvec4 & v3,
+		const fvec4 & v4
 	);
 
 	//--- destructor ---
 
-	~mat() = default;
+	~mat() {
+		static_assert(std::is_standard_layout<mat<4, 4>>::value, "mat<4, 4> must be of standard layout");
+		static_assert(sizeof(mat<4, 4>) == 16 * sizeof(float), "mat<4, 4> must be equal in size to 16 floats");
+	}
 
 	//--- assignment operators ---
 
@@ -339,7 +348,7 @@ struct mat<4, 4> {
 	friend mat4 operator*(const mat4 & m1, const mat4 & m2);
 	friend mat4 operator*(const mat4 & m1, float v);
 	friend mat4 operator*(float v, const mat4 & m1);
-	friend vec4 operator*(const mat4 & m1, const vec4 & v);
+	friend fvec4 operator*(const mat4 & m1, const fvec4 & v);
 
 	friend mat4 operator/(const mat4 & m1, float v);
 	friend mat4 operator/(float v, const mat4 & m1);
@@ -393,46 +402,46 @@ mat4 inv(const mat4 & m1);
 
 
 mat2 translate(float delta);
-mat3 translate(const vec2 & delta);
-mat4 translate(const vec3 & delta);
+mat3 translate(const fvec2 & delta);
+mat4 translate(const fvec3 & delta);
 
-mat2 scale(const vec2 & scale);
-mat3 scale(const vec3 & scale);
-mat4 scale(const vec4 & scale);
+mat2 scale(const fvec2 & scale);
+mat3 scale(const fvec3 & scale);
+mat4 scale(const fvec4 & scale);
 
 mat2 rotate(float theta);
 mat3 rotateX(float theta);
 mat3 rotateY(float theta);
 mat3 rotateZ(float theta);
 
-mat3 rotate(float sinTheta, float cosTheta, const vec3 & axis);
-mat3 rotate_n(float s, float c, const vec3 & m1);
+mat3 rotate(float sinTheta, float cosTheta, const fvec3 & axis);
+mat3 rotate_n(float s, float c, const fvec3 & m1);
 
-mat3 rotate(float theta, const vec3 & axis);
-mat3 rotate_n(float theta, const vec3 & axis);
+mat3 rotate(float theta, const fvec3 & axis);
+mat3 rotate_n(float theta, const fvec3 & axis);
 
 //theta: thumb points up, phi: right, psi: forward
-mat3 euler(const vec3 & forward, const vec3 & up, float theta, float phi, float psi);
-mat3 euler_n(const vec3 & forward, const vec3 & up, float theta, float phi, float psi);
+mat3 euler(const fvec3 & forward, const fvec3 & up, float theta, float phi, float psi);
+mat3 euler_n(const fvec3 & forward, const fvec3 & up, float theta, float phi, float psi);
 
-mat3 align(const vec3 & v1, const vec3 & v2);
-mat3 align_n(const vec3 & v1, const vec3 & v2);
+mat3 align(const fvec3 & v1, const fvec3 & v2);
+mat3 align_n(const fvec3 & v1, const fvec3 & v2);
 
-//expects orthogonal vectors
-mat3 align(const vec3 & forward1, const vec3 & up1, const vec3 & forward2, const vec3 & up2);
-mat3 align_n(const vec3 & forward1, const vec3 & up1, const vec3 & forward2, const vec3 & up2);
+//expects orthogonal fvectors
+mat3 align(const fvec3 & forward1, const fvec3 & up1, const fvec3 & forward2, const fvec3 & up2);
+mat3 align_n(const fvec3 & forward1, const fvec3 & up1, const fvec3 & forward2, const fvec3 & up2);
 
-//expects ortho-normal vectors!!! x, y, and z are the axes
-mat3 map(const vec3 & x1, const vec3 & y1, const vec3 & z1, const vec3 & x2, const vec3 & y2, const vec3 & z2);
-mat3 map_n(const vec3 & x1, const vec3 & y1, const vec3 & z1, const vec3 & x2, const vec3 & y2, const vec3 & z2);
+//expects ortho-normal fvectors!!! x, y, and z are the axes
+mat3 map(const fvec3 & x1, const fvec3 & y1, const fvec3 & z1, const fvec3 & x2, const fvec3 & y2, const fvec3 & z2);
+mat3 map_n(const fvec3 & x1, const fvec3 & y1, const fvec3 & z1, const fvec3 & x2, const fvec3 & y2, const fvec3 & z2);
 
-mat3 mapTo(const vec3 & x, const vec3 & y, const vec3 & z);
-mat3 mapTo_n(const vec3 & x, const vec3 & y, const vec3 & z);
+mat3 mapTo(const fvec3 & x, const fvec3 & y, const fvec3 & z);
+mat3 mapTo_n(const fvec3 & x, const fvec3 & y, const fvec3 & z);
 
-mat3 mapFrom(const vec3 & x, const vec3 & y, const vec3 & z);
-mat3 mapFrom_n(const vec3 & x, const vec3 & y, const vec3 & z);
+mat3 mapFrom(const fvec3 & x, const fvec3 & y, const fvec3 & z);
+mat3 mapFrom_n(const fvec3 & x, const fvec3 & y, const fvec3 & z);
 
-mat3 mapAny(const vec3 & x1, const vec3 & y1, const vec3 & z1, const vec3 & x2, const vec3 & y2, const vec3 & z2);
+mat3 mapAny(const fvec3 & x1, const fvec3 & y1, const fvec3 & z1, const fvec3 & x2, const fvec3 & y2, const fvec3 & z2);
 
 mat4 ortho(float w, float h, float n, float f);
 mat4 orthoAsym(float l, float r, float b, float t, float n, float f);
@@ -443,7 +452,7 @@ mat4 perspective(float fov, float a, float n, float f);
 mat4 perspectiveAsym(float fovNX, float fovPX, float fovNY, float fovPY, float n, float f);
 
 //camUp should be perpendicular to camDir!!!
-mat4 view(const vec3 & camPos, const vec3 & camDir, const vec3 & camUp);
+mat4 view(const fvec3 & camPos, const fvec3 & camDir, const fvec3 & camUp);
 
 
 
@@ -498,8 +507,8 @@ constexpr mat<2, 2>::mat(const mat4 & m) :
 {}
 
 constexpr mat<2, 2>::mat(
-	const vec2 & v1,
-	const vec2 & v2
+	const fvec2 & v1,
+	const fvec2 & v2
 ) :
 	x1(v1.x), y1(v1.y),
 	x2(v2.x), y2(v2.y)
@@ -723,8 +732,8 @@ inline mat2 operator*(float v, const mat2 & m1) {
 	);
 }
 
-inline vec2 operator*(const mat2 & m1, const vec2 & v) {
-	return vec2(
+inline fvec2 operator*(const mat2 & m1, const fvec2 & v) {
+	return fvec2(
 		v.x * m1.x1 + v.y * m1.x2,
 		v.x * m1.y1 + v.y * m1.y2
 	);
@@ -844,9 +853,9 @@ constexpr mat<3, 3>::mat(const mat4 & m) :
 {}
 
 constexpr mat<3, 3>::mat(
-	const vec3 & v1,
-	const vec3 & v2,
-	const vec3 & v3
+	const fvec3 & v1,
+	const fvec3 & v2,
+	const fvec3 & v3
 ) :
 	x1(v1.x), y1(v1.y), z1(v1.z),
 	x2(v2.x), y2(v2.y), z2(v2.z),
@@ -1098,8 +1107,8 @@ inline mat3 operator*(float v, const mat3 & m1) {
 	);
 }
 
-inline vec3 operator*(const mat3 & m1, const vec3 & v) {
-	return vec3(
+inline fvec3 operator*(const mat3 & m1, const fvec3 & v) {
+	return fvec3(
 		v.x * m1.x1 + v.y * m1.x2 + v.z * m1.x3,
 		v.x * m1.y1 + v.y * m1.y2 + v.z * m1.y3,
 		v.x * m1.z1 + v.y * m1.z2 + v.z * m1.z3
@@ -1233,10 +1242,10 @@ constexpr mat<4, 4>::mat(const mat3 & m) :
 {}
 
 constexpr mat<4, 4>::mat(
-	const vec4 & v1,
-	const vec4 & v2,
-	const vec4 & v3,
-	const vec4 & v4
+	const fvec4 & v1,
+	const fvec4 & v2,
+	const fvec4 & v3,
+	const fvec4 & v4
 ) :
 	x1(v1.x), y1(v1.y), z1(v1.z), w1(v1.w),
 	x2(v2.x), y2(v2.y), z2(v2.z), w2(v2.w),
@@ -1512,8 +1521,8 @@ inline mat4 operator*(float v, const mat4 & m1) {
 	);
 }
 
-inline vec4 operator*(const mat4 & m1, const vec4 & v) {
-	return vec4(
+inline fvec4 operator*(const mat4 & m1, const fvec4 & v) {
+	return fvec4(
 		v.x * m1.x1 + v.y * m1.x2 + v.z * m1.x3 + v.w * m1.x4,
 		v.x * m1.y1 + v.y * m1.y2 + v.z * m1.y3 + v.w * m1.y4,
 		v.x * m1.z1 + v.y * m1.z2 + v.z * m1.z3 + v.w * m1.z4,
@@ -1782,7 +1791,7 @@ inline mat2 translate(float delta) {
 	);
 }
 
-inline mat3 translate(const vec2 & delta) {
+inline mat3 translate(const fvec2 & delta) {
 	return mat3(
 		1.0f, 0.0f, 0.0f,
 		0.0f, 1.0f, 0.0f,
@@ -1790,7 +1799,7 @@ inline mat3 translate(const vec2 & delta) {
 	);
 }
 
-inline mat4 translate(const vec3 & delta) {
+inline mat4 translate(const fvec3 & delta) {
 	return mat4(
 		1.0f, 0.0f, 0.0f, 0.0f,
 		0.0f, 1.0f, 0.0f, 0.0f,
@@ -1799,14 +1808,14 @@ inline mat4 translate(const vec3 & delta) {
 	);
 }
 
-inline mat2 scale(const vec2 & scale) {
+inline mat2 scale(const fvec2 & scale) {
 	return mat2(
 		scale.x, 0.0f,
 		0.0f, scale.y
 	);
 }
 
-inline mat3 scale(const vec3 & scale) {
+inline mat3 scale(const fvec3 & scale) {
 	return mat3(
 		scale.x, 0.0f, 0.0f,
 		0.0f, scale.y, 0.0f,
@@ -1814,7 +1823,7 @@ inline mat3 scale(const vec3 & scale) {
 	);
 }
 
-inline mat4 scale(const vec4 & scale) {
+inline mat4 scale(const fvec4 & scale) {
 	return mat4(
 		scale.x, 0.0f, 0.0f, 0.0f,
 		0.0f, scale.y, 0.0f, 0.0f,
@@ -1866,14 +1875,14 @@ inline mat3 rotateZ(float theta) {
 	);
 }
 
-inline mat3 rotate(float sinTheta, float cosTheta, const vec3 & axis) {
-	if (mag2(axis) == 0) { //can't rotate around 0 length vector
+inline mat3 rotate(float sinTheta, float cosTheta, const fvec3 & axis) {
+	if (mag2(axis) == 0) { //can't rotate around 0 length fvector
 		return mat3();
 	}
 
 	return rotate_n(sinTheta, cosTheta, norm(axis));
 }
-inline mat3 rotate_n(float s, float c, const vec3 & m1) {
+inline mat3 rotate_n(float s, float c, const fvec3 & m1) {
 	float cm = 1.0f - c;
 
 	return mat3(
@@ -1883,63 +1892,63 @@ inline mat3 rotate_n(float s, float c, const vec3 & m1) {
 	);
 }
 
-inline mat3 rotate(float theta, const vec3 & axis) {
+inline mat3 rotate(float theta, const fvec3 & axis) {
 	return rotate(sin(theta), cos(theta), axis);
 }
-inline mat3 rotate_n(float theta, const vec3 & axis) {
+inline mat3 rotate_n(float theta, const fvec3 & axis) {
 	return rotate_n(sin(theta), cos(theta), axis);
 }
 
-inline mat3 euler(const vec3 & forward, const vec3 & up, float theta, float phi, float psi) {
+inline mat3 euler(const fvec3 & forward, const fvec3 & up, float theta, float phi, float psi) {
 	return euler_n(norm(forward), norm(up), theta, phi, psi);
 }
-inline mat3 euler_n(const vec3 & forward, const vec3 & up, float theta, float phi, float psi) {
+inline mat3 euler_n(const fvec3 & forward, const fvec3 & up, float theta, float phi, float psi) {
 	return rotate_n(theta, up) * rotate_n(phi, cross(forward, up)) * rotate_n(psi, forward);
 }
 
-inline mat3 align(const vec3 & v1, const vec3 & v2) {
+inline mat3 align(const fvec3 & v1, const fvec3 & v2) {
 	return align_n(norm(v1), norm(v2));
 }
-inline mat3 align_n(const vec3 & v1, const vec3 & v2) {
-	vec3 c = cross(v1, v2);
+inline mat3 align_n(const fvec3 & v1, const fvec3 & v2) {
+	fvec3 c = cross(v1, v2);
 	float d = dot(v1, v2);
 
 	return rotate(mag(c), d, c);
 }
 
-inline mat3 align(const vec3 & forward1, const vec3 & up1, const vec3 & forward2, const vec3 & up2) {
+inline mat3 align(const fvec3 & forward1, const fvec3 & up1, const fvec3 & forward2, const fvec3 & up2) {
 	return align_n(norm(forward1), norm(up1), norm(forward2), norm(up2));
 }
-inline mat3 align_n(const vec3 & forward1, const vec3 & up1, const vec3 & forward2, const vec3 & up2) {
+inline mat3 align_n(const fvec3 & forward1, const fvec3 & up1, const fvec3 & forward2, const fvec3 & up2) {
 	mat3 m = align_n(forward1, forward2);
 	return align_n(m * up1, up2) * m;
 }
 
-inline mat3 map(const vec3 & x1, const vec3 & y1, const vec3 & z1, const vec3 & x2, const vec3 & y2, const vec3 & z2) {
+inline mat3 map(const fvec3 & x1, const fvec3 & y1, const fvec3 & z1, const fvec3 & x2, const fvec3 & y2, const fvec3 & z2) {
 	return map_n(norm(x1), norm(y1), norm(z1), norm(x2), norm(y2), norm(z2));
 }
-inline mat3 map_n(const vec3 & x1, const vec3 & y1, const vec3 & z1, const vec3 & x2, const vec3 & y2, const vec3 & z2) {
+inline mat3 map_n(const fvec3 & x1, const fvec3 & y1, const fvec3 & z1, const fvec3 & x2, const fvec3 & y2, const fvec3 & z2) {
 	mat3 A(x1, y1, z1);
 	mat3 B(x2, y2, z2);
 
 	return trans(B) * A;
 }
 
-inline mat3 mapTo(const vec3 & x, const vec3 & y, const vec3 & z) {
+inline mat3 mapTo(const fvec3 & x, const fvec3 & y, const fvec3 & z) {
 	return mapTo_n(norm(x), norm(y), norm(z));
 }
-inline mat3 mapTo_n(const vec3 & x, const vec3 & y, const vec3 & z) {
+inline mat3 mapTo_n(const fvec3 & x, const fvec3 & y, const fvec3 & z) {
 	return trans(mat3(x, y, z));
 }
 
-inline mat3 mapFrom(const vec3 & x, const vec3 & y, const vec3 & z) {
+inline mat3 mapFrom(const fvec3 & x, const fvec3 & y, const fvec3 & z) {
 	return mapFrom_n(norm(x), norm(y), norm(z));
 }
-inline mat3 mapFrom_n(const vec3 & x, const vec3 & y, const vec3 & z) {
+inline mat3 mapFrom_n(const fvec3 & x, const fvec3 & y, const fvec3 & z) {
 	return mat3(x, y, z);
 }
 
-inline mat3 mapAny(const vec3 & x1, const vec3 & y1, const vec3 & z1, const vec3 & x2, const vec3 & y2, const vec3 & z2) {
+inline mat3 mapAny(const fvec3 & x1, const fvec3 & y1, const fvec3 & z1, const fvec3 & x2, const fvec3 & y2, const fvec3 & z2) {
 	mat3 A(x1, y1, z1);
 	mat3 B(x2, y2, z2);
 
@@ -1991,11 +2000,11 @@ inline mat4 perspectiveAsym(float fovNX, float fovPX, float fovNY, float fovPY, 
 	);
 }
 
-inline mat4 view(const vec3 & camPos, const vec3 & camDir, const vec3 & camUp) {
-	vec3 Z = -norm(camDir);
-	vec3 Y = norm(camUp);
-	vec3 X = cross(Y, Z);
-	vec3 P = -camPos;
+inline mat4 view(const fvec3 & camPos, const fvec3 & camDir, const fvec3 & camUp) {
+	fvec3 Z = -norm(camDir);
+	fvec3 Y = norm(camUp);
+	fvec3 X = cross(Y, Z);
+	fvec3 P = -camPos;
 
 	return mat4(mapTo_n(X, Y, Z)) * translate(P);
 }
