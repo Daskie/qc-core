@@ -12,20 +12,20 @@ namespace qmu {
 
 
 
-constexpr float PI =		3.14159265f; //9 digits to uniquely identify float
-constexpr float PI_2 =		PI / 2.0f;
-constexpr float E =			2.71828182f;
-constexpr float SQRT2 =		1.41421356f;
-constexpr float SQRT3 =		1.73205081f;
-constexpr float SQRT5 =		2.23606798f;
-constexpr float SQRT7 =		2.64575131f;
+constexpr float    PI = 3.14159265f; //9 digits to uniquely identify float
+constexpr float  PI_2 = PI / 2.0f;
+constexpr float     E = 2.71828182f;
+constexpr float SQRT2 = 1.41421356f;
+constexpr float SQRT3 = 1.73205081f;
+constexpr float SQRT5 = 2.23606798f;
+constexpr float SQRT7 = 2.64575131f;
 
-constexpr double PI_D =		3.1415926535897932; //17 digits to uniquely identify double
-constexpr double E_D =		2.7182818284590452;
-constexpr double SQRT2_D =	1.4142135623730950;
-constexpr double SQRT3_D =	1.7320508075688773;
-constexpr double SQRT5_D =	2.2360679774997897;
-constexpr double SQRT7_D =	2.6457513110645906;
+constexpr double    PI_D = 3.1415926535897932; //17 digits to uniquely identify double
+constexpr double     E_D = 2.7182818284590452;
+constexpr double SQRT2_D = 1.4142135623730950;
+constexpr double SQRT3_D = 1.7320508075688773;
+constexpr double SQRT5_D = 2.2360679774997897;
+constexpr double SQRT7_D = 2.6457513110645906;
 
 
 

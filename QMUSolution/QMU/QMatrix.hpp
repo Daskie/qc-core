@@ -20,10 +20,6 @@ namespace qmu {
 
 
 
-using namespace type;
-
-
-
 template <typename T, nat t_m, nat t_n> struct mat;
 
 
@@ -1995,8 +1991,8 @@ inline mat4<T> scale(const vec4<T> & scale) {
 
 template <typename T>
 inline mat2<T> rotate(const T & theta) {
-	T s = sin(theta);
-	T c = cos(theta);
+	T s = std::sin(theta);
+	T c = std::cos(theta);
 
 	return mat2<T>(
 		c, s,
@@ -2006,8 +2002,8 @@ inline mat2<T> rotate(const T & theta) {
 
 template <typename T>
 inline mat3<T> rotateX(const T & theta) {
-	T s = sin(theta);
-	T c = cos(theta);
+	T s = std::sin(theta);
+	T c = std::cos(theta);
 
 	return mat3<T>(
 		1, 0, 0,
@@ -2018,8 +2014,8 @@ inline mat3<T> rotateX(const T & theta) {
 
 template <typename T>
 inline mat3<T> rotateY(const T & theta) {
-	T s = sin(theta);
-	T c = cos(theta);
+	T s = std::sin(theta);
+	T c = std::cos(theta);
 
 	return mat3<T>(
 		c, 0, -s,
@@ -2030,8 +2026,8 @@ inline mat3<T> rotateY(const T & theta) {
 
 template <typename T>
 inline mat3<T> rotateZ(const T & theta) {
-	T s = sin(theta);
-	T c = cos(theta);
+	T s = std::sin(theta);
+	T c = std::cos(theta);
 
 	return mat3<T>(
 		c, s, 0,
@@ -2061,11 +2057,11 @@ inline mat3<T> rotate_n(const vec3<T> & axis, const T & s, const T & c) {
 
 template <typename T>
 inline mat3<T> rotate(const vec3<T> & axis, const T & theta) {
-	return rotate(axis, sin(theta), cos(theta));
+	return rotate(axis, std::sin(theta), std::cos(theta));
 }
 template <typename T>
 inline mat3<T> rotate_n(const vec3<T> & axis, const T & theta) {
-	return rotate_n(axis, sin(theta), cos(theta));
+	return rotate_n(axis, std::sin(theta), std::cos(theta));
 }
 
 template <typename T>
@@ -2159,7 +2155,7 @@ inline mat4<T> orthoAsym(const T & left, const T & right, const T & bottom, cons
 
 template <typename T>
 inline mat4<T> perspective(const T & fov, const T & aspectRatio, const T & near, const T & far) {
-	T near_top = 1 / tan(fov / 2);
+	T near_top = 1 / std::tan(fov / 2);
 
 	return mat4<T>(
 		near_top / aspectRatio, 0, 0, 0,
@@ -2171,10 +2167,10 @@ inline mat4<T> perspective(const T & fov, const T & aspectRatio, const T & near,
 
 template <typename T>
 inline mat4<T> perspectiveAsym(const T & fovLeft, const T & fovRight, const T & fovBottom, const T & fovTop, const T & near, const T & far) {
-	T left = near * -tan(fovLeft);
-	T right = near * tan(fovRight);
-	T bottom = near * -tan(fovBottom);
-	T top = near * tan(fovTop);
+	T left = near * -std::tan(fovLeft);
+	T right = near * std::tan(fovRight);
+	T bottom = near * -std::tan(fovBottom);
+	T top = near * std::tan(fovTop);
 
 	return mat4<T>(
 		2 * near / (right - left), 0, 0, 0,

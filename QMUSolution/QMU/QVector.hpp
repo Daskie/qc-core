@@ -20,10 +20,6 @@ namespace qmu {
 
 
 
-using namespace type;
-
-
-
 template <typename T, nat t_n> struct vec;
 
 
@@ -781,17 +777,17 @@ struct vec<T, 6> {
 
 template <typename T, nat t_n> T mag(const vec<T, t_n> & v);
 
-template <typename T, nat t_n> T mag2(const vec<T, t_n> & a);
+template <typename T, nat t_n> T mag2(const vec<T, t_n> & v);
 
-template <typename T, nat t_n> vec<T, t_n> norm(const vec<T, t_n> & a);
+template <typename T, nat t_n> vec<T, t_n> norm(const vec<T, t_n> & v);
 
-template <typename T, nat t_n> T dot(const vec<T, t_n> & a, const vec<T, t_n> & b);
+template <typename T, nat t_n> T dot(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 
-template <typename T> vec3<T> cross(const vec3<T> & a, const vec3<T> & b);
+template <typename T> vec3<T> cross(const vec3<T> & v1, const vec3<T> & v2);
 
-template <typename T, nat t_n> T angle(const vec<T, t_n> & a, const vec<T, t_n> & b);
+template <typename T, nat t_n> T angle(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 
-template <typename T, nat t_n> vec<T, t_n> lerp(const vec<T, t_n> & v1, const vec<T, t_n> & v2, T t);
+template <typename T, nat t_n> vec<T, t_n> lerp(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const T & p);
 
 
 
@@ -2926,72 +2922,72 @@ inline std::ostream & operator<<(std::ostream & os, const bound3<T> & v) {
 
 
 template <typename T>
-inline T mag2(const vec1<T> & a) {
-	return a.x * a.x;
+inline T mag2(const vec1<T> & v) {
+	return v.x * v.x;
 }
 
 template <typename T>
-inline T mag2(const vec2<T> & a) {
-	return a.x * a.x + a.y * a.y;
+inline T mag2(const vec2<T> & v) {
+	return v.x * v.x + v.y * v.y;
 }
 
 template <typename T>
-inline T mag2(const vec3<T> & a) {
-	return a.x * a.x + a.y * a.y + a.z * a.z;
+inline T mag2(const vec3<T> & v) {
+	return v.x * v.x + v.y * v.y + v.z * v.z;
 }
 
 template <typename T>
-inline T mag2(const vec4<T> & a) {
-	return a.x * a.x + a.y * a.y + a.z * a.z + a.w * a.w;
+inline T mag2(const vec4<T> & v) {
+	return v.x * v.x + v.y * v.y + v.z * v.z + v.w * v.w;
 }
 
 template <typename T, nat t_n>
 inline T mag(const vec<T, t_n> & v) {
-	return sqrt(mag2(v));
+	return static_cast<T>(std::sqrt(mag2(v)));
 }
 
 template <typename T, nat t_n>
-inline vec<T, t_n> norm(const vec<T, t_n> & a) {
-	T m = mag(a);
+inline vec<T, t_n> norm(const vec<T, t_n> & v) {
+	T m(mag(v));
 	if (abs(m) < std::numeric_limits<T>::min()) {
 		return vec<T, t_n>();
 	}
-	return a / m;
+	return v / m;
 }
 
 template <typename T>
-inline T dot(const vec1<T> & a, const vec1<T> & b) {
-	return a.x * b.x;
+inline T dot(const vec1<T> & v1, const vec1<T> & v2) {
+	return v1.x * v2.x;
 }
 
 template <typename T>
-inline T dot(const vec2<T> & a, const vec2<T> & b) {
-	return a.x * b.x + a.y * b.y;
+inline T dot(const vec2<T> & v1, const vec2<T> & v2) {
+	return v1.x * v2.x + v1.y * v2.y;
 }
 
 template <typename T>
-inline T dot(const vec3<T> & a, const vec3<T> & b) {
-	return a.x * b.x + a.y * b.y + a.z * b.z;
+inline T dot(const vec3<T> & v1, const vec3<T> & v2) {
+	return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
 }
 
 template <typename T>
-inline T dot(const vec4<T> & a, const vec4<T> & b) {
-	return a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
+inline T dot(const vec4<T> & v1, const vec4<T> & v2) {
+	return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z + v1.w * v2.w;
 }
 
 template <typename T>
-inline vec3<T> cross(const vec3<T> & a, const vec3<T> & b) {
-	return vec3<T>(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x);
+inline vec3<T> cross(const vec3<T> & v1, const vec3<T> & v2) {
+	return vec3<T>(v1.y * v2.z - v1.z * v2.y, v1.z * v2.x - v1.x * v2.z, v1.x * v2.y - v1.y * v2.x);
 }
 
 template <typename T, nat t_n>
-inline T angle(const vec<T, t_n> & a, const vec<T, t_n> & b) {
-	return acos(dot(norm(a), norm(b)));
+inline T angle(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
+	return static_cast<T>(std::acos(dot(norm(v1), norm(v2))));
 }
 
 template <typename T, nat t_n>
-inline vec<T, t_n> lerp(const vec<T, t_n> & v1, const vec<T, t_n> & v2, T t) {
-	return (1 - t) * v1 + t * v2;
+inline vec<T, t_n> lerp(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const T & p) {
+	return static_cast<T>(1 - p) * v1 + p * v2;
 }
 
 

@@ -2,8 +2,8 @@
 #include <sstream>
 
 #include "QMU.hpp"
-#include "QLog.hpp"
-#include "QUtils.hpp"
+#include "QVector.hpp"
+#include "QMatrix.hpp"
 #include "QQuaternion.hpp"
 
 using namespace qmu;
@@ -425,6 +425,41 @@ void testVectorTCompilation() {
 	// other
 	v6.toString();
 	os << v6;
+
+	//--------------------------------------------------------------------------
+	// Vec Functions
+
+	mag(v1);
+	mag(v2);
+	mag(v3);
+	mag(v4);
+	
+	mag2(v1);
+	mag2(v2);
+	mag2(v3);
+	mag2(v4);
+
+	norm(v1);
+	norm(v2);
+	norm(v3);
+	norm(v4);
+
+	dot(v1, v1);
+	dot(v2, v2);
+	dot(v3, v3);
+	dot(v4, v4);
+
+	cross(v3, v3);
+
+	angle(v1, v1);
+	angle(v2, v2);
+	angle(v3, v3);
+	angle(v4, v4);
+
+	lerp(v1, v1, t);
+	lerp(v2, v2, t);
+	lerp(v3, v3, t);
+	lerp(v4, v4, t);
 }
 
 void testVectorCompilation() {

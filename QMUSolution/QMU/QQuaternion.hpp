@@ -10,10 +10,6 @@ namespace qmu {
 
 
 
-using namespace type;
-
-
-
 template <typename T> struct quat;
 
 
@@ -377,8 +373,8 @@ inline T mag(const quat<T> & q) {
 template <typename T>
 inline quat<T> norm(const quat<T> & q) {
 	T m(mag(q));
-	if (abs(m - 1) < std::numeric_limits<T>::min()) return q;
-	if (abs(m) < std::numeric_limits<T>::min()) return quat<T>(0, 0, 0, 1);
+	if (std::abs(m - 1) < std::numeric_limits<T>::min()) return q;
+	if (std::abs(m) < std::numeric_limits<T>::min()) return quat<T>(0, 0, 0, 1);
 	m = 1 / m;
 	return quat<T>(q.v * m, q.w * m);
 }
@@ -390,7 +386,7 @@ inline quat<T> inv(const quat<T> & q) {
 
 template <typename T>
 inline T angle(const quat<T> & q) {
-	return acos(q.w) * 2;
+	return std::acos(q.w) * 2;
 }
 
 template <typename T>
@@ -400,7 +396,7 @@ inline vec3<T> axis(const quat<T> & q) {
 template <typename T>
 inline vec3<T> axis_n(const quat<T> & q) {
 	if (q.w >= 1) return vec3<T>();
-	return q.v * (1 / sqrt(1 - q.w * q.w));
+	return q.v * (1 / std::sqrt(1 - q.w * q.w));
 }
 
 
@@ -421,8 +417,8 @@ inline quat<T> rotateQ(const T & theta, const vec3<T> & axis) {
 template <typename T>
 inline quat<T> rotateQ_n(const T & theta, const vec3<T> & axis) {
 	return quat<T>(
-		sin(theta / 2) * axis,
-		cos(theta / 2)
+		std::sin(theta / 2) * axis,
+		std::cos(theta / 2)
 	);
 }
 
@@ -432,7 +428,7 @@ inline quat<T> alignQ(const vec3<T> & v1, const vec3<T> & v2) {
 }
 template <typename T>
 inline quat<T> alignQ_n(const vec3<T> & v1, const vec3<T> & v2) {
-	return rotateQ(acos(dot(v1, v2)), cross(v1, v2));
+	return rotateQ(std::acos(dot(v1, v2)), cross(v1, v2));
 }
 
 template <typename T>
@@ -490,14 +486,14 @@ inline quat<T> slerp(const quat<T> & q1, const quat<T> & q2_, const T & t) {
 		q2 = -q2;
 	}
 	//if parallel, no interpolation necessary
-	if (abs(abs(cosHalfTheta) - 1) < std::numeric_limits<T>::min()) {
+	if (std::abs(std::abs(cosHalfTheta) - 1) < std::numeric_limits<T>::min()) {
 		return q1;
 	}
 
-	T halfTheta(acos(cosHalfTheta));
-	T sinHalfTheta(sqrt(1 - cosHalfTheta * cosHalfTheta));
+	T halfTheta(std::acos(cosHalfTheta));
+	T sinHalfTheta(std::sqrt(1 - cosHalfTheta * cosHalfTheta));
 
-	return (q1 * sin((1 - t) * halfTheta) + q2 * sin(t * halfTheta)) * (1 / sinHalfTheta);
+	return (q1 * std::sin((1 - t) * halfTheta) + q2 * std::sin(t * halfTheta)) * (1 / sinHalfTheta);
 }
 
 
