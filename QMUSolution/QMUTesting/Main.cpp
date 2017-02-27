@@ -429,6 +429,11 @@ void testVectorTCompilation() {
 	//--------------------------------------------------------------------------
 	// Vec Functions
 
+	v1 = vec1<T>(1);
+	v2 = vec2<T>(1);
+	v3 = vec3<T>(1);
+	v4 = vec4<T>(1);
+
 	mag(v1);
 	mag(v2);
 	mag(v3);
@@ -449,12 +454,17 @@ void testVectorTCompilation() {
 	dot(v3, v3);
 	dot(v4, v4);
 
+	cross(v2, v2);
 	cross(v3, v3);
 
 	angle(v1, v1);
+	angle_n(v1, v1);
 	angle(v2, v2);
+	angle_n(v2, v2);
 	angle(v3, v3);
+	angle_n(v3, v3);
 	angle(v4, v4);
+	angle_n(v4, v4);
 
 	lerp(v1, v1, t);
 	lerp(v2, v2, t);
@@ -480,8 +490,269 @@ void testVectorCompilation() {
 	testVectorTCompilation<              unat>();
 }
 
+template <typename T>
+void testMatrixTCompilation() {
+	T t;
+	vec1<T> v1;
+	vec2<T> v2;
+	vec3<T> v3;
+	vec4<T> v4;
+	mat2<T> m2;
+	mat3<T> m3;
+	mat4<T> m4;
+	std::stringstream os;
+
+	//--------------------------------------------------------------------------
+	// Mat2
+
+	// constructors
+	mat2<T> m2_1;
+	mat2<T> m2_2(m2);
+	mat2<T> m2_3(std::move(m2));
+	mat2<T> m2_4(t, t, t, t);
+	mat2<T> m2_5(m3);
+	mat2<T> m2_6(m4);
+	mat2<T> m2_7(v2, v2);
+
+	// assignment operators
+	m2 = m2;
+	m2 = std::move(m2);
+	m2 = m3;
+	m2 = m4;
+
+	// access operators
+	m2[0];
+
+	// arithmetic assignment operators
+	m2 += t;
+	m2 += m2;
+	m2 -= t;
+	m2 -= m2;
+	m2 *= t;
+	m2 *= m2;
+	m2 /= T(1);
+	++m2;
+	m2++;
+	--m2;
+	m2--;
+
+	// arithmetic operators
+	+m2;
+	-m2;
+	m2 + m2;
+	m2 + t;
+	t + m2;
+	m2 - m2;
+	m2 - t;
+	t - m2;
+	m2 * m2;
+	m2 * t;
+	t * m2;
+	m2 * v2;
+	m2 / T(1);
+	T(1) / m2;
+
+	// comparison operators
+	m2 == m2;
+	m2 != m2;
+
+	// other
+	m2.toString();
+	os << m2;
+
+	//--------------------------------------------------------------------------
+	// Mat3
+
+	// constructors
+	mat3<T> m3_1;
+	mat3<T> m3_2(m3);
+	mat3<T> m3_3(std::move(m3));
+	mat3<T> m3_4(t, t, t, t, t, t, t, t, t);
+	mat3<T> m3_5(m2);
+	mat3<T> m3_6(m4);
+	mat3<T> m3_7(v3, v3, v3);
+
+	// assignment operators
+	m3 = m3;
+	m3 = std::move(m3);
+	m3 = m2;
+	m3 = m4;
+
+	// access operators
+	m3[0];
+
+	// arithmetic assignment operators
+	m3 += t;
+	m3 += m3;
+	m3 -= t;
+	m3 -= m3;
+	m3 *= t;
+	m3 *= m3;
+	m3 /= T(1);
+	++m3;
+	m3++;
+	--m3;
+	m3--;
+
+	// arithmetic operators
+	+m3;
+	-m3;
+	m3 + m3;
+	m3 + t;
+	t + m3;
+	m3 - m3;
+	m3 - t;
+	t - m3;
+	m3 * m3;
+	m3 * t;
+	t * m3;
+	m3 * v3;
+	m3 / T(1);
+	T(1) / m3;
+
+	// comparison operators
+	m3 == m3;
+	m3 != m3;
+
+	// other
+	m3.toString();
+	os << m3;
+
+	//--------------------------------------------------------------------------
+	// Mat4
+
+	// constructors
+	mat4<T> m4_1;
+	mat4<T> m4_2(m4);
+	mat4<T> m4_3(std::move(m4));
+	mat4<T> m4_4(t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t);
+	mat4<T> m4_5(m2);
+	mat4<T> m4_6(m3);
+	mat4<T> m4_7(v4, v4, v4, v4);
+
+	// assignment operators
+	m4 = m4;
+	m4 = std::move(m4);
+	m4 = m2;
+	m4 = m3;
+
+	// access operators
+	m4[0];
+
+	// arithmetic assignment operators
+	m4 += t;
+	m4 += m4;
+	m4 -= t;
+	m4 -= m4;
+	m4 *= t;
+	m4 *= m4;
+	m4 /= T(1);
+	++m4;
+	m4++;
+	--m4;
+	m4--;
+
+	// arithmetic operators
+	+m4;
+	-m4;
+	m4 + m4;
+	m4 + t;
+	t + m4;
+	m4 - m4;
+	m4 - t;
+	t - m4;
+	m4 * m4;
+	m4 * t;
+	t * m4;
+	m4 * v4;
+	m4 / T(1);
+	T(1) / m4;
+
+	// comparison operators
+	m4 == m4;
+	m4 != m4;
+
+	// other
+	m4.toString();
+	os << m4;
+
+	//--------------------------------------------------------------------------
+	// Mat Functions
+
+	trans(m2);
+	trans(m3);
+	trans(m4);
+	cof(m2);
+	cof(m3);
+	cof(m4);
+	adj(m2);
+	adj(m3);
+	adj(m4);
+	det(m2);
+	det(m3);
+	det(m4);
+	inv(m2);
+	inv(m3);
+	inv(m4);
+
+	//--------------------------------------------------------------------------
+	// Transformations
+
+	translate(v1);
+	translate(v2);
+	translate(v3);
+	scale(v2);
+	scale(v3);
+	rotate(t);
+	rotateX(t);
+	rotateY(t);
+	rotateZ(t);
+	rotate(v3, t, t);
+	rotate_n(v3, t, t);
+	rotate(v3, t);
+	rotate_n(v3, t);
+	euler(v3, v3, t, t, t);
+	euler_n(v3, v3, t, t, t);
+	align(v2, v2);
+	align(v3, v3);
+	align_n(v2, v2);
+	align_n(v3, v3);
+	map(v2, v2, v2, v2);
+	map_n(v2, v2, v2, v2);
+	map(v3, v3, v3, v3, v3, v3);
+	map_n(v3, v3, v3, v3, v3, v3);
+	mapOrtho(v2, v2, v2, v2);
+	mapOrtho_n(v2, v2, v2, v2);
+	mapOrtho(v3, v3, v3, v3, v3, v3);
+	mapOrtho_n(v3, v3, v3, v3, v3, v3);
+	mapTo(v2, v2);
+	mapTo_n(v2, v2);
+	mapTo(v3, v3, v3);
+	mapTo_n(v3, v3, v3);
+	mapToOrtho(v2, v2);
+	mapToOrtho_n(v2, v2);
+	mapToOrtho(v3, v3, v3);
+	mapToOrtho_n(v3, v3, v3);
+	mapFrom(v2, v2);
+	mapFrom_n(v2, v2);
+	mapFrom(v3, v3, v3);
+	mapFrom_n(v3, v3, v3);
+	ortho(t, t, t, t);
+	orthoAsym(t, t, t, t, t, t);
+	perspective(t, t, t, t);
+	perspectiveAsym(t, t, t, t, t, t);
+	view(v3, v3, v3);
+}
+
+void testMatrixCompilation() {
+	testMatrixTCompilation<float>();
+	testMatrixTCompilation<double>();
+	testMatrixTCompilation<fnat>();
+}
+
 int main(void) {
 	testVectorCompilation();
+	testMatrixCompilation();
 
 	std::cin.get();
 	return 0;

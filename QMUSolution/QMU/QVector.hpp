@@ -783,9 +783,10 @@ template <typename T, nat t_n> vec<T, t_n> norm(const vec<T, t_n> & v);
 
 template <typename T, nat t_n> T dot(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 
-template <typename T> vec3<T> cross(const vec3<T> & v1, const vec3<T> & v2);
+template <typename T, nat t_n> vec<T, t_n> cross(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 
 template <typename T, nat t_n> T angle(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, nat t_n> T angle_n(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 
 template <typename T, nat t_n> vec<T, t_n> lerp(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const T & p);
 
@@ -2976,13 +2977,22 @@ inline T dot(const vec4<T> & v1, const vec4<T> & v2) {
 }
 
 template <typename T>
+inline T cross(const vec2<T> & v1, const vec2<T> & v2) {
+	return v1.x * v2.y - v1.y * v2.x;
+}
+
+template <typename T>
 inline vec3<T> cross(const vec3<T> & v1, const vec3<T> & v2) {
 	return vec3<T>(v1.y * v2.z - v1.z * v2.y, v1.z * v2.x - v1.x * v2.z, v1.x * v2.y - v1.y * v2.x);
 }
 
 template <typename T, nat t_n>
 inline T angle(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
-	return static_cast<T>(std::acos(dot(norm(v1), norm(v2))));
+	return angle_n(norm(v1), norm(v2));
+}
+template <typename T, nat t_n>
+inline T angle_n(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
+	return static_cast<T>(std::acos(dot(v1, v2)));
 }
 
 template <typename T, nat t_n>

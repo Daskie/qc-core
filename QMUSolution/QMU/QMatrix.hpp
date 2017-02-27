@@ -1,5 +1,3 @@
-#pragma once
-
 /*
 	The mat structs need to be of standard layout.
 	std::is_standard_layout
@@ -12,6 +10,10 @@
 
 
 
+#pragma once
+
+
+
 #include "QVector.hpp"
 
 
@@ -20,27 +22,27 @@ namespace qmu {
 
 
 
-template <typename T, nat t_m, nat t_n> struct mat;
+template <typename T, nat t_m, nat t_n = t_m> struct mat;
 
 
 
-template <typename T> using mat2 = mat<T, 2, 2>;
-template <typename T> using mat3 = mat<T, 3, 3>;
-template <typename T> using mat4 = mat<T, 4, 4>;
+template <typename T> using mat2 = mat<T, 2>;
+template <typename T> using mat3 = mat<T, 3>;
+template <typename T> using mat4 = mat<T, 4>;
 
 template <nat t_m, nat t_n> using  fmat = mat< float, t_m, t_n>;
 template <nat t_m, nat t_n> using  dmat = mat<double, t_m, t_n>;
 template <nat t_m, nat t_n> using fnmat = mat<  fnat, t_m, t_n>;
 
-using  fmat2 = mat< float, 2, 2>;
-using  fmat3 = mat< float, 3, 3>;
-using  fmat4 = mat< float, 4, 4>;
-using  dmat2 = mat<double, 2, 2>;
-using  dmat3 = mat<double, 3, 3>;
-using  dmat4 = mat<double, 4, 4>;
-using fnmat2 = mat<  fnat, 2, 2>;
-using fnmat3 = mat<  fnat, 3, 3>;
-using fnmat4 = mat<  fnat, 4, 4>;
+using  fmat2 = mat< float, 2>;
+using  fmat3 = mat< float, 3>;
+using  fmat4 = mat< float, 4>;
+using  dmat2 = mat<double, 2>;
+using  dmat3 = mat<double, 3>;
+using  dmat4 = mat<double, 4>;
+using fnmat2 = mat<  fnat, 2>;
+using fnmat3 = mat<  fnat, 3>;
+using fnmat4 = mat<  fnat, 4>;
 
 
 
@@ -415,9 +417,9 @@ template <typename T, nat t_m, nat t_n> mat<T, t_m, t_n> inv(const mat<T, t_m, t
 
 
 
-template <typename T, nat t_n> mat<T, t_n + 1, t_n + 1> translate(const vec<T, t_n> & delta);
+template <typename T, nat t_n> mat<T, t_n + 1> translate(const vec<T, t_n> & delta);
 
-template <typename T, nat t_n> mat<T, t_n, t_n> scale(const vec<T, t_n> & scale);
+template <typename T, nat t_n> mat<T, t_n> scale(const vec<T, t_n> & scale);
 
 template <typename T> mat2<T> rotate(const T & theta);
 
@@ -437,24 +439,41 @@ template <typename T> mat3<T> rotate_n(const vec3<T> & axis, const T & theta);
 template <typename T> mat3<T> euler(const vec3<T> & forward, const vec3<T> & up, const T & theta, const T & phi, const T & psi);
 template <typename T> mat3<T> euler_n(const vec3<T> & forward, const vec3<T> & up, const T & theta, const T & phi, const T & psi);
 
-template <typename T> mat3<T> align(const vec3<T> & v1, const vec3<T> & v2);
-template <typename T> mat3<T> align_n(const vec3<T> & v1, const vec3<T> & v2);
+template <typename T, nat t_n> mat<T, t_n> align(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, nat t_n> mat<T, t_n> align_n(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 
 //expects orthogonal fvectors
 template <typename T> mat3<T> align(const vec3<T> & forward1, const vec3<T> & up1, const vec3<T> & forward2, const vec3<T> & up2);
 template <typename T> mat3<T> align_n(const vec3<T> & forward1, const vec3<T> & up1, const vec3<T> & forward2, const vec3<T> & up2);
 
-//expects ortho-normal vectors!!! x, y, and z are the axes
+template <typename T> mat2<T> map(const vec2<T> & x1, const vec2<T> & y1, const vec2<T> & x2, const vec2<T> & y2);
+template <typename T> mat2<T> map_n(const vec2<T> & x1, const vec2<T> & y1, const vec2<T> & x2, const vec2<T> & y2);
 template <typename T> mat3<T> map(const vec3<T> & x1, const vec3<T> & y1, const vec3<T> & z1, const vec3<T> & x2, const vec3<T> & y2, const vec3<T> & z2);
 template <typename T> mat3<T> map_n(const vec3<T> & x1, const vec3<T> & y1, const vec3<T> & z1, const vec3<T> & x2, const vec3<T> & y2, const vec3<T> & z2);
 
+// usable when the transformation matrix, T, from basis A to B is orthogonal
+// i.e. A's basis vectors don't need to be orthogonal, nor B's, but the angles
+// between A's basis vectors must be the same as B's
+template <typename T> mat2<T> mapOrtho(const vec2<T> & x1, const vec2<T> & y1, const vec2<T> & x2, const vec2<T> & y2);
+template <typename T> mat2<T> mapOrtho_n(const vec2<T> & x1, const vec2<T> & y1, const vec2<T> & x2, const vec2<T> & y2);
+template <typename T> mat3<T> mapOrtho(const vec3<T> & x1, const vec3<T> & y1, const vec3<T> & z1, const vec3<T> & x2, const vec3<T> & y2, const vec3<T> & z2);
+template <typename T> mat3<T> mapOrtho_n(const vec3<T> & x1, const vec3<T> & y1, const vec3<T> & z1, const vec3<T> & x2, const vec3<T> & y2, const vec3<T> & z2);
+
+template <typename T> mat2<T> mapTo(const vec2<T> & x, const vec2<T> & y);
+template <typename T> mat2<T> mapTo_n(const vec2<T> & x, const vec2<T> & y);
 template <typename T> mat3<T> mapTo(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z);
 template <typename T> mat3<T> mapTo_n(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z);
 
+// usable when the transformation matrix, T, from basis A to B is orthogonal
+// i.e. A's basis vectors don't need to be orthogonal, nor B's, but the angles
+// between A's basis vectors must be the same as B's
+template <typename T> mat2<T> mapToOrtho(const vec2<T> & x, const vec2<T> & y);
+template <typename T> mat2<T> mapToOrtho_n(const vec2<T> & x, const vec2<T> & y);
+template <typename T> mat3<T> mapToOrtho(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z);
+template <typename T> mat3<T> mapToOrtho_n(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z);
+
 template <typename T> mat3<T> mapFrom(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z);
 template <typename T> mat3<T> mapFrom_n(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z);
-
-template <typename T> mat3<T> mapAny(const vec3<T> & x1, const vec3<T> & y1, const vec3<T> & z1, const vec3<T> & x2, const vec3<T> & y2, const vec3<T> & z2);
 
 template <typename T> mat4<T> ortho(const T & width, const T & height, const T & near, const T & far);
 template <typename T> mat4<T> orthoAsym(const T & left, const T & right, const T & bottom, const T & top, const T & near, const T & far);
@@ -604,7 +623,7 @@ inline mat2<T> & operator+=(mat2<T> & m1, const mat2<T> & m2) {
 
 template <typename T>
 inline mat2<T> & operator-=(mat2<T> & m, const T & v) {
-	m = m - v;
+	return m = m - v;
 }
 
 template <typename T>
@@ -616,7 +635,7 @@ inline mat2<T> & operator-=(mat2<T> & m1, const mat2<T> & m2) {
 
 template <typename T>
 inline mat2<T> & operator*=(mat2<T> & m, const T & v) {
-	m = m * v;
+	return m = m * v;
 }
 
 template <typename T>
@@ -628,7 +647,7 @@ inline mat2<T> & operator*=(mat2<T> & m1, const mat2<T> & m2) {
 
 template <typename T>
 inline mat2<T> & operator/=(mat2<T> & m, const T & v) {
-	m = m / v;
+	return m = m / v;
 }
 
 //--- pre increment ---
@@ -645,7 +664,7 @@ inline mat2<T> & operator++(mat2<T> & m) {
 
 template <typename T>
 inline mat2<T> operator++(mat2<T> & m, int) {
-	mat2 temp(m);
+	mat2<T> temp(m);
 	++m;
 
 	return temp;
@@ -665,7 +684,7 @@ inline mat2<T> & operator--(mat2<T> & m) {
 
 template <typename T>
 inline mat2<T> operator--(mat2<T> & m, int) {
-	mat2 temp(m);
+	mat2<T> temp(m);
 	--m;
 
 	return temp;
@@ -1002,7 +1021,7 @@ inline mat3<T> & operator+=(mat3<T> & m1, const mat3<T> & m2) {
 
 template <typename T>
 inline mat3<T> & operator-=(mat3<T> & m, const T & v) {
-	m = m - v;
+	return m = m - v;
 }
 
 template <typename T>
@@ -1014,7 +1033,7 @@ inline mat3<T> & operator-=(mat3<T> & m1, const mat3<T> & m2) {
 
 template <typename T>
 inline mat3<T> & operator*=(mat3<T> & m, const T & v) {
-	m = m * v;
+	return m = m * v;
 }
 
 template <typename T>
@@ -1026,7 +1045,7 @@ inline mat3<T> & operator*=(mat3<T> & m1, const mat3<T> & m2) {
 
 template <typename T>
 inline mat3<T> & operator/=(mat3<T> & m, const T & v) {
-	m = m / v;
+	return m = m / v;
 }
 
 //--- pre increment ---
@@ -1044,7 +1063,7 @@ inline mat3<T> & operator++(mat3<T> & m) {
 
 template <typename T>
 inline mat3<T> operator++(mat3<T> & m, int) {
-	mat3 temp(m);
+	mat3<T> temp(m);
 	++m;
 
 	return temp;
@@ -1065,7 +1084,7 @@ inline mat3<T> & operator--(mat3<T> & m) {
 
 template <typename T>
 inline mat3<T> operator--(mat3<T> & m, int) {
-	mat3 temp(m);
+	mat3<T> temp(m);
 	--m;
 
 	return temp;
@@ -1437,7 +1456,7 @@ inline mat4<T> & operator+=(mat4<T> & m1, const mat4<T> & m2) {
 
 template <typename T>
 inline mat4<T> & operator-=(mat4<T> & m, const T & v) {
-	m = m - v;
+	return m = m - v;
 }
 
 template <typename T>
@@ -1449,7 +1468,7 @@ inline mat4<T> & operator-=(mat4<T> & m1, const mat4<T> & m2) {
 
 template <typename T>
 inline mat4<T> & operator*=(mat4<T> & m, const T & v) {
-	m = m * v;
+	return m = m * v;
 }
 
 template <typename T>
@@ -1461,7 +1480,7 @@ inline mat4<T> & operator*=(mat4<T> & m1, const mat4<T> & m2) {
 
 template <typename T>
 inline mat4<T> & operator/=(mat4<T> & m, const T & v) {
-	m = m / v;
+	return m = m / v;
 }
 
 //--- pre increment ---
@@ -1480,7 +1499,7 @@ inline mat4<T> & operator++(mat4<T> & m) {
 
 template <typename T>
 inline mat4<T> operator++(mat4<T> & m, int) {
-	mat4 temp(m);
+	mat4<T> temp(m);
 	++m;
 
 	return temp;
@@ -1502,7 +1521,7 @@ inline mat4<T> & operator--(mat4<T> & m) {
 
 template <typename T>
 inline mat4<T> operator--(mat4<T> & m, int) {
-	mat4 temp(m);
+	mat4<T> temp(m);
 	--m;
 
 	return temp;
@@ -1939,7 +1958,7 @@ template <typename T>
 inline mat2<T> translate(const vec1<T> & delta) {
 	return mat2<T>(
 		1, 0,
-		delta, 1
+		delta.x, 1
 	);
 }
 
@@ -1976,16 +1995,6 @@ inline mat3<T> scale(const vec3<T> & scale) {
 		scale.x, 0, 0,
 		0, scale.y, 0,
 		0, 0, scale.z
-	);
-}
-
-template <typename T>
-inline mat4<T> scale(const vec4<T> & scale) {
-	return mat4<T>(
-		scale.x, 0, 0, 0,
-		0, scale.y, 0, 0,
-		0, 0, scale.z, 0,
-		0, 0, 0, scale.w
 	);
 }
 
@@ -2070,19 +2079,26 @@ inline mat3<T> euler(const vec3<T> & forward, const vec3<T> & up, const T & thet
 }
 template <typename T>
 inline mat3<T> euler_n(const vec3<T> & forward, const vec3<T> & up, const T & theta, const T & phi, const T & psi) {
-	return rotate_n(theta, up) * rotate_n(phi, cross(forward, up)) * rotate_n(psi, forward);
+	return rotate_n(up, theta) * rotate_n(cross(forward, up), phi) * rotate_n(forward, psi);
 }
 
-template <typename T>
-inline mat3<T> align(const vec3<T> & v1, const vec3<T> & v2) {
+template <typename T, nat t_n>
+inline mat<T, t_n> align(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
 	return align_n(norm(v1), norm(v2));
 }
 template <typename T>
-inline mat3<T> align_n(const vec3<T> & v1, const vec3<T> & v2) {
-	vec3<T> c = cross(v1, v2);
-	T d = dot(v1, v2);
+inline mat2<T> align_n(const vec2<T> & v1, const vec2<T> & v2) {
+	T c(cross(v1, v2));
+	T d(dot(v1, v2));
 
-	return rotate(mag(c), d, c);
+	return rotate(c < 0 ? -std::acos(d) : std::acos(d));
+}
+template <typename T>
+inline mat3<T> align_n(const vec3<T> & v1, const vec3<T> & v2) {
+	vec3<T> c(cross(v1, v2));
+	T d(dot(v1, v2));
+
+	return rotate(c, mag(c), d);
 }
 
 template <typename T>
@@ -2096,15 +2112,60 @@ inline mat3<T> align_n(const vec3<T> & forward1, const vec3<T> & up1, const vec3
 }
 
 template <typename T>
+inline mat2<T> map(const vec2<T> & x1, const vec2<T> & y1, const vec2<T> & x2, const vec2<T> & y2) {
+	return map_n(norm(x1), norm(y1), norm(x2), norm(y2));
+}
+template <typename T>
+inline mat2<T> map_n(const vec2<T> & x1, const vec2<T> & y1, const vec2<T> & x2, const vec2<T> & y2) {
+	mat2<T> a(x1, y1);
+	mat2<T> b(x2, y2);
+
+	return inv(b) * a;
+}
+
+template <typename T>
 inline mat3<T> map(const vec3<T> & x1, const vec3<T> & y1, const vec3<T> & z1, const vec3<T> & x2, const vec3<T> & y2, const vec3<T> & z2) {
 	return map_n(norm(x1), norm(y1), norm(z1), norm(x2), norm(y2), norm(z2));
 }
 template <typename T>
 inline mat3<T> map_n(const vec3<T> & x1, const vec3<T> & y1, const vec3<T> & z1, const vec3<T> & x2, const vec3<T> & y2, const vec3<T> & z2) {
-	mat3 A(x1, y1, z1);
-	mat3 B(x2, y2, z2);
+	mat3<T> a(x1, y1, z1);
+	mat3<T> b(x2, y2, z2);
 
-	return trans(B) * A;
+	return inv(b) * a;
+}
+
+template <typename T>
+inline mat2<T> mapOrtho(const vec2<T> & x1, const vec2<T> & y1, const vec2<T> & x2, const vec2<T> & y2) {
+	return map_n(norm(x1), norm(y1), norm(x2), norm(y2));
+}
+template <typename T>
+inline mat2<T> mapOrtho_n(const vec2<T> & x1, const vec2<T> & y1, const vec2<T> & x2, const vec2<T> & y2) {
+	mat2<T> a(x1, y1);
+	mat2<T> b(x2, y2);
+
+	return trans(b) * a;
+}
+
+template <typename T>
+inline mat3<T> mapOrtho(const vec3<T> & x1, const vec3<T> & y1, const vec3<T> & z1, const vec3<T> & x2, const vec3<T> & y2, const vec3<T> & z2) {
+	return map_n(norm(x1), norm(y1), norm(z1), norm(x2), norm(y2), norm(z2));
+}
+template <typename T>
+inline mat3<T> mapOrtho_n(const vec3<T> & x1, const vec3<T> & y1, const vec3<T> & z1, const vec3<T> & x2, const vec3<T> & y2, const vec3<T> & z2) {
+	mat3<T> a(x1, y1, z1);
+	mat3<T> b(x2, y2, z2);
+
+	return trans(b) * a;
+}
+
+template <typename T>
+inline mat2<T> mapTo(const vec2<T> & x, const vec2<T> & y) {
+	return mapTo_n(norm(x), norm(y));
+}
+template <typename T>
+inline mat2<T> mapTo_n(const vec2<T> & x, const vec2<T> & y) {
+	return inv(mat2<T>(x, y));
 }
 
 template <typename T>
@@ -2113,7 +2174,34 @@ inline mat3<T> mapTo(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z) {
 }
 template <typename T>
 inline mat3<T> mapTo_n(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z) {
+	return inv(mat3<T>(x, y, z));
+}
+
+template <typename T>
+inline mat2<T> mapToOrtho(const vec2<T> & x, const vec2<T> & y) {
+	return mapTo_n(norm(x), norm(y));
+}
+template <typename T>
+inline mat2<T> mapToOrtho_n(const vec2<T> & x, const vec2<T> & y) {
+	return trans(mat2<T>(x, y));
+}
+
+template <typename T>
+inline mat3<T> mapToOrtho(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z) {
+	return mapToOrtho_n(norm(x), norm(y), norm(z));
+}
+template <typename T>
+inline mat3<T> mapToOrtho_n(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z) {
 	return trans(mat3<T>(x, y, z));
+}
+
+template <typename T>
+inline mat2<T> mapFrom(const vec2<T> & x, const vec2<T> & y) {
+	return mapFrom_n(norm(x), norm(y));
+}
+template <typename T>
+inline mat2<T> mapFrom_n(const vec2<T> & x, const vec2<T> & y) {
+	return mat2<T>(x, y);
 }
 
 template <typename T>
@@ -2123,14 +2211,6 @@ inline mat3<T> mapFrom(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z) 
 template <typename T>
 inline mat3<T> mapFrom_n(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z) {
 	return mat3<T>(x, y, z);
-}
-
-template <typename T>
-inline mat3<T> mapAny(const vec3<T> & x1, const vec3<T> & y1, const vec3<T> & z1, const vec3<T> & x2, const vec3<T> & y2, const vec3<T> & z2) {
-	mat3 A(x1, y1, z1);
-	mat3 B(x2, y2, z2);
-
-	return inv(B) * A;
 }
 
 template <typename T>
