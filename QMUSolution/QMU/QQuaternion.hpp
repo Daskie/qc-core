@@ -74,6 +74,7 @@ struct quat {
 	template <typename T> friend quat<T> & operator-=(quat<T> & q1, const quat<T> & q2);
 
 	template <typename T> friend quat<T> & operator*=(quat<T> & q1, const quat<T> & q2);
+	template <typename T> friend quat<T> & operator*=(quat<T> &  q, const      T  &  v);
 
 	template <typename T> friend quat<T> & operator/=(quat<T> & q1, const quat<T> & q2);
 
@@ -136,8 +137,8 @@ template <typename T> vec3<T> axis_n(const quat<T> & q);
 //template <typename T>
 //quat<T> pow(const quat<T> & q, T t);
 
-template <typename T> quat<T> rotateQ(const T & theta, const vec3<T> & axis);
-template <typename T> quat<T> rotateQ_n(const T & theta, const vec3<T> & axis);
+template <typename T> quat<T> rotateQ(const vec3<T> & axis, const T & theta);
+template <typename T> quat<T> rotateQ_n(const vec3<T> & axis, const T & theta);
 
 template <typename T> quat<T> alignQ(const vec3<T> & v1, const vec3<T> & v2);
 template <typename T> quat<T> alignQ_n(const vec3<T> & v1, const vec3<T> & v2);
@@ -264,6 +265,11 @@ inline quat<T> & operator*=(quat<T> & q1, const quat<T> & q2) {
 }
 
 template <typename T>
+inline quat<T> & operator*=(quat<T> & q, const T & v) {
+	return q = q * v;
+}
+
+template <typename T>
 inline quat<T> & operator/=(quat<T> & q1, const quat<T> & q2) {
 	return q1 = q1 / q2;
 }
@@ -315,7 +321,7 @@ inline quat<T> operator*(const T & v, const quat<T> & q) {
 
 template <typename T>
 inline vec3<T> operator*(const quat<T> & q, const vec3<T> & v) {
-	vec3<T> t(2 * cross(q.v, v));
+	vec3<T> t(static_cast<T>(2) * cross(q.v, v));
 	return v + q.w * t + cross(q.v, t);
 }
 
@@ -411,11 +417,11 @@ inline vec3<T> axis_n(const quat<T> & q) {
 }*/
 
 template <typename T>
-inline quat<T> rotateQ(const T & theta, const vec3<T> & axis) {
-	return rotateQ_n(theta, norm(axis));
+inline quat<T> rotateQ(const vec3<T> & axis, const T & theta) {
+	return rotateQ_n(norm(axis), theta);
 }
 template <typename T>
-inline quat<T> rotateQ_n(const T & theta, const vec3<T> & axis) {
+inline quat<T> rotateQ_n(const vec3<T> & axis, const T & theta) {
 	return quat<T>(
 		std::sin(theta / 2) * axis,
 		std::cos(theta / 2)
@@ -428,7 +434,7 @@ inline quat<T> alignQ(const vec3<T> & v1, const vec3<T> & v2) {
 }
 template <typename T>
 inline quat<T> alignQ_n(const vec3<T> & v1, const vec3<T> & v2) {
-	return rotateQ(std::acos(dot(v1, v2)), cross(v1, v2));
+	return rotateQ(cross(v1, v2), std::acos(dot(v1, v2)));
 }
 
 template <typename T>
@@ -447,7 +453,7 @@ inline quat<T> eulerQ(const vec3<T> & forward, const vec3<T> & up, const T & the
 }
 template <typename T>
 inline quat<T> eulerQ_n(const vec3<T> & forward, const vec3<T> & up, const T & theta, const T & phi, const T & psi) {
-	return rotateQ_n(theta, up) * rotateQ_n(phi, cross(forward, up)) * rotateQ_n(psi, forward);
+	return rotateQ_n(up, theta) * rotateQ_n(cross(forward, up), phi) * rotateQ_n(forward, psi);
 }
 
 template <typename T>
@@ -462,7 +468,7 @@ inline mat3<T> toMat(const quat<T> & q) {
 	const T & yz(q.y * q.z);
 	const T & zz(q.z * q.z);
 
-	return mat3(
+	return mat3<T>(
 		1 - 2 * (yy + zz), 2 * (xy + wz), 2 * (xz - wy),
 		2 * (xy - wz), 1 - 2 * (xx + zz), 2 * (yz + wx),
 		2 * (xz + wy), 2 * (yz - wx), 1 - 2 * (xx + yy)
@@ -470,12 +476,12 @@ inline mat3<T> toMat(const quat<T> & q) {
 }
 
 template <typename T>
-inline quat<T> nlerp(const quat<T> & q1, const quat<T> & q2, const T & t) {
-	return norm(quat<T>(lerp(q1.v4, q2.v4, t)));
+inline quat<T> nlerp(const quat<T> & q1, const quat<T> & q2, const T & p) {
+	return norm(quat<T>(lerp(q1.v4, q2.v4, p)));
 }
 
 template <typename T>
-inline quat<T> slerp(const quat<T> & q1, const quat<T> & q2_, const T & t) {
+inline quat<T> slerp(const quat<T> & q1, const quat<T> & q2_, const T & p) {
 	quat<T> q2(q2_);
 
 	T cosHalfTheta(dot(q1.v4, q2.v4));
@@ -493,7 +499,7 @@ inline quat<T> slerp(const quat<T> & q1, const quat<T> & q2_, const T & t) {
 	T halfTheta(std::acos(cosHalfTheta));
 	T sinHalfTheta(std::sqrt(1 - cosHalfTheta * cosHalfTheta));
 
-	return (q1 * std::sin((1 - t) * halfTheta) + q2 * std::sin(t * halfTheta)) * (1 / sinHalfTheta);
+	return (q1 * std::sin((1 - p) * halfTheta) + q2 * std::sin(p * halfTheta)) * (1 / sinHalfTheta);
 }
 
 

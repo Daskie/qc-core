@@ -750,9 +750,98 @@ void testMatrixCompilation() {
 	testMatrixTCompilation<fnat>();
 }
 
+template <typename T>
+void testQuaternionTCompilation() {
+	T t;
+	vec3<T> v3;
+	vec4<T> v4;
+	mat3<T> m3;
+	quat<T> q;
+	std::stringstream os;
+
+	//--------------------------------------------------------------------------
+	// Quat
+
+	// constructors
+	quat<T> q_1;
+	quat<T> q_2(q);
+	quat<T> q_3(std::move(q));
+	quat<T> q_4(v3, t);
+	quat<T> q_5(t, t, t, t);
+	quat<T> q_6(v3);
+	quat<T> q_7(v4);
+
+	// assignment operators
+	q = q;
+	q = std::move(q);
+
+	// access operators
+	q[0];
+
+	// arithmetic assignment operators
+	q += q;
+	q -= q;
+	q *= q;
+	q *= t;
+	q /= quat<T>(1, 1, 1, 1);
+
+	// arithmetic operators
+	+q;
+	-q;
+	q + q;
+	q - q;
+	q * q;
+	q * t;
+	t * q;
+	q * v3;
+	q / quat<T>(1, 1, 1, 1);
+
+	// comparison operators
+	q == q;
+	q != q;
+
+	// other
+	q.toString();
+	os << q;
+
+	//--------------------------------------------------------------------------
+	// Quat Functions
+
+	q = quat<T>(1, 1, 1, 1);
+
+	mag(q);
+	norm(q);
+	inv(q);
+	angle(q);
+	axis(q);
+	axis_n(q);
+
+	//--------------------------------------------------------------------------
+	// Transformations
+
+	rotateQ(v3, t);
+	rotateQ_n(v3, t);
+	alignQ(v3, v3);
+	alignQ_n(v3, v3);
+	alignQ(v3, v3, v3, v3);
+	alignQ_n(v3, v3, v3, v3);
+	eulerQ(v3, v3, t, t, t);
+	eulerQ_n(v3, v3, t, t, t);
+	toMat(q);
+	nlerp(q, q, t);
+	slerp(q, q, t);
+}
+
+void testQuaternionCompilation() {
+	testQuaternionTCompilation<float>();
+	testQuaternionTCompilation<double>();
+	testQuaternionTCompilation<fnat>();
+}
+
 int main(void) {
 	testVectorCompilation();
 	testMatrixCompilation();
+	testQuaternionCompilation();
 
 	std::cin.get();
 	return 0;
