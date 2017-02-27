@@ -1,6 +1,5 @@
 #include <string>
 #include <iostream>
-#include <chrono>
 #include <unordered_map>
 
 #include "QMap.hpp"
@@ -923,141 +922,6 @@ bool testStats() {
 	return true;
 }
 
-template <typename T> struct Generator;
-template <> struct Generator<s08> {
-	s08 v;
-	void next() { ++v; }
-	void reset() { v = 0; }
-};
-template <> struct Generator<s16> {
-	s16 v;
-	void next() { ++v; }
-	void reset() { v = 0; }
-};
-template <> struct Generator<s32> {
-	s32 v;
-	void next() { ++v; }
-	void reset() { v = 0; } };
-template <> struct Generator<s64> {
-	s64 v;
-	void next() { ++v; }
-	void reset() { v = 0; }
-};
-template <> struct Generator<s128> {
-	s128 v;
-	void next() { v = s128{ ++v.s64_1, ++v.s64_2 }; }
-	void reset() { v = { 0, 0 }; }
-};
-template <> struct Generator<string> {
-	unsigned char c;
-	string v;
-	void next() { ++c; v = string(c, c); }
-	void reset() { v = string(); }
-};
-
-template <typename T>
-bool testPerformance(int n, Generator<T> g) {
-	Map<int> m1;
-	std::unordered_map<T, int> u1;
-	std::chrono::time_point<std::chrono::high_resolution_clock> thenM, thenU;
-	std::chrono::duration<double> timeM, timeU;
-
-	cout << "accessing..." << endl;
-	g.reset();
-	thenM = std::chrono::high_resolution_clock::now();
-	for (int i = 0; i < n; ++i) {
-		m1[g.v] = i;
-		g.next();
-	}
-	timeM = std::chrono::high_resolution_clock::now() - thenM;
-	cout << "switch..." << endl;
-	g.reset();
-	thenU = std::chrono::high_resolution_clock::now();
-	for (int i = 0; i < n; ++i) {
-		u1[g.v] = i;
-		g.next();
-	}
-	timeU = std::chrono::high_resolution_clock::now() - thenU;
-	cout << timeU.count() / timeM.count() * 100.0 << "% faster" << endl;
-	cout << endl;
-
-	cout << "at-ing..." << endl;
-	g.reset();
-	thenM = std::chrono::high_resolution_clock::now();
-	for (int i = 0; i < n; ++i) {
-		m1.at(g.v);
-		g.next();
-	}
-	timeM = std::chrono::high_resolution_clock::now() - thenM;
-	cout << "switch..." << endl;
-	g.reset();
-	thenU = std::chrono::high_resolution_clock::now();
-	for (int i = 0; i < n; ++i) {
-		u1.at(g.v);
-		g.next();
-	}
-	timeU = std::chrono::high_resolution_clock::now() - thenU;
-	cout << timeU.count() / timeM.count() * 100.0 << "% faster" << endl;
-	cout << endl;
-	timeU = std::chrono::high_resolution_clock::now() - thenU;
-	cout << timeU.count() / timeM.count() * 100.0 << "% faster" << endl;
-	cout << endl;
-
-	cout << "iterator..." << endl;
-	thenM = std::chrono::high_resolution_clock::now();
-	for (auto it = m1.begin(); it != m1.end(); ++it) {
-	}
-	timeM = std::chrono::high_resolution_clock::now() - thenM;
-	cout << "switch..." << endl;
-	thenU = std::chrono::high_resolution_clock::now();
-	for (auto it = u1.begin(); it != u1.end(); ++it) {
-	}
-	timeU = std::chrono::high_resolution_clock::now() - thenU;
-	cout << timeU.count() / timeM.count() * 100.0 << "% faster" << endl;
-	cout << endl;
-
-	cout << "counting and erasing..." << endl;
-	g.reset();
-	thenM = std::chrono::high_resolution_clock::now();
-	for (int i = 0; i < n; ++i) {
-		if (m1.count(g.v)) m1.erase(g.v);
-		g.next();
-	}
-	timeM = std::chrono::high_resolution_clock::now() - thenM;
-	cout << "switch..." << endl;
-	g.reset();
-	thenU = std::chrono::high_resolution_clock::now();
-	for (int i = 0; i < n; ++i) {
-		if (u1.count(g.v)) u1.erase(g.v);
-		g.next();
-	}
-	timeU = std::chrono::high_resolution_clock::now() - thenU;
-	cout << timeU.count() / timeM.count() * 100.0 << "% faster" << endl;
-	cout << endl;
-
-	return true;
-}
-
-bool testPerformanceSuite() {
-	cout << "k:    s08, n: 1000000" << endl;
-	if (!testPerformance<   s08>(1000000, Generator<   s08>())) return false;
-	cout << endl;
-	cout << "k:    s16, n:  500000" << endl;
-	if (!testPerformance<   s16>( 500000, Generator<   s16>())) return false;
-	cout << endl;
-	cout << "k:    s32, n:  250000" << endl;
-	if (!testPerformance<   s32>( 250000, Generator<   s32>())) return false;
-	cout << endl;
-	cout << "k:    s64, n:  125000" << endl;
-	if (!testPerformance<   s64>( 125000, Generator<   s64>())) return false;
-	cout << endl;
-	cout << "k: string, n: 100000" << endl;
-	if (!testPerformance<string>( 100000, Generator<string>())) return false;
-	cout << endl;
-
-	return true;
-}
-
 bool runTests() {
 
 	cout << "Testing Default Constructor..." << endl << endl;
@@ -1262,14 +1126,6 @@ bool runTests() {
 		return false;
 	}
 	cout << endl;
-	if (false) {
-		cout << "Testing Performance..." << endl << endl;
-		if (!testPerformanceSuite()) {
-			cout << "Performance Test Failed!" << endl;
-			return false;
-		}
-		cout << endl;
-	}
 
 	return true;
 }

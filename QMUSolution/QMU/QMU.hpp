@@ -10,6 +10,10 @@ namespace qmu {
 
 
 
+namespace type {
+
+
+
 using  nat =  intptr_t;
 using unat = uintptr_t;
 using fnat = std::conditional_t<sizeof(nat) == 4,
@@ -48,6 +52,10 @@ template <nat t_p> using precision_t  = typename precision<t_p>::type;
 template <nat t_p> using precision_ut = typename precision<t_p>::utype;
 
 constexpr nat gk_nat_p = sizeof(nat) * 8;
+
+
+
+}
 
 
 

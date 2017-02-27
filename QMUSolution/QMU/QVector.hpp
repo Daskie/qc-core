@@ -20,8 +20,11 @@ namespace qmu {
 
 
 
-template <typename T, nat t_n>
-struct vec;
+using namespace type;
+
+
+
+template <typename T, nat t_n> struct vec;
 
 
 
@@ -32,6 +35,7 @@ template <typename T> using vec4 = vec<T, 4>;
 
 template <nat t_n> using   fvec = vec<             float, t_n>;
 template <nat t_n> using   dvec = vec<            double, t_n>;
+template <nat t_n> using  fnvec = vec<              fnat, t_n>;
 template <nat t_n> using   cvec = vec<  signed      char, t_n>;
 template <nat t_n> using  ucvec = vec<unsigned      char, t_n>;
 template <nat t_n> using   svec = vec<  signed     short, t_n>;
@@ -42,56 +46,53 @@ template <nat t_n> using   lvec = vec<  signed      long, t_n>;
 template <nat t_n> using  ulvec = vec<unsigned      long, t_n>;
 template <nat t_n> using  llvec = vec<  signed long long, t_n>;
 template <nat t_n> using ullvec = vec<unsigned long long, t_n>;
-template <nat t_n> using   bvec = vec<              bool, t_n>;
 template <nat t_n> using   nvec = vec<               nat, t_n>;
-template <nat t_n> using  fnvec = vec<              fnat, t_n>;
+template <nat t_n> using  unvec = vec<              unat, t_n>;
 
 using   fvec1 = vec<             float, 1>;
 using   fvec2 = vec<             float, 2>;
 using   fvec3 = vec<             float, 3>;
 using   fvec4 = vec<             float, 4>;
-
 using   dvec1 = vec<            double, 1>;
 using   dvec2 = vec<            double, 2>;
 using   dvec3 = vec<            double, 3>;
 using   dvec4 = vec<            double, 4>;
-
-using   cvec1 = vec<       signed char, 1>;
-using   cvec2 = vec<       signed char, 2>;
-using   cvec3 = vec<       signed char, 3>;
-using   cvec4 = vec<       signed char, 4>;
-using  ucvec1 = vec<     unsigned char, 1>;
-using  ucvec2 = vec<     unsigned char, 2>;
-using  ucvec3 = vec<     unsigned char, 3>;
-using  ucvec4 = vec<     unsigned char, 4>;
-
-using   svec1 = vec<      signed short, 1>;
-using   svec2 = vec<      signed short, 2>;
-using   svec3 = vec<      signed short, 3>;
-using   svec4 = vec<      signed short, 4>;
-using  usvec1 = vec<    unsigned short, 1>;
-using  usvec2 = vec<    unsigned short, 2>;
-using  usvec3 = vec<    unsigned short, 3>;
-using  usvec4 = vec<    unsigned short, 4>;
-
-using   ivec1 = vec<        signed int, 1>;
-using   ivec2 = vec<        signed int, 2>;
-using   ivec3 = vec<        signed int, 3>;
-using   ivec4 = vec<        signed int, 4>;
-using  uivec1 = vec<      unsigned int, 1>;
-using  uivec2 = vec<      unsigned int, 2>;
-using  uivec3 = vec<      unsigned int, 3>;
-using  uivec4 = vec<      unsigned int, 4>;
-
-using   lvec1 = vec<       signed long, 1>;
-using   lvec2 = vec<       signed long, 2>;
-using   lvec3 = vec<       signed long, 3>;
-using   lvec4 = vec<       signed long, 4>;
-using  ulvec1 = vec<     unsigned long, 1>;
-using  ulvec2 = vec<     unsigned long, 2>;
-using  ulvec3 = vec<     unsigned long, 3>;
-using  ulvec4 = vec<     unsigned long, 4>;
-
+using  fnvec1 = vec<              fnat, 1>;
+using  fnvec2 = vec<              fnat, 2>;
+using  fnvec3 = vec<              fnat, 3>;
+using  fnvec4 = vec<              fnat, 4>;
+using   cvec1 = vec<  signed      char, 1>;
+using   cvec2 = vec<  signed      char, 2>;
+using   cvec3 = vec<  signed      char, 3>;
+using   cvec4 = vec<  signed      char, 4>;
+using  ucvec1 = vec<unsigned      char, 1>;
+using  ucvec2 = vec<unsigned      char, 2>;
+using  ucvec3 = vec<unsigned      char, 3>;
+using  ucvec4 = vec<unsigned      char, 4>;
+using   svec1 = vec<  signed     short, 1>;
+using   svec2 = vec<  signed     short, 2>;
+using   svec3 = vec<  signed     short, 3>;
+using   svec4 = vec<  signed     short, 4>;
+using  usvec1 = vec<unsigned     short, 1>;
+using  usvec2 = vec<unsigned     short, 2>;
+using  usvec3 = vec<unsigned     short, 3>;
+using  usvec4 = vec<unsigned     short, 4>;
+using   ivec1 = vec<  signed       int, 1>;
+using   ivec2 = vec<  signed       int, 2>;
+using   ivec3 = vec<  signed       int, 3>;
+using   ivec4 = vec<  signed       int, 4>;
+using  uivec1 = vec<unsigned       int, 1>;
+using  uivec2 = vec<unsigned       int, 2>;
+using  uivec3 = vec<unsigned       int, 3>;
+using  uivec4 = vec<unsigned       int, 4>;
+using   lvec1 = vec<  signed      long, 1>;
+using   lvec2 = vec<  signed      long, 2>;
+using   lvec3 = vec<  signed      long, 3>;
+using   lvec4 = vec<  signed      long, 4>;
+using  ulvec1 = vec<unsigned      long, 1>;
+using  ulvec2 = vec<unsigned      long, 2>;
+using  ulvec3 = vec<unsigned      long, 3>;
+using  ulvec4 = vec<unsigned      long, 4>;
 using  llvec1 = vec<  signed long long, 1>;
 using  llvec2 = vec<  signed long long, 2>;
 using  llvec3 = vec<  signed long long, 3>;
@@ -100,21 +101,14 @@ using ullvec1 = vec<unsigned long long, 1>;
 using ullvec2 = vec<unsigned long long, 2>;
 using ullvec3 = vec<unsigned long long, 3>;
 using ullvec4 = vec<unsigned long long, 4>;
-
-using   bvec1 = vec<              bool, 1>;
-using   bvec2 = vec<              bool, 2>;
-using   bvec3 = vec<              bool, 3>;
-using   bvec4 = vec<              bool, 4>;
-
 using   nvec1 = vec<               nat, 1>;
 using   nvec2 = vec<               nat, 2>;
 using   nvec3 = vec<               nat, 3>;
 using   nvec4 = vec<               nat, 4>;
-
-using  fnvec1 = vec<              fnat, 1>;
-using  fnvec2 = vec<              fnat, 2>;
-using  fnvec3 = vec<              fnat, 3>;
-using  fnvec4 = vec<              fnat, 4>;
+using  unvec1 = vec<              unat, 1>;
+using  unvec2 = vec<              unat, 2>;
+using  unvec3 = vec<              unat, 3>;
+using  unvec4 = vec<              unat, 4>;
 
 template <typename T> using point = vec<T, 2>;
 
@@ -147,7 +141,7 @@ struct vec<T, 1> {
 	constexpr vec(const vec1<T> & v);
 	constexpr vec(vec1<T> && v);
 
-	constexpr explicit vec(const       T  & v);
+	constexpr explicit vec(const      T  & v);
 	constexpr explicit vec(const vec2<T> & v);
 	constexpr explicit vec(const vec3<T> & v);
 	constexpr explicit vec(const vec4<T> & v);
@@ -157,6 +151,9 @@ struct vec<T, 1> {
 	~vec() {
 		static_assert(std::is_standard_layout<vec<T, 1>>::value, "vec<T, 1> must be of standard layout");
 		static_assert(sizeof(vec<T, 1>) == 1 * sizeof(T), "vec<T, 1> must be equal in size to one T");
+		static_assert(std::is_default_constructible<T>::value, "vec<T, 1> must be default constructible");
+		static_assert(std::is_copy_constructible<T>::value, "vec<T, 1> must be copy constructable");
+		static_assert(std::is_copy_assignable<T>::value, "vec<T, 1> must be copy assignable");
 	}
 
 	//--- assignment operators ---
@@ -164,7 +161,7 @@ struct vec<T, 1> {
 	vec1<T> & operator=(const vec1<T> & v);
 	vec1<T> & operator=(vec1<T> && v);
 
-	vec1<T> & operator=(const       T  & v);
+	vec1<T> & operator=(const      T  & v);
 	vec1<T> & operator=(const vec2<T> & v);
 	vec1<T> & operator=(const vec3<T> & v);
 	vec1<T> & operator=(const vec4<T> & v);
@@ -176,76 +173,76 @@ struct vec<T, 1> {
 	//--- arithmetic operators ---
 
 	template <typename T> friend vec1<T> & operator+=(vec1<T> & v1, const vec1<T> & v2);
-	template <typename T> friend vec1<T> & operator+=(vec1<T> & v1, const       T  & v2);
+	template <typename T> friend vec1<T> & operator+=(vec1<T> & v1, const      T  & v2);
 	template <typename T> friend vec1<T> & operator+=(vec1<T> & v1, const vec2<T> & v2);
 	template <typename T> friend vec1<T> & operator+=(vec1<T> & v1, const vec3<T> & v2);
 	template <typename T> friend vec1<T> & operator+=(vec1<T> & v1, const vec4<T> & v2);
 
 	template <typename T> friend vec1<T> & operator-=(vec1<T> & v1, const vec1<T> & v2);
-	template <typename T> friend vec1<T> & operator-=(vec1<T> & v1, const       T  & v2);
+	template <typename T> friend vec1<T> & operator-=(vec1<T> & v1, const      T  & v2);
 	template <typename T> friend vec1<T> & operator-=(vec1<T> & v1, const vec2<T> & v2);
 	template <typename T> friend vec1<T> & operator-=(vec1<T> & v1, const vec3<T> & v2);
 	template <typename T> friend vec1<T> & operator-=(vec1<T> & v1, const vec4<T> & v2);
 
 	template <typename T> friend vec1<T> & operator*=(vec1<T> & v1, const vec1<T> & v2);
-	template <typename T> friend vec1<T> & operator*=(vec1<T> & v1, const       T  & v2);
+	template <typename T> friend vec1<T> & operator*=(vec1<T> & v1, const      T  & v2);
 	template <typename T> friend vec1<T> & operator*=(vec1<T> & v1, const vec2<T> & v2);
 	template <typename T> friend vec1<T> & operator*=(vec1<T> & v1, const vec3<T> & v2);
 	template <typename T> friend vec1<T> & operator*=(vec1<T> & v1, const vec4<T> & v2);
 
 	template <typename T> friend vec1<T> & operator/=(vec1<T> & v1, const vec1<T> & v2);
-	template <typename T> friend vec1<T> & operator/=(vec1<T> & v1, const       T  & v2);
+	template <typename T> friend vec1<T> & operator/=(vec1<T> & v1, const      T  & v2);
 	template <typename T> friend vec1<T> & operator/=(vec1<T> & v1, const vec2<T> & v2);
 	template <typename T> friend vec1<T> & operator/=(vec1<T> & v1, const vec3<T> & v2);
 	template <typename T> friend vec1<T> & operator/=(vec1<T> & v1, const vec4<T> & v2);
 
 	template <typename T> friend vec1<T> & operator++(vec1<T> & v);
-	template <typename T> friend vec1<T> operator++(vec1<T> & v, int);
+	template <typename T> friend vec1<T>   operator++(vec1<T> & v, int);
 
 	template <typename T> friend vec1<T> & operator--(vec1<T> & v);
-	template <typename T> friend vec1<T> operator--(vec1<T> & v, int);
+	template <typename T> friend vec1<T>   operator--(vec1<T> & v, int);
 
 	template <typename T> friend vec1<T> operator+(const vec1<T> & v);
 
 	template <typename T> friend vec1<T> operator-(const vec1<T> & v);
 
 	template <typename T> friend vec1<T> operator+(const vec1<T> & v1, const vec1<T> & v2);
-	template <typename T> friend vec1<T> operator+(const vec1<T> & v1, const       T  & v2);
-	template <typename T> friend vec1<T> operator+(const       T  & v1, const vec1<T> & v2);
+	template <typename T> friend vec1<T> operator+(const vec1<T> & v1, const      T  & v2);
+	template <typename T> friend vec1<T> operator+(const      T  & v1, const vec1<T> & v2);
 
 	template <typename T> friend vec1<T> operator-(const vec1<T> & v1, const vec1<T> & v2);
-	template <typename T> friend vec1<T> operator-(const vec1<T> & v1, const       T  & v2);
-	template <typename T> friend vec1<T> operator-(const       T  & v1, const vec1<T> & v2);
+	template <typename T> friend vec1<T> operator-(const vec1<T> & v1, const      T  & v2);
+	template <typename T> friend vec1<T> operator-(const      T  & v1, const vec1<T> & v2);
 
 	template <typename T> friend vec1<T> operator*(const vec1<T> & v1, const vec1<T> & v2);
-	template <typename T> friend vec1<T> operator*(const vec1<T> & v1, const       T  & v2);
-	template <typename T> friend vec1<T> operator*(const       T  & v1, const vec1<T> & v2);
+	template <typename T> friend vec1<T> operator*(const vec1<T> & v1, const      T  & v2);
+	template <typename T> friend vec1<T> operator*(const      T  & v1, const vec1<T> & v2);
 
 	template <typename T> friend vec1<T> operator/(const vec1<T> & v1, const vec1<T> & v2);
-	template <typename T> friend vec1<T> operator/(const vec1<T> & v1, const       T  & v2);
-	template <typename T> friend vec1<T> operator/(const       T  & v1, const vec1<T> & v2);
+	template <typename T> friend vec1<T> operator/(const vec1<T> & v1, const      T  & v2);
+	template <typename T> friend vec1<T> operator/(const      T  & v1, const vec1<T> & v2);
 
 	//--- comparison operators ---
 
 	template <typename T> friend bool operator==(const vec1<T> & v1, const vec1<T> & v2);
-	template <typename T> friend bool operator==(const vec1<T> & v1, const       T  & v2);
-	template <typename T> friend bool operator==(const       T  & v1, const vec1<T> & v2);
+	template <typename T> friend bool operator==(const vec1<T> & v1, const      T  & v2);
+	template <typename T> friend bool operator==(const      T  & v1, const vec1<T> & v2);
 
 	template <typename T> friend bool operator!=(const vec1<T> & v1, const vec1<T> & v2);
-	template <typename T> friend bool operator!=(const vec1<T> & v1, const       T  & v2);
-	template <typename T> friend bool operator!=(const       T  & v1, const vec1<T> & v2);
+	template <typename T> friend bool operator!=(const vec1<T> & v1, const      T  & v2);
+	template <typename T> friend bool operator!=(const      T  & v1, const vec1<T> & v2);
 
-	template <typename T> friend bool operator<(const vec1<T> & v1, const       T  & v2);
-	template <typename T> friend bool operator<(const       T  & v1, const vec1<T> & v2);
+	template <typename T> friend bool operator<(const vec1<T> & v1, const      T  & v2);
+	template <typename T> friend bool operator<(const      T  & v1, const vec1<T> & v2);
 
-	template <typename T> friend bool operator>(const vec1<T> & v1, const       T  & v2);
-	template <typename T> friend bool operator>(const       T  & v1, const vec1<T> & v2);
+	template <typename T> friend bool operator>(const vec1<T> & v1, const      T  & v2);
+	template <typename T> friend bool operator>(const      T  & v1, const vec1<T> & v2);
 
-	template <typename T> friend bool operator<=(const vec1<T> & v1, const       T  & v2);
-	template <typename T> friend bool operator<=(const       T  & v1, const vec1<T> & v2);
+	template <typename T> friend bool operator<=(const vec1<T> & v1, const      T  & v2);
+	template <typename T> friend bool operator<=(const      T  & v1, const vec1<T> & v2);
 
-	template <typename T> friend bool operator>=(const vec1<T> & v1, const       T  & v2);
-	template <typename T> friend bool operator>=(const       T  & v1, const vec1<T> & v2);
+	template <typename T> friend bool operator>=(const vec1<T> & v1, const      T  & v2);
+	template <typename T> friend bool operator>=(const      T  & v1, const vec1<T> & v2);
 
 	//--- other ---
 
@@ -281,7 +278,7 @@ struct vec<T, 2> {
 	constexpr vec(const vec2<T> & v);
 	constexpr vec(vec2<T> && v);
 
-	constexpr explicit vec(const       T  & v);
+	constexpr explicit vec(const      T  & v);
 	constexpr explicit vec(const vec1<T> & v);
 	constexpr explicit vec(const vec3<T> & v);
 	constexpr explicit vec(const vec4<T> & v);
@@ -292,6 +289,9 @@ struct vec<T, 2> {
 	~vec() {
 		static_assert(std::is_standard_layout<vec<T, 2>>::value, "vec<T, 2> must be of standard layout");
 		static_assert(sizeof(vec<T, 2>) == 2 * sizeof(T), "vec<T, 2> must be equal in size to 2 Ts");
+		static_assert(std::is_default_constructible<T>::value, "vec<T, 2> must be default constructible");
+		static_assert(std::is_copy_constructible<T>::value, "vec<T, 2> must be copy constructable");
+		static_assert(std::is_copy_assignable<T>::value, "vec<T, 2> must be copy assignable");
 	}
 
 	//--- assignment operators ---
@@ -299,7 +299,7 @@ struct vec<T, 2> {
 	vec2<T> & operator=(const vec2<T> & v);
 	vec2<T> & operator=(vec2<T> && v);
 
-	vec2<T> & operator=(const       T  & v);
+	vec2<T> & operator=(const      T  & v);
 	vec2<T> & operator=(const vec1<T> & v);
 	vec2<T> & operator=(const vec3<T> & v);
 	vec2<T> & operator=(const vec4<T> & v);
@@ -311,78 +311,84 @@ struct vec<T, 2> {
 	//--- arithmetic operators ---
 
 	template <typename T> friend vec2<T> & operator+=(vec2<T> & v1, const vec2<T> & v2);
-	template <typename T> friend vec2<T> & operator+=(vec2<T> & v1, const       T  & v2);
+	template <typename T> friend vec2<T> & operator+=(vec2<T> & v1, const      T  & v2);
 	template <typename T> friend vec2<T> & operator+=(vec2<T> & v1, const vec1<T> & v2);
 	template <typename T> friend vec2<T> & operator+=(vec2<T> & v1, const vec3<T> & v2);
 	template <typename T> friend vec2<T> & operator+=(vec2<T> & v1, const vec4<T> & v2);
 
 	template <typename T> friend vec2<T> & operator-=(vec2<T> & v1, const vec2<T> & v2);
-	template <typename T> friend vec2<T> & operator-=(vec2<T> & v1, const       T  & v2);
+	template <typename T> friend vec2<T> & operator-=(vec2<T> & v1, const      T  & v2);
 	template <typename T> friend vec2<T> & operator-=(vec2<T> & v1, const vec1<T> & v2);
 	template <typename T> friend vec2<T> & operator-=(vec2<T> & v1, const vec3<T> & v2);
 	template <typename T> friend vec2<T> & operator-=(vec2<T> & v1, const vec4<T> & v2);
 
 	template <typename T> friend vec2<T> & operator*=(vec2<T> & v1, const vec2<T> & v2);
-	template <typename T> friend vec2<T> & operator*=(vec2<T> & v1, const       T  & v2);
+	template <typename T> friend vec2<T> & operator*=(vec2<T> & v1, const      T  & v2);
 	template <typename T> friend vec2<T> & operator*=(vec2<T> & v1, const vec1<T> & v2);
 	template <typename T> friend vec2<T> & operator*=(vec2<T> & v1, const vec3<T> & v2);
 	template <typename T> friend vec2<T> & operator*=(vec2<T> & v1, const vec4<T> & v2);
 
 	template <typename T> friend vec2<T> & operator/=(vec2<T> & v1, const vec2<T> & v2);
-	template <typename T> friend vec2<T> & operator/=(vec2<T> & v1, const       T  & v2);
+	template <typename T> friend vec2<T> & operator/=(vec2<T> & v1, const      T  & v2);
 	template <typename T> friend vec2<T> & operator/=(vec2<T> & v1, const vec1<T> & v2);
 	template <typename T> friend vec2<T> & operator/=(vec2<T> & v1, const vec3<T> & v2);
 	template <typename T> friend vec2<T> & operator/=(vec2<T> & v1, const vec4<T> & v2);
 
 	template <typename T> friend vec2<T> & operator++(vec2<T> & v);
-	template <typename T> friend vec2<T> operator++(vec2<T> & v, int);
+	template <typename T> friend vec2<T>   operator++(vec2<T> & v, int);
 
 	template <typename T> friend vec2<T> & operator--(vec2<T> & v);
-	template <typename T> friend vec2<T> operator--(vec2<T> & v, int);
+	template <typename T> friend vec2<T>   operator--(vec2<T> & v, int);
 
 	template <typename T> friend vec2<T> operator+(const vec2<T> & v);
 
 	template <typename T> friend vec2<T> operator-(const vec2<T> & v);
 
 	template <typename T> friend vec2<T> operator+(const vec2<T> & v1, const vec2<T> & v2);
-	template <typename T> friend vec2<T> operator+(const vec2<T> & v1, const       T  & v2);
-	template <typename T> friend vec2<T> operator+(const       T  & v1, const vec2<T> & v2);
+	template <typename T> friend vec2<T> operator+(const vec2<T> & v1, const      T  & v2);
+	template <typename T> friend vec2<T> operator+(const      T  & v1, const vec2<T> & v2);
+	template <typename T> friend vec2<T> operator+(const vec2<T> & v1, const vec1<T> & v2);
+	template <typename T> friend vec2<T> operator+(const vec1<T> & v1, const vec2<T> & v2);
 
 	template <typename T> friend vec2<T> operator-(const vec2<T> & v1, const vec2<T> & v2);
-	template <typename T> friend vec2<T> operator-(const vec2<T> & v1, const       T  & v2);
-	template <typename T> friend vec2<T> operator-(const       T  & v1, const vec2<T> & v2);
+	template <typename T> friend vec2<T> operator-(const vec2<T> & v1, const      T  & v2);
+	template <typename T> friend vec2<T> operator-(const      T  & v1, const vec2<T> & v2);
+	template <typename T> friend vec2<T> operator-(const vec2<T> & v1, const vec1<T> & v2);
+	template <typename T> friend vec2<T> operator-(const vec1<T> & v1, const vec2<T> & v2);
 
 	template <typename T> friend vec2<T> operator*(const vec2<T> & v1, const vec2<T> & v2);
-	template <typename T> friend vec2<T> operator*(const vec2<T> & v1, const       T  & v2);
-	template <typename T> friend vec2<T> operator*(const       T  & v1, const vec2<T> & v2);
+	template <typename T> friend vec2<T> operator*(const vec2<T> & v1, const      T  & v2);
+	template <typename T> friend vec2<T> operator*(const      T  & v1, const vec2<T> & v2);
+	template <typename T> friend vec2<T> operator*(const vec2<T> & v1, const vec1<T> & v2);
+	template <typename T> friend vec2<T> operator*(const vec1<T> & v1, const vec2<T> & v2);
 
 	template <typename T> friend vec2<T> operator/(const vec2<T> & v1, const vec2<T> & v2);
-	template <typename T> friend vec2<T> operator/(const vec2<T> & v1, const       T  & v2);
-	template <typename T> friend vec2<T> operator/(const       T  & v1, const vec2<T> & v2);
+	template <typename T> friend vec2<T> operator/(const vec2<T> & v1, const      T  & v2);
+	template <typename T> friend vec2<T> operator/(const      T  & v1, const vec2<T> & v2);
 	template <typename T> friend vec2<T> operator/(const vec2<T> & v1, const vec1<T> & v2);
 	template <typename T> friend vec2<T> operator/(const vec1<T> & v1, const vec2<T> & v2);
 
 	//--- comparison operators ---
 
 	template <typename T> friend bool operator==(const vec2<T> & v1, const vec2<T> & v2);
-	template <typename T> friend bool operator==(const vec2<T> & v1, const       T  & v2);
-	template <typename T> friend bool operator==(const       T  & v1, const vec2<T> & v2);
+	template <typename T> friend bool operator==(const vec2<T> & v1, const      T  & v2);
+	template <typename T> friend bool operator==(const      T  & v1, const vec2<T> & v2);
 
 	template <typename T> friend bool operator!=(const vec2<T> & v1, const vec2<T> & v2);
-	template <typename T> friend bool operator!=(const vec2<T> & v1, const       T  & v2);
-	template <typename T> friend bool operator!=(const       T  & v1, const vec2<T> & v2);
+	template <typename T> friend bool operator!=(const vec2<T> & v1, const      T  & v2);
+	template <typename T> friend bool operator!=(const      T  & v1, const vec2<T> & v2);
 
-	template <typename T> friend bool operator<(const vec2<T> & v1, const       T  & v2);
-	template <typename T> friend bool operator<(const       T  & v1, const vec2<T> & v2);
+	template <typename T> friend bool operator<(const vec2<T> & v1, const      T  & v2);
+	template <typename T> friend bool operator<(const      T  & v1, const vec2<T> & v2);
 
-	template <typename T> friend bool operator>(const vec2<T> & v1, const       T  & v2);
-	template <typename T> friend bool operator>(const       T  & v1, const vec2<T> & v2);
+	template <typename T> friend bool operator>(const vec2<T> & v1, const      T  & v2);
+	template <typename T> friend bool operator>(const      T  & v1, const vec2<T> & v2);
 
-	template <typename T> friend bool operator<=(const vec2<T> & v1, const       T  & v2);
-	template <typename T> friend bool operator<=(const       T  & v1, const vec2<T> & v2);
+	template <typename T> friend bool operator<=(const vec2<T> & v1, const      T  & v2);
+	template <typename T> friend bool operator<=(const      T  & v1, const vec2<T> & v2);
 
-	template <typename T> friend bool operator>=(const vec2<T> & v1, const       T  & v2);
-	template <typename T> friend bool operator>=(const       T  & v1, const vec2<T> & v2);
+	template <typename T> friend bool operator>=(const vec2<T> & v1, const      T  & v2);
+	template <typename T> friend bool operator>=(const      T  & v1, const vec2<T> & v2);
 
 	//--- other ---
 
@@ -419,7 +425,7 @@ struct vec<T, 3> {
 	constexpr vec(const vec3<T> & v);
 	constexpr vec(vec3<T> && v);
 
-	constexpr explicit vec(const       T  & v);
+	constexpr explicit vec(const      T  & v);
 	constexpr explicit vec(const vec1<T> & v);
 	constexpr explicit vec(const vec2<T> & v);
 	constexpr explicit vec(const vec4<T> & v);
@@ -430,6 +436,9 @@ struct vec<T, 3> {
 	~vec() {
 		static_assert(std::is_standard_layout<vec<T, 3>>::value, "vec<T, 3> must be of standard layout");
 		static_assert(sizeof(vec<T, 3>) == 3 * sizeof(T), "vec<T, 3> must be equal in size to 3 Ts");
+		static_assert(std::is_default_constructible<T>::value, "vec<T, 3> must be default constructible");
+		static_assert(std::is_copy_constructible<T>::value, "vec<T, 3> must be copy constructable");
+		static_assert(std::is_copy_assignable<T>::value, "vec<T, 3> must be copy assignable");
 	}
 
 	//--- assignment operators ---
@@ -437,7 +446,7 @@ struct vec<T, 3> {
 	vec3<T> & operator=(const vec3<T> & v);
 	vec3<T> & operator=(vec3<T> && v);
 
-	vec3<T> & operator=(const       T  & v);
+	vec3<T> & operator=(const      T  & v);
 	vec3<T> & operator=(const vec1<T> & v);
 	vec3<T> & operator=(const vec2<T> & v);
 	vec3<T> & operator=(const vec4<T> & v);
@@ -449,66 +458,66 @@ struct vec<T, 3> {
 	//--- arithmetic operators ---
 
 	template <typename T> friend vec3<T> & operator+=(vec3<T> & v1, const vec3<T> & v2);
-	template <typename T> friend vec3<T> & operator+=(vec3<T> & v1, const       T  & v2);
+	template <typename T> friend vec3<T> & operator+=(vec3<T> & v1, const      T  & v2);
 	template <typename T> friend vec3<T> & operator+=(vec3<T> & v1, const vec1<T> & v2);
 	template <typename T> friend vec3<T> & operator+=(vec3<T> & v1, const vec2<T> & v2);
 	template <typename T> friend vec3<T> & operator+=(vec3<T> & v1, const vec4<T> & v2);
 
 	template <typename T> friend vec3<T> & operator-=(vec3<T> & v1, const vec3<T> & v2);
-	template <typename T> friend vec3<T> & operator-=(vec3<T> & v1, const       T  & v2);
+	template <typename T> friend vec3<T> & operator-=(vec3<T> & v1, const      T  & v2);
 	template <typename T> friend vec3<T> & operator-=(vec3<T> & v1, const vec1<T> & v2);
 	template <typename T> friend vec3<T> & operator-=(vec3<T> & v1, const vec2<T> & v2);
 	template <typename T> friend vec3<T> & operator-=(vec3<T> & v1, const vec4<T> & v2);
 
 	template <typename T> friend vec3<T> & operator*=(vec3<T> & v1, const vec3<T> & v2);
-	template <typename T> friend vec3<T> & operator*=(vec3<T> & v1, const       T  & v2);
+	template <typename T> friend vec3<T> & operator*=(vec3<T> & v1, const      T  & v2);
 	template <typename T> friend vec3<T> & operator*=(vec3<T> & v1, const vec1<T> & v2);
 	template <typename T> friend vec3<T> & operator*=(vec3<T> & v1, const vec2<T> & v2);
 	template <typename T> friend vec3<T> & operator*=(vec3<T> & v1, const vec4<T> & v2);
 
 	template <typename T> friend vec3<T> & operator/=(vec3<T> & v1, const vec3<T> & v2);
-	template <typename T> friend vec3<T> & operator/=(vec3<T> & v1, const       T  & v2);
+	template <typename T> friend vec3<T> & operator/=(vec3<T> & v1, const      T  & v2);
 	template <typename T> friend vec3<T> & operator/=(vec3<T> & v1, const vec1<T> & v2);
 	template <typename T> friend vec3<T> & operator/=(vec3<T> & v1, const vec2<T> & v2);
 	template <typename T> friend vec3<T> & operator/=(vec3<T> & v1, const vec4<T> & v2);
 
 	template <typename T> friend vec3<T> & operator++(vec3<T> & v);
-	template <typename T> friend vec3<T> operator++(vec3<T> & v, int);
+	template <typename T> friend vec3<T>   operator++(vec3<T> & v, int);
 
 	template <typename T> friend vec3<T> & operator--(vec3<T> & v);
-	template <typename T> friend vec3<T> operator--(vec3<T> & v, int);
+	template <typename T> friend vec3<T>   operator--(vec3<T> & v, int);
 
 	template <typename T> friend vec3<T> operator+(const vec3<T> & v);
 
 	template <typename T> friend vec3<T> operator-(const vec3<T> & v);
 
 	template <typename T> friend vec3<T> operator+(const vec3<T> & v1, const vec3<T> & v2);
-	template <typename T> friend vec3<T> operator+(const vec3<T> & v1, const       T  & v2);
-	template <typename T> friend vec3<T> operator+(const       T  & v1, const vec3<T> & v2);
+	template <typename T> friend vec3<T> operator+(const vec3<T> & v1, const      T  & v2);
+	template <typename T> friend vec3<T> operator+(const      T  & v1, const vec3<T> & v2);
 	template <typename T> friend vec3<T> operator+(const vec3<T> & v1, const vec1<T> & v2);
 	template <typename T> friend vec3<T> operator+(const vec1<T> & v1, const vec3<T> & v2);
 	template <typename T> friend vec3<T> operator+(const vec3<T> & v1, const vec2<T> & v2);
 	template <typename T> friend vec3<T> operator+(const vec2<T> & v1, const vec3<T> & v2);
 
 	template <typename T> friend vec3<T> operator-(const vec3<T> & v1, const vec3<T> & v2);
-	template <typename T> friend vec3<T> operator-(const vec3<T> & v1, const       T  & v2);
-	template <typename T> friend vec3<T> operator-(const       T  & v1, const vec3<T> & v2);
+	template <typename T> friend vec3<T> operator-(const vec3<T> & v1, const      T  & v2);
+	template <typename T> friend vec3<T> operator-(const      T  & v1, const vec3<T> & v2);
 	template <typename T> friend vec3<T> operator-(const vec3<T> & v1, const vec1<T> & v2);
 	template <typename T> friend vec3<T> operator-(const vec1<T> & v1, const vec3<T> & v2);
 	template <typename T> friend vec3<T> operator-(const vec3<T> & v1, const vec2<T> & v2);
 	template <typename T> friend vec3<T> operator-(const vec2<T> & v1, const vec3<T> & v2);
 
 	template <typename T> friend vec3<T> operator*(const vec3<T> & v1, const vec3<T> & v2);
-	template <typename T> friend vec3<T> operator*(const vec3<T> & v1, const       T  & v2);
-	template <typename T> friend vec3<T> operator*(const       T  & v1, const vec3<T> & v2);
+	template <typename T> friend vec3<T> operator*(const vec3<T> & v1, const      T  & v2);
+	template <typename T> friend vec3<T> operator*(const      T  & v1, const vec3<T> & v2);
 	template <typename T> friend vec3<T> operator*(const vec3<T> & v1, const vec1<T> & v2);
 	template <typename T> friend vec3<T> operator*(const vec1<T> & v1, const vec3<T> & v2);
 	template <typename T> friend vec3<T> operator*(const vec3<T> & v1, const vec2<T> & v2);
 	template <typename T> friend vec3<T> operator*(const vec2<T> & v1, const vec3<T> & v2);
 
 	template <typename T> friend vec3<T> operator/(const vec3<T> & v1, const vec3<T> & v2);
-	template <typename T> friend vec3<T> operator/(const vec3<T> & v1, const       T  & v2);
-	template <typename T> friend vec3<T> operator/(const       T  & v1, const vec3<T> & v2);
+	template <typename T> friend vec3<T> operator/(const vec3<T> & v1, const      T  & v2);
+	template <typename T> friend vec3<T> operator/(const      T  & v1, const vec3<T> & v2);
 	template <typename T> friend vec3<T> operator/(const vec3<T> & v1, const vec1<T> & v2);
 	template <typename T> friend vec3<T> operator/(const vec1<T> & v1, const vec3<T> & v2);
 	template <typename T> friend vec3<T> operator/(const vec3<T> & v1, const vec2<T> & v2);
@@ -517,24 +526,24 @@ struct vec<T, 3> {
 	//--- comparison operators ---
 
 	template <typename T> friend bool operator==(const vec3<T> & v1, const vec3<T> & v2);
-	template <typename T> friend bool operator==(const vec3<T> & v1, const       T  & v2);
-	template <typename T> friend bool operator==(const       T  & v1, const vec3<T> & v2);
+	template <typename T> friend bool operator==(const vec3<T> & v1, const      T  & v2);
+	template <typename T> friend bool operator==(const      T  & v1, const vec3<T> & v2);
 
 	template <typename T> friend bool operator!=(const vec3<T> & v1, const vec3<T> & v2);
-	template <typename T> friend bool operator!=(const vec3<T> & v1, const       T  & v2);
-	template <typename T> friend bool operator!=(const       T  & v1, const vec3<T> & v2);
+	template <typename T> friend bool operator!=(const vec3<T> & v1, const      T  & v2);
+	template <typename T> friend bool operator!=(const      T  & v1, const vec3<T> & v2);
 
-	template <typename T> friend bool operator<(const vec3<T> & v1, const       T  & v2);
-	template <typename T> friend bool operator<(const       T  & v1, const vec3<T> & v2);
+	template <typename T> friend bool operator<(const vec3<T> & v1, const      T  & v2);
+	template <typename T> friend bool operator<(const      T  & v1, const vec3<T> & v2);
 
-	template <typename T> friend bool operator>(const vec3<T> & v1, const       T  & v2);
-	template <typename T> friend bool operator>(const       T  & v1, const vec3<T> & v2);
+	template <typename T> friend bool operator>(const vec3<T> & v1, const      T  & v2);
+	template <typename T> friend bool operator>(const      T  & v1, const vec3<T> & v2);
 
-	template <typename T> friend bool operator<=(const vec3<T> & v1, const       T  & v2);
-	template <typename T> friend bool operator<=(const       T  & v1, const vec3<T> & v2);
+	template <typename T> friend bool operator<=(const vec3<T> & v1, const      T  & v2);
+	template <typename T> friend bool operator<=(const      T  & v1, const vec3<T> & v2);
 
-	template <typename T> friend bool operator>=(const vec3<T> & v1, const       T  & v2);
-	template <typename T> friend bool operator>=(const       T  & v1, const vec3<T> & v2);
+	template <typename T> friend bool operator>=(const vec3<T> & v1, const      T  & v2);
+	template <typename T> friend bool operator>=(const      T  & v1, const vec3<T> & v2);
 
 	//--- other ---
 
@@ -570,7 +579,7 @@ struct vec<T, 4> {
 	constexpr vec(const vec4<T> & v);
 	constexpr vec(vec4<T> && v);
 
-	constexpr explicit vec(const       T  & v);
+	constexpr explicit vec(const      T  & v);
 	constexpr explicit vec(const vec1<T> & v);
 	constexpr explicit vec(const vec2<T> & v);
 	constexpr explicit vec(const vec3<T> & v);
@@ -581,6 +590,9 @@ struct vec<T, 4> {
 	~vec() {
 		static_assert(std::is_standard_layout<vec<T, 4>>::value, "vec<T, 4> must be of standard layout");
 		static_assert(sizeof(vec<T, 4>) == 4 * sizeof(T), "vec<T, 4> must be equal in size to 4 Ts");
+		static_assert(std::is_default_constructible<T>::value, "vec<T, 4> must be default constructible");
+		static_assert(std::is_copy_constructible<T>::value, "vec<T, 4> must be copy constructable");
+		static_assert(std::is_copy_assignable<T>::value, "vec<T, 4> must be copy assignable");
 	}
 
 	//--- assignment operators ---
@@ -588,7 +600,7 @@ struct vec<T, 4> {
 	vec4<T> & operator=(const vec4<T> & v);
 	vec4<T> & operator=(vec4<T> && v);
 
-	vec4<T> & operator=(const       T  & v);
+	vec4<T> & operator=(const      T  & v);
 	vec4<T> & operator=(const vec1<T> & v);
 	vec4<T> & operator=(const vec2<T> & v);
 	vec4<T> & operator=(const vec3<T> & v);
@@ -600,42 +612,42 @@ struct vec<T, 4> {
 	//--- arithmetic operators ---
 
 	template <typename T> friend vec4<T> & operator+=(vec4<T> & v1, const vec4<T> & v2);
-	template <typename T> friend vec4<T> & operator+=(vec4<T> & v1, const       T  & v2);
+	template <typename T> friend vec4<T> & operator+=(vec4<T> & v1, const      T  & v2);
 	template <typename T> friend vec4<T> & operator+=(vec4<T> & v1, const vec1<T> & v2);
 	template <typename T> friend vec4<T> & operator+=(vec4<T> & v1, const vec2<T> & v2);
 	template <typename T> friend vec4<T> & operator+=(vec4<T> & v1, const vec3<T> & v2);
 
 	template <typename T> friend vec4<T> & operator-=(vec4<T> & v1, const vec4<T> & v2);
-	template <typename T> friend vec4<T> & operator-=(vec4<T> & v1, const       T  & v2);
+	template <typename T> friend vec4<T> & operator-=(vec4<T> & v1, const      T  & v2);
 	template <typename T> friend vec4<T> & operator-=(vec4<T> & v1, const vec1<T> & v2);
 	template <typename T> friend vec4<T> & operator-=(vec4<T> & v1, const vec2<T> & v2);
 	template <typename T> friend vec4<T> & operator-=(vec4<T> & v1, const vec3<T> & v2);
 
 	template <typename T> friend vec4<T> & operator*=(vec4<T> & v1, const vec4<T> & v2);
-	template <typename T> friend vec4<T> & operator*=(vec4<T> & v1, const       T  & v2);
+	template <typename T> friend vec4<T> & operator*=(vec4<T> & v1, const      T  & v2);
 	template <typename T> friend vec4<T> & operator*=(vec4<T> & v1, const vec1<T> & v2);
 	template <typename T> friend vec4<T> & operator*=(vec4<T> & v1, const vec2<T> & v2);
 	template <typename T> friend vec4<T> & operator*=(vec4<T> & v1, const vec3<T> & v2);
 
 	template <typename T> friend vec4<T> & operator/=(vec4<T> & v1, const vec4<T> & v2);
-	template <typename T> friend vec4<T> & operator/=(vec4<T> & v1, const       T  & v2);
+	template <typename T> friend vec4<T> & operator/=(vec4<T> & v1, const      T  & v2);
 	template <typename T> friend vec4<T> & operator/=(vec4<T> & v1, const vec1<T> & v2);
 	template <typename T> friend vec4<T> & operator/=(vec4<T> & v1, const vec2<T> & v2);
 	template <typename T> friend vec4<T> & operator/=(vec4<T> & v1, const vec3<T> & v2);
 
 	template <typename T> friend vec4<T> & operator++(vec4<T> & v);
-	template <typename T> friend vec4<T> operator++(vec4<T> & v, int);
+	template <typename T> friend vec4<T>   operator++(vec4<T> & v, int);
 
 	template <typename T> friend vec4<T> & operator--(vec4<T> & v);
-	template <typename T> friend vec4<T> operator--(vec4<T> & v, int);
+	template <typename T> friend vec4<T>   operator--(vec4<T> & v, int);
 
 	template <typename T> friend vec4<T> operator+(const vec4<T> & v);
 
 	template <typename T> friend vec4<T> operator-(const vec4<T> & v);
 
 	template <typename T> friend vec4<T> operator+(const vec4<T> & v1, const vec4<T> & v2);
-	template <typename T> friend vec4<T> operator+(const vec4<T> & v1, const       T  & v2);
-	template <typename T> friend vec4<T> operator+(const       T  & v1, const vec4<T> & v2);
+	template <typename T> friend vec4<T> operator+(const vec4<T> & v1, const      T  & v2);
+	template <typename T> friend vec4<T> operator+(const      T  & v1, const vec4<T> & v2);
 	template <typename T> friend vec4<T> operator+(const vec4<T> & v1, const vec1<T> & v2);
 	template <typename T> friend vec4<T> operator+(const vec1<T> & v1, const vec4<T> & v2);
 	template <typename T> friend vec4<T> operator+(const vec4<T> & v1, const vec2<T> & v2);
@@ -644,8 +656,8 @@ struct vec<T, 4> {
 	template <typename T> friend vec4<T> operator+(const vec3<T> & v1, const vec4<T> & v2);
 
 	template <typename T> friend vec4<T> operator-(const vec4<T> & v1, const vec4<T> & v2);
-	template <typename T> friend vec4<T> operator-(const vec4<T> & v1, const       T  & v2);
-	template <typename T> friend vec4<T> operator-(const       T  & v1, const vec4<T> & v2);
+	template <typename T> friend vec4<T> operator-(const vec4<T> & v1, const      T  & v2);
+	template <typename T> friend vec4<T> operator-(const      T  & v1, const vec4<T> & v2);
 	template <typename T> friend vec4<T> operator-(const vec4<T> & v1, const vec1<T> & v2);
 	template <typename T> friend vec4<T> operator-(const vec1<T> & v1, const vec4<T> & v2);
 	template <typename T> friend vec4<T> operator-(const vec4<T> & v1, const vec2<T> & v2);
@@ -654,8 +666,8 @@ struct vec<T, 4> {
 	template <typename T> friend vec4<T> operator-(const vec3<T> & v1, const vec4<T> & v2);
 
 	template <typename T> friend vec4<T> operator*(const vec4<T> & v1, const vec4<T> & v2);
-	template <typename T> friend vec4<T> operator*(const vec4<T> & v1, const       T  & v2);
-	template <typename T> friend vec4<T> operator*(const       T  & v1, const vec4<T> & v2);
+	template <typename T> friend vec4<T> operator*(const vec4<T> & v1, const      T  & v2);
+	template <typename T> friend vec4<T> operator*(const      T  & v1, const vec4<T> & v2);
 	template <typename T> friend vec4<T> operator*(const vec4<T> & v1, const vec1<T> & v2);
 	template <typename T> friend vec4<T> operator*(const vec1<T> & v1, const vec4<T> & v2);
 	template <typename T> friend vec4<T> operator*(const vec4<T> & v1, const vec2<T> & v2);
@@ -664,8 +676,8 @@ struct vec<T, 4> {
 	template <typename T> friend vec4<T> operator*(const vec3<T> & v1, const vec4<T> & v2);
 
 	template <typename T> friend vec4<T> operator/(const vec4<T> & v1, const vec4<T> & v2);
-	template <typename T> friend vec4<T> operator/(const vec4<T> & v1, const       T  & v2);
-	template <typename T> friend vec4<T> operator/(const       T  & v1, const vec4<T> & v2);
+	template <typename T> friend vec4<T> operator/(const vec4<T> & v1, const      T  & v2);
+	template <typename T> friend vec4<T> operator/(const      T  & v1, const vec4<T> & v2);
 	template <typename T> friend vec4<T> operator/(const vec4<T> & v1, const vec1<T> & v2);
 	template <typename T> friend vec4<T> operator/(const vec1<T> & v1, const vec4<T> & v2);
 	template <typename T> friend vec4<T> operator/(const vec4<T> & v1, const vec2<T> & v2);
@@ -676,24 +688,24 @@ struct vec<T, 4> {
 	//--- comparison operators ---
 
 	template <typename T> friend bool operator==(const vec4<T> & v1, const vec4<T> & v2);
-	template <typename T> friend bool operator==(const vec4<T> & v1, const       T  & v2);
-	template <typename T> friend bool operator==(const       T  & v1, const vec4<T> & v2);
+	template <typename T> friend bool operator==(const vec4<T> & v1, const      T  & v2);
+	template <typename T> friend bool operator==(const      T  & v1, const vec4<T> & v2);
 
 	template <typename T> friend bool operator!=(const vec4<T> & v1, const vec4<T> & v2);
-	template <typename T> friend bool operator!=(const vec4<T> & v1, const       T  & v2);
-	template <typename T> friend bool operator!=(const       T  & v1, const vec4<T> & v2);
+	template <typename T> friend bool operator!=(const vec4<T> & v1, const      T  & v2);
+	template <typename T> friend bool operator!=(const      T  & v1, const vec4<T> & v2);
 
-	template <typename T> friend bool operator<(const vec4<T> & v1, const       T  & v2);
-	template <typename T> friend bool operator<(const       T  & v1, const vec4<T> & v2);
+	template <typename T> friend bool operator<(const vec4<T> & v1, const      T  & v2);
+	template <typename T> friend bool operator<(const      T  & v1, const vec4<T> & v2);
 
-	template <typename T> friend bool operator>(const vec4<T> & v1, const       T  & v2);
-	template <typename T> friend bool operator>(const       T  & v1, const vec4<T> & v2);
+	template <typename T> friend bool operator>(const vec4<T> & v1, const      T  & v2);
+	template <typename T> friend bool operator>(const      T  & v1, const vec4<T> & v2);
 
-	template <typename T> friend bool operator<=(const vec4<T> & v1, const       T  & v2);
-	template <typename T> friend bool operator<=(const       T  & v1, const vec4<T> & v2);
+	template <typename T> friend bool operator<=(const vec4<T> & v1, const      T  & v2);
+	template <typename T> friend bool operator<=(const      T  & v1, const vec4<T> & v2);
 
-	template <typename T> friend bool operator>=(const vec4<T> & v1, const       T  & v2);
-	template <typename T> friend bool operator>=(const       T  & v1, const vec4<T> & v2);
+	template <typename T> friend bool operator>=(const vec4<T> & v1, const      T  & v2);
+	template <typename T> friend bool operator>=(const      T  & v1, const vec4<T> & v2);
 
 	//--- other ---
 
@@ -732,6 +744,9 @@ struct vec<T, 6> {
 	~vec() {
 		static_assert(std::is_standard_layout<vec<T, 6>>::value, "vec<T, 6> must be of standard layout");
 		static_assert(sizeof(vec<T, 6>) == 6 * sizeof(T), "vec<T, 6> must be equal in size to 6 Ts");
+		static_assert(std::is_default_constructible<T>::value, "vec<T, 6> must be default constructible");
+		static_assert(std::is_copy_constructible<T>::value, "vec<T, 6> must be copy constructable");
+		static_assert(std::is_copy_assignable<T>::value, "vec<T, 6> must be copy assignable");
 	}
 
 	//--- assignment operators ---
@@ -755,9 +770,6 @@ struct vec<T, 6> {
 
 	template <typename T> friend std::ostream & operator<<(std::ostream & os, const bound3<T> & v);
 
-	static_assert(     std::is_pod<vec<T, 6>>::value, "vec6<T> must be P.O.D.");
-	static_assert(sizeof(vec<T, 6>) == 3 * sizeof(T), "vec6<T> must be equal in size to six Ts");
-
 };
 
 
@@ -767,26 +779,19 @@ struct vec<T, 6> {
 
 
 
-template <typename T, nat t_n>
-T mag(const vec<T, t_n> & v);
+template <typename T, nat t_n> T mag(const vec<T, t_n> & v);
 
-template <typename T, nat t_n>
-T mag2(const vec<T, t_n> & a);
+template <typename T, nat t_n> T mag2(const vec<T, t_n> & a);
 
-template <typename T, nat t_n>
-vec<T, t_n> norm(const vec<T, t_n> & a);
+template <typename T, nat t_n> vec<T, t_n> norm(const vec<T, t_n> & a);
 
-template <typename T, nat t_n>
-T dot(const vec<T, t_n> & a, const vec<T, t_n> & b);
+template <typename T, nat t_n> T dot(const vec<T, t_n> & a, const vec<T, t_n> & b);
 
-template <typename T>
-vec3<T> cross(const vec3<T> & a, const vec3<T> & b);
+template <typename T> vec3<T> cross(const vec3<T> & a, const vec3<T> & b);
 
-template <typename T, nat t_n>
-T angle(const vec<T, t_n> & a, const vec<T, t_n> & b);
+template <typename T, nat t_n> T angle(const vec<T, t_n> & a, const vec<T, t_n> & b);
 
-template <typename T, nat t_n>
-vec<T, t_n> lerp(const vec<T, t_n> & v1, const vec<T, t_n> & v2, T t);
+template <typename T, nat t_n> vec<T, t_n> lerp(const vec<T, t_n> & v1, const vec<T, t_n> & v2, T t);
 
 
 
@@ -2882,7 +2887,7 @@ T vec<T, 6>::operator[](nat i) {
 
 template <typename T>
 inline bool operator==(const bound3<T> & v1, const bound3<T> & v2) {
-	return v1.x == v2.x && v1.y == v2.y && v1.z == v2.z && v1.width = v2.width && v1.height == v2.height;
+	return v1.x == v2.x && v1.y == v2.y && v1.z == v2.z && v1.width == v2.width && v1.height == v2.height;
 }
 
 //--- not equal to ---

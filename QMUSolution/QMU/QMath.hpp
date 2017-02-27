@@ -91,7 +91,7 @@ inline fvec2 barycentricToCartesian(const fvec3 & v, const fvec2 & A, const fvec
 }
 
 inline fvec3 cartesianToBarycentric(const fvec2 & v, const fvec2 & A, const fvec2 & B, const fvec2 & C) {
-	mat2 mat(
+	fmat2 mat(
 		A.x - C.x, A.y - C.y,
 		B.x - C.x, B.y - C.y
 	);
@@ -105,11 +105,11 @@ inline fvec3 cartesianToBarycentric(const fvec2 & v, const fvec2 & A, const fvec
 //the point's x and y components, along with thetaPerUnit, determine the distance in radians from the origin
 //the point's z component determines the radius
 inline fvec3 mapToSphere(const fvec3 & v, float thetaPerUnit) {
-	static const mat2 perpMat = rotate(PI_2);
+	static const fmat2 perpMat = rotate(PI_2);
 
 	fvec2 perp = perpMat * fvec2(v);
 	float theta = mag(fvec2(v)) * thetaPerUnit;
-	mat3 rot = rotate(theta, fvec3(perp.x, perp.y, 0.0f));
+	fmat3 rot = rotate(fvec3(perp.x, perp.y, 0.0f), theta);
 
 	return rot * fvec3(0.0f, 0.0f, v.z);
 }

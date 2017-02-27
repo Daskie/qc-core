@@ -10,20 +10,35 @@ namespace qmu {
 
 
 
+using namespace type;
+
+
+
+template <typename T> struct quat;
+
+
+
+using  fquat = quat< float>;
+using  dquat = quat<double>;
+using fnquat = quat<  fnat>;
+
+
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // QUAT ----------------------------------------------------------------------------------------------------------------
 
+template <typename T>
 struct quat {
 
 	union {
 		struct {
-			float x, y, z, w;
+			T x, y, z, w;
 		};
 		struct {
-			fvec3 v;
-			float w;
+			vec3<T> v;
+			T w;
 		};
-		fvec4 v4;
+		vec4<T> v4;
 	};
 
 	//--- constructors ---
@@ -32,16 +47,19 @@ struct quat {
 	constexpr quat(const quat & o);
 	constexpr quat(quat && o);
 
-	constexpr quat(const fvec3 & v, float w);
-	constexpr quat(float x, float y, float z, float w);
-	constexpr explicit quat(const fvec3 & v);
-	constexpr explicit quat(const fvec4 & v);
+	constexpr quat(const vec3<T> & v, const T & w);
+	constexpr quat(const T & x, const T & y, const T & z, const T & w);
+	constexpr explicit quat(const vec3<T> & v);
+	constexpr explicit quat(const vec4<T> & v);
 
 	//--- destructor ---
 
 	~quat() {
-		static_assert(std::is_standard_layout<quat>::value, "quat must be of standard layout");
-		static_assert(sizeof(quat) == 4 * sizeof(float), "quat must be equal in size to 4 floats");
+		static_assert(std::is_standard_layout<quat>::value, "quat<T> must be of standard layout");
+		static_assert(sizeof(quat) == 4 * sizeof(T), "quat<T> must be equal in size to 4 Ts");
+		static_assert(std::is_default_constructible<T>::value, "quat<T> must be default constructible");
+		static_assert(std::is_copy_constructible<T>::value, "quat<T> must be copy constructable");
+		static_assert(std::is_copy_assignable<T>::value, "quat<T> must be copy assignable");
 	}
 
 	//--- assignment operators ---
@@ -51,45 +69,46 @@ struct quat {
 
 	//--- access operators ---
 
-	float operator[](nat i);
+	T operator[](nat i);
 
 	//--- arithmetic assignment operators ---
 
-	friend quat & operator+=(quat & q1, const quat & q2);
+	template <typename T> friend quat<T> & operator+=(quat<T> & q1, const quat<T> & q2);
 
-	friend quat & operator-=(quat & q1, const quat & q2);
+	template <typename T> friend quat<T> & operator-=(quat<T> & q1, const quat<T> & q2);
 
-	friend quat & operator*=(quat & q1, const quat & q2);
+	template <typename T> friend quat<T> & operator*=(quat<T> & q1, const quat<T> & q2);
 
-	friend quat & operator/=(quat & q1, const quat & q2);
+	template <typename T> friend quat<T> & operator/=(quat<T> & q1, const quat<T> & q2);
 
 	//--- arithmetic operators ---
 
-	friend quat operator+(const quat & q);
+	template <typename T> friend quat<T> operator+(const quat<T> & q);
 
-	friend quat operator-(const quat & q);
+	template <typename T> friend quat<T> operator-(const quat<T> & q);
 
-	friend quat operator+(const quat & q1, const quat & q2);
+	template <typename T> friend quat<T> operator+(const quat<T> & q1, const quat<T> & q2);
 
-	friend quat operator-(const quat & q1, const quat & q2);
+	template <typename T> friend quat<T> operator-(const quat<T> & q1, const quat<T> & q2);
 
-	friend quat operator*(const quat & q1, const quat & q2);
-	friend quat operator*(const quat & q, float v);
-	friend quat operator*(float v, const quat & q);
-	friend fvec3 operator*(const quat & q, const fvec3 & v);
+	template <typename T> friend quat<T> operator*(const quat<T> & q1, const quat<T> & q2);
+	template <typename T> friend quat<T> operator*(const quat<T> &  q, const      T  &  v);
+	template <typename T> friend quat<T> operator*(const      T  &  v, const quat<T> &  q);
+	template <typename T> friend vec3<T> operator*(const quat<T> &  q, const vec3<T> &  v);
 
-	friend quat operator/(const quat & q1, const quat & q2);
+	template <typename T> friend quat<T> operator/(const quat<T> & q1, const quat<T> & q2);
 
 	//--- comparison operators ---
 
-	friend bool operator==(const quat & q1, const quat & q2);
+	template <typename T> friend bool operator==(const quat<T> & q1, const quat<T> & q2);
 
-	friend bool operator!=(const quat & q1, const quat & q2);
+	template <typename T> friend bool operator!=(const quat<T> & q1, const quat<T> & q2);
 
 	//--- other ---
 
 	std::string toString() const;
-	friend std::ostream & operator<<(std::ostream & os, const quat & q);
+
+	template <typename T> friend std::ostream & operator<<(std::ostream & os, const quat<T> & q);
 
 };
 
@@ -100,16 +119,16 @@ struct quat {
 
 
 
-float mag(const quat & q);
+template <typename T> T mag(const quat<T> & q);
 
-quat norm(const quat & q);
+template <typename T> quat<T> norm(const quat<T> & q);
 
-quat inv(const quat & q);
+template <typename T> quat<T> inv(const quat<T> & q);
 
-float angle(const quat & q);
+template <typename T> T angle(const quat<T> & q);
 
-fvec3 axis(const quat & q);
-fvec3 axis_n(const quat & q);
+template <typename T> vec3<T> axis(const quat<T> & q);
+template <typename T> vec3<T> axis_n(const quat<T> & q);
 
 
 
@@ -118,28 +137,29 @@ fvec3 axis_n(const quat & q);
 
 
 
-/*quat pow(const quat & q, float t);*/
+//template <typename T>
+//quat<T> pow(const quat<T> & q, T t);
 
-quat rotateQ(float theta, const fvec3 & axis);
-quat rotateQ_n(float theta, const fvec3 & axis);
+template <typename T> quat<T> rotateQ(const T & theta, const vec3<T> & axis);
+template <typename T> quat<T> rotateQ_n(const T & theta, const vec3<T> & axis);
 
-quat alignQ(const fvec3 & v1, const fvec3 & v2);
-quat alignQ_n(const fvec3 & v1, const fvec3 & v2);
+template <typename T> quat<T> alignQ(const vec3<T> & v1, const vec3<T> & v2);
+template <typename T> quat<T> alignQ_n(const vec3<T> & v1, const vec3<T> & v2);
 
 //expects orthogonal fvectors
-quat alignQ(const fvec3 & forward1, const fvec3 & up1, const fvec3 & forward2, const fvec3 & up2);
-quat alignQ_n(const fvec3 & forward1, const fvec3 & up1, const fvec3 & forward2, const fvec3 & up2);
+template <typename T> quat<T> alignQ(const vec3<T> & forward1, const vec3<T> & up1, const vec3<T> & forward2, const vec3<T> & up2);
+template <typename T> quat<T> alignQ_n(const vec3<T> & forward1, const vec3<T> & up1, const vec3<T> & forward2, const vec3<T> & up2);
 
 //theta: thumb points up, phi: right, psi: forward
-quat eulerQ(const fvec3 & forward, const fvec3 & up, float theta, float phi, float psi);
-quat eulerQ_n(const fvec3 & forward, const fvec3 & up, float theta, float phi, float psi);
+template <typename T> quat<T> eulerQ(const vec3<T> & forward, const vec3<T> & up, const T & theta, const T & phi, const T & psi);
+template <typename T> quat<T> eulerQ_n(const vec3<T> & forward, const vec3<T> & up, const T & theta, const T & phi, const T & psi);
 
-mat3 toMat(const quat & q);
+template <typename T> mat3<T> toMat(const quat<T> & q);
 
 //t is a "time" value between 0 and 1
-quat nlerp(const quat & q1, const quat & q2, float t);
+template <typename T> quat<T> nlerp(const quat<T> & q1, const quat<T> & q2, const T & t);
 
-quat slerp(const quat & q1, const quat & q2__, float t);
+template <typename T> quat<T> slerp(const quat<T> & q1, const quat<T> & q2, const T & t);
 
 
 
@@ -159,31 +179,38 @@ quat slerp(const quat & q1, const quat & q2__, float t);
 	
 
 
-constexpr quat::quat() :
+template <typename T>
+constexpr quat<T>::quat() :
 	x(0), y(0), z(0), w(1)
 {}
 
-constexpr quat::quat(const quat & o) :
+template <typename T>
+constexpr quat<T>::quat(const quat<T> & o) :
 	x(o.x), y(o.y), z(o.z), w(o.w)
 {}
 
-constexpr quat::quat(quat && o) :
+template <typename T>
+constexpr quat<T>::quat(quat<T> && o) :
 	x(o.x), y(o.y), z(o.z), w(o.w)
 {}
 
-constexpr quat::quat(const fvec3 & v, float w) :
+template <typename T>
+constexpr quat<T>::quat(const vec3<T> & v, const T & w) :
 	x(v.x), y(v.y), z(v.z), w(w)
 {}
 
-constexpr quat::quat(float x, float y, float z, float w) :
+template <typename T>
+constexpr quat<T>::quat(const T & x, const T & y, const T & z, const T & w) :
 	x(x), y(y), z(z), w(w)
 {}
 
-constexpr quat::quat(const fvec3 & v) :
+template <typename T>
+constexpr quat<T>::quat(const vec3<T> & v) :
 	x(v.x), y(v.y), z(v.z), w(0)
 {}
 
-constexpr quat::quat(const fvec4 & v) :
+template <typename T>
+constexpr quat<T>::quat(const vec4<T> & v) :
 	x(v.x), y(v.y), z(v.z), w(v.w)
 {}
 
@@ -194,12 +221,14 @@ constexpr quat::quat(const fvec4 & v) :
 
 
 
-inline quat & quat::operator=(const quat & o) {
+template <typename T>
+inline quat<T> & quat<T>::operator=(const quat<T> & o) {
 	x = o.x; y = o.y; z = o.z; w = o.w;
 	return *this;
 }
 
-inline quat & quat::operator=(quat && o) {
+template <typename T>
+inline quat<T> & quat<T>::operator=(quat<T> && o) {
 	x = o.x; y = o.y; z = o.z; w = o.w;
 	return *this;
 }
@@ -211,7 +240,8 @@ inline quat & quat::operator=(quat && o) {
 
 
 
-inline float quat::operator[](nat i) {
+template <typename T>
+inline T quat<T>::operator[](nat i) {
 	return *(&x + i);
 }
 
@@ -222,19 +252,23 @@ inline float quat::operator[](nat i) {
 
 
 
-inline quat & operator+=(quat & q1, const quat & q2) {
+template <typename T>
+inline quat<T> & operator+=(quat<T> & q1, const quat<T> & q2) {
 	return q1 = q1 + q2;
 }
 
-inline quat & operator-=(quat & q1, const quat & q2) {
+template <typename T>
+inline quat<T> & operator-=(quat<T> & q1, const quat<T> & q2) {
 	return q1 = q1 - q2;
 }
 
-inline quat & operator*=(quat & q1, const quat & q2) {
+template <typename T>
+inline quat<T> & operator*=(quat<T> & q1, const quat<T> & q2) {
 	return q1 = q1 * q2;
 }
 
-inline quat & operator/=(quat & q1, const quat & q2) {
+template <typename T>
+inline quat<T> & operator/=(quat<T> & q1, const quat<T> & q2) {
 	return q1 = q1 / q2;
 }
 
@@ -245,44 +279,53 @@ inline quat & operator/=(quat & q1, const quat & q2) {
 
 
 
-inline quat operator+(const quat & q) {
-	return quat(+q.x, +q.y, +q.z, +q.w);
+template <typename T>
+inline quat<T> operator+(const quat<T> & q) {
+	return quat<T>(+q.x, +q.y, +q.z, +q.w);
 }
 
-inline quat operator-(const quat & q) {
-	return quat(-q.x, -q.y, -q.z, -q.w);
+template <typename T>
+inline quat<T> operator-(const quat<T> & q) {
+	return quat<T>(-q.x, -q.y, -q.z, -q.w);
 }
 
-inline quat operator+(const quat & q1, const quat & q2) {
-	return quat(q1.x + q2.x, q1.y + q2.y, q1.z + q2.z, q1.w + q2.w);
+template <typename T>
+inline quat<T> operator+(const quat<T> & q1, const quat<T> & q2) {
+	return quat<T>(q1.x + q2.x, q1.y + q2.y, q1.z + q2.z, q1.w + q2.w);
 }
 
-inline quat operator-(const quat & q1, const quat & q2) {
-	return quat(q1.x - q2.x, q1.y - q2.y, q1.z - q2.z, q1.w - q2.w);
+template <typename T>
+inline quat<T> operator-(const quat<T> & q1, const quat<T> & q2) {
+	return quat<T>(q1.x - q2.x, q1.y - q2.y, q1.z - q2.z, q1.w - q2.w);
 }
 
-inline quat operator*(const quat & q1, const quat & q2) {
-	return quat(
+template <typename T>
+inline quat<T> operator*(const quat<T> & q1, const quat<T> & q2) {
+	return quat<T>(
 		q1.w * q2.v + q2.w * q1.v + cross(q1.v, q2.v),
 		q1.w * q2.w - dot(q1.v, q2.v)
 	);
 }
 
-inline quat operator*(const quat & q, float v) {
-	return quat(q.x * v, q.y * v, q.z * v, q.w * v);
+template <typename T>
+inline quat<T> operator*(const quat<T> & q, const T & v) {
+	return quat<T>(q.x * v, q.y * v, q.z * v, q.w * v);
 }
 
-inline quat operator*(float v, const quat & q) {
-	return quat(v * q.x, v * q.y, v * q.z, v * q.w);
+template <typename T>
+inline quat<T> operator*(const T & v, const quat<T> & q) {
+	return quat<T>(v * q.x, v * q.y, v * q.z, v * q.w);
 }
 
-inline fvec3 operator*(const quat & q, const fvec3 & v) {
-	fvec3 t = 2.0f * cross(q.v, v);
+template <typename T>
+inline vec3<T> operator*(const quat<T> & q, const vec3<T> & v) {
+	vec3<T> t(2 * cross(q.v, v));
 	return v + q.w * t + cross(q.v, t);
 }
 
-inline quat operator/(const quat & q1, const quat & q2) {
-	return quat(q1.v * q2.w - q2.v * q1.w - cross(q1.v, q2.v), dot(q1.v4, q2.v4));
+template <typename T>
+inline quat<T> operator/(const quat<T> & q1, const quat<T> & q2) {
+	return quat<T>(q1.v * q2.w - q2.v * q1.w - cross(q1.v, q2.v), dot(q1.v4, q2.v4));
 }
 
 
@@ -292,11 +335,13 @@ inline quat operator/(const quat & q1, const quat & q2) {
 
 
 
-inline bool operator==(const quat & q1, const quat & q2) {
+template <typename T>
+inline bool operator==(const quat<T> & q1, const quat<T> & q2) {
 	return q1.x == q2.x && q1.y == q2.y && q1.z == q2.z && q1.w == q2.w;
 }
 
-inline bool operator!=(const quat & q1, const quat & q2) {
+template <typename T>
+inline bool operator!=(const quat<T> & q1, const quat<T> & q2) {
 	return q1.x != q2.x || q1.y != q2.y || q1.z != q2.z || q1.w != q2.w;
 }
 
@@ -307,11 +352,13 @@ inline bool operator!=(const quat & q1, const quat & q2) {
 
 
 
-inline std::string quat::toString() const {
+template <typename T>
+inline std::string quat<T>::toString() const {
 	return v4.toString();
 }
 
-inline std::ostream & operator<<(std::ostream & os, const quat & q) {
+template <typename T>
+inline std::ostream & operator<<(std::ostream & os, const quat<T> & q) {
 	return os << q.v4.toString();
 }
 
@@ -322,32 +369,38 @@ inline std::ostream & operator<<(std::ostream & os, const quat & q) {
 
 
 
-inline float mag(const quat & q) {
+template <typename T>
+inline T mag(const quat<T> & q) {
 	return sqrt(q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w);
 }
 
-inline quat norm(const quat & q) {
-	float m = mag(q);
-	if (abs(m - 1.0f) < std::numeric_limits<float>::min()) return q;
-	if (abs(m) < std::numeric_limits<float>::min()) return quat(0, 0, 0, 1);
-	m = 1.0f / m;
-	return quat(q.v * m, q.w * m);
+template <typename T>
+inline quat<T> norm(const quat<T> & q) {
+	T m(mag(q));
+	if (abs(m - 1) < std::numeric_limits<T>::min()) return q;
+	if (abs(m) < std::numeric_limits<T>::min()) return quat<T>(0, 0, 0, 1);
+	m = 1 / m;
+	return quat<T>(q.v * m, q.w * m);
 }
 
-inline quat inv(const quat & q) {
-	return quat(-q.v, q.w);
+template <typename T>
+inline quat<T> inv(const quat<T> & q) {
+	return quat<T>(-q.v, q.w);
 }
 
-inline float angle(const quat & q) {
-	return acos(q.w) * 2.0f;
+template <typename T>
+inline T angle(const quat<T> & q) {
+	return acos(q.w) * 2;
 }
 
-inline fvec3 axis(const quat & q) {
+template <typename T>
+inline vec3<T> axis(const quat<T> & q) {
 	return axis_n(norm(q));
 }
-inline fvec3 axis_n(const quat & q) {
-	if (q.w >= 1.0f) return fvec3();
-	return q.v * (1.0f / sqrt(1.0f - q.w * q.w));
+template <typename T>
+inline vec3<T> axis_n(const quat<T> & q) {
+	if (q.w >= 1) return vec3<T>();
+	return q.v * (1 / sqrt(1 - q.w * q.w));
 }
 
 
@@ -357,68 +410,79 @@ inline fvec3 axis_n(const quat & q) {
 
 
 
-/*inline quat pow(const quat & q, float t) {
+/*inline quat<T> pow(const quat<T> & q, const T & t) {
 	return angleAxis(angle(q) * t, axis(q));
 }*/
 
-inline quat rotateQ(float theta, const fvec3 & axis) {
+template <typename T>
+inline quat<T> rotateQ(const T & theta, const vec3<T> & axis) {
 	return rotateQ_n(theta, norm(axis));
 }
-inline quat rotateQ_n(float theta, const fvec3 & axis) {
-	return quat(
-		sin(theta / 2.0f) * axis,
-		cos(theta / 2.0f)
+template <typename T>
+inline quat<T> rotateQ_n(const T & theta, const vec3<T> & axis) {
+	return quat<T>(
+		sin(theta / 2) * axis,
+		cos(theta / 2)
 	);
 }
 
-inline quat alignQ(const fvec3 & v1, const fvec3 & v2) {
+template <typename T>
+inline quat<T> alignQ(const vec3<T> & v1, const vec3<T> & v2) {
 	return alignQ_n(norm(v1), norm(v2));
 }
-inline quat alignQ_n(const fvec3 & v1, const fvec3 & v2) {
+template <typename T>
+inline quat<T> alignQ_n(const vec3<T> & v1, const vec3<T> & v2) {
 	return rotateQ(acos(dot(v1, v2)), cross(v1, v2));
 }
 
-inline quat alignQ(const fvec3 & forward1, const fvec3 & up1, const fvec3 & forward2, const fvec3 & up2) {
+template <typename T>
+inline quat<T> alignQ(const vec3<T> & forward1, const vec3<T> & up1, const vec3<T> & forward2, const vec3<T> & up2) {
 	return alignQ_n(norm(forward1), norm(up1), norm(forward2), norm(up2));
 }
-inline quat alignQ_n(const fvec3 & forward1, const fvec3 & up1, const fvec3 & forward2, const fvec3 & up2) {
-	quat q = alignQ_n(forward1, forward2);
+template <typename T>
+inline quat<T> alignQ_n(const vec3<T> & forward1, const vec3<T> & up1, const vec3<T> & forward2, const vec3<T> & up2) {
+	quat<T> q(alignQ_n(forward1, forward2));
 	return alignQ_n(q * up1, up2) * q;
 }
 
-inline quat eulerQ(const fvec3 & forward, const fvec3 & up, float theta, float phi, float psi) {
+template <typename T>
+inline quat<T> eulerQ(const vec3<T> & forward, const vec3<T> & up, const T & theta, const T & phi, const T & psi) {
 	return eulerQ_n(norm(forward), norm(up), theta, phi, psi);
 }
-inline quat eulerQ_n(const fvec3 & forward, const fvec3 & up, float theta, float phi, float psi) {
+template <typename T>
+inline quat<T> eulerQ_n(const vec3<T> & forward, const vec3<T> & up, const T & theta, const T & phi, const T & psi) {
 	return rotateQ_n(theta, up) * rotateQ_n(phi, cross(forward, up)) * rotateQ_n(psi, forward);
 }
 
-inline mat3 toMat(const quat & q) {
-	float wx = q.w * q.x;
-	float wy = q.w * q.y;
-	float wz = q.w * q.z;
-	float xx = q.x * q.x;
-	float xy = q.x * q.y;
-	float xz = q.x * q.z;
-	float yy = q.y * q.y;
-	float yz = q.y * q.z;
-	float zz = q.z * q.z;
+template <typename T>
+inline mat3<T> toMat(const quat<T> & q) {
+	const T & wx(q.w * q.x);
+	const T & wy(q.w * q.y);
+	const T & wz(q.w * q.z);
+	const T & xx(q.x * q.x);
+	const T & xy(q.x * q.y);
+	const T & xz(q.x * q.z);
+	const T & yy(q.y * q.y);
+	const T & yz(q.y * q.z);
+	const T & zz(q.z * q.z);
 
 	return mat3(
-		1.0f - 2.0f * (yy + zz), 2.0f * (xy + wz), 2.0f * (xz - wy),
-		2.0f * (xy - wz), 1.0f - 2.0f * (xx + zz), 2.0f * (yz + wx),
-		2.0f * (xz + wy), 2.0f * (yz - wx), 1.0f - 2.0f * (xx + yy)
+		1 - 2 * (yy + zz), 2 * (xy + wz), 2 * (xz - wy),
+		2 * (xy - wz), 1 - 2 * (xx + zz), 2 * (yz + wx),
+		2 * (xz + wy), 2 * (yz - wx), 1 - 2 * (xx + yy)
 	);
 }
 
-inline quat nlerp(const quat & q1, const quat & q2, float t) {
-	return norm(quat(lerp(q1.v4, q2.v4, t)));
+template <typename T>
+inline quat<T> nlerp(const quat<T> & q1, const quat<T> & q2, const T & t) {
+	return norm(quat<T>(lerp(q1.v4, q2.v4, t)));
 }
 
-inline quat slerp(const quat & q1, const quat & q2__, float t) {
-	quat q2 = q2__;
+template <typename T>
+inline quat<T> slerp(const quat<T> & q1, const quat<T> & q2_, const T & t) {
+	quat<T> q2(q2_);
 
-	float cosHalfTheta = dot(q1.v4, q2.v4);
+	T cosHalfTheta(dot(q1.v4, q2.v4));
 
 	//make sure to take the shorter route
 	if (cosHalfTheta < 0) {
@@ -426,14 +490,14 @@ inline quat slerp(const quat & q1, const quat & q2__, float t) {
 		q2 = -q2;
 	}
 	//if parallel, no interpolation necessary
-	if (abs(abs(cosHalfTheta) - 1) < std::numeric_limits<float>::min()) {
+	if (abs(abs(cosHalfTheta) - 1) < std::numeric_limits<T>::min()) {
 		return q1;
 	}
 
-	float halfTheta = acos(cosHalfTheta);
-	float sinHalfTheta = sqrt(1.0f - cosHalfTheta * cosHalfTheta);
+	T halfTheta(acos(cosHalfTheta));
+	T sinHalfTheta(sqrt(1 - cosHalfTheta * cosHalfTheta));
 
-	return (q1 * sin((1.0f - t) * halfTheta) + q2 * sin(t * halfTheta)) * (1.0f / sinHalfTheta);
+	return (q1 * sin((1 - t) * halfTheta) + q2 * sin(t * halfTheta)) * (1 / sinHalfTheta);
 }
 
 
