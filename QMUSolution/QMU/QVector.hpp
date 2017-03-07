@@ -775,11 +775,11 @@ struct vec<T, 6> {
 
 
 
-template <typename T, nat t_n> T mag(const vec<T, t_n> & v);
+template <typename T, nat t_n> T magnitude(const vec<T, t_n> & v);
 
-template <typename T, nat t_n> T mag2(const vec<T, t_n> & v);
+template <typename T, nat t_n> T magnitude2(const vec<T, t_n> & v);
 
-template <typename T, nat t_n> vec<T, t_n> norm(const vec<T, t_n> & v);
+template <typename T, nat t_n> vec<T, t_n> normalize(const vec<T, t_n> & v);
 
 template <typename T, nat t_n> T dot(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 
@@ -789,6 +789,8 @@ template <typename T, nat t_n> T angle(const vec<T, t_n> & v1, const vec<T, t_n>
 template <typename T, nat t_n> T angle_n(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 
 template <typename T, nat t_n> vec<T, t_n> lerp(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const T & p);
+
+template <typename T, nat t_n> vec<T, t_n> orthogonal(const vec<T, t_n> & v);
 
 
 
@@ -2922,34 +2924,34 @@ inline std::ostream & operator<<(std::ostream & os, const bound3<T> & v) {
 
 
 
+template <typename T, nat t_n>
+inline T magnitude(const vec<T, t_n> & v) {
+	return static_cast<T>(std::sqrt(magnitude2(v)));
+}
+
 template <typename T>
-inline T mag2(const vec1<T> & v) {
+inline T magnitude2(const vec1<T> & v) {
 	return v.x * v.x;
 }
 
 template <typename T>
-inline T mag2(const vec2<T> & v) {
+inline T magnitude2(const vec2<T> & v) {
 	return v.x * v.x + v.y * v.y;
 }
 
 template <typename T>
-inline T mag2(const vec3<T> & v) {
+inline T magnitude2(const vec3<T> & v) {
 	return v.x * v.x + v.y * v.y + v.z * v.z;
 }
 
 template <typename T>
-inline T mag2(const vec4<T> & v) {
+inline T magnitude2(const vec4<T> & v) {
 	return v.x * v.x + v.y * v.y + v.z * v.z + v.w * v.w;
 }
 
 template <typename T, nat t_n>
-inline T mag(const vec<T, t_n> & v) {
-	return static_cast<T>(std::sqrt(mag2(v)));
-}
-
-template <typename T, nat t_n>
-inline vec<T, t_n> norm(const vec<T, t_n> & v) {
-	T m(mag(v));
+inline vec<T, t_n> normalize(const vec<T, t_n> & v) {
+	T m(magnitude(v));
 	if (abs(m) < std::numeric_limits<T>::min()) {
 		return vec<T, t_n>();
 	}
@@ -2988,7 +2990,7 @@ inline vec3<T> cross(const vec3<T> & v1, const vec3<T> & v2) {
 
 template <typename T, nat t_n>
 inline T angle(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
-	return angle_n(norm(v1), norm(v2));
+	return angle_n(normalize(v1), normalize(v2));
 }
 template <typename T, nat t_n>
 inline T angle_n(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
@@ -2998,6 +3000,31 @@ inline T angle_n(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
 template <typename T, nat t_n>
 inline vec<T, t_n> lerp(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const T & p) {
 	return static_cast<T>(1 - p) * v1 + p * v2;
+}
+
+template <typename T>
+inline vec2<T> orthogonal(const vec2<T> & v) {
+	return vec2<T>(-v.y, v.x);
+}
+
+template <typename T>
+inline vec3<T> orthogonal(const vec3<T> & v) {
+	if (v.x < v.y) {
+		if (v.x < v.z) {
+			return vec3<T>(0, -v.z, v.y);
+		}
+		else {
+			return vec3<T>(-v.y, v.x, 0);
+		}
+	}
+	else {
+		if (v.y < v.z) {
+			return vec3<T>(v.z, 0, -v.x);
+		}
+		else {
+			return vec3<T>(-v.y, v.x, 0);
+		}
+	}
 }
 
 

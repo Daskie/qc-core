@@ -434,20 +434,20 @@ void testVectorTCompilation() {
 	v3 = vec3<T>(1);
 	v4 = vec4<T>(1);
 
-	mag(v1);
-	mag(v2);
-	mag(v3);
-	mag(v4);
+	magnitude(v1);
+	magnitude(v2);
+	magnitude(v3);
+	magnitude(v4);
 	
-	mag2(v1);
-	mag2(v2);
-	mag2(v3);
-	mag2(v4);
+	magnitude2(v1);
+	magnitude2(v2);
+	magnitude2(v3);
+	magnitude2(v4);
 
-	norm(v1);
-	norm(v2);
-	norm(v3);
-	norm(v4);
+	normalize(v1);
+	normalize(v2);
+	normalize(v3);
+	normalize(v4);
 
 	dot(v1, v1);
 	dot(v2, v2);
@@ -470,24 +470,21 @@ void testVectorTCompilation() {
 	lerp(v2, v2, t);
 	lerp(v3, v3, t);
 	lerp(v4, v4, t);
+
+	orthogonal(v2);
+	orthogonal(v3);
 }
 
 void testVectorCompilation() {
-	testVectorTCompilation<             float>();
-	testVectorTCompilation<            double>();
-	testVectorTCompilation<              fnat>();
-	testVectorTCompilation<  signed      char>();
-	testVectorTCompilation<unsigned      char>();
-	testVectorTCompilation<  signed     short>();
-	testVectorTCompilation<unsigned     short>();
-	testVectorTCompilation<  signed       int>();
-	testVectorTCompilation<unsigned       int>();
-	testVectorTCompilation<  signed      long>();
-	testVectorTCompilation<unsigned      long>();
-	testVectorTCompilation<  signed long long>();
-	testVectorTCompilation<unsigned long long>();
-	testVectorTCompilation<               nat>();
-	testVectorTCompilation<              unat>();
+	testVectorTCompilation<    float>();
+	testVectorTCompilation<   double>();
+	testVectorTCompilation<     fnat>();
+	testVectorTCompilation<     char>();
+	testVectorTCompilation<    short>();
+	testVectorTCompilation<      int>();
+	testVectorTCompilation<     long>();
+	testVectorTCompilation<long long>();
+	testVectorTCompilation<      nat>();
 }
 
 template <typename T>
@@ -679,21 +676,21 @@ void testMatrixTCompilation() {
 	//--------------------------------------------------------------------------
 	// Mat Functions
 
-	trans(m2);
-	trans(m3);
-	trans(m4);
-	cof(m2);
-	cof(m3);
-	cof(m4);
-	adj(m2);
-	adj(m3);
-	adj(m4);
-	det(m2);
-	det(m3);
-	det(m4);
-	inv(m2);
-	inv(m3);
-	inv(m4);
+	transpose(m2);
+	transpose(m3);
+	transpose(m4);
+	cofactor(m2);
+	cofactor(m3);
+	cofactor(m4);
+	adjoint(m2);
+	adjoint(m3);
+	adjoint(m4);
+	determinant(m2);
+	determinant(m3);
+	determinant(m4);
+	inverse(m2);
+	inverse(m3);
+	inverse(m4);
 
 	//--------------------------------------------------------------------------
 	// Transformations
@@ -701,8 +698,17 @@ void testMatrixTCompilation() {
 	translate(v1);
 	translate(v2);
 	translate(v3);
+	translate(m2, v1);
+	translate(m3, v2);
+	translate(m4, v3);
 	scale(v2);
 	scale(v3);
+	scale(m2, v1);
+	scale(m2, v2);
+	scale(m3, v2);
+	scale(m3, v3);
+	scale(m4, v3);
+	scale(m4, v4);
 	rotate(t);
 	rotateX(t);
 	rotateY(t);
@@ -721,27 +727,31 @@ void testMatrixTCompilation() {
 	map_n(v2, v2, v2, v2);
 	map(v3, v3, v3, v3, v3, v3);
 	map_n(v3, v3, v3, v3, v3, v3);
-	mapOrtho(v2, v2, v2, v2);
-	mapOrtho_n(v2, v2, v2, v2);
-	mapOrtho(v3, v3, v3, v3, v3, v3);
-	mapOrtho_n(v3, v3, v3, v3, v3, v3);
+	map_o(v2, v2, v2, v2);
+	map_on(v2, v2, v2, v2);
+	map_o(v3, v3, v3, v3, v3, v3);
+	map_on(v3, v3, v3, v3, v3, v3);
 	mapTo(v2, v2);
 	mapTo_n(v2, v2);
 	mapTo(v3, v3, v3);
 	mapTo_n(v3, v3, v3);
-	mapToOrtho(v2, v2);
-	mapToOrtho_n(v2, v2);
-	mapToOrtho(v3, v3, v3);
-	mapToOrtho_n(v3, v3, v3);
+	mapTo_o(v2, v2);
+	mapTo_on(v2, v2);
+	mapTo_o(v3, v3, v3);
+	mapTo_on(v3, v3, v3);
 	mapFrom(v2, v2);
 	mapFrom_n(v2, v2);
 	mapFrom(v3, v3, v3);
 	mapFrom_n(v3, v3, v3);
-	ortho(t, t, t, t);
-	orthoAsym(t, t, t, t, t, t);
-	perspective(t, t, t, t);
-	perspectiveAsym(t, t, t, t, t, t);
+	orthoProj(t, t, t, t);
+	orthoProjAsym(t, t, t, t, t, t);
+	perspProj(t, t, t, t);
+	perspProjAsym(t, t, t, t, t, t);
 	view(v3, v3, v3);
+	view(v3, v3, v3, v3);
+	view_n(v3, v3, v3, v3);
+	view_o(v3, v3, v3, v3);
+	view_on(v3, v3, v3, v3);
 }
 
 void testMatrixCompilation() {
@@ -809,9 +819,9 @@ void testQuaternionTCompilation() {
 
 	q = quat<T>(1, 1, 1, 1);
 
-	mag(q);
-	norm(q);
-	inv(q);
+	magnitude(q);
+	normalize(q);
+	inverse(q);
 	angle(q);
 	axis(q);
 	axis_n(q);

@@ -95,7 +95,7 @@ inline fvec3 cartesianToBarycentric(const fvec2 & v, const fvec2 & A, const fvec
 		A.x - C.x, A.y - C.y,
 		B.x - C.x, B.y - C.y
 	);
-	mat = inv(mat);
+	mat = inverse(mat);
 	fvec3 bary(mat * (v - C));
 	bary.lamC = 1.0f - bary.lamA - bary.lamB;
 	return bary;
@@ -108,7 +108,7 @@ inline fvec3 mapToSphere(const fvec3 & v, float thetaPerUnit) {
 	static const fmat2 perpMat = rotate(PI_2);
 
 	fvec2 perp = perpMat * fvec2(v);
-	float theta = mag(fvec2(v)) * thetaPerUnit;
+	float theta = magnitude(fvec2(v)) * thetaPerUnit;
 	fmat3 rot = rotate(fvec3(perp.x, perp.y, 0.0f), theta);
 
 	return rot * fvec3(0.0f, 0.0f, v.z);
