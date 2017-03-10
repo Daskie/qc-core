@@ -11,38 +11,26 @@
 namespace qmu {
 
 
+// 9 digits to uniquely identify float, 17 digits to uniquely identify double
+template <typename T> constexpr T pi() { return static_cast<T>(3.1415926535897932); }
 
-constexpr float    PI = 3.14159265f; //9 digits to uniquely identify float
-constexpr float  PI_2 = PI / 2.0f;
-constexpr float     E = 2.71828182f;
-constexpr float SQRT2 = 1.41421356f;
-constexpr float SQRT3 = 1.73205081f;
-constexpr float SQRT5 = 2.23606798f;
-constexpr float SQRT7 = 2.64575131f;
+template <typename T> constexpr T e() { return static_cast<T>(2.7182818284590452); }
 
-constexpr double    PI_D = 3.1415926535897932; //17 digits to uniquely identify double
-constexpr double     E_D = 2.7182818284590452;
-constexpr double SQRT2_D = 1.4142135623730950;
-constexpr double SQRT3_D = 1.7320508075688773;
-constexpr double SQRT5_D = 2.2360679774997897;
-constexpr double SQRT7_D = 2.6457513110645906;
+template <typename T> constexpr T sqrt2() { return static_cast<T>(1.4142135623730950); }
+template <typename T> constexpr T sqrt3() { return static_cast<T>(1.7320508075688773); }
+template <typename T> constexpr T sqrt5() { return static_cast<T>(2.2360679774997897); }
+template <typename T> constexpr T sqrt7() { return static_cast<T>(2.6457513110645906); }
 
 
 
-constexpr float radians(float degrees) {
-	return degrees * PI / 180.0f;
+template <typename T>
+constexpr T radians(T degrees) {
+	return degrees * pi<T>() / static_cast<T>(180.0);
 }
 
-constexpr double radians(double degrees) {
-	return degrees * PI_D / 180.0;
-}
-
-constexpr float degrees(float radians) {
-	return radians * 180.0f / PI;
-}
-
-constexpr double degrees(double radians) {
-	return radians * 180.0 / PI_D;
+template <typename T>
+constexpr T degrees(T radians) {
+	return radians * 180.0f / pi<T>();
 }
 
 //r is radius, theta is angle on xy plane, phi is angle from z axis
@@ -74,7 +62,7 @@ inline fvec3 sphericalToCartesian(float rad, float theta, float phi) {
 
 //r is radius, theta is angle on xy plane, phi is angle from z axis
 inline fvec3 cartesianToSpherical(const fvec3 & v) {
-	float rad = sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
+	float rad(std::sqrt(v.x * v.x + v.y * v.y + v.z * v.z));
 	return fvec3(
 		rad,
 		atan2(v.y, v.x),
@@ -105,7 +93,7 @@ inline fvec3 cartesianToBarycentric(const fvec2 & v, const fvec2 & A, const fvec
 //the point's x and y components, along with thetaPerUnit, determine the distance in radians from the origin
 //the point's z component determines the radius
 inline fvec3 mapToSphere(const fvec3 & v, float thetaPerUnit) {
-	static const fmat2 perpMat = rotate(PI_2);
+	static const fmat2 perpMat = rotate(pi<float>() / 2.0f);
 
 	fvec2 perp = perpMat * fvec2(v);
 	float theta = magnitude(fvec2(v)) * thetaPerUnit;

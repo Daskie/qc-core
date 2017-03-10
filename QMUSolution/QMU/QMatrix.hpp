@@ -449,34 +449,21 @@ template <typename T, nat t_n> mat<T, t_n> align_n(const vec<T, t_n> & v1, const
 template <typename T> mat3<T> align(const vec3<T> & forward1, const vec3<T> & up1, const vec3<T> & forward2, const vec3<T> & up2);
 template <typename T> mat3<T> align_n(const vec3<T> & forward1, const vec3<T> & up1, const vec3<T> & forward2, const vec3<T> & up2);
 
+// _o variants (orthogonal) usable when the transformation matrix, T, from basis
+// A to B is orthogonal i.e. A's basis vectors don't need to be orthogonal, nor
+// B's, but the angles between A's basis vectors must be the same as B's
 template <typename T> mat2<T> map(const vec2<T> & x1, const vec2<T> & y1, const vec2<T> & x2, const vec2<T> & y2);
-template <typename T> mat2<T> map_n(const vec2<T> & x1, const vec2<T> & y1, const vec2<T> & x2, const vec2<T> & y2);
-template <typename T> mat3<T> map(const vec3<T> & x1, const vec3<T> & y1, const vec3<T> & z1, const vec3<T> & x2, const vec3<T> & y2, const vec3<T> & z2);
-template <typename T> mat3<T> map_n(const vec3<T> & x1, const vec3<T> & y1, const vec3<T> & z1, const vec3<T> & x2, const vec3<T> & y2, const vec3<T> & z2);
-
-// usable when the transformation matrix, T, from basis A to B is orthogonal
-// i.e. A's basis vectors don't need to be orthogonal, nor B's, but the angles
-// between A's basis vectors must be the same as B's
 template <typename T> mat2<T> map_o(const vec2<T> & x1, const vec2<T> & y1, const vec2<T> & x2, const vec2<T> & y2);
-template <typename T> mat2<T> map_on(const vec2<T> & x1, const vec2<T> & y1, const vec2<T> & x2, const vec2<T> & y2);
+template <typename T> mat3<T> map(const vec3<T> & x1, const vec3<T> & y1, const vec3<T> & z1, const vec3<T> & x2, const vec3<T> & y2, const vec3<T> & z2);
 template <typename T> mat3<T> map_o(const vec3<T> & x1, const vec3<T> & y1, const vec3<T> & z1, const vec3<T> & x2, const vec3<T> & y2, const vec3<T> & z2);
-template <typename T> mat3<T> map_on(const vec3<T> & x1, const vec3<T> & y1, const vec3<T> & z1, const vec3<T> & x2, const vec3<T> & y2, const vec3<T> & z2);
 
 template <typename T> mat2<T> mapTo(const vec2<T> & x, const vec2<T> & y);
-template <typename T> mat2<T> mapTo_n(const vec2<T> & x, const vec2<T> & y);
-template <typename T> mat3<T> mapTo(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z);
-template <typename T> mat3<T> mapTo_n(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z);
-
-// usable when the transformation matrix, T, from basis A to B is orthogonal
-// i.e. A's basis vectors don't need to be orthogonal, nor B's, but the angles
-// between A's basis vectors must be the same as B's
 template <typename T> mat2<T> mapTo_o(const vec2<T> & x, const vec2<T> & y);
-template <typename T> mat2<T> mapTo_on(const vec2<T> & x, const vec2<T> & y);
+template <typename T> mat3<T> mapTo(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z);
 template <typename T> mat3<T> mapTo_o(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z);
-template <typename T> mat3<T> mapTo_on(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z);
 
+template <typename T> mat2<T> mapFrom(const vec2<T> & x, const vec2<T> & y);
 template <typename T> mat3<T> mapFrom(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z);
-template <typename T> mat3<T> mapFrom_n(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z);
 
 template <typename T> mat4<T> orthoProj(const T & width, const T & height, const T & near, const T & far);
 template <typename T> mat4<T> orthoProjAsym(const T & left, const T & right, const T & bottom, const T & top, const T & near, const T & far);
@@ -2236,10 +2223,6 @@ inline mat3<T> align_n(const vec3<T> & forward1, const vec3<T> & up1, const vec3
 
 template <typename T>
 inline mat2<T> map(const vec2<T> & x1, const vec2<T> & y1, const vec2<T> & x2, const vec2<T> & y2) {
-	return map_n(normalize(x1), normalize(y1), normalize(x2), normalize(y2));
-}
-template <typename T>
-inline mat2<T> map_n(const vec2<T> & x1, const vec2<T> & y1, const vec2<T> & x2, const vec2<T> & y2) {
 	mat2<T> a(x1, y1);
 	mat2<T> b(x2, y2);
 
@@ -2247,23 +2230,7 @@ inline mat2<T> map_n(const vec2<T> & x1, const vec2<T> & y1, const vec2<T> & x2,
 }
 
 template <typename T>
-inline mat3<T> map(const vec3<T> & x1, const vec3<T> & y1, const vec3<T> & z1, const vec3<T> & x2, const vec3<T> & y2, const vec3<T> & z2) {
-	return map_n(normalize(x1), normalize(y1), normalize(z1), normalize(x2), normalize(y2), normalize(z2));
-}
-template <typename T>
-inline mat3<T> map_n(const vec3<T> & x1, const vec3<T> & y1, const vec3<T> & z1, const vec3<T> & x2, const vec3<T> & y2, const vec3<T> & z2) {
-	mat3<T> a(x1, y1, z1);
-	mat3<T> b(x2, y2, z2);
-
-	return inverse(b) * a;
-}
-
-template <typename T>
 inline mat2<T> map_o(const vec2<T> & x1, const vec2<T> & y1, const vec2<T> & x2, const vec2<T> & y2) {
-	return map_on(normalize(x1), normalize(y1), normalize(x2), normalize(y2));
-}
-template <typename T>
-inline mat2<T> map_on(const vec2<T> & x1, const vec2<T> & y1, const vec2<T> & x2, const vec2<T> & y2) {
 	mat2<T> a(x1, y1);
 	mat2<T> b(x2, y2);
 
@@ -2271,11 +2238,15 @@ inline mat2<T> map_on(const vec2<T> & x1, const vec2<T> & y1, const vec2<T> & x2
 }
 
 template <typename T>
-inline mat3<T> map_o(const vec3<T> & x1, const vec3<T> & y1, const vec3<T> & z1, const vec3<T> & x2, const vec3<T> & y2, const vec3<T> & z2) {
-	return map_on(normalize(x1), normalize(y1), normalize(z1), normalize(x2), normalize(y2), normalize(z2));
+inline mat3<T> map(const vec3<T> & x1, const vec3<T> & y1, const vec3<T> & z1, const vec3<T> & x2, const vec3<T> & y2, const vec3<T> & z2) {
+	mat3<T> a(x1, y1, z1);
+	mat3<T> b(x2, y2, z2);
+
+	return inverse(b) * a;
 }
+
 template <typename T>
-inline mat3<T> map_on(const vec3<T> & x1, const vec3<T> & y1, const vec3<T> & z1, const vec3<T> & x2, const vec3<T> & y2, const vec3<T> & z2) {
+inline mat3<T> map_o(const vec3<T> & x1, const vec3<T> & y1, const vec3<T> & z1, const vec3<T> & x2, const vec3<T> & y2, const vec3<T> & z2) {
 	mat3<T> a(x1, y1, z1);
 	mat3<T> b(x2, y2, z2);
 
@@ -2284,55 +2255,31 @@ inline mat3<T> map_on(const vec3<T> & x1, const vec3<T> & y1, const vec3<T> & z1
 
 template <typename T>
 inline mat2<T> mapTo(const vec2<T> & x, const vec2<T> & y) {
-	return mapTo_n(normalize(x), normalize(y));
-}
-template <typename T>
-inline mat2<T> mapTo_n(const vec2<T> & x, const vec2<T> & y) {
 	return inverse(mat2<T>(x, y));
 }
 
 template <typename T>
-inline mat3<T> mapTo(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z) {
-	return mapTo_n(normalize(x), normalize(y), normalize(z));
-}
-template <typename T>
-inline mat3<T> mapTo_n(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z) {
-	return inverse(mat3<T>(x, y, z));
-}
-
-template <typename T>
 inline mat2<T> mapTo_o(const vec2<T> & x, const vec2<T> & y) {
-	return mapTo_on(normalize(x), normalize(y));
-}
-template <typename T>
-inline mat2<T> mapTo_on(const vec2<T> & x, const vec2<T> & y) {
 	return transpose(mat2<T>(x, y));
 }
 
 template <typename T>
-inline mat3<T> mapTo_o(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z) {
-	return mapTo_on(normalize(x), normalize(y), normalize(z));
+inline mat3<T> mapTo(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z) {
+	return inverse(mat3<T>(x, y, z));
 }
+
 template <typename T>
-inline mat3<T> mapTo_on(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z) {
+inline mat3<T> mapTo_o(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z) {
 	return transpose(mat3<T>(x, y, z));
 }
 
 template <typename T>
 inline mat2<T> mapFrom(const vec2<T> & x, const vec2<T> & y) {
-	return mapFrom_n(normalize(x), normalize(y));
-}
-template <typename T>
-inline mat2<T> mapFrom_n(const vec2<T> & x, const vec2<T> & y) {
 	return mat2<T>(x, y);
 }
 
 template <typename T>
 inline mat3<T> mapFrom(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z) {
-	return mapFrom_n(normalize(x), normalize(y), normalize(z));
-}
-template <typename T>
-inline mat3<T> mapFrom_n(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z) {
 	return mat3<T>(x, y, z);
 }
 
@@ -2358,11 +2305,11 @@ inline mat4<T> orthoProjAsym(const T & left, const T & right, const T & bottom, 
 
 template <typename T>
 inline mat4<T> perspProj(const T & fov, const T & aspectRatio, const T & near, const T & far) {
-	T near_top = 1 / std::tan(fov / 2);
+	T near_right = 1 / std::tan(fov / 2);
 
 	return mat4<T>(
-		near_top / aspectRatio, 0, 0, 0,
-		0, near_top, 0, 0,
+		near_right, 0, 0, 0,
+		0, near_right / aspectRatio, 0, 0,
 		0, 0, (far + near) / (near - far), -1,
 		0, 0, 2 * far * near / (near - far), 0
 	);
@@ -2389,7 +2336,7 @@ inline mat4<T> view(const vec3<T> & camLoc, const vec3<T> & camForward, const ve
 	vec3<T> x(normalize(cross(up, z)));
 	vec3<T> y(normalize(cross(z, x)));
 
-	return mat4<T>(mapTo_on(x, y, z)) * translate(-camLoc);
+	return mat4<T>(mapTo_o(x, y, z)) * translate(-camLoc);
 }
 
 template <typename T>
@@ -2399,7 +2346,7 @@ inline mat4<T> view(const vec3<T> & camLoc, const vec3<T> & camX, const vec3<T> 
 
 template <typename T>
 inline mat4<T> view_n(const vec3<T> & camLoc, const vec3<T> & camX, const vec3<T> & camY, const vec3<T> & camZ) {
-	return mat4<T>(mapTo_n(camX, camY, camZ)) * translate(-camLoc);
+	return mat4<T>(mapTo(camX, camY, camZ)) * translate(-camLoc);
 }
 
 template <typename T>
@@ -2409,7 +2356,7 @@ inline mat4<T> view_o(const vec3<T> & camLoc, const vec3<T> & camX, const vec3<T
 
 template <typename T>
 inline mat4<T> view_on(const vec3<T> & camLoc, const vec3<T> & camX, const vec3<T> & camY, const vec3<T> & camZ) {
-	return mat4<T>(mapTo_on(camX, camY, camZ)) * translate(-camLoc);
+	return mat4<T>(mapTo_o(camX, camY, camZ)) * translate(-camLoc);
 }
 
 

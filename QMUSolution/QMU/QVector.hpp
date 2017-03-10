@@ -785,6 +785,9 @@ template <typename T, nat t_n> T dot(const vec<T, t_n> & v1, const vec<T, t_n> &
 
 template <typename T, nat t_n> vec<T, t_n> cross(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 
+template <typename T, nat t_n> vec<T, t_n> reflect(const vec<T, t_n> & v, const vec<T, t_n> & n);
+template <typename T, nat t_n> vec<T, t_n> reflect_n(const vec<T, t_n> & v, const vec<T, t_n> & n);
+
 template <typename T, nat t_n> T angle(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 template <typename T, nat t_n> T angle_n(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 
@@ -2986,6 +2989,16 @@ inline T cross(const vec2<T> & v1, const vec2<T> & v2) {
 template <typename T>
 inline vec3<T> cross(const vec3<T> & v1, const vec3<T> & v2) {
 	return vec3<T>(v1.y * v2.z - v1.z * v2.y, v1.z * v2.x - v1.x * v2.z, v1.x * v2.y - v1.y * v2.x);
+}
+
+template <typename T, nat t_n>
+inline vec<T, t_n> reflect(const vec<T, t_n> & v, const vec<T, t_n> & n) {
+	return reflect_n(v, normalize(n));
+}
+
+template <typename T, nat t_n>
+inline vec<T, t_n> reflect_n(const vec<T, t_n> & v, const vec<T, t_n> & n) {
+	return static_cast<T>(2 * dot(v, n)) * n - v;
 }
 
 template <typename T, nat t_n>

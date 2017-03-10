@@ -457,6 +457,9 @@ void testVectorTCompilation() {
 	cross(v2, v2);
 	cross(v3, v3);
 
+	reflect(v2, v2);
+	reflect(v3, v3);
+
 	angle(v1, v1);
 	angle_n(v1, v1);
 	angle(v2, v2);
@@ -724,25 +727,15 @@ void testMatrixTCompilation() {
 	align_n(v2, v2);
 	align_n(v3, v3);
 	map(v2, v2, v2, v2);
-	map_n(v2, v2, v2, v2);
-	map(v3, v3, v3, v3, v3, v3);
-	map_n(v3, v3, v3, v3, v3, v3);
 	map_o(v2, v2, v2, v2);
-	map_on(v2, v2, v2, v2);
+	map(v3, v3, v3, v3, v3, v3);
 	map_o(v3, v3, v3, v3, v3, v3);
-	map_on(v3, v3, v3, v3, v3, v3);
 	mapTo(v2, v2);
-	mapTo_n(v2, v2);
-	mapTo(v3, v3, v3);
-	mapTo_n(v3, v3, v3);
 	mapTo_o(v2, v2);
-	mapTo_on(v2, v2);
+	mapTo(v3, v3, v3);
 	mapTo_o(v3, v3, v3);
-	mapTo_on(v3, v3, v3);
 	mapFrom(v2, v2);
-	mapFrom_n(v2, v2);
 	mapFrom(v3, v3, v3);
-	mapFrom_n(v3, v3, v3);
 	orthoProj(t, t, t, t);
 	orthoProjAsym(t, t, t, t, t, t);
 	perspProj(t, t, t, t);
