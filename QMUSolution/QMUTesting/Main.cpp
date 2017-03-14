@@ -481,6 +481,11 @@ void testVectorTCompilation() {
 
 	orthogonal(v2);
 	orthogonal(v3);
+
+	clamp(v1, t, t);
+	clamp(v2, t, t);
+	clamp(v3, t, t);
+	clamp(v4, t, t);
 }
 
 void testVectorCompilation() {

@@ -800,6 +800,8 @@ template <typename T, nat t_n> vec<T, t_n> lerp(const vec<T, t_n> & v1, const ve
 
 template <typename T, nat t_n> vec<T, t_n> orthogonal(const vec<T, t_n> & v);
 
+template <typename T, nat t_n> vec<T, t_n> clamp(const vec<T, t_n> & v, const T & min, const T & max);
+
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -3078,6 +3080,40 @@ inline vec3<T> orthogonal(const vec3<T> & v) {
 			return vec3<T>(-v.y, v.x, 0);
 		}
 	}
+}
+
+template <typename T>
+constexpr vec1<T> clamp(const vec1<T> & v, const T & min, const T & max) {
+	return vec1<T>(
+		v.x >= min ? (v.x <= max ? v.x : max) : min
+	);
+}
+
+template <typename T>
+constexpr vec2<T> clamp(const vec2<T> & v, const T & min, const T & max) {
+	return vec2<T>(
+		v.x >= min ? (v.x <= max ? v.x : max) : min,
+		v.y >= min ? (v.y <= max ? v.y : max) : min
+	);
+}
+
+template <typename T>
+constexpr vec3<T> clamp(const vec3<T> & v, const T & min, const T & max) {
+	return vec3<T>(
+		v.x >= min ? (v.x <= max ? v.x : max) : min,
+		v.y >= min ? (v.y <= max ? v.y : max) : min,
+		v.z >= min ? (v.z <= max ? v.z : max) : min
+	);
+}
+
+template <typename T>
+constexpr vec4<T> clamp(const vec4<T> & v, const T & min, const T & max) {
+	return vec4<T>(
+		v.x >= min ? (v.x <= max ? v.x : max) : min,
+		v.y >= min ? (v.y <= max ? v.y : max) : min,
+		v.z >= min ? (v.z <= max ? v.z : max) : min,
+		v.w >= min ? (v.w <= max ? v.w : max) : min
+	);
 }
 
 

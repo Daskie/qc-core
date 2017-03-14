@@ -364,7 +364,7 @@ inline vec3<T> rgb2hsl(const vec3<T> & rgb) {
 	// lightness
 	hsl.z = (rgb[minI] + rgb[maxI]) * static_cast<T>(0.5);
 
-	if (hsl.z > 0) {
+	if (hsl.z > 0 && hsl.z < static_cast<T>(1.0)) {
 		// saturation
 		if (hsl.z > static_cast<T>(0.5)) {
 			hsl.y = (rgb[maxI] - rgb[minI]) / (static_cast<T>(2.0) - (hsl.z * static_cast<T>(2.0)));
@@ -388,7 +388,7 @@ inline vec3<T> rgb2hsl(const vec3<T> & rgb) {
 template <typename T, std::enable_if_t<std::is_floating_point<T>::value, int> = 0>
 inline vec3<T> hsl2rgb(const vec3<T> & hsl) {
 	if (hsl.y == 0) {
-		return fvec3(hsl.z, hsl.z, hsl.z);
+		return vec3<T>(hsl.z, hsl.z, hsl.z);
 	}
 
 	vec3<T> rgb(0, 0, 0);

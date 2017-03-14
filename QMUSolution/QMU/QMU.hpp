@@ -77,8 +77,8 @@ constexpr const T & max(const T & a, const T & b, const Ts & ... rest) {
 }
 
 template <typename T>
-constexpr const T & clamp(const T & v, const T & min, const T & max) {
-	return v < min ? min : (v > max ? max : v);
+constexpr T clamp(const T & v, const T & min, const T & max) {
+	return v >= min ? (v <= max ? v : max) : min;
 }
 
 template <typename T, std::enable_if_t<!std::is_unsigned<T>::value, int> = 0>
