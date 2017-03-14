@@ -164,7 +164,8 @@ struct vec<T, 1> {
 
 	//--- access operators ---
 
-	T operator[](nat i);
+	T & operator[](nat i);
+	const T & operator[](nat i) const;
 
 	//--- arithmetic operators ---
 
@@ -302,7 +303,8 @@ struct vec<T, 2> {
 
 	//--- access operators ---
 
-	T operator[](nat i);
+	T & operator[](nat i);
+	const T & operator[](nat i) const;
 
 	//--- arithmetic operators ---
 
@@ -449,7 +451,8 @@ struct vec<T, 3> {
 
 	//--- access operators ---
 
-	T operator[](nat i);
+	T & operator[](nat i);
+	const T & operator[](nat i) const;
 
 	//--- arithmetic operators ---
 
@@ -603,7 +606,8 @@ struct vec<T, 4> {
 
 	//--- access operators ---
 	
-	T operator[](nat i);
+	T & operator[](nat i);
+	const T & operator[](nat i) const;
 
 	//--- arithmetic operators ---
 
@@ -752,7 +756,8 @@ struct vec<T, 6> {
 
 	//--- access operators ---
 
-	T operator[](nat i);
+	T & operator[](nat i);
+	const T & operator[](nat i) const;
 
 	//--- comparison operators ---
 
@@ -856,37 +861,37 @@ constexpr vec<T, 1>::vec(const vec4<T> & v) :
 
 
 template <typename T>
-vec1<T> & vec<T, 1>::operator=(const vec1<T> & v) {
+inline vec1<T> & vec<T, 1>::operator=(const vec1<T> & v) {
 	x = v.x;
 	return *this;
 }
 
 template <typename T>
-vec1<T> & vec<T, 1>::operator=(vec1<T> && v) {
+inline vec1<T> & vec<T, 1>::operator=(vec1<T> && v) {
 	x = v.x;
 	return *this;
 }
 
 template <typename T>
-vec1<T> & vec<T, 1>::operator=(const T & v) {
+inline vec1<T> & vec<T, 1>::operator=(const T & v) {
 	x = v;
 	return *this;
 }
 
 template <typename T>
-vec1<T> & vec<T, 1>::operator=(const vec2<T> & v) {
+inline vec1<T> & vec<T, 1>::operator=(const vec2<T> & v) {
 	x = v.x;
 	return *this;
 }
 
 template <typename T>
-vec1<T> & vec<T, 1>::operator=(const vec3<T> & v) {
+inline vec1<T> & vec<T, 1>::operator=(const vec3<T> & v) {
 	x = v.x;
 	return *this;
 }
 
 template <typename T>
-vec1<T> & vec<T, 1>::operator=(const vec4<T> & v) {
+inline vec1<T> & vec<T, 1>::operator=(const vec4<T> & v) {
 	x = v.x;
 	return *this;
 }
@@ -899,7 +904,14 @@ vec1<T> & vec<T, 1>::operator=(const vec4<T> & v) {
 
 
 template <typename T>
-T vec<T, 1>::operator[](nat i) {
+inline T & vec<T, 1>::operator[](nat i) {
+	return *(&x + i);
+}
+
+
+
+template <typename T>
+inline const T & vec<T, 1>::operator[](nat i) const {
 	return *(&x + i);
 }
 
@@ -1300,37 +1312,37 @@ constexpr vec<T, 2>::vec(const T & v1, const T & v2) :
 
 
 template <typename T>
-vec2<T> & vec<T, 2>::operator=(const vec2<T> & v) {
+inline vec2<T> & vec<T, 2>::operator=(const vec2<T> & v) {
 	x = v.x; y = v.y;
 	return *this;
 }
 
 template <typename T>
-vec2<T> & vec<T, 2>::operator=(vec2<T> && v) {
+inline vec2<T> & vec<T, 2>::operator=(vec2<T> && v) {
 	x = v.x; y = v.y;
 	return *this;
 }
 
 template <typename T>
-vec2<T> & vec<T, 2>::operator=(const T & v) {
+inline vec2<T> & vec<T, 2>::operator=(const T & v) {
 	x = v; y = v;
 	return *this;
 }
 
 template <typename T>
-vec2<T> & vec<T, 2>::operator=(const vec1<T> & v) {
+inline vec2<T> & vec<T, 2>::operator=(const vec1<T> & v) {
 	x = v.x; y = static_cast<T>(0);
 	return *this;
 }
 
 template <typename T>
-vec2<T> & vec<T, 2>::operator=(const vec3<T> & v) {
+inline vec2<T> & vec<T, 2>::operator=(const vec3<T> & v) {
 	x = v.x; y = v.y;
 	return *this;
 }
 
 template <typename T>
-vec2<T> & vec<T, 2>::operator=(const vec4<T> & v) {
+inline vec2<T> & vec<T, 2>::operator=(const vec4<T> & v) {
 	x = v.x; y = v.y;
 	return *this;
 }
@@ -1343,7 +1355,14 @@ vec2<T> & vec<T, 2>::operator=(const vec4<T> & v) {
 
 
 template <typename T>
-T vec<T, 2>::operator[](nat i) {
+inline T & vec<T, 2>::operator[](nat i) {
+	return *(&x + i);
+}
+
+
+
+template <typename T>
+inline const T & vec<T, 2>::operator[](nat i) const {
 	return *(&x + i);
 }
 
@@ -1784,37 +1803,37 @@ constexpr vec<T, 3>::vec(const T & v1, const T & v2, const T & v3) :
 
 
 template <typename T>
-vec3<T> & vec<T, 3>::operator=(const vec3<T> & v) {
+inline vec3<T> & vec<T, 3>::operator=(const vec3<T> & v) {
 	x = v.x; y = v.y; z = v.z;
 	return *this;
 }
 
 template <typename T>
-vec3<T> & vec<T, 3>::operator=(vec3<T> && v) {
+inline vec3<T> & vec<T, 3>::operator=(vec3<T> && v) {
 	x = v.x; y = v.y; z = v.z;
 	return *this;
 }
 
 template <typename T>
-vec3<T> & vec<T, 3>::operator=(const T & v) {
+inline vec3<T> & vec<T, 3>::operator=(const T & v) {
 	x = v; y = v; z = v;
 	return *this;
 }
 
 template <typename T>
-vec3<T> & vec<T, 3>::operator=(const vec1<T> & v) {
+inline vec3<T> & vec<T, 3>::operator=(const vec1<T> & v) {
 	x = v.x; y = static_cast<T>(0); z = static_cast<T>(0);
 	return *this;
 }
 
 template <typename T>
-vec3<T> & vec<T, 3>::operator=(const vec2<T> & v) {
+inline vec3<T> & vec<T, 3>::operator=(const vec2<T> & v) {
 	x = v.x; y = v.y; z = static_cast<T>(0);
 	return *this;
 }
 
 template <typename T>
-vec3<T> & vec<T, 3>::operator=(const vec4<T> & v) {
+inline vec3<T> & vec<T, 3>::operator=(const vec4<T> & v) {
 	x = v.x; y = v.y; z = v.z;
 	return *this;
 }
@@ -1827,7 +1846,14 @@ vec3<T> & vec<T, 3>::operator=(const vec4<T> & v) {
 
 
 template <typename T>
-T vec<T, 3>::operator[](nat i) {
+inline T & vec<T, 3>::operator[](nat i) {
+	return *(&x + i);
+}
+
+
+
+template <typename T>
+inline const T & vec<T, 3>::operator[](nat i) const {
 	return *(&x + i);
 }
 
@@ -2308,37 +2334,37 @@ constexpr vec<T, 4>::vec(const T & v1, const T & v2, const T & v3, const T & v4)
 
 
 template <typename T>
-vec4<T> & vec<T, 4>::operator=(const vec4<T> & v) {
+inline vec4<T> & vec<T, 4>::operator=(const vec4<T> & v) {
 	x = v.x; y = v.y; z = v.z; w = v.w;
 	return *this;
 }
 
 template <typename T>
-vec4<T> & vec<T, 4>::operator=(vec4<T> && v) {
+inline vec4<T> & vec<T, 4>::operator=(vec4<T> && v) {
 	x = v.x; y = v.y; z = v.z; w = v.w;
 	return *this;
 }
 
 template <typename T>
-vec4<T> & vec<T, 4>::operator=(const T & v) {
+inline vec4<T> & vec<T, 4>::operator=(const T & v) {
 	x = v; y = v; z = v; w = v;
 	return *this;
 }
 
 template <typename T>
-vec4<T> & vec<T, 4>::operator=(const vec1<T> & v) {
+inline vec4<T> & vec<T, 4>::operator=(const vec1<T> & v) {
 	x = v.x; y = static_cast<T>(0); z = static_cast<T>(0); w = static_cast<T>(0);
 	return *this;
 }
 
 template <typename T>
-vec4<T> & vec<T, 4>::operator=(const vec2<T> & v) {
+inline vec4<T> & vec<T, 4>::operator=(const vec2<T> & v) {
 	x = v.x; y = v.y; z = static_cast<T>(0); w = static_cast<T>(0);
 	return *this;
 }
 
 template <typename T>
-vec4<T> & vec<T, 4>::operator=(const vec3<T> & v) {
+inline vec4<T> & vec<T, 4>::operator=(const vec3<T> & v) {
 	x = v.x; y = v.y; z = v.z; w = static_cast<T>(0);
 	return *this;
 }
@@ -2351,7 +2377,14 @@ vec4<T> & vec<T, 4>::operator=(const vec3<T> & v) {
 
 
 template <typename T>
-T vec<T, 4>::operator[](nat i) {
+inline T & vec<T, 4>::operator[](nat i) {
+	return *(&x + i);
+}
+
+
+
+template <typename T>
+inline const T & vec<T, 4>::operator[](nat i) const {
 	return *(&x + i);
 }
 
@@ -2855,13 +2888,13 @@ constexpr vec<T, 6>::vec(const T & v1, const T & v2, const T & v3, const T & v4,
 
 
 template <typename T>
-bound3<T> & vec<T, 6>::operator=(const bound3<T> & v) {
+inline bound3<T> & vec<T, 6>::operator=(const bound3<T> & v) {
 	x = v.x; y = v.y; z = v.z; width = v.width; height = v.height; depth = v.depth;
 	return *this;
 }
 
 template <typename T>
-bound3<T> & vec<T, 6>::operator=(bound3<T> && v) {
+inline bound3<T> & vec<T, 6>::operator=(bound3<T> && v) {
 	x = v.x; y = v.y; z = v.z; width = v.width; height = v.height; depth = v.depth;
 	return *this;
 }
@@ -2874,7 +2907,14 @@ bound3<T> & vec<T, 6>::operator=(bound3<T> && v) {
 
 
 template <typename T>
-T vec<T, 6>::operator[](nat i) {
+inline T & vec<T, 6>::operator[](nat i) {
+	return *(&x + i);
+}
+
+
+
+template <typename T>
+inline const T & vec<T, 6>::operator[](nat i) const {
 	return *(&x + i);
 }
 

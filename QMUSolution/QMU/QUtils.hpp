@@ -314,77 +314,114 @@ constexpr float avgCol(const fvec4 & color) {
 	return (color.r + color.g + color.b) / 3.0f;
 }
 
-inline fvec3 rgb2hsl(const fvec3 & color) {
-	float rgb[3]{ color.r, color.g, color.b };
-	fvec3 hsl(0.0f, 0.0f, 0.0f);
+template <typename T, std::enable_if_t<std::is_floating_point<T>::value, int> = 0>
+constexpr ucvec3 convert(const vec3<T> & col) {
+	return ucvec3(
+		static_cast<unsigned char>(clamp(col.r, static_cast<T>(0.0), static_cast<T>(1.0)) * static_cast<T>(255.0)),
+		static_cast<unsigned char>(clamp(col.g, static_cast<T>(0.0), static_cast<T>(1.0)) * static_cast<T>(255.0)),
+		static_cast<unsigned char>(clamp(col.b, static_cast<T>(0.0), static_cast<T>(1.0)) * static_cast<T>(255.0))
+	);
+}
 
-	nat minI = color.r < color.g ? 0 : 1;
-	if (color.b < rgb[minI]) minI = 2;
-	nat maxI = color.r > color.g ? 0 : 1;
-	if (color.b > rgb[maxI]) maxI = 2;
+template <typename T, std::enable_if_t<std::is_floating_point<T>::value, int> = 0>
+constexpr ucvec4 convert(const vec4<T> & col) {
+	return ucvec4(
+		static_cast<unsigned char>(clamp(col.r, static_cast<T>(0.0), static_cast<T>(1.0)) * static_cast<T>(255.0)),
+		static_cast<unsigned char>(clamp(col.g, static_cast<T>(0.0), static_cast<T>(1.0)) * static_cast<T>(255.0)),
+		static_cast<unsigned char>(clamp(col.b, static_cast<T>(0.0), static_cast<T>(1.0)) * static_cast<T>(255.0)),
+		static_cast<unsigned char>(clamp(col.a, static_cast<T>(0.0), static_cast<T>(1.0)) * static_cast<T>(255.0))
+	);
+}
 
-	//lightness
-	hsl.z = (rgb[minI] + rgb[maxI]) / 2.0f;
+template <typename T, std::enable_if_t<std::is_floating_point<T>::value, int> = 0>
+constexpr vec3<T> convert(const ucvec3 & col) {
+	return vec3<T>(
+		static_cast<T>(col.r * static_cast<T>(1.0 / 255.0)),
+		static_cast<T>(col.g * static_cast<T>(1.0 / 255.0)),
+		static_cast<T>(col.b * static_cast<T>(1.0 / 255.0))
+	);
+}
 
-	//saturation
-	if (hsl.z > 0.0f && hsl.z < 1.0f) {
-		if (hsl.z > 0.5f) {
-			hsl.y = (rgb[maxI] - rgb[minI]) / (2.0f - rgb[maxI] - rgb[minI]);
+template <typename T, std::enable_if_t<std::is_floating_point<T>::value, int> = 0>
+constexpr vec4<T> convert(const ucvec4 & col) {
+	return vec4<T>(
+		static_cast<T>(col.r * static_cast<T>(1.0 / 255.0)),
+		static_cast<T>(col.g * static_cast<T>(1.0 / 255.0)),
+		static_cast<T>(col.b * static_cast<T>(1.0 / 255.0)),
+		static_cast<T>(col.a * static_cast<T>(1.0 / 255.0))
+	);
+}
+
+template <typename T, std::enable_if_t<std::is_floating_point<T>::value, int> = 0>
+inline vec3<T> rgb2hsl(const vec3<T> & rgb) {
+	vec3<T> hsl(0, 0, 0);
+
+	nat minI(rgb.r <= rgb.g ? 0 : 1);
+	if (rgb.b < rgb[minI]) minI = 2;
+	nat maxI(rgb.r >= rgb.g ? 0 : 1);
+	if (rgb.b > rgb[maxI]) maxI = 2;
+
+	// lightness
+	hsl.z = (rgb[minI] + rgb[maxI]) * static_cast<T>(0.5);
+
+	if (hsl.z > 0) {
+		// saturation
+		if (hsl.z > static_cast<T>(0.5)) {
+			hsl.y = (rgb[maxI] - rgb[minI]) / (static_cast<T>(2.0) - (hsl.z * static_cast<T>(2.0)));
 		}
 		else {
-			hsl.y = (rgb[maxI] - rgb[minI]) / (rgb[maxI] + rgb[minI]);
+			hsl.y = (rgb[maxI] - rgb[minI]) / (hsl.z * static_cast<T>(2.0));
 		}
 
-		//hue
-		if (hsl.y > 0.0f) {
-			hsl.x = maxI / 3.0f;
-			hsl.x += (rgb[(maxI + 1) % 3] - rgb[((maxI + 2) % 3)]) / (rgb[maxI] - rgb[minI]) * (1.0f / 6.0f);
-			hsl.x += 1.0f;
-			hsl.x -= (nat)hsl.x;
+		if (hsl.y > 0) {
+			// hue
+			hsl.x = maxI * static_cast<T>(1.0 / 3.0);
+			hsl.x += (rgb[(maxI + 1) % 3] - rgb[((maxI + 2) % 3)]) / (rgb[maxI] - rgb[minI]) * static_cast<T>(1.0 / 6.0);
+			hsl.x += static_cast<T>(1.0);
+			hsl.x -= std::floor(hsl.x);
 		}
 	}
 
 	return hsl;
 }
 
-inline fvec3 hsl2rgb(const fvec3 & color) {
-	if (color.y == 0) {
-		return fvec3(color.z, color.z, color.z);
+template <typename T, std::enable_if_t<std::is_floating_point<T>::value, int> = 0>
+inline vec3<T> hsl2rgb(const vec3<T> & hsl) {
+	if (hsl.y == 0) {
+		return fvec3(hsl.z, hsl.z, hsl.z);
 	}
 
-	float rgb[3]{ 0.0f, 0.0f, 0.0f };
-	float temp;
+	vec3<T> rgb(0, 0, 0);
+	T temp;
 
-	//process hue
-	temp = round(color.x * 3.0f);
-	nat maxI = (nat)temp % 3;
-	rgb[maxI] = 1.0f;
-	float secondaryWeight = (color.x * 3.0f - temp) * 2.0f;
-	if (secondaryWeight != 0) {
-		nat midI = (maxI + nat(secondaryWeight > 0 ? ceil(secondaryWeight) : floor(secondaryWeight)) + 3) % 3;
-		rgb[midI] = abs(secondaryWeight);
-	}
+	// hue
+	temp = std::round(hsl.x * static_cast<T>(3.0));
+	nat maxI(static_cast<nat>(temp) % 3);
+	rgb[maxI] = static_cast<T>(1.0);
+	T secondaryWeight((hsl.x * static_cast<T>(3.0) - temp) * static_cast<T>(2.0));
+	nat midI((maxI + nat(secondaryWeight > 0 ? std::ceil(secondaryWeight) : std::floor(secondaryWeight)) + 3) % 3);
+	rgb[midI] = std::abs(secondaryWeight);
 
-	//process saturation
-	temp = 1.0f - color.y;
-	rgb[0] += (0.5f - rgb[0]) * temp;
-	rgb[1] += (0.5f - rgb[1]) * temp;
-	rgb[2] += (0.5f - rgb[2]) * temp;
+	// saturation
+	temp = static_cast<T>(1.0) - hsl.y;
+	rgb.r += (static_cast<T>(0.5) - rgb.r) * temp;
+	rgb.g += (static_cast<T>(0.5) - rgb.g) * temp;
+	rgb.b += (static_cast<T>(0.5) - rgb.b) * temp;
 
-	//process lightness
-	temp = (color.z - 0.5f) * 2.0f;
-	if (color.z > 0.5f) {
-		rgb[0] += (1.0f - rgb[0]) * temp;
-		rgb[1] += (1.0f - rgb[1]) * temp;
-		rgb[2] += (1.0f - rgb[2]) * temp;
+	// lightness
+	temp = (hsl.z - static_cast<T>(0.5)) * static_cast<T>(2.0);
+	if (hsl.z > static_cast<T>(0.5)) {
+		rgb.r += (static_cast<T>(1.0) - rgb.r) * temp;
+		rgb.g += (static_cast<T>(1.0) - rgb.g) * temp;
+		rgb.b += (static_cast<T>(1.0) - rgb.b) * temp;
 	}
 	else {
-		rgb[0] += rgb[0] * temp;
-		rgb[1] += rgb[1] * temp;
-		rgb[2] += rgb[2] * temp;
+		rgb.r += rgb.r * temp;
+		rgb.g += rgb.g * temp;
+		rgb.b += rgb.b * temp;
 	}
 
-	return fvec3(rgb[0], rgb[1], rgb[2]);
+	return rgb;
 }
 
 inline bool readTextFile(const std::string & filepath, std::string & str_dst) {

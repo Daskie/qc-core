@@ -40,6 +40,7 @@ void testVectorTCompilation() {
 
 	// access operators
 	v1[0];
+	static_cast<const vec1<T>>(v1)[0];
 
 	// arithmetic operators
 	v1 += v1;
@@ -124,6 +125,7 @@ void testVectorTCompilation() {
 
 	// access operators
 	v2[0];
+	static_cast<const vec2<T>>(v2)[0];
 
 	// arithmetic operators
 	v2 += v2;
@@ -216,6 +218,7 @@ void testVectorTCompilation() {
 
 	// access operators
 	v3[0];
+	static_cast<const vec3<T>>(v3)[0];
 
 	// arithmetic operators
 	v3 += v3;
@@ -316,6 +319,7 @@ void testVectorTCompilation() {
 
 	// access operators
 	v4[0];
+	static_cast<const vec4<T>>(v4)[0];
 
 	// arithmetic operators
 	v4 += v4;
@@ -417,6 +421,7 @@ void testVectorTCompilation() {
 
 	// access operators
 	v6[0];
+	static_cast<const vec<T, 6>>(v6)[0];
 
 	// comparison operators
 	v6 == v6;
@@ -522,6 +527,7 @@ void testMatrixTCompilation() {
 
 	// access operators
 	m2[0];
+	static_cast<const mat2<T>>(m2)[0];
 
 	// arithmetic assignment operators
 	m2 += t;
@@ -580,6 +586,7 @@ void testMatrixTCompilation() {
 
 	// access operators
 	m3[0];
+	static_cast<const mat3<T>>(m3)[0];
 
 	// arithmetic assignment operators
 	m3 += t;
@@ -638,6 +645,7 @@ void testMatrixTCompilation() {
 
 	// access operators
 	m4[0];
+	static_cast<const mat4<T>>(m4)[0];
 
 	// arithmetic assignment operators
 	m4 += t;

@@ -34,39 +34,51 @@ constexpr T degrees(T radians) {
 }
 
 //r is radius, theta is angle on xy plane, phi is angle from z axis
-inline fvec3 sphericalToCartesian(const fvec3 & v) {
-	float sinTheta = sin(v.theta);
-	float cosTheta = cos(v.theta);
-	float sinPhi = sin(v.phi);
-	float cosPhi = cos(v.phi);
+template <typename T, std::enable_if_t<std::is_floating_point<T>::value, int> = 0>
+inline vec3<T> sphericalToCartesian(const vec3<T> & v) {
+	T sinTheta = std::sin(v.theta);
+	T cosTheta = std::cos(v.theta);
+	T sinPhi = std::sin(v.phi);
+	T cosPhi = std::cos(v.phi);
 
-	return fvec3(
+	return vec3<T>(
 		v.rad * sinPhi * cosTheta,
 		v.rad * sinPhi * sinTheta,
 		v.rad * cosPhi
 	);
 }
 
-inline fvec3 sphericalToCartesian(float rad, float theta, float phi) {
-	float sinTheta = sin(theta);
-	float cosTheta = cos(theta);
-	float sinPhi = sin(phi);
-	float cosPhi = cos(phi);
+template <typename T, std::enable_if_t<std::is_floating_point<T>::value, int> = 0>
+inline vec3<T> sphericalToCartesian(T rad, T theta, T phi) {
+	T sinTheta = std::sin(theta);
+	T cosTheta = std::cos(theta);
+	T sinPhi = std::sin(phi);
+	T cosPhi = std::cos(phi);
 
-	return fvec3(
+	return vec3<T>(
 		rad * sinPhi * cosTheta,
 		rad * sinPhi * sinTheta,
 		rad * cosPhi
 	);
 }
 
-//r is radius, theta is angle on xy plane, phi is angle from z axis
-inline fvec3 cartesianToSpherical(const fvec3 & v) {
-	float rad(std::sqrt(v.x * v.x + v.y * v.y + v.z * v.z));
-	return fvec3(
+template <typename T, std::enable_if_t<std::is_floating_point<T>::value, int> = 0>
+inline vec3<T> cartesianToSpherical(const vec3<T> & v) {
+	T rad(std::sqrt(v.x * v.x + v.y * v.y + v.z * v.z));
+	return vec3<T>(
 		rad,
-		atan2(v.y, v.x),
-		acos(v.z / rad)
+		std::atan2(v.y, v.x),
+		std::acos(v.z / rad)
+	);
+}
+
+template <typename T, std::enable_if_t<std::is_floating_point<T>::value, int> = 0>
+inline vec3<T> cartesianToSpherical(T x, T y, T z) {
+	T rad(std::sqrt(x * x + y * y + z * z));
+	return vec3<T>(
+		rad,
+		std::atan2(y, x),
+		std::acos(z / rad)
 	);
 }
 

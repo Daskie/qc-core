@@ -102,6 +102,7 @@ struct mat<T, 2, 2> {
 	//--- access operators ---
 
 	T & operator[](nat i);
+	const T & operator[](nat i) const;
 
 	//--- arithmetic assignment operators ---
 
@@ -218,6 +219,7 @@ struct mat<T, 3, 3> {
 	//--- access operators ---
 
 	T & operator[](nat i);
+	const T & operator[](nat i) const;
 
 	//--- arithmetic assignment operators ---
 
@@ -337,6 +339,7 @@ struct mat<T, 4, 4> {
 	//--- access operators ---
 
 	T & operator[](nat i);
+	const T & operator[](nat i) const;
 
 	//--- arithmetic assignment operators ---
 
@@ -593,6 +596,13 @@ inline mat2<T> & mat<T, 2, 2>::operator=(const mat4<T> & m) {
 
 template <typename T>
 inline T & mat<T, 2, 2>::operator[](nat i) {
+	return *(&x1 + i);
+}
+
+
+
+template <typename T>
+inline const T & mat<T, 2, 2>::operator[](nat i) const {
 	return *(&x1 + i);
 }
 
@@ -991,6 +1001,13 @@ inline mat3<T> & mat<T, 3, 3>::operator=(const mat4<T> & m) {
 
 template <typename T>
 inline T & mat<T, 3, 3>::operator[](nat i) {
+	return *(&x1 + i);
+}
+
+
+
+template <typename T>
+inline const T & mat<T, 3, 3>::operator[](nat i) const {
 	return *(&x1 + i);
 }
 
@@ -1426,6 +1443,13 @@ inline mat4<T> & mat<T, 4, 4>::operator=(const mat3<T> & m) {
 
 template <typename T>
 inline T & mat<T, 4, 4>::operator[](nat i) {
+	return *(&x1 + i);
+}
+
+
+
+template <typename T>
+inline const T & mat<T, 4, 4>::operator[](nat i) const {
 	return *(&x1 + i);
 }
 
