@@ -11,6 +11,7 @@
 #include <codecvt>
 #include <string>
 #include <sstream>
+#include <iomanip>
 
 #include "QMath.hpp"
 
@@ -134,9 +135,10 @@ inline unsigned char trailingZeroes(u32 x) {
 	return count;
 }
 
-inline float rand(float min, float max) {
-	static std::mt19937 mt(static_cast<unsigned int>(std::chrono::system_clock::now().time_since_epoch().count()));
-	static std::uniform_real_distribution<float> dist(0.0f, 1.0f);
+template <typename T, std::enable_if_t<std::is_floating_point<T>::value, int> = 0>
+inline T rand(T min, T max) {
+	static std::mt19937 mt(static_cast<std::mt19937::result_type>(std::chrono::system_clock::now().time_since_epoch().count()));
+	static std::uniform_real_distribution<T> dist(static_cast<T>(0.0), static_cast<T>(1.0));
 
 	return dist(mt) * (max - min) + min;
 }
@@ -436,6 +438,26 @@ inline bool readTextFile(const std::string & filepath, std::string & str_dst) {
 	str_dst = ss.str();
 
 	return true;
+}
+
+inline std::string timeString(double seconds) {
+	static const double k_secondsPerDay(86400.0);
+	static const double k_secondsPerHour(3600.0);
+	static const double k_secondsPerMinute(60.0);
+	
+	seconds = std::floor(seconds);
+	double days(std::floor(seconds / k_secondsPerDay)); seconds -= days * k_secondsPerDay;
+	double hours(std::floor(seconds / k_secondsPerHour)); seconds -= hours * k_secondsPerHour;
+	double minutes(std::floor(seconds / k_secondsPerMinute)); seconds -= minutes * k_secondsPerMinute;
+
+	std::stringstream ss;
+
+	ss << std::setw(2) << std::setfill('0') << static_cast<nat>(days) << ":";
+	ss << std::setw(2) << std::setfill('0') << static_cast<nat>(hours) << ":";
+	ss << std::setw(2) << std::setfill('0') << static_cast<nat>(minutes) << ":";
+	ss << std::setw(2) << std::setfill('0') << static_cast<nat>(seconds);
+
+	return ss.str();
 }
 
 }

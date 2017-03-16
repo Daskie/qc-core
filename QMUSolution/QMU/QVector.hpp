@@ -222,24 +222,24 @@ struct vec<T, 1> {
 	//--- comparison operators ---
 
 	template <typename T> friend bool operator==(const vec1<T> & v1, const vec1<T> & v2);
-	template <typename T> friend bool operator==(const vec1<T> & v1, const      T  & v2);
-	template <typename T> friend bool operator==(const      T  & v1, const vec1<T> & v2);
+	template <typename T> friend vec1<bool> operator==(const vec1<T> & v1, const      T  & v2);
+	template <typename T> friend vec1<bool> operator==(const      T  & v1, const vec1<T> & v2);
 
 	template <typename T> friend bool operator!=(const vec1<T> & v1, const vec1<T> & v2);
-	template <typename T> friend bool operator!=(const vec1<T> & v1, const      T  & v2);
-	template <typename T> friend bool operator!=(const      T  & v1, const vec1<T> & v2);
+	template <typename T> friend vec1<bool> operator!=(const vec1<T> & v1, const      T  & v2);
+	template <typename T> friend vec1<bool> operator!=(const      T  & v1, const vec1<T> & v2);
 
-	template <typename T> friend bool operator<(const vec1<T> & v1, const      T  & v2);
-	template <typename T> friend bool operator<(const      T  & v1, const vec1<T> & v2);
+	template <typename T> friend vec1<bool> operator<(const vec1<T> & v1, const      T  & v2);
+	template <typename T> friend vec1<bool> operator<(const      T  & v1, const vec1<T> & v2);
 
-	template <typename T> friend bool operator>(const vec1<T> & v1, const      T  & v2);
-	template <typename T> friend bool operator>(const      T  & v1, const vec1<T> & v2);
+	template <typename T> friend vec1<bool> operator>(const vec1<T> & v1, const      T  & v2);
+	template <typename T> friend vec1<bool> operator>(const      T  & v1, const vec1<T> & v2);
 
-	template <typename T> friend bool operator<=(const vec1<T> & v1, const      T  & v2);
-	template <typename T> friend bool operator<=(const      T  & v1, const vec1<T> & v2);
+	template <typename T> friend vec1<bool> operator<=(const vec1<T> & v1, const      T  & v2);
+	template <typename T> friend vec1<bool> operator<=(const      T  & v1, const vec1<T> & v2);
 
-	template <typename T> friend bool operator>=(const vec1<T> & v1, const      T  & v2);
-	template <typename T> friend bool operator>=(const      T  & v1, const vec1<T> & v2);
+	template <typename T> friend vec1<bool> operator>=(const vec1<T> & v1, const      T  & v2);
+	template <typename T> friend vec1<bool> operator>=(const      T  & v1, const vec1<T> & v2);
 
 	//--- other ---
 
@@ -369,24 +369,24 @@ struct vec<T, 2> {
 	//--- comparison operators ---
 
 	template <typename T> friend bool operator==(const vec2<T> & v1, const vec2<T> & v2);
-	template <typename T> friend bool operator==(const vec2<T> & v1, const      T  & v2);
-	template <typename T> friend bool operator==(const      T  & v1, const vec2<T> & v2);
+	template <typename T> friend vec2<bool> operator==(const vec2<T> & v1, const      T  & v2);
+	template <typename T> friend vec2<bool> operator==(const      T  & v1, const vec2<T> & v2);
 
 	template <typename T> friend bool operator!=(const vec2<T> & v1, const vec2<T> & v2);
-	template <typename T> friend bool operator!=(const vec2<T> & v1, const      T  & v2);
-	template <typename T> friend bool operator!=(const      T  & v1, const vec2<T> & v2);
+	template <typename T> friend vec2<bool> operator!=(const vec2<T> & v1, const      T  & v2);
+	template <typename T> friend vec2<bool> operator!=(const      T  & v1, const vec2<T> & v2);
 
-	template <typename T> friend bool operator<(const vec2<T> & v1, const      T  & v2);
-	template <typename T> friend bool operator<(const      T  & v1, const vec2<T> & v2);
+	template <typename T> friend vec2<bool> operator<(const vec2<T> & v1, const      T  & v2);
+	template <typename T> friend vec2<bool> operator<(const      T  & v1, const vec2<T> & v2);
 
-	template <typename T> friend bool operator>(const vec2<T> & v1, const      T  & v2);
-	template <typename T> friend bool operator>(const      T  & v1, const vec2<T> & v2);
+	template <typename T> friend vec2<bool> operator>(const vec2<T> & v1, const      T  & v2);
+	template <typename T> friend vec2<bool> operator>(const      T  & v1, const vec2<T> & v2);
 
-	template <typename T> friend bool operator<=(const vec2<T> & v1, const      T  & v2);
-	template <typename T> friend bool operator<=(const      T  & v1, const vec2<T> & v2);
+	template <typename T> friend vec2<bool> operator<=(const vec2<T> & v1, const      T  & v2);
+	template <typename T> friend vec2<bool> operator<=(const      T  & v1, const vec2<T> & v2);
 
-	template <typename T> friend bool operator>=(const vec2<T> & v1, const      T  & v2);
-	template <typename T> friend bool operator>=(const      T  & v1, const vec2<T> & v2);
+	template <typename T> friend vec2<bool> operator>=(const vec2<T> & v1, const      T  & v2);
+	template <typename T> friend vec2<bool> operator>=(const      T  & v1, const vec2<T> & v2);
 
 	//--- other ---
 
@@ -525,24 +525,24 @@ struct vec<T, 3> {
 	//--- comparison operators ---
 
 	template <typename T> friend bool operator==(const vec3<T> & v1, const vec3<T> & v2);
-	template <typename T> friend bool operator==(const vec3<T> & v1, const      T  & v2);
-	template <typename T> friend bool operator==(const      T  & v1, const vec3<T> & v2);
+	template <typename T> friend vec3<bool> operator==(const vec3<T> & v1, const      T  & v2);
+	template <typename T> friend vec3<bool> operator==(const      T  & v1, const vec3<T> & v2);
 
 	template <typename T> friend bool operator!=(const vec3<T> & v1, const vec3<T> & v2);
-	template <typename T> friend bool operator!=(const vec3<T> & v1, const      T  & v2);
-	template <typename T> friend bool operator!=(const      T  & v1, const vec3<T> & v2);
+	template <typename T> friend vec3<bool> operator!=(const vec3<T> & v1, const      T  & v2);
+	template <typename T> friend vec3<bool> operator!=(const      T  & v1, const vec3<T> & v2);
 
-	template <typename T> friend bool operator<(const vec3<T> & v1, const      T  & v2);
-	template <typename T> friend bool operator<(const      T  & v1, const vec3<T> & v2);
+	template <typename T> friend vec3<bool> operator<(const vec3<T> & v1, const      T  & v2);
+	template <typename T> friend vec3<bool> operator<(const      T  & v1, const vec3<T> & v2);
 
-	template <typename T> friend bool operator>(const vec3<T> & v1, const      T  & v2);
-	template <typename T> friend bool operator>(const      T  & v1, const vec3<T> & v2);
+	template <typename T> friend vec3<bool> operator>(const vec3<T> & v1, const      T  & v2);
+	template <typename T> friend vec3<bool> operator>(const      T  & v1, const vec3<T> & v2);
 
-	template <typename T> friend bool operator<=(const vec3<T> & v1, const      T  & v2);
-	template <typename T> friend bool operator<=(const      T  & v1, const vec3<T> & v2);
+	template <typename T> friend vec3<bool> operator<=(const vec3<T> & v1, const      T  & v2);
+	template <typename T> friend vec3<bool> operator<=(const      T  & v1, const vec3<T> & v2);
 
-	template <typename T> friend bool operator>=(const vec3<T> & v1, const      T  & v2);
-	template <typename T> friend bool operator>=(const      T  & v1, const vec3<T> & v2);
+	template <typename T> friend vec3<bool> operator>=(const vec3<T> & v1, const      T  & v2);
+	template <typename T> friend vec3<bool> operator>=(const      T  & v1, const vec3<T> & v2);
 
 	//--- other ---
 
@@ -688,24 +688,24 @@ struct vec<T, 4> {
 	//--- comparison operators ---
 
 	template <typename T> friend bool operator==(const vec4<T> & v1, const vec4<T> & v2);
-	template <typename T> friend bool operator==(const vec4<T> & v1, const      T  & v2);
-	template <typename T> friend bool operator==(const      T  & v1, const vec4<T> & v2);
+	template <typename T> friend vec4<bool> operator==(const vec4<T> & v1, const      T  & v2);
+	template <typename T> friend vec4<bool> operator==(const      T  & v1, const vec4<T> & v2);
 
 	template <typename T> friend bool operator!=(const vec4<T> & v1, const vec4<T> & v2);
-	template <typename T> friend bool operator!=(const vec4<T> & v1, const      T  & v2);
-	template <typename T> friend bool operator!=(const      T  & v1, const vec4<T> & v2);
+	template <typename T> friend vec4<bool> operator!=(const vec4<T> & v1, const      T  & v2);
+	template <typename T> friend vec4<bool> operator!=(const      T  & v1, const vec4<T> & v2);
 
-	template <typename T> friend bool operator<(const vec4<T> & v1, const      T  & v2);
-	template <typename T> friend bool operator<(const      T  & v1, const vec4<T> & v2);
+	template <typename T> friend vec4<bool> operator<(const vec4<T> & v1, const      T  & v2);
+	template <typename T> friend vec4<bool> operator<(const      T  & v1, const vec4<T> & v2);
 
-	template <typename T> friend bool operator>(const vec4<T> & v1, const      T  & v2);
-	template <typename T> friend bool operator>(const      T  & v1, const vec4<T> & v2);
+	template <typename T> friend vec4<bool> operator>(const vec4<T> & v1, const      T  & v2);
+	template <typename T> friend vec4<bool> operator>(const      T  & v1, const vec4<T> & v2);
 
-	template <typename T> friend bool operator<=(const vec4<T> & v1, const      T  & v2);
-	template <typename T> friend bool operator<=(const      T  & v1, const vec4<T> & v2);
+	template <typename T> friend vec4<bool> operator<=(const vec4<T> & v1, const      T  & v2);
+	template <typename T> friend vec4<bool> operator<=(const      T  & v1, const vec4<T> & v2);
 
-	template <typename T> friend bool operator>=(const vec4<T> & v1, const      T  & v2);
-	template <typename T> friend bool operator>=(const      T  & v1, const vec4<T> & v2);
+	template <typename T> friend vec4<bool> operator>=(const vec4<T> & v1, const      T  & v2);
+	template <typename T> friend vec4<bool> operator>=(const      T  & v1, const vec4<T> & v2);
 
 	//--- other ---
 
@@ -1159,13 +1159,13 @@ inline bool operator==(const vec1<T> & v1, const vec1<T> & v2) {
 }
 
 template <typename T>
-inline bool operator==(const vec1<T> & v1, const T & v2) {
-	return v1.x == v2;
+inline vec1<bool> operator==(const vec1<T> & v1, const T & v2) {
+	return vec1<bool>(v1.x == v2);
 }
 
 template <typename T>
-inline bool operator==(const T & v1, const vec1<T> & v2) {
-	return v1 == v2.x;
+inline vec1<bool> operator==(const T & v1, const vec1<T> & v2) {
+	return vec1<bool>(v1 == v2.x);
 }
 
 //--- not equal to ---
@@ -1176,61 +1176,61 @@ inline bool operator!=(const vec1<T> & v1, const vec1<T> & v2) {
 }
 
 template <typename T>
-inline bool operator!=(const vec1<T> & v1, const T & v2) {
-	return v1.x != v2;
+inline vec1<bool> operator!=(const vec1<T> & v1, const T & v2) {
+	return vec1<bool>(v1.x != v2);
 }
 
 template <typename T>
-inline bool operator!=(const T & v1, const vec1<T> & v2) {
-	return v1 != v2.x;
+inline vec1<bool> operator!=(const T & v1, const vec1<T> & v2) {
+	return vec1<bool>(v1 != v2.x);
 }
 
 //--- less than ---
 
 template <typename T>
-inline bool operator<(const vec1<T> & v1, const T & v2) {
-	return v1.x < v2;
+inline vec1<bool> operator<(const vec1<T> & v1, const T & v2) {
+	return vec1<bool>(v1.x < v2);
 }
 
 template <typename T>
-inline bool operator<(const T & v1, const vec1<T> & v2) {
-	return  v1 < v2.x;
+inline vec1<bool> operator<(const T & v1, const vec1<T> & v2) {
+	return vec1<bool>(v1 < v2.x);
 }
 
 //--- greater than ---
 
 template <typename T>
-inline bool operator>(const vec1<T> & v1, const T & v2) {
-	return v1.x > v2;
+inline vec1<bool> operator>(const vec1<T> & v1, const T & v2) {
+	return vec1<bool>(v1.x > v2);
 }
 
 template <typename T>
-inline bool operator>(const T & v1, const vec1<T> & v2) {
-	return  v1 > v2.x;
+inline vec1<bool> operator>(const T & v1, const vec1<T> & v2) {
+	return vec1<bool>(v1 > v2.x);
 }
 
 //--- less than or equal to ---
 
 template <typename T>
-inline bool operator<=(const vec1<T> & v1, const T & v2) {
-	return v1.x <= v2;
+inline vec1<bool> operator<=(const vec1<T> & v1, const T & v2) {
+	return vec1<bool>(v1.x <= v2);
 }
 
 template <typename T>
-inline bool operator<=(const T & v1, const vec1<T> & v2) {
-	return  v1 <= v2.x;
+inline vec1<bool> operator<=(const T & v1, const vec1<T> & v2) {
+	return vec1<bool>(v1 <= v2.x);
 }
 
 //--- greater than or equal to ---
 
 template <typename T>
-inline bool operator>=(const vec1<T> & v1, const T & v2) {
-	return v1.x >= v2;
+inline vec1<bool> operator>=(const vec1<T> & v1, const T & v2) {
+	return vec1<bool>(v1.x >= v2);
 }
 
 template <typename T>
-inline bool operator>=(const T & v1, const vec1<T> & v2) {
-	return  v1 >= v2.x;
+inline vec1<bool> operator>=(const T & v1, const vec1<T> & v2) {
+	return vec1<bool>(v1 >= v2.x);
 }
 
 
@@ -1650,13 +1650,13 @@ inline bool operator==(const vec2<T> & v1, const vec2<T> & v2) {
 }
 
 template <typename T>
-inline bool operator==(const vec2<T> & v1, const T & v2) {
-	return v1.x == v2 && v1.y == v2;
+inline vec2<bool> operator==(const vec2<T> & v1, const T & v2) {
+	return vec2<bool>(v1.x == v2, v1.y == v2);
 }
 
 template <typename T>
-inline bool operator==(const T & v1, const vec2<T> & v2) {
-	return v1 == v2.x && v1 == v2.y;
+inline vec2<bool> operator==(const T & v1, const vec2<T> & v2) {
+	return vec2<bool>(v1 == v2.x, v1 == v2.y);
 }
 
 //--- not equal to ---
@@ -1667,61 +1667,61 @@ inline bool operator!=(const vec2<T> & v1, const vec2<T> & v2) {
 }
 
 template <typename T>
-inline bool operator!=(const vec2<T> & v1, const T & v2) {
-	return v1.x != v2 || v1.y != v2;
+inline vec2<bool> operator!=(const vec2<T> & v1, const T & v2) {
+	return vec2<bool>(v1.x != v2, v1.y != v2);
 }
 
 template <typename T>
-inline bool operator!=(const T & v1, const vec2<T> & v2) {
-	return v1 != v2.x || v1 != v2.y;
+inline vec2<bool> operator!=(const T & v1, const vec2<T> & v2) {
+	return vec2<bool>(v1 != v2.x, v1 != v2.y);
 }
 
 //--- less than ---
 
 template <typename T>
-inline bool operator<(const vec2<T> & v1, const T & v2) {
-	return v1.x < v2 && v1.y < v2;
+inline vec2<bool> operator<(const vec2<T> & v1, const T & v2) {
+	return vec2<bool>(v1.x < v2 && v1.y < v2);
 }
 
 template <typename T>
-inline bool operator<(const T & v1, const vec2<T> & v2) {
-	return  v1 < v2.x && v1 < v2.y;
+inline vec2<bool> operator<(const T & v1, const vec2<T> & v2) {
+	return vec2<bool>(v1 < v2.x, v1 < v2.y);
 }
 
 //--- greater than ---
 
 template <typename T>
-inline bool operator>(const vec2<T> & v1, const T & v2) {
-	return v1.x > v2 && v1.y > v2;
+inline vec2<bool> operator>(const vec2<T> & v1, const T & v2) {
+	return vec2<bool>(v1.x > v2, v1.y > v2);
 }
 
 template <typename T>
-inline bool operator>(const T & v1, const vec2<T> & v2) {
-	return  v1 > v2.x && v1 > v2.y;
+inline vec2<bool> operator>(const T & v1, const vec2<T> & v2) {
+	return vec2<bool>(v1 > v2.x, v1 > v2.y);
 }
 
 //--- less than or equal to ---
 
 template <typename T>
-inline bool operator<=(const vec2<T> & v1, const T & v2) {
-	return v1.x <= v2 && v1.y <= v2;
+inline vec2<bool> operator<=(const vec2<T> & v1, const T & v2) {
+	return vec2<bool>(v1.x <= v2, v1.y <= v2);
 }
 
 template <typename T>
-inline bool operator<=(const T & v1, const vec2<T> & v2) {
-	return  v1 <= v2.x && v1 <= v2.y;
+inline vec2<bool> operator<=(const T & v1, const vec2<T> & v2) {
+	return vec2<bool>(v1 <= v2.x, v1 <= v2.y);
 }
 
 //--- greater than or equal to ---
 
 template <typename T>
-inline bool operator>=(const vec2<T> & v1, const T & v2) {
-	return v1.x >= v2 && v1.y >= v2;
+inline vec2<bool> operator>=(const vec2<T> & v1, const T & v2) {
+	return vec2<bool>(v1.x >= v2, v1.y >= v2);
 }
 
 template <typename T>
-inline bool operator>=(const T & v1, const vec2<T> & v2) {
-	return  v1 >= v2.x && v1 >= v2.y;
+inline vec2<bool> operator>=(const T & v1, const vec2<T> & v2) {
+	return vec2<bool>(v1 >= v2.x, v1 >= v2.y);
 }
 
 
@@ -2181,13 +2181,13 @@ inline bool operator==(const vec3<T> & v1, const vec3<T> & v2) {
 }
 
 template <typename T>
-inline bool operator==(const vec3<T> & v1, const T & v2) {
-	return v1.x == v2 && v1.y == v2 && v1.z == v2;
+inline vec3<bool> operator==(const vec3<T> & v1, const T & v2) {
+	return vec3<bool>(v1.x == v2, v1.y == v2, v1.z == v2);
 }
 
 template <typename T>
-inline bool operator==(const T & v1, const vec3<T> & v2) {
-	return v1 == v2.x && v1 == v2.y && v1 == v2.z;
+inline vec3<bool> operator==(const T & v1, const vec3<T> & v2) {
+	return vec3<bool>(v1 == v2.x, v1 == v2.y, v1 == v2.z);
 }
 
 //--- not equal to ---
@@ -2198,61 +2198,61 @@ inline bool operator!=(const vec3<T> & v1, const vec3<T> & v2) {
 }
 
 template <typename T>
-inline bool operator!=(const vec3<T> & v1, const T & v2) {
-	return v1.x != v2 || v1.y != v2 || v1.z != v2;
+inline vec3<bool> operator!=(const vec3<T> & v1, const T & v2) {
+	return vec3<bool>(v1.x != v2, v1.y != v2, v1.z != v2);
 }
 
 template <typename T>
-inline bool operator!=(const T & v1, const vec3<T> & v2) {
-	return v1 != v2.x || v1 != v2.y || v1 != v2.z;
+inline vec3<bool> operator!=(const T & v1, const vec3<T> & v2) {
+	return vec3<bool>(v1 != v2.x, v1 != v2.y, v1 != v2.z);
 }
 
 //--- less than ---
 
 template <typename T>
-inline bool operator<(const vec3<T> & v1, const T & v2) {
-	return v1.x < v2 && v1.y < v2 && v1.z < v2;
+inline vec3<bool> operator<(const vec3<T> & v1, const T & v2) {
+	return vec3<bool>(v1.x < v2, v1.y < v2, v1.z < v2);
 }
 
 template <typename T>
-inline bool operator<(const T & v1, const vec3<T> & v2) {
-	return  v1 < v2.x && v1 < v2.y && v1 < v2.z;
+inline vec3<bool> operator<(const T & v1, const vec3<T> & v2) {
+	return vec3<bool>(v1 < v2.x, v1 < v2.y, v1 < v2.z);
 }
 
 //--- greater than ---
 
 template <typename T>
-inline bool operator>(const vec3<T> & v1, const T & v2) {
-	return v1.x > v2 && v1.y > v2 && v1.z > v2;
+inline vec3<bool> operator>(const vec3<T> & v1, const T & v2) {
+	return vec3<bool>(v1.x > v2, v1.y > v2, v1.z > v2);
 }
 
 template <typename T>
-inline bool operator>(const T & v1, const vec3<T> & v2) {
-	return  v1 > v2.x && v1 > v2.y && v1 > v2.z;
+inline vec3<bool> operator>(const T & v1, const vec3<T> & v2) {
+	return vec3<bool>(v1 > v2.x, v1 > v2.y, v1 > v2.z);
 }
 
 //--- less than or equal to ---
 
 template <typename T>
-inline bool operator<=(const vec3<T> & v1, const T & v2) {
-	return v1.x <= v2 && v1.y <= v2 && v1.z <= v2;
+inline vec3<bool> operator<=(const vec3<T> & v1, const T & v2) {
+	return vec3<bool>(v1.x <= v2, v1.y <= v2, v1.z <= v2);
 }
 
 template <typename T>
-inline bool operator<=(const T & v1, const vec3<T> & v2) {
-	return  v1 <= v2.x && v1 <= v2.y && v1 <= v2.z;
+inline vec3<bool> operator<=(const T & v1, const vec3<T> & v2) {
+	return vec3<bool>(v1 <= v2.x, v1 <= v2.y, v1 <= v2.z);
 }
 
 //--- greater than or equal to ---
 
 template <typename T>
-inline bool operator>=(const vec3<T> & v1, const T & v2) {
-	return v1.x >= v2 && v1.y >= v2 && v1.z >= v2;
+inline vec3<bool> operator>=(const vec3<T> & v1, const T & v2) {
+	return vec3<bool>(v1.x >= v2, v1.y >= v2, v1.z >= v2);
 }
 
 template <typename T>
-inline bool operator>=(const T & v1, const vec3<T> & v2) {
-	return  v1 >= v2.x && v1 >= v2.y && v1 >= v2.z;
+inline vec3<bool> operator>=(const T & v1, const vec3<T> & v2) {
+	return vec3<bool>(v1 >= v2.x, v1 >= v2.y, v1 >= v2.z);
 }
 
 
@@ -2752,13 +2752,13 @@ inline bool operator==(const vec4<T> & v1, const vec4<T> & v2) {
 }
 
 template <typename T>
-inline bool operator==(const vec4<T> & v1, const T & v2) {
-	return v1.x == v2 && v1.y == v2 && v1.z == v2 && v1.w == v2;
+inline vec4<bool> operator==(const vec4<T> & v1, const T & v2) {
+	return vec4<bool>(v1.x == v2, v1.y == v2, v1.z == v2, v1.w == v2);
 }
 
 template <typename T>
-inline bool operator==(const T & v1, const vec4<T> & v2) {
-	return v1 == v2.x && v1 == v2.y && v1 == v2.z && v1 == v2.w;
+inline vec4<bool> operator==(const T & v1, const vec4<T> & v2) {
+	return vec4<bool>(v1 == v2.x, v1 == v2.y, v1 == v2.z, v1 == v2.w);
 }
 
 //--- not equal to ---
@@ -2769,61 +2769,61 @@ inline bool operator!=(const vec4<T> & v1, const vec4<T> & v2) {
 }
 
 template <typename T>
-inline bool operator!=(const vec4<T> & v1, const T & v2) {
-	return v1.x != v2 || v1.y != v2 || v1.z != v2 || v1.w != v2;
+inline vec4<bool> operator!=(const vec4<T> & v1, const T & v2) {
+	return vec4<bool>(v1.x != v2, v1.y != v2, v1.z != v2, v1.w != v2);
 }
 
 template <typename T>
-inline bool operator!=(const T & v1, const vec4<T> & v2) {
-	return v1 != v2.x || v1 != v2.y || v1 != v2.z || v1 != v2.w;
+inline vec4<bool> operator!=(const T & v1, const vec4<T> & v2) {
+	return vec4<bool>(v1 != v2.x, v1 != v2.y, v1 != v2.z, v1 != v2.w);
 }
 
 //--- less than ---
 
 template <typename T>
-inline bool operator<(const vec4<T> & v1, const T & v2) {
-	return v1.x < v2 && v1.y < v2 && v1.z < v2 && v1.w < v2;
+inline vec4<bool> operator<(const vec4<T> & v1, const T & v2) {
+	return vec4<bool>(v1.x < v2, v1.y < v2, v1.z < v2, v1.w < v2);
 }
 
 template <typename T>
-inline bool operator<(const T & v1, const vec4<T> & v2) {
-	return  v1 < v2.x && v1 < v2.y && v1 < v2.z && v1 < v2.w;
+inline vec4<bool> operator<(const T & v1, const vec4<T> & v2) {
+	return vec4<bool>(v1 < v2.x, v1 < v2.y, v1 < v2.z, v1 < v2.w);
 }
 
 //--- greater than ---
 
 template <typename T>
-inline bool operator>(const vec4<T> & v1, const T & v2) {
-	return v1.x > v2 && v1.y > v2 && v1.z > v2 && v1.w > v2;
+inline vec4<bool> operator>(const vec4<T> & v1, const T & v2) {
+	return vec4<bool>(v1.x > v2, v1.y > v2, v1.z > v2, v1.w > v2);
 }
 
 template <typename T>
-inline bool operator>(const T & v1, const vec4<T> & v2) {
-	return  v1 > v2.x && v1 > v2.y && v1 > v2.z && v1 > v2.w;
+inline vec4<bool> operator>(const T & v1, const vec4<T> & v2) {
+	return vec4<bool>(v1 > v2.x, v1 > v2.y, v1 > v2.z, v1 > v2.w);
 }
 
 //--- less than or equal to ---
 
 template <typename T>
-inline bool operator<=(const vec4<T> & v1, const T & v2) {
-	return v1.x <= v2 && v1.y <= v2 && v1.z <= v2 && v1.w <= v2;
+inline vec4<bool> operator<=(const vec4<T> & v1, const T & v2) {
+	return vec4<bool>(v1.x <= v2, v1.y <= v2, v1.z <= v2, v1.w <= v2);
 }
 
 template <typename T>
-inline bool operator<=(const T & v1, const vec4<T> & v2) {
-	return  v1 <= v2.x && v1 <= v2.y && v1 <= v2.z && v1 <= v2.w;
+inline vec4<bool> operator<=(const T & v1, const vec4<T> & v2) {
+	return vec4<bool>(v1 <= v2.x, v1 <= v2.y, v1 <= v2.z, v1 <= v2.w);
 }
 
 //--- greater than or equal to ---
 
 template <typename T>
-inline bool operator>=(const vec4<T> & v1, const T & v2) {
-	return v1.x >= v2 && v1.y >= v2 && v1.z >= v2 && v1.w >= v2;
+inline vec4<bool> operator>=(const vec4<T> & v1, const T & v2) {
+	return vec4<bool>(v1.x >= v2, v1.y >= v2, v1.z >= v2, v1.w >= v2);
 }
 
 template <typename T>
-inline bool operator>=(const T & v1, const vec4<T> & v2) {
-	return  v1 >= v2.x && v1 >= v2.y && v1 >= v2.z && v1 >= v2.w;
+inline vec4<bool> operator>=(const T & v1, const vec4<T> & v2) {
+	return vec4<bool>(v1 >= v2.x, v1 >= v2.y, v1 >= v2.z, v1 >= v2.w);
 }
 
 
