@@ -3,6 +3,8 @@
 
 
 #include <cstdint>
+#include <type_traits>
+#include <cmath>
 
 
 
@@ -92,14 +94,25 @@ constexpr T abs(const T & v) {
 }
 
 template <typename T, std::enable_if_t<std::is_floating_point<T>::value, int> = 0>
-constexpr bool is0(const T & v) {
-	return abs(v) < std::numeric_limits<T>::min();
+constexpr bool zero(const T & v, const T & e = std::numeric_limits<T>::min()) {
+	return abs(v) < e;
 }
 
 template <typename T, std::enable_if_t<!std::is_floating_point<T>::value, int> = 0>
-constexpr bool is0(const T & v) {
+constexpr bool zero(const T & v) {
 	return v == 0;
 }
+
+template <typename T, std::enable_if_t<std::is_floating_point<T>::value, int> = 0>
+constexpr bool equal(const T & v1, const T & v2, const T & e = std::numeric_limits<T>::min()) {
+	return zero(v1 - v2, e);
+}
+
+template <typename T, std::enable_if_t<!std::is_floating_point<T>::value, int> = 0>
+constexpr bool zero(const T & v1, const T & v2) {
+	return zero(v1 - v2);
+}
+
 
 template <typename T, std::enable_if_t<std::is_integral<T>::value && sizeof(T) == 1, int> = 0>
 inline match_sign_t<nat, T> log2(T x) {

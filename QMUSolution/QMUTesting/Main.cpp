@@ -10,12 +10,13 @@ using namespace qmu;
 
 template <typename T>
 void testVectorTCompilation() {
-	T t;
+	T v;
 	vec1<T> v1;
 	vec2<T> v2;
 	vec3<T> v3;
 	vec4<T> v4;
 	vec<T, 6> v6;
+	vec<T, 8> v8;
 	std::stringstream os;
 
 	//--------------------------------------------------------------------------
@@ -25,7 +26,7 @@ void testVectorTCompilation() {
 	vec1<T> v1_1;
 	vec1<T> v1_2(v1);
 	vec1<T> v1_3(std::move(v1));
-	vec1<T> v1_4(t);
+	vec1<T> v1_4(v);
 	vec1<T> v1_5(v2);
 	vec1<T> v1_6(v3);
 	vec1<T> v1_7(v4);
@@ -33,7 +34,7 @@ void testVectorTCompilation() {
 	// assignment operators
 	v1 = v1;
 	v1 = std::move(v1);
-	v1 = t;
+	v1 = v;
 	v1 = v2;
 	v1 = v3;
 	v1 = v4;
@@ -44,17 +45,17 @@ void testVectorTCompilation() {
 
 	// arithmetic operators
 	v1 += v1;
-	v1 += t;
+	v1 += v;
 	v1 += v2;
 	v1 += v3;
 	v1 += v4;
 	v1 -= v1;
-	v1 -= t;
+	v1 -= v;
 	v1 -= v2;
 	v1 -= v3;
 	v1 -= v4;
 	v1 *= v1;
-	v1 *= t;
+	v1 *= v;
 	v1 *= v2;
 	v1 *= v3;
 	v1 *= v4;
@@ -70,33 +71,33 @@ void testVectorTCompilation() {
 	+v1;
 	-v1;
 	v1 + v1;
-	v1 + t;
-	t + v1;
+	v1 + v;
+	v + v1;
 	v1 - v1;
-	v1 - t;
-	t - v1;
+	v1 - v;
+	v - v1;
 	v1 * v1;
-	v1 * t;
-	t * v1;
+	v1 * v;
+	v * v1;
 	v1 / vec1<T>(1);
 	v1 / T(1);
-	t / vec1<T>(1);
+	v / vec1<T>(1);
 
 	// comparison operators
 	v1 == v1;
-	v1 == t;
-	t == v1;
+	v1 == v;
+	v == v1;
 	v1 != v1;
-	v1 != t;
-	t != v1;
-	v1 < t;
-	t < v1;
-	v1 > t;
-	t > v1;
-	v1 <= t;
-	t <= v1;
-	v1 >= t;
-	t >= v1;
+	v1 != v;
+	v != v1;
+	v1 < v;
+	v < v1;
+	v1 > v;
+	v > v1;
+	v1 <= v;
+	v <= v1;
+	v1 >= v;
+	v >= v1;
 
 	// other
 	v1.toString();
@@ -106,19 +107,22 @@ void testVectorTCompilation() {
 	// Vec2
 
 	// constructors
-	vec2<T> v2_1;
-	vec2<T> v2_2(v2);
-	vec2<T> v2_3(std::move(v2));
-	vec2<T> v2_4(t);
-	vec2<T> v2_5(v1);
-	vec2<T> v2_6(v3);
-	vec2<T> v2_7(v4);
-	vec2<T> v2_8(t, t);
+	vec2<T> v2_01;
+	vec2<T> v2_02(v2);
+	vec2<T> v2_03(std::move(v2));
+	vec2<T> v2_04(v);
+	vec2<T> v2_05(v1);
+	vec2<T> v2_06(v3);
+	vec2<T> v2_07(v4);
+	vec2<T> v2_08(v, v);
+	vec2<T> v2_09(v1, v);
+	vec2<T> v2_10(v, v1);
+	vec2<T> v2_11(v1, v1);
 
 	// assignment operators
 	v2 = v2;
 	v2 = std::move(v2);
-	v2 = t;
+	v2 = v;
 	v2 = v1;
 	v2 = v3;
 	v2 = v4;
@@ -129,17 +133,17 @@ void testVectorTCompilation() {
 
 	// arithmetic operators
 	v2 += v2;
-	v2 += t;
+	v2 += v;
 	v2 += v1;
 	v2 += v3;
 	v2 += v4;
 	v2 -= v2;
-	v2 -= t;
+	v2 -= v;
 	v2 -= v1;
 	v2 -= v3;
 	v2 -= v4;
 	v2 *= v2;
-	v2 *= t;
+	v2 *= v;
 	v2 *= v1;
 	v2 *= v3;
 	v2 *= v4;
@@ -155,41 +159,41 @@ void testVectorTCompilation() {
 	+v2;
 	-v2;
 	v2 + v2;
-	v2 + t;
-	t + v2;
+	v2 + v;
+	v + v2;
 	v2 + v1;
 	v1 + v2;
 	v2 - v2;
-	v2 - t;
-	t - v2;
+	v2 - v;
+	v - v2;
 	v2 - v1;
 	v1 - v2;
 	v2 * v2;
-	v2 * t;
-	t * v2;
+	v2 * v;
+	v * v2;
 	v2 * v1;
 	v1 * v2;
 	v2 / vec2<T>(1);
-	v2 / T(t);
-	t / vec2<T>(1);
+	v2 / T(v);
+	v / vec2<T>(1);
 	v2 / vec1<T>(1);
 	v1 / vec2<T>(1);
 
 	// comparison operators
 	v2 == v2;
-	v2 == t;
-	t == v2;
+	v2 == v;
+	v == v2;
 	v2 != v2;
-	v2 != t;
-	t != v2;
-	v2 < t;
-	t < v2;
-	v2 > t;
-	t > v2;
-	v2 <= t;
-	t <= v2;
-	v2 >= t;
-	t >= v2;
+	v2 != v;
+	v != v2;
+	v2 < v;
+	v < v2;
+	v2 > v;
+	v > v2;
+	v2 <= v;
+	v <= v2;
+	v2 >= v;
+	v >= v2;
 
 	// other
 	v2.toString();
@@ -199,19 +203,30 @@ void testVectorTCompilation() {
 	// Vec3
 
 	// constructors
-	vec3<T> v3_1;
-	vec3<T> v3_2(v3);
-	vec3<T> v3_3(std::move(v3));
-	vec3<T> v3_4(t);
-	vec3<T> v3_5(v1);
-	vec3<T> v3_6(v2);
-	vec3<T> v3_7(v4);
-	vec3<T> v3_8(t, t, t);
+	vec3<T> v3_01;
+	vec3<T> v3_02(v3);
+	vec3<T> v3_03(std::move(v3));
+	vec3<T> v3_04(v);
+	vec3<T> v3_05(v1);
+	vec3<T> v3_06(v2);
+	vec3<T> v3_07(v4);
+	vec3<T> v3_08(v, v, v);
+	vec3<T> v3_09(v1, v, v);
+	vec3<T> v3_10(v, v1, v);
+	vec3<T> v3_11(v, v, v1);
+	vec3<T> v3_12(v1, v1, v);
+	vec3<T> v3_13(v1, v, v1);
+	vec3<T> v3_14(v, v1, v1);
+	vec3<T> v3_15(v1, v1, v1);
+	vec3<T> v3_16(v2, v);
+	vec3<T> v3_17(v2, v1);
+	vec3<T> v3_18(v, v2);
+	vec3<T> v3_19(v1, v2);
 
 	// assignment operators
 	v3 = v3;
 	v3 = std::move(v3);
-	v3 = t;
+	v3 = v;
 	v3 = v1;
 	v3 = v2;
 	v3 = v4;
@@ -222,17 +237,17 @@ void testVectorTCompilation() {
 
 	// arithmetic operators
 	v3 += v3;
-	v3 += t;
+	v3 += v;
 	v3 += v1;
 	v3 += v2;
 	v3 += v4;
 	v3 -= v3;
-	v3 -= t;
+	v3 -= v;
 	v3 -= v1;
 	v3 -= v2;
 	v3 -= v4;
 	v3 *= v3;
-	v3 *= t;
+	v3 *= v;
 	v3 *= v1;
 	v3 *= v2;
 	v3 *= v4;
@@ -248,29 +263,29 @@ void testVectorTCompilation() {
 	+v3;
 	-v3;
 	v3 + v3;
-	v3 + t;
-	t + v3;
+	v3 + v;
+	v + v3;
 	v3 + v1;
 	v1 + v3;
 	v3 + v2;
 	v2 + v3;
 	v3 - v3;
-	v3 - t;
-	t - v3;
+	v3 - v;
+	v - v3;
 	v3 - v1;
 	v1 - v3;
 	v3 - v2;
 	v2 - v3;
 	v3 * v3;
-	v3 * t;
-	t * v3;
+	v3 * v;
+	v * v3;
 	v3 * v1;
 	v1 * v3;
 	v3 * v2;
 	v2 * v3;
 	v3 / vec3<T>(1);
-	v3 / T(t);
-	t / vec3<T>(1);
+	v3 / T(v);
+	v / vec3<T>(1);
 	v3 / vec1<T>(1);
 	v1 / vec3<T>(1);
 	v3 / vec2<T>(1);
@@ -278,19 +293,19 @@ void testVectorTCompilation() {
 
 	// comparison operators
 	v3 == v3;
-	v3 == t;
-	t == v3;
+	v3 == v;
+	v == v3;
 	v3 != v3;
-	v3 != t;
-	t != v3;
-	v3 < t;
-	t < v3;
-	v3 > t;
-	t > v3;
-	v3 <= t;
-	t <= v3;
-	v3 >= t;
-	t >= v3;
+	v3 != v;
+	v != v3;
+	v3 < v;
+	v < v3;
+	v3 > v;
+	v > v3;
+	v3 <= v;
+	v <= v3;
+	v3 >= v;
+	v >= v3;
 
 	// other
 	v3.toString();
@@ -300,19 +315,50 @@ void testVectorTCompilation() {
 	// Vec4
 
 	// constructors
-	vec4<T> v4_1;
-	vec4<T> v4_2(v4);
-	vec4<T> v4_3(std::move(v4));
-	vec4<T> v4_4(t);
-	vec4<T> v4_5(v1);
-	vec4<T> v4_6(v2);
-	vec4<T> v4_7(v3);
-	vec4<T> v4_8(t, t, t, t);
+	vec4<T> v4_01;
+	vec4<T> v4_02(v4);
+	vec4<T> v4_03(std::move(v4));
+	vec4<T> v4_04(v);
+	vec4<T> v4_05(v1);
+	vec4<T> v4_06(v2);
+	vec4<T> v4_07(v3);
+	vec4<T> v4_08(v, v, v, v);
+	vec4<T> v4_09(v1, v, v, v);
+	vec4<T> v4_10(v, v1, v, v);
+	vec4<T> v4_11(v, v, v1, v);
+	vec4<T> v4_12(v, v, v, v1);
+	vec4<T> v4_13(v1, v1, v, v);
+	vec4<T> v4_14(v1, v, v1, v);
+	vec4<T> v4_15(v1, v, v, v1);
+	vec4<T> v4_16(v, v1, v, v1);
+	vec4<T> v4_17(v, v, v1, v1);
+	vec4<T> v4_18(v1, v1, v1, v);
+	vec4<T> v4_19(v1, v1, v, v1);
+	vec4<T> v4_20(v1, v, v1, v1);
+	vec4<T> v4_21(v, v1, v1, v1);
+	vec4<T> v4_22(v1, v1, v1, v1);
+	vec4<T> v4_23(v2, v, v);
+	vec4<T> v4_24(v2, v1, v);
+	vec4<T> v4_25(v2, v, v1);
+	vec4<T> v4_26(v2, v1, v1);
+	vec4<T> v4_27(v, v2, v);
+	vec4<T> v4_28(v1, v2, v);
+	vec4<T> v4_29(v, v2, v1);
+	vec4<T> v4_30(v1, v2, v1);
+	vec4<T> v4_31(v, v, v2);
+	vec4<T> v4_32(v1, v, v2);
+	vec4<T> v4_33(v, v1, v2);
+	vec4<T> v4_34(v1, v1, v2);
+	vec4<T> v4_35(v2, v2);
+	vec4<T> v4_36(v3, v);
+	vec4<T> v4_37(v3, v1);
+	vec4<T> v4_38(v, v3);
+	vec4<T> v4_39(v1, v3);
 
 	// assignment operators
 	v4 = v4;
 	v4 = std::move(v4);
-	v4 = t;
+	v4 = v;
 	v4 = v1;
 	v4 = v2;
 	v4 = v3;
@@ -323,17 +369,17 @@ void testVectorTCompilation() {
 
 	// arithmetic operators
 	v4 += v4;
-	v4 += t;
+	v4 += v;
 	v4 += v1;
 	v4 += v2;
 	v4 += v3;
 	v4 -= v4;
-	v4 -= t;
+	v4 -= v;
 	v4 -= v1;
 	v4 -= v2;
 	v4 -= v3;
 	v4 *= v4;
-	v4 *= t;
+	v4 *= v;
 	v4 *= v1;
 	v4 *= v2;
 	v4 *= v3;
@@ -349,8 +395,8 @@ void testVectorTCompilation() {
 	+v4;
 	-v4;
 	v4 + v4;
-	v4 + t;
-	t + v4;
+	v4 + v;
+	v + v4;
 	v4 + v1;
 	v1 + v4;
 	v4 + v2;
@@ -358,8 +404,8 @@ void testVectorTCompilation() {
 	v4 + v3;
 	v3 + v4;
 	v4 - v4;
-	v4 - t;
-	t - v4;
+	v4 - v;
+	v - v4;
 	v4 - v1;
 	v1 - v4;
 	v4 - v2;
@@ -367,8 +413,8 @@ void testVectorTCompilation() {
 	v4 - v3;
 	v3 - v4;
 	v4 * v4;
-	v4 * t;
-	t * v4;
+	v4 * v;
+	v * v4;
 	v4 * v1;
 	v1 * v4;
 	v4 * v2;
@@ -376,8 +422,8 @@ void testVectorTCompilation() {
 	v4 * v3;
 	v3 * v4;
 	v4 / vec4<T>(1);
-	v4 / T(t);
-	t / vec4<T>(1);
+	v4 / T(v);
+	v / vec4<T>(1);
 	v4 / vec1<T>(1);
 	v1 / vec4<T>(1);
 	v4 / vec2<T>(1);
@@ -387,19 +433,19 @@ void testVectorTCompilation() {
 
 	// comparison operators
 	v4 == v4;
-	v4 == t;
-	t == v4;
+	v4 == v;
+	v == v4;
 	v4 != v4;
-	v4 != t;
-	t != v4;
-	v4 < t;
-	t < v4;
-	v4 > t;
-	t > v4;
-	v4 <= t;
-	t <= v4;
-	v4 >= t;
-	t >= v4;
+	v4 != v;
+	v != v4;
+	v4 < v;
+	v < v4;
+	v4 > v;
+	v > v4;
+	v4 <= v;
+	v <= v4;
+	v4 >= v;
+	v >= v4;
 
 	// other
 	v4.toString();
@@ -413,7 +459,7 @@ void testVectorTCompilation() {
 	vec<T, 6> v6_2(v6);
 	vec<T, 6> v6_3(std::move(v6));
 	vec<T, 6> v6_4(v3, v3);
-	vec<T, 6> v6_5(t, t, t, t, t, t);
+	vec<T, 6> v6_5(v, v, v, v, v, v);
 
 	// asignment operators
 	v6 = v6;
@@ -430,6 +476,32 @@ void testVectorTCompilation() {
 	// other
 	v6.toString();
 	os << v6;
+
+	//--------------------------------------------------------------------------
+	// Vec8
+
+	// constructors
+	vec<T, 8> v8_1;
+	vec<T, 8> v8_2(v8);
+	vec<T, 8> v8_3(std::move(v8));
+	vec<T, 8> v8_4(v4, v4);
+	vec<T, 8> v8_5(v, v, v, v, v, v, v, v);
+
+	// asignment operators
+	v8 = v8;
+	v8 = std::move(v8);
+
+	// access operators
+	v8[0];
+	static_cast<const vec<T, 8>>(v8)[0];
+
+	// comparison operators
+	v8 == v8;
+	v8 != v8;
+
+	// other
+	v8.toString();
+	os << v8;
 
 	//--------------------------------------------------------------------------
 	// Vec Functions
@@ -474,18 +546,18 @@ void testVectorTCompilation() {
 	angle(v4, v4);
 	angle_n(v4, v4);
 
-	lerp(v1, v1, t);
-	lerp(v2, v2, t);
-	lerp(v3, v3, t);
-	lerp(v4, v4, t);
+	lerp(v1, v1, v);
+	lerp(v2, v2, v);
+	lerp(v3, v3, v);
+	lerp(v4, v4, v);
 
 	orthogonal(v2);
 	orthogonal(v3);
 
-	clamp(v1, t, t);
-	clamp(v2, t, t);
-	clamp(v3, t, t);
-	clamp(v4, t, t);
+	clamp(v1, v, v);
+	clamp(v2, v, v);
+	clamp(v3, v, v);
+	clamp(v4, v, v);
 }
 
 void testVectorCompilation() {
@@ -502,7 +574,7 @@ void testVectorCompilation() {
 
 template <typename T>
 void testMatrixTCompilation() {
-	T t;
+	T v;
 	vec1<T> v1;
 	vec2<T> v2;
 	vec3<T> v3;
@@ -513,13 +585,13 @@ void testMatrixTCompilation() {
 	std::stringstream os;
 
 	//--------------------------------------------------------------------------
-	// Mat2
+	// Mav2
 
 	// constructors
 	mat2<T> m2_1;
 	mat2<T> m2_2(m2);
 	mat2<T> m2_3(std::move(m2));
-	mat2<T> m2_4(t, t, t, t);
+	mat2<T> m2_4(v, v, v, v);
 	mat2<T> m2_5(m3);
 	mat2<T> m2_6(m4);
 	mat2<T> m2_7(v2, v2);
@@ -535,11 +607,11 @@ void testMatrixTCompilation() {
 	static_cast<const mat2<T>>(m2)[0];
 
 	// arithmetic assignment operators
-	m2 += t;
+	m2 += v;
 	m2 += m2;
-	m2 -= t;
+	m2 -= v;
 	m2 -= m2;
-	m2 *= t;
+	m2 *= v;
 	m2 *= m2;
 	m2 /= T(1);
 	++m2;
@@ -551,14 +623,14 @@ void testMatrixTCompilation() {
 	+m2;
 	-m2;
 	m2 + m2;
-	m2 + t;
-	t + m2;
+	m2 + v;
+	v + m2;
 	m2 - m2;
-	m2 - t;
-	t - m2;
+	m2 - v;
+	v - m2;
 	m2 * m2;
-	m2 * t;
-	t * m2;
+	m2 * v;
+	v * m2;
 	m2 * v2;
 	m2 / T(1);
 	T(1) / m2;
@@ -578,7 +650,7 @@ void testMatrixTCompilation() {
 	mat3<T> m3_1;
 	mat3<T> m3_2(m3);
 	mat3<T> m3_3(std::move(m3));
-	mat3<T> m3_4(t, t, t, t, t, t, t, t, t);
+	mat3<T> m3_4(v, v, v, v, v, v, v, v, v);
 	mat3<T> m3_5(m2);
 	mat3<T> m3_6(m4);
 	mat3<T> m3_7(v3, v3, v3);
@@ -594,11 +666,11 @@ void testMatrixTCompilation() {
 	static_cast<const mat3<T>>(m3)[0];
 
 	// arithmetic assignment operators
-	m3 += t;
+	m3 += v;
 	m3 += m3;
-	m3 -= t;
+	m3 -= v;
 	m3 -= m3;
-	m3 *= t;
+	m3 *= v;
 	m3 *= m3;
 	m3 /= T(1);
 	++m3;
@@ -610,14 +682,14 @@ void testMatrixTCompilation() {
 	+m3;
 	-m3;
 	m3 + m3;
-	m3 + t;
-	t + m3;
+	m3 + v;
+	v + m3;
 	m3 - m3;
-	m3 - t;
-	t - m3;
+	m3 - v;
+	v - m3;
 	m3 * m3;
-	m3 * t;
-	t * m3;
+	m3 * v;
+	v * m3;
 	m3 * v3;
 	m3 / T(1);
 	T(1) / m3;
@@ -637,7 +709,7 @@ void testMatrixTCompilation() {
 	mat4<T> m4_1;
 	mat4<T> m4_2(m4);
 	mat4<T> m4_3(std::move(m4));
-	mat4<T> m4_4(t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t);
+	mat4<T> m4_4(v, v, v, v, v, v, v, v, v, v, v, v, v, v, v, v);
 	mat4<T> m4_5(m2);
 	mat4<T> m4_6(m3);
 	mat4<T> m4_7(v4, v4, v4, v4);
@@ -653,11 +725,11 @@ void testMatrixTCompilation() {
 	static_cast<const mat4<T>>(m4)[0];
 
 	// arithmetic assignment operators
-	m4 += t;
+	m4 += v;
 	m4 += m4;
-	m4 -= t;
+	m4 -= v;
 	m4 -= m4;
-	m4 *= t;
+	m4 *= v;
 	m4 *= m4;
 	m4 /= T(1);
 	++m4;
@@ -669,14 +741,14 @@ void testMatrixTCompilation() {
 	+m4;
 	-m4;
 	m4 + m4;
-	m4 + t;
-	t + m4;
+	m4 + v;
+	v + m4;
 	m4 - m4;
-	m4 - t;
-	t - m4;
+	m4 - v;
+	v - m4;
 	m4 * m4;
-	m4 * t;
-	t * m4;
+	m4 * v;
+	v * m4;
 	m4 * v4;
 	m4 / T(1);
 	T(1) / m4;
@@ -725,16 +797,16 @@ void testMatrixTCompilation() {
 	scale(m3, v3);
 	scale(m4, v3);
 	scale(m4, v4);
-	rotate(t);
-	rotateX(t);
-	rotateY(t);
-	rotateZ(t);
-	rotate(v3, t, t);
-	rotate_n(v3, t, t);
-	rotate(v3, t);
-	rotate_n(v3, t);
-	euler(v3, v3, t, t, t);
-	euler_n(v3, v3, t, t, t);
+	rotate(v);
+	rotateX(v);
+	rotateY(v);
+	rotateZ(v);
+	rotate(v3, v, v);
+	rotate_n(v3, v, v);
+	rotate(v3, v);
+	rotate_n(v3, v);
+	euler(v3, v3, v, v, v);
+	euler_n(v3, v3, v, v, v);
 	align(v2, v2);
 	align(v3, v3);
 	align_n(v2, v2);
@@ -749,10 +821,10 @@ void testMatrixTCompilation() {
 	mapTo_o(v3, v3, v3);
 	mapFrom(v2, v2);
 	mapFrom(v3, v3, v3);
-	orthoProj(t, t, t, t);
-	orthoProjAsym(t, t, t, t, t, t);
-	perspProj(t, t, t, t);
-	perspProjAsym(t, t, t, t, t, t);
+	orthoProj(v, v, v, v);
+	orthoProjAsym(v, v, v, v, v, v);
+	perspProj(v, v, v, v);
+	perspProjAsym(v, v, v, v, v, v);
 	view(v3, v3, v3);
 	view(v3, v3, v3, v3);
 	view_n(v3, v3, v3, v3);
@@ -768,7 +840,7 @@ void testMatrixCompilation() {
 
 template <typename T>
 void testQuaternionTCompilation() {
-	T t;
+	T v;
 	vec3<T> v3;
 	vec4<T> v4;
 	mat3<T> m3;
@@ -782,8 +854,8 @@ void testQuaternionTCompilation() {
 	quat<T> q_1;
 	quat<T> q_2(q);
 	quat<T> q_3(std::move(q));
-	quat<T> q_4(v3, t);
-	quat<T> q_5(t, t, t, t);
+	quat<T> q_4(v3, v);
+	quat<T> q_5(v, v, v, v);
 	quat<T> q_6(v3);
 	quat<T> q_7(v4);
 
@@ -798,7 +870,7 @@ void testQuaternionTCompilation() {
 	q += q;
 	q -= q;
 	q *= q;
-	q *= t;
+	q *= v;
 	q /= quat<T>(1, 1, 1, 1);
 
 	// arithmetic operators
@@ -807,8 +879,8 @@ void testQuaternionTCompilation() {
 	q + q;
 	q - q;
 	q * q;
-	q * t;
-	t * q;
+	q * v;
+	v * q;
 	q * v3;
 	q / quat<T>(1, 1, 1, 1);
 
@@ -835,17 +907,17 @@ void testQuaternionTCompilation() {
 	//--------------------------------------------------------------------------
 	// Transformations
 
-	rotateQ(v3, t);
-	rotateQ_n(v3, t);
+	rotateQ(v3, v);
+	rotateQ_n(v3, v);
 	alignQ(v3, v3);
 	alignQ_n(v3, v3);
 	alignQ(v3, v3, v3, v3);
 	alignQ_n(v3, v3, v3, v3);
-	eulerQ(v3, v3, t, t, t);
-	eulerQ_n(v3, v3, t, t, t);
+	eulerQ(v3, v3, v, v, v);
+	eulerQ_n(v3, v3, v, v, v);
 	toMat(q);
-	nlerp(q, q, t);
-	slerp(q, q, t);
+	nlerp(q, q, v);
+	slerp(q, q, v);
 }
 
 void testQuaternionCompilation() {

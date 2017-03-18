@@ -138,6 +138,7 @@ inline unsigned char trailingZeroes(u32 x) {
 template <typename T, std::enable_if_t<std::is_floating_point<T>::value, int> = 0>
 inline T rand(T min, T max) {
 	static std::mt19937 mt(static_cast<std::mt19937::result_type>(std::chrono::system_clock::now().time_since_epoch().count()));
+	//static std::mt19937 mt(0);
 	static std::uniform_real_distribution<T> dist(static_cast<T>(0.0), static_cast<T>(1.0));
 
 	return dist(mt) * (max - min) + min;

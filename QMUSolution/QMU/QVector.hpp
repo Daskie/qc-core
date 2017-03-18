@@ -111,6 +111,7 @@ template <typename T> using point = vec<T, 2>;
 template <typename T> using bound1 = vec<T, 2>;
 template <typename T> using bound2 = vec<T, 4>;
 template <typename T> using bound3 = vec<T, 6>;
+template <typename T> using bound4 = vec<T, 8>;
 
 
 
@@ -266,7 +267,9 @@ struct vec<T, 2> {
 		struct { T x, y; };
 		struct { T r, g; };
 		struct { T s, t; };
-		struct { T x, width; };
+		struct { T x1, x2; };
+		struct { vec1<T> min, max; };
+		struct { vec1<T> loc, size; };
 	};
 
 	//--- constructors ---
@@ -279,7 +282,10 @@ struct vec<T, 2> {
 	constexpr explicit vec(const vec1<T> & v);
 	constexpr explicit vec(const vec3<T> & v);
 	constexpr explicit vec(const vec4<T> & v);
-	constexpr vec(const T & v1, const T & v2);
+	constexpr vec(const       T & v1, const      T  & v2);
+	constexpr vec(const vec1<T> & v1, const      T  & v2);
+	constexpr vec(const       T & v1, const vec1<T> & v2);
+	constexpr vec(const vec1<T> & v1, const vec1<T> & v2);
 
 	//--- destructor ---
 
@@ -427,7 +433,18 @@ struct vec<T, 3> {
 	constexpr explicit vec(const vec1<T> & v);
 	constexpr explicit vec(const vec2<T> & v);
 	constexpr explicit vec(const vec4<T> & v);
-	constexpr vec(const T & v1, const T & v2, const T & v3);
+	constexpr vec(const      T  & v1, const      T  & v2, const      T  & v3);
+	constexpr vec(const vec1<T> & v1, const      T  & v2, const      T  & v3);
+	constexpr vec(const      T  & v1, const vec1<T> & v2, const      T  & v3);
+	constexpr vec(const      T  & v1, const      T  & v2, const vec1<T> & v3);
+	constexpr vec(const vec1<T> & v1, const vec1<T> & v2, const      T  & v3);
+	constexpr vec(const vec1<T> & v1, const      T  & v2, const vec1<T> & v3);
+	constexpr vec(const      T  & v1, const vec1<T> & v2, const vec1<T> & v3);
+	constexpr vec(const vec1<T> & v1, const vec1<T> & v2, const vec1<T> & v3);
+	constexpr vec(const vec2<T> & v1, const      T  & v2);
+	constexpr vec(const vec2<T> & v1, const vec1<T> & v2);
+	constexpr vec(const      T  & v1, const vec2<T> & v2);
+	constexpr vec(const vec1<T> & v1, const vec2<T> & v2);
 
 	//--- destructor ---
 
@@ -569,7 +586,9 @@ struct vec<T, 4> {
 		struct { T x, y, z, w; };
 		struct { T r, g, b, a; };
 		struct { T s, t, p, q; };
-		struct { T x, y, width, height; };
+		struct { T x1, y1, x2, y2; };
+		struct { vec2<T> min, max; };
+		struct { vec2<T> loc, size; };
 	};
 	
 	//--- constructors ---
@@ -582,7 +601,39 @@ struct vec<T, 4> {
 	constexpr explicit vec(const vec1<T> & v);
 	constexpr explicit vec(const vec2<T> & v);
 	constexpr explicit vec(const vec3<T> & v);
-	constexpr vec(const T & v1, const T & v2, const T & v3, const T & v4);
+	constexpr vec(const      T  & v1, const      T  & v2, const      T  & v3, const      T  & v4);
+	constexpr vec(const vec1<T> & v1, const      T  & v2, const      T  & v3, const      T  & v4);
+	constexpr vec(const      T  & v1, const vec1<T> & v2, const      T  & v3, const      T  & v4);
+	constexpr vec(const      T  & v1, const      T  & v2, const vec1<T> & v3, const      T  & v4);
+	constexpr vec(const      T  & v1, const      T  & v2, const      T  & v3, const vec1<T> & v4);
+	constexpr vec(const vec1<T> & v1, const vec1<T> & v2, const      T  & v3, const      T  & v4);
+	constexpr vec(const vec1<T> & v1, const      T  & v2, const vec1<T> & v3, const      T  & v4);
+	constexpr vec(const vec1<T> & v1, const      T  & v2, const      T  & v3, const vec1<T> & v4);
+	constexpr vec(const      T  & v1, const vec1<T> & v2, const vec1<T> & v3, const      T  & v4);
+	constexpr vec(const      T  & v1, const vec1<T> & v2, const      T  & v3, const vec1<T> & v4);
+	constexpr vec(const      T  & v1, const      T  & v2, const vec1<T> & v3, const vec1<T> & v4);
+	constexpr vec(const vec1<T> & v1, const vec1<T> & v2, const vec1<T> & v3, const      T  & v4);
+	constexpr vec(const vec1<T> & v1, const vec1<T> & v2, const      T  & v3, const vec1<T> & v4);
+	constexpr vec(const vec1<T> & v1, const      T  & v2, const vec1<T> & v3, const vec1<T> & v4);
+	constexpr vec(const      T  & v1, const vec1<T> & v2, const vec1<T> & v3, const vec1<T> & v4);
+	constexpr vec(const vec1<T> & v1, const vec1<T> & v2, const vec1<T> & v3, const vec1<T> & v4);
+	constexpr vec(const vec2<T> & v1, const      T  & v2, const      T  & v3);
+	constexpr vec(const vec2<T> & v1, const vec1<T> & v2, const      T  & v3);
+	constexpr vec(const vec2<T> & v1, const      T  & v2, const vec1<T> & v3);
+	constexpr vec(const vec2<T> & v1, const vec1<T> & v2, const vec1<T> & v3);
+	constexpr vec(const      T  & v1, const vec2<T> & v2, const      T  & v3);
+	constexpr vec(const vec1<T> & v1, const vec2<T> & v2, const      T  & v3);
+	constexpr vec(const      T  & v1, const vec2<T> & v2, const vec1<T> & v3);
+	constexpr vec(const vec1<T> & v1, const vec2<T> & v2, const vec1<T> & v3);
+	constexpr vec(const      T  & v1, const      T  & v2, const vec2<T> & v3);
+	constexpr vec(const vec1<T> & v1, const      T  & v2, const vec2<T> & v3);
+	constexpr vec(const      T  & v1, const vec1<T> & v2, const vec2<T> & v3);
+	constexpr vec(const vec1<T> & v1, const vec1<T> & v2, const vec2<T> & v3);
+	constexpr vec(const vec2<T> & v1, const vec2<T> & v2);
+	constexpr vec(const vec3<T> & v1, const      T  & v2);
+	constexpr vec(const vec3<T> & v1, const vec1<T> & v2);
+	constexpr vec(const      T  & v1, const vec3<T> & v2);
+	constexpr vec(const vec1<T> & v1, const vec3<T> & v2);
 
 	//--- destructor ---
 
@@ -728,13 +779,17 @@ struct vec<T, 6> {
 	using Type = T;
 	static constexpr nat t_n = 6;
 
-	T x, y, z, width, height, depth;
+	union {
+		struct { T x1, y1, z1, x2, y2, z2; };
+		struct { vec3<T> min, max; };
+		struct { vec3<T> loc, size; };
+	};
 
 	//--- constructors ---
 
 	constexpr vec();
-	constexpr vec(const bound3<T> & v);
-	constexpr vec(bound3<T> && v);
+	constexpr vec(const vec<T, 6> & v);
+	constexpr vec(vec<T, 6> && v);
 
 	constexpr vec(const vec3<T> & v1, const vec3<T> & v2);
 	constexpr vec(const T & v1, const T & v2, const T & v3, const T & v4, const T & v5, const T & v6);
@@ -751,8 +806,8 @@ struct vec<T, 6> {
 
 	//--- assignment operators ---
 
-	bound3<T> & operator=(const bound3<T> & v);
-	bound3<T> & operator=(bound3<T> && v);
+	vec<T, 6> & operator=(const vec<T, 6> & v);
+	vec<T, 6> & operator=(vec<T, 6> && v);
 
 	//--- access operators ---
 
@@ -761,15 +816,77 @@ struct vec<T, 6> {
 
 	//--- comparison operators ---
 
-	template <typename T> friend bool operator==(const bound3<T> & v1, const bound3<T> & v2);
+	template <typename T> friend bool operator==(const vec<T, 6> & v1, const vec<T, 6> & v2);
 
-	template <typename T> friend bool operator!=(const bound3<T> & v1, const bound3<T> & v2);
+	template <typename T> friend bool operator!=(const vec<T, 6> & v1, const vec<T, 6> & v2);
 
 	//--- other ---
 
 	std::string toString() const;
 
-	template <typename T> friend std::ostream & operator<<(std::ostream & os, const bound3<T> & v);
+	template <typename T> friend std::ostream & operator<<(std::ostream & os, const vec<T, 6> & v);
+
+};
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// VEC8 ----------------------------------------------------------------------------------------------------------------
+
+
+
+template <typename T>
+struct vec<T, 8> {
+
+	using Type = T;
+	static constexpr nat t_n = 8;
+
+	union {
+		struct { T x1, y1, z1, w1, x2, y2, z2, w2; };
+		struct { vec4<T> min, max; };
+		struct { vec4<T> loc, size; };
+	};
+
+	//--- constructors ---
+
+	constexpr vec();
+	constexpr vec(const vec<T, 8> & v);
+	constexpr vec(vec<T, 8> && v);
+
+	constexpr vec(const vec4<T> & v1, const vec4<T> & v2);
+	constexpr vec(const T & v1, const T & v2, const T & v3, const T & v4, const T & v5, const T & v6, const T & v7, const T & v8);
+
+	//--- destructor ---
+
+	~vec() {
+		static_assert(std::is_standard_layout<vec<T, 8>>::value, "vec<T, 8> must be of standard layout");
+		static_assert(sizeof(vec<T, 8>) == 8 * sizeof(T), "vec<T, 8> must be equal in size to 8 Ts");
+		static_assert(std::is_default_constructible<T>::value, "vec<T, 8> must be default constructible");
+		static_assert(std::is_copy_constructible<T>::value, "vec<T, 8> must be copy constructable");
+		static_assert(std::is_copy_assignable<T>::value, "vec<T, 8> must be copy assignable");
+	}
+
+	//--- assignment operators ---
+
+	vec<T, 8> & operator=(const vec<T, 8> & v);
+	vec<T, 8> & operator=(vec<T, 8> && v);
+
+	//--- access operators ---
+
+	T & operator[](nat i);
+	const T & operator[](nat i) const;
+
+	//--- comparison operators ---
+
+	template <typename T> friend bool operator==(const vec<T, 8> & v1, const vec<T, 8> & v2);
+
+	template <typename T> friend bool operator!=(const vec<T, 8> & v1, const vec<T, 8> & v2);
+
+	//--- other ---
+
+	std::string toString() const;
+
+	template <typename T> friend std::ostream & operator<<(std::ostream & os, const vec<T, 8> & v);
 
 };
 
@@ -1306,6 +1423,21 @@ constexpr vec<T, 2>::vec(const T & v1, const T & v2) :
 	x(v1), y(v2)
 {}
 
+template <typename T>
+constexpr vec<T, 2>::vec(const vec1<T> & v1, const T & v2) :
+	x(v1.x), y(v2)
+{}
+
+template <typename T>
+constexpr vec<T, 2>::vec(const T & v1, const vec1<T> & v2) :
+	x(v1), y(v2.x)
+{}
+
+template <typename T>
+constexpr vec<T, 2>::vec(const vec1<T> & v1, const vec1<T> & v2) :
+	x(v1.x), y(v2.x)
+{}
+
 
 
 //------------------------------------------------------------------------------
@@ -1795,6 +1927,61 @@ constexpr vec<T, 3>::vec(const vec4<T> & v) :
 template <typename T>
 constexpr vec<T, 3>::vec(const T & v1, const T & v2, const T & v3) :
 	x(v1), y(v2), z(v3)
+{}
+
+template <typename T>
+constexpr vec<T, 3>::vec(const vec1<T> & v1, const T & v2, const T & v3) :
+	x(v1.x), y(v2), z(v3)
+{}
+
+template <typename T>
+constexpr vec<T, 3>::vec(const T & v1, const vec1<T> & v2, const T & v3) :
+	x(v1), y(v2.x), z(v3)
+{}
+
+template <typename T>
+constexpr vec<T, 3>::vec(const T & v1, const T & v2, const vec1<T> & v3) :
+	x(v1), y(v2), z(v3.x)
+{}
+
+template <typename T>
+constexpr vec<T, 3>::vec(const vec1<T> & v1, const vec1<T> & v2, const T & v3) :
+	x(v1.x), y(v2.x), z(v3)
+{}
+
+template <typename T>
+constexpr vec<T, 3>::vec(const vec1<T> & v1, const T & v2, const vec1<T> & v3) :
+	x(v1.x), y(v2), z(v3.x)
+{}
+
+template <typename T>
+constexpr vec<T, 3>::vec(const T & v1, const vec1<T> & v2, const vec1<T> & v3) :
+	x(v1), y(v2.x), z(v3.x)
+{}
+
+template <typename T>
+constexpr vec<T, 3>::vec(const vec1<T> & v1, const vec1<T> & v2, const vec1<T> & v3) :
+	x(v1.x), y(v2.x), z(v3.x)
+{}
+
+template <typename T>
+constexpr vec<T, 3>::vec(const vec2<T> & v1, const T & v2) :
+	x(v1.x), y(v1.y), z(v2)
+{}
+
+template <typename T>
+constexpr vec<T, 3>::vec(const vec2<T> & v1, const vec1<T> & v2) :
+	x(v1.x), y(v1.y), z(v2.x)
+{}
+
+template <typename T>
+constexpr vec<T, 3>::vec(const T & v1, const vec2<T> & v2) :
+	x(v1), y(v2.x), z(v2.y)
+{}
+
+template <typename T>
+constexpr vec<T, 3>::vec(const vec1<T> & v1, const vec2<T> & v2) :
+	x(v1.x), y(v2.x), z(v2.y)
 {}
 
 
@@ -2328,6 +2515,166 @@ constexpr vec<T, 4>::vec(const T & v1, const T & v2, const T & v3, const T & v4)
 	x(v1), y(v2), z(v3), w(v4)
 {}
 
+template <typename T>
+constexpr vec<T, 4>::vec(const vec1<T> & v1, const T & v2, const T & v3, const T & v4) :
+	x(v1.x), y(v2), z(v3), w(v4)
+{}
+
+template <typename T>
+constexpr vec<T, 4>::vec(const T & v1, const vec1<T> & v2, const T & v3, const T & v4) :
+	x(v1), y(v2.x), z(v3), w(v4)
+{}
+
+template <typename T>
+constexpr vec<T, 4>::vec(const T & v1, const T & v2, const vec1<T> & v3, const T & v4) :
+	x(v1), y(v2), z(v3.x), w(v4)
+{}
+
+template <typename T>
+constexpr vec<T, 4>::vec(const T & v1, const T & v2, const T & v3, const vec1<T> & v4) :
+	x(v1), y(v2), z(v3), w(v4.x)
+{}
+
+template <typename T>
+constexpr vec<T, 4>::vec(const vec1<T> & v1, const vec1<T> & v2, const T & v3, const T & v4) :
+	x(v1.x), y(v2.x), z(v3), w(v4)
+{}
+
+template <typename T>
+constexpr vec<T, 4>::vec(const vec1<T> & v1, const T & v2, const vec1<T> & v3, const T & v4) :
+	x(v1.x), y(v2), z(v3.x), w(v4)
+{}
+
+template <typename T>
+constexpr vec<T, 4>::vec(const vec1<T> & v1, const T & v2, const T & v3, const vec1<T> & v4) :
+	x(v1.x), y(v2), z(v3), w(v4.x)
+{}
+
+template <typename T>
+constexpr vec<T, 4>::vec(const T & v1, const vec1<T> & v2, const vec1<T> & v3, const T & v4) :
+	x(v1), y(v2.x), z(v3.x), w(v4)
+{}
+
+template <typename T>
+constexpr vec<T, 4>::vec(const T & v1, const vec1<T> & v2, const T & v3, const vec1<T> & v4) :
+	x(v1), y(v2.x), z(v3), w(v4.x)
+{}
+
+template <typename T>
+constexpr vec<T, 4>::vec(const T & v1, const T & v2, const vec1<T> & v3, const vec1<T> & v4) :
+	x(v1), y(v2), z(v3.x), w(v4.x)
+{}
+
+template <typename T>
+constexpr vec<T, 4>::vec(const vec1<T> & v1, const vec1<T> & v2, const vec1<T> & v3, const T & v4) :
+	x(v1.x), y(v2.x), z(v3.x), w(v4)
+{}
+
+template <typename T>
+constexpr vec<T, 4>::vec(const vec1<T> & v1, const vec1<T> & v2, const T & v3, const vec1<T> & v4) :
+	x(v1.x), y(v2.x), z(v3), w(v4.x)
+{}
+
+template <typename T>
+constexpr vec<T, 4>::vec(const vec1<T> & v1, const T & v2, const vec1<T> & v3, const vec1<T> & v4) :
+	x(v1.x), y(v2), z(v3.x), w(v4.x)
+{}
+
+template <typename T>
+constexpr vec<T, 4>::vec(const T & v1, const vec1<T> & v2, const vec1<T> & v3, const vec1<T> & v4) :
+	x(v1), y(v2.x), z(v3.x), w(v4.x)
+{}
+
+template <typename T>
+constexpr vec<T, 4>::vec(const vec1<T> & v1, const vec1<T> & v2, const vec1<T> & v3, const vec1<T> & v4) :
+	x(v1.x), y(v2.x), z(v3.x), w(v4.x)
+{}
+
+template <typename T>
+constexpr vec<T, 4>::vec(const vec2<T> & v1, const T & v2, const T & v3) :
+	x(v1.x), y(v1.y), z(v2), w(v3)
+{}
+
+template <typename T>
+constexpr vec<T, 4>::vec(const vec2<T> & v1, const vec1<T> & v2, const T & v3) :
+	x(v1.x), y(v1.y), z(v2.x), w(v3)
+{}
+
+template <typename T>
+constexpr vec<T, 4>::vec(const vec2<T> & v1, const T & v2, const vec1<T> & v3) :
+	x(v1.x), y(v1.y), z(v2), w(v3.x)
+{}
+
+template <typename T>
+constexpr vec<T, 4>::vec(const vec2<T> & v1, const vec1<T> & v2, const vec1<T> & v3) :
+	x(v1.x), y(v1.y), z(v2.x), w(v3.x)
+{}
+
+template <typename T>
+constexpr vec<T, 4>::vec(const T & v1, const vec2<T> & v2, const T & v3) :
+	x(v1), y(v2.x), z(v2.y), w(v3)
+{}
+
+template <typename T>
+constexpr vec<T, 4>::vec(const vec1<T> & v1, const vec2<T> & v2, const T & v3) :
+	x(v1.x), y(v2.x), z(v2.y), w(v3)
+{}
+
+template <typename T>
+constexpr vec<T, 4>::vec(const T & v1, const vec2<T> & v2, const vec1<T> & v3) :
+	x(v1), y(v2.x), z(v2.y), w(v3.x)
+{}
+
+template <typename T>
+constexpr vec<T, 4>::vec(const vec1<T> & v1, const vec2<T> & v2, const vec1<T> & v3) :
+	x(v1.x), y(v2.x), z(v2.y), w(v3.x)
+{}
+
+template <typename T>
+constexpr vec<T, 4>::vec(const T & v1, const T & v2, const vec2<T> & v3) :
+	x(v1), y(v2), z(v3.x), w(v3.y)
+{}
+
+template <typename T>
+constexpr vec<T, 4>::vec(const vec1<T> & v1, const T & v2, const vec2<T> & v3) :
+	x(v1.x), y(v2), z(v3.x), w(v3.y)
+{}
+
+template <typename T>
+constexpr vec<T, 4>::vec(const T & v1, const vec1<T> & v2, const vec2<T> & v3) :
+	x(v1), y(v2.x), z(v3.x), w(v3.y)
+{}
+
+template <typename T>
+constexpr vec<T, 4>::vec(const vec1<T> & v1, const vec1<T> & v2, const vec2<T> & v3) :
+	x(v1.x), y(v2.x), z(v3.x), w(v3.y)
+{}
+
+template <typename T>
+constexpr vec<T, 4>::vec(const vec2<T> & v1, const vec2<T> & v2) :
+	x(v1.x), y(v1.y), z(v2.x), w(v2.y)
+{}
+
+template <typename T>
+constexpr vec<T, 4>::vec(const vec3<T> & v1, const T & v2) :
+	x(v1.x), y(v1.y), z(v1.z), w(v2)
+{}
+
+template <typename T>
+constexpr vec<T, 4>::vec(const vec3<T> & v1, const vec1<T> & v2) :
+	x(v1.x), y(v1.y), z(v1.z), w(v2.x)
+{}
+
+template <typename T>
+constexpr vec<T, 4>::vec(const T & v1, const vec3<T> & v2) :
+	x(v1), y(v2.x), z(v2.y), w(v2.z)
+{}
+
+template <typename T>
+constexpr vec<T, 4>::vec(const vec1<T> & v1, const vec3<T> & v2) :
+	x(v1.x), y(v2.x), z(v2.y), w(v2.z)
+{}
+
 
 
 //------------------------------------------------------------------------------
@@ -2859,27 +3206,27 @@ inline std::ostream & operator<<(std::ostream & os, const vec4<T> & v) {
 
 template <typename T>
 constexpr vec<T, 6>::vec() :
-	x(static_cast<T>(0)), y(static_cast<T>(0)), z(static_cast<T>(0)), width(static_cast<T>(0)), height(static_cast<T>(0)), depth(static_cast<T>(0))
+	x1(static_cast<T>(0)), y1(static_cast<T>(0)), z1(static_cast<T>(0)), x2(static_cast<T>(0)), y2(static_cast<T>(0)), z2(static_cast<T>(0))
 {}
 
 template <typename T>
-constexpr vec<T, 6>::vec(const bound3<T> & v) :
-	x(v.x), y(v.y), z(v.z), width(v.width), height(v.height), depth(v.depth)
+constexpr vec<T, 6>::vec(const vec<T, 6> & v) :
+	x1(v.x1), y1(v.y1), z1(v.z1), x2(v.x2), y2(v.y2), z2(v.z2)
 {}
 
 template <typename T>
-constexpr vec<T, 6>::vec(bound3<T> && v) :
-	x(v.x), y(v.y), z(v.z), width(v.width), height(v.height), depth(v.depth)
+constexpr vec<T, 6>::vec(vec<T, 6> && v) :
+	x1(v.x1), y1(v.y1), z1(v.z1), x2(v.x2), y2(v.y2), z2(v.z2)
 {}
 
 template <typename T>
 constexpr vec<T, 6>::vec(const vec3<T> & v1, const vec3<T> & v2) :
-	x(v1.x), y(v1.y), z(v1.z), width(v2.x), height(v2.y), depth(v2.z)
+	x1(v1.x), y1(v1.y), z1(v1.z), x2(v2.x), y2(v2.y), z2(v2.z)
 {}
 
 template <typename T>
 constexpr vec<T, 6>::vec(const T & v1, const T & v2, const T & v3, const T & v4, const T & v5, const T & v6) :
-	x(v1), y(v2), z(v3), width(v4), height(v5), depth(v6)
+	x1(v1), y1(v2), z1(v3), x2(v4), y2(v5), z2(v6)
 {}
 
 
@@ -2890,14 +3237,14 @@ constexpr vec<T, 6>::vec(const T & v1, const T & v2, const T & v3, const T & v4,
 
 
 template <typename T>
-inline bound3<T> & vec<T, 6>::operator=(const bound3<T> & v) {
-	x = v.x; y = v.y; z = v.z; width = v.width; height = v.height; depth = v.depth;
+inline vec<T, 6> & vec<T, 6>::operator=(const vec<T, 6> & v) {
+	x1 = v.x1; y1 = v.y1; z1 = v.z1; x2 = v.x2; y2 = v.y2; z2 = v.z2;
 	return *this;
 }
 
 template <typename T>
-inline bound3<T> & vec<T, 6>::operator=(bound3<T> && v) {
-	x = v.x; y = v.y; z = v.z; width = v.width; height = v.height; depth = v.depth;
+inline vec<T, 6> & vec<T, 6>::operator=(vec<T, 6> && v) {
+	x1 = v.x1; y1 = v.y1; z1 = v.z1; x2 = v.x2; y2 = v.y2; z2 = v.z2;
 	return *this;
 }
 
@@ -2910,14 +3257,14 @@ inline bound3<T> & vec<T, 6>::operator=(bound3<T> && v) {
 
 template <typename T>
 inline T & vec<T, 6>::operator[](nat i) {
-	return *(&x + i);
+	return *(&x1 + i);
 }
 
 
 
 template <typename T>
 inline const T & vec<T, 6>::operator[](nat i) const {
-	return *(&x + i);
+	return *(&x1 + i);
 }
 
 
@@ -2930,15 +3277,15 @@ inline const T & vec<T, 6>::operator[](nat i) const {
 //--- equal to ---
 
 template <typename T>
-inline bool operator==(const bound3<T> & v1, const bound3<T> & v2) {
-	return v1.x == v2.x && v1.y == v2.y && v1.z == v2.z && v1.width == v2.width && v1.height == v2.height;
+inline bool operator==(const vec<T, 6> & v1, const vec<T, 6> & v2) {
+	return v1.x1 == v2.x1 && v1.y1 == v2.y1 && v1.z1 == v2.z1 && v1.x2 == v2.x2 && v1.y2 == v2.y2 && v1.z2 == v2.z2;
 }
 
 //--- not equal to ---
 
 template <typename T>
-inline bool operator!=(const bound3<T> & v1, const bound3<T> & v2) {
-	return v1.x != v2.x || v1.y != v2.y || v1.z != v2.z || v1.width != v2.width || v1.height != v2.height || v1.depth != v2.depth;
+inline bool operator!=(const vec<T, 6> & v1, const vec<T, 6> & v2) {
+	return v1.x1 != v2.x1 || v1.y1 != v2.y1 || v1.z1 != v2.z1 || v1.x2 != v2.x2 || v1.y2 != v2.y2 || v1.z2 != v2.z2;
 }
 
 
@@ -2951,14 +3298,131 @@ inline bool operator!=(const bound3<T> & v1, const bound3<T> & v2) {
 template <typename T>
 inline std::string vec<T, 6>::toString() const {
 	std::stringstream ss;
-	ss << "(" << x << ", " << y << ", " << z << ", " << width << ", " << height << ", " << depth << ")";
+	ss << "(" << x1 << ", " << y1 << ", " << z1 << ", " << x2 << ", " << y2 << ", " << z2 << ")";
 	return ss.str();
 }
 
 
 
 template <typename T>
-inline std::ostream & operator<<(std::ostream & os, const bound3<T> & v) {
+inline std::ostream & operator<<(std::ostream & os, const vec<T, 6> & v) {
+	return os << v.toString();
+}
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// VEC8 IMPLEMENTATION -------------------------------------------------------------------------------------------------
+
+
+
+//------------------------------------------------------------------------------
+// Constructors
+
+
+
+template <typename T>
+constexpr vec<T, 8>::vec() :
+	x1(static_cast<T>(0)), y1(static_cast<T>(0)), z1(static_cast<T>(0)), w1(static_cast<T>(0)), x2(static_cast<T>(0)), y2(static_cast<T>(0)), z2(static_cast<T>(0)), w2(static_cast<T>(0))
+{}
+
+template <typename T>
+constexpr vec<T, 8>::vec(const vec<T, 8> & v) :
+	x1(v.x1), y1(v.y1), z1(v.z1), w1(v.w1), x2(v.x2), y2(v.y2), z2(v.z2), w2(v.w2)
+{}
+
+template <typename T>
+constexpr vec<T, 8>::vec(vec<T, 8> && v) :
+	x1(v.x1), y1(v.y1), z1(v.z1), w1(v.w1), x2(v.x2), y2(v.y2), z2(v.z2), w2(v.w2)
+{}
+
+template <typename T>
+constexpr vec<T, 8>::vec(const vec4<T> & v1, const vec4<T> & v2) :
+	x1(v1.x), y1(v1.y), z1(v1.z), w1(v1.w), x2(v2.x), y2(v2.y), z2(v2.z), w2(v2.w)
+{}
+
+template <typename T>
+constexpr vec<T, 8>::vec(const T & v1, const T & v2, const T & v3, const T & v4, const T & v5, const T & v6, const T & v7, const T & v8) :
+	x1(v1), y1(v2), z1(v3), w1(v4), x2(v5), y2(v6), z2(v7), w2(v8)
+{}
+
+
+
+//------------------------------------------------------------------------------
+// Assignment Operators
+
+
+
+template <typename T>
+inline vec<T, 8> & vec<T, 8>::operator=(const vec<T, 8> & v) {
+	x1 = v.x1; y1 = v.y1; z1 = v.z1; w1 = v.w1; x2 = v.x2; y2 = v.y2; z2 = v.z2; w2 = v.w2;
+	return *this;
+}
+
+template <typename T>
+inline vec<T, 8> & vec<T, 8>::operator=(vec<T, 8> && v) {
+	x1 = v.x1; y1 = v.y1; z1 = v.z1; w1 = v.w1; x2 = v.x2; y2 = v.y2; z2 = v.z2; w2 = v.w2;
+	return *this;
+}
+
+
+
+//------------------------------------------------------------------------------
+// Access Operators
+
+
+
+template <typename T>
+inline T & vec<T, 8>::operator[](nat i) {
+	return *(&x1 + i);
+}
+
+
+
+template <typename T>
+inline const T & vec<T, 8>::operator[](nat i) const {
+	return *(&x1 + i);
+}
+
+
+
+//------------------------------------------------------------------------------
+// Comparison Operators
+
+
+
+//--- equal to ---
+
+template <typename T>
+inline bool operator==(const vec<T, 8> & v1, const vec<T, 8> & v2) {
+	return v1.x1 == v2.x1 && v1.y1 == v2.y1 && v1.z1 == v2.z1 && v1.w1 == v2.w1 && v1.x2 == v2.x2 && v1.y2 == v2.y2 && v1.z2 == v2.z2 && v1.w2 == v2.w2;
+}
+
+//--- not equal to ---
+
+template <typename T>
+inline bool operator!=(const vec<T, 8> & v1, const vec<T, 8> & v2) {
+	return v1.x1 != v2.x1 || v1.y1 != v2.y1 || v1.z1 != v2.z1 || v1.w1 != v2.w1 || v1.x2 != v2.x2 || v1.y2 != v2.y2 || v1.z2 != v2.z2 || v1.w2 != v2.w2;
+}
+
+
+
+//------------------------------------------------------------------------------
+// Other
+
+
+
+template <typename T>
+inline std::string vec<T, 8>::toString() const {
+	std::stringstream ss;
+	ss << "(" << x1 << ", " << y1 << ", " << z1 << ", " << w1 << ", " << x2 << ", " << y2 << ", " << z2 << ", " << w2 << ")";
+	return ss.str();
+}
+
+
+
+template <typename T>
+inline std::ostream & operator<<(std::ostream & os, const vec<T, 8> & v) {
 	return os << v.toString();
 }
 
