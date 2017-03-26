@@ -558,6 +558,16 @@ void testVectorTCompilation() {
 	clamp(v2, v, v);
 	clamp(v3, v, v);
 	clamp(v4, v, v);
+
+	min(v1);
+	min(v2);
+	min(v3);
+	min(v4);
+	
+	max(v1);
+	max(v2);
+	max(v3);
+	max(v4);
 }
 
 void testVectorCompilation() {

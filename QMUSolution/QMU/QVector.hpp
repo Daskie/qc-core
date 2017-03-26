@@ -919,6 +919,10 @@ template <typename T, nat t_n> vec<T, t_n> orthogonal(const vec<T, t_n> & v);
 
 template <typename T, nat t_n> vec<T, t_n> clamp(const vec<T, t_n> & v, const T & min, const T & max);
 
+template <typename T, nat t_n> T min(const vec<T, t_n> & v);
+
+template <typename T, nat t_n> T max(const vec<T, t_n> & v);
+
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -3547,14 +3551,14 @@ inline vec3<T> orthogonal(const vec3<T> & v) {
 }
 
 template <typename T>
-constexpr vec1<T> clamp(const vec1<T> & v, const T & min, const T & max) {
+inline vec1<T> clamp(const vec1<T> & v, const T & min, const T & max) {
 	return vec1<T>(
 		v.x >= min ? (v.x <= max ? v.x : max) : min
 	);
 }
 
 template <typename T>
-constexpr vec2<T> clamp(const vec2<T> & v, const T & min, const T & max) {
+inline vec2<T> clamp(const vec2<T> & v, const T & min, const T & max) {
 	return vec2<T>(
 		v.x >= min ? (v.x <= max ? v.x : max) : min,
 		v.y >= min ? (v.y <= max ? v.y : max) : min
@@ -3562,7 +3566,7 @@ constexpr vec2<T> clamp(const vec2<T> & v, const T & min, const T & max) {
 }
 
 template <typename T>
-constexpr vec3<T> clamp(const vec3<T> & v, const T & min, const T & max) {
+inline vec3<T> clamp(const vec3<T> & v, const T & min, const T & max) {
 	return vec3<T>(
 		v.x >= min ? (v.x <= max ? v.x : max) : min,
 		v.y >= min ? (v.y <= max ? v.y : max) : min,
@@ -3571,13 +3575,53 @@ constexpr vec3<T> clamp(const vec3<T> & v, const T & min, const T & max) {
 }
 
 template <typename T>
-constexpr vec4<T> clamp(const vec4<T> & v, const T & min, const T & max) {
+inline vec4<T> clamp(const vec4<T> & v, const T & min, const T & max) {
 	return vec4<T>(
 		v.x >= min ? (v.x <= max ? v.x : max) : min,
 		v.y >= min ? (v.y <= max ? v.y : max) : min,
 		v.z >= min ? (v.z <= max ? v.z : max) : min,
 		v.w >= min ? (v.w <= max ? v.w : max) : min
 	);
+}
+
+template <typename T>
+inline T min(const vec1<T> & v) {
+	return v.x;
+}
+
+template <typename T>
+inline T min(const vec2<T> & v) {
+	return qmu::min(v.x, v.y);
+}
+
+template <typename T>
+inline T min(const vec3<T> & v) {
+	return qmu::min(v.x, v.y, v.z);
+}
+
+template <typename T>
+inline T min(const vec4<T> & v) {
+	return qmu::min(v.x, v.y, v.z, v.w);
+}
+
+template <typename T>
+inline T max(const vec1<T> & v) {
+	return v.x;
+}
+
+template <typename T>
+inline T max(const vec2<T> & v) {
+	return qmu::max(v.x, v.y);
+}
+
+template <typename T>
+inline T max(const vec3<T> & v) {
+	return qmu::max(v.x, v.y, v.z);
+}
+
+template <typename T>
+inline T max(const vec4<T> & v) {
+	return qmu::max(v.x, v.y, v.z, v.w);
 }
 
 
