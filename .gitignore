@@ -255,3 +255,4 @@ paket-files/
 /QMUSolution/QMU/QMU.vcxproj
 *.vcxproj
 *.filters
+*.sln
