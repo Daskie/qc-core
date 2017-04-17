@@ -67,47 +67,50 @@ struct quat {
 
 	T operator[](nat i);
 
-	//--- arithmetic assignment operators ---
-
-	template <typename T> friend quat<T> & operator+=(quat<T> & q1, const quat<T> & q2);
-
-	template <typename T> friend quat<T> & operator-=(quat<T> & q1, const quat<T> & q2);
-
-	template <typename T> friend quat<T> & operator*=(quat<T> & q1, const quat<T> & q2);
-	template <typename T> friend quat<T> & operator*=(quat<T> &  q, const      T  &  v);
-
-	template <typename T> friend quat<T> & operator/=(quat<T> & q1, const quat<T> & q2);
-
-	//--- arithmetic operators ---
-
-	template <typename T> friend quat<T> operator+(const quat<T> & q);
-
-	template <typename T> friend quat<T> operator-(const quat<T> & q);
-
-	template <typename T> friend quat<T> operator+(const quat<T> & q1, const quat<T> & q2);
-
-	template <typename T> friend quat<T> operator-(const quat<T> & q1, const quat<T> & q2);
-
-	template <typename T> friend quat<T> operator*(const quat<T> & q1, const quat<T> & q2);
-	template <typename T> friend quat<T> operator*(const quat<T> &  q, const      T  &  v);
-	template <typename T> friend quat<T> operator*(const      T  &  v, const quat<T> &  q);
-	template <typename T> friend vec3<T> operator*(const quat<T> &  q, const vec3<T> &  v);
-
-	template <typename T> friend quat<T> operator/(const quat<T> & q1, const quat<T> & q2);
-
-	//--- comparison operators ---
-
-	template <typename T> friend bool operator==(const quat<T> & q1, const quat<T> & q2);
-
-	template <typename T> friend bool operator!=(const quat<T> & q1, const quat<T> & q2);
-
 	//--- other ---
 
 	std::string toString() const;
 
-	template <typename T> friend std::ostream & operator<<(std::ostream & os, const quat<T> & q);
-
 };
+
+//--- arithmetic assignment operators ---
+
+template <typename T> quat<T> & operator+=(quat<T> & q1, const quat<T> & q2);
+
+template <typename T> quat<T> & operator-=(quat<T> & q1, const quat<T> & q2);
+
+template <typename T> quat<T> & operator*=(quat<T> & q1, const quat<T> & q2);
+template <typename T> quat<T> & operator*=(quat<T> &  q, const      T  &  v);
+
+template <typename T> quat<T> & operator/=(quat<T> & q1, const quat<T> & q2);
+
+//--- arithmetic operators ---
+
+template <typename T> quat<T> operator+(const quat<T> & q);
+
+template <typename T> quat<T> operator-(const quat<T> & q);
+
+template <typename T> quat<T> operator+(const quat<T> & q1, const quat<T> & q2);
+
+template <typename T> quat<T> operator-(const quat<T> & q1, const quat<T> & q2);
+
+template <typename T> quat<T> operator*(const quat<T> & q1, const quat<T> & q2);
+template <typename T> quat<T> operator*(const quat<T> &  q, const      T  &  v);
+template <typename T> quat<T> operator*(const      T  &  v, const quat<T> &  q);
+template <typename T> vec3<T> operator*(const quat<T> &  q, const vec3<T> &  v);
+
+template <typename T> quat<T> operator/(const quat<T> & q1, const quat<T> & q2);
+
+//--- comparison operators ---
+
+template <typename T> bool operator==(const quat<T> & q1, const quat<T> & q2);
+
+template <typename T> bool operator!=(const quat<T> & q1, const quat<T> & q2);
+
+
+//--- other ---
+
+template <typename T> std::ostream & operator<<(std::ostream & os, const quat<T> & q);
 
 
 

@@ -104,60 +104,62 @@ struct mat<T, 2, 2> {
 	T & operator[](nat i);
 	const T & operator[](nat i) const;
 
-	//--- arithmetic assignment operators ---
-
-	template <typename T> friend mat2<T> & operator+=(mat2<T> &  m, const      T  &  v);
-	template <typename T> friend mat2<T> & operator+=(mat2<T> & m1, const mat2<T> & m2);
-
-	template <typename T> friend mat2<T> & operator-=(mat2<T> &  m, const      T  &  v);
-	template <typename T> friend mat2<T> & operator-=(mat2<T> & m1, const mat2<T> & m2);
-
-	template <typename T> friend mat2<T> & operator*=(mat2<T> &  m, const      T  &  v);
-	template <typename T> friend mat2<T> & operator*=(mat2<T> & m1, const mat2<T> & m2);
-
-	template <typename T> friend mat2<T> & operator/=(mat2<T> & m, const T & v);
-
-	template <typename T> friend mat2<T> & operator++(mat2<T> & m);
-	template <typename T> friend mat2<T>   operator++(mat2<T> & m, int);
-
-	template <typename T> friend mat2<T> & operator--(mat2<T> & m);
-	template <typename T> friend mat2<T>   operator--(mat2<T> & m, int);
-
-	//--- arithmetic operators ---
-
-	template <typename T> friend mat2<T> operator+(const mat2<T> & m);
-
-	template <typename T> friend mat2<T> operator-(const mat2<T> & m);
-
-	template <typename T> friend mat2<T> operator+(const mat2<T> & m1, const mat2<T> & m2);
-	template <typename T> friend mat2<T> operator+(const mat2<T> &  m, const      T  &  v);
-	template <typename T> friend mat2<T> operator+(const      T  &  v, const mat2<T> & m1);
-
-	template <typename T> friend mat2<T> operator-(const mat2<T> & m1, const mat2<T> & m2);
-	template <typename T> friend mat2<T> operator-(const mat2<T> &  m, const      T  &  v);
-	template <typename T> friend mat2<T> operator-(const      T  &  v, const mat2<T> &  m);
-
-	template <typename T> friend mat2<T> operator*(const mat2<T> & m1, const mat2<T> & m2);
-	template <typename T> friend mat2<T> operator*(const mat2<T> &  m, const      T  &  v);
-	template <typename T> friend mat2<T> operator*(const      T  &  v, const mat2<T> &  m);
-	template <typename T> friend vec2<T> operator*(const mat2<T> &  m, const vec2<T> &  v);
-
-	template <typename T> friend mat2<T> operator/(const mat2<T> &  m, const      T  & v);
-	template <typename T> friend mat2<T> operator/(const      T  &  v, const mat2<T> & m);
-
-	//--- comparison operators ---
-
-	template <typename T> friend bool operator==(const mat2<T> & m1, const mat2<T> & m2);
-	template <typename T> friend bool operator!=(const mat2<T> & m1, const mat2<T> & m2);
-
 	//--- other ---
 
 	std::string toString() const;
 
-	template <typename T>
-	friend std::ostream & operator<<(std::ostream & os, const mat2<T> & m);
-
 };
+
+//--- arithmetic assignment operators ---
+
+template <typename T> mat2<T> & operator+=(mat2<T> &  m, const      T  &  v);
+template <typename T> mat2<T> & operator+=(mat2<T> & m1, const mat2<T> & m2);
+
+template <typename T> mat2<T> & operator-=(mat2<T> &  m, const      T  &  v);
+template <typename T> mat2<T> & operator-=(mat2<T> & m1, const mat2<T> & m2);
+
+template <typename T> mat2<T> & operator*=(mat2<T> &  m, const      T  &  v);
+template <typename T> mat2<T> & operator*=(mat2<T> & m1, const mat2<T> & m2);
+
+template <typename T> mat2<T> & operator/=(mat2<T> & m, const T & v);
+
+template <typename T> mat2<T> & operator++(mat2<T> & m);
+template <typename T> mat2<T>   operator++(mat2<T> & m, int);
+
+template <typename T> mat2<T> & operator--(mat2<T> & m);
+template <typename T> mat2<T>   operator--(mat2<T> & m, int);
+
+//--- arithmetic operators ---
+
+template <typename T> mat2<T> operator+(const mat2<T> & m);
+
+template <typename T> mat2<T> operator-(const mat2<T> & m);
+
+template <typename T> mat2<T> operator+(const mat2<T> & m1, const mat2<T> & m2);
+template <typename T> mat2<T> operator+(const mat2<T> &  m, const      T  &  v);
+template <typename T> mat2<T> operator+(const      T  &  v, const mat2<T> & m1);
+
+template <typename T> mat2<T> operator-(const mat2<T> & m1, const mat2<T> & m2);
+template <typename T> mat2<T> operator-(const mat2<T> &  m, const      T  &  v);
+template <typename T> mat2<T> operator-(const      T  &  v, const mat2<T> &  m);
+
+template <typename T> mat2<T> operator*(const mat2<T> & m1, const mat2<T> & m2);
+template <typename T> mat2<T> operator*(const mat2<T> &  m, const      T  &  v);
+template <typename T> mat2<T> operator*(const      T  &  v, const mat2<T> &  m);
+template <typename T> vec2<T> operator*(const mat2<T> &  m, const vec2<T> &  v);
+
+template <typename T> mat2<T> operator/(const mat2<T> &  m, const      T  & v);
+template <typename T> mat2<T> operator/(const      T  &  v, const mat2<T> & m);
+
+//--- comparison operators ---
+
+template <typename T> bool operator==(const mat2<T> & m1, const mat2<T> & m2);
+template <typename T> bool operator!=(const mat2<T> & m1, const mat2<T> & m2);
+
+//--- other ---
+
+template <typename T>
+std::ostream & operator<<(std::ostream & os, const mat2<T> & m);
 
 
 
@@ -221,60 +223,62 @@ struct mat<T, 3, 3> {
 	T & operator[](nat i);
 	const T & operator[](nat i) const;
 
-	//--- arithmetic assignment operators ---
-
-	template <typename T> friend mat3<T> & operator+=(mat3<T> &  m, const      T  &  v);
-	template <typename T> friend mat3<T> & operator+=(mat3<T> & m1, const mat3<T> & m2);
-
-	template <typename T> friend mat3<T> & operator-=(mat3<T> &  m, const      T  &  v);
-	template <typename T> friend mat3<T> & operator-=(mat3<T> & m1, const mat3<T> & m2);
-
-	template <typename T> friend mat3<T> & operator*=(mat3<T> &  m, const      T  &  v);
-	template <typename T> friend mat3<T> & operator*=(mat3<T> & m1, const mat3<T> & m2);
-
-	template <typename T> friend mat3<T> & operator/=(mat3<T> & m, const T & v);
-
-	template <typename T> friend mat3<T> & operator++(mat3<T> & m);
-	template <typename T> friend mat3<T>   operator++(mat3<T> & m, int);
-
-	template <typename T> friend mat3<T> & operator--(mat3<T> & m);
-	template <typename T> friend mat3<T>   operator--(mat3<T> & m, int);
-
-	//--- arithmetic operators ---
-
-	template <typename T> friend mat3<T> operator+(const mat3<T> & m);
-
-	template <typename T> friend mat3<T> operator-(const mat3<T> & m);
-
-	template <typename T> friend mat3<T> operator+(const mat3<T> & m1, const mat3<T> & m2);
-	template <typename T> friend mat3<T> operator+(const mat3<T> &  m, const      T  &  v);
-	template <typename T> friend mat3<T> operator+(const      T  &  v, const mat3<T> &  m);
-
-	template <typename T> friend mat3<T> operator-(const mat3<T> & m1, const mat3<T> & m2);
-	template <typename T> friend mat3<T> operator-(const mat3<T> &  m, const      T  &  v);
-	template <typename T> friend mat3<T> operator-(const      T  &  v, const mat3<T> &  m);
-
-	template <typename T> friend mat3<T> operator*(const mat3<T> & m1, const mat3<T> & m2);
-	template <typename T> friend mat3<T> operator*(const mat3<T> &  m, const      T  &  v);
-	template <typename T> friend mat3<T> operator*(const      T  &  v, const mat3<T> &  m);
-	template <typename T> friend vec3<T> operator*(const mat3<T> & m1, const vec3<T> &  v);
-
-	template <typename T> friend mat3<T> operator/(const mat3<T> & m1, const      T  & v);
-	template <typename T> friend mat3<T> operator/(const      T  &  v, const mat3<T> & m);
-
-	//--- comparison operators ---
-
-	template <typename T> friend bool operator==(const mat3<T> & m1, const mat3<T> & m2);
-
-	template <typename T> friend bool operator!=(const mat3<T> & m1, const mat3<T> & m2);
-
 	//--- other ---
 
 	std::string toString() const;
 
-	template <typename T> friend std::ostream & operator<<(std::ostream & os, const mat3<T> & m);
-
 };
+
+//--- arithmetic assignment operators ---
+
+template <typename T> mat3<T> & operator+=(mat3<T> &  m, const      T  &  v);
+template <typename T> mat3<T> & operator+=(mat3<T> & m1, const mat3<T> & m2);
+
+template <typename T> mat3<T> & operator-=(mat3<T> &  m, const      T  &  v);
+template <typename T> mat3<T> & operator-=(mat3<T> & m1, const mat3<T> & m2);
+
+template <typename T> mat3<T> & operator*=(mat3<T> &  m, const      T  &  v);
+template <typename T> mat3<T> & operator*=(mat3<T> & m1, const mat3<T> & m2);
+
+template <typename T> mat3<T> & operator/=(mat3<T> & m, const T & v);
+
+template <typename T> mat3<T> & operator++(mat3<T> & m);
+template <typename T> mat3<T>   operator++(mat3<T> & m, int);
+
+template <typename T> mat3<T> & operator--(mat3<T> & m);
+template <typename T> mat3<T>   operator--(mat3<T> & m, int);
+
+//--- arithmetic operators ---
+
+template <typename T> mat3<T> operator+(const mat3<T> & m);
+
+template <typename T> mat3<T> operator-(const mat3<T> & m);
+
+template <typename T> mat3<T> operator+(const mat3<T> & m1, const mat3<T> & m2);
+template <typename T> mat3<T> operator+(const mat3<T> &  m, const      T  &  v);
+template <typename T> mat3<T> operator+(const      T  &  v, const mat3<T> &  m);
+
+template <typename T> mat3<T> operator-(const mat3<T> & m1, const mat3<T> & m2);
+template <typename T> mat3<T> operator-(const mat3<T> &  m, const      T  &  v);
+template <typename T> mat3<T> operator-(const      T  &  v, const mat3<T> &  m);
+
+template <typename T> mat3<T> operator*(const mat3<T> & m1, const mat3<T> & m2);
+template <typename T> mat3<T> operator*(const mat3<T> &  m, const      T  &  v);
+template <typename T> mat3<T> operator*(const      T  &  v, const mat3<T> &  m);
+template <typename T> vec3<T> operator*(const mat3<T> & m1, const vec3<T> &  v);
+
+template <typename T> mat3<T> operator/(const mat3<T> & m1, const      T  & v);
+template <typename T> mat3<T> operator/(const      T  &  v, const mat3<T> & m);
+
+//--- comparison operators ---
+
+template <typename T> bool operator==(const mat3<T> & m1, const mat3<T> & m2);
+
+template <typename T> bool operator!=(const mat3<T> & m1, const mat3<T> & m2);
+
+//--- other ---
+
+template <typename T> std::ostream & operator<<(std::ostream & os, const mat3<T> & m);
 
 
 
@@ -341,60 +345,62 @@ struct mat<T, 4, 4> {
 	T & operator[](nat i);
 	const T & operator[](nat i) const;
 
-	//--- arithmetic assignment operators ---
-
-	template <typename T> friend mat4<T> & operator+=(mat4<T> & m, const T & v);
-	template <typename T> friend mat4<T> & operator+=(mat4<T> & m1, const mat4<T> & m2);
-
-	template <typename T> friend mat4<T> & operator-=(mat4<T> & m, const T & v);
-	template <typename T> friend mat4<T> & operator-=(mat4<T> & m1, const mat4<T> & m2);
-
-	template <typename T> friend mat4<T> & operator*=(mat4<T> & m, const T & v);
-	template <typename T> friend mat4<T> & operator*=(mat4<T> & m1, const mat4<T> & m2);
-
-	template <typename T> friend mat4<T> & operator/=(mat4<T> & m, const T & v);
-
-	template <typename T> friend mat4<T> & operator++(mat4<T> & m);
-	template <typename T> friend mat4<T>   operator++(mat4<T> & m, int);
-
-	template <typename T> friend mat4<T> & operator--(mat4<T> & m);
-	template <typename T> friend mat4<T>   operator--(mat4<T> & m, int);
-
-	//--- arithmetic operators ---
-
-	template <typename T> friend mat4<T> operator+(const mat4<T> & m);
-
-	template <typename T> friend mat4<T> operator-(const mat4<T> & m);
-
-	template <typename T> friend mat4<T> operator+(const mat4<T> & m1, const mat4<T> & m2);
-	template <typename T> friend mat4<T> operator+(const mat4<T> &  m, const      T  &  v);
-	template <typename T> friend mat4<T> operator+(const      T  &  v, const mat4<T> &  m);
-
-	template <typename T> friend mat4<T> operator-(const mat4<T> & m1, const mat4<T> & m2);
-	template <typename T> friend mat4<T> operator-(const mat4<T> &  m, const      T  &  v);
-	template <typename T> friend mat4<T> operator-(const      T  &  v, const mat4<T> &  m);
-
-	template <typename T> friend mat4<T> operator*(const mat4<T> & m1, const mat4<T> & m2);
-	template <typename T> friend mat4<T> operator*(const mat4<T> &  m, const      T  &  v);
-	template <typename T> friend mat4<T> operator*(const      T  &  v, const mat4<T> &  m);
-	template <typename T> friend vec4<T> operator*(const mat4<T> &  m, const vec4<T> &  v);
-
-	template <typename T> friend mat4<T> operator/(const mat4<T> & m, const      T  & v);
-	template <typename T> friend mat4<T> operator/(const      T  & v, const mat4<T> & m);
-
-	//--- comparison operators ---
-
-	template <typename T> friend bool operator==(const mat4<T> & m1, const mat4<T> & m2);
-
-	template <typename T> friend bool operator!=(const mat4<T> & m1, const mat4<T> & m2);
-
 	//--- other ---
 
 	std::string toString() const;
 
-	template <typename T> friend std::ostream & operator<<(std::ostream & os, const mat4<T> & m);
-
 };
+
+//--- arithmetic assignment operators ---
+
+template <typename T> mat4<T> & operator+=(mat4<T> & m, const T & v);
+template <typename T> mat4<T> & operator+=(mat4<T> & m1, const mat4<T> & m2);
+
+template <typename T> mat4<T> & operator-=(mat4<T> & m, const T & v);
+template <typename T> mat4<T> & operator-=(mat4<T> & m1, const mat4<T> & m2);
+
+template <typename T> mat4<T> & operator*=(mat4<T> & m, const T & v);
+template <typename T> mat4<T> & operator*=(mat4<T> & m1, const mat4<T> & m2);
+
+template <typename T> mat4<T> & operator/=(mat4<T> & m, const T & v);
+
+template <typename T> mat4<T> & operator++(mat4<T> & m);
+template <typename T> mat4<T>   operator++(mat4<T> & m, int);
+
+template <typename T> mat4<T> & operator--(mat4<T> & m);
+template <typename T> mat4<T>   operator--(mat4<T> & m, int);
+
+//--- arithmetic operators ---
+
+template <typename T> mat4<T> operator+(const mat4<T> & m);
+
+template <typename T> mat4<T> operator-(const mat4<T> & m);
+
+template <typename T> mat4<T> operator+(const mat4<T> & m1, const mat4<T> & m2);
+template <typename T> mat4<T> operator+(const mat4<T> &  m, const      T  &  v);
+template <typename T> mat4<T> operator+(const      T  &  v, const mat4<T> &  m);
+
+template <typename T> mat4<T> operator-(const mat4<T> & m1, const mat4<T> & m2);
+template <typename T> mat4<T> operator-(const mat4<T> &  m, const      T  &  v);
+template <typename T> mat4<T> operator-(const      T  &  v, const mat4<T> &  m);
+
+template <typename T> mat4<T> operator*(const mat4<T> & m1, const mat4<T> & m2);
+template <typename T> mat4<T> operator*(const mat4<T> &  m, const      T  &  v);
+template <typename T> mat4<T> operator*(const      T  &  v, const mat4<T> &  m);
+template <typename T> vec4<T> operator*(const mat4<T> &  m, const vec4<T> &  v);
+
+template <typename T> mat4<T> operator/(const mat4<T> & m, const      T  & v);
+template <typename T> mat4<T> operator/(const      T  & v, const mat4<T> & m);
+
+//--- comparison operators ---
+
+template <typename T> bool operator==(const mat4<T> & m1, const mat4<T> & m2);
+
+template <typename T> bool operator!=(const mat4<T> & m1, const mat4<T> & m2);
+
+//--- other ---
+
+template <typename T> std::ostream & operator<<(std::ostream & os, const mat4<T> & m);
 
 
 
