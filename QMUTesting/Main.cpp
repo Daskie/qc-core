@@ -573,13 +573,11 @@ void testVectorTCompilation() {
 void testVectorCompilation() {
     testVectorTCompilation<    float>();
     testVectorTCompilation<   double>();
-    testVectorTCompilation<     fnat>();
     testVectorTCompilation<     char>();
     testVectorTCompilation<    short>();
     testVectorTCompilation<      int>();
     testVectorTCompilation<     long>();
     testVectorTCompilation<long long>();
-    testVectorTCompilation<      nat>();
 }
 
 template <typename T>
@@ -847,7 +845,6 @@ void testMatrixTCompilation() {
 void testMatrixCompilation() {
     testMatrixTCompilation<float>();
     testMatrixTCompilation<double>();
-    testMatrixTCompilation<fnat>();
 }
 
 template <typename T>
@@ -935,13 +932,83 @@ void testQuaternionTCompilation() {
 void testQuaternionCompilation() {
     testQuaternionTCompilation<float>();
     testQuaternionTCompilation<double>();
-    testQuaternionTCompilation<fnat>();
+}
+
+template <typename T1, typename T2>
+void testVectorTTCasts() {
+    static_cast<vec1<T2>>(vec1<T1>());
+    static_cast<vec2<T2>>(vec2<T1>());
+    static_cast<vec3<T2>>(vec3<T1>());
+    static_cast<vec4<T2>>(vec4<T1>());
+    static_cast<vec<T2, 6>>(vec<T1, 6>());
+    static_cast<vec<T2, 8>>(vec<T1, 8>());
+}
+
+template <typename T>
+void testVectorTCasts() {
+    testVectorTTCasts<T,     float>();
+    testVectorTTCasts<T,    double>();
+    testVectorTTCasts<T,      char>();
+    testVectorTTCasts<T,     short>();
+    testVectorTTCasts<T,       int>();
+    testVectorTTCasts<T,      long>();
+    testVectorTTCasts<T, long long>();
+}
+
+void testVectorCasts() {
+    testVectorTCasts<    float>();
+    testVectorTCasts<   double>();
+    testVectorTCasts<     char>();
+    testVectorTCasts<    short>();
+    testVectorTCasts<      int>();
+    testVectorTCasts<     long>();
+    testVectorTCasts<long long>();
+}
+
+template <typename T1, typename T2>
+void testMatrixTTCasts() {
+    static_cast<mat2<T2>>(mat2<T1>());
+    static_cast<mat3<T2>>(mat3<T1>());
+    static_cast<mat4<T2>>(mat4<T1>());
+}
+
+template <typename T>
+void testMatrixTCasts() {
+    testMatrixTTCasts<T,  float>();
+    testMatrixTTCasts<T, double>();
+}
+
+void testMatrixCasts() {
+    testMatrixTCasts< float>();
+    testMatrixTCasts<double>();
+}
+
+template <typename T1, typename T2>
+void testQuaternionTTCasts() {
+    static_cast<mat2<T2>>(mat2<T1>());
+    static_cast<mat3<T2>>(mat3<T1>());
+    static_cast<mat4<T2>>(mat4<T1>());
+}
+
+template <typename T>
+void testQuaternionTCasts() {
+    testQuaternionTTCasts<T,  float>();
+    testQuaternionTTCasts<T, double>();
+}
+
+void testQuaternionCasts() {
+    testQuaternionTCasts< float>();
+    testQuaternionTCasts<double>();
 }
 
 int main(void) {
     testVectorCompilation();
     testMatrixCompilation();
     testQuaternionCompilation();
+
+    testVectorCasts();
+    testMatrixCasts();
+    testQuaternionCasts();
 
     std::cin.get();
     return 0;

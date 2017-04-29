@@ -40,28 +40,20 @@ struct quat {
 	//--- constructors ---
 
 	constexpr quat();
-	constexpr quat(const quat & o);
-	constexpr quat(quat && o);
+	constexpr quat(const quat & q);
+	constexpr quat(quat && q);
+
+    template <typename U> constexpr explicit quat(const quat<U> & q);
 
 	constexpr quat(const vec3<T> & v, const T & w);
 	constexpr quat(const T & x, const T & y, const T & z, const T & w);
 	constexpr explicit quat(const vec3<T> & v);
 	constexpr explicit quat(const vec4<T> & v);
 
-	//--- destructor ---
-
-	~quat() {
-		static_assert(std::is_standard_layout<quat>::value, "quat<T> must be of standard layout");
-		static_assert(sizeof(quat) == 4 * sizeof(T), "quat<T> must be equal in size to 4 Ts");
-		static_assert(std::is_default_constructible<T>::value, "quat<T> must be default constructible");
-		static_assert(std::is_copy_constructible<T>::value, "quat<T> must be copy constructable");
-		static_assert(std::is_copy_assignable<T>::value, "quat<T> must be copy assignable");
-	}
-
 	//--- assignment operators ---
 
-	quat & operator=(const quat & o);
-	quat & operator=(quat && o);
+	quat & operator=(const quat & q);
+	quat & operator=(quat && q);
 
 	//--- access operators ---
 
@@ -185,13 +177,18 @@ constexpr quat<T>::quat() :
 {}
 
 template <typename T>
-constexpr quat<T>::quat(const quat<T> & o) :
-	x(o.x), y(o.y), z(o.z), w(o.w)
+constexpr quat<T>::quat(const quat<T> & q) :
+	x(q.x), y(q.y), z(q.z), w(q.w)
 {}
 
 template <typename T>
-constexpr quat<T>::quat(quat<T> && o) :
-	x(o.x), y(o.y), z(o.z), w(o.w)
+constexpr quat<T>::quat(quat<T> && q) :
+	x(q.x), y(q.y), z(q.z), w(q.w)
+{}
+
+template <typename T> template <typename U>
+constexpr quat<T>::quat(const quat<U> & q) :
+    x(static_cast<T>(q.x)), y(static_cast<T>(q.y)), z(static_cast<T>(q.z)), w(static_cast<T>(q.w))
 {}
 
 template <typename T>
@@ -222,14 +219,14 @@ constexpr quat<T>::quat(const vec4<T> & v) :
 
 
 template <typename T>
-inline quat<T> & quat<T>::operator=(const quat<T> & o) {
-	x = o.x; y = o.y; z = o.z; w = o.w;
+inline quat<T> & quat<T>::operator=(const quat<T> & q) {
+	x = q.x; y = q.y; z = q.z; w = q.w;
 	return *this;
 }
 
 template <typename T>
-inline quat<T> & quat<T>::operator=(quat<T> && o) {
-	x = o.x; y = o.y; z = o.z; w = o.w;
+inline quat<T> & quat<T>::operator=(quat<T> && q) {
+	x = q.x; y = q.y; z = q.z; w = q.w;
 	return *this;
 }
 
