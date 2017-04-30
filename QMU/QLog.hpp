@@ -27,21 +27,21 @@ inline void exception_break() {}
 
 
 
-#define Q_ERROR(msg) do { \
+#define QERROR(msg) do { \
 	qmu::error_break(); \
 	qmu::log() << "ERROR" << std::endl; \
 	qmu::log() << "\t" << msg << std::endl; \
 	qmu::log() << "\t" << __func__ << " (" << __FILE__ << "(" << __LINE__ << "))" << std::endl; \
 } while (false)
 
-#define Q_WARNING(msg) do { \
+#define QWARNING(msg) do { \
 	qmu::warning_break(); \
 	qmu::log() << "WARNING" << std::endl; \
 	qmu::log() << "\t" << msg << std::endl; \
 	qmu::log() << "\t" << __func__ << " (" << __FILE__ << "(" << __LINE__ << "))" << std::endl; \
 } while (false)
 
-#define Q_LOG(msg) do { \
+#define QLOG(msg) do { \
 	qmu::log() << msg << std::endl; \
 } while (false)
 
