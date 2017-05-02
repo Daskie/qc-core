@@ -12,6 +12,10 @@ namespace qmu {
 
 
 
+double now();
+
+
+
 class Clock {
 
     private:
@@ -34,6 +38,8 @@ class Clock {
 
     void recycle();
 
+    void decycle();
+
     double period() const;
     void period(double period);
 
@@ -48,6 +54,11 @@ class Clock {
 // IMPLEMENTATION //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+
+double now() {
+    return std::chrono::duration_cast<std::chrono::duration<double>>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
+}
 
 
 
@@ -75,6 +86,12 @@ nat Clock::cycles() const {
 
 void Clock::recycle() {
     m_start += std::chrono::duration_cast<std::chrono::high_resolution_clock::duration>(std::chrono::duration<double>(cycles() * m_period));
+}
+
+void Clock::decycle() {
+    if (cycles() > 0) {
+        m_start += std::chrono::duration_cast<std::chrono::high_resolution_clock::duration>(std::chrono::duration<double>(m_period));
+    }
 }
 
 double Clock::period() const {
