@@ -27,7 +27,12 @@ class Clock {
     void restart();
 
     double age() const;
+    
     double time() const;
+
+    nat cycles() const;
+
+    void recycle();
 
     double period() const;
     void period(double period);
@@ -61,7 +66,15 @@ double Clock::age() const {
 }
 
 double Clock::time() const {
+    return fract(age());
+}
 
+nat Clock::cycles() const {
+    return trunc(age());
+}
+
+void Clock::recycle() {
+    m_start += std::chrono::duration_cast<std::chrono::high_resolution_clock::duration>(std::chrono::duration<double>(cycles() * m_period));
 }
 
 double Clock::period() const {

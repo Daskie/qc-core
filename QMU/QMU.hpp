@@ -178,8 +178,13 @@ inline T ceil2(T v) {
 }
 
 template <typename T, std::enable_if_t<std::is_floating_point<T>::value, int> = 0>
+inline nat trunc(T v) {
+    return static_cast<nat>(v);
+}
+
+template <typename T, std::enable_if_t<std::is_floating_point<T>::value, int> = 0>
 inline T fract(T v) {
-    return v - static_cast<T>(static_cast<nat>(v));
+    return v - static_cast<T>(trunc(v));
 }
 
 
