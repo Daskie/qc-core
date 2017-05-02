@@ -16,6 +16,9 @@ namespace qmu {
 using  nat =  intptr_t;
 using unat = uintptr_t;
 
+nat operator""n(unsigned long long int v) { return v; }
+unat operator""un(unsigned long long int v) { return v; }
+
 using   s08 =   int8_t;
 using   u08 =  uint8_t;
 using   s16 =  int16_t;
@@ -45,7 +48,7 @@ template        <> struct precision<128> { using stype = s128; using utype = u12
 template <nat t_p> using precision_st  = typename precision<t_p>::stype;
 template <nat t_p> using precision_ut = typename precision<t_p>::utype;
 
-constexpr nat gk_nat_p = sizeof(nat) * 8;
+constexpr nat k_nat_p = sizeof(nat) * 8;
 
 
 
