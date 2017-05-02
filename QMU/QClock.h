@@ -26,6 +26,7 @@ class Clock {
 
     void restart();
 
+    double age() const;
     double time() const;
 
     double period() const;
@@ -55,8 +56,12 @@ void Clock::restart() {
     m_start = std::chrono::high_resolution_clock::now();
 }
 
-double Clock::time() const {
+double Clock::age() const {
     return std::chrono::duration_cast<std::chrono::duration<double>>(std::chrono::high_resolution_clock::now() - m_start).count() * m_frequency;
+}
+
+double Clock::time() const {
+
 }
 
 double Clock::period() const {
