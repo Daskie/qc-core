@@ -318,6 +318,7 @@ struct vec<T, 2> {
         struct { T r, g; };
         struct { T s, t; };
         struct { T x1, x2; };
+        struct { T x, width; };
         struct { vec1<T> min, max; };
         struct { vec1<T> loc, size; };
     };
@@ -629,6 +630,7 @@ struct vec<T, 4> {
         struct { T r, g, b, a; };
         struct { T s, t, p, q; };
         struct { T x1, y1, x2, y2; };
+        struct { T x, y, width, height; };
         struct { vec2<T> min, max; };
         struct { vec2<T> loc, size; };
     };
@@ -819,6 +821,7 @@ struct vec<T, 6> {
 
     union {
         struct { T x1, y1, z1, x2, y2, z2; };
+        struct { T x, y, z, width, height, depth; };
         struct { vec3<T> min, max; };
         struct { vec3<T> loc, size; };
     };
@@ -875,6 +878,7 @@ struct vec<T, 8> {
 
     union {
         struct { T x1, y1, z1, w1, x2, y2, z2, w2; };
+        struct { T x, y, z, w, width, height, depth, duration; };
         struct { vec4<T> min, max; };
         struct { vec4<T> loc, size; };
     };

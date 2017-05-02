@@ -32,7 +32,6 @@ template <typename T> using mat4 = mat<T, 4>;
 
 template <nat t_m, nat t_n> using  fmat = mat< float, t_m, t_n>;
 template <nat t_m, nat t_n> using  dmat = mat<double, t_m, t_n>;
-template <nat t_m, nat t_n> using fnmat = mat<  fnat, t_m, t_n>;
 
 using  fmat2 = mat< float, 2>;
 using  fmat3 = mat< float, 3>;
@@ -40,9 +39,6 @@ using  fmat4 = mat< float, 4>;
 using  dmat2 = mat<double, 2>;
 using  dmat3 = mat<double, 3>;
 using  dmat4 = mat<double, 4>;
-using fnmat2 = mat<  fnat, 2>;
-using fnmat3 = mat<  fnat, 3>;
-using fnmat4 = mat<  fnat, 4>;
 
 
 
