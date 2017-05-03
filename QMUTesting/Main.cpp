@@ -1,10 +1,10 @@
 #include <iostream>
 #include <sstream>
 
-#include "QMU.hpp"
-#include "QVector.hpp"
-#include "QMatrix.hpp"
-#include "QQuaternion.hpp"
+#include "QMU/QMU.hpp"
+#include "QMU/Vector.hpp"
+#include "QMU/Matrix.hpp"
+#include "QMU/Quaternion.hpp"
 
 using namespace qmu;
 

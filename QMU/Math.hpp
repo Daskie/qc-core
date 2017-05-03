@@ -4,7 +4,7 @@
 
 #include <cmath>
 
-#include "QMatrix.hpp"
+#include "Matrix.hpp"
 
 
 

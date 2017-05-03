@@ -1,4 +1,4 @@
-#include "QLog.hpp"
+#include "Log.hpp"
 
 
 

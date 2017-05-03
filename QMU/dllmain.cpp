@@ -1,10 +1,10 @@
 // dllmain.cpp : Defines the entry point for the DLL application.
 
-#include "QVector.hpp"
-#include "QMatrix.hpp"
-#include "QQuaternion.hpp"
-#include "QMath.hpp"
-#include "QUtils.hpp"
+#include "Vector.hpp"
+#include "Matrix.hpp"
+#include "Quaternion.hpp"
+#include "Math.hpp"
+#include "Utils.hpp"
 
 // Including SDKDDKVer.h defines the highest available Windows platform.
 

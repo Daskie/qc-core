@@ -13,7 +13,7 @@
 #include <sstream>
 #include <iomanip>
 
-#include "QMath.hpp"
+#include "Math.hpp"
 
 
 
