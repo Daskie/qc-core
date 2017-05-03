@@ -45,6 +45,7 @@ template <nat t_n> using  llvec = vec<  signed long long, t_n>;
 template <nat t_n> using ullvec = vec<unsigned long long, t_n>;
 template <nat t_n> using   nvec = vec<               nat, t_n>;
 template <nat t_n> using  unvec = vec<              unat, t_n>;
+template <nat t_n> using   bvec = vec<              bool, t_n>;
 
 using   fvec1 = vec<             float, 1>;
 using   fvec2 = vec<             float, 2>;
@@ -102,6 +103,10 @@ using  unvec1 = vec<              unat, 1>;
 using  unvec2 = vec<              unat, 2>;
 using  unvec3 = vec<              unat, 3>;
 using  unvec4 = vec<              unat, 4>;
+using   bvec1 = vec<              bool, 1>;
+using   bvec2 = vec<              bool, 2>;
+using   bvec3 = vec<              bool, 3>;
+using   bvec4 = vec<              bool, 4>;
 
 template <typename T> using point = vec<T, 2>;
 
@@ -277,24 +282,24 @@ template <typename T> vec1<T> operator/(const      T  & v1, const vec1<T> & v2);
 //--- comparison operators ---
 
 template <typename T> bool operator==(const vec1<T> & v1, const vec1<T> & v2);
-template <typename T> vec1<bool> operator==(const vec1<T> & v1, const      T  & v2);
-template <typename T> vec1<bool> operator==(const      T  & v1, const vec1<T> & v2);
+template <typename T> bvec1 operator==(const vec1<T> & v1, const      T  & v2);
+template <typename T> bvec1 operator==(const      T  & v1, const vec1<T> & v2);
 
 template <typename T> bool operator!=(const vec1<T> & v1, const vec1<T> & v2);
-template <typename T> vec1<bool> operator!=(const vec1<T> & v1, const      T  & v2);
-template <typename T> vec1<bool> operator!=(const      T  & v1, const vec1<T> & v2);
+template <typename T> bvec1 operator!=(const vec1<T> & v1, const      T  & v2);
+template <typename T> bvec1 operator!=(const      T  & v1, const vec1<T> & v2);
 
-template <typename T> vec1<bool> operator<(const vec1<T> & v1, const      T  & v2);
-template <typename T> vec1<bool> operator<(const      T  & v1, const vec1<T> & v2);
+template <typename T> bvec1 operator<(const vec1<T> & v1, const      T  & v2);
+template <typename T> bvec1 operator<(const      T  & v1, const vec1<T> & v2);
 
-template <typename T> vec1<bool> operator>(const vec1<T> & v1, const      T  & v2);
-template <typename T> vec1<bool> operator>(const      T  & v1, const vec1<T> & v2);
+template <typename T> bvec1 operator>(const vec1<T> & v1, const      T  & v2);
+template <typename T> bvec1 operator>(const      T  & v1, const vec1<T> & v2);
 
-template <typename T> vec1<bool> operator<=(const vec1<T> & v1, const      T  & v2);
-template <typename T> vec1<bool> operator<=(const      T  & v1, const vec1<T> & v2);
+template <typename T> bvec1 operator<=(const vec1<T> & v1, const      T  & v2);
+template <typename T> bvec1 operator<=(const      T  & v1, const vec1<T> & v2);
 
-template <typename T> vec1<bool> operator>=(const vec1<T> & v1, const      T  & v2);
-template <typename T> vec1<bool> operator>=(const      T  & v1, const vec1<T> & v2);
+template <typename T> bvec1 operator>=(const vec1<T> & v1, const      T  & v2);
+template <typename T> bvec1 operator>=(const      T  & v1, const vec1<T> & v2);
 
 //--- other ---
 
@@ -319,8 +324,8 @@ struct vec<T, 2> {
         struct { T s, t; };
         struct { T x1, x2; };
         struct { T x, width; };
-        //struct { vec1<T> min, max; };
-        //struct { vec1<T> loc, size; };
+        struct { vec1<T> min, max; };
+        struct { vec1<T> loc, size; };
     };
 
     //--- constructors ---
@@ -426,24 +431,24 @@ template <typename T> vec2<T> operator/(const vec1<T> & v1, const vec2<T> & v2);
 //--- comparison operators ---
 
 template <typename T> bool operator==(const vec2<T> & v1, const vec2<T> & v2);
-template <typename T> vec2<bool> operator==(const vec2<T> & v1, const      T  & v2);
-template <typename T> vec2<bool> operator==(const      T  & v1, const vec2<T> & v2);
+template <typename T> bvec2 operator==(const vec2<T> & v1, const      T  & v2);
+template <typename T> bvec2 operator==(const      T  & v1, const vec2<T> & v2);
 
 template <typename T> bool operator!=(const vec2<T> & v1, const vec2<T> & v2);
-template <typename T> vec2<bool> operator!=(const vec2<T> & v1, const      T  & v2);
-template <typename T> vec2<bool> operator!=(const      T  & v1, const vec2<T> & v2);
+template <typename T> bvec2 operator!=(const vec2<T> & v1, const      T  & v2);
+template <typename T> bvec2 operator!=(const      T  & v1, const vec2<T> & v2);
 
-template <typename T> vec2<bool> operator<(const vec2<T> & v1, const      T  & v2);
-template <typename T> vec2<bool> operator<(const      T  & v1, const vec2<T> & v2);
+template <typename T> bvec2 operator<(const vec2<T> & v1, const      T  & v2);
+template <typename T> bvec2 operator<(const      T  & v1, const vec2<T> & v2);
 
-template <typename T> vec2<bool> operator>(const vec2<T> & v1, const      T  & v2);
-template <typename T> vec2<bool> operator>(const      T  & v1, const vec2<T> & v2);
+template <typename T> bvec2 operator>(const vec2<T> & v1, const      T  & v2);
+template <typename T> bvec2 operator>(const      T  & v1, const vec2<T> & v2);
 
-template <typename T> vec2<bool> operator<=(const vec2<T> & v1, const      T  & v2);
-template <typename T> vec2<bool> operator<=(const      T  & v1, const vec2<T> & v2);
+template <typename T> bvec2 operator<=(const vec2<T> & v1, const      T  & v2);
+template <typename T> bvec2 operator<=(const      T  & v1, const vec2<T> & v2);
 
-template <typename T> vec2<bool> operator>=(const vec2<T> & v1, const      T  & v2);
-template <typename T> vec2<bool> operator>=(const      T  & v1, const vec2<T> & v2);
+template <typename T> bvec2 operator>=(const vec2<T> & v1, const      T  & v2);
+template <typename T> bvec2 operator>=(const      T  & v1, const vec2<T> & v2);
 
 //--- other ---
 
@@ -589,24 +594,24 @@ template <typename T> vec3<T> operator/(const vec2<T> & v1, const vec3<T> & v2);
 //--- comparison operators ---
 
 template <typename T> bool operator==(const vec3<T> & v1, const vec3<T> & v2);
-template <typename T> vec3<bool> operator==(const vec3<T> & v1, const      T  & v2);
-template <typename T> vec3<bool> operator==(const      T  & v1, const vec3<T> & v2);
+template <typename T> bvec3 operator==(const vec3<T> & v1, const      T  & v2);
+template <typename T> bvec3 operator==(const      T  & v1, const vec3<T> & v2);
 
 template <typename T> bool operator!=(const vec3<T> & v1, const vec3<T> & v2);
-template <typename T> vec3<bool> operator!=(const vec3<T> & v1, const      T  & v2);
-template <typename T> vec3<bool> operator!=(const      T  & v1, const vec3<T> & v2);
+template <typename T> bvec3 operator!=(const vec3<T> & v1, const      T  & v2);
+template <typename T> bvec3 operator!=(const      T  & v1, const vec3<T> & v2);
 
-template <typename T> vec3<bool> operator<(const vec3<T> & v1, const      T  & v2);
-template <typename T> vec3<bool> operator<(const      T  & v1, const vec3<T> & v2);
+template <typename T> bvec3 operator<(const vec3<T> & v1, const      T  & v2);
+template <typename T> bvec3 operator<(const      T  & v1, const vec3<T> & v2);
 
-template <typename T> vec3<bool> operator>(const vec3<T> & v1, const      T  & v2);
-template <typename T> vec3<bool> operator>(const      T  & v1, const vec3<T> & v2);
+template <typename T> bvec3 operator>(const vec3<T> & v1, const      T  & v2);
+template <typename T> bvec3 operator>(const      T  & v1, const vec3<T> & v2);
 
-template <typename T> vec3<bool> operator<=(const vec3<T> & v1, const      T  & v2);
-template <typename T> vec3<bool> operator<=(const      T  & v1, const vec3<T> & v2);
+template <typename T> bvec3 operator<=(const vec3<T> & v1, const      T  & v2);
+template <typename T> bvec3 operator<=(const      T  & v1, const vec3<T> & v2);
 
-template <typename T> vec3<bool> operator>=(const vec3<T> & v1, const      T  & v2);
-template <typename T> vec3<bool> operator>=(const      T  & v1, const vec3<T> & v2);
+template <typename T> bvec3 operator>=(const vec3<T> & v1, const      T  & v2);
+template <typename T> bvec3 operator>=(const      T  & v1, const vec3<T> & v2);
 
 //--- other ---
 
@@ -631,8 +636,8 @@ struct vec<T, 4> {
         struct { T s, t, p, q; };
         struct { T x1, y1, x2, y2; };
         struct { T x, y, width, height; };
-        //struct { vec2<T> min, max; };
-        //struct { vec2<T> loc, size; };
+        struct { vec2<T> min, max; };
+        struct { vec2<T> loc, size; };
     };
     
     //--- constructors ---
@@ -783,24 +788,24 @@ template <typename T> vec4<T> operator/(const vec3<T> & v1, const vec4<T> & v2);
 //--- comparison operators ---
 
 template <typename T> bool operator==(const vec4<T> & v1, const vec4<T> & v2);
-template <typename T> vec4<bool> operator==(const vec4<T> & v1, const      T  & v2);
-template <typename T> vec4<bool> operator==(const      T  & v1, const vec4<T> & v2);
+template <typename T> bvec4 operator==(const vec4<T> & v1, const      T  & v2);
+template <typename T> bvec4 operator==(const      T  & v1, const vec4<T> & v2);
 
 template <typename T> bool operator!=(const vec4<T> & v1, const vec4<T> & v2);
-template <typename T> vec4<bool> operator!=(const vec4<T> & v1, const      T  & v2);
-template <typename T> vec4<bool> operator!=(const      T  & v1, const vec4<T> & v2);
+template <typename T> bvec4 operator!=(const vec4<T> & v1, const      T  & v2);
+template <typename T> bvec4 operator!=(const      T  & v1, const vec4<T> & v2);
 
-template <typename T> vec4<bool> operator<(const vec4<T> & v1, const      T  & v2);
-template <typename T> vec4<bool> operator<(const      T  & v1, const vec4<T> & v2);
+template <typename T> bvec4 operator<(const vec4<T> & v1, const      T  & v2);
+template <typename T> bvec4 operator<(const      T  & v1, const vec4<T> & v2);
 
-template <typename T> vec4<bool> operator>(const vec4<T> & v1, const      T  & v2);
-template <typename T> vec4<bool> operator>(const      T  & v1, const vec4<T> & v2);
+template <typename T> bvec4 operator>(const vec4<T> & v1, const      T  & v2);
+template <typename T> bvec4 operator>(const      T  & v1, const vec4<T> & v2);
 
-template <typename T> vec4<bool> operator<=(const vec4<T> & v1, const      T  & v2);
-template <typename T> vec4<bool> operator<=(const      T  & v1, const vec4<T> & v2);
+template <typename T> bvec4 operator<=(const vec4<T> & v1, const      T  & v2);
+template <typename T> bvec4 operator<=(const      T  & v1, const vec4<T> & v2);
 
-template <typename T> vec4<bool> operator>=(const vec4<T> & v1, const      T  & v2);
-template <typename T> vec4<bool> operator>=(const      T  & v1, const vec4<T> & v2);
+template <typename T> bvec4 operator>=(const vec4<T> & v1, const      T  & v2);
+template <typename T> bvec4 operator>=(const      T  & v1, const vec4<T> & v2);
 
 //--- other ---
 
@@ -822,8 +827,8 @@ struct vec<T, 6> {
     union {
         struct { T x1, y1, z1, x2, y2, z2; };
         struct { T x, y, z, width, height, depth; };
-        //struct { vec3<T> min, max; };
-        //struct { vec3<T> loc, size; };
+        struct { vec3<T> min, max; };
+        struct { vec3<T> loc, size; };
     };
 
     //--- constructors ---
@@ -879,8 +884,8 @@ struct vec<T, 8> {
     union {
         struct { T x1, y1, z1, w1, x2, y2, z2, w2; };
         struct { T x, y, z, w, width, height, depth, duration; };
-        //struct { vec4<T> min, max; };
-        //struct { vec4<T> loc, size; };
+        struct { vec4<T> min, max; };
+        struct { vec4<T> loc, size; };
     };
 
     //--- constructors ---
@@ -952,6 +957,10 @@ template <typename T, nat t_n> vec<T, t_n> clamp(const vec<T, t_n> & v, const T 
 template <typename T, nat t_n> T min(const vec<T, t_n> & v);
 
 template <typename T, nat t_n> T max(const vec<T, t_n> & v);
+
+template <typename T, nat t_n> vec<T, t_n> min(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+
+template <typename T, nat t_n> vec<T, t_n> max(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 
 
 
@@ -1315,13 +1324,13 @@ inline bool operator==(const vec1<T> & v1, const vec1<T> & v2) {
 }
 
 template <typename T>
-inline vec1<bool> operator==(const vec1<T> & v1, const T & v2) {
-    return vec1<bool>(v1.x == v2);
+inline bvec1 operator==(const vec1<T> & v1, const T & v2) {
+    return bvec1(v1.x == v2);
 }
 
 template <typename T>
-inline vec1<bool> operator==(const T & v1, const vec1<T> & v2) {
-    return vec1<bool>(v1 == v2.x);
+inline bvec1 operator==(const T & v1, const vec1<T> & v2) {
+    return bvec1(v1 == v2.x);
 }
 
 //--- not equal to ---
@@ -1332,61 +1341,61 @@ inline bool operator!=(const vec1<T> & v1, const vec1<T> & v2) {
 }
 
 template <typename T>
-inline vec1<bool> operator!=(const vec1<T> & v1, const T & v2) {
-    return vec1<bool>(v1.x != v2);
+inline bvec1 operator!=(const vec1<T> & v1, const T & v2) {
+    return bvec1(v1.x != v2);
 }
 
 template <typename T>
-inline vec1<bool> operator!=(const T & v1, const vec1<T> & v2) {
-    return vec1<bool>(v1 != v2.x);
+inline bvec1 operator!=(const T & v1, const vec1<T> & v2) {
+    return bvec1(v1 != v2.x);
 }
 
 //--- less than ---
 
 template <typename T>
-inline vec1<bool> operator<(const vec1<T> & v1, const T & v2) {
-    return vec1<bool>(v1.x < v2);
+inline bvec1 operator<(const vec1<T> & v1, const T & v2) {
+    return bvec1(v1.x < v2);
 }
 
 template <typename T>
-inline vec1<bool> operator<(const T & v1, const vec1<T> & v2) {
-    return vec1<bool>(v1 < v2.x);
+inline bvec1 operator<(const T & v1, const vec1<T> & v2) {
+    return bvec1(v1 < v2.x);
 }
 
 //--- greater than ---
 
 template <typename T>
-inline vec1<bool> operator>(const vec1<T> & v1, const T & v2) {
-    return vec1<bool>(v1.x > v2);
+inline bvec1 operator>(const vec1<T> & v1, const T & v2) {
+    return bvec1(v1.x > v2);
 }
 
 template <typename T>
-inline vec1<bool> operator>(const T & v1, const vec1<T> & v2) {
-    return vec1<bool>(v1 > v2.x);
+inline bvec1 operator>(const T & v1, const vec1<T> & v2) {
+    return bvec1(v1 > v2.x);
 }
 
 //--- less than or equal to ---
 
 template <typename T>
-inline vec1<bool> operator<=(const vec1<T> & v1, const T & v2) {
-    return vec1<bool>(v1.x <= v2);
+inline bvec1 operator<=(const vec1<T> & v1, const T & v2) {
+    return bvec1(v1.x <= v2);
 }
 
 template <typename T>
-inline vec1<bool> operator<=(const T & v1, const vec1<T> & v2) {
-    return vec1<bool>(v1 <= v2.x);
+inline bvec1 operator<=(const T & v1, const vec1<T> & v2) {
+    return bvec1(v1 <= v2.x);
 }
 
 //--- greater than or equal to ---
 
 template <typename T>
-inline vec1<bool> operator>=(const vec1<T> & v1, const T & v2) {
-    return vec1<bool>(v1.x >= v2);
+inline bvec1 operator>=(const vec1<T> & v1, const T & v2) {
+    return bvec1(v1.x >= v2);
 }
 
 template <typename T>
-inline vec1<bool> operator>=(const T & v1, const vec1<T> & v2) {
-    return vec1<bool>(v1 >= v2.x);
+inline bvec1 operator>=(const T & v1, const vec1<T> & v2) {
+    return bvec1(v1 >= v2.x);
 }
 
 
@@ -1826,13 +1835,13 @@ inline bool operator==(const vec2<T> & v1, const vec2<T> & v2) {
 }
 
 template <typename T>
-inline vec2<bool> operator==(const vec2<T> & v1, const T & v2) {
-    return vec2<bool>(v1.x == v2, v1.y == v2);
+inline bvec2 operator==(const vec2<T> & v1, const T & v2) {
+    return bvec2(v1.x == v2, v1.y == v2);
 }
 
 template <typename T>
-inline vec2<bool> operator==(const T & v1, const vec2<T> & v2) {
-    return vec2<bool>(v1 == v2.x, v1 == v2.y);
+inline bvec2 operator==(const T & v1, const vec2<T> & v2) {
+    return bvec2(v1 == v2.x, v1 == v2.y);
 }
 
 //--- not equal to ---
@@ -1843,61 +1852,61 @@ inline bool operator!=(const vec2<T> & v1, const vec2<T> & v2) {
 }
 
 template <typename T>
-inline vec2<bool> operator!=(const vec2<T> & v1, const T & v2) {
-    return vec2<bool>(v1.x != v2, v1.y != v2);
+inline bvec2 operator!=(const vec2<T> & v1, const T & v2) {
+    return bvec2(v1.x != v2, v1.y != v2);
 }
 
 template <typename T>
-inline vec2<bool> operator!=(const T & v1, const vec2<T> & v2) {
-    return vec2<bool>(v1 != v2.x, v1 != v2.y);
+inline bvec2 operator!=(const T & v1, const vec2<T> & v2) {
+    return bvec2(v1 != v2.x, v1 != v2.y);
 }
 
 //--- less than ---
 
 template <typename T>
-inline vec2<bool> operator<(const vec2<T> & v1, const T & v2) {
-    return vec2<bool>(v1.x < v2 && v1.y < v2);
+inline bvec2 operator<(const vec2<T> & v1, const T & v2) {
+    return bvec2(v1.x < v2, v1.y < v2);
 }
 
 template <typename T>
-inline vec2<bool> operator<(const T & v1, const vec2<T> & v2) {
-    return vec2<bool>(v1 < v2.x, v1 < v2.y);
+inline bvec2 operator<(const T & v1, const vec2<T> & v2) {
+    return bvec2(v1 < v2.x, v1 < v2.y);
 }
 
 //--- greater than ---
 
 template <typename T>
-inline vec2<bool> operator>(const vec2<T> & v1, const T & v2) {
-    return vec2<bool>(v1.x > v2, v1.y > v2);
+inline bvec2 operator>(const vec2<T> & v1, const T & v2) {
+    return bvec2(v1.x > v2, v1.y > v2);
 }
 
 template <typename T>
-inline vec2<bool> operator>(const T & v1, const vec2<T> & v2) {
-    return vec2<bool>(v1 > v2.x, v1 > v2.y);
+inline bvec2 operator>(const T & v1, const vec2<T> & v2) {
+    return bvec2(v1 > v2.x, v1 > v2.y);
 }
 
 //--- less than or equal to ---
 
 template <typename T>
-inline vec2<bool> operator<=(const vec2<T> & v1, const T & v2) {
-    return vec2<bool>(v1.x <= v2, v1.y <= v2);
+inline bvec2 operator<=(const vec2<T> & v1, const T & v2) {
+    return bvec2(v1.x <= v2, v1.y <= v2);
 }
 
 template <typename T>
-inline vec2<bool> operator<=(const T & v1, const vec2<T> & v2) {
-    return vec2<bool>(v1 <= v2.x, v1 <= v2.y);
+inline bvec2 operator<=(const T & v1, const vec2<T> & v2) {
+    return bvec2(v1 <= v2.x, v1 <= v2.y);
 }
 
 //--- greater than or equal to ---
 
 template <typename T>
-inline vec2<bool> operator>=(const vec2<T> & v1, const T & v2) {
-    return vec2<bool>(v1.x >= v2, v1.y >= v2);
+inline bvec2 operator>=(const vec2<T> & v1, const T & v2) {
+    return bvec2(v1.x >= v2, v1.y >= v2);
 }
 
 template <typename T>
-inline vec2<bool> operator>=(const T & v1, const vec2<T> & v2) {
-    return vec2<bool>(v1 >= v2.x, v1 >= v2.y);
+inline bvec2 operator>=(const T & v1, const vec2<T> & v2) {
+    return bvec2(v1 >= v2.x, v1 >= v2.y);
 }
 
 
@@ -2417,13 +2426,13 @@ inline bool operator==(const vec3<T> & v1, const vec3<T> & v2) {
 }
 
 template <typename T>
-inline vec3<bool> operator==(const vec3<T> & v1, const T & v2) {
-    return vec3<bool>(v1.x == v2, v1.y == v2, v1.z == v2);
+inline bvec3 operator==(const vec3<T> & v1, const T & v2) {
+    return bvec3(v1.x == v2, v1.y == v2, v1.z == v2);
 }
 
 template <typename T>
-inline vec3<bool> operator==(const T & v1, const vec3<T> & v2) {
-    return vec3<bool>(v1 == v2.x, v1 == v2.y, v1 == v2.z);
+inline bvec3 operator==(const T & v1, const vec3<T> & v2) {
+    return bvec3(v1 == v2.x, v1 == v2.y, v1 == v2.z);
 }
 
 //--- not equal to ---
@@ -2434,61 +2443,61 @@ inline bool operator!=(const vec3<T> & v1, const vec3<T> & v2) {
 }
 
 template <typename T>
-inline vec3<bool> operator!=(const vec3<T> & v1, const T & v2) {
-    return vec3<bool>(v1.x != v2, v1.y != v2, v1.z != v2);
+inline bvec3 operator!=(const vec3<T> & v1, const T & v2) {
+    return bvec3(v1.x != v2, v1.y != v2, v1.z != v2);
 }
 
 template <typename T>
-inline vec3<bool> operator!=(const T & v1, const vec3<T> & v2) {
-    return vec3<bool>(v1 != v2.x, v1 != v2.y, v1 != v2.z);
+inline bvec3 operator!=(const T & v1, const vec3<T> & v2) {
+    return bvec3(v1 != v2.x, v1 != v2.y, v1 != v2.z);
 }
 
 //--- less than ---
 
 template <typename T>
-inline vec3<bool> operator<(const vec3<T> & v1, const T & v2) {
-    return vec3<bool>(v1.x < v2, v1.y < v2, v1.z < v2);
+inline bvec3 operator<(const vec3<T> & v1, const T & v2) {
+    return bvec3(v1.x < v2, v1.y < v2, v1.z < v2);
 }
 
 template <typename T>
-inline vec3<bool> operator<(const T & v1, const vec3<T> & v2) {
-    return vec3<bool>(v1 < v2.x, v1 < v2.y, v1 < v2.z);
+inline bvec3 operator<(const T & v1, const vec3<T> & v2) {
+    return bvec3(v1 < v2.x, v1 < v2.y, v1 < v2.z);
 }
 
 //--- greater than ---
 
 template <typename T>
-inline vec3<bool> operator>(const vec3<T> & v1, const T & v2) {
-    return vec3<bool>(v1.x > v2, v1.y > v2, v1.z > v2);
+inline bvec3 operator>(const vec3<T> & v1, const T & v2) {
+    return bvec3(v1.x > v2, v1.y > v2, v1.z > v2);
 }
 
 template <typename T>
-inline vec3<bool> operator>(const T & v1, const vec3<T> & v2) {
-    return vec3<bool>(v1 > v2.x, v1 > v2.y, v1 > v2.z);
+inline bvec3 operator>(const T & v1, const vec3<T> & v2) {
+    return bvec3(v1 > v2.x, v1 > v2.y, v1 > v2.z);
 }
 
 //--- less than or equal to ---
 
 template <typename T>
-inline vec3<bool> operator<=(const vec3<T> & v1, const T & v2) {
-    return vec3<bool>(v1.x <= v2, v1.y <= v2, v1.z <= v2);
+inline bvec3 operator<=(const vec3<T> & v1, const T & v2) {
+    return bvec3(v1.x <= v2, v1.y <= v2, v1.z <= v2);
 }
 
 template <typename T>
-inline vec3<bool> operator<=(const T & v1, const vec3<T> & v2) {
-    return vec3<bool>(v1 <= v2.x, v1 <= v2.y, v1 <= v2.z);
+inline bvec3 operator<=(const T & v1, const vec3<T> & v2) {
+    return bvec3(v1 <= v2.x, v1 <= v2.y, v1 <= v2.z);
 }
 
 //--- greater than or equal to ---
 
 template <typename T>
-inline vec3<bool> operator>=(const vec3<T> & v1, const T & v2) {
-    return vec3<bool>(v1.x >= v2, v1.y >= v2, v1.z >= v2);
+inline bvec3 operator>=(const vec3<T> & v1, const T & v2) {
+    return bvec3(v1.x >= v2, v1.y >= v2, v1.z >= v2);
 }
 
 template <typename T>
-inline vec3<bool> operator>=(const T & v1, const vec3<T> & v2) {
-    return vec3<bool>(v1 >= v2.x, v1 >= v2.y, v1 >= v2.z);
+inline bvec3 operator>=(const T & v1, const vec3<T> & v2) {
+    return bvec3(v1 >= v2.x, v1 >= v2.y, v1 >= v2.z);
 }
 
 
@@ -3153,13 +3162,13 @@ inline bool operator==(const vec4<T> & v1, const vec4<T> & v2) {
 }
 
 template <typename T>
-inline vec4<bool> operator==(const vec4<T> & v1, const T & v2) {
-    return vec4<bool>(v1.x == v2, v1.y == v2, v1.z == v2, v1.w == v2);
+inline bvec4 operator==(const vec4<T> & v1, const T & v2) {
+    return bvec4(v1.x == v2, v1.y == v2, v1.z == v2, v1.w == v2);
 }
 
 template <typename T>
-inline vec4<bool> operator==(const T & v1, const vec4<T> & v2) {
-    return vec4<bool>(v1 == v2.x, v1 == v2.y, v1 == v2.z, v1 == v2.w);
+inline bvec4 operator==(const T & v1, const vec4<T> & v2) {
+    return bvec4(v1 == v2.x, v1 == v2.y, v1 == v2.z, v1 == v2.w);
 }
 
 //--- not equal to ---
@@ -3170,61 +3179,61 @@ inline bool operator!=(const vec4<T> & v1, const vec4<T> & v2) {
 }
 
 template <typename T>
-inline vec4<bool> operator!=(const vec4<T> & v1, const T & v2) {
-    return vec4<bool>(v1.x != v2, v1.y != v2, v1.z != v2, v1.w != v2);
+inline bvec4 operator!=(const vec4<T> & v1, const T & v2) {
+    return bvec4(v1.x != v2, v1.y != v2, v1.z != v2, v1.w != v2);
 }
 
 template <typename T>
-inline vec4<bool> operator!=(const T & v1, const vec4<T> & v2) {
-    return vec4<bool>(v1 != v2.x, v1 != v2.y, v1 != v2.z, v1 != v2.w);
+inline bvec4 operator!=(const T & v1, const vec4<T> & v2) {
+    return bvec4(v1 != v2.x, v1 != v2.y, v1 != v2.z, v1 != v2.w);
 }
 
 //--- less than ---
 
 template <typename T>
-inline vec4<bool> operator<(const vec4<T> & v1, const T & v2) {
-    return vec4<bool>(v1.x < v2, v1.y < v2, v1.z < v2, v1.w < v2);
+inline bvec4 operator<(const vec4<T> & v1, const T & v2) {
+    return bvec4(v1.x < v2, v1.y < v2, v1.z < v2, v1.w < v2);
 }
 
 template <typename T>
-inline vec4<bool> operator<(const T & v1, const vec4<T> & v2) {
-    return vec4<bool>(v1 < v2.x, v1 < v2.y, v1 < v2.z, v1 < v2.w);
+inline bvec4 operator<(const T & v1, const vec4<T> & v2) {
+    return bvec4(v1 < v2.x, v1 < v2.y, v1 < v2.z, v1 < v2.w);
 }
 
 //--- greater than ---
 
 template <typename T>
-inline vec4<bool> operator>(const vec4<T> & v1, const T & v2) {
-    return vec4<bool>(v1.x > v2, v1.y > v2, v1.z > v2, v1.w > v2);
+inline bvec4 operator>(const vec4<T> & v1, const T & v2) {
+    return bvec4(v1.x > v2, v1.y > v2, v1.z > v2, v1.w > v2);
 }
 
 template <typename T>
-inline vec4<bool> operator>(const T & v1, const vec4<T> & v2) {
-    return vec4<bool>(v1 > v2.x, v1 > v2.y, v1 > v2.z, v1 > v2.w);
+inline bvec4 operator>(const T & v1, const vec4<T> & v2) {
+    return bvec4(v1 > v2.x, v1 > v2.y, v1 > v2.z, v1 > v2.w);
 }
 
 //--- less than or equal to ---
 
 template <typename T>
-inline vec4<bool> operator<=(const vec4<T> & v1, const T & v2) {
-    return vec4<bool>(v1.x <= v2, v1.y <= v2, v1.z <= v2, v1.w <= v2);
+inline bvec4 operator<=(const vec4<T> & v1, const T & v2) {
+    return bvec4(v1.x <= v2, v1.y <= v2, v1.z <= v2, v1.w <= v2);
 }
 
 template <typename T>
-inline vec4<bool> operator<=(const T & v1, const vec4<T> & v2) {
-    return vec4<bool>(v1 <= v2.x, v1 <= v2.y, v1 <= v2.z, v1 <= v2.w);
+inline bvec4 operator<=(const T & v1, const vec4<T> & v2) {
+    return bvec4(v1 <= v2.x, v1 <= v2.y, v1 <= v2.z, v1 <= v2.w);
 }
 
 //--- greater than or equal to ---
 
 template <typename T>
-inline vec4<bool> operator>=(const vec4<T> & v1, const T & v2) {
-    return vec4<bool>(v1.x >= v2, v1.y >= v2, v1.z >= v2, v1.w >= v2);
+inline bvec4 operator>=(const vec4<T> & v1, const T & v2) {
+    return bvec4(v1.x >= v2, v1.y >= v2, v1.z >= v2, v1.w >= v2);
 }
 
 template <typename T>
-inline vec4<bool> operator>=(const T & v1, const vec4<T> & v2) {
-    return vec4<bool>(v1 >= v2.x, v1 >= v2.y, v1 >= v2.z, v1 >= v2.w);
+inline bvec4 operator>=(const T & v1, const vec4<T> & v2) {
+    return bvec4(v1 >= v2.x, v1 >= v2.y, v1 >= v2.z, v1 >= v2.w);
 }
 
 
@@ -3684,6 +3693,47 @@ template <typename T>
 inline T max(const vec4<T> & v) {
     return qmu::max(v.x, v.y, v.z, v.w);
 }
+
+template <typename T>
+inline vec1<T> min(const vec1<T> & v1, const vec1<T> & v2) {
+    return vec1<T>(qmu::min(v1.x, v2.x));
+}
+
+template <typename T>
+inline vec2<T> min(const vec2<T> & v1, const vec2<T> & v2) {
+    return vec2<T>(qmu::min(v1.x, v2.x), qmu::min(v1.y, v2.y));
+}
+
+template <typename T>
+inline vec3<T> min(const vec3<T> & v1, const vec3<T> & v2) {
+    return vec3<T>(qmu::min(v1.x, v2.x), qmu::min(v1.y, v2.y), qmu::min(v1.z, v2.z));
+}
+
+template <typename T>
+inline vec4<T> min(const vec4<T> & v1, const vec4<T> & v2) {
+    return vec4<T>(qmu::min(v1.x, v2.x), qmu::min(v1.y, v2.y), qmu::min(v1.z, v2.z), qmu::min(v1.w, v2.w));
+}
+
+template <typename T>
+inline vec1<T> max(const vec1<T> & v1, const vec1<T> & v2) {
+    return vec1<T>(qmu::max(v1.x, v2.x));
+}
+
+template <typename T>
+inline vec2<T> max(const vec2<T> & v1, const vec2<T> & v2) {
+    return vec2<T>(qmu::max(v1.x, v2.x), qmu::max(v1.y, v2.y));
+}
+
+template <typename T>
+inline vec3<T> max(const vec3<T> & v1, const vec3<T> & v2) {
+    return vec3<T>(qmu::max(v1.x, v2.x), qmu::max(v1.y, v2.y), qmu::max(v1.z, v2.z));
+}
+
+template <typename T>
+inline vec4<T> max(const vec4<T> & v1, const vec4<T> & v2) {
+    return vec4<T>(qmu::max(v1.x, v2.x), qmu::max(v1.y, v2.y), qmu::max(v1.z, v2.z), qmu::max(v1.w, v2.w));
+}
+
 
 
 

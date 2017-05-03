@@ -16,8 +16,8 @@ namespace qmu {
 using  nat =  intptr_t;
 using unat = uintptr_t;
 
-nat operator""n(unsigned long long int v) { return v; }
-unat operator""un(unsigned long long int v) { return v; }
+constexpr nat operator""_n(unsigned long long int v) { return v; }
+constexpr unat operator""_un(unsigned long long int v) { return v; }
 
 using   s08 =   int8_t;
 using   u08 =  uint8_t;

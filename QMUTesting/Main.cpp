@@ -568,6 +568,16 @@ void testVectorTCompilation() {
     max(v2);
     max(v3);
     max(v4);
+
+    min(v1, v1);
+    min(v2, v2);
+    min(v3, v3);
+    min(v4, v4);
+
+    max(v1, v1);
+    max(v2, v2);
+    max(v3, v3);
+    max(v4, v4);
 }
 
 void testVectorCompilation() {
