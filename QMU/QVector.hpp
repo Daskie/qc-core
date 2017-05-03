@@ -174,69 +174,69 @@ using  unbound2 = bound2<              unat>;
 using  unbound3 = bound3<              unat>;
 using  unbound4 = bound4<              unat>;
 
-template <typename T, nat t_n> using range = bound<T, t_n>;
+template <typename T, nat t_n> using span = bound<T, t_n>;
 
-template <typename T> using range1 = bound1<T>;
-template <typename T> using range2 = bound2<T>;
-template <typename T> using range3 = bound3<T>;
-template <typename T> using range4 = bound4<T>;
+template <typename T> using span1 = bound1<T>;
+template <typename T> using span2 = bound2<T>;
+template <typename T> using span3 = bound3<T>;
+template <typename T> using span4 = bound4<T>;
 
-using   frange1 =   fbound1;
-using   frange2 =   fbound2;
-using   frange3 =   fbound3;
-using   frange4 =   fbound4;
-using   drange1 =   dbound1;
-using   drange2 =   dbound2;
-using   drange3 =   dbound3;
-using   drange4 =   dbound4;
-using   crange1 =   cbound1;
-using   crange2 =   cbound2;
-using   crange3 =   cbound3;
-using   crange4 =   cbound4;
-using  ucrange1 =  ucbound1;
-using  ucrange2 =  ucbound2;
-using  ucrange3 =  ucbound3;
-using  ucrange4 =  ucbound4;
-using   srange1 =   sbound1;
-using   srange2 =   sbound2;
-using   srange3 =   sbound3;
-using   srange4 =   sbound4;
-using  usrange1 =  usbound1;
-using  usrange2 =  usbound2;
-using  usrange3 =  usbound3;
-using  usrange4 =  usbound4;
-using   irange1 =   ibound1;
-using   irange2 =   ibound2;
-using   irange3 =   ibound3;
-using   irange4 =   ibound4;
-using  uirange1 =  uibound1;
-using  uirange2 =  uibound2;
-using  uirange3 =  uibound3;
-using  uirange4 =  uibound4;
-using   lrange1 =   lbound1;
-using   lrange2 =   lbound2;
-using   lrange3 =   lbound3;
-using   lrange4 =   lbound4;
-using  ulrange1 =  ulbound1;
-using  ulrange2 =  ulbound2;
-using  ulrange3 =  ulbound3;
-using  ulrange4 =  ulbound4;
-using  llrange1 =  llbound1;
-using  llrange2 =  llbound2;
-using  llrange3 =  llbound3;
-using  llrange4 =  llbound4;
-using ullrange1 = ullbound1;
-using ullrange2 = ullbound2;
-using ullrange3 = ullbound3;
-using ullrange4 = ullbound4;
-using   nrange1 =   nbound1;
-using   nrange2 =   nbound2;
-using   nrange3 =   nbound3;
-using   nrange4 =   nbound4;
-using  unrange1 =  unbound1;
-using  unrange2 =  unbound2;
-using  unrange3 =  unbound3;
-using  unrange4 =  unbound4;
+using   fspan1 =   fbound1;
+using   fspan2 =   fbound2;
+using   fspan3 =   fbound3;
+using   fspan4 =   fbound4;
+using   dspan1 =   dbound1;
+using   dspan2 =   dbound2;
+using   dspan3 =   dbound3;
+using   dspan4 =   dbound4;
+using   cspan1 =   cbound1;
+using   cspan2 =   cbound2;
+using   cspan3 =   cbound3;
+using   cspan4 =   cbound4;
+using  ucspan1 =  ucbound1;
+using  ucspan2 =  ucbound2;
+using  ucspan3 =  ucbound3;
+using  ucspan4 =  ucbound4;
+using   sspan1 =   sbound1;
+using   sspan2 =   sbound2;
+using   sspan3 =   sbound3;
+using   sspan4 =   sbound4;
+using  usspan1 =  usbound1;
+using  usspan2 =  usbound2;
+using  usspan3 =  usbound3;
+using  usspan4 =  usbound4;
+using   ispan1 =   ibound1;
+using   ispan2 =   ibound2;
+using   ispan3 =   ibound3;
+using   ispan4 =   ibound4;
+using  uispan1 =  uibound1;
+using  uispan2 =  uibound2;
+using  uispan3 =  uibound3;
+using  uispan4 =  uibound4;
+using   lspan1 =   lbound1;
+using   lspan2 =   lbound2;
+using   lspan3 =   lbound3;
+using   lspan4 =   lbound4;
+using  ulspan1 =  ulbound1;
+using  ulspan2 =  ulbound2;
+using  ulspan3 =  ulbound3;
+using  ulspan4 =  ulbound4;
+using  llspan1 =  llbound1;
+using  llspan2 =  llbound2;
+using  llspan3 =  llbound3;
+using  llspan4 =  llbound4;
+using ullspan1 = ullbound1;
+using ullspan2 = ullbound2;
+using ullspan3 = ullbound3;
+using ullspan4 = ullbound4;
+using   nspan1 =   nbound1;
+using   nspan2 =   nbound2;
+using   nspan3 =   nbound3;
+using   nspan4 =   nbound4;
+using  unspan1 =  unbound1;
+using  unspan2 =  unbound2;
+using  unspan3 =  unbound3;
+using  unspan4 =  unbound4;
 
 
 
@@ -1030,7 +1030,7 @@ template <typename T, nat t_n> vec<T, t_n> clamp(const vec<T, t_n> & v, const T 
 
 template <typename T, nat t_n> vec<T, t_n> clamp(const vec<T, t_n> & v, const vec<T, t_n> & min, const vec<T, t_n> & max);
 
-template <typename T, nat t_n> range<T, t_n> intersect(const range<T, t_n> & r1, const range<T, t_n> & r2);
+template <typename T, nat t_n> span<T, t_n> intersect(const span<T, t_n> & r1, const span<T, t_n> & r2);
 
 
 
@@ -3839,16 +3839,16 @@ inline vec4<T> clamp(const vec4<T> & v, const vec4<T> & min, const vec4<T> & max
 }
 
 template <typename T>
-inline range1<T> intersect(const range1<T> & r1, const range1<T> & r2) {
-    return range1<T>(
+inline span1<T> intersect(const span1<T> & r1, const span1<T> & r2) {
+    return span1<T>(
         max(r1.x1, r2.x1),
         min(r1.x2, r2.x2)
     );
 }
 
 template <typename T>
-inline range2<T> intersect(const range2<T> & r1, const range2<T> & r2) {
-    return range2<T>(
+inline span2<T> intersect(const span2<T> & r1, const span2<T> & r2) {
+    return span2<T>(
         max(r1.x1, r2.x1),
         max(r1.y1, r2.y1),
         min(r1.x2, r2.x2),
@@ -3857,8 +3857,8 @@ inline range2<T> intersect(const range2<T> & r1, const range2<T> & r2) {
 }
 
 template <typename T>
-inline range3<T> intersect(const range3<T> & r1, const range3<T> & r2) {
-    return range3<T>(
+inline span3<T> intersect(const span3<T> & r1, const span3<T> & r2) {
+    return span3<T>(
         max(r1.x1, r2.x1),
         max(r1.y1, r2.y1),
         max(r1.z1, r2.z1),
@@ -3869,8 +3869,8 @@ inline range3<T> intersect(const range3<T> & r1, const range3<T> & r2) {
 }
 
 template <typename T>
-inline range4<T> intersect(const range4<T> & r1, const range4<T> & r2) {
-    return range4<T>(
+inline span4<T> intersect(const span4<T> & r1, const span4<T> & r2) {
+    return span4<T>(
         max(r1.x1, r2.x1),
         max(r1.y1, r2.y1),
         max(r1.z1, r2.z1),
