@@ -110,6 +110,8 @@ using   bvec4 = vec<              bool, 4>;
 
 template <typename T> using point = vec<T, 2>;
 
+template <typename T, nat t_n> using bound = vec<T, t_n * 2>;
+
 template <typename T> using bound1 = vec<T, 2>;
 template <typename T> using bound2 = vec<T, 4>;
 template <typename T> using bound3 = vec<T, 6>;
@@ -171,6 +173,70 @@ using  unbound1 = bound1<              unat>;
 using  unbound2 = bound2<              unat>;
 using  unbound3 = bound3<              unat>;
 using  unbound4 = bound4<              unat>;
+
+template <typename T, nat t_n> using range = bound<T, t_n>;
+
+template <typename T> using range1 = bound1<T>;
+template <typename T> using range2 = bound2<T>;
+template <typename T> using range3 = bound3<T>;
+template <typename T> using range4 = bound4<T>;
+
+using   frange1 =   fbound1;
+using   frange2 =   fbound2;
+using   frange3 =   fbound3;
+using   frange4 =   fbound4;
+using   drange1 =   dbound1;
+using   drange2 =   dbound2;
+using   drange3 =   dbound3;
+using   drange4 =   dbound4;
+using   crange1 =   cbound1;
+using   crange2 =   cbound2;
+using   crange3 =   cbound3;
+using   crange4 =   cbound4;
+using  ucrange1 =  ucbound1;
+using  ucrange2 =  ucbound2;
+using  ucrange3 =  ucbound3;
+using  ucrange4 =  ucbound4;
+using   srange1 =   sbound1;
+using   srange2 =   sbound2;
+using   srange3 =   sbound3;
+using   srange4 =   sbound4;
+using  usrange1 =  usbound1;
+using  usrange2 =  usbound2;
+using  usrange3 =  usbound3;
+using  usrange4 =  usbound4;
+using   irange1 =   ibound1;
+using   irange2 =   ibound2;
+using   irange3 =   ibound3;
+using   irange4 =   ibound4;
+using  uirange1 =  uibound1;
+using  uirange2 =  uibound2;
+using  uirange3 =  uibound3;
+using  uirange4 =  uibound4;
+using   lrange1 =   lbound1;
+using   lrange2 =   lbound2;
+using   lrange3 =   lbound3;
+using   lrange4 =   lbound4;
+using  ulrange1 =  ulbound1;
+using  ulrange2 =  ulbound2;
+using  ulrange3 =  ulbound3;
+using  ulrange4 =  ulbound4;
+using  llrange1 =  llbound1;
+using  llrange2 =  llbound2;
+using  llrange3 =  llbound3;
+using  llrange4 =  llbound4;
+using ullrange1 = ullbound1;
+using ullrange2 = ullbound2;
+using ullrange3 = ullbound3;
+using ullrange4 = ullbound4;
+using   nrange1 =   nbound1;
+using   nrange2 =   nbound2;
+using   nrange3 =   nbound3;
+using   nrange4 =   nbound4;
+using  unrange1 =  unbound1;
+using  unrange2 =  unbound2;
+using  unrange3 =  unbound3;
+using  unrange4 =  unbound4;
 
 
 
@@ -952,8 +1018,6 @@ template <typename T, nat t_n> vec<T, t_n> lerp(const vec<T, t_n> & v1, const ve
 
 template <typename T, nat t_n> vec<T, t_n> orthogonal(const vec<T, t_n> & v);
 
-template <typename T, nat t_n> vec<T, t_n> clamp(const vec<T, t_n> & v, const T & min, const T & max);
-
 template <typename T, nat t_n> T min(const vec<T, t_n> & v);
 
 template <typename T, nat t_n> T max(const vec<T, t_n> & v);
@@ -961,6 +1025,12 @@ template <typename T, nat t_n> T max(const vec<T, t_n> & v);
 template <typename T, nat t_n> vec<T, t_n> min(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 
 template <typename T, nat t_n> vec<T, t_n> max(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+
+template <typename T, nat t_n> vec<T, t_n> clamp(const vec<T, t_n> & v, const T & min, const T & max);
+
+template <typename T, nat t_n> vec<T, t_n> clamp(const vec<T, t_n> & v, const vec<T, t_n> & min, const vec<T, t_n> & max);
+
+template <typename T, nat t_n> range<T, t_n> intersect(const range<T, t_n> & r1, const range<T, t_n> & r2);
 
 
 
@@ -3621,57 +3691,23 @@ inline vec3<T> orthogonal(const vec3<T> & v) {
 }
 
 template <typename T>
-inline vec1<T> clamp(const vec1<T> & v, const T & min, const T & max) {
-    return vec1<T>(
-        v.x >= min ? (v.x <= max ? v.x : max) : min
-    );
-}
-
-template <typename T>
-inline vec2<T> clamp(const vec2<T> & v, const T & min, const T & max) {
-    return vec2<T>(
-        v.x >= min ? (v.x <= max ? v.x : max) : min,
-        v.y >= min ? (v.y <= max ? v.y : max) : min
-    );
-}
-
-template <typename T>
-inline vec3<T> clamp(const vec3<T> & v, const T & min, const T & max) {
-    return vec3<T>(
-        v.x >= min ? (v.x <= max ? v.x : max) : min,
-        v.y >= min ? (v.y <= max ? v.y : max) : min,
-        v.z >= min ? (v.z <= max ? v.z : max) : min
-    );
-}
-
-template <typename T>
-inline vec4<T> clamp(const vec4<T> & v, const T & min, const T & max) {
-    return vec4<T>(
-        v.x >= min ? (v.x <= max ? v.x : max) : min,
-        v.y >= min ? (v.y <= max ? v.y : max) : min,
-        v.z >= min ? (v.z <= max ? v.z : max) : min,
-        v.w >= min ? (v.w <= max ? v.w : max) : min
-    );
-}
-
-template <typename T>
 inline T min(const vec1<T> & v) {
     return v.x;
 }
 
 template <typename T>
 inline T min(const vec2<T> & v) {
-    return qmu::min(v.x, v.y);
+    return min(v.x, v.y);
 }
 
 template <typename T>
 inline T min(const vec3<T> & v) {
-    return qmu::min(v.x, v.y, v.z);
+    return min(v.x, v.y, v.z);
 }
 
 template <typename T>
 inline T min(const vec4<T> & v) {
-    return qmu::min(v.x, v.y, v.z, v.w);
+    return min(v.x, v.y, v.z, v.w);
 }
 
 template <typename T>
@@ -3681,57 +3717,169 @@ inline T max(const vec1<T> & v) {
 
 template <typename T>
 inline T max(const vec2<T> & v) {
-    return qmu::max(v.x, v.y);
+    return max(v.x, v.y);
 }
 
 template <typename T>
 inline T max(const vec3<T> & v) {
-    return qmu::max(v.x, v.y, v.z);
+    return max(v.x, v.y, v.z);
 }
 
 template <typename T>
 inline T max(const vec4<T> & v) {
-    return qmu::max(v.x, v.y, v.z, v.w);
+    return max(v.x, v.y, v.z, v.w);
 }
 
 template <typename T>
 inline vec1<T> min(const vec1<T> & v1, const vec1<T> & v2) {
-    return vec1<T>(qmu::min(v1.x, v2.x));
+    return vec1<T>(min(v1.x, v2.x));
 }
 
 template <typename T>
 inline vec2<T> min(const vec2<T> & v1, const vec2<T> & v2) {
-    return vec2<T>(qmu::min(v1.x, v2.x), qmu::min(v1.y, v2.y));
+    return vec2<T>(min(v1.x, v2.x), min(v1.y, v2.y));
 }
 
 template <typename T>
 inline vec3<T> min(const vec3<T> & v1, const vec3<T> & v2) {
-    return vec3<T>(qmu::min(v1.x, v2.x), qmu::min(v1.y, v2.y), qmu::min(v1.z, v2.z));
+    return vec3<T>(min(v1.x, v2.x), min(v1.y, v2.y), min(v1.z, v2.z));
 }
 
 template <typename T>
 inline vec4<T> min(const vec4<T> & v1, const vec4<T> & v2) {
-    return vec4<T>(qmu::min(v1.x, v2.x), qmu::min(v1.y, v2.y), qmu::min(v1.z, v2.z), qmu::min(v1.w, v2.w));
+    return vec4<T>(min(v1.x, v2.x), min(v1.y, v2.y), min(v1.z, v2.z), min(v1.w, v2.w));
 }
 
 template <typename T>
 inline vec1<T> max(const vec1<T> & v1, const vec1<T> & v2) {
-    return vec1<T>(qmu::max(v1.x, v2.x));
+    return vec1<T>(max(v1.x, v2.x));
 }
 
 template <typename T>
 inline vec2<T> max(const vec2<T> & v1, const vec2<T> & v2) {
-    return vec2<T>(qmu::max(v1.x, v2.x), qmu::max(v1.y, v2.y));
+    return vec2<T>(max(v1.x, v2.x), max(v1.y, v2.y));
 }
 
 template <typename T>
 inline vec3<T> max(const vec3<T> & v1, const vec3<T> & v2) {
-    return vec3<T>(qmu::max(v1.x, v2.x), qmu::max(v1.y, v2.y), qmu::max(v1.z, v2.z));
+    return vec3<T>(max(v1.x, v2.x), max(v1.y, v2.y), max(v1.z, v2.z));
 }
 
 template <typename T>
 inline vec4<T> max(const vec4<T> & v1, const vec4<T> & v2) {
-    return vec4<T>(qmu::max(v1.x, v2.x), qmu::max(v1.y, v2.y), qmu::max(v1.z, v2.z), qmu::max(v1.w, v2.w));
+    return vec4<T>(max(v1.x, v2.x), max(v1.y, v2.y), max(v1.z, v2.z), max(v1.w, v2.w));
+}
+
+template <typename T>
+inline vec1<T> clamp(const vec1<T> & v, const T & min, const T & max) {
+    return vec1<T>(
+        clamp(v.x, min, max)
+    );
+}
+
+template <typename T>
+inline vec2<T> clamp(const vec2<T> & v, const T & min, const T & max) {
+    return vec2<T>(
+        clamp(v.x, min, max),
+        clamp(v.y, min, max)
+    );
+}
+
+template <typename T>
+inline vec3<T> clamp(const vec3<T> & v, const T & min, const T & max) {
+    return vec3<T>(
+        clamp(v.x, min, max),
+        clamp(v.y, min, max),
+        clamp(v.z, min, max)
+    );
+}
+
+template <typename T>
+inline vec4<T> clamp(const vec4<T> & v, const T & min, const T & max) {
+    return vec4<T>(
+        clamp(v.x, min, max),
+        clamp(v.y, min, max),
+        clamp(v.z, min, max),
+        clamp(v.w, min, max)
+    );
+}
+
+template <typename T>
+inline vec1<T> clamp(const vec1<T> & v, const vec1<T> & min, const vec1<T> & max) {
+    return vec1<T>(
+        clamp(v.x, min.x, max.x)
+    );
+}
+
+template <typename T>
+inline vec2<T> clamp(const vec2<T> & v, const vec2<T> & min, const vec2<T> & max) {
+    return vec2<T>(
+        clamp(v.x, min.x, max.x),
+        clamp(v.y, min.y, max.y)
+    );
+}
+
+template <typename T>
+inline vec3<T> clamp(const vec3<T> & v, const vec3<T> & min, const vec3<T> & max) {
+    return vec3<T>(
+        clamp(v.x, min.x, max.x),
+        clamp(v.y, min.y, max.y),
+        clamp(v.z, min.z, max.z)
+    );
+}
+
+template <typename T>
+inline vec4<T> clamp(const vec4<T> & v, const vec4<T> & min, const vec4<T> & max) {
+    return vec4<T>(
+        clamp(v.x, min.x, max.x),
+        clamp(v.y, min.y, max.y),
+        clamp(v.z, min.z, max.z),
+        clamp(v.w, min.w, max.w)
+    );
+}
+
+template <typename T>
+inline range1<T> intersect(const range1<T> & r1, const range1<T> & r2) {
+    return range1<T>(
+        max(r1.x1, r2.x1),
+        min(r1.x2, r2.x2)
+    );
+}
+
+template <typename T>
+inline range2<T> intersect(const range2<T> & r1, const range2<T> & r2) {
+    return range2<T>(
+        max(r1.x1, r2.x1),
+        max(r1.y1, r2.y1),
+        min(r1.x2, r2.x2),
+        min(r1.y2, r2.y2)
+    );
+}
+
+template <typename T>
+inline range3<T> intersect(const range3<T> & r1, const range3<T> & r2) {
+    return range3<T>(
+        max(r1.x1, r2.x1),
+        max(r1.y1, r2.y1),
+        max(r1.z1, r2.z1),
+        min(r1.x2, r2.x2),
+        min(r1.y2, r2.y2),
+        min(r1.z2, r2.z2)
+    );
+}
+
+template <typename T>
+inline range4<T> intersect(const range4<T> & r1, const range4<T> & r2) {
+    return range4<T>(
+        max(r1.x1, r2.x1),
+        max(r1.y1, r2.y1),
+        max(r1.z1, r2.z1),
+        max(r1.w1, r2.w1),
+        min(r1.x2, r2.x2),
+        min(r1.y2, r2.y2),
+        min(r1.z2, r2.z2),
+        min(r1.w2, r2.w2)
+    );
 }
 
 

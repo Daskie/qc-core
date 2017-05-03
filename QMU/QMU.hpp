@@ -59,27 +59,27 @@ using match_sign_t = std::conditional_t<std::is_signed<T2>::value, std::make_sig
 
 template <typename T>
 constexpr const T & min(const T & a, const T & b) {
-    return a < b ? a : b;
+    return a <= b ? a : b;
 }
 
 template <typename T>
 constexpr const T & max(const T & a, const T & b) {
-    return a > b ? a : b;
+    return a >= b ? a : b;
 }
 
 template <typename T, typename... Ts>
 constexpr const T & min(const T & a, const T & b, const Ts & ... rest) {
-    return min(a < b ? a : b, rest...);
+    return min(a <= b ? a : b, rest...);
 }
 
 template <typename T, typename... Ts>
 constexpr const T & max(const T & a, const T & b, const Ts & ... rest) {
-    return max(a > b ? a : b, rest...);
+    return max(a >= b ? a : b, rest...);
 }
 
 template <typename T>
 constexpr T clamp(const T & v, const T & min, const T & max) {
-    return v >= min ? (v <= max ? v : max) : min;
+    return qmu::min(qmu::max(v, min), max);
 }
 
 template <typename T, std::enable_if_t<!std::is_unsigned<T>::value, int> = 0>

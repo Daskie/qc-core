@@ -554,11 +554,6 @@ void testVectorTCompilation() {
     orthogonal(v2);
     orthogonal(v3);
 
-    clamp(v1, v, v);
-    clamp(v2, v, v);
-    clamp(v3, v, v);
-    clamp(v4, v, v);
-
     min(v1);
     min(v2);
     min(v3);
@@ -578,6 +573,21 @@ void testVectorTCompilation() {
     max(v2, v2);
     max(v3, v3);
     max(v4, v4);
+
+    clamp(v1, v, v);
+    clamp(v2, v, v);
+    clamp(v3, v, v);
+    clamp(v4, v, v);
+
+    clamp(v1, v1, v1);
+    clamp(v2, v2, v2);
+    clamp(v3, v3, v3);
+    clamp(v4, v4, v4);
+
+    intersect(v2, v2);
+    intersect(v4, v4);
+    intersect(v6, v6);
+    intersect(v8, v8);
 }
 
 void testVectorCompilation() {
