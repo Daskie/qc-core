@@ -16,8 +16,8 @@ namespace qmu {
 using  nat =  intptr_t;
 using unat = uintptr_t;
 
-constexpr nat operator""_n(unsigned long long int v) { return v; }
-constexpr unat operator""_un(unsigned long long int v) { return v; }
+constexpr nat operator""_n(unsigned long long int v) { return static_cast<nat>(v); }
+constexpr unat operator""_un(unsigned long long int v) { return static_cast<unat>(v); }
 
 using   s08 =   int8_t;
 using   u08 =  uint8_t;
@@ -188,6 +188,18 @@ inline nat trunc(T v) {
 template <typename T, std::enable_if_t<std::is_floating_point<T>::value, int> = 0>
 inline T fract(T v) {
     return v - static_cast<T>(trunc(v));
+}
+
+template <typename T, std::enable_if_t<std::is_integral<T>::value, int> = 0>
+inline T highBit(T v) {
+    using UT = std::make_unsigned_t<T>;
+    constexpr UT mask(static_cast<UT>(1 << (sizeof(v) * 8 - 1)));
+    return static_cast<T>(static_cast<UT>(v) & mask);
+}
+
+template <typename T, std::enable_if_t<std::is_integral<T>::value, int> = 0>
+inline T lowBit(T v) {
+    return v & static_cast<T>(1);
 }
 
 
