@@ -51,6 +51,8 @@ using  dmat4 = mat<double, 4>;
 template <typename T>
 struct mat<T, 2, 2> {
 
+    static_assert(std::is_floating_point<T>::value, "mat2<T> must have floating point T");
+
     static constexpr nat t_m = 2, t_n = 2;
 
     union {
@@ -158,6 +160,8 @@ std::ostream & operator<<(std::ostream & os, const mat2<T> & m);
 
 template <typename T>
 struct mat<T, 3, 3> {
+
+    static_assert(std::is_floating_point<T>::value, "mat3<T> must have floating point T");
 
     static constexpr nat t_m = 3, t_n = 3;
 
@@ -269,6 +273,8 @@ template <typename T> std::ostream & operator<<(std::ostream & os, const mat3<T>
 
 template <typename T>
 struct mat<T, 4, 4> {
+
+    static_assert(std::is_floating_point<T>::value, "mat4<T> must have floating point T");
 
     static constexpr nat t_m = 4, t_n = 4;
 

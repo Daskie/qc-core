@@ -593,6 +593,22 @@ void testVectorTFunctionCompilation() {
     mix(v4, v4, v);
 }
 
+template <typename T, nat t_n>
+void testVectorTNProperties() {
+    static_assert(std::is_standard_layout<vec<T, t_n>>::value, "");
+    static_assert(sizeof(vec<T, t_n>) == t_n * sizeof(T), "");
+}
+
+template <typename T>
+void testVectorTProperties() {
+    testVectorTNProperties<T, 1>();
+    testVectorTNProperties<T, 2>();
+    testVectorTNProperties<T, 3>();
+    testVectorTNProperties<T, 4>();
+    testVectorTNProperties<T, 6>();
+    testVectorTNProperties<T, 8>();
+}
+
 void testVectorCompilation() {
     testVectorTCompilation<    float>();
     testVectorTCompilation<   double>();
@@ -604,6 +620,14 @@ void testVectorCompilation() {
 
     testVectorTFunctionCompilation< float>();
     testVectorTFunctionCompilation<double>();
+
+    testVectorTProperties<    float>();
+    testVectorTProperties<   double>();
+    testVectorTProperties<     char>();
+    testVectorTProperties<    short>();
+    testVectorTProperties<      int>();
+    testVectorTProperties<     long>();
+    testVectorTProperties<long long>();
 }
 
 template <typename T>
@@ -868,9 +892,25 @@ void testMatrixTCompilation() {
     view_on(v3, v3, v3, v3);
 }
 
+template <typename T, nat t_n>
+void testMatrixTNProperties() {
+    static_assert(std::is_standard_layout<mat<T, t_n>>::value, "");
+    static_assert(sizeof(mat<T, t_n>) == t_n * t_n * sizeof(T), "");
+}
+
+template <typename T>
+void testMatrixTProperties() {
+    testMatrixTNProperties<T, 2>();
+    testMatrixTNProperties<T, 3>();
+    testMatrixTNProperties<T, 4>();
+}
+
 void testMatrixCompilation() {
     testMatrixTCompilation<float>();
     testMatrixTCompilation<double>();
+
+    testMatrixTProperties<float>();
+    testMatrixTProperties<double>();
 }
 
 template <typename T>
@@ -955,9 +995,18 @@ void testQuaternionTCompilation() {
     slerp(q, q, v);
 }
 
+template <typename T>
+void testQuaternionTProperties() {
+    static_assert(std::is_standard_layout<quat<T>>::value, "");
+    static_assert(sizeof(quat<T>) == 4 * sizeof(T), "");
+}
+
 void testQuaternionCompilation() {
     testQuaternionTCompilation<float>();
     testQuaternionTCompilation<double>();
+
+    testQuaternionTProperties<float>();
+    testQuaternionTProperties<double>();
 }
 
 template <typename T1, typename T2>

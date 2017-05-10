@@ -25,6 +25,8 @@ using  dquat = quat<double>;
 template <typename T>
 struct quat {
 
+    static_assert(std::is_floating_point<T>::value, "quat<T> must have floating point T");
+
     union {
         struct {
             T x, y, z, w;

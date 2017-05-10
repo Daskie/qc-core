@@ -34,7 +34,7 @@ constexpr T degrees(T radians) {
 }
 
 //r is radius, theta is angle on xy plane, phi is angle from z axis
-template <typename T, std::enable_if_t<std::is_floating_point<T>::value, int> = 0>
+template <typename T, enable_if_floating_t<T> = 0>
 inline vec3<T> sphericalToCartesian(const vec3<T> & v) {
 	T sinTheta = std::sin(v.theta);
 	T cosTheta = std::cos(v.theta);
@@ -48,7 +48,7 @@ inline vec3<T> sphericalToCartesian(const vec3<T> & v) {
 	);
 }
 
-template <typename T, std::enable_if_t<std::is_floating_point<T>::value, int> = 0>
+template <typename T, enable_if_floating_t<T> = 0>
 inline vec3<T> sphericalToCartesian(T rad, T theta, T phi) {
 	T sinTheta = std::sin(theta);
 	T cosTheta = std::cos(theta);
@@ -62,7 +62,7 @@ inline vec3<T> sphericalToCartesian(T rad, T theta, T phi) {
 	);
 }
 
-template <typename T, std::enable_if_t<std::is_floating_point<T>::value, int> = 0>
+template <typename T, enable_if_floating_t<T> = 0>
 inline vec3<T> cartesianToSpherical(const vec3<T> & v) {
 	T rad(std::sqrt(v.x * v.x + v.y * v.y + v.z * v.z));
 	return vec3<T>(
@@ -72,7 +72,7 @@ inline vec3<T> cartesianToSpherical(const vec3<T> & v) {
 	);
 }
 
-template <typename T, std::enable_if_t<std::is_floating_point<T>::value, int> = 0>
+template <typename T, enable_if_floating_t<T> = 0>
 inline vec3<T> cartesianToSpherical(T x, T y, T z) {
 	T rad(std::sqrt(x * x + y * y + z * z));
 	return vec3<T>(

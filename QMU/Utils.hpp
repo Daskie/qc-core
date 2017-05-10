@@ -135,7 +135,7 @@ inline unsigned char trailingZeroes(u32 x) {
 	return count;
 }
 
-template <typename T, std::enable_if_t<std::is_floating_point<T>::value, int> = 0>
+template <typename T, enable_if_floating_t<T> = 0>
 inline T rand(T min, T max) {
 	static std::mt19937 mt(static_cast<std::mt19937::result_type>(std::chrono::system_clock::now().time_since_epoch().count()));
 	//static std::mt19937 mt(0);
@@ -273,7 +273,7 @@ inline std::wstring convert(const std::string & str) {
 	return converter.from_bytes(str);
 }
 
-template <typename T, std::enable_if_t<std::is_floating_point<T>::value, int> = 0>
+template <typename T, enable_if_floating_t<T> = 0>
 inline vec3<T> rgb2hsl(const vec3<T> & rgb) {
 	vec3<T> hsl(0, 0, 0);
 
@@ -306,7 +306,7 @@ inline vec3<T> rgb2hsl(const vec3<T> & rgb) {
 	return hsl;
 }
 
-template <typename T, std::enable_if_t<std::is_floating_point<T>::value, int> = 0>
+template <typename T, enable_if_floating_t<T> = 0>
 inline vec3<T> hsl2rgb(const vec3<T> & hsl) {
 	if (hsl.y == 0) {
 		return vec3<T>(hsl.z, hsl.z, hsl.z);

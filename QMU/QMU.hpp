@@ -55,6 +55,12 @@ constexpr nat k_nat_p = sizeof(nat) * 8;
 template <typename T1, typename T2>
 using match_sign_t = std::conditional_t<std::is_signed<T2>::value, std::make_signed_t<T1>, std::make_unsigned_t<T1>>;
 
+template <typename T>
+using enable_if_floating_t = std::enable_if_t<std::is_floating_point<T>::value, int>;
+
+template <typename T>
+using enable_if_integral_t = std::enable_if_t<std::is_integral<T>::value, int>;
+
 
 
 template <typename T>
@@ -92,7 +98,7 @@ constexpr T abs(const T & v) {
     return v;
 }
 
-template <typename T, std::enable_if_t<std::is_floating_point<T>::value, int> = 0>
+template <typename T, enable_if_floating_t<T> = 0>
 constexpr bool zero(const T & v, const T & e = std::numeric_limits<T>::min()) {
     return abs(v) < e;
 }
@@ -102,7 +108,7 @@ constexpr bool zero(const T & v) {
     return v == 0;
 }
 
-template <typename T, std::enable_if_t<std::is_floating_point<T>::value, int> = 0>
+template <typename T, enable_if_floating_t<T> = 0>
 constexpr bool equal(const T & v1, const T & v2, const T & e = std::numeric_limits<T>::min()) {
     return zero(v1 - v2, e);
 }
@@ -155,51 +161,51 @@ inline match_sign_t<nat, T> log2(T x) {
     return log;
 }
 
-template <typename T, std::enable_if_t<std::is_floating_point<T>::value, int> = 0>
+template <typename T, enable_if_floating_t<T> = 0>
 inline T log2(T v) {
     return std::log2(v);
 }
 
-template <typename T, std::enable_if_t<std::is_integral<T>::value, int> = 0>
+template <typename T, enable_if_integral_t<T> = 0>
 constexpr bool isPow2(T v) {
     return (v & (v - 1)) == 0;
 }
 
-template <typename T, std::enable_if_t<std::is_integral<T>::value, int> = 0>
+template <typename T, enable_if_integral_t<T> = 0>
 inline T floor2(T v) {
     if (v == 0) return 0;
     return T(1) << log2(v);
 }
 
-template <typename T, std::enable_if_t<std::is_integral<T>::value, int> = 0>
+template <typename T, enable_if_integral_t<T> = 0>
 inline T ceil2(T v) {
     if (v == 0) return 0;
     return floor2(v * 2 - 1);
 }
 
-template <typename T, std::enable_if_t<std::is_floating_point<T>::value, int> = 0>
+template <typename T, enable_if_floating_t<T> = 0>
 inline nat trunc(T v) {
     return static_cast<nat>(v);
 }
 
-template <typename T, std::enable_if_t<std::is_floating_point<T>::value, int> = 0>
+template <typename T, enable_if_floating_t<T> = 0>
 inline T fract(T v) {
     return v - static_cast<T>(trunc(v));
 }
 
-template <typename T, std::enable_if_t<std::is_integral<T>::value, int> = 0>
+template <typename T, enable_if_integral_t<T> = 0>
 inline T highBit(T v) {
     using UT = std::make_unsigned_t<T>;
     constexpr UT mask(static_cast<UT>(1 << (sizeof(v) * 8 - 1)));
     return static_cast<T>(static_cast<UT>(v) & mask);
 }
 
-template <typename T, std::enable_if_t<std::is_integral<T>::value, int> = 0>
+template <typename T, enable_if_integral_t<T> = 0>
 inline T lowBit(T v) {
     return v & static_cast<T>(1);
 }
 
-template <typename T, std::enable_if_t<std::is_floating_point<T>::value, int> = 0>
+template <typename T, enable_if_floating_t<T> = 0>
 inline T mix(T v1, T v2, T t) {
     return (static_cast<T>(1) - t) * v1 + t * v2;
 }
