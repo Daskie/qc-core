@@ -502,14 +502,17 @@ void testVectorTCompilation() {
     // other
     v8.toString();
     os << v8;
+}
 
-    //--------------------------------------------------------------------------
-    // Vec Functions
-
-    v1 = vec1<T>(1);
-    v2 = vec2<T>(1);
-    v3 = vec3<T>(1);
-    v4 = vec4<T>(1);
+template <typename T>
+void testVectorTFunctionCompilation() {
+    T v;
+    vec1<T> v1;
+    vec2<T> v2;
+    vec3<T> v3;
+    vec4<T> v4;
+    vec<T, 6> v6;
+    vec<T, 8> v8;
 
     magnitude(v1);
     magnitude(v2);
@@ -545,11 +548,6 @@ void testVectorTCompilation() {
     angle_n(v3, v3);
     angle(v4, v4);
     angle_n(v4, v4);
-
-    lerp(v1, v1, v);
-    lerp(v2, v2, v);
-    lerp(v3, v3, v);
-    lerp(v4, v4, v);
 
     orthogonal(v2);
     orthogonal(v3);
@@ -588,6 +586,11 @@ void testVectorTCompilation() {
     intersect(v4, v4);
     intersect(v6, v6);
     intersect(v8, v8);
+
+    mix(v1, v1, v);
+    mix(v2, v2, v);
+    mix(v3, v3, v);
+    mix(v4, v4, v);
 }
 
 void testVectorCompilation() {
@@ -598,6 +601,9 @@ void testVectorCompilation() {
     testVectorTCompilation<      int>();
     testVectorTCompilation<     long>();
     testVectorTCompilation<long long>();
+
+    testVectorTFunctionCompilation< float>();
+    testVectorTFunctionCompilation<double>();
 }
 
 template <typename T>

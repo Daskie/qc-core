@@ -4,11 +4,13 @@
 
 namespace qmu {
 
-
-
 namespace {
 
+
+
 std::ostream * s_logStream(&std::cout);
+
+
 
 }
 

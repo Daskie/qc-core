@@ -998,23 +998,22 @@ template <typename T> std::ostream & operator<<(std::ostream & os, const vec<T, 
 
 
 
-template <typename T, nat t_n> T magnitude(const vec<T, t_n> & v);
+
+template <typename T, nat t_n, std::enable_if_t<std::is_floating_point<T>::value, int> = 0> T magnitude(const vec<T, t_n> & v);
 
 template <typename T, nat t_n> T magnitude2(const vec<T, t_n> & v);
 
-template <typename T, nat t_n> vec<T, t_n> normalize(const vec<T, t_n> & v);
+template <typename T, nat t_n, std::enable_if_t<std::is_floating_point<T>::value, int> = 0> vec<T, t_n> normalize(const vec<T, t_n> & v);
 
 template <typename T, nat t_n> T dot(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 
 template <typename T, nat t_n> vec<T, t_n> cross(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 
-template <typename T, nat t_n> vec<T, t_n> reflect(const vec<T, t_n> & v, const vec<T, t_n> & n);
-template <typename T, nat t_n> vec<T, t_n> reflect_n(const vec<T, t_n> & v, const vec<T, t_n> & n);
+template <typename T, nat t_n, std::enable_if_t<std::is_floating_point<T>::value, int> = 0> vec<T, t_n> reflect(const vec<T, t_n> & v, const vec<T, t_n> & n);
+template <typename T, nat t_n, std::enable_if_t<std::is_floating_point<T>::value, int> = 0> vec<T, t_n> reflect_n(const vec<T, t_n> & v, const vec<T, t_n> & n);
 
-template <typename T, nat t_n> T angle(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
-template <typename T, nat t_n> T angle_n(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
-
-template <typename T, nat t_n> vec<T, t_n> lerp(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const T & p);
+template <typename T, nat t_n, std::enable_if_t<std::is_floating_point<T>::value, int> = 0> T angle(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, nat t_n, std::enable_if_t<std::is_floating_point<T>::value, int> = 0> T angle_n(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 
 template <typename T, nat t_n> vec<T, t_n> orthogonal(const vec<T, t_n> & v);
 
@@ -1031,6 +1030,8 @@ template <typename T, nat t_n> vec<T, t_n> clamp(const vec<T, t_n> & v, const T 
 template <typename T, nat t_n> vec<T, t_n> clamp(const vec<T, t_n> & v, const vec<T, t_n> & min, const vec<T, t_n> & max);
 
 template <typename T, nat t_n> span<T, t_n> intersect(const span<T, t_n> & r1, const span<T, t_n> & r2);
+
+template <typename T, nat t_n, std::enable_if_t<std::is_floating_point<T>::value, int> = 0> vec<T, t_n> mix(const vec<T, t_n> & v1, const vec <T, t_n> & v2, T t);
 
 
 
@@ -3577,7 +3578,7 @@ inline std::ostream & operator<<(std::ostream & os, const vec<T, 8> & v) {
 
 
 
-template <typename T, nat t_n>
+template <typename T, nat t_n, std::enable_if_t<std::is_floating_point<T>::value, int>>
 inline T magnitude(const vec<T, t_n> & v) {
     return static_cast<T>(std::sqrt(magnitude2(v)));
 }
@@ -3602,7 +3603,7 @@ inline T magnitude2(const vec4<T> & v) {
     return v.x * v.x + v.y * v.y + v.z * v.z + v.w * v.w;
 }
 
-template <typename T, nat t_n>
+template <typename T, nat t_n, std::enable_if_t<std::is_floating_point<T>::value, int>>
 inline vec<T, t_n> normalize(const vec<T, t_n> & v) {
     T m(magnitude(v));
     if (abs(m) < std::numeric_limits<T>::min()) {
@@ -3641,28 +3642,23 @@ inline vec3<T> cross(const vec3<T> & v1, const vec3<T> & v2) {
     return vec3<T>(v1.y * v2.z - v1.z * v2.y, v1.z * v2.x - v1.x * v2.z, v1.x * v2.y - v1.y * v2.x);
 }
 
-template <typename T, nat t_n>
+template <typename T, nat t_n, std::enable_if_t<std::is_floating_point<T>::value, int>>
 inline vec<T, t_n> reflect(const vec<T, t_n> & v, const vec<T, t_n> & n) {
     return reflect_n(v, normalize(n));
 }
 
-template <typename T, nat t_n>
+template <typename T, nat t_n, std::enable_if_t<std::is_floating_point<T>::value, int>>
 inline vec<T, t_n> reflect_n(const vec<T, t_n> & v, const vec<T, t_n> & n) {
     return static_cast<T>(2 * dot(v, n)) * n - v;
 }
 
-template <typename T, nat t_n>
+template <typename T, nat t_n, std::enable_if_t<std::is_floating_point<T>::value, int>>
 inline T angle(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
     return angle_n(normalize(v1), normalize(v2));
 }
-template <typename T, nat t_n>
+template <typename T, nat t_n, std::enable_if_t<std::is_floating_point<T>::value, int>>
 inline T angle_n(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
     return static_cast<T>(std::acos(dot(v1, v2)));
-}
-
-template <typename T, nat t_n>
-inline vec<T, t_n> lerp(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const T & p) {
-    return static_cast<T>(1 - p) * v1 + p * v2;
 }
 
 template <typename T>
@@ -3880,6 +3876,11 @@ inline span4<T> intersect(const span4<T> & r1, const span4<T> & r2) {
         min(r1.z2, r2.z2),
         min(r1.w2, r2.w2)
     );
+}
+
+template <typename T, nat t_n, std::enable_if_t<std::is_floating_point<T>::value, int>>
+inline vec<T, t_n> mix(const vec<T, t_n> & v1, const vec<T, t_n> & v2, T t) {
+    return (static_cast<T>(1) - t) * v1 + t * v2;
 }
 
 

@@ -155,11 +155,8 @@ inline match_sign_t<nat, T> log2(T x) {
     return log;
 }
 
-inline float log2(float v) {
-    return std::log2f(v);
-}
-
-inline double log2(double v) {
+template <typename T, std::enable_if_t<std::is_floating_point<T>::value, int> = 0>
+inline T log2(T v) {
     return std::log2(v);
 }
 
@@ -200,6 +197,11 @@ inline T highBit(T v) {
 template <typename T, std::enable_if_t<std::is_integral<T>::value, int> = 0>
 inline T lowBit(T v) {
     return v & static_cast<T>(1);
+}
+
+template <typename T, std::enable_if_t<std::is_floating_point<T>::value, int> = 0>
+inline T mix(T v1, T v2, T t) {
+    return (static_cast<T>(1) - t) * v1 + t * v2;
 }
 
 

@@ -476,7 +476,7 @@ inline mat3<T> toMat(const quat<T> & q) {
 
 template <typename T>
 inline quat<T> nlerp(const quat<T> & q1, const quat<T> & q2, const T & p) {
-    return normalize(quat<T>(lerp(q1.v4, q2.v4, p)));
+    return normalize(quat<T>(mix(q1.v4, q2.v4, p)));
 }
 
 template <typename T>
