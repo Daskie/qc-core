@@ -253,9 +253,9 @@ struct vec<T, 1> {
     static constexpr nat t_n = 1;
 
     union {
-        struct { T x; };
-        struct { T r; };
-        struct { T s; };
+        T x;
+        T r;
+        T s;
     };
 
     //--- constructors ---
@@ -347,11 +347,11 @@ template <typename T> vec1<T> operator/(const      T  & v1, const vec1<T> & v2);
 
 //--- comparison operators ---
 
-template <typename T> bool operator==(const vec1<T> & v1, const vec1<T> & v2);
+template <typename T>  bool operator==(const vec1<T> & v1, const vec1<T> & v2);
 template <typename T> bvec1 operator==(const vec1<T> & v1, const      T  & v2);
 template <typename T> bvec1 operator==(const      T  & v1, const vec1<T> & v2);
 
-template <typename T> bool operator!=(const vec1<T> & v1, const vec1<T> & v2);
+template <typename T>  bool operator!=(const vec1<T> & v1, const vec1<T> & v2);
 template <typename T> bvec1 operator!=(const vec1<T> & v1, const      T  & v2);
 template <typename T> bvec1 operator!=(const      T  & v1, const vec1<T> & v2);
 
@@ -388,8 +388,6 @@ struct vec<T, 2> {
         struct { T x, y; };
         struct { T r, g; };
         struct { T s, t; };
-        struct { T x1, x2; };
-        struct { T x, width; };
         struct { vec1<T> min, max; };
         struct { vec1<T> loc, size; };
     };
@@ -496,11 +494,11 @@ template <typename T> vec2<T> operator/(const vec1<T> & v1, const vec2<T> & v2);
 
 //--- comparison operators ---
 
-template <typename T> bool operator==(const vec2<T> & v1, const vec2<T> & v2);
+template <typename T>  bool operator==(const vec2<T> & v1, const vec2<T> & v2);
 template <typename T> bvec2 operator==(const vec2<T> & v1, const      T  & v2);
 template <typename T> bvec2 operator==(const      T  & v1, const vec2<T> & v2);
 
-template <typename T> bool operator!=(const vec2<T> & v1, const vec2<T> & v2);
+template <typename T>  bool operator!=(const vec2<T> & v1, const vec2<T> & v2);
 template <typename T> bvec2 operator!=(const vec2<T> & v1, const      T  & v2);
 template <typename T> bvec2 operator!=(const      T  & v1, const vec2<T> & v2);
 
@@ -538,7 +536,9 @@ struct vec<T, 3> {
         struct { T r, g, b; };
         struct { T s, t, p; };
         struct { T rad, theta, phi; };
-        struct { T lamA, lamB, lamC; };
+        struct { T alpha, beta, gamma; };
+        struct { vec2<T> xy; T z; };
+        struct { T x; vec2<T> yz; };
     };
 
     //--- constructors ---
@@ -659,11 +659,11 @@ template <typename T> vec3<T> operator/(const vec2<T> & v1, const vec3<T> & v2);
 
 //--- comparison operators ---
 
-template <typename T> bool operator==(const vec3<T> & v1, const vec3<T> & v2);
+template <typename T>  bool operator==(const vec3<T> & v1, const vec3<T> & v2);
 template <typename T> bvec3 operator==(const vec3<T> & v1, const      T  & v2);
 template <typename T> bvec3 operator==(const      T  & v1, const vec3<T> & v2);
 
-template <typename T> bool operator!=(const vec3<T> & v1, const vec3<T> & v2);
+template <typename T>  bool operator!=(const vec3<T> & v1, const vec3<T> & v2);
 template <typename T> bvec3 operator!=(const vec3<T> & v1, const      T  & v2);
 template <typename T> bvec3 operator!=(const      T  & v1, const vec3<T> & v2);
 
@@ -700,10 +700,12 @@ struct vec<T, 4> {
         struct { T x, y, z, w; };
         struct { T r, g, b, a; };
         struct { T s, t, p, q; };
-        struct { T x1, y1, x2, y2; };
-        struct { T x, y, width, height; };
         struct { vec2<T> min, max; };
         struct { vec2<T> loc, size; };
+        struct { vec2<T> xy, zw; };
+        struct { T x; vec2<T> yz; T w; };
+        struct { vec3<T> xyz; T w; };
+        struct { T x; vec3<T> yzw; };
     };
     
     //--- constructors ---
@@ -853,11 +855,11 @@ template <typename T> vec4<T> operator/(const vec3<T> & v1, const vec4<T> & v2);
 
 //--- comparison operators ---
 
-template <typename T> bool operator==(const vec4<T> & v1, const vec4<T> & v2);
+template <typename T>  bool operator==(const vec4<T> & v1, const vec4<T> & v2);
 template <typename T> bvec4 operator==(const vec4<T> & v1, const      T  & v2);
 template <typename T> bvec4 operator==(const      T  & v1, const vec4<T> & v2);
 
-template <typename T> bool operator!=(const vec4<T> & v1, const vec4<T> & v2);
+template <typename T>  bool operator!=(const vec4<T> & v1, const vec4<T> & v2);
 template <typename T> bvec4 operator!=(const vec4<T> & v1, const      T  & v2);
 template <typename T> bvec4 operator!=(const      T  & v1, const vec4<T> & v2);
 
@@ -891,8 +893,6 @@ struct vec<T, 6> {
     static constexpr nat t_n = 6;
 
     union {
-        struct { T x1, y1, z1, x2, y2, z2; };
-        struct { T x, y, z, width, height, depth; };
         struct { vec3<T> min, max; };
         struct { vec3<T> loc, size; };
     };
@@ -948,8 +948,6 @@ struct vec<T, 8> {
     static constexpr nat t_n = 8;
 
     union {
-        struct { T x1, y1, z1, w1, x2, y2, z2, w2; };
-        struct { T x, y, z, w, width, height, depth, duration; };
         struct { vec4<T> min, max; };
         struct { vec4<T> loc, size; };
     };
@@ -1084,7 +1082,8 @@ constexpr vec<T, 1>::vec(vec1<T> && v) :
     x(v.x)
 {}
 
-template <typename T> template <typename U>
+template <typename T>
+template <typename U>
 constexpr vec<T, 1>::vec(const vec1<U> & v) :
     x(static_cast<T>(v.x))
 {}
@@ -1535,7 +1534,8 @@ constexpr vec<T, 2>::vec(vec2<T> && v) :
     x(v.x), y(v.y)
 {}
 
-template <typename T> template <typename U>
+template <typename T>
+template <typename U>
 constexpr vec<T, 2>::vec(const vec2<U> & v) :
     x(static_cast<T>(v.x)), y(static_cast<T>(v.y))
 {}
@@ -2046,7 +2046,8 @@ constexpr vec<T, 3>::vec(vec3<T> && v) :
     x(v.x), y(v.y), z(v.z)
 {}
 
-template <typename T> template <typename U>
+template <typename T>
+template <typename U>
 constexpr vec<T, 3>::vec(const vec3<U> & v) :
     x(static_cast<T>(v.x)), y(static_cast<T>(v.y)), z(static_cast<T>(v.z))
 {}
@@ -2637,7 +2638,8 @@ constexpr vec<T, 4>::vec(vec4<T> && v) :
     x(v.x), y(v.y), z(v.z), w(v.w)
 {}
 
-template <typename T> template <typename U>
+template <typename T>
+template <typename U>
 constexpr vec<T, 4>::vec(const vec4<U> & v) :
     x(static_cast<T>(v.x)), y(static_cast<T>(v.y)), z(static_cast<T>(v.z)), w(static_cast<T>(v.w))
 {}
@@ -3358,33 +3360,33 @@ inline std::ostream & operator<<(std::ostream & os, const vec4<T> & v) {
 
 template <typename T>
 constexpr vec<T, 6>::vec() :
-    x1(static_cast<T>(0)), y1(static_cast<T>(0)), z1(static_cast<T>(0)), x2(static_cast<T>(0)), y2(static_cast<T>(0)), z2(static_cast<T>(0))
+    min(), max()
 {}
 
 template <typename T>
 constexpr vec<T, 6>::vec(const vec<T, 6> & v) :
-    x1(v.x1), y1(v.y1), z1(v.z1), x2(v.x2), y2(v.y2), z2(v.z2)
+    min(v.min), max(v.max)
 {}
 
 template <typename T>
 constexpr vec<T, 6>::vec(vec<T, 6> && v) :
-    x1(v.x1), y1(v.y1), z1(v.z1), x2(v.x2), y2(v.y2), z2(v.z2)
+    min(v.min), max(v.max)
 {}
 
 template <typename T>
 template <typename U>
 constexpr vec<T, 6>::vec(const vec<U, 6> & v) :
-    x1(static_cast<T>(v.x1)), y1(static_cast<T>(v.y1)), z1(static_cast<T>(v.z1)), x2(static_cast<T>(v.x2)), y2(static_cast<T>(v.y2)), z2(static_cast<T>(v.z2))
+    min(v.min), max(v.max)
 {}
 
 template <typename T>
 constexpr vec<T, 6>::vec(const vec3<T> & v1, const vec3<T> & v2) :
-    x1(v1.x), y1(v1.y), z1(v1.z), x2(v2.x), y2(v2.y), z2(v2.z)
+    min(v1), max(v2)
 {}
 
 template <typename T>
 constexpr vec<T, 6>::vec(const T & v1, const T & v2, const T & v3, const T & v4, const T & v5, const T & v6) :
-    x1(v1), y1(v2), z1(v3), x2(v4), y2(v5), z2(v6)
+    min(v1, v2, v3), max(v4, v5, v6)
 {}
 
 
@@ -3396,13 +3398,13 @@ constexpr vec<T, 6>::vec(const T & v1, const T & v2, const T & v3, const T & v4,
 
 template <typename T>
 inline vec<T, 6> & vec<T, 6>::operator=(const vec<T, 6> & v) {
-    x1 = v.x1; y1 = v.y1; z1 = v.z1; x2 = v.x2; y2 = v.y2; z2 = v.z2;
+    min = v.min; max = v.max;
     return *this;
 }
 
 template <typename T>
 inline vec<T, 6> & vec<T, 6>::operator=(vec<T, 6> && v) {
-    x1 = v.x1; y1 = v.y1; z1 = v.z1; x2 = v.x2; y2 = v.y2; z2 = v.z2;
+    min = v.min; max = v.max;
     return *this;
 }
 
@@ -3415,14 +3417,14 @@ inline vec<T, 6> & vec<T, 6>::operator=(vec<T, 6> && v) {
 
 template <typename T>
 inline T & vec<T, 6>::operator[](nat i) {
-    return *(&x1 + i);
+    return *(&min.x + i);
 }
 
 
 
 template <typename T>
 inline const T & vec<T, 6>::operator[](nat i) const {
-    return *(&x1 + i);
+    return *(&min.x + i);
 }
 
 
@@ -3436,14 +3438,14 @@ inline const T & vec<T, 6>::operator[](nat i) const {
 
 template <typename T>
 inline bool operator==(const vec<T, 6> & v1, const vec<T, 6> & v2) {
-    return v1.x1 == v2.x1 && v1.y1 == v2.y1 && v1.z1 == v2.z1 && v1.x2 == v2.x2 && v1.y2 == v2.y2 && v1.z2 == v2.z2;
+    return v1.min == v2.min && v1.max == v2.max;
 }
 
 //--- not equal to ---
 
 template <typename T>
 inline bool operator!=(const vec<T, 6> & v1, const vec<T, 6> & v2) {
-    return v1.x1 != v2.x1 || v1.y1 != v2.y1 || v1.z1 != v2.z1 || v1.x2 != v2.x2 || v1.y2 != v2.y2 || v1.z2 != v2.z2;
+    return v1.min != v2.min || v1.max != v2.max;
 }
 
 
@@ -3456,7 +3458,7 @@ inline bool operator!=(const vec<T, 6> & v1, const vec<T, 6> & v2) {
 template <typename T>
 inline std::string vec<T, 6>::toString() const {
     std::stringstream ss;
-    ss << "(" << x1 << ", " << y1 << ", " << z1 << ", " << x2 << ", " << y2 << ", " << z2 << ")";
+    ss << "(" << min.x << ", " << min.y << ", " << min.z << ", " << max.x << ", " << max.y << ", " << max.z << ")";
     return ss.str();
 }
 
@@ -3481,32 +3483,33 @@ inline std::ostream & operator<<(std::ostream & os, const vec<T, 6> & v) {
 
 template <typename T>
 constexpr vec<T, 8>::vec() :
-    x1(static_cast<T>(0)), y1(static_cast<T>(0)), z1(static_cast<T>(0)), w1(static_cast<T>(0)), x2(static_cast<T>(0)), y2(static_cast<T>(0)), z2(static_cast<T>(0)), w2(static_cast<T>(0))
+    min(), max()
 {}
 
 template <typename T>
 constexpr vec<T, 8>::vec(const vec<T, 8> & v) :
-    x1(v.x1), y1(v.y1), z1(v.z1), w1(v.w1), x2(v.x2), y2(v.y2), z2(v.z2), w2(v.w2)
+    min(v.min), max(v.max)
 {}
 
 template <typename T>
 constexpr vec<T, 8>::vec(vec<T, 8> && v) :
-    x1(v.x1), y1(v.y1), z1(v.z1), w1(v.w1), x2(v.x2), y2(v.y2), z2(v.z2), w2(v.w2)
+    min(v.min), max(v.max)
 {}
 
-template <typename T> template <typename U>
+template <typename T>
+template <typename U>
 constexpr vec<T, 8>::vec(const vec<U, 8> & v) :
-    x1(static_cast<T>(v.x1)), y1(static_cast<T>(v.y1)), z1(static_cast<T>(v.z1)), w1(static_cast<T>(v.w1)), x2(static_cast<T>(v.x2)), y2(static_cast<T>(v.y2)), z2(static_cast<T>(v.z2)), w2(static_cast<T>(v.w2))
+    min(v.min), max(v.max)
 {}
 
 template <typename T>
 constexpr vec<T, 8>::vec(const vec4<T> & v1, const vec4<T> & v2) :
-    x1(v1.x), y1(v1.y), z1(v1.z), w1(v1.w), x2(v2.x), y2(v2.y), z2(v2.z), w2(v2.w)
+    min(v1), max(v2)
 {}
 
 template <typename T>
 constexpr vec<T, 8>::vec(const T & v1, const T & v2, const T & v3, const T & v4, const T & v5, const T & v6, const T & v7, const T & v8) :
-    x1(v1), y1(v2), z1(v3), w1(v4), x2(v5), y2(v6), z2(v7), w2(v8)
+    min(v1, v2, v3, v4), max(v5, v6, v7, v8)
 {}
 
 
@@ -3518,13 +3521,13 @@ constexpr vec<T, 8>::vec(const T & v1, const T & v2, const T & v3, const T & v4,
 
 template <typename T>
 inline vec<T, 8> & vec<T, 8>::operator=(const vec<T, 8> & v) {
-    x1 = v.x1; y1 = v.y1; z1 = v.z1; w1 = v.w1; x2 = v.x2; y2 = v.y2; z2 = v.z2; w2 = v.w2;
+    min = v.min; max = v.max;
     return *this;
 }
 
 template <typename T>
 inline vec<T, 8> & vec<T, 8>::operator=(vec<T, 8> && v) {
-    x1 = v.x1; y1 = v.y1; z1 = v.z1; w1 = v.w1; x2 = v.x2; y2 = v.y2; z2 = v.z2; w2 = v.w2;
+    min = v.min; max = v.max;
     return *this;
 }
 
@@ -3537,14 +3540,14 @@ inline vec<T, 8> & vec<T, 8>::operator=(vec<T, 8> && v) {
 
 template <typename T>
 inline T & vec<T, 8>::operator[](nat i) {
-    return *(&x1 + i);
+    return *(&min.x + i);
 }
 
 
 
 template <typename T>
 inline const T & vec<T, 8>::operator[](nat i) const {
-    return *(&x1 + i);
+    return *(&min.x + i);
 }
 
 
@@ -3558,14 +3561,14 @@ inline const T & vec<T, 8>::operator[](nat i) const {
 
 template <typename T>
 inline bool operator==(const vec<T, 8> & v1, const vec<T, 8> & v2) {
-    return v1.x1 == v2.x1 && v1.y1 == v2.y1 && v1.z1 == v2.z1 && v1.w1 == v2.w1 && v1.x2 == v2.x2 && v1.y2 == v2.y2 && v1.z2 == v2.z2 && v1.w2 == v2.w2;
+    return v1.min == v2.min && v1.max == v2.max;
 }
 
 //--- not equal to ---
 
 template <typename T>
 inline bool operator!=(const vec<T, 8> & v1, const vec<T, 8> & v2) {
-    return v1.x1 != v2.x1 || v1.y1 != v2.y1 || v1.z1 != v2.z1 || v1.w1 != v2.w1 || v1.x2 != v2.x2 || v1.y2 != v2.y2 || v1.z2 != v2.z2 || v1.w2 != v2.w2;
+    return v1.min != v2.min || v1.max != v2.max;
 }
 
 
@@ -3578,7 +3581,7 @@ inline bool operator!=(const vec<T, 8> & v1, const vec<T, 8> & v2) {
 template <typename T>
 inline std::string vec<T, 8>::toString() const {
     std::stringstream ss;
-    ss << "(" << x1 << ", " << y1 << ", " << z1 << ", " << w1 << ", " << x2 << ", " << y2 << ", " << z2 << ", " << w2 << ")";
+    ss << "(" << min.x << ", " << min.y << ", " << min.z << ", " << min.w << ", " << max.x << ", " << max.y << ", " << max.z << ", " << max.w << ")";
     return ss.str();
 }
 
@@ -3855,44 +3858,44 @@ inline vec4<T> clamp(const vec4<T> & v, const vec4<T> & min, const vec4<T> & max
 template <typename T>
 inline span1<T> intersect(const span1<T> & r1, const span1<T> & r2) {
     return span1<T>(
-        max(r1.x1, r2.x1),
-        min(r1.x2, r2.x2)
+        max(r1.min.x, r2.min.x),
+        min(r1.max.x, r2.max.x)
     );
 }
 
 template <typename T>
 inline span2<T> intersect(const span2<T> & r1, const span2<T> & r2) {
     return span2<T>(
-        max(r1.x1, r2.x1),
-        max(r1.y1, r2.y1),
-        min(r1.x2, r2.x2),
-        min(r1.y2, r2.y2)
+        max(r1.min.x, r2.min.x),
+        max(r1.min.y, r2.min.y),
+        min(r1.max.x, r2.max.x),
+        min(r1.max.y, r2.max.y)
     );
 }
 
 template <typename T>
 inline span3<T> intersect(const span3<T> & r1, const span3<T> & r2) {
     return span3<T>(
-        max(r1.x1, r2.x1),
-        max(r1.y1, r2.y1),
-        max(r1.z1, r2.z1),
-        min(r1.x2, r2.x2),
-        min(r1.y2, r2.y2),
-        min(r1.z2, r2.z2)
+        max(r1.min.x, r2.min.x),
+        max(r1.min.y, r2.min.y),
+        max(r1.min.z, r2.min.z),
+        min(r1.max.x, r2.max.x),
+        min(r1.max.y, r2.max.y),
+        min(r1.max.z, r2.max.z)
     );
 }
 
 template <typename T>
 inline span4<T> intersect(const span4<T> & r1, const span4<T> & r2) {
     return span4<T>(
-        max(r1.x1, r2.x1),
-        max(r1.y1, r2.y1),
-        max(r1.z1, r2.z1),
-        max(r1.w1, r2.w1),
-        min(r1.x2, r2.x2),
-        min(r1.y2, r2.y2),
-        min(r1.z2, r2.z2),
-        min(r1.w2, r2.w2)
+        max(r1.min.x, r2.min.x),
+        max(r1.min.y, r2.min.y),
+        max(r1.min.z, r2.min.z),
+        max(r1.min.w, r2.min.w),
+        min(r1.max.x, r2.max.x),
+        min(r1.max.y, r2.max.y),
+        min(r1.max.z, r2.max.z),
+        min(r1.max.w, r2.max.w)
     );
 }
 

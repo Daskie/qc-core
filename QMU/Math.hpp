@@ -85,8 +85,8 @@ inline vec3<T> cartesianToSpherical(T x, T y, T z) {
 //a is distance from vertex A in range [0, 1] (can be outside range and outside triangle), AX, AY, and AZ define cartesian location of A
 inline fvec2 barycentricToCartesian(const fvec3 & v, const fvec2 & A, const fvec2 & B, const fvec2 & C) {
 	return fvec2(
-		v.lamA * A.x + v.lamB * B.x + v.lamC * C.x,
-		v.lamA * A.y + v.lamB * B.y + v.lamC * C.y
+		v.alpha * A.x + v.beta * B.x + v.gamma * C.x,
+		v.alpha * A.y + v.beta * B.y + v.gamma * C.y
 	);
 }
 
@@ -97,7 +97,7 @@ inline fvec3 cartesianToBarycentric(const fvec2 & v, const fvec2 & A, const fvec
 	);
 	mat = inverse(mat);
 	fvec3 bary(mat * (v - C));
-	bary.lamC = 1.0f - bary.lamA - bary.lamB;
+	bary.gamma = 1.0f - bary.alpha - bary.beta;
 	return bary;
 }
 
@@ -117,39 +117,39 @@ inline fvec3 mapToSphere(const fvec3 & v, float thetaPerUnit) {
 //draw a line from v to A; gets the angle of this line w/ respect to the A bisector
 //possible angles range from -1 (along AB side) to 1 (along AC side), w/ linear-ness
 inline float baryToAngleA(const fvec3 & v) {
-	return (v.lamC - v.lamB) / v.lamA;
+	return (v.gamma - v.beta) / v.alpha;
 }
 
 inline float baryToAngleB(const fvec3 & v) {
-	return (v.lamA - v.lamC) / v.lamB;
+	return (v.alpha - v.gamma) / v.beta;
 }
 
 inline float baryToAngleC(const fvec3 & v) {
-	return (v.lamB - v.lamA) / v.lamC;
+	return (v.beta - v.alpha) / v.gamma;
 }
 
 //given a bary angle, return point along given a corresponding to angle
 inline fvec3 baryFromAngleA(float angle, float a) {
 	fvec3 v;
-	v.lamA = a;
-	v.lamC = (angle - 1) * (a - 1);
-	v.lamB = 1 - v.lamA - v.lamC;
+	v.alpha = a;
+	v.gamma = (angle - 1) * (a - 1);
+	v.beta = 1 - v.alpha - v.gamma;
 	return v;
 }
 
 inline fvec3 baryFromAngleB(float angle, float b) {
 	fvec3 v;
-	v.lamB = b;
-	v.lamA = (angle - 1) * (b - 1);
-	v.lamC = 1 - v.lamB - v.lamA;
+	v.beta = b;
+	v.alpha = (angle - 1) * (b - 1);
+	v.gamma = 1 - v.beta - v.alpha;
 	return v;
 }
 
 inline fvec3 baryFromAngleC(float angle, float c) {
 	fvec3 v;
-	v.lamC = c;
-	v.lamB = (angle - 1) * (c - 1);
-	v.lamA = 1 - v.lamC - v.lamB;
+	v.gamma = c;
+	v.beta = (angle - 1) * (c - 1);
+	v.alpha = 1 - v.gamma - v.beta;
 	return v;
 }
 

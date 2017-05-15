@@ -1076,6 +1076,41 @@ void testQuaternionCasts() {
     testQuaternionTCasts<double>();
 }
 
+void testVectorMembers() {
+    int v;
+    vec1<int> v1;
+    vec2<int> v2;
+    vec3<int> v3;
+    vec4<int> v4;
+    vec<int, 6> v6;
+    vec<int, 8> v8;
+
+    v = v1.x;
+    v = v1.r;
+    v = v1.s;
+
+    v = v2.x; v = v2.y;
+    v = v2.r; v = v2.g;
+    v = v2.s; v = v2.t;
+    v1 = v2.min; v1 = v2.max;
+    v1 = v2.loc; v1 = v2.size;
+
+    v = v3.x; v = v3.y; v = v3.z;
+    v = v3.r; v = v3.g; v = v3.b;
+    v = v3.s; v = v3.t; v = v3.p;
+    v = v3.rad; v = v3.theta; v = v3.phi;
+    v = v3.alpha; v = v3.beta; v = v3.gamma;
+    v2 = v3.xy; v2 = v3.yz;
+
+    v = v4.x; v = v4.y; v = v4.z; v = v4.w;
+    v = v4.r; v = v4.g; v = v4.b; v = v4.a;
+    v = v4.s; v = v4.t; v = v4.p; v = v4.q;
+    v2 = v4.min; v2 = v4.max;
+    v2 = v4.loc; v2 = v4.size;
+    v2 = v4.xy; v2 = v4.yz; v2 = v4.zw;
+    v3 = v4.xyz; v3 = v4.yzw;
+}
+
 int main(void) {
     testVectorCompilation();
     testMatrixCompilation();
@@ -1084,6 +1119,8 @@ int main(void) {
     testVectorCasts();
     testMatrixCasts();
     testQuaternionCasts();
+
+    testVectorMembers();
 
     std::cin.get();
     return 0;
