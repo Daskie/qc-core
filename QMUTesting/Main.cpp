@@ -700,6 +700,8 @@ void testMatrixTCompilation() {
     // other
     m2.toString();
     os << m2;
+    m2.col(0);
+    m2.row(0);
 
     //--------------------------------------------------------------------------
     // Mat3
@@ -759,6 +761,8 @@ void testMatrixTCompilation() {
     // other
     m3.toString();
     os << m3;
+    m3.col(0);
+    m3.row(0);
 
     //--------------------------------------------------------------------------
     // Mat4
@@ -818,6 +822,8 @@ void testMatrixTCompilation() {
     // other
     m4.toString();
     os << m4;
+    m4.col(0);
+    m4.row(0);
 
     //--------------------------------------------------------------------------
     // Mat Functions

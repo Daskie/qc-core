@@ -98,6 +98,9 @@ struct mat<T, 2, 2> {
 
     std::string toString() const;
 
+    vec2<T> col(nat i) const;
+    vec2<T> row(nat i) const;
+
 };
 
 //--- arithmetic assignment operators ---
@@ -210,6 +213,9 @@ struct mat<T, 3, 3> {
     //--- other ---
 
     std::string toString() const;
+
+    vec3<T> col(nat i) const;
+    vec3<T> row(nat i) const;
 
 };
 
@@ -326,6 +332,9 @@ struct mat<T, 4, 4> {
     //--- other ---
 
     std::string toString() const;
+
+    vec4<T> col(nat i) const;
+    vec4<T> row(nat i) const;
 
 };
 
@@ -862,11 +871,20 @@ inline std::string mat<T, 2, 2>::toString() const {
         " ]";
 }
 
-
-
 template <typename T>
 inline std::ostream & operator<<(std::ostream & os, const mat2<T> & m) {
     return os << m.toString();
+}
+
+template <typename T>
+inline vec2<T> mat<T, 2, 2>::col(nat i) const {
+    nat stride(i * 2);
+    return vec2<T>(*(&x1 + stride), *(&y1 + stride));
+}
+
+template <typename T>
+inline vec2<T> mat<T, 2, 2>::row(nat i) const {
+    return vec2<T>(*(&x1 + i), *(&y1 + i));
 }
 
 
@@ -1304,6 +1322,17 @@ inline std::string mat<T, 3, 3>::toString() const {
 template <typename T>
 inline std::ostream & operator<<(std::ostream & os, const mat3<T> & m) {
     return os << m.toString();
+}
+
+template <typename T>
+inline vec3<T> mat<T, 3, 3>::col(nat i) const {
+    nat stride(i * 3);
+    return vec3<T>(*(&x1 + stride), *(&y1 + stride), *(&z1 + stride));
+}
+
+template <typename T>
+inline vec3<T> mat<T, 3, 3>::row(nat i) const {
+    return vec3<T>(*(&x1 + i), *(&y1 + i), *(&z1 + i));
 }
 
 
@@ -1781,6 +1810,17 @@ inline std::string mat<T, 4, 4>::toString() const {
 template <typename T>
 inline std::ostream & operator<<(std::ostream & os, const mat4<T> & m) {
     return os << m.toString();
+}
+
+template <typename T>
+inline vec4<T> mat<T, 4, 4>::col(nat i) const {
+    nat stride(i * 4);
+    return vec4<T>(*(&x1 + stride), *(&y1 + stride), *(&z1 + stride), *(&w1 + stride));
+}
+
+template <typename T>
+inline vec4<T> mat<T, 4, 4>::row(nat i) const {
+    return vec4<T>(*(&x1 + i), *(&y1 + i), *(&z1 + i), *(&w1 + i));
 }
 
 
