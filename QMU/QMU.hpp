@@ -33,7 +33,13 @@ using   u64 = uint64_t;
 namespace types {
 
 using qmu::nat; using qmu::unat;
-using qmu::s08;
+using qmu::s08; using qmu::u08;
+using qmu::s16; using qmu::u16;
+using qmu::s32; using qmu::u32;
+using qmu::s64; using qmu::u64;
+
+using qmu::operator""_n;
+using qmu::operator""_un;
 
 }
 
