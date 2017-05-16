@@ -2,13 +2,6 @@
 
 
 
-/*
-    The vec structs need to be of standard layout.
-    std::is_standard_layout
-*/
-
-
-
 #include <limits>
 #include <iostream>
 #include <string>
@@ -22,93 +15,111 @@ namespace qmu {
 
 
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Type Declarations ---------------------------------------------------------------------------------------------------
+
+
+
+//------------------------------------------------------------------------------
+// Vec
+
+
+
 template <typename T, nat t_n> struct vec;
-
-
 
 template <typename T> using vec1 = vec<T, 1>;
 template <typename T> using vec2 = vec<T, 2>;
 template <typename T> using vec3 = vec<T, 3>;
 template <typename T> using vec4 = vec<T, 4>;
 
-template <nat t_n> using   fvec = vec<             float, t_n>;
-template <nat t_n> using   dvec = vec<            double, t_n>;
-template <nat t_n> using   cvec = vec<  signed      char, t_n>;
-template <nat t_n> using  ucvec = vec<unsigned      char, t_n>;
-template <nat t_n> using   svec = vec<  signed     short, t_n>;
-template <nat t_n> using  usvec = vec<unsigned     short, t_n>;
-template <nat t_n> using   ivec = vec<  signed       int, t_n>;
-template <nat t_n> using  uivec = vec<unsigned       int, t_n>;
-template <nat t_n> using   lvec = vec<  signed      long, t_n>;
-template <nat t_n> using  ulvec = vec<unsigned      long, t_n>;
-template <nat t_n> using  llvec = vec<  signed long long, t_n>;
-template <nat t_n> using ullvec = vec<unsigned long long, t_n>;
-template <nat t_n> using   nvec = vec<               nat, t_n>;
-template <nat t_n> using  unvec = vec<              unat, t_n>;
-template <nat t_n> using   bvec = vec<              bool, t_n>;
+template <nat t_n> using   fvec = vec<               float, t_n>;
+template <nat t_n> using   dvec = vec<              double, t_n>;
+template <nat t_n> using  ldvec = vec<         long double, t_n>;
+template <nat t_n> using   cvec = vec<  signed        char, t_n>;
+template <nat t_n> using  ucvec = vec<unsigned        char, t_n>;
+template <nat t_n> using   svec = vec<  signed       short, t_n>;
+template <nat t_n> using  usvec = vec<unsigned       short, t_n>;
+template <nat t_n> using   ivec = vec<  signed         int, t_n>;
+template <nat t_n> using  uivec = vec<unsigned         int, t_n>;
+template <nat t_n> using   lvec = vec<  signed        long, t_n>;
+template <nat t_n> using  ulvec = vec<unsigned        long, t_n>;
+template <nat t_n> using  llvec = vec<  signed long   long, t_n>;
+template <nat t_n> using ullvec = vec<unsigned long   long, t_n>;
+template <nat t_n> using   nvec = vec<                 nat, t_n>;
+template <nat t_n> using  unvec = vec<                unat, t_n>;
+template <nat t_n> using   bvec = vec<                bool, t_n>;
 
-using   fvec1 = vec<             float, 1>;
-using   fvec2 = vec<             float, 2>;
-using   fvec3 = vec<             float, 3>;
-using   fvec4 = vec<             float, 4>;
-using   dvec1 = vec<            double, 1>;
-using   dvec2 = vec<            double, 2>;
-using   dvec3 = vec<            double, 3>;
-using   dvec4 = vec<            double, 4>;
-using   cvec1 = vec<  signed      char, 1>;
-using   cvec2 = vec<  signed      char, 2>;
-using   cvec3 = vec<  signed      char, 3>;
-using   cvec4 = vec<  signed      char, 4>;
-using  ucvec1 = vec<unsigned      char, 1>;
-using  ucvec2 = vec<unsigned      char, 2>;
-using  ucvec3 = vec<unsigned      char, 3>;
-using  ucvec4 = vec<unsigned      char, 4>;
-using   svec1 = vec<  signed     short, 1>;
-using   svec2 = vec<  signed     short, 2>;
-using   svec3 = vec<  signed     short, 3>;
-using   svec4 = vec<  signed     short, 4>;
-using  usvec1 = vec<unsigned     short, 1>;
-using  usvec2 = vec<unsigned     short, 2>;
-using  usvec3 = vec<unsigned     short, 3>;
-using  usvec4 = vec<unsigned     short, 4>;
-using   ivec1 = vec<  signed       int, 1>;
-using   ivec2 = vec<  signed       int, 2>;
-using   ivec3 = vec<  signed       int, 3>;
-using   ivec4 = vec<  signed       int, 4>;
-using  uivec1 = vec<unsigned       int, 1>;
-using  uivec2 = vec<unsigned       int, 2>;
-using  uivec3 = vec<unsigned       int, 3>;
-using  uivec4 = vec<unsigned       int, 4>;
-using   lvec1 = vec<  signed      long, 1>;
-using   lvec2 = vec<  signed      long, 2>;
-using   lvec3 = vec<  signed      long, 3>;
-using   lvec4 = vec<  signed      long, 4>;
-using  ulvec1 = vec<unsigned      long, 1>;
-using  ulvec2 = vec<unsigned      long, 2>;
-using  ulvec3 = vec<unsigned      long, 3>;
-using  ulvec4 = vec<unsigned      long, 4>;
-using  llvec1 = vec<  signed long long, 1>;
-using  llvec2 = vec<  signed long long, 2>;
-using  llvec3 = vec<  signed long long, 3>;
-using  llvec4 = vec<  signed long long, 4>;
-using ullvec1 = vec<unsigned long long, 1>;
-using ullvec2 = vec<unsigned long long, 2>;
-using ullvec3 = vec<unsigned long long, 3>;
-using ullvec4 = vec<unsigned long long, 4>;
-using   nvec1 = vec<               nat, 1>;
-using   nvec2 = vec<               nat, 2>;
-using   nvec3 = vec<               nat, 3>;
-using   nvec4 = vec<               nat, 4>;
-using  unvec1 = vec<              unat, 1>;
-using  unvec2 = vec<              unat, 2>;
-using  unvec3 = vec<              unat, 3>;
-using  unvec4 = vec<              unat, 4>;
-using   bvec1 = vec<              bool, 1>;
-using   bvec2 = vec<              bool, 2>;
-using   bvec3 = vec<              bool, 3>;
-using   bvec4 = vec<              bool, 4>;
+using   fvec1 = vec<               float, 1>;
+using   fvec2 = vec<               float, 2>;
+using   fvec3 = vec<               float, 3>;
+using   fvec4 = vec<               float, 4>;
+using   dvec1 = vec<              double, 1>;
+using   dvec2 = vec<              double, 2>;
+using   dvec3 = vec<              double, 3>;
+using   dvec4 = vec<              double, 4>;
+using  ldvec1 = vec<         long double, 1>;
+using  ldvec2 = vec<         long double, 2>;
+using  ldvec3 = vec<         long double, 3>;
+using  ldvec4 = vec<         long double, 4>;
+using   cvec1 = vec<  signed        char, 1>;
+using   cvec2 = vec<  signed        char, 2>;
+using   cvec3 = vec<  signed        char, 3>;
+using   cvec4 = vec<  signed        char, 4>;
+using  ucvec1 = vec<unsigned        char, 1>;
+using  ucvec2 = vec<unsigned        char, 2>;
+using  ucvec3 = vec<unsigned        char, 3>;
+using  ucvec4 = vec<unsigned        char, 4>;
+using   svec1 = vec<  signed       short, 1>;
+using   svec2 = vec<  signed       short, 2>;
+using   svec3 = vec<  signed       short, 3>;
+using   svec4 = vec<  signed       short, 4>;
+using  usvec1 = vec<unsigned       short, 1>;
+using  usvec2 = vec<unsigned       short, 2>;
+using  usvec3 = vec<unsigned       short, 3>;
+using  usvec4 = vec<unsigned       short, 4>;
+using   ivec1 = vec<  signed         int, 1>;
+using   ivec2 = vec<  signed         int, 2>;
+using   ivec3 = vec<  signed         int, 3>;
+using   ivec4 = vec<  signed         int, 4>;
+using  uivec1 = vec<unsigned         int, 1>;
+using  uivec2 = vec<unsigned         int, 2>;
+using  uivec3 = vec<unsigned         int, 3>;
+using  uivec4 = vec<unsigned         int, 4>;
+using   lvec1 = vec<  signed        long, 1>;
+using   lvec2 = vec<  signed        long, 2>;
+using   lvec3 = vec<  signed        long, 3>;
+using   lvec4 = vec<  signed        long, 4>;
+using  ulvec1 = vec<unsigned        long, 1>;
+using  ulvec2 = vec<unsigned        long, 2>;
+using  ulvec3 = vec<unsigned        long, 3>;
+using  ulvec4 = vec<unsigned        long, 4>;
+using  llvec1 = vec<  signed long   long, 1>;
+using  llvec2 = vec<  signed long   long, 2>;
+using  llvec3 = vec<  signed long   long, 3>;
+using  llvec4 = vec<  signed long   long, 4>;
+using ullvec1 = vec<unsigned long   long, 1>;
+using ullvec2 = vec<unsigned long   long, 2>;
+using ullvec3 = vec<unsigned long   long, 3>;
+using ullvec4 = vec<unsigned long   long, 4>;
+using   nvec1 = vec<                 nat, 1>;
+using   nvec2 = vec<                 nat, 2>;
+using   nvec3 = vec<                 nat, 3>;
+using   nvec4 = vec<                 nat, 4>;
+using  unvec1 = vec<                unat, 1>;
+using  unvec2 = vec<                unat, 2>;
+using  unvec3 = vec<                unat, 3>;
+using  unvec4 = vec<                unat, 4>;
+using   bvec1 = vec<                bool, 1>;
+using   bvec2 = vec<                bool, 2>;
+using   bvec3 = vec<                bool, 3>;
+using   bvec4 = vec<                bool, 4>;
 
-template <typename T> using point = vec<T, 2>;
+
+
+//------------------------------------------------------------------------------
+// Bound
+
+
 
 template <typename T, nat t_n> using bound = vec<T, t_n * 2>;
 
@@ -117,62 +128,89 @@ template <typename T> using bound2 = vec<T, 4>;
 template <typename T> using bound3 = vec<T, 6>;
 template <typename T> using bound4 = vec<T, 8>;
 
-using   fbound1 = bound1<             float>;
-using   fbound2 = bound2<             float>;
-using   fbound3 = bound3<             float>;
-using   fbound4 = bound4<             float>;
-using   dbound1 = bound1<            double>;
-using   dbound2 = bound2<            double>;
-using   dbound3 = bound3<            double>;
-using   dbound4 = bound4<            double>;
-using   cbound1 = bound1<  signed      char>;
-using   cbound2 = bound2<  signed      char>;
-using   cbound3 = bound3<  signed      char>;
-using   cbound4 = bound4<  signed      char>;
-using  ucbound1 = bound1<unsigned      char>;
-using  ucbound2 = bound2<unsigned      char>;
-using  ucbound3 = bound3<unsigned      char>;
-using  ucbound4 = bound4<unsigned      char>;
-using   sbound1 = bound1<  signed     short>;
-using   sbound2 = bound2<  signed     short>;
-using   sbound3 = bound3<  signed     short>;
-using   sbound4 = bound4<  signed     short>;
-using  usbound1 = bound1<unsigned     short>;
-using  usbound2 = bound2<unsigned     short>;
-using  usbound3 = bound3<unsigned     short>;
-using  usbound4 = bound4<unsigned     short>;
-using   ibound1 = bound1<  signed       int>;
-using   ibound2 = bound2<  signed       int>;
-using   ibound3 = bound3<  signed       int>;
-using   ibound4 = bound4<  signed       int>;
-using  uibound1 = bound1<unsigned       int>;
-using  uibound2 = bound2<unsigned       int>;
-using  uibound3 = bound3<unsigned       int>;
-using  uibound4 = bound4<unsigned       int>;
-using   lbound1 = bound1<  signed      long>;
-using   lbound2 = bound2<  signed      long>;
-using   lbound3 = bound3<  signed      long>;
-using   lbound4 = bound4<  signed      long>;
-using  ulbound1 = bound1<unsigned      long>;
-using  ulbound2 = bound2<unsigned      long>;
-using  ulbound3 = bound3<unsigned      long>;
-using  ulbound4 = bound4<unsigned      long>;
-using  llbound1 = bound1<  signed long long>;
-using  llbound2 = bound2<  signed long long>;
-using  llbound3 = bound3<  signed long long>;
-using  llbound4 = bound4<  signed long long>;
-using ullbound1 = bound1<unsigned long long>;
-using ullbound2 = bound2<unsigned long long>;
-using ullbound3 = bound3<unsigned long long>;
-using ullbound4 = bound4<unsigned long long>;
-using   nbound1 = bound1<               nat>;
-using   nbound2 = bound2<               nat>;
-using   nbound3 = bound3<               nat>;
-using   nbound4 = bound4<               nat>;
-using  unbound1 = bound1<              unat>;
-using  unbound2 = bound2<              unat>;
-using  unbound3 = bound3<              unat>;
-using  unbound4 = bound4<              unat>;
+template <nat t_n> using   fbound = vec<               float, t_n>;
+template <nat t_n> using   dbound = vec<              double, t_n>;
+template <nat t_n> using  ldbound = vec<         long double, t_n>;
+template <nat t_n> using   cbound = vec<  signed        char, t_n>;
+template <nat t_n> using  ucbound = vec<unsigned        char, t_n>;
+template <nat t_n> using   sbound = vec<  signed       short, t_n>;
+template <nat t_n> using  usbound = vec<unsigned       short, t_n>;
+template <nat t_n> using   ibound = vec<  signed         int, t_n>;
+template <nat t_n> using  uibound = vec<unsigned         int, t_n>;
+template <nat t_n> using   lbound = vec<  signed        long, t_n>;
+template <nat t_n> using  ulbound = vec<unsigned        long, t_n>;
+template <nat t_n> using  llbound = vec<  signed long   long, t_n>;
+template <nat t_n> using ullbound = vec<unsigned long   long, t_n>;
+template <nat t_n> using   nbound = vec<                 nat, t_n>;
+template <nat t_n> using  unbound = vec<                unat, t_n>;
+
+using   fbound1 = bound1<               float>;
+using   fbound2 = bound2<               float>;
+using   fbound3 = bound3<               float>;
+using   fbound4 = bound4<               float>;
+using   dbound1 = bound1<              double>;
+using   dbound2 = bound2<              double>;
+using   dbound3 = bound3<              double>;
+using   dbound4 = bound4<              double>;
+using  ldbound1 = bound1<         long double>;
+using  ldbound2 = bound2<         long double>;
+using  ldbound3 = bound3<         long double>;
+using  ldbound4 = bound4<         long double>;
+using   cbound1 = bound1<  signed        char>;
+using   cbound2 = bound2<  signed        char>;
+using   cbound3 = bound3<  signed        char>;
+using   cbound4 = bound4<  signed        char>;
+using  ucbound1 = bound1<unsigned        char>;
+using  ucbound2 = bound2<unsigned        char>;
+using  ucbound3 = bound3<unsigned        char>;
+using  ucbound4 = bound4<unsigned        char>;
+using   sbound1 = bound1<  signed       short>;
+using   sbound2 = bound2<  signed       short>;
+using   sbound3 = bound3<  signed       short>;
+using   sbound4 = bound4<  signed       short>;
+using  usbound1 = bound1<unsigned       short>;
+using  usbound2 = bound2<unsigned       short>;
+using  usbound3 = bound3<unsigned       short>;
+using  usbound4 = bound4<unsigned       short>;
+using   ibound1 = bound1<  signed         int>;
+using   ibound2 = bound2<  signed         int>;
+using   ibound3 = bound3<  signed         int>;
+using   ibound4 = bound4<  signed         int>;
+using  uibound1 = bound1<unsigned         int>;
+using  uibound2 = bound2<unsigned         int>;
+using  uibound3 = bound3<unsigned         int>;
+using  uibound4 = bound4<unsigned         int>;
+using   lbound1 = bound1<  signed        long>;
+using   lbound2 = bound2<  signed        long>;
+using   lbound3 = bound3<  signed        long>;
+using   lbound4 = bound4<  signed        long>;
+using  ulbound1 = bound1<unsigned        long>;
+using  ulbound2 = bound2<unsigned        long>;
+using  ulbound3 = bound3<unsigned        long>;
+using  ulbound4 = bound4<unsigned        long>;
+using  llbound1 = bound1<  signed long   long>;
+using  llbound2 = bound2<  signed long   long>;
+using  llbound3 = bound3<  signed long   long>;
+using  llbound4 = bound4<  signed long   long>;
+using ullbound1 = bound1<unsigned long   long>;
+using ullbound2 = bound2<unsigned long   long>;
+using ullbound3 = bound3<unsigned long   long>;
+using ullbound4 = bound4<unsigned long   long>;
+using   nbound1 = bound1<                 nat>;
+using   nbound2 = bound2<                 nat>;
+using   nbound3 = bound3<                 nat>;
+using   nbound4 = bound4<                 nat>;
+using  unbound1 = bound1<                unat>;
+using  unbound2 = bound2<                unat>;
+using  unbound3 = bound3<                unat>;
+using  unbound4 = bound4<                unat>;
+
+
+
+//------------------------------------------------------------------------------
+// Span
+
+
 
 template <typename T, nat t_n> using span = bound<T, t_n>;
 
@@ -180,6 +218,22 @@ template <typename T> using span1 = bound1<T>;
 template <typename T> using span2 = bound2<T>;
 template <typename T> using span3 = bound3<T>;
 template <typename T> using span4 = bound4<T>;
+
+template <nat t_n> using   fspan =   fbound<t_n>;
+template <nat t_n> using   dspan =   dbound<t_n>;
+template <nat t_n> using  ldspan =  ldbound<t_n>;
+template <nat t_n> using   cspan =   cbound<t_n>;
+template <nat t_n> using  ucspan =  ucbound<t_n>;
+template <nat t_n> using   sspan =   sbound<t_n>;
+template <nat t_n> using  usspan =  usbound<t_n>;
+template <nat t_n> using   ispan =   ibound<t_n>;
+template <nat t_n> using  uispan =  uibound<t_n>;
+template <nat t_n> using   lspan =   lbound<t_n>;
+template <nat t_n> using  ulspan =  ulbound<t_n>;
+template <nat t_n> using  llspan =  llbound<t_n>;
+template <nat t_n> using ullspan = ullbound<t_n>;
+template <nat t_n> using   nspan =   nbound<t_n>;
+template <nat t_n> using  unspan =  unbound<t_n>;
 
 using   fspan1 =   fbound1;
 using   fspan2 =   fbound2;
@@ -189,6 +243,10 @@ using   dspan1 =   dbound1;
 using   dspan2 =   dbound2;
 using   dspan3 =   dbound3;
 using   dspan4 =   dbound4;
+using  ldspan1 =  ldbound1;
+using  ldspan2 =  ldbound2;
+using  ldspan3 =  ldbound3;
+using  ldspan4 =  ldbound4;
 using   cspan1 =   cbound1;
 using   cspan2 =   cbound2;
 using   cspan3 =   cbound3;
@@ -238,6 +296,147 @@ using  unspan2 =  unbound2;
 using  unspan3 =  unbound3;
 using  unspan4 =  unbound4;
 
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Type Namespaces -----------------------------------------------------------------------------------------------------
+
+
+
+//------------------------------------------------------------------------------
+// Vec
+
+
+
+namespace   tvecs { using qmu::   vec; using qmu::   vec1; using qmu::   vec2; using qmu::   vec3; using qmu::   vec4; }
+namespace   fvecs { using qmu::  fvec; using qmu::  fvec1; using qmu::  fvec2; using qmu::  fvec3; using qmu::  fvec4; }
+namespace   dvecs { using qmu::  dvec; using qmu::  dvec1; using qmu::  dvec2; using qmu::  dvec3; using qmu::  dvec4; }
+namespace  ldvecs { using qmu:: ldvec; using qmu:: ldvec1; using qmu:: ldvec2; using qmu:: ldvec3; using qmu:: ldvec4; }
+namespace   cvecs { using qmu::  cvec; using qmu::  cvec1; using qmu::  cvec2; using qmu::  cvec3; using qmu::  cvec4; }
+namespace  ucvecs { using qmu:: ucvec; using qmu:: ucvec1; using qmu:: ucvec2; using qmu:: ucvec3; using qmu:: ucvec4; }
+namespace   svecs { using qmu::  svec; using qmu::  svec1; using qmu::  svec2; using qmu::  svec3; using qmu::  svec4; }
+namespace  usvecs { using qmu:: usvec; using qmu:: usvec1; using qmu:: usvec2; using qmu:: usvec3; using qmu:: usvec4; }
+namespace   ivecs { using qmu::  ivec; using qmu::  ivec1; using qmu::  ivec2; using qmu::  ivec3; using qmu::  ivec4; }
+namespace  uivecs { using qmu:: uivec; using qmu:: uivec1; using qmu:: uivec2; using qmu:: uivec3; using qmu:: uivec4; }
+namespace   lvecs { using qmu::  lvec; using qmu::  lvec1; using qmu::  lvec2; using qmu::  lvec3; using qmu::  lvec4; }
+namespace  ulvecs { using qmu:: ulvec; using qmu:: ulvec1; using qmu:: ulvec2; using qmu:: ulvec3; using qmu:: ulvec4; }
+namespace  llvecs { using qmu:: llvec; using qmu:: llvec1; using qmu:: llvec2; using qmu:: llvec3; using qmu:: llvec4; }
+namespace ullvecs { using qmu::ullvec; using qmu::ullvec1; using qmu::ullvec2; using qmu::ullvec3; using qmu::ullvec4; }
+namespace   nvecs { using qmu::  nvec; using qmu::  nvec1; using qmu::  nvec2; using qmu::  nvec3; using qmu::  nvec4; }
+namespace  unvecs { using qmu:: unvec; using qmu:: unvec1; using qmu:: unvec2; using qmu:: unvec3; using qmu:: unvec4; }
+namespace   bvecs { using qmu::  bvec; using qmu::  bvec1; using qmu::  bvec2; using qmu::  bvec3; using qmu::  bvec4; }
+
+namespace vecs {
+
+using namespace   tvecs;
+using namespace   fvecs;
+using namespace   dvecs;
+using namespace  ldvecs;
+using namespace   cvecs;
+using namespace  ucvecs;
+using namespace   svecs;
+using namespace  usvecs;
+using namespace   ivecs;
+using namespace  uivecs;
+using namespace   lvecs;
+using namespace  ulvecs;
+using namespace  llvecs;
+using namespace ullvecs;
+using namespace   nvecs;
+using namespace  unvecs;
+using namespace   bvecs;
+
+}
+
+
+
+//------------------------------------------------------------------------------
+// Bound
+
+
+
+namespace   tbounds { using qmu::   bound; using qmu::   bound1; using qmu::   bound2; using qmu::   bound3; using qmu::   bound4; }
+namespace   fbounds { using qmu::  fbound; using qmu::  fbound1; using qmu::  fbound2; using qmu::  fbound3; using qmu::  fbound4; }
+namespace   dbounds { using qmu::  dbound; using qmu::  dbound1; using qmu::  dbound2; using qmu::  dbound3; using qmu::  dbound4; }
+namespace  ldbounds { using qmu:: ldbound; using qmu:: ldbound1; using qmu:: ldbound2; using qmu:: ldbound3; using qmu:: ldbound4; }
+namespace   cbounds { using qmu::  cbound; using qmu::  cbound1; using qmu::  cbound2; using qmu::  cbound3; using qmu::  cbound4; }
+namespace  ucbounds { using qmu:: ucbound; using qmu:: ucbound1; using qmu:: ucbound2; using qmu:: ucbound3; using qmu:: ucbound4; }
+namespace   sbounds { using qmu::  sbound; using qmu::  sbound1; using qmu::  sbound2; using qmu::  sbound3; using qmu::  sbound4; }
+namespace  usbounds { using qmu:: usbound; using qmu:: usbound1; using qmu:: usbound2; using qmu:: usbound3; using qmu:: usbound4; }
+namespace   ibounds { using qmu::  ibound; using qmu::  ibound1; using qmu::  ibound2; using qmu::  ibound3; using qmu::  ibound4; }
+namespace  uibounds { using qmu:: uibound; using qmu:: uibound1; using qmu:: uibound2; using qmu:: uibound3; using qmu:: uibound4; }
+namespace   lbounds { using qmu::  lbound; using qmu::  lbound1; using qmu::  lbound2; using qmu::  lbound3; using qmu::  lbound4; }
+namespace  ulbounds { using qmu:: ulbound; using qmu:: ulbound1; using qmu:: ulbound2; using qmu:: ulbound3; using qmu:: ulbound4; }
+namespace  llbounds { using qmu:: llbound; using qmu:: llbound1; using qmu:: llbound2; using qmu:: llbound3; using qmu:: llbound4; }
+namespace ullbounds { using qmu::ullbound; using qmu::ullbound1; using qmu::ullbound2; using qmu::ullbound3; using qmu::ullbound4; }
+namespace   nbounds { using qmu::  nbound; using qmu::  nbound1; using qmu::  nbound2; using qmu::  nbound3; using qmu::  nbound4; }
+namespace  unbounds { using qmu:: unbound; using qmu:: unbound1; using qmu:: unbound2; using qmu:: unbound3; using qmu:: unbound4; }
+
+namespace bounds {
+
+using namespace   tbounds;
+using namespace   fbounds;
+using namespace   dbounds;
+using namespace  ldbounds;
+using namespace   cbounds;
+using namespace  ucbounds;
+using namespace   sbounds;
+using namespace  usbounds;
+using namespace   ibounds;
+using namespace  uibounds;
+using namespace   lbounds;
+using namespace  ulbounds;
+using namespace  llbounds;
+using namespace ullbounds;
+using namespace   nbounds;
+using namespace  unbounds;
+
+}
+
+
+
+//------------------------------------------------------------------------------
+// Span
+
+
+
+namespace   tspans { using qmu::   span; using qmu::   span1; using qmu::   span2; using qmu::   span3; using qmu::   span4; }
+namespace   fspans { using qmu::  fspan; using qmu::  fspan1; using qmu::  fspan2; using qmu::  fspan3; using qmu::  fspan4; }
+namespace   dspans { using qmu::  dspan; using qmu::  dspan1; using qmu::  dspan2; using qmu::  dspan3; using qmu::  dspan4; }
+namespace  ldspans { using qmu:: ldspan; using qmu:: ldspan1; using qmu:: ldspan2; using qmu:: ldspan3; using qmu:: ldspan4; }
+namespace   cspans { using qmu::  cspan; using qmu::  cspan1; using qmu::  cspan2; using qmu::  cspan3; using qmu::  cspan4; }
+namespace  ucspans { using qmu:: ucspan; using qmu:: ucspan1; using qmu:: ucspan2; using qmu:: ucspan3; using qmu:: ucspan4; }
+namespace   sspans { using qmu::  sspan; using qmu::  sspan1; using qmu::  sspan2; using qmu::  sspan3; using qmu::  sspan4; }
+namespace  usspans { using qmu:: usspan; using qmu:: usspan1; using qmu:: usspan2; using qmu:: usspan3; using qmu:: usspan4; }
+namespace   ispans { using qmu::  ispan; using qmu::  ispan1; using qmu::  ispan2; using qmu::  ispan3; using qmu::  ispan4; }
+namespace  uispans { using qmu:: uispan; using qmu:: uispan1; using qmu:: uispan2; using qmu:: uispan3; using qmu:: uispan4; }
+namespace   lspans { using qmu::  lspan; using qmu::  lspan1; using qmu::  lspan2; using qmu::  lspan3; using qmu::  lspan4; }
+namespace  ulspans { using qmu:: ulspan; using qmu:: ulspan1; using qmu:: ulspan2; using qmu:: ulspan3; using qmu:: ulspan4; }
+namespace  llspans { using qmu:: llspan; using qmu:: llspan1; using qmu:: llspan2; using qmu:: llspan3; using qmu:: llspan4; }
+namespace ullspans { using qmu::ullspan; using qmu::ullspan1; using qmu::ullspan2; using qmu::ullspan3; using qmu::ullspan4; }
+namespace   nspans { using qmu::  nspan; using qmu::  nspan1; using qmu::  nspan2; using qmu::  nspan3; using qmu::  nspan4; }
+namespace  unspans { using qmu:: unspan; using qmu:: unspan1; using qmu:: unspan2; using qmu:: unspan3; using qmu:: unspan4; }
+
+namespace spans {
+
+using namespace   tspans;
+using namespace   fspans;
+using namespace   dspans;
+using namespace  ldspans;
+using namespace   cspans;
+using namespace  ucspans;
+using namespace   sspans;
+using namespace  usspans;
+using namespace   ispans;
+using namespace  uispans;
+using namespace   lspans;
+using namespace  ulspans;
+using namespace  llspans;
+using namespace ullspans;
+using namespace   nspans;
+using namespace  unspans;
+
+}
 
 
 

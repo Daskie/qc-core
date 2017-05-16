@@ -12,15 +12,16 @@ namespace qmu {
 
 template <typename T> struct quat;
 
-
-
-using  fquat = quat< float>;
-using  dquat = quat<double>;
+using  fquat = quat<      float>;
+using  dquat = quat<     double>;
+using ldquat = quat<long double>;
 
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // QUAT ----------------------------------------------------------------------------------------------------------------
+
+
 
 template <typename T>
 struct quat {

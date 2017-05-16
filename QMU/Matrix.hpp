@@ -2,15 +2,13 @@
 
 
 
-/*
-    The mat structs need to be of standard layout.
-    std::is_standard_layout
 
-    Column-major ordering
-    x1 x2 x3	00 03 06
-    y1 y2 y3	01 04 07
-    z1 z2 z3	02 05 08
-*/
+// Column-major ordering
+//
+//  x1 x2 x3    00 03 06
+//  y1 y2 y3    01 04 07
+//  z1 z2 z3    02 05 08
+
 
 
 
@@ -22,24 +20,52 @@ namespace qmu {
 
 
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Type Declarations ---------------------------------------------------------------------------------------------------
+
+
+
+//------------------------------------------------------------------------------
+// Mat
+
+
+
 template <typename T, nat t_m, nat t_n = t_m> struct mat;
-
-
 
 template <typename T> using mat2 = mat<T, 2>;
 template <typename T> using mat3 = mat<T, 3>;
 template <typename T> using mat4 = mat<T, 4>;
 
-template <nat t_m, nat t_n> using  fmat = mat< float, t_m, t_n>;
-template <nat t_m, nat t_n> using  dmat = mat<double, t_m, t_n>;
+template <nat t_m, nat t_n> using  fmat = mat<      float, t_m, t_n>;
+template <nat t_m, nat t_n> using  dmat = mat<     double, t_m, t_n>;
+template <nat t_m, nat t_n> using ldmat = mat<long double, t_m, t_n>;
 
-using  fmat2 = mat< float, 2>;
-using  fmat3 = mat< float, 3>;
-using  fmat4 = mat< float, 4>;
-using  dmat2 = mat<double, 2>;
-using  dmat3 = mat<double, 3>;
-using  dmat4 = mat<double, 4>;
+using  fmat2 = mat<      float, 2>;
+using  fmat3 = mat<      float, 3>;
+using  fmat4 = mat<      float, 4>;
+using  dmat2 = mat<     double, 2>;
+using  dmat3 = mat<     double, 3>;
+using  dmat4 = mat<     double, 4>;
+using ldmat2 = mat<long double, 2>;
+using ldmat3 = mat<long double, 3>;
+using ldmat4 = mat<long double, 4>;
 
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Type Namespaces -----------------------------------------------------------------------------------------------------
+
+
+
+//------------------------------------------------------------------------------
+// Mat
+
+
+
+namespace  tmats { using qmu::  mat; using qmu::  mat2; using qmu::  mat3; using qmu::  mat4; }
+namespace  fmats { using qmu:: fmat; using qmu:: fmat2; using qmu:: fmat3; using qmu:: fmat4; }
+namespace  dmats { using qmu:: dmat; using qmu:: dmat2; using qmu:: dmat3; using qmu:: dmat4; }
+namespace ldmats { using qmu::ldmat; using qmu::ldmat2; using qmu::ldmat3; using qmu::ldmat4; }
 
 
 

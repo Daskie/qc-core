@@ -27,25 +27,25 @@ using   s32 =  int32_t;
 using   u32 = uint32_t;
 using   s64 =  int64_t;
 using   u64 = uint64_t;
-struct  s128 {
-    union {
-        struct { s64 s64_1, s64_2; };
-        struct { s32 s32_1, s32_2, s32_3, s32_4; };
-    };
-};
-struct u128 {
-    union {
-        struct { u64 u64_1, u64_2; };
-        struct { u32 u32_1, u32_2, u32_3, u32_4; };
-    };
-};
+
+
+
+namespace types {
+
+using qmu::nat; using qmu::unat;
+using qmu::s08;
+
+}
+
+
 
 template <nat t_p> struct precision;
-template        <> struct precision< 32> { using stype =  s32; using utype =  u32; };
-template        <> struct precision< 64> { using stype =  s64; using utype =  u64; };
-template        <> struct precision<128> { using stype = s128; using utype = u128; };
+template <> struct precision< 8> { using stype = s08; using utype = u08; };
+template <> struct precision<16> { using stype = s16; using utype = u16; };
+template <> struct precision<32> { using stype = s32; using utype = u32; };
+template <> struct precision<64> { using stype = s64; using utype = u64; };
 
-template <nat t_p> using precision_st  = typename precision<t_p>::stype;
+template <nat t_p> using precision_st = typename precision<t_p>::stype;
 template <nat t_p> using precision_ut = typename precision<t_p>::utype;
 
 constexpr nat k_nat_p = sizeof(nat) * 8;
