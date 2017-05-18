@@ -736,6 +736,10 @@ struct vec<T, 6> {
 
     template <typename U> constexpr explicit vec(const vec<U, 6> & v);
 
+    constexpr explicit vec(const vec<T, 2> & v);
+    constexpr explicit vec(const vec<T, 4> & v);
+    constexpr explicit vec(const vec<T, 8> & v);
+
     constexpr vec(const vec3<T> & v1, const vec3<T> & v2);
     constexpr vec(const T & v1, const T & v2, const T & v3, const T & v4, const T & v5, const T & v6);
 
@@ -780,6 +784,10 @@ struct vec<T, 8> {
     constexpr vec(vec<T, 8> && v);
 
     template <typename U> constexpr explicit vec(const vec<U, 8> & v);
+
+    constexpr explicit vec(const vec<T, 2> & v);
+    constexpr explicit vec(const vec<T, 4> & v);
+    constexpr explicit vec(const vec<T, 6> & v);
 
     constexpr vec(const vec4<T> & v1, const vec4<T> & v2);
     constexpr vec(const T & v1, const T & v2, const T & v3, const T & v4, const T & v5, const T & v6, const T & v7, const T & v8);
@@ -1750,6 +1758,21 @@ constexpr vec<T, 6>::vec(const vec<U, 6> & v) :
 {}
 
 template <typename T>
+constexpr vec<T, 6>::vec(const vec<T, 2> & v) :
+    min(v.min), max(v.max)
+{}
+
+template <typename T>
+constexpr vec<T, 6>::vec(const vec<T, 4> & v) :
+    min(v.min), max(v.max)
+{}
+
+template <typename T>
+constexpr vec<T, 6>::vec(const vec<T, 8> & v) :
+    min(v.min), max(v.max)
+{}
+
+template <typename T>
 constexpr vec<T, 6>::vec(const vec3<T> & v1, const vec3<T> & v2) :
     min(v1), max(v2)
 {}
@@ -1841,6 +1864,21 @@ constexpr vec<T, 8>::vec(vec<T, 8> && v) :
 template <typename T>
 template <typename U>
 constexpr vec<T, 8>::vec(const vec<U, 8> & v) :
+    min(v.min), max(v.max)
+{}
+
+template <typename T>
+constexpr vec<T, 8>::vec(const vec<T, 2> & v) :
+    min(v.min), max(v.max)
+{}
+
+template <typename T>
+constexpr vec<T, 8>::vec(const vec<T, 4> & v) :
+    min(v.min), max(v.max)
+{}
+
+template <typename T>
+constexpr vec<T, 8>::vec(const vec<T, 6> & v) :
     min(v.min), max(v.max)
 {}
 
