@@ -28,26 +28,27 @@ inline void exception_break() {}
 
 
 #define QERROR(msg) do { \
-	qmu::error_break(); \
-	qmu::log() << "ERROR" << std::endl; \
-	qmu::log() << "\t" << msg << std::endl; \
-	qmu::log() << "\t" << __func__ << " (" << __FILE__ << "(" << __LINE__ << "))" << std::endl; \
+    qmu::error_break(); \
+    qmu::log() << "ERROR" << std::endl; \
+    qmu::log() << "\t" << msg << std::endl; \
+    qmu::log() << "\t" << __func__ << " (" << __FILE__ << "(" << __LINE__ << "))" << std::endl; \
 } while (false)
 
 #define QWARNING(msg) do { \
-	qmu::warning_break(); \
-	qmu::log() << "WARNING" << std::endl; \
-	qmu::log() << "\t" << msg << std::endl; \
-	qmu::log() << "\t" << __func__ << " (" << __FILE__ << "(" << __LINE__ << "))" << std::endl; \
+    qmu::warning_break(); \
+    qmu::log() << "WARNING" << std::endl; \
+    qmu::log() << "\t" << msg << std::endl; \
+    qmu::log() << "\t" << __func__ << " (" << __FILE__ << "(" << __LINE__ << "))" << std::endl; \
 } while (false)
 
 #define QLOG(msg) do { \
-	qmu::log() << msg << std::endl; \
+    qmu::log() << msg << std::endl; \
 } while (false)
 
-#define Q_EXCEPTION(msg) do { \
-	qmu::exception_break(); \
-	qmu::log() << "EXCEPTION" << std::endl; \
-	qmu::log() << "\t" << msg << std::endl; \
-	qmu::log() << "\t" << __func__ << " (" << __FILE__ << "(" << __LINE__ << "))" << std::endl; \
+#define QEXCEPTION(msg, exception) do { \
+    qmu::exception_break(); \
+    qmu::log() << "EXCEPTION" << std::endl; \
+    qmu::log() << "\t" << msg << std::endl; \
+    qmu::log() << "\t" << __func__ << " (" << __FILE__ << "(" << __LINE__ << "))" << std::endl; \
+    throw exception; \
 } while (false)

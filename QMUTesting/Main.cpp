@@ -582,15 +582,25 @@ void testVectorTFunctionCompilation() {
     clamp(v3, v3, v3);
     clamp(v4, v4, v4);
 
+    mix(v1, v1, v);
+    mix(v2, v2, v);
+    mix(v3, v3, v);
+    mix(v4, v4, v);
+
     intersect(v2, v2);
     intersect(v4, v4);
     intersect(v6, v6);
     intersect(v8, v8);
 
-    mix(v1, v1, v);
-    mix(v2, v2, v);
-    mix(v3, v3, v);
-    mix(v4, v4, v);
+    v2 = toSpan(v2);
+    v4 = toSpan(v4);
+    v6 = toSpan(v6);
+    v8 = toSpan(v8);
+    
+    v2 = toBound(v2);
+    v4 = toBound(v4);
+    v6 = toBound(v6);
+    v8 = toBound(v8);
 }
 
 template <typename T, nat t_n>

@@ -67,6 +67,15 @@ namespace  fmats { using qmu:: fmat; using qmu:: fmat2; using qmu:: fmat3; using
 namespace  dmats { using qmu:: dmat; using qmu:: dmat2; using qmu:: dmat3; using qmu:: dmat4; }
 namespace ldmats { using qmu::ldmat; using qmu::ldmat2; using qmu::ldmat3; using qmu::ldmat4; }
 
+namespace mats {
+
+using namespace  tmats;
+using namespace  fmats;
+using namespace  dmats;
+using namespace ldmats;
+
+}
+
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -1242,11 +1242,17 @@ vec<T, t_n> clamp(const vec<T, t_n> & v, const T & min, const T & max);
 template <typename T, nat t_n>
 vec<T, t_n> clamp(const vec<T, t_n> & v, const vec<T, t_n> & min, const vec<T, t_n> & max);
 
-template <typename T, nat t_n>
-span<T, t_n> intersect(const span<T, t_n> & r1, const span<T, t_n> & r2);
-
 template <typename T, nat t_n, enable_if_floating_t<T> = 0>
 vec<T, t_n> mix(const vec<T, t_n> & v1, const vec <T, t_n> & v2, T t);
+
+template <typename T, nat t_n>
+span<T, t_n> toSpan(const bound<T, t_n> & b);
+
+template <typename T, nat t_n>
+bound<T, t_n> toBound(const span<T, t_n> & s);
+
+template <typename T, nat t_n>
+span<T, t_n> intersect(const span<T, t_n> & s1, const span<T, t_n> & s2);
 
 
 
@@ -4054,53 +4060,93 @@ inline vec4<T> clamp(const vec4<T> & v, const vec4<T> & min, const vec4<T> & max
     );
 }
 
-template <typename T>
-inline span1<T> intersect(const span1<T> & r1, const span1<T> & r2) {
-    return span1<T>(
-        max(r1.min.x, r2.min.x),
-        min(r1.max.x, r2.max.x)
-    );
-}
-
-template <typename T>
-inline span2<T> intersect(const span2<T> & r1, const span2<T> & r2) {
-    return span2<T>(
-        max(r1.min.x, r2.min.x),
-        max(r1.min.y, r2.min.y),
-        min(r1.max.x, r2.max.x),
-        min(r1.max.y, r2.max.y)
-    );
-}
-
-template <typename T>
-inline span3<T> intersect(const span3<T> & r1, const span3<T> & r2) {
-    return span3<T>(
-        max(r1.min.x, r2.min.x),
-        max(r1.min.y, r2.min.y),
-        max(r1.min.z, r2.min.z),
-        min(r1.max.x, r2.max.x),
-        min(r1.max.y, r2.max.y),
-        min(r1.max.z, r2.max.z)
-    );
-}
-
-template <typename T>
-inline span4<T> intersect(const span4<T> & r1, const span4<T> & r2) {
-    return span4<T>(
-        max(r1.min.x, r2.min.x),
-        max(r1.min.y, r2.min.y),
-        max(r1.min.z, r2.min.z),
-        max(r1.min.w, r2.min.w),
-        min(r1.max.x, r2.max.x),
-        min(r1.max.y, r2.max.y),
-        min(r1.max.z, r2.max.z),
-        min(r1.max.w, r2.max.w)
-    );
-}
-
 template <typename T, nat t_n, enable_if_floating_t<T>>
 inline vec<T, t_n> mix(const vec<T, t_n> & v1, const vec<T, t_n> & v2, T t) {
     return (static_cast<T>(1) - t) * v1 + t * v2;
+}
+
+template <typename T>
+inline span1<T> toSpan(const bound1<T> & b) {
+    return span1<T>(b.loc, b.loc + b.size);
+}
+
+template <typename T>
+inline span2<T> toSpan(const bound2<T> & b) {
+    return span2<T>(b.loc, b.loc + b.size);
+}
+
+template <typename T>
+inline span3<T> toSpan(const bound3<T> & b) {
+    return span3<T>(b.loc, b.loc + b.size);
+}
+
+template <typename T>
+inline span4<T> toSpan(const bound4<T> & b) {
+    return span4<T>(b.loc, b.loc + b.size);
+}
+
+template <typename T>
+inline bound1<T> toBound(const span1<T> & s) {
+    return bound1<T>(s.min, s.max - s.min);
+}
+
+template <typename T>
+inline bound2<T> toBound(const span2<T> & s) {
+    return bound2<T>(s.min, s.max - s.min);
+}
+
+template <typename T>
+inline bound3<T> toBound(const span3<T> & s) {
+    return bound3<T>(s.min, s.max - s.min);
+}
+
+template <typename T>
+inline bound4<T> toBound(const span4<T> & s) {
+    return bound4<T>(s.min, s.max - s.min);
+}
+
+template <typename T>
+inline span1<T> intersect(const span1<T> & s1, const span1<T> & s2) {
+    return span1<T>(
+        max(s1.min.x, s2.min.x),
+        min(s1.max.x, s2.max.x)
+    );
+}
+
+template <typename T>
+inline span2<T> intersect(const span2<T> & s1, const span2<T> & s2) {
+    return span2<T>(
+        max(s1.min.x, s2.min.x),
+        max(s1.min.y, s2.min.y),
+        min(s1.max.x, s2.max.x),
+        min(s1.max.y, s2.max.y)
+    );
+}
+
+template <typename T>
+inline span3<T> intersect(const span3<T> & s1, const span3<T> & s2) {
+    return span3<T>(
+        max(s1.min.x, s2.min.x),
+        max(s1.min.y, s2.min.y),
+        max(s1.min.z, s2.min.z),
+        min(s1.max.x, s2.max.x),
+        min(s1.max.y, s2.max.y),
+        min(s1.max.z, s2.max.z)
+    );
+}
+
+template <typename T>
+inline span4<T> intersect(const span4<T> & s1, const span4<T> & s2) {
+    return span4<T>(
+        max(s1.min.x, s2.min.x),
+        max(s1.min.y, s2.min.y),
+        max(s1.min.z, s2.min.z),
+        max(s1.min.w, s2.min.w),
+        min(s1.max.x, s2.max.x),
+        min(s1.max.y, s2.max.y),
+        min(s1.max.z, s2.max.z),
+        min(s1.max.w, s2.max.w)
+    );
 }
 
 
