@@ -592,15 +592,40 @@ void testVectorTFunctionCompilation() {
     intersect(v6, v6);
     intersect(v8, v8);
 
-    v2 = toSpan(v2);
-    v4 = toSpan(v4);
-    v6 = toSpan(v6);
-    v8 = toSpan(v8);
+    toSpan(v2);
+    toSpan(v4);
+    toSpan(v6);
+    toSpan(v8);
     
-    v2 = toBound(v2);
-    v4 = toBound(v4);
-    v6 = toBound(v6);
-    v8 = toBound(v8);
+    toBound(v2);
+    toBound(v4);
+    toBound(v6);
+    toBound(v8);
+
+    bvec1 b1;
+    bvec2 b2;
+    bvec3 b3;
+    bvec4 b4;
+
+    and(b1);
+    and(b2);
+    and(b3);
+    and(b4);
+
+    or(b1);
+    or(b2);
+    or(b3);
+    or(b4);
+
+    xor(b1);
+    xor(b2);
+    xor(b3);
+    xor(b4);
+
+    not(b1);
+    not(b2);
+    not(b3);
+    not(b4);
 }
 
 template <typename T, nat t_n>

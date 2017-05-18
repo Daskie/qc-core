@@ -1254,6 +1254,18 @@ bound<T, t_n> toBound(const span<T, t_n> & s);
 template <typename T, nat t_n>
 span<T, t_n> intersect(const span<T, t_n> & s1, const span<T, t_n> & s2);
 
+template <nat t_n>
+bool and(const bvec<t_n> & v);
+
+template <nat t_n>
+bool or(const bvec<t_n> & v);
+
+template <nat t_n>
+bool xor(const bvec<t_n> & v);
+
+template <nat t_n>
+bvec<t_n> not(const bvec<t_n> & v);
+
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -4147,6 +4159,70 @@ inline span4<T> intersect(const span4<T> & s1, const span4<T> & s2) {
         min(s1.max.z, s2.max.z),
         min(s1.max.w, s2.max.w)
     );
+}
+
+bool and(const bvec1 & v) {
+    return v.x;
+}
+
+bool and(const bvec2 & v) {
+    return v.x && v.y;
+}
+
+bool and(const bvec3 & v) {
+    return v.x && v.y && v.z;
+}
+
+bool and(const bvec4 & v) {
+    return v.x && v.y && v.z && v.w;
+}
+
+bool or(const bvec1 & v) {
+    return v.x;
+}
+
+bool or(const bvec2 & v) {
+    return v.x || v.y;
+}
+
+bool or(const bvec3 & v) {
+    return v.x || v.y || v.z;
+}
+
+bool or(const bvec4 & v) {
+    return v.x || v.y || v.z || v.w;
+}
+
+bool xor(const bvec1 & v) {
+    return v.x;
+}
+
+bool xor(const bvec2 & v) {
+    return v.x ^ v.y;
+}
+
+bool xor(const bvec3 & v) {
+    return v.x ^ v.y ^ v.z;
+}
+
+bool xor(const bvec4 & v) {
+    return v.x ^ v.y ^ v.z ^ v.w;
+}
+
+bvec1 not(const bvec1 & v) {
+    return bvec1(!v.x);
+}
+
+bvec2 not(const bvec2 & v) {
+    return bvec2(!v.x, !v.y);
+}
+
+bvec3 not(const bvec3 & v) {
+    return bvec3(!v.x, !v.y, !v.z);
+}
+
+bvec4 not(const bvec4 & v) {
+    return bvec4(!v.x, !v.y, !v.z, !v.w);
 }
 
 
