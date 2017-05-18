@@ -17,7 +17,6 @@ void testVectorTCompilation() {
     vec4<T> v4;
     vec<T, 6> v6;
     vec<T, 8> v8;
-    std::stringstream os;
 
     //--------------------------------------------------------------------------
     // Vec1
@@ -43,65 +42,8 @@ void testVectorTCompilation() {
     v1[0];
     static_cast<const vec1<T>>(v1)[0];
 
-    // arithmetic operators
-    v1 += v1;
-    v1 += v;
-    v1 += v2;
-    v1 += v3;
-    v1 += v4;
-    v1 -= v1;
-    v1 -= v;
-    v1 -= v2;
-    v1 -= v3;
-    v1 -= v4;
-    v1 *= v1;
-    v1 *= v;
-    v1 *= v2;
-    v1 *= v3;
-    v1 *= v4;
-    v1 /= vec1<T>(1);
-    v1 /= T(1);
-    v1 /= vec2<T>(1);
-    v1 /= vec3<T>(1);
-    v1 /= vec4<T>(1);
-    ++v1;
-    v1++;
-    --v1;
-    v1--;
-    +v1;
-    -v1;
-    v1 + v1;
-    v1 + v;
-    v + v1;
-    v1 - v1;
-    v1 - v;
-    v - v1;
-    v1 * v1;
-    v1 * v;
-    v * v1;
-    v1 / vec1<T>(1);
-    v1 / T(1);
-    v / vec1<T>(1);
-
-    // comparison operators
-    v1 == v1;
-    v1 == v;
-    v == v1;
-    v1 != v1;
-    v1 != v;
-    v != v1;
-    v1 < v;
-    v < v1;
-    v1 > v;
-    v > v1;
-    v1 <= v;
-    v <= v1;
-    v1 >= v;
-    v >= v1;
-
     // other
     v1.toString();
-    os << v1;
 
     //--------------------------------------------------------------------------
     // Vec2
@@ -131,73 +73,8 @@ void testVectorTCompilation() {
     v2[0];
     static_cast<const vec2<T>>(v2)[0];
 
-    // arithmetic operators
-    v2 += v2;
-    v2 += v;
-    v2 += v1;
-    v2 += v3;
-    v2 += v4;
-    v2 -= v2;
-    v2 -= v;
-    v2 -= v1;
-    v2 -= v3;
-    v2 -= v4;
-    v2 *= v2;
-    v2 *= v;
-    v2 *= v1;
-    v2 *= v3;
-    v2 *= v4;
-    v2 /= vec2<T>(1);
-    v2 /= T(1);
-    v2 /= vec1<T>(1);
-    v2 /= vec3<T>(1);
-    v2 /= vec4<T>(1);
-    ++v2;
-    v2++;
-    --v2;
-    v2--;
-    +v2;
-    -v2;
-    v2 + v2;
-    v2 + v;
-    v + v2;
-    v2 + v1;
-    v1 + v2;
-    v2 - v2;
-    v2 - v;
-    v - v2;
-    v2 - v1;
-    v1 - v2;
-    v2 * v2;
-    v2 * v;
-    v * v2;
-    v2 * v1;
-    v1 * v2;
-    v2 / vec2<T>(1);
-    v2 / T(v);
-    v / vec2<T>(1);
-    v2 / vec1<T>(1);
-    v1 / vec2<T>(1);
-
-    // comparison operators
-    v2 == v2;
-    v2 == v;
-    v == v2;
-    v2 != v2;
-    v2 != v;
-    v != v2;
-    v2 < v;
-    v < v2;
-    v2 > v;
-    v > v2;
-    v2 <= v;
-    v <= v2;
-    v2 >= v;
-    v >= v2;
-
     // other
     v2.toString();
-    os << v2;
 
     //--------------------------------------------------------------------------
     // Vec3
@@ -235,81 +112,8 @@ void testVectorTCompilation() {
     v3[0];
     static_cast<const vec3<T>>(v3)[0];
 
-    // arithmetic operators
-    v3 += v3;
-    v3 += v;
-    v3 += v1;
-    v3 += v2;
-    v3 += v4;
-    v3 -= v3;
-    v3 -= v;
-    v3 -= v1;
-    v3 -= v2;
-    v3 -= v4;
-    v3 *= v3;
-    v3 *= v;
-    v3 *= v1;
-    v3 *= v2;
-    v3 *= v4;
-    v3 /= vec3<T>(1);
-    v3 /= T(1);
-    v3 /= vec1<T>(1);
-    v3 /= vec2<T>(1);
-    v3 /= vec4<T>(1);
-    ++v3;
-    v3++;
-    --v3;
-    v3--;
-    +v3;
-    -v3;
-    v3 + v3;
-    v3 + v;
-    v + v3;
-    v3 + v1;
-    v1 + v3;
-    v3 + v2;
-    v2 + v3;
-    v3 - v3;
-    v3 - v;
-    v - v3;
-    v3 - v1;
-    v1 - v3;
-    v3 - v2;
-    v2 - v3;
-    v3 * v3;
-    v3 * v;
-    v * v3;
-    v3 * v1;
-    v1 * v3;
-    v3 * v2;
-    v2 * v3;
-    v3 / vec3<T>(1);
-    v3 / T(v);
-    v / vec3<T>(1);
-    v3 / vec1<T>(1);
-    v1 / vec3<T>(1);
-    v3 / vec2<T>(1);
-    v2 / vec3<T>(1);
-
-    // comparison operators
-    v3 == v3;
-    v3 == v;
-    v == v3;
-    v3 != v3;
-    v3 != v;
-    v != v3;
-    v3 < v;
-    v < v3;
-    v3 > v;
-    v > v3;
-    v3 <= v;
-    v <= v3;
-    v3 >= v;
-    v >= v3;
-
     // other
     v3.toString();
-    os << v3;
 
     //--------------------------------------------------------------------------
     // Vec4
@@ -367,89 +171,8 @@ void testVectorTCompilation() {
     v4[0];
     static_cast<const vec4<T>>(v4)[0];
 
-    // arithmetic operators
-    v4 += v4;
-    v4 += v;
-    v4 += v1;
-    v4 += v2;
-    v4 += v3;
-    v4 -= v4;
-    v4 -= v;
-    v4 -= v1;
-    v4 -= v2;
-    v4 -= v3;
-    v4 *= v4;
-    v4 *= v;
-    v4 *= v1;
-    v4 *= v2;
-    v4 *= v3;
-    v4 /= vec4<T>(1);
-    v4 /= T(1);
-    v4 /= vec1<T>(1);
-    v4 /= vec2<T>(1);
-    v4 /= vec3<T>(1);
-    ++v4;
-    v4++;
-    --v4;
-    v4--;
-    +v4;
-    -v4;
-    v4 + v4;
-    v4 + v;
-    v + v4;
-    v4 + v1;
-    v1 + v4;
-    v4 + v2;
-    v2 + v4;
-    v4 + v3;
-    v3 + v4;
-    v4 - v4;
-    v4 - v;
-    v - v4;
-    v4 - v1;
-    v1 - v4;
-    v4 - v2;
-    v2 - v4;
-    v4 - v3;
-    v3 - v4;
-    v4 * v4;
-    v4 * v;
-    v * v4;
-    v4 * v1;
-    v1 * v4;
-    v4 * v2;
-    v2 * v4;
-    v4 * v3;
-    v3 * v4;
-    v4 / vec4<T>(1);
-    v4 / T(v);
-    v / vec4<T>(1);
-    v4 / vec1<T>(1);
-    v1 / vec4<T>(1);
-    v4 / vec2<T>(1);
-    v2 / vec4<T>(1);
-    v4 / vec3<T>(1);
-    v3 / vec4<T>(1);
-
-    // comparison operators
-    v4 == v4;
-    v4 == v;
-    v == v4;
-    v4 != v4;
-    v4 != v;
-    v != v4;
-    v4 < v;
-    v < v4;
-    v4 > v;
-    v > v4;
-    v4 <= v;
-    v <= v4;
-    v4 >= v;
-    v >= v4;
-
     // other
     v4.toString();
-    os << v4;
 
     //--------------------------------------------------------------------------
     // Vec6
@@ -469,13 +192,8 @@ void testVectorTCompilation() {
     v6[0];
     static_cast<const vec<T, 6>>(v6)[0];
 
-    // comparison operators
-    v6 == v6;
-    v6 != v6;
-
     // other
     v6.toString();
-    os << v6;
 
     //--------------------------------------------------------------------------
     // Vec8
@@ -495,13 +213,8 @@ void testVectorTCompilation() {
     v8[0];
     static_cast<const vec<T, 8>>(v8)[0];
 
-    // comparison operators
-    v8 == v8;
-    v8 != v8;
-
     // other
     v8.toString();
-    os << v8;
 }
 
 template <typename T>
@@ -513,6 +226,223 @@ void testVectorTFunctionCompilation() {
     vec4<T> v4;
     vec<T, 6> v6;
     vec<T, 8> v8;
+    std::stringstream os;
+
+    // arithmetic
+
+    v1 += v1;
+    v2 += v2;
+    v3 += v3;
+    v4 += v4;
+    v1 += v;
+    v2 += v;
+    v3 += v;
+    v4 += v;
+
+    v1 -= v1;
+    v2 -= v2;
+    v3 -= v3;
+    v4 -= v4;
+    v1 -= v;
+    v2 -= v;
+    v3 -= v;
+    v4 -= v;
+
+    v1 *= v1;
+    v2 *= v2;
+    v3 *= v3;
+    v4 *= v4;
+    v1 *= v;
+    v2 *= v;
+    v3 *= v;
+    v4 *= v;
+
+    v1 /= vec1<T>(1);
+    v2 /= vec2<T>(1);
+    v3 /= vec3<T>(1);
+    v4 /= vec4<T>(1);
+    v1 /= T(1);
+    v2 /= T(1);
+    v3 /= T(1);
+    v4 /= T(1);
+
+    ++v1;
+    ++v2;
+    ++v3;
+    ++v4;
+
+    v1++;
+    v2++;
+    v3++;
+    v4++;
+
+    --v1;
+    --v2;
+    --v3;
+    --v4;
+
+    v1--;
+    v2--;
+    v3--;
+    v4--;
+
+    +v1;
+    +v2;
+    +v3;
+    +v4;
+
+    -v1;
+    -v2;
+    -v3;
+    -v4;
+
+    v1 + v1;
+    v2 + v2;
+    v3 + v3;
+    v4 + v4;
+    v1 + v;
+    v2 + v;
+    v3 + v;
+    v4 + v;
+    v + v1;
+    v + v2;
+    v + v3;
+    v + v4;
+
+    v1 - v1;
+    v2 - v2;
+    v3 - v3;
+    v4 - v4;
+    v1 - v;
+    v2 - v;
+    v3 - v;
+    v4 - v;
+    v - v1;
+    v - v2;
+    v - v3;
+    v - v4;
+
+    v1 * v1;
+    v2 * v2;
+    v3 * v3;
+    v4 * v4;
+    v1 * v;
+    v2 * v;
+    v3 * v;
+    v4 * v;
+    v * v1;
+    v * v2;
+    v * v3;
+    v * v4;
+
+    v1 / vec1<T>(1);
+    v2 / vec2<T>(1);
+    v3 / vec3<T>(1);
+    v4 / vec4<T>(1);
+    v1 / T(1);
+    v2 / T(v);
+    v3 / T(v);
+    v4 / T(v);
+    v / vec1<T>(1);
+    v / vec2<T>(1);
+    v / vec3<T>(1);
+    v / vec4<T>(1);
+
+
+    // comparison
+
+    v1 == v1;
+    v2 == v2;
+    v3 == v3;
+    v4 == v4;
+    v6 == v6;
+    v8 == v8;
+    v1 == v;
+    v2 == v;
+    v3 == v;
+    v4 == v;
+    v == v1;
+    v == v2;
+    v == v3;
+    v == v4;
+
+    v1 != v1;
+    v2 != v2;
+    v3 != v3;
+    v4 != v4;
+    v6 != v6;
+    v8 != v8;
+    v1 != v;
+    v2 != v;
+    v3 != v;
+    v4 != v;
+    v != v1;
+    v != v2;
+    v != v3;
+    v != v4;
+
+    v1 < v1;
+    v2 < v2;
+    v3 < v3;
+    v4 < v4;
+    v1 < v;
+    v2 < v;
+    v3 < v;
+    v4 < v;
+    v < v1;
+    v < v2;
+    v < v3;
+    v < v4;
+
+    v1 > v1;
+    v2 > v2;
+    v3 > v3;
+    v4 > v4;
+    v1 > v;
+    v2 > v;
+    v3 > v;
+    v4 > v;
+    v > v1;
+    v > v2;
+    v > v3;
+    v > v4;
+
+    v1 <= v1;
+    v2 <= v2;
+    v3 <= v3;
+    v4 <= v4;
+    v1 <= v;
+    v2 <= v;
+    v3 <= v;
+    v4 <= v;
+    v <= v1;
+    v <= v2;
+    v <= v3;
+    v <= v4;
+
+    v1 >= v1;
+    v2 >= v2;
+    v3 >= v3;
+    v4 >= v4;
+    v1 >= v;
+    v2 >= v;
+    v3 >= v;
+    v4 >= v;
+    v >= v1;
+    v >= v2;
+    v >= v3;
+    v >= v4;
+
+    // other
+
+    os << v1;
+    os << v2;
+    os << v3;
+    os << v4;
+    os << v6;
+    os << v8;
+
+    // uncategorized
 
     magnitude(v1);
     magnitude(v2);
