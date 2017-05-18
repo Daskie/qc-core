@@ -181,9 +181,6 @@ void testVectorTCompilation() {
     vec<T, 6> v6_1;
     vec<T, 6> v6_2(v6);
     vec<T, 6> v6_3(std::move(v6));
-    vec<T, 8> v6_4(v2);
-    vec<T, 8> v6_5(v4);
-    vec<T, 8> v6_6(v8);
     vec<T, 6> v6_7(v3, v3);
     vec<T, 6> v6_8(v, v, v, v, v, v);
 
@@ -205,9 +202,6 @@ void testVectorTCompilation() {
     vec<T, 8> v8_1;
     vec<T, 8> v8_2(v8);
     vec<T, 8> v8_3(std::move(v8));
-    vec<T, 8> v8_4(v2);
-    vec<T, 8> v8_5(v4);
-    vec<T, 8> v8_6(v6);
     vec<T, 8> v8_7(v4, v4);
     vec<T, 8> v8_8(v, v, v, v, v, v, v, v);
 
