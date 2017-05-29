@@ -71,22 +71,22 @@ using enable_if_integral_t = std::enable_if_t<std::is_integral<T>::value, int>;
 
 template <typename T>
 constexpr const T & min(const T & a, const T & b) {
-    return a <= b ? a : b;
+    return a < b ? a : b;
 }
 
 template <typename T>
 constexpr const T & max(const T & a, const T & b) {
-    return a >= b ? a : b;
+    return a > b ? a : b;
 }
 
 template <typename T, typename... Ts>
 constexpr const T & min(const T & a, const T & b, const Ts & ... rest) {
-    return min(a <= b ? a : b, rest...);
+    return min(a < b ? a : b, rest...);
 }
 
 template <typename T, typename... Ts>
 constexpr const T & max(const T & a, const T & b, const Ts & ... rest) {
-    return max(a >= b ? a : b, rest...);
+    return max(a > b ? a : b, rest...);
 }
 
 template <typename T>
