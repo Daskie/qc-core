@@ -90,12 +90,8 @@ struct mat<T, 2, 2> {
 
     static constexpr nat t_m = 2, t_n = 2;
 
-    union {
-        struct {
-            T x1, y1;
-            T x2, y2;
-        };
-    };
+    T x1, y1;
+    T x2, y2;
 
     //--- constructors ---
 
@@ -203,13 +199,9 @@ struct mat<T, 3, 3> {
 
     static constexpr nat t_m = 3, t_n = 3;
 
-    union {
-        struct {
-            T x1, y1, z1;
-            T x2, y2, z2;
-            T x3, y3, z3;
-        };
-    };
+    T x1, y1, z1;
+    T x2, y2, z2;
+    T x3, y3, z3;
 
     //--- constructors ---
 
@@ -319,14 +311,10 @@ struct mat<T, 4, 4> {
 
     static constexpr nat t_m = 4, t_n = 4;
 
-    union {
-        struct {
-            T x1, y1, z1, w1;
-            T x2, y2, z2, w2;
-            T x3, y3, z3, w3;
-            T x4, y4, z4, w4;
-        };
-    };
+    T x1, y1, z1, w1;
+    T x2, y2, z2, w2;
+    T x3, y3, z3, w3;
+    T x4, y4, z4, w4;
 
     //--- constructors ---
 
