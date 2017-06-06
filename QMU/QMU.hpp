@@ -69,6 +69,18 @@ using enable_if_integral_t = std::enable_if_t<std::is_integral<T>::value, int>;
 
 
 
+// 9 digits to uniquely identify float, 17 digits to uniquely identify double
+
+template <typename T, enable_if_floating_t<T> = 0> constexpr T pi() { return static_cast<T>(3.1415926535897932); }
+
+template <typename T, enable_if_floating_t<T> = 0> constexpr T e() { return static_cast<T>(2.7182818284590452); }
+
+template <typename T, enable_if_floating_t<T> = 0> constexpr T phi() { return static_cast<T>(1.6180339887498948); }
+
+template <typename T, nat t_v, enable_if_floating_t<T> = 0> constexpr T sqrt() { return std::sqrt(static_cast<T>(t_v)); }
+
+
+
 template <typename T>
 constexpr const T & min(const T & a, const T & b) {
     return a < b ? a : b;
@@ -214,6 +226,16 @@ inline T lowBit(T v) {
 template <typename T, enable_if_floating_t<T> = 0>
 inline T mix(T v1, T v2, T t) {
     return (static_cast<T>(1) - t) * v1 + t * v2;
+}
+
+template <typename T, enable_if_floating_t<T> = 0>
+constexpr T radians(T degrees) {
+    return degrees * pi<T>() / static_cast<T>(180.0);
+}
+
+template <typename T, enable_if_floating_t<T> = 0>
+constexpr T degrees(T radians) {
+    return radians * static_cast<T>(180.0) / pi<T>();
 }
 
 

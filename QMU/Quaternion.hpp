@@ -375,7 +375,7 @@ inline std::ostream & operator<<(std::ostream & os, const quat<T> & q) {
 
 template <typename T>
 inline T magnitude(const quat<T> & q) {
-    return sqrt(q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w);
+    return std::sqrt(q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w);
 }
 
 template <typename T>

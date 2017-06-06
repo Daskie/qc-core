@@ -2249,7 +2249,7 @@ inline mat3<T> rotateZ(const T & theta) {
 
 template <typename T>
 inline mat3<T> rotate(const vec3<T> & axis, const T & sinTheta, const T & cosTheta) {
-    if (magnitude2(axis) == 0) { //can't rotate around 0 length fvector
+    if (zero(magnitude2(axis))) { //can't rotate around 0 length fvector
         return mat3<T>();
     }
 
@@ -2297,10 +2297,17 @@ inline mat2<T> align_n(const vec2<T> & v1, const vec2<T> & v2) {
 }
 template <typename T>
 inline mat3<T> align_n(const vec3<T> & v1, const vec3<T> & v2) {
-    vec3<T> c(cross(v1, v2));
     T d(dot(v1, v2));
+    if (equal(d, static_cast<T>(1))) { // already aligned, and would break rotation
+        return mat3<T>();
+    }
+    if (equal(d, static_cast<T>(-1))) { // opposite direction, pick arbitrary axis to rotate around
+        return rotate_n(orthogonal(v1), pi<T>());
+    }
 
-    return rotate(c, magnitude(c), d);
+    vec3<T> c(cross(v1, v2));
+    T m(magnitude(c));
+    return rotate_n(c * (static_cast<T>(1) / m), m, d);
 }
 
 template <typename T>
