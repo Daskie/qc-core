@@ -136,12 +136,29 @@ inline unsigned char trailingZeroes(u32 x) {
 }
 
 template <typename T, enable_if_floating_t<T> = 0>
-inline T rand(T min, T max) {
+inline T rand() {
     static std::mt19937 mt(static_cast<std::mt19937::result_type>(std::chrono::system_clock::now().time_since_epoch().count()));
     //static std::mt19937 mt(0);
     static std::uniform_real_distribution<T> dist(static_cast<T>(0.0), static_cast<T>(1.0));
 
-    return dist(mt) * (max - min) + min;
+    return dist(mt);
+}
+
+template <typename T, enable_if_floating_t<T> = 0>
+inline T rand(T min, T max) {
+    return rand<T>() * (max - min) + min;
+}
+
+template <typename T, enable_if_floating_t<T> = 0>
+inline T randCheap() {
+    constexpr T inv_max(static_cast<T>(1.0) / RAND_MAX);
+
+    return std::rand() * inv_max;
+}
+
+template <typename T, enable_if_floating_t<T> = 0>
+inline T randCheap(T min, T max) {
+    return randCheap<T>() * (max - min) + min;
 }
 
 constexpr unsigned char toByte(float x) {

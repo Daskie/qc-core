@@ -14,7 +14,7 @@ namespace qmu {
 
 template <typename T, enable_if_floating_t<T> = 0>
 inline vec2<T> polarToCartesian(const vec2<T> & v) {
-    return vec3<T>(
+    return vec2<T>(
         v.rad * std::cos(v.theta),
         v.rad * std::sin(v.theta)
     );
