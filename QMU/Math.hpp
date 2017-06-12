@@ -94,7 +94,7 @@ inline fvec3 cartesianToBarycentric(const fvec2 & v, const fvec2 & A, const fvec
 //the point's x and y components, along with thetaPerUnit, determine the distance in radians from the origin
 //the point's z component determines the radius
 inline fvec3 mapToSphere(const fvec3 & v, float thetaPerUnit) {
-    static const fmat2 perpMat = rotate(pi<float>() / 2.0f);
+    static const fmat2 perpMat = rotate(pi<float> / 2.0f);
 
     fvec2 perp = perpMat * fvec2(v);
     float theta = magnitude(fvec2(v)) * thetaPerUnit;

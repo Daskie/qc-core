@@ -503,6 +503,19 @@ void testTFunctionCompilation() {
     cross(v2, v2);
     cross(v3, v3);
 
+    parallel(v1, v1);
+    parallel(v2, v2);
+    parallel(v3, v3);
+    parallel(v4, v4);
+
+    orthogonal(v1, v1);
+    orthogonal(v2, v2);
+    orthogonal(v3, v3);
+    orthogonal(v4, v4);
+
+    ortho(v2);
+    ortho(v3);
+
     reflect(v2, v2);
     reflect(v3, v3);
 
@@ -514,9 +527,6 @@ void testTFunctionCompilation() {
     angle_n(v3, v3);
     angle(v4, v4);
     angle_n(v4, v4);
-
-    orthogonal(v2);
-    orthogonal(v3);
 
     min(v1);
     min(v2);

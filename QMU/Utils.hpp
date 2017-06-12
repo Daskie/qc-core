@@ -38,8 +38,8 @@ namespace qmu {
 // the auto business is so you can use one lvalue and one rvalue argument
 
 template <typename T>
-inline std::unique_ptr<T[]> make_unique_init(nat size, const T & val) {
-    std::unique_ptr<T[]> arr = std::make_unique<T[]>(size);
+inline std::unique_ptr<T []> make_unique_init(nat size, const T & val) {
+    std::unique_ptr<T []> arr = std::make_unique<T []>(size);
     for (nat i(0); i < size; ++i) {
         arr[i] = val;
     }
@@ -228,7 +228,7 @@ class TriGrid {
 
     const nat size_;
     const nat mapSize_;
-    const std::unique_ptr<T[]> map_;
+    const std::unique_ptr<T []> map_;
 
 };
 
@@ -274,7 +274,7 @@ class TriWeb {
     private:
 
     nat size_;
-    std::unique_ptr<TriGrid<T>[]> tris_;
+    std::unique_ptr<TriGrid<T> []> tris_;
 };
 
 

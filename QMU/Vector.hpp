@@ -845,6 +845,15 @@ T dot(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 template <typename T, nat t_n>
 vec<T, t_n> cross(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 
+template <typename T, nat t_n>
+bool parallel(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+
+template <typename T, nat t_n>
+bool orthogonal(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+
+template <typename T, nat t_n>
+vec<T, t_n> ortho(const vec<T, t_n> & v);
+
 template <typename T, nat t_n, enable_if_floating_t<T> = 0>
 vec<T, t_n> reflect(const vec<T, t_n> & v, const vec<T, t_n> & n);
 template <typename T, nat t_n, enable_if_floating_t<T> = 0>
@@ -854,9 +863,6 @@ template <typename T, nat t_n, enable_if_floating_t<T> = 0>
 T angle(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 template <typename T, nat t_n, enable_if_floating_t<T> = 0>
 T angle_n(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
-
-template <typename T, nat t_n>
-vec<T, t_n> orthogonal(const vec<T, t_n> & v);
 
 template <typename T, nat t_n>
 T min(const vec<T, t_n> & v);
@@ -2844,6 +2850,41 @@ inline vec3<T> cross(const vec3<T> & v1, const vec3<T> & v2) {
     return vec3<T>(v1.y * v2.z - v1.z * v2.y, v1.z * v2.x - v1.x * v2.z, v1.x * v2.y - v1.y * v2.x);
 }
 
+template <typename T, nat t_n>
+inline bool parallel(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
+    return equal(abs(dot(v1, v2)), static_cast<T>(1.0));
+}
+
+template <typename T, nat t_n>
+inline bool orthogonal(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
+    return zero(dot(v1, v2));
+}
+
+template <typename T>
+inline vec2<T> ortho(const vec2<T> & v) {
+    return vec2<T>(-v.y, v.x);
+}
+
+template <typename T>
+inline vec3<T> ortho(const vec3<T> & v) {
+    if (v.x < v.y) {
+        if (v.x < v.z) {
+            return vec3<T>(0, -v.z, v.y);
+        }
+        else {
+            return vec3<T>(-v.y, v.x, 0);
+        }
+    }
+    else {
+        if (v.y < v.z) {
+            return vec3<T>(v.z, 0, -v.x);
+        }
+        else {
+            return vec3<T>(-v.y, v.x, 0);
+        }
+    }
+}
+
 template <typename T, nat t_n, enable_if_floating_t<T>>
 inline vec<T, t_n> reflect(const vec<T, t_n> & v, const vec<T, t_n> & n) {
     return reflect_n(v, normalize(n));
@@ -2861,31 +2902,6 @@ inline T angle(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
 template <typename T, nat t_n, enable_if_floating_t<T>>
 inline T angle_n(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
     return static_cast<T>(std::acos(dot(v1, v2)));
-}
-
-template <typename T>
-inline vec2<T> orthogonal(const vec2<T> & v) {
-    return vec2<T>(-v.y, v.x);
-}
-
-template <typename T>
-inline vec3<T> orthogonal(const vec3<T> & v) {
-    if (v.x < v.y) {
-        if (v.x < v.z) {
-            return vec3<T>(0, -v.z, v.y);
-        }
-        else {
-            return vec3<T>(-v.y, v.x, 0);
-        }
-    }
-    else {
-        if (v.y < v.z) {
-            return vec3<T>(v.z, 0, -v.x);
-        }
-        else {
-            return vec3<T>(-v.y, v.x, 0);
-        }
-    }
 }
 
 template <typename T>

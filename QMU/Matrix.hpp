@@ -2302,7 +2302,7 @@ inline mat3<T> align_n(const vec3<T> & v1, const vec3<T> & v2) {
         return mat3<T>();
     }
     if (equal(d, static_cast<T>(-1))) { // opposite direction, pick arbitrary axis to rotate around
-        return rotate_n(orthogonal(v1), pi<T>());
+        return rotate_n(ortho(v1), pi<T>);
     }
 
     vec3<T> c(cross(v1, v2));

@@ -30,16 +30,29 @@ using   u64 = uint64_t;
 
 
 
-namespace types {
+namespace ntypes {
 
-using qmu::nat; using qmu::unat;
+using qmu::nat;
+using qmu::unat;
+
+using qmu::operator""_n;
+using qmu::operator""_un;
+
+}
+
+namespace itypes {
+
 using qmu::s08; using qmu::u08;
 using qmu::s16; using qmu::u16;
 using qmu::s32; using qmu::u32;
 using qmu::s64; using qmu::u64;
 
-using qmu::operator""_n;
-using qmu::operator""_un;
+}
+
+namespace types {
+
+using namespace ntypes;
+using namespace itypes;
 
 }
 
@@ -54,7 +67,7 @@ template <> struct precision<64> { using stype = s64; using utype = u64; };
 template <nat t_p> using precision_st = typename precision<t_p>::stype;
 template <nat t_p> using precision_ut = typename precision<t_p>::utype;
 
-constexpr nat k_nat_p = sizeof(nat) * 8;
+constexpr nat k_nat_p = sizeof(nat);
 
 
 
@@ -69,15 +82,48 @@ using enable_if_integral_t = std::enable_if_t<std::is_integral<T>::value, int>;
 
 
 
-// 9 digits to uniquely identify float, 17 digits to uniquely identify double
+namespace detail {
 
-template <typename T, enable_if_floating_t<T> = 0> constexpr T pi() { return static_cast<T>(3.1415926535897932); }
+template <typename T, enable_if_floating_t<T> = 0>
+constexpr T sqrt_constexpr_helper(T v, T curr, T prev) {
+    if (curr == prev) {
+        return curr;
+    }
 
-template <typename T, enable_if_floating_t<T> = 0> constexpr T e() { return static_cast<T>(2.7182818284590452); }
+    return sqrt_constexpr_helper(v, static_cast<T>(0.5) * (curr + v / curr), curr);
+}
 
-template <typename T, enable_if_floating_t<T> = 0> constexpr T phi() { return static_cast<T>(1.6180339887498948); }
+template <typename T, enable_if_floating_t<T> = 0>
+constexpr T sqrt_constexpr(T v) {
+    if (v == static_cast<T>(0.0) || v == std::numeric_limits<T>::infinity()) {
+        return v;
+    }
+    if (v < static_cast<T>(0.0)) {
+        return std::numeric_limits<T>::quiet_NaN();
+    }
 
-template <typename T, nat t_v, enable_if_floating_t<T> = 0> constexpr T sqrt() { return std::sqrt(static_cast<T>(t_v)); }
+    return sqrt_constexpr_helper(v, v, static_cast<T>(0.0));
+}
+
+}
+
+
+
+// unique identification of floating point numbers
+//           | bits | digits
+// ----------+------+--------
+//      half |   16 |      5
+//    single |   32 |      9
+//    double |   64 |     17
+//  extended |   80 |     21
+//      quad |  128 |     36
+
+template <typename T, enable_if_floating_t<T> = 0> constexpr T  pi = static_cast<T>(3.14159265358979323846264338327950288L);
+template <typename T, enable_if_floating_t<T> = 0> constexpr T   e = static_cast<T>(2.71828182845904523536028747135266250L);
+template <typename T, enable_if_floating_t<T> = 0> constexpr T phi = static_cast<T>(1.61803398874989484820458683436563812L);
+
+template <typename T, nat t_v, enable_if_floating_t<T> = 0> constexpr T sqrt = detail::sqrt_constexpr(static_cast<T>(t_v));
+template <typename T, enable_if_floating_t<T> = 0> constexpr T infinity = std::numeric_limits<T>::infinity();
 
 
 
@@ -106,24 +152,24 @@ constexpr T clamp(const T & v, const T & min, const T & max) {
     return qmu::min(qmu::max(v, min), max);
 }
 
-template <typename T, std::enable_if_t<!std::is_unsigned<T>::value, int> = 0>
-constexpr T abs(const T & v) {
+template <typename T, std::enable_if_t<std::is_signed<T>::value, int> = 0>
+constexpr T abs(T v) {
     return v < 0 ? -v : v;
 }
 
 template <typename T, std::enable_if_t<std::is_unsigned<T>::value, int> = 0>
-constexpr T abs(const T & v) {
+constexpr T abs(T v) {
     return v;
 }
 
 template <typename T, enable_if_floating_t<T> = 0>
-constexpr bool zero(const T & v, const T & e = std::numeric_limits<T>::min()) {
+constexpr bool zero(T v, T e = std::numeric_limits<T>::min()) {
     return abs(v) < e;
 }
 
-template <typename T, std::enable_if_t<!std::is_floating_point<T>::value, int> = 0>
-constexpr bool zero(const T & v) {
-    return v == 0;
+template <typename T, enable_if_integral_t<T> = 0>
+constexpr bool zero(T v) {
+    return v == static_cast<T>(0);
 }
 
 template <typename T, enable_if_floating_t<T> = 0>
@@ -131,11 +177,25 @@ constexpr bool equal(const T & v1, const T & v2, const T & e = std::numeric_limi
     return zero(v1 - v2, e);
 }
 
-template <typename T, std::enable_if_t<!std::is_floating_point<T>::value, int> = 0>
+template <typename T, enable_if_integral_t<T> = 0>
+constexpr bool equal(const T & v1, const T & v2, const T & e = std::numeric_limits<T>::min()) {
+    return v1 == v2;
+}
+
+template <typename T, enable_if_integral_t<T> = 0>
 constexpr bool zero(const T & v1, const T & v2) {
     return zero(v1 - v2);
 }
 
+template <typename T, std::enable_if_t<std::is_signed<T>::value, int> = 0>
+constexpr T sign(T v) {
+    return static_cast<T>(static_cast<T>(0) < v) - static_cast<T>(v < static_cast<T>(0));
+}
+
+template <typename T, std::enable_if_t<std::is_unsigned<T>::value, int> = 0>
+constexpr T sign(T v) {
+    return static_cast<T>(v > static_cast<T>(0));
+}
 
 template <typename T, std::enable_if_t<std::is_integral<T>::value && sizeof(T) == 1, int> = 0>
 inline match_sign_t<nat, T> log2(T x) {
@@ -201,6 +261,19 @@ inline T ceil2(T v) {
     return floor2(v * 2 - 1);
 }
 
+template <typename T, enable_if_integral_t<T> = 0>
+inline T highBit(T v) {
+    using UT = std::make_unsigned_t<T>;
+    constexpr UT mask(static_cast<UT>(1) << (sizeof(T) * 8 - 1));
+
+    return static_cast<T>(static_cast<UT>(v) & mask);
+}
+
+template <typename T, enable_if_integral_t<T> = 0>
+inline T lowBit(T v) {
+    return v & static_cast<T>(1);
+}
+
 template <typename T, enable_if_floating_t<T> = 0>
 inline nat trunc(T v) {
     return static_cast<nat>(v);
@@ -211,18 +284,6 @@ inline T fract(T v) {
     return v - static_cast<T>(trunc(v));
 }
 
-template <typename T, enable_if_integral_t<T> = 0>
-inline T highBit(T v) {
-    using UT = std::make_unsigned_t<T>;
-    constexpr UT mask(static_cast<UT>(1 << (sizeof(v) * 8 - 1)));
-    return static_cast<T>(static_cast<UT>(v) & mask);
-}
-
-template <typename T, enable_if_integral_t<T> = 0>
-inline T lowBit(T v) {
-    return v & static_cast<T>(1);
-}
-
 template <typename T, enable_if_floating_t<T> = 0>
 inline T mix(T v1, T v2, T t) {
     return (static_cast<T>(1) - t) * v1 + t * v2;
@@ -230,12 +291,12 @@ inline T mix(T v1, T v2, T t) {
 
 template <typename T, enable_if_floating_t<T> = 0>
 constexpr T radians(T degrees) {
-    return degrees * pi<T>() / static_cast<T>(180.0);
+    return degrees * pi<T> / static_cast<T>(180.0);
 }
 
 template <typename T, enable_if_floating_t<T> = 0>
 constexpr T degrees(T radians) {
-    return radians * static_cast<T>(180.0) / pi<T>();
+    return radians * static_cast<T>(180.0) / pi<T>;
 }
 
 
