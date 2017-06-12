@@ -152,19 +152,9 @@ constexpr T clamp(const T & v, const T & min, const T & max) {
     return qmu::min(qmu::max(v, min), max);
 }
 
-template <typename T, std::enable_if_t<std::is_signed<T>::value, int> = 0>
-constexpr T abs(T v) {
-    return v < 0 ? -v : v;
-}
-
-template <typename T, std::enable_if_t<std::is_unsigned<T>::value, int> = 0>
-constexpr T abs(T v) {
-    return v;
-}
-
 template <typename T, enable_if_floating_t<T> = 0>
 constexpr bool zero(T v, T e = std::numeric_limits<T>::min()) {
-    return abs(v) < e;
+    return std::abs(v) < e;
 }
 
 template <typename T, enable_if_integral_t<T> = 0>

@@ -2852,7 +2852,7 @@ inline vec3<T> cross(const vec3<T> & v1, const vec3<T> & v2) {
 
 template <typename T, nat t_n>
 inline bool parallel(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
-    return equal(abs(dot(v1, v2)), static_cast<T>(1.0));
+    return equal(std::abs(dot(v1, v2)), static_cast<T>(1.0));
 }
 
 template <typename T, nat t_n>
@@ -2866,21 +2866,21 @@ inline vec2<T> ortho(const vec2<T> & v) {
 }
 
 template <typename T>
-inline vec3<T> ortho(const vec3<T> & v) {
-    if (v.x < v.y) {
-        if (v.x < v.z) {
-            return vec3<T>(0, -v.z, v.y);
+inline vec3<T> ortho(const vec3<T> & v) {    
+    if (std::abs(v.x) < std::abs(v.y)) {
+        if (std::abs(v.x) <= std::abs(v.z)) {   // x is smallest
+            return vec3<T>(0, -v.z, v.y);       // rotate around x
         }
-        else {
-            return vec3<T>(-v.y, v.x, 0);
+        else {                                  // z is smallest
+            return vec3<T>(-v.y, v.x, 0);       // rotate around z
         }
     }
     else {
-        if (v.y < v.z) {
-            return vec3<T>(v.z, 0, -v.x);
+        if (std::abs(v.y) < std::abs(v.z)) {    // y is smallest
+            return vec3<T>(v.z, 0, -v.x);       // rotate around y
         }
-        else {
-            return vec3<T>(-v.y, v.x, 0);
+        else {                                  // z is smallest
+            return vec3<T>(-v.y, v.x, 0);       // rotate around z
         }
     }
 }

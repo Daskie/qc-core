@@ -66,8 +66,6 @@ void testFunctionsT() {
 
     clamp(v, v, v);
 
-    abs(v);
-
     zero(v);
 
     equal(v, v);
