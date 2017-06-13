@@ -132,18 +132,18 @@ constexpr const T & min(const T & a, const T & b) {
     return a < b ? a : b;
 }
 
+template <typename T, typename... Ts>
+constexpr const T & min(const T & a, const T & b, const Ts &... rest) {
+    return min(a < b ? a : b, rest...);
+}
+
 template <typename T>
 constexpr const T & max(const T & a, const T & b) {
     return a > b ? a : b;
 }
 
 template <typename T, typename... Ts>
-constexpr const T & min(const T & a, const T & b, const Ts & ... rest) {
-    return min(a < b ? a : b, rest...);
-}
-
-template <typename T, typename... Ts>
-constexpr const T & max(const T & a, const T & b, const Ts & ... rest) {
+constexpr const T & max(const T & a, const T & b, const Ts &... rest) {
     return max(a > b ? a : b, rest...);
 }
 
@@ -152,9 +152,19 @@ constexpr T clamp(const T & v, const T & min, const T & max) {
     return qmu::min(qmu::max(v, min), max);
 }
 
+template <typename T, std::enable_if_t<std::is_signed<T>::value, int> = 0>
+constexpr T abs(T v) {
+    return v < static_cast<T>(0) ? -v : v; 
+}
+
+template <typename T, std::enable_if_t<std::is_unsigned<T>::value, int> = 0>
+constexpr T abs(T v) {
+    return v; 
+}
+
 template <typename T, enable_if_floating_t<T> = 0>
 constexpr bool zero(T v, T e = std::numeric_limits<T>::min()) {
-    return std::abs(v) < e;
+    return abs(v) < e;
 }
 
 template <typename T, enable_if_integral_t<T> = 0>
@@ -163,13 +173,18 @@ constexpr bool zero(T v) {
 }
 
 template <typename T, enable_if_floating_t<T> = 0>
-constexpr bool equal(const T & v1, const T & v2, const T & e = std::numeric_limits<T>::min()) {
-    return zero(v1 - v2, e);
+constexpr bool equal(T v1, T v2) {
+    return zero(v1 - v2, std::numeric_limits<T>::min());
 }
 
-template <typename T, enable_if_integral_t<T> = 0>
-constexpr bool equal(const T & v1, const T & v2, const T & e = std::numeric_limits<T>::min()) {
+template <typename T, std::enable_if_t<!std::is_floating_point<T>::value, int> = 0>
+constexpr bool equal(const T & v1, const T & v2) {
     return v1 == v2;
+}
+
+template <typename T, typename... Ts>
+constexpr bool equal(const T & v1, const T & v2, const Ts &... rest) {
+    return equal(v1, v2) && equal(v2, rest...);
 }
 
 template <typename T, enable_if_integral_t<T> = 0>
@@ -188,7 +203,7 @@ constexpr T sign(T v) {
 }
 
 template <typename T, std::enable_if_t<std::is_integral<T>::value && sizeof(T) == 1, int> = 0>
-inline match_sign_t<nat, T> log2(T x) {
+constexpr match_sign_t<nat, T> log2(T x) {
     match_sign_t<nat, T> log(0);
     if (x & 0xF0) { x >>=  4; log +=  4; }
     if (x & 0x0C) { x >>=  2; log +=  2; }
@@ -197,7 +212,7 @@ inline match_sign_t<nat, T> log2(T x) {
 }
 
 template <typename T, std::enable_if_t<std::is_integral<T>::value && sizeof(T) == 2, int> = 0>
-inline match_sign_t<nat, T> log2(T x) {
+constexpr match_sign_t<nat, T> log2(T x) {
     match_sign_t<nat, T> log(0);
     if (x & 0xFF00) { x >>=  8; log +=  8; }
     if (x & 0x00F0) { x >>=  4; log +=  4; }
@@ -207,7 +222,7 @@ inline match_sign_t<nat, T> log2(T x) {
 }
 
 template <typename T, std::enable_if_t<std::is_integral<T>::value && sizeof(T) == 4, int> = 0>
-inline match_sign_t<nat, T> log2(T x) {
+constexpr match_sign_t<nat, T> log2(T x) {
     match_sign_t<nat, T> log(0);
     if (x & 0xFFFF0000) { x >>= 16; log += 16; }
     if (x & 0x0000FF00) { x >>=  8; log +=  8; }
@@ -218,7 +233,7 @@ inline match_sign_t<nat, T> log2(T x) {
 }
 
 template <typename T, std::enable_if_t<std::is_integral<T>::value && sizeof(T) == 8, int> = 0>
-inline match_sign_t<nat, T> log2(T x) {
+constexpr match_sign_t<nat, T> log2(T x) {
     match_sign_t<nat, T> log(0);
     if (x & 0xFFFFFFFF00000000) { x >>= 32; log += 32; }
     if (x & 0x00000000FFFF0000) { x >>= 16; log += 16; }
@@ -230,7 +245,7 @@ inline match_sign_t<nat, T> log2(T x) {
 }
 
 template <typename T, enable_if_floating_t<T> = 0>
-inline T log2(T v) {
+constexpr T log2(T v) {
     return std::log2(v);
 }
 
@@ -240,19 +255,19 @@ constexpr bool isPow2(T v) {
 }
 
 template <typename T, enable_if_integral_t<T> = 0>
-inline T floor2(T v) {
+constexpr T floor2(T v) {
     if (v == 0) return 0;
     return T(1) << log2(v);
 }
 
 template <typename T, enable_if_integral_t<T> = 0>
-inline T ceil2(T v) {
+constexpr T ceil2(T v) {
     if (v == 0) return 0;
     return floor2(v * 2 - 1);
 }
 
 template <typename T, enable_if_integral_t<T> = 0>
-inline T highBit(T v) {
+constexpr T highBit(T v) {
     using UT = std::make_unsigned_t<T>;
     constexpr UT mask(static_cast<UT>(1) << (sizeof(T) * 8 - 1));
 
@@ -260,23 +275,23 @@ inline T highBit(T v) {
 }
 
 template <typename T, enable_if_integral_t<T> = 0>
-inline T lowBit(T v) {
+constexpr T lowBit(T v) {
     return v & static_cast<T>(1);
 }
 
 template <typename T, enable_if_floating_t<T> = 0>
-inline nat trunc(T v) {
+constexpr nat trunc(T v) {
     return static_cast<nat>(v);
 }
 
 template <typename T, enable_if_floating_t<T> = 0>
-inline T fract(T v) {
+constexpr T fract(T v) {
     return v - static_cast<T>(trunc(v));
 }
 
 template <typename T, enable_if_floating_t<T> = 0>
-inline T mix(T v1, T v2, T t) {
-    return (static_cast<T>(1) - t) * v1 + t * v2;
+constexpr T mix(T v1, T v2, T t) {
+    return (static_cast<T>(1.0) - t) * v1 + t * v2;
 }
 
 template <typename T, enable_if_floating_t<T> = 0>

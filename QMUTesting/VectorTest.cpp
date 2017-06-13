@@ -13,7 +13,7 @@ namespace {
 
 
 template <typename T>
-void testTCompilation() {
+void compileClassesT() {
     T v;
     vec1<T> v1;
     vec2<T> v2;
@@ -36,7 +36,7 @@ void testTCompilation() {
     vec1<T> v1_6(v3);
     vec1<T> v1_7(v4);
     
-    // assignment operators
+    // assignment
     v1 = v1;
     v1 = std::move(v1);
     v1 = v;
@@ -44,9 +44,10 @@ void testTCompilation() {
     v1 = v3;
     v1 = v4;
 
-    // access operators
+    // access
     v1[0];
-    static_cast<const vec1<T>>(v1)[0];
+
+    v1.at<0>();
 
     // other
     v1.toString();
@@ -67,7 +68,7 @@ void testTCompilation() {
     vec2<T> v2_10(v, v1);
     vec2<T> v2_11(v1, v1);
 
-    // assignment operators
+    // assignment
     v2 = v2;
     v2 = std::move(v2);
     v2 = v;
@@ -75,9 +76,11 @@ void testTCompilation() {
     v2 = v3;
     v2 = v4;
 
-    // access operators
+    // access
     v2[0];
-    static_cast<const vec2<T>>(v2)[0];
+
+    v2.at<0>();
+    v2.at<1>();
 
     // other
     v2.toString();
@@ -106,7 +109,7 @@ void testTCompilation() {
     vec3<T> v3_18(v, v2);
     vec3<T> v3_19(v1, v2);
 
-    // assignment operators
+    // assignment
     v3 = v3;
     v3 = std::move(v3);
     v3 = v;
@@ -114,9 +117,12 @@ void testTCompilation() {
     v3 = v2;
     v3 = v4;
 
-    // access operators
+    // access
     v3[0];
-    static_cast<const vec3<T>>(v3)[0];
+
+    v3.at<0>();
+    v3.at<1>();
+    v3.at<2>();
 
     // other
     v3.toString();
@@ -165,7 +171,7 @@ void testTCompilation() {
     vec4<T> v4_38(v, v3);
     vec4<T> v4_39(v1, v3);
 
-    // assignment operators
+    // assignment
     v4 = v4;
     v4 = std::move(v4);
     v4 = v;
@@ -173,9 +179,13 @@ void testTCompilation() {
     v4 = v2;
     v4 = v3;
 
-    // access operators
+    // access
     v4[0];
-    static_cast<const vec4<T>>(v4)[0];
+
+    v4.at<0>();
+    v4.at<1>();
+    v4.at<2>();
+    v4.at<3>();
 
     // other
     v4.toString();
@@ -245,8 +255,195 @@ void testTCompilation() {
     s4.toString();
 }
 
+void compileClasses() {
+    compileClassesT<      float>();
+    compileClassesT<     double>();
+    compileClassesT<long double>();
+    compileClassesT<       char>();
+    compileClassesT<      short>();
+    compileClassesT<        int>();
+    compileClassesT<       long>();
+    compileClassesT<  long long>();
+}
+
 template <typename T>
-void testTFunctionCompilation() {
+constexpr void compileClassesConstexprT() {
+    constexpr T v(static_cast<T>(0));
+    constexpr vec1<T> v1;
+    constexpr vec2<T> v2;
+    constexpr vec3<T> v3;
+    constexpr vec4<T> v4;
+    constexpr span1<T> s1;
+    constexpr span2<T> s2;
+    constexpr span3<T> s3;
+    constexpr span4<T> s4;
+
+    //--------------------------------------------------------------------------
+    // Vec1
+    
+    // constructors
+    constexpr vec1<T> v1_1;
+    constexpr vec1<T> v1_2(v1);
+    constexpr vec1<T> v1_3(std::move(v1));
+    constexpr vec1<T> v1_4(v);
+    constexpr vec1<T> v1_5(v2);
+    constexpr vec1<T> v1_6(v3);
+    constexpr vec1<T> v1_7(v4);
+
+    // access
+    static_assert(v1.at<0>() || true, "");
+
+    //--------------------------------------------------------------------------
+    // Vec2
+
+    // constructors
+    constexpr vec2<T> v2_01;
+    constexpr vec2<T> v2_02(v2);
+    constexpr vec2<T> v2_03(std::move(v2));
+    constexpr vec2<T> v2_04(v);
+    constexpr vec2<T> v2_05(v1);
+    constexpr vec2<T> v2_06(v3);
+    constexpr vec2<T> v2_07(v4);
+    constexpr vec2<T> v2_08(v, v);
+    constexpr vec2<T> v2_09(v1, v);
+    constexpr vec2<T> v2_10(v, v1);
+    constexpr vec2<T> v2_11(v1, v1);
+
+    // access
+    v2.at<0>();
+    v2.at<1>();
+
+    //--------------------------------------------------------------------------
+    // Vec3
+
+    // constructors
+    constexpr vec3<T> v3_01;
+    constexpr vec3<T> v3_02(v3);
+    constexpr vec3<T> v3_03(std::move(v3));
+    constexpr vec3<T> v3_04(v);
+    constexpr vec3<T> v3_05(v1);
+    constexpr vec3<T> v3_06(v2);
+    constexpr vec3<T> v3_07(v4);
+    constexpr vec3<T> v3_08(v, v, v);
+    constexpr vec3<T> v3_09(v1, v, v);
+    constexpr vec3<T> v3_10(v, v1, v);
+    constexpr vec3<T> v3_11(v, v, v1);
+    constexpr vec3<T> v3_12(v1, v1, v);
+    constexpr vec3<T> v3_13(v1, v, v1);
+    constexpr vec3<T> v3_14(v, v1, v1);
+    constexpr vec3<T> v3_15(v1, v1, v1);
+    constexpr vec3<T> v3_16(v2, v);
+    constexpr vec3<T> v3_17(v2, v1);
+    constexpr vec3<T> v3_18(v, v2);
+    constexpr vec3<T> v3_19(v1, v2);
+
+    // access
+    v3.at<0>();
+    v3.at<1>();
+    v3.at<2>();
+
+    //--------------------------------------------------------------------------
+    // Vec4
+
+    // constructors
+    constexpr vec4<T> v4_01;
+    constexpr vec4<T> v4_02(v4);
+    constexpr vec4<T> v4_03(std::move(v4));
+    constexpr vec4<T> v4_04(v);
+    constexpr vec4<T> v4_05(v1);
+    constexpr vec4<T> v4_06(v2);
+    constexpr vec4<T> v4_07(v3);
+    constexpr vec4<T> v4_08(v, v, v, v);
+    constexpr vec4<T> v4_09(v1, v, v, v);
+    constexpr vec4<T> v4_10(v, v1, v, v);
+    constexpr vec4<T> v4_11(v, v, v1, v);
+    constexpr vec4<T> v4_12(v, v, v, v1);
+    constexpr vec4<T> v4_13(v1, v1, v, v);
+    constexpr vec4<T> v4_14(v1, v, v1, v);
+    constexpr vec4<T> v4_15(v1, v, v, v1);
+    constexpr vec4<T> v4_16(v, v1, v, v1);
+    constexpr vec4<T> v4_17(v, v, v1, v1);
+    constexpr vec4<T> v4_18(v1, v1, v1, v);
+    constexpr vec4<T> v4_19(v1, v1, v, v1);
+    constexpr vec4<T> v4_20(v1, v, v1, v1);
+    constexpr vec4<T> v4_21(v, v1, v1, v1);
+    constexpr vec4<T> v4_22(v1, v1, v1, v1);
+    constexpr vec4<T> v4_23(v2, v, v);
+    constexpr vec4<T> v4_24(v2, v1, v);
+    constexpr vec4<T> v4_25(v2, v, v1);
+    constexpr vec4<T> v4_26(v2, v1, v1);
+    constexpr vec4<T> v4_27(v, v2, v);
+    constexpr vec4<T> v4_28(v1, v2, v);
+    constexpr vec4<T> v4_29(v, v2, v1);
+    constexpr vec4<T> v4_30(v1, v2, v1);
+    constexpr vec4<T> v4_31(v, v, v2);
+    constexpr vec4<T> v4_32(v1, v, v2);
+    constexpr vec4<T> v4_33(v, v1, v2);
+    constexpr vec4<T> v4_34(v1, v1, v2);
+    constexpr vec4<T> v4_35(v2, v2);
+    constexpr vec4<T> v4_36(v3, v);
+    constexpr vec4<T> v4_37(v3, v1);
+    constexpr vec4<T> v4_38(v, v3);
+    constexpr vec4<T> v4_39(v1, v3);
+
+    // access
+    v4.at<0>();
+    v4.at<1>();
+    v4.at<2>();
+    v4.at<3>();
+
+    //--------------------------------------------------------------------------
+    // Span1
+
+    // constructors
+    constexpr span<T, 1> s1_1;
+    constexpr span<T, 1> s1_2(s1);
+    constexpr span<T, 1> s1_3(std::move(s1));
+    constexpr span<T, 1> s1_7(v1, v1);
+
+    //--------------------------------------------------------------------------
+    // Span2
+
+    // constructors
+    constexpr span<T, 2> s2_1;
+    constexpr span<T, 2> s2_2(s2);
+    constexpr span<T, 2> s2_3(std::move(s2));
+    constexpr span<T, 2> s2_7(v2, v2);
+
+    //--------------------------------------------------------------------------
+    // Span3
+
+    // constructors
+    constexpr span<T, 3> s3_1;
+    constexpr span<T, 3> s3_2(s3);
+    constexpr span<T, 3> s3_3(std::move(s3));
+    constexpr span<T, 3> s3_7(v3, v3);
+
+    //--------------------------------------------------------------------------
+    // Span4
+
+    // constructors
+    constexpr span<T, 4> s4_1;
+    constexpr span<T, 4> s4_2(s4);
+    constexpr span<T, 4> s4_3(std::move(s4));
+    constexpr span<T, 4> s4_7(v4, v4);
+}
+
+constexpr bool compileClassesConstexpr() {
+    compileClassesConstexprT<      float>();
+    compileClassesConstexprT<     double>();
+    compileClassesConstexprT<long double>();
+    compileClassesConstexprT<       char>();
+    compileClassesConstexprT<      short>();
+    compileClassesConstexprT<        int>();
+    compileClassesConstexprT<       long>();
+    compileClassesConstexprT<  long long>();
+
+    return true;
+}
+
+template <typename T>
+void compileFunctionsT() {
     T v;
     vec1<T> v1;
     vec2<T> v2;
@@ -490,10 +687,10 @@ void testTFunctionCompilation() {
     magnitude2(v3);
     magnitude2(v4);
 
-    normalize(v1);
-    normalize(v2);
-    normalize(v3);
-    normalize(v4);
+    norm(v1);
+    norm(v2);
+    norm(v3);
+    norm(v4);
 
     dot(v1, v1);
     dot(v2, v2);
@@ -515,6 +712,9 @@ void testTFunctionCompilation() {
 
     ortho(v2);
     ortho(v3);
+
+    orthogonalize(v2, v2);
+    orthogonalize(v3, v3, v3);
 
     reflect(v2, v2);
     reflect(v3, v3);
@@ -548,6 +748,16 @@ void testTFunctionCompilation() {
     max(v3, v3);
     max(v4, v4);
 
+    min(v1, v1, v1, v1, v1);
+    min(v2, v2, v2, v2, v2);
+    min(v3, v3, v3, v3, v3);
+    min(v4, v4, v4, v4, v4);
+
+    max(v1, v1, v1, v1, v1);
+    max(v2, v2, v2, v2, v2);
+    max(v3, v3, v3, v3, v3);
+    max(v4, v4, v4, v4, v4);
+
     clamp(v1, v, v);
     clamp(v2, v, v);
     clamp(v3, v, v);
@@ -577,7 +787,9 @@ void testTFunctionCompilation() {
     toBound(s2);
     toBound(s3);
     toBound(s4);
+}
 
+void compileBoolFunctions() {
     bvec1 b1;
     bvec2 b2;
     bvec3 b3;
@@ -604,43 +816,325 @@ void testTFunctionCompilation() {
     not(b4);
 }
 
+void compileFunctions() {
+    compileFunctionsT<      float>();
+    compileFunctionsT<     double>();
+    compileFunctionsT<long double>();
+    compileBoolFunctions();
+}
+
+template <typename T>
+constexpr void compileFunctionsConstexprT() {
+    constexpr T v(static_cast<T>(1.0));
+    constexpr vec1<T> v1(static_cast<T>(1.0));
+    constexpr vec2<T> v2(static_cast<T>(1.0));
+    constexpr vec3<T> v3(static_cast<T>(1.0));
+    constexpr vec4<T> v4(static_cast<T>(1.0));
+    constexpr span1<T> s1(v1, v1);
+    constexpr span2<T> s2(v2, v2);
+    constexpr span3<T> s3(v3, v3);
+    constexpr span4<T> s4(v4, v4);
+
+    // arithmetic
+
+    +v1;
+    +v2;
+    +v3;
+    +v4;
+
+    -v1;
+    -v2;
+    -v3;
+    -v4;
+
+    v1 + v1;
+    v2 + v2;
+    v3 + v3;
+    v4 + v4;
+    v1 + v;
+    v2 + v;
+    v3 + v;
+    v4 + v;
+    v + v1;
+    v + v2;
+    v + v3;
+    v + v4;
+
+    v1 - v1;
+    v2 - v2;
+    v3 - v3;
+    v4 - v4;
+    v1 - v;
+    v2 - v;
+    v3 - v;
+    v4 - v;
+    v - v1;
+    v - v2;
+    v - v3;
+    v - v4;
+
+    v1 * v1;
+    v2 * v2;
+    v3 * v3;
+    v4 * v4;
+    v1 * v;
+    v2 * v;
+    v3 * v;
+    v4 * v;
+    v * v1;
+    v * v2;
+    v * v3;
+    v * v4;
+
+    v1 / vec1<T>(1);
+    v2 / vec2<T>(1);
+    v3 / vec3<T>(1);
+    v4 / vec4<T>(1);
+    v1 / T(1);
+    v2 / T(v);
+    v3 / T(v);
+    v4 / T(v);
+    v / vec1<T>(1);
+    v / vec2<T>(1);
+    v / vec3<T>(1);
+    v / vec4<T>(1);
+
+
+    // comparison
+
+    v1 == v1;
+    v2 == v2;
+    v3 == v3;
+    v4 == v4;
+    v1 == v;
+    v2 == v;
+    v3 == v;
+    v4 == v;
+    v == v1;
+    v == v2;
+    v == v3;
+    v == v4;
+    s1 == s1;
+    s2 == s2;
+    s3 == s3;
+    s4 == s4;
+
+    v1 != v1;
+    v2 != v2;
+    v3 != v3;
+    v4 != v4;
+    v1 != v;
+    v2 != v;
+    v3 != v;
+    v4 != v;
+    v != v1;
+    v != v2;
+    v != v3;
+    v != v4;
+    s1 != s1;
+    s2 != s2;
+    s3 != s3;
+    s4 != s4;
+
+    v1 < v1;
+    v2 < v2;
+    v3 < v3;
+    v4 < v4;
+    v1 < v;
+    v2 < v;
+    v3 < v;
+    v4 < v;
+    v < v1;
+    v < v2;
+    v < v3;
+    v < v4;
+
+    v1 > v1;
+    v2 > v2;
+    v3 > v3;
+    v4 > v4;
+    v1 > v;
+    v2 > v;
+    v3 > v;
+    v4 > v;
+    v > v1;
+    v > v2;
+    v > v3;
+    v > v4;
+
+    v1 <= v1;
+    v2 <= v2;
+    v3 <= v3;
+    v4 <= v4;
+    v1 <= v;
+    v2 <= v;
+    v3 <= v;
+    v4 <= v;
+    v <= v1;
+    v <= v2;
+    v <= v3;
+    v <= v4;
+
+    v1 >= v1;
+    v2 >= v2;
+    v3 >= v3;
+    v4 >= v4;
+    v1 >= v;
+    v2 >= v;
+    v3 >= v;
+    v4 >= v;
+    v >= v1;
+    v >= v2;
+    v >= v3;
+    v >= v4;
+
+    // uncategorized
+
+    dot(v1, v1);
+    dot(v2, v2);
+    dot(v3, v3);
+    dot(v4, v4);
+
+    cross(v2, v2);
+    cross(v3, v3);
+
+    parallel(v1, v1);
+    parallel(v2, v2);
+    parallel(v3, v3);
+    parallel(v4, v4);
+
+    orthogonal(v1, v1);
+    orthogonal(v2, v2);
+    orthogonal(v3, v3);
+    orthogonal(v4, v4);
+
+    ortho(v2);
+    ortho(v3);
+
+    min(v1);
+    min(v2);
+    min(v3);
+    min(v4);
+    
+    max(v1);
+    max(v2);
+    max(v3);
+    max(v4);
+
+    min(v1, v1);
+    min(v2, v2);
+    min(v3, v3);
+    min(v4, v4);
+
+    max(v1, v1);
+    max(v2, v2);
+    max(v3, v3);
+    max(v4, v4);
+
+    min(v1, v1, v1, v1, v1);
+    min(v2, v2, v2, v2, v2);
+    min(v3, v3, v3, v3, v3);
+    min(v4, v4, v4, v4, v4);
+
+    max(v1, v1, v1, v1, v1);
+    max(v2, v2, v2, v2, v2);
+    max(v3, v3, v3, v3, v3);
+    max(v4, v4, v4, v4, v4);
+
+    clamp(v1, v, v);
+    clamp(v2, v, v);
+    clamp(v3, v, v);
+    clamp(v4, v, v);
+
+    clamp(v1, v1, v1);
+    clamp(v2, v2, v2);
+    clamp(v3, v3, v3);
+    clamp(v4, v4, v4);
+
+    mix(v1, v1, v);
+    mix(v2, v2, v);
+    mix(v3, v3, v);
+    mix(v4, v4, v);
+
+    intersect(s1, s1);
+    intersect(s2, s2);
+    intersect(s3, s3);
+    intersect(s4, s4);
+
+    toSpan(s1);
+    toSpan(s2);
+    toSpan(s3);
+    toSpan(s4);
+    
+    toBound(s1);
+    toBound(s2);
+    toBound(s3);
+    toBound(s4);
+}
+
+constexpr void compileBoolFunctionsConstexpr() {
+    bvec1 b1;
+    bvec2 b2;
+    bvec3 b3;
+    bvec4 b4;
+
+    and(b1);
+    and(b2);
+    and(b3);
+    and(b4);
+
+    or(b1);
+    or(b2);
+    or(b3);
+    or(b4);
+
+    xor(b1);
+    xor(b2);
+    xor(b3);
+    xor(b4);
+
+    not(b1);
+    not(b2);
+    not(b3);
+    not(b4);
+}
+
+constexpr bool compileFunctionsConstexpr() {
+    compileFunctionsConstexprT<      float>();
+    compileFunctionsConstexprT<     double>();
+    compileFunctionsConstexprT<long double>();
+    compileBoolFunctionsConstexpr();
+
+    return true;
+}
+
 template <typename T, nat t_n>
-void testTNProperties() {
+void testPropertiesTN() {
     static_assert(std::is_standard_layout<vec<T, t_n>>::value, "");
     static_assert(sizeof(vec<T, t_n>) == t_n * sizeof(T), "");
 }
 
 template <typename T>
-void testTProperties() {
-    testTNProperties<T, 1>();
-    testTNProperties<T, 2>();
-    testTNProperties<T, 3>();
-    testTNProperties<T, 4>();
+void testPropertiesT() {
+    testPropertiesTN<T, 1>();
+    testPropertiesTN<T, 2>();
+    testPropertiesTN<T, 3>();
+    testPropertiesTN<T, 4>();
 }
 
-void testCompilation() {
-    testTCompilation<    float>();
-    testTCompilation<   double>();
-    testTCompilation<     char>();
-    testTCompilation<    short>();
-    testTCompilation<      int>();
-    testTCompilation<     long>();
-    testTCompilation<long long>();
-
-    testTFunctionCompilation< float>();
-    testTFunctionCompilation<double>();
-
-    testTProperties<    float>();
-    testTProperties<   double>();
-    testTProperties<     char>();
-    testTProperties<    short>();
-    testTProperties<      int>();
-    testTProperties<     long>();
-    testTProperties<long long>();
+void testProperties() {
+    testPropertiesT<      float>();
+    testPropertiesT<     double>();
+    testPropertiesT<long double>();
+    testPropertiesT<       char>();
+    testPropertiesT<      short>();
+    testPropertiesT<        int>();
+    testPropertiesT<       long>();
+    testPropertiesT<  long long>();
 }
 
 template <typename T1, typename T2, nat t_n>
-void castTTNCasts() {
+void castCastsTTN() {
     static_cast<vec<T2, t_n>>(vec1<T1>());
     static_cast<vec<T2, t_n>>(vec2<T1>());
     static_cast<vec<T2, t_n>>(vec3<T1>());
@@ -653,35 +1147,37 @@ void castTTNCasts() {
 }
 
 template <typename T1, typename T2>
-void testTTCasts() {
-    castTTNCasts<T1, T2, 1>();
-    castTTNCasts<T1, T2, 2>();
-    castTTNCasts<T1, T2, 3>();
-    castTTNCasts<T1, T2, 4>();
+void compileCastsTT() {
+    castCastsTTN<T1, T2, 1>();
+    castCastsTTN<T1, T2, 2>();
+    castCastsTTN<T1, T2, 3>();
+    castCastsTTN<T1, T2, 4>();
 }
 
 template <typename T>
-void testTCasts() {
-    testTTCasts<T,     float>();
-    testTTCasts<T,    double>();
-    testTTCasts<T,      char>();
-    testTTCasts<T,     short>();
-    testTTCasts<T,       int>();
-    testTTCasts<T,      long>();
-    testTTCasts<T, long long>();
+void compileCastsT() {
+    compileCastsTT<T,       float>();
+    compileCastsTT<T,      double>();
+    compileCastsTT<T, long double>();
+    compileCastsTT<T,        char>();
+    compileCastsTT<T,       short>();
+    compileCastsTT<T,         int>();
+    compileCastsTT<T,        long>();
+    compileCastsTT<T,   long long>();
 }
 
-void testCasts() {
-    testTCasts<    float>();
-    testTCasts<   double>();
-    testTCasts<     char>();
-    testTCasts<    short>();
-    testTCasts<      int>();
-    testTCasts<     long>();
-    testTCasts<long long>();
+void compileCasts() {
+    compileCastsT<      float>();
+    compileCastsT<     double>();
+    compileCastsT<long double>();
+    compileCastsT<       char>();
+    compileCastsT<      short>();
+    compileCastsT<        int>();
+    compileCastsT<       long>();
+    compileCastsT<  long long>();
 }
 
-void testMembers() {
+void compileMembers() {
     int v;
     vec1<int> v1;
     vec2<int> v2;
@@ -720,7 +1216,7 @@ void testMembers() {
     v4 = s4.loc; v4 = s4.size;
 }
 
-void testAxes() {
+void compileAxes() {
     fvec3 px(posX<float>);
     fvec3 nx(posX<float>);
     fvec3 py(posY<float>);
@@ -736,8 +1232,12 @@ void testAxes() {
 
 
 void testVector() {
-    testCompilation();
-    testCasts();
-    testMembers();
-    testAxes();
+    compileClasses();
+    static_assert(compileClassesConstexpr(), "");
+    compileFunctions();
+    static_assert(compileFunctionsConstexpr(), "");
+    testProperties();
+    compileCasts();
+    compileMembers();
+    compileAxes();
 }

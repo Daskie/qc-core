@@ -4,137 +4,224 @@
 
 
 
-using namespace qmu;
-
-
-
 namespace {
 
 
 
-void testTyping() {
-    nat nat_;   nat_;
-    unat unat_; unat_;
+void compileTyping() {
+    qmu::nat nat_;   nat_;
+    qmu::unat unat_; unat_;
 
-    0_n;
-    0_un;
+    qmu::operator""_n(0);
+    qmu::operator""_un(0);
 
-    s08 s08_; s08_;
-    u08 u08_; u08_;
-    s16 s16_; s16_;
-    u16 u16_; u16_;
-    s32 s32_; s32_;
-    u32 u32_; u32_;
-    s64 s64_; s64_;
-    u64 u64_; u64_;
+    qmu::s08 s08_; s08_;
+    qmu::u08 u08_; u08_;
+    qmu::s16 s16_; s16_;
+    qmu::u16 u16_; u16_;
+    qmu::s32 s32_; s32_;
+    qmu::u32 u32_; u32_;
+    qmu::s64 s64_; s64_;
+    qmu::u64 u64_; u64_;
 
-    precision< 8>::stype p8s_;  p8s_;
-    precision< 8>::utype p8u_;  p8u_;
-    precision<16>::stype p16s_; p16s_;
-    precision<16>::utype p16u_; p16u_;
-    precision<32>::stype p32s_; p32s_;
-    precision<32>::utype p32u_; p32u_;
-    precision<64>::stype p64s_; p64s_;
-    precision<64>::utype p64u_; p64u_;
+    qmu::precision< 8>::stype p8s_;  p8s_;
+    qmu::precision< 8>::utype p8u_;  p8u_;
+    qmu::precision<16>::stype p16s_; p16s_;
+    qmu::precision<16>::utype p16u_; p16u_;
+    qmu::precision<32>::stype p32s_; p32s_;
+    qmu::precision<32>::utype p32u_; p32u_;
+    qmu::precision<64>::stype p64s_; p64s_;
+    qmu::precision<64>::utype p64u_; p64u_;
 }
 
 template <typename T>
-void testConstantsT() {
-    pi<T>;
-    e<T>;
-    phi<T>;
+void compileConstantsT() {
+    qmu::pi<T>;
+    qmu::e<T>;
+    qmu::phi<T>;
     qmu::sqrt<T, 2>;
     qmu::sqrt<T, 3>;
-    infinity<T>;
+    qmu::infinity<T>;
 }
 
-void testConstants() {
-    testConstantsT<float>();
-    testConstantsT<double>();
-    testConstantsT<long double>();
+void compileConstants() {
+    compileConstantsT<float>();
+    compileConstantsT<double>();
+    compileConstantsT<long double>();
 }
 
 template <typename T>
-void testFunctionsT() {
+void compileFunctionsT() {
     T v(0);
 
-    min(v, v);
-    min(v, v, v);
+    qmu::min(v, v);
+    qmu::min(v, v, v);
 
-    max(v, v);
-    max(v, v, v);
+    qmu::max(v, v);
+    qmu::max(v, v, v);
 
-    clamp(v, v, v);
+    qmu::abs(v);
 
-    zero(v);
+    qmu::clamp(v, v, v);
 
-    equal(v, v);
+    qmu::zero(v);
 
-    sign(v);
+    qmu::equal(v, v);
+    qmu::equal(v, v, v);
+
+    qmu::sign(v);
 }
 
 template <typename T>
-void testFunctionsFT() {
+void compileFunctionsFT() {
     T v(0.0);
 
-    trunc(v);
+    qmu::trunc(v);
 
-    fract(v);
+    qmu::fract(v);
 
-    mix(v, v, v);
+    qmu::mix(v, v, v);
 
-    radians(v);
+    qmu::radians(v);
 
-    degrees(v);
+    qmu::degrees(v);
 }
 
 template <typename T>
-void testFunctionsIT() {
+void compileFunctionsIT() {
     T v(0);
 
     qmu::log2(v);
 
-    isPow2(v);
+    qmu::isPow2(v);
 
-    floor2(v);
+    qmu::floor2(v);
 
-    ceil2(v);
+    qmu::ceil2(v);
 
-    highBit(v);
+    qmu::highBit(v);
 
-    lowBit(v);
+    qmu::lowBit(v);
 }
 
-void testFunctions() {
-    testFunctionsT<float>();
-    testFunctionsT<double>();
-    testFunctionsT<long double>();
-    testFunctionsT<signed char>();
-    testFunctionsT<unsigned char>();
-    testFunctionsT<signed short>();
-    testFunctionsT<unsigned short>();
-    testFunctionsT<signed int>();
-    testFunctionsT<unsigned short>();
-    testFunctionsT<signed long>();
-    testFunctionsT<unsigned long>();
-    testFunctionsT<signed long long>();
-    testFunctionsT<signed long long>();
-    testFunctionsT<bool>();
+void compileFunctions() {
+    compileFunctionsT<float>();
+    compileFunctionsT<double>();
+    compileFunctionsT<long double>();
+    compileFunctionsT<signed char>();
+    compileFunctionsT<unsigned char>();
+    compileFunctionsT<signed short>();
+    compileFunctionsT<unsigned short>();
+    compileFunctionsT<signed int>();
+    compileFunctionsT<unsigned short>();
+    compileFunctionsT<signed long>();
+    compileFunctionsT<unsigned long>();
+    compileFunctionsT<signed long long>();
+    compileFunctionsT<signed long long>();
+    compileFunctionsT<bool>();
 
-    testFunctionsFT<float>();
-    testFunctionsFT<double>();
-    testFunctionsFT<long double>();
+    compileFunctionsFT<float>();
+    compileFunctionsFT<double>();
+    compileFunctionsFT<long double>();
     
-    testFunctionsIT<signed char>();
-    testFunctionsIT<unsigned char>();
-    testFunctionsIT<signed short>();
-    testFunctionsIT<unsigned short>();
-    testFunctionsIT<signed int>();
-    testFunctionsIT<unsigned short>();
-    testFunctionsIT<signed long>();
-    testFunctionsIT<unsigned long>();
-    testFunctionsIT<signed long long>();
-    testFunctionsIT<signed long long>();
+    compileFunctionsIT<signed char>();
+    compileFunctionsIT<unsigned char>();
+    compileFunctionsIT<signed short>();
+    compileFunctionsIT<unsigned short>();
+    compileFunctionsIT<signed int>();
+    compileFunctionsIT<unsigned short>();
+    compileFunctionsIT<signed long>();
+    compileFunctionsIT<unsigned long>();
+    compileFunctionsIT<signed long long>();
+    compileFunctionsIT<signed long long>();
+}
+
+template <typename T>
+constexpr void compileFunctionsConstexprT() {
+    constexpr T v(0);
+
+    qmu::min(v, v);
+    qmu::min(v, v, v);
+
+    qmu::max(v, v);
+    qmu::max(v, v, v);
+
+    qmu::abs(v);
+
+    qmu::clamp(v, v, v);
+
+    qmu::zero(v);
+
+    qmu::equal(v, v);
+    qmu::equal(v, v, v);
+
+    qmu::sign(v);
+}
+
+template <typename T>
+constexpr void compileFunctionsConstexprFT() {
+    constexpr T v(0.0);
+
+    qmu::trunc(v);
+
+    qmu::fract(v);
+
+    qmu::mix(v, v, v);
+
+    qmu::radians(v);
+
+    qmu::degrees(v);
+}
+
+template <typename T>
+constexpr void compileFunctionsConstexprIT() {
+    constexpr T v(0);
+
+    qmu::log2(v);
+
+    qmu::isPow2(v);
+
+    qmu::floor2(v);
+
+    qmu::ceil2(v);
+
+    qmu::highBit(v);
+
+    qmu::lowBit(v);
+}
+
+constexpr bool compileFunctionsConstexpr() {
+    compileFunctionsConstexprT<float>();
+    compileFunctionsConstexprT<double>();
+    compileFunctionsConstexprT<long double>();
+    compileFunctionsConstexprT<signed char>();
+    compileFunctionsConstexprT<unsigned char>();
+    compileFunctionsConstexprT<signed short>();
+    compileFunctionsConstexprT<unsigned short>();
+    compileFunctionsConstexprT<signed int>();
+    compileFunctionsConstexprT<unsigned short>();
+    compileFunctionsConstexprT<signed long>();
+    compileFunctionsConstexprT<unsigned long>();
+    compileFunctionsConstexprT<signed long long>();
+    compileFunctionsConstexprT<signed long long>();
+    compileFunctionsConstexprT<bool>();
+
+    compileFunctionsConstexprFT<float>();
+    compileFunctionsConstexprFT<double>();
+    compileFunctionsConstexprFT<long double>();
+    
+    compileFunctionsConstexprIT<signed char>();
+    compileFunctionsConstexprIT<unsigned char>();
+    compileFunctionsConstexprIT<signed short>();
+    compileFunctionsConstexprIT<unsigned short>();
+    compileFunctionsConstexprIT<signed int>();
+    compileFunctionsConstexprIT<unsigned short>();
+    compileFunctionsConstexprIT<signed long>();
+    compileFunctionsConstexprIT<unsigned long>();
+    compileFunctionsConstexprIT<signed long long>();
+    compileFunctionsConstexprIT<signed long long>();
+
+    return true;
 }
 
 
@@ -144,7 +231,8 @@ void testFunctions() {
 
 
 void testQMU() {
-    testTyping();
-    testConstants();
-    testFunctions();
+    compileTyping();
+    compileConstants();
+    compileFunctions();
+    static_assert(compileFunctionsConstexpr(), "");
 }

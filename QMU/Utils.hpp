@@ -338,7 +338,7 @@ inline vec3<T> hsl2rgb(const vec3<T> & hsl) {
     rgb[maxI] = static_cast<T>(1.0);
     T secondaryWeight((hsl.x * static_cast<T>(3.0) - temp) * static_cast<T>(2.0));
     nat midI((maxI + nat(secondaryWeight > 0 ? std::ceil(secondaryWeight) : std::floor(secondaryWeight)) + 3) % 3);
-    rgb[midI] = std::abs(secondaryWeight);
+    rgb[midI] = abs(secondaryWeight);
 
     // saturation
     temp = static_cast<T>(1.0) - hsl.y;

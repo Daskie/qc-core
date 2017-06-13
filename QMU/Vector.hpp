@@ -469,7 +469,7 @@ struct vec<T, 1> {
 
     constexpr explicit vec(const T & v);
 
-    //--- assignment operators ---
+    //--- assignment ---
 
     vec1<T> & operator=(const vec1<T> & v);
     vec1<T> & operator=(vec1<T> && v);
@@ -479,14 +479,19 @@ struct vec<T, 1> {
     vec1<T> & operator=(const vec3<T> & v);
     vec1<T> & operator=(const vec4<T> & v);
 
-    //--- access operators ---
+    //--- access ---
 
     T & operator[](nat i);
     const T & operator[](nat i) const;
 
+    template <nat t_i> T & at();
+    template <nat t_i> constexpr T at() const;
+
     //--- other ---
 
     std::string toString() const;
+
+    void test() const {}
 };
 
 
@@ -527,7 +532,7 @@ struct vec<T, 2> {
     constexpr vec(const       T & v1, const vec1<T> & v2);
     constexpr vec(const vec1<T> & v1, const vec1<T> & v2);
 
-    //--- assignment operators ---
+    //--- assignment ---
 
     vec2<T> & operator=(const vec2<T> & v);
     vec2<T> & operator=(vec2<T> && v);
@@ -537,10 +542,13 @@ struct vec<T, 2> {
     vec2<T> & operator=(const vec3<T> & v);
     vec2<T> & operator=(const vec4<T> & v);
 
-    //--- access operators ---
+    //--- access ---
 
     T & operator[](nat i);
     const T & operator[](nat i) const;
+
+    template <nat t_i> T & at();
+    template <nat t_i> constexpr T at() const;
 
     //--- other ---
 
@@ -595,7 +603,7 @@ struct vec<T, 3> {
     constexpr vec(const      T  & v1, const vec2<T> & v2);
     constexpr vec(const vec1<T> & v1, const vec2<T> & v2);
 
-    //--- assignment operators ---
+    //--- assignment ---
 
     vec3<T> & operator=(const vec3<T> & v);
     vec3<T> & operator=(vec3<T> && v);
@@ -605,10 +613,13 @@ struct vec<T, 3> {
     vec3<T> & operator=(const vec2<T> & v);
     vec3<T> & operator=(const vec4<T> & v);
 
-    //--- access operators ---
+    //--- access ---
 
     T & operator[](nat i);
     const T & operator[](nat i) const;
+
+    template <nat t_i> T & at();
+    template <nat t_i> constexpr T at() const;
 
     //--- other ---
 
@@ -682,7 +693,7 @@ struct vec<T, 4> {
     constexpr vec(const      T  & v1, const vec3<T> & v2);
     constexpr vec(const vec1<T> & v1, const vec3<T> & v2);
 
-    //--- assignment operators ---
+    //--- assignment ---
 
     vec4<T> & operator=(const vec4<T> & v);
     vec4<T> & operator=(vec4<T> && v);
@@ -692,10 +703,13 @@ struct vec<T, 4> {
     vec4<T> & operator=(const vec2<T> & v);
     vec4<T> & operator=(const vec3<T> & v);
 
-    //--- access operators ---
+    //--- access ---
     
     T & operator[](nat i);
     const T & operator[](nat i) const;
+
+    template <nat t_i> T & at();
+    template <nat t_i> constexpr T at() const;
 
     //--- other ---
 
@@ -731,7 +745,7 @@ struct span {
 
     constexpr span(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 
-    //--- assignment operators ---
+    //--- assignment ---
 
     span<T, t_n> & operator=(const span<T, t_n> & s);
     span<T, t_n> & operator=(span<T, t_n> && s);
@@ -745,12 +759,13 @@ struct span {
 };
 
 
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // VEC FUNCTIONS -------------------------------------------------------------------------------------------------------
 
 
 
-//--- arithmetic assignment operators ---
+//--- arithmetic assignment ---
 
 template <typename T, nat t_n> vec<T, t_n> & operator++(vec<T, t_n> & v);
 template <typename T, nat t_n> vec<T, t_n>   operator++(vec<T, t_n> & v, int);
@@ -772,55 +787,55 @@ template <typename T, nat t_n> vec<T, t_n> & operator/=(vec<T, t_n> & v1, const 
 
 //-- arithmetic operators
 
-template <typename T, nat t_n> vec<T, t_n> operator+(const vec<T, t_n> & v);
+template <typename T, nat t_n> vec<T, t_n> constexpr operator+(const vec<T, t_n> & v);
 
-template <typename T, nat t_n> vec<T, t_n> operator-(const vec<T, t_n> & v);
+template <typename T, nat t_n> vec<T, t_n> constexpr operator-(const vec<T, t_n> & v);
 
-template <typename T, nat t_n> vec<T, t_n> operator+(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
-template <typename T, nat t_n> vec<T, t_n> operator+(const vec<T, t_n> & v1, const           T & v2);
-template <typename T, nat t_n> vec<T, t_n> operator+(const           T & v1, const vec<T, t_n> & v2);
+template <typename T, nat t_n> vec<T, t_n> constexpr operator+(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, nat t_n> vec<T, t_n> constexpr operator+(const vec<T, t_n> & v1, const           T & v2);
+template <typename T, nat t_n> vec<T, t_n> constexpr operator+(const           T & v1, const vec<T, t_n> & v2);
 
-template <typename T, nat t_n> vec<T, t_n> operator-(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
-template <typename T, nat t_n> vec<T, t_n> operator-(const vec<T, t_n> & v1, const           T & v2);
-template <typename T, nat t_n> vec<T, t_n> operator-(const           T & v1, const vec<T, t_n> & v2);
+template <typename T, nat t_n> vec<T, t_n> constexpr operator-(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, nat t_n> vec<T, t_n> constexpr operator-(const vec<T, t_n> & v1, const           T & v2);
+template <typename T, nat t_n> vec<T, t_n> constexpr operator-(const           T & v1, const vec<T, t_n> & v2);
 
-template <typename T, nat t_n> vec<T, t_n> operator*(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
-template <typename T, nat t_n> vec<T, t_n> operator*(const vec<T, t_n> & v1, const           T & v2);
-template <typename T, nat t_n> vec<T, t_n> operator*(const           T & v1, const vec<T, t_n> & v2);
+template <typename T, nat t_n> vec<T, t_n> constexpr operator*(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, nat t_n> vec<T, t_n> constexpr operator*(const vec<T, t_n> & v1, const           T & v2);
+template <typename T, nat t_n> vec<T, t_n> constexpr operator*(const           T & v1, const vec<T, t_n> & v2);
 
-template <typename T, nat t_n> vec<T, t_n> operator/(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
-template <typename T, nat t_n> vec<T, t_n> operator/(const vec<T, t_n> & v1, const           T & v2);
-template <typename T, nat t_n> vec<T, t_n> operator/(const           T & v1, const vec<T, t_n> & v2);
+template <typename T, nat t_n> vec<T, t_n> constexpr operator/(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, nat t_n> vec<T, t_n> constexpr operator/(const vec<T, t_n> & v1, const           T & v2);
+template <typename T, nat t_n> vec<T, t_n> constexpr operator/(const           T & v1, const vec<T, t_n> & v2);
 
 //--- comparison operators ---
 
-template <typename T, nat t_n>  bool operator==(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
-template <typename T, nat t_n> bvec<t_n> operator==(const vec<T, t_n> & v1, const           T & v2);
-template <typename T, nat t_n> bvec<t_n> operator==(const           T & v1, const vec<T, t_n> & v2);
+template <typename T, nat t_n> constexpr bool operator==(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, nat t_n> constexpr bvec<t_n> operator==(const vec<T, t_n> & v1, const           T & v2);
+template <typename T, nat t_n> constexpr bvec<t_n> operator==(const           T & v1, const vec<T, t_n> & v2);
 
-template <typename T, nat t_n>  bool operator!=(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
-template <typename T, nat t_n> bvec<t_n> operator!=(const vec<T, t_n> & v1, const           T & v2);
-template <typename T, nat t_n> bvec<t_n> operator!=(const           T & v1, const vec<T, t_n> & v2);
+template <typename T, nat t_n> constexpr bool operator!=(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, nat t_n> constexpr bvec<t_n> operator!=(const vec<T, t_n> & v1, const           T & v2);
+template <typename T, nat t_n> constexpr bvec<t_n> operator!=(const           T & v1, const vec<T, t_n> & v2);
 
-template <typename T, nat t_n> bvec<t_n> operator<(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
-template <typename T, nat t_n> bvec<t_n> operator<(const vec<T, t_n> & v1, const           T & v2);
-template <typename T, nat t_n> bvec<t_n> operator<(const           T & v1, const vec<T, t_n> & v2);
+template <typename T, nat t_n> constexpr bvec<t_n> operator<(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, nat t_n> constexpr bvec<t_n> operator<(const vec<T, t_n> & v1, const           T & v2);
+template <typename T, nat t_n> constexpr bvec<t_n> operator<(const           T & v1, const vec<T, t_n> & v2);
 
-template <typename T, nat t_n> bvec<t_n> operator>(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
-template <typename T, nat t_n> bvec<t_n> operator>(const vec<T, t_n> & v1, const           T & v2);
-template <typename T, nat t_n> bvec<t_n> operator>(const           T & v1, const vec<T, t_n> & v2);
+template <typename T, nat t_n> constexpr bvec<t_n> operator>(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, nat t_n> constexpr bvec<t_n> operator>(const vec<T, t_n> & v1, const           T & v2);
+template <typename T, nat t_n> constexpr bvec<t_n> operator>(const           T & v1, const vec<T, t_n> & v2);
 
-template <typename T, nat t_n> bvec<t_n> operator<=(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
-template <typename T, nat t_n> bvec<t_n> operator<=(const vec<T, t_n> & v1, const           T & v2);
-template <typename T, nat t_n> bvec<t_n> operator<=(const           T & v1, const vec<T, t_n> & v2);
+template <typename T, nat t_n> constexpr bvec<t_n> operator<=(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, nat t_n> constexpr bvec<t_n> operator<=(const vec<T, t_n> & v1, const           T & v2);
+template <typename T, nat t_n> constexpr bvec<t_n> operator<=(const           T & v1, const vec<T, t_n> & v2);
 
-template <typename T, nat t_n> bvec<t_n> operator>=(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
-template <typename T, nat t_n> bvec<t_n> operator>=(const vec<T, t_n> & v1, const           T & v2);
-template <typename T, nat t_n> bvec<t_n> operator>=(const           T & v1, const vec<T, t_n> & v2);
+template <typename T, nat t_n> constexpr bvec<t_n> operator>=(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, nat t_n> constexpr bvec<t_n> operator>=(const vec<T, t_n> & v1, const           T & v2);
+template <typename T, nat t_n> constexpr bvec<t_n> operator>=(const           T & v1, const vec<T, t_n> & v2);
 
-template <typename T, nat t_n> bool operator==(const span<T, t_n> & s1, const span<T, t_n> & s2);
+template <typename T, nat t_n> constexpr bool operator==(const span<T, t_n> & s1, const span<T, t_n> & s2);
 
-template <typename T, nat t_n> bool operator!=(const span<T, t_n> & s1, const span<T, t_n> & s2);
+template <typename T, nat t_n> constexpr bool operator!=(const span<T, t_n> & s1, const span<T, t_n> & s2);
 
 //--- other ---
 
@@ -837,22 +852,30 @@ template <typename T, nat t_n>
 T magnitude2(const vec<T, t_n> & v);
 
 template <typename T, nat t_n, enable_if_floating_t<T> = 0>
-vec<T, t_n> normalize(const vec<T, t_n> & v);
+vec<T, t_n> norm(const vec<T, t_n> & v);
 
 template <typename T, nat t_n>
-T dot(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+constexpr T dot(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 
 template <typename T, nat t_n>
-vec<T, t_n> cross(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+constexpr vec<T, t_n> cross(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 
 template <typename T, nat t_n>
-bool parallel(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+constexpr bool parallel(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 
 template <typename T, nat t_n>
-bool orthogonal(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+constexpr bool orthogonal(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 
 template <typename T, nat t_n>
-vec<T, t_n> ortho(const vec<T, t_n> & v);
+constexpr vec<T, t_n> ortho(const vec<T, t_n> & v);
+
+template <typename T>
+void orthogonalize(const vec2<T> & v1, vec2<T> & v2);
+
+template <typename T, enable_if_floating_t<T> = 0>
+void orthogonalize(const vec3<T> & v1, vec3<T> & v2, vec3<T> & v3);
+template <typename T, enable_if_floating_t<T> = 0>
+void orthogonalize_n(const vec3<T> & v1, vec3<T> & v2, vec3<T> & v3);
 
 template <typename T, nat t_n, enable_if_floating_t<T> = 0>
 vec<T, t_n> reflect(const vec<T, t_n> & v, const vec<T, t_n> & n);
@@ -865,46 +888,52 @@ template <typename T, nat t_n, enable_if_floating_t<T> = 0>
 T angle_n(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 
 template <typename T, nat t_n>
-T min(const vec<T, t_n> & v);
+constexpr T min(const vec<T, t_n> & v);
 
 template <typename T, nat t_n>
-T max(const vec<T, t_n> & v);
+constexpr T max(const vec<T, t_n> & v);
 
 template <typename T, nat t_n>
-vec<T, t_n> min(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+constexpr vec<T, t_n> min(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+
+template <typename T, nat t_n, typename... Ts>
+constexpr vec<T, t_n> min(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<Ts, t_n> &... rest);
 
 template <typename T, nat t_n>
-vec<T, t_n> max(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+constexpr vec<T, t_n> max(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+
+template <typename T, nat t_n, typename... Ts>
+constexpr vec<T, t_n> max(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<Ts, t_n> &... rest);
 
 template <typename T, nat t_n>
-vec<T, t_n> clamp(const vec<T, t_n> & v, const T & min, const T & max);
+constexpr vec<T, t_n> clamp(const vec<T, t_n> & v, const T & min, const T & max);
 
 template <typename T, nat t_n>
-vec<T, t_n> clamp(const vec<T, t_n> & v, const vec<T, t_n> & min, const vec<T, t_n> & max);
+constexpr vec<T, t_n> clamp(const vec<T, t_n> & v, const vec<T, t_n> & min, const vec<T, t_n> & max);
 
 template <typename T, nat t_n, enable_if_floating_t<T> = 0>
-vec<T, t_n> mix(const vec<T, t_n> & v1, const vec <T, t_n> & v2, T t);
+constexpr vec<T, t_n> mix(const vec<T, t_n> & v1, const vec <T, t_n> & v2, T t);
 
 template <typename T, nat t_n>
-span<T, t_n> toSpan(const bound<T, t_n> & b);
+constexpr span<T, t_n> toSpan(const bound<T, t_n> & b);
 
 template <typename T, nat t_n>
-bound<T, t_n> toBound(const span<T, t_n> & s);
+constexpr bound<T, t_n> toBound(const span<T, t_n> & s);
 
 template <typename T, nat t_n>
-span<T, t_n> intersect(const span<T, t_n> & s1, const span<T, t_n> & s2);
+constexpr span<T, t_n> intersect(const span<T, t_n> & s1, const span<T, t_n> & s2);
 
 template <nat t_n>
-bool and(const bvec<t_n> & v);
+constexpr bool and(const bvec<t_n> & v);
 
 template <nat t_n>
-bool or(const bvec<t_n> & v);
+constexpr bool or(const bvec<t_n> & v);
 
 template <nat t_n>
-bool xor(const bvec<t_n> & v);
+constexpr bool xor(const bvec<t_n> & v);
 
 template <nat t_n>
-bvec<t_n> not(const bvec<t_n> & v);
+constexpr bvec<t_n> not(const bvec<t_n> & v);
 
 
 
@@ -920,6 +949,89 @@ template <typename T> constexpr vec3<T> negZ = vec3<T>( 0,  0, -1);
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+namespace detail {
+
+
+
+template <nat t_i>
+struct VecAccessor;
+
+template <>
+struct VecAccessor<0> {
+    template <typename T, nat t_n>
+    static T & access(vec<T, t_n> & v) {
+        return v.x;
+    }
+    template <typename T, nat t_n>
+    static constexpr T access(const vec<T, t_n> & v) {
+        return v.x;
+    }
+};
+
+template <>
+struct VecAccessor<1> {
+    template <typename T, nat t_n>
+    static T & access(vec<T, t_n> & v) {
+        return v.y;
+    }
+    template <typename T, nat t_n>
+    static constexpr T access(const vec<T, t_n> & v) {
+        return v.y;
+    }
+};
+
+template <>
+struct VecAccessor<2> {
+    template <typename T, nat t_n>
+    static T & access(vec<T, t_n> & v) {
+        return v.z;
+    }
+    template <typename T, nat t_n>
+    static constexpr T access(const vec<T, t_n> & v) {
+        return v.z;
+    }
+};
+
+template <>
+struct VecAccessor<3> {
+    template <typename T, nat t_n>
+    static T & access(vec<T, t_n> & v) {
+        return v.w;
+    }
+    template <typename T, nat t_n>
+    static constexpr T access(const vec<T, t_n> & v) {
+        return v.w;
+    }
+};
+
+
+
+template <nat t_i, typename T, nat t_n>
+constexpr T min(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
+    return qmu::min(v1.at<t_i>(), v2.at<t_i>());
+}
+
+template <nat t_i, typename T, nat t_n, typename... Ts>
+constexpr T min(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const Ts &... rest) {
+    return min<t_i>(v1.at<t_i>() < v2.at<t_i>() ? v1 : v2, rest...);
+}
+
+template <nat t_i, typename T, nat t_n>
+constexpr T max(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
+    return qmu::max(v1.at<t_i>(), v2.at<t_i>());
+}
+
+template <nat t_i, typename T, nat t_n, typename... Ts>
+constexpr T max(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const Ts &... rest) {
+    return max<t_i>(v1.at<t_i>() > v2.at<t_i>() ? v1 : v2, rest...);
+}
+
+
+
+}
 
 
 
@@ -980,7 +1092,7 @@ constexpr vec<T, 1>::vec(const T & v) :
 
 
 //------------------------------------------------------------------------------
-// Assignment Operators
+// Assignment
 
 
 
@@ -1023,7 +1135,7 @@ inline vec1<T> & vec<T, 1>::operator=(const vec4<T> & v) {
 
 
 //------------------------------------------------------------------------------
-// Access Operators
+// Access
 
 
 
@@ -1032,11 +1144,23 @@ inline T & vec<T, 1>::operator[](nat i) {
     return *(&x + i);
 }
 
-
-
 template <typename T>
 inline const T & vec<T, 1>::operator[](nat i) const {
     return *(&x + i);
+}
+
+
+
+template <typename T>
+template <nat t_i>
+inline T & vec<T, 1>::at() {
+    return detail::VecAccessor<t_i>::access(*this);
+}
+
+template <typename T>
+template <nat t_i>
+constexpr T vec<T, 1>::at() const {
+    return detail::VecAccessor<t_i>::access(*this);
 }
 
 
@@ -1049,7 +1173,7 @@ inline const T & vec<T, 1>::operator[](nat i) const {
 template <typename T>
 inline std::string vec<T, 1>::toString() const {
     std::stringstream ss;
-    ss << "(" << x << ")";
+    ss << *this;
     return ss.str();
 }
 
@@ -1132,7 +1256,7 @@ constexpr vec<T, 2>::vec(const vec1<T> & v1, const vec1<T> & v2) :
 
 
 //------------------------------------------------------------------------------
-// Assignment Operators
+// Assignment
 
 
 
@@ -1175,7 +1299,7 @@ inline vec2<T> & vec<T, 2>::operator=(const vec4<T> & v) {
 
 
 //------------------------------------------------------------------------------
-// Access Operators
+// Access
 
 
 
@@ -1184,11 +1308,23 @@ inline T & vec<T, 2>::operator[](nat i) {
     return *(&x + i);
 }
 
-
-
 template <typename T>
 inline const T & vec<T, 2>::operator[](nat i) const {
     return *(&x + i);
+}
+
+
+
+template <typename T>
+template <nat t_i>
+inline T & vec<T, 2>::at() {
+    return detail::VecAccessor<t_i>::access(*this);
+}
+
+template <typename T>
+template <nat t_i>
+constexpr T vec<T, 2>::at() const {
+    return detail::VecAccessor<t_i>::access(*this);
 }
 
 
@@ -1201,7 +1337,7 @@ inline const T & vec<T, 2>::operator[](nat i) const {
 template <typename T>
 inline std::string vec<T, 2>::toString() const {
     std::stringstream ss;
-    ss << "(" << x << ", " << y << ")";
+    ss << *this;
     return ss.str();
 }
 
@@ -1324,7 +1460,7 @@ constexpr vec<T, 3>::vec(const vec1<T> & v1, const vec2<T> & v2) :
 
 
 //------------------------------------------------------------------------------
-// Assignment Operators
+// Assignment
 
 
 
@@ -1367,7 +1503,7 @@ inline vec3<T> & vec<T, 3>::operator=(const vec4<T> & v) {
 
 
 //------------------------------------------------------------------------------
-// Access Operators
+// Access
 
 
 
@@ -1376,11 +1512,23 @@ inline T & vec<T, 3>::operator[](nat i) {
     return *(&x + i);
 }
 
-
-
 template <typename T>
 inline const T & vec<T, 3>::operator[](nat i) const {
     return *(&x + i);
+}
+
+
+
+template <typename T>
+template <nat t_i>
+inline T & vec<T, 3>::at() {
+    return detail::VecAccessor<t_i>::access(*this);
+}
+
+template <typename T>
+template <nat t_i>
+constexpr T vec<T, 3>::at() const {
+    return detail::VecAccessor<t_i>::access(*this);
 }
 
 
@@ -1393,7 +1541,7 @@ inline const T & vec<T, 3>::operator[](nat i) const {
 template <typename T>
 inline std::string vec<T, 3>::toString() const {
     std::stringstream ss;
-    ss << "(" << x << ", " << y << ", " << z << ")";
+    ss << *this;
     return ss.str();
 }
 
@@ -1621,7 +1769,7 @@ constexpr vec<T, 4>::vec(const vec1<T> & v1, const vec3<T> & v2) :
 
 
 //------------------------------------------------------------------------------
-// Assignment Operators
+// Assignment
 
 
 
@@ -1664,7 +1812,7 @@ inline vec4<T> & vec<T, 4>::operator=(const vec3<T> & v) {
 
 
 //------------------------------------------------------------------------------
-// Access Operators
+// Access
 
 
 
@@ -1673,11 +1821,23 @@ inline T & vec<T, 4>::operator[](nat i) {
     return *(&x + i);
 }
 
-
-
 template <typename T>
 inline const T & vec<T, 4>::operator[](nat i) const {
     return *(&x + i);
+}
+
+
+
+template <typename T>
+template <nat t_i>
+inline T & vec<T, 4>::at() {
+    return detail::VecAccessor<t_i>::access(*this);
+}
+
+template <typename T>
+template <nat t_i>
+constexpr T vec<T, 4>::at() const {
+    return detail::VecAccessor<t_i>::access(*this);
 }
 
 
@@ -1689,7 +1849,9 @@ inline const T & vec<T, 4>::operator[](nat i) const {
 
 template <typename T>
 inline std::string vec<T, 4>::toString() const {
-    return "(" + std::to_string(x) + ", " + std::to_string(y) + ", " + std::to_string(z) + ", " + std::to_string(w) + ")";
+    std::stringstream ss;
+    ss << *this;
+    return ss.str();
 }
 
 
@@ -1738,7 +1900,7 @@ constexpr span<T, t_n>::span(const vec<T, t_n> & v1, const vec<T, t_n> & v2) :
 
 
 //------------------------------------------------------------------------------
-// Assignment Operators
+// Assignment
 
 
 
@@ -1774,7 +1936,7 @@ inline span<T, t_n> & span<T, t_n>::operator=(const span<T, u_n> & s) {
 template <typename T, nat t_n>
 inline std::string span<T, t_n>::toString() const {
     std::stringstream ss;
-    ss << "(" << min << ", " << max << ")";
+    ss << *this;
     return ss.str();
 }
 
@@ -1786,7 +1948,7 @@ inline std::string span<T, t_n>::toString() const {
 
 
 //------------------------------------------------------------------------------
-// Arithmetic Assignment Operators
+// Arithmetic Assignment
 
 
 
@@ -2064,292 +2226,292 @@ inline vec4<T> & operator/=(vec4<T> & v1, const T & v2) {
 //--- positive ---
 
 template <typename T>
-inline vec1<T> operator+(const vec1<T> & v) {
-    return v;
+constexpr vec1<T> operator+(const vec1<T> & v) {
+    return vec1<T>(+v.x);
 }
 
 template <typename T>
-inline vec2<T> operator+(const vec2<T> & v) {
-    return v;
+constexpr vec2<T> operator+(const vec2<T> & v) {
+    return vec2<T>(+v.x, +v.y);
 }
 
 template <typename T>
-inline vec3<T> operator+(const vec3<T> & v) {
-    return v;
+constexpr vec3<T> operator+(const vec3<T> & v) {
+    return vec3<T>(+v.x, +v.y, +v.z);
 }
 
 template <typename T>
-inline vec4<T> operator+(const vec4<T> & v) {
-    return v;
+constexpr vec4<T> operator+(const vec4<T> & v) {
+    return vec4<T>(+v.x, +v.y, +v.z, +v.w);
 }
 
 //--- negative ---
 
 template <typename T>
-inline vec1<T> operator-(const vec1<T> & v) {
-    return v * static_cast<T>(-1);
+constexpr vec1<T> operator-(const vec1<T> & v) {
+    return vec1<T>(-v.x);
 }
 
 template <typename T>
-inline vec2<T> operator-(const vec2<T> & v) {
-    return v * static_cast<T>(-1);
+constexpr vec2<T> operator-(const vec2<T> & v) {
+    return vec2<T>(-v.x, -v.y);
 }
 
 template <typename T>
-inline vec3<T> operator-(const vec3<T> & v) {
-    return v * static_cast<T>(-1);
+constexpr vec3<T> operator-(const vec3<T> & v) {
+    return vec3<T>(-v.x, -v.y, -v.z);
 }
 
 template <typename T>
-inline vec4<T> operator-(const vec4<T> & v) {
-    return v * static_cast<T>(-1);
+constexpr vec4<T> operator-(const vec4<T> & v) {
+    return vec4<T>(-v.x, -v.y, -v.z, -v.w);
 }
 
 //--- add ---
 
 template <typename T>
-inline vec1<T> operator+(const vec1<T> & v1, const vec1<T> & v2) {
+constexpr vec1<T> operator+(const vec1<T> & v1, const vec1<T> & v2) {
     return vec1<T>(v1.x + v2.x);
 }
 
 template <typename T>
-inline vec2<T> operator+(const vec2<T> & v1, const vec2<T> & v2) {
+constexpr vec2<T> operator+(const vec2<T> & v1, const vec2<T> & v2) {
     return vec2<T>(v1.x + v2.x, v1.y + v2.y);
 }
 
 template <typename T>
-inline vec3<T> operator+(const vec3<T> & v1, const vec3<T> & v2) {
+constexpr vec3<T> operator+(const vec3<T> & v1, const vec3<T> & v2) {
     return vec3<T>(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z);
 }
 
 template <typename T>
-inline vec4<T> operator+(const vec4<T> & v1, const vec4<T> & v2) {
+constexpr vec4<T> operator+(const vec4<T> & v1, const vec4<T> & v2) {
     return vec4<T>(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z, v1.w + v2.w);
 }
 
 template <typename T>
-inline vec1<T> operator+(const vec1<T> & v1, const T & v2) {
+constexpr vec1<T> operator+(const vec1<T> & v1, const T & v2) {
     return vec1<T>(v1.x + v2);
 }
 
 template <typename T>
-inline vec2<T> operator+(const vec2<T> & v1, const T & v2) {
+constexpr vec2<T> operator+(const vec2<T> & v1, const T & v2) {
     return vec2<T>(v1.x + v2, v1.y + v2);
 }
 
 template <typename T>
-inline vec3<T> operator+(const vec3<T> & v1, const T & v2) {
+constexpr vec3<T> operator+(const vec3<T> & v1, const T & v2) {
     return vec3<T>(v1.x + v2, v1.y + v2, v1.z + v2);
 }
 
 template <typename T>
-inline vec4<T> operator+(const vec4<T> & v1, const T & v2) {
+constexpr vec4<T> operator+(const vec4<T> & v1, const T & v2) {
     return vec4<T>(v1.x + v2, v1.y + v2, v1.z + v2, v1.w + v2);
 }
 
 template <typename T>
-inline vec1<T> operator+(const T & v1, const vec1<T> & v2) {
+constexpr vec1<T> operator+(const T & v1, const vec1<T> & v2) {
     return vec1<T>(v1 + v2.x);
 }
 
 template <typename T>
-inline vec2<T> operator+(const T & v1, const vec2<T> & v2) {
+constexpr vec2<T> operator+(const T & v1, const vec2<T> & v2) {
     return vec2<T>(v1 + v2.x, v1 + v2.y);
 }
 
 template <typename T>
-inline vec3<T> operator+(const T & v1, const vec3<T> & v2) {
+constexpr vec3<T> operator+(const T & v1, const vec3<T> & v2) {
     return vec3<T>(v1 + v2.x, v1 + v2.y, v1 + v2.z);
 }
 
 template <typename T>
-inline vec4<T> operator+(const T & v1, const vec4<T> & v2) {
+constexpr vec4<T> operator+(const T & v1, const vec4<T> & v2) {
     return vec4<T>(v1 + v2.x, v1 + v2.y, v1 + v2.z, v1 + v2.w);
 }
 
 //--- subtract ---
 
 template <typename T>
-inline vec1<T> operator-(const vec1<T> & v1, const vec1<T> & v2) {
+constexpr vec1<T> operator-(const vec1<T> & v1, const vec1<T> & v2) {
     return vec1<T>(v1.x - v2.x);
 }
 
 template <typename T>
-inline vec2<T> operator-(const vec2<T> & v1, const vec2<T> & v2) {
+constexpr vec2<T> operator-(const vec2<T> & v1, const vec2<T> & v2) {
     return vec2<T>(v1.x - v2.x, v1.y - v2.y);
 }
 
 template <typename T>
-inline vec3<T> operator-(const vec3<T> & v1, const vec3<T> & v2) {
+constexpr vec3<T> operator-(const vec3<T> & v1, const vec3<T> & v2) {
     return vec3<T>(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z);
 }
 
 template <typename T>
-inline vec4<T> operator-(const vec4<T> & v1, const vec4<T> & v2) {
+constexpr vec4<T> operator-(const vec4<T> & v1, const vec4<T> & v2) {
     return vec4<T>(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z, v1.w - v2.w);
 }
 
 template <typename T>
-inline vec1<T> operator-(const vec1<T> & v1, const T & v2) {
+constexpr vec1<T> operator-(const vec1<T> & v1, const T & v2) {
     return vec1<T>(v1.x - v2);
 }
 
 template <typename T>
-inline vec2<T> operator-(const vec2<T> & v1, const T & v2) {
+constexpr vec2<T> operator-(const vec2<T> & v1, const T & v2) {
     return vec2<T>(v1.x - v2, v1.y - v2);
 }
 
 template <typename T>
-inline vec3<T> operator-(const vec3<T> & v1, const T & v2) {
+constexpr vec3<T> operator-(const vec3<T> & v1, const T & v2) {
     return vec3<T>(v1.x - v2, v1.y - v2, v1.z - v2);
 }
 
 template <typename T>
-inline vec4<T> operator-(const vec4<T> & v1, const T & v2) {
+constexpr vec4<T> operator-(const vec4<T> & v1, const T & v2) {
     return vec4<T>(v1.x - v2, v1.y - v2, v1.z - v2, v1.w - v2);
 }
 
 template <typename T>
-inline vec1<T> operator-(const T & v1, const vec1<T> & v2) {
+constexpr vec1<T> operator-(const T & v1, const vec1<T> & v2) {
     return vec1<T>(v1 - v2.x);
 }
 
 template <typename T>
-inline vec2<T> operator-(const T & v1, const vec2<T> & v2) {
+constexpr vec2<T> operator-(const T & v1, const vec2<T> & v2) {
     return vec2<T>(v1 - v2.x, v1 - v2.y);
 }
 
 template <typename T>
-inline vec3<T> operator-(const T & v1, const vec3<T> & v2) {
+constexpr vec3<T> operator-(const T & v1, const vec3<T> & v2) {
     return vec3<T>(v1 - v2.x, v1 - v2.y, v1 - v2.z);
 }
 
 template <typename T>
-inline vec4<T> operator-(const T & v1, const vec4<T> & v2) {
+constexpr vec4<T> operator-(const T & v1, const vec4<T> & v2) {
     return vec4<T>(v1 - v2.x, v1 - v2.y, v1 - v2.z, v1 - v2.w);
 }
 
 //--- multiply ---
 
 template <typename T>
-inline vec1<T> operator*(const vec1<T> & v1, const vec1<T> & v2) {
+constexpr vec1<T> operator*(const vec1<T> & v1, const vec1<T> & v2) {
     return vec1<T>(v1.x * v2.x);
 }
 
 template <typename T>
-inline vec2<T> operator*(const vec2<T> & v1, const vec2<T> & v2) {
+constexpr vec2<T> operator*(const vec2<T> & v1, const vec2<T> & v2) {
     return vec2<T>(v1.x * v2.x, v1.y * v2.y);
 }
 
 template <typename T>
-inline vec3<T> operator*(const vec3<T> & v1, const vec3<T> & v2) {
+constexpr vec3<T> operator*(const vec3<T> & v1, const vec3<T> & v2) {
     return vec3<T>(v1.x * v2.x, v1.y * v2.y, v1.z * v2.z);
 }
 
 template <typename T>
-inline vec4<T> operator*(const vec4<T> & v1, const vec4<T> & v2) {
+constexpr vec4<T> operator*(const vec4<T> & v1, const vec4<T> & v2) {
     return vec4<T>(v1.x * v2.x, v1.y * v2.y, v1.z * v2.z, v1.w * v2.w);
 }
 
 template <typename T>
-inline vec1<T> operator*(const vec1<T> & v1, const T & v2) {
+constexpr vec1<T> operator*(const vec1<T> & v1, const T & v2) {
     return vec1<T>(v1.x * v2);
 }
 
 template <typename T>
-inline vec2<T> operator*(const vec2<T> & v1, const T & v2) {
+constexpr vec2<T> operator*(const vec2<T> & v1, const T & v2) {
     return vec2<T>(v1.x * v2, v1.y * v2);
 }
 
 template <typename T>
-inline vec3<T> operator*(const vec3<T> & v1, const T & v2) {
+constexpr vec3<T> operator*(const vec3<T> & v1, const T & v2) {
     return vec3<T>(v1.x * v2, v1.y * v2, v1.z * v2);
 }
 
 template <typename T>
-inline vec4<T> operator*(const vec4<T> & v1, const T & v2) {
+constexpr vec4<T> operator*(const vec4<T> & v1, const T & v2) {
     return vec4<T>(v1.x * v2, v1.y * v2, v1.z * v2, v1.w * v2);
 }
 
 template <typename T>
-inline vec1<T> operator*(const T & v1, const vec1<T> & v2) {
+constexpr vec1<T> operator*(const T & v1, const vec1<T> & v2) {
     return vec1<T>(v1 * v2.x);
 }
 
 template <typename T>
-inline vec2<T> operator*(const T & v1, const vec2<T> & v2) {
+constexpr vec2<T> operator*(const T & v1, const vec2<T> & v2) {
     return vec2<T>(v1 * v2.x, v1 * v2.y);
 }
 
 template <typename T>
-inline vec3<T> operator*(const T & v1, const vec3<T> & v2) {
+constexpr vec3<T> operator*(const T & v1, const vec3<T> & v2) {
     return vec3<T>(v1 * v2.x, v1 * v2.y, v1 * v2.z);
 }
 
 template <typename T>
-inline vec4<T> operator*(const T & v1, const vec4<T> & v2) {
+constexpr vec4<T> operator*(const T & v1, const vec4<T> & v2) {
     return vec4<T>(v1 * v2.x, v1 * v2.y, v1 * v2.z, v1 * v2.w);
 }
 
 //--- divide ---
 
 template <typename T>
-inline vec1<T> operator/(const vec1<T> & v1, const vec1<T> & v2) {
+constexpr vec1<T> operator/(const vec1<T> & v1, const vec1<T> & v2) {
     return vec1<T>(v1.x / v2.x);
 }
 
 template <typename T>
-inline vec2<T> operator/(const vec2<T> & v1, const vec2<T> & v2) {
+constexpr vec2<T> operator/(const vec2<T> & v1, const vec2<T> & v2) {
     return vec2<T>(v1.x / v2.x, v1.y / v2.y);
 }
 
 template <typename T>
-inline vec3<T> operator/(const vec3<T> & v1, const vec3<T> & v2) {
+constexpr vec3<T> operator/(const vec3<T> & v1, const vec3<T> & v2) {
     return vec3<T>(v1.x / v2.x, v1.y / v2.y, v1.z / v2.z);
 }
 
 template <typename T>
-inline vec4<T> operator/(const vec4<T> & v1, const vec4<T> & v2) {
+constexpr vec4<T> operator/(const vec4<T> & v1, const vec4<T> & v2) {
     return vec4<T>(v1.x / v2.x, v1.y / v2.y, v1.z / v2.z, v1.w / v2.w);
 }
 
 template <typename T>
-inline vec1<T> operator/(const vec1<T> & v1, const T & v2) {
+constexpr vec1<T> operator/(const vec1<T> & v1, const T & v2) {
     return vec1<T>(v1.x / v2);
 }
 
 template <typename T>
-inline vec2<T> operator/(const vec2<T> & v1, const T & v2) {
+constexpr vec2<T> operator/(const vec2<T> & v1, const T & v2) {
     return vec2<T>(v1.x / v2, v1.y / v2);
 }
 
 template <typename T>
-inline vec3<T> operator/(const vec3<T> & v1, const T & v2) {
+constexpr vec3<T> operator/(const vec3<T> & v1, const T & v2) {
     return vec3<T>(v1.x / v2, v1.y / v2, v1.z / v2);
 }
 
 template <typename T>
-inline vec4<T> operator/(const vec4<T> & v1, const T & v2) {
+constexpr vec4<T> operator/(const vec4<T> & v1, const T & v2) {
     return vec4<T>(v1.x / v2, v1.y / v2, v1.z / v2, v1.w / v2);
 }
 
 template <typename T>
-inline vec1<T> operator/(const T & v1, const vec1<T> & v2) {
+constexpr vec1<T> operator/(const T & v1, const vec1<T> & v2) {
     return vec1<T>(v1 / v2.x);
 }
 
 template <typename T>
-inline vec2<T> operator/(const T & v1, const vec2<T> & v2) {
+constexpr vec2<T> operator/(const T & v1, const vec2<T> & v2) {
     return vec2<T>(v1 / v2.x, v1 / v2.y);
 }
 
 template <typename T>
-inline vec3<T> operator/(const T & v1, const vec3<T> & v2) {
+constexpr vec3<T> operator/(const T & v1, const vec3<T> & v2) {
     return vec3<T>(v1 / v2.x, v1 / v2.y, v1 / v2.z);
 }
 
 template <typename T>
-inline vec4<T> operator/(const T & v1, const vec4<T> & v2) {
+constexpr vec4<T> operator/(const T & v1, const vec4<T> & v2) {
     return vec4<T>(v1 / v2.x, v1 / v2.y, v1 / v2.z, v1 / v2.w);
 }
 
@@ -2363,402 +2525,402 @@ inline vec4<T> operator/(const T & v1, const vec4<T> & v2) {
 //--- equal to ---
 
 template <typename T>
-inline bool operator==(const vec1<T> & v1, const vec1<T> & v2) {
+constexpr bool operator==(const vec1<T> & v1, const vec1<T> & v2) {
     return v1.x == v2.x;
 }
 
 template <typename T>
-inline bool operator==(const vec2<T> & v1, const vec2<T> & v2) {
+constexpr bool operator==(const vec2<T> & v1, const vec2<T> & v2) {
     return v1.x == v2.x && v1.y == v2.y;
 }
 
 template <typename T>
-inline bool operator==(const vec3<T> & v1, const vec3<T> & v2) {
+constexpr bool operator==(const vec3<T> & v1, const vec3<T> & v2) {
     return v1.x == v2.x && v1.y == v2.y && v1.z == v2.z;
 }
 
 template <typename T>
-inline bool operator==(const vec4<T> & v1, const vec4<T> & v2) {
+constexpr bool operator==(const vec4<T> & v1, const vec4<T> & v2) {
     return v1.x == v2.x && v1.y == v2.y && v1.z == v2.z && v1.w == v2.w;
 }
 
 template <typename T>
-inline bool operator==(const vec<T, 6> & v1, const vec<T, 6> & v2) {
+constexpr bool operator==(const vec<T, 6> & v1, const vec<T, 6> & v2) {
     return v1.min == v2.min && v1.max == v2.max;
 }
 
 template <typename T>
-inline bool operator==(const vec<T, 8> & v1, const vec<T, 8> & v2) {
+constexpr bool operator==(const vec<T, 8> & v1, const vec<T, 8> & v2) {
     return v1.min == v2.min && v1.max == v2.max;
 }
 
 template <typename T>
-inline bvec1 operator==(const vec1<T> & v1, const T & v2) {
+constexpr bvec1 operator==(const vec1<T> & v1, const T & v2) {
     return bvec1(v1.x == v2);
 }
 
 template <typename T>
-inline bvec2 operator==(const vec2<T> & v1, const T & v2) {
+constexpr bvec2 operator==(const vec2<T> & v1, const T & v2) {
     return bvec2(v1.x == v2, v1.y == v2);
 }
 
 template <typename T>
-inline bvec3 operator==(const vec3<T> & v1, const T & v2) {
+constexpr bvec3 operator==(const vec3<T> & v1, const T & v2) {
     return bvec3(v1.x == v2, v1.y == v2, v1.z == v2);
 }
 
 template <typename T>
-inline bvec4 operator==(const vec4<T> & v1, const T & v2) {
+constexpr bvec4 operator==(const vec4<T> & v1, const T & v2) {
     return bvec4(v1.x == v2, v1.y == v2, v1.z == v2, v1.w == v2);
 }
 
 template <typename T>
-inline bvec1 operator==(const T & v1, const vec1<T> & v2) {
+constexpr bvec1 operator==(const T & v1, const vec1<T> & v2) {
     return bvec1(v1 == v2.x);
 }
 
 template <typename T>
-inline bvec2 operator==(const T & v1, const vec2<T> & v2) {
+constexpr bvec2 operator==(const T & v1, const vec2<T> & v2) {
     return bvec2(v1 == v2.x, v1 == v2.y);
 }
 
 template <typename T>
-inline bvec3 operator==(const T & v1, const vec3<T> & v2) {
+constexpr bvec3 operator==(const T & v1, const vec3<T> & v2) {
     return bvec3(v1 == v2.x, v1 == v2.y, v1 == v2.z);
 }
 
 template <typename T>
-inline bvec4 operator==(const T & v1, const vec4<T> & v2) {
+constexpr bvec4 operator==(const T & v1, const vec4<T> & v2) {
     return bvec4(v1 == v2.x, v1 == v2.y, v1 == v2.z, v1 == v2.w);
 }
 
 template <typename T, nat t_n>
-inline bool operator==(const span<T, t_n> & s1, const span<T, t_n> & s2) {
+constexpr bool operator==(const span<T, t_n> & s1, const span<T, t_n> & s2) {
     return s1.min == s2.min && s1.max == s2.max;
 }
 
 //--- not equal to ---
 
 template <typename T>
-inline bool operator!=(const vec1<T> & v1, const vec1<T> & v2) {
+constexpr bool operator!=(const vec1<T> & v1, const vec1<T> & v2) {
     return v1.x != v2.x;
 }
 
 template <typename T>
-inline bool operator!=(const vec2<T> & v1, const vec2<T> & v2) {
+constexpr bool operator!=(const vec2<T> & v1, const vec2<T> & v2) {
     return v1.x != v2.x || v1.y != v2.y;
 }
 
 template <typename T>
-inline bool operator!=(const vec3<T> & v1, const vec3<T> & v2) {
+constexpr bool operator!=(const vec3<T> & v1, const vec3<T> & v2) {
     return v1.x != v2.x || v1.y != v2.y || v1.z != v2.z;
 }
 
 template <typename T>
-inline bool operator!=(const vec4<T> & v1, const vec4<T> & v2) {
+constexpr bool operator!=(const vec4<T> & v1, const vec4<T> & v2) {
     return v1.x != v2.x || v1.y != v2.y || v1.z != v2.z || v1.w != v2.w;
 }
 
 template <typename T>
-inline bool operator!=(const vec<T, 6> & v1, const vec<T, 6> & v2) {
+constexpr bool operator!=(const vec<T, 6> & v1, const vec<T, 6> & v2) {
     return v1.min != v2.min || v1.max != v2.max;
 }
 
 template <typename T>
-inline bool operator!=(const vec<T, 8> & v1, const vec<T, 8> & v2) {
+constexpr bool operator!=(const vec<T, 8> & v1, const vec<T, 8> & v2) {
     return v1.min != v2.min || v1.max != v2.max;
 }
 
 template <typename T>
-inline bvec1 operator!=(const vec1<T> & v1, const T & v2) {
+constexpr bvec1 operator!=(const vec1<T> & v1, const T & v2) {
     return bvec1(v1.x != v2);
 }
 
 template <typename T>
-inline bvec2 operator!=(const vec2<T> & v1, const T & v2) {
+constexpr bvec2 operator!=(const vec2<T> & v1, const T & v2) {
     return bvec2(v1.x != v2, v1.y != v2);
 }
 
 template <typename T>
-inline bvec3 operator!=(const vec3<T> & v1, const T & v2) {
+constexpr bvec3 operator!=(const vec3<T> & v1, const T & v2) {
     return bvec3(v1.x != v2, v1.y != v2, v1.z != v2);
 }
 
 template <typename T>
-inline bvec4 operator!=(const vec4<T> & v1, const T & v2) {
+constexpr bvec4 operator!=(const vec4<T> & v1, const T & v2) {
     return bvec4(v1.x != v2, v1.y != v2, v1.z != v2, v1.w != v2);
 }
 
 template <typename T>
-inline bvec1 operator!=(const T & v1, const vec1<T> & v2) {
+constexpr bvec1 operator!=(const T & v1, const vec1<T> & v2) {
     return bvec1(v1 != v2.x);
 }
 
 template <typename T>
-inline bvec2 operator!=(const T & v1, const vec2<T> & v2) {
+constexpr bvec2 operator!=(const T & v1, const vec2<T> & v2) {
     return bvec2(v1 != v2.x, v1 != v2.y);
 }
 
 template <typename T>
-inline bvec3 operator!=(const T & v1, const vec3<T> & v2) {
+constexpr bvec3 operator!=(const T & v1, const vec3<T> & v2) {
     return bvec3(v1 != v2.x, v1 != v2.y, v1 != v2.z);
 }
 
 template <typename T>
-inline bvec4 operator!=(const T & v1, const vec4<T> & v2) {
+constexpr bvec4 operator!=(const T & v1, const vec4<T> & v2) {
     return bvec4(v1 != v2.x, v1 != v2.y, v1 != v2.z, v1 != v2.w);
 }
 
 template <typename T, nat t_n>
-inline bool operator!=(const span<T, t_n> & s1, const span<T, t_n> & s2) {
+constexpr bool operator!=(const span<T, t_n> & s1, const span<T, t_n> & s2) {
     return s1.min != s2.min || s1.max != s2.max;
 }
 
 //--- less than ---
 
 template <typename T>
-inline bvec1 operator<(const vec1<T> & v1, const vec1<T> & v2) {
+constexpr bvec1 operator<(const vec1<T> & v1, const vec1<T> & v2) {
     return bvec1(v1.x < v2.x);
 }
 
 template <typename T>
-inline bvec2 operator<(const vec2<T> & v1, const vec2<T> & v2) {
+constexpr bvec2 operator<(const vec2<T> & v1, const vec2<T> & v2) {
     return bvec2(v1.x < v2.x, v1.y < v2.y);
 }
 
 template <typename T>
-inline bvec3 operator<(const vec3<T> & v1, const vec3<T> & v2) {
+constexpr bvec3 operator<(const vec3<T> & v1, const vec3<T> & v2) {
     return bvec3(v1.x < v2.x, v1.y < v2.y, v1.z < v2.z);
 }
 
 template <typename T>
-inline bvec4 operator<(const vec4<T> & v1, const vec4<T> & v2) {
+constexpr bvec4 operator<(const vec4<T> & v1, const vec4<T> & v2) {
     return bvec4(v1.x < v2.x, v1.y < v2.y, v1.z < v2.z, v1.w < v2.w);
 }
 
 template <typename T>
-inline bvec1 operator<(const vec1<T> & v1, const T & v2) {
+constexpr bvec1 operator<(const vec1<T> & v1, const T & v2) {
     return bvec1(v1.x < v2);
 }
 
 template <typename T>
-inline bvec2 operator<(const vec2<T> & v1, const T & v2) {
+constexpr bvec2 operator<(const vec2<T> & v1, const T & v2) {
     return bvec2(v1.x < v2, v1.y < v2);
 }
 
 template <typename T>
-inline bvec3 operator<(const vec3<T> & v1, const T & v2) {
+constexpr bvec3 operator<(const vec3<T> & v1, const T & v2) {
     return bvec3(v1.x < v2, v1.y < v2, v1.z < v2);
 }
 
 template <typename T>
-inline bvec4 operator<(const vec4<T> & v1, const T & v2) {
+constexpr bvec4 operator<(const vec4<T> & v1, const T & v2) {
     return bvec4(v1.x < v2, v1.y < v2, v1.z < v2, v1.w < v2);
 }
 
 template <typename T>
-inline bvec1 operator<(const T & v1, const vec1<T> & v2) {
+constexpr bvec1 operator<(const T & v1, const vec1<T> & v2) {
     return bvec1(v1 < v2.x);
 }
 
 template <typename T>
-inline bvec2 operator<(const T & v1, const vec2<T> & v2) {
+constexpr bvec2 operator<(const T & v1, const vec2<T> & v2) {
     return bvec2(v1 < v2.x, v1 < v2.y);
 }
 
 template <typename T>
-inline bvec3 operator<(const T & v1, const vec3<T> & v2) {
+constexpr bvec3 operator<(const T & v1, const vec3<T> & v2) {
     return bvec3(v1 < v2.x, v1 < v2.y, v1 < v2.z);
 }
 
 template <typename T>
-inline bvec4 operator<(const T & v1, const vec4<T> & v2) {
+constexpr bvec4 operator<(const T & v1, const vec4<T> & v2) {
     return bvec4(v1 < v2.x, v1 < v2.y, v1 < v2.z, v1 < v2.w);
 }
 
 //--- greater than ---
 
 template <typename T>
-inline bvec1 operator>(const vec1<T> & v1, const vec1<T> & v2) {
+constexpr bvec1 operator>(const vec1<T> & v1, const vec1<T> & v2) {
     return bvec1(v1.x > v2.x);
 }
 
 template <typename T>
-inline bvec2 operator>(const vec2<T> & v1, const vec2<T> & v2) {
+constexpr bvec2 operator>(const vec2<T> & v1, const vec2<T> & v2) {
     return bvec2(v1.x > v2.x, v1.y > v2.y);
 }
 
 template <typename T>
-inline bvec3 operator>(const vec3<T> & v1, const vec3<T> & v2) {
+constexpr bvec3 operator>(const vec3<T> & v1, const vec3<T> & v2) {
     return bvec3(v1.x > v2.x, v1.y > v2.y, v1.z > v2.z);
 }
 
 template <typename T>
-inline bvec4 operator>(const vec4<T> & v1, const vec4<T> & v2) {
+constexpr bvec4 operator>(const vec4<T> & v1, const vec4<T> & v2) {
     return bvec4(v1.x > v2.x, v1.y > v2.y, v1.z > v2.z, v1.w > v2.w);
 }
 
 template <typename T>
-inline bvec1 operator>(const vec1<T> & v1, const T & v2) {
+constexpr bvec1 operator>(const vec1<T> & v1, const T & v2) {
     return bvec1(v1.x > v2);
 }
 
 template <typename T>
-inline bvec2 operator>(const vec2<T> & v1, const T & v2) {
+constexpr bvec2 operator>(const vec2<T> & v1, const T & v2) {
     return bvec2(v1.x > v2, v1.y > v2);
 }
 
 template <typename T>
-inline bvec3 operator>(const vec3<T> & v1, const T & v2) {
+constexpr bvec3 operator>(const vec3<T> & v1, const T & v2) {
     return bvec3(v1.x > v2, v1.y > v2, v1.z > v2);
 }
 
 template <typename T>
-inline bvec4 operator>(const vec4<T> & v1, const T & v2) {
+constexpr bvec4 operator>(const vec4<T> & v1, const T & v2) {
     return bvec4(v1.x > v2, v1.y > v2, v1.z > v2, v1.w > v2);
 }
 
 template <typename T>
-inline bvec1 operator>(const T & v1, const vec1<T> & v2) {
+constexpr bvec1 operator>(const T & v1, const vec1<T> & v2) {
     return bvec1(v1 > v2.x);
 }
 
 template <typename T>
-inline bvec2 operator>(const T & v1, const vec2<T> & v2) {
+constexpr bvec2 operator>(const T & v1, const vec2<T> & v2) {
     return bvec2(v1 > v2.x, v1 > v2.y);
 }
 
 template <typename T>
-inline bvec3 operator>(const T & v1, const vec3<T> & v2) {
+constexpr bvec3 operator>(const T & v1, const vec3<T> & v2) {
     return bvec3(v1 > v2.x, v1 > v2.y, v1 > v2.z);
 }
 
 template <typename T>
-inline bvec4 operator>(const T & v1, const vec4<T> & v2) {
+constexpr bvec4 operator>(const T & v1, const vec4<T> & v2) {
     return bvec4(v1 > v2.x, v1 > v2.y, v1 > v2.z, v1 > v2.w);
 }
 
 //--- less than or equal to ---
 
 template <typename T>
-inline bvec1 operator<=(const vec1<T> & v1, const vec1<T> & v2) {
+constexpr bvec1 operator<=(const vec1<T> & v1, const vec1<T> & v2) {
     return bvec1(v1.x <= v2.x);
 }
 
 template <typename T>
-inline bvec2 operator<=(const vec2<T> & v1, const vec2<T> & v2) {
+constexpr bvec2 operator<=(const vec2<T> & v1, const vec2<T> & v2) {
     return bvec2(v1.x <= v2.x, v1.y <= v2.y);
 }
 
 template <typename T>
-inline bvec3 operator<=(const vec3<T> & v1, const vec3<T> & v2) {
+constexpr bvec3 operator<=(const vec3<T> & v1, const vec3<T> & v2) {
     return bvec3(v1.x <= v2.x, v1.y <= v2.y, v1.z <= v2.z);
 }
 
 template <typename T>
-inline bvec4 operator<=(const vec4<T> & v1, const vec4<T> & v2) {
+constexpr bvec4 operator<=(const vec4<T> & v1, const vec4<T> & v2) {
     return bvec4(v1.x <= v2.x, v1.y <= v2.y, v1.z <= v2.z, v1.w <= v2.w);
 }
 
 template <typename T>
-inline bvec1 operator<=(const vec1<T> & v1, const T & v2) {
+constexpr bvec1 operator<=(const vec1<T> & v1, const T & v2) {
     return bvec1(v1.x <= v2);
 }
 
 template <typename T>
-inline bvec2 operator<=(const vec2<T> & v1, const T & v2) {
+constexpr bvec2 operator<=(const vec2<T> & v1, const T & v2) {
     return bvec2(v1.x <= v2, v1.y <= v2);
 }
 
 template <typename T>
-inline bvec3 operator<=(const vec3<T> & v1, const T & v2) {
+constexpr bvec3 operator<=(const vec3<T> & v1, const T & v2) {
     return bvec3(v1.x <= v2, v1.y <= v2, v1.z <= v2);
 }
 
 template <typename T>
-inline bvec4 operator<=(const vec4<T> & v1, const T & v2) {
+constexpr bvec4 operator<=(const vec4<T> & v1, const T & v2) {
     return bvec4(v1.x <= v2, v1.y <= v2, v1.z <= v2, v1.w <= v2);
 }
 
 template <typename T>
-inline bvec1 operator<=(const T & v1, const vec1<T> & v2) {
+constexpr bvec1 operator<=(const T & v1, const vec1<T> & v2) {
     return bvec1(v1 <= v2.x);
 }
 
 template <typename T>
-inline bvec2 operator<=(const T & v1, const vec2<T> & v2) {
+constexpr bvec2 operator<=(const T & v1, const vec2<T> & v2) {
     return bvec2(v1 <= v2.x, v1 <= v2.y);
 }
 
 template <typename T>
-inline bvec3 operator<=(const T & v1, const vec3<T> & v2) {
+constexpr bvec3 operator<=(const T & v1, const vec3<T> & v2) {
     return bvec3(v1 <= v2.x, v1 <= v2.y, v1 <= v2.z);
 }
 
 template <typename T>
-inline bvec4 operator<=(const T & v1, const vec4<T> & v2) {
+constexpr bvec4 operator<=(const T & v1, const vec4<T> & v2) {
     return bvec4(v1 <= v2.x, v1 <= v2.y, v1 <= v2.z, v1 <= v2.w);
 }
 
 //--- greater than or equal to ---
 
 template <typename T>
-inline bvec1 operator>=(const vec1<T> & v1, const vec1<T> & v2) {
+constexpr bvec1 operator>=(const vec1<T> & v1, const vec1<T> & v2) {
     return bvec1(v1.x >= v2.x);
 }
 
 template <typename T>
-inline bvec2 operator>=(const vec2<T> & v1, const vec2<T> & v2) {
+constexpr bvec2 operator>=(const vec2<T> & v1, const vec2<T> & v2) {
     return bvec2(v1.x >= v2.x, v1.y >= v2.y);
 }
 
 template <typename T>
-inline bvec3 operator>=(const vec3<T> & v1, const vec3<T> & v2) {
+constexpr bvec3 operator>=(const vec3<T> & v1, const vec3<T> & v2) {
     return bvec3(v1.x >= v2.x, v1.y >= v2.y, v1.z >= v2.z);
 }
 
 template <typename T>
-inline bvec4 operator>=(const vec4<T> & v1, const vec4<T> & v2) {
+constexpr bvec4 operator>=(const vec4<T> & v1, const vec4<T> & v2) {
     return bvec4(v1.x >= v2.x, v1.y >= v2.y, v1.z >= v2.z, v1.w >= v2.w);
 }
 
 template <typename T>
-inline bvec1 operator>=(const vec1<T> & v1, const T & v2) {
+constexpr bvec1 operator>=(const vec1<T> & v1, const T & v2) {
     return bvec1(v1.x >= v2);
 }
 
 template <typename T>
-inline bvec2 operator>=(const vec2<T> & v1, const T & v2) {
+constexpr bvec2 operator>=(const vec2<T> & v1, const T & v2) {
     return bvec2(v1.x >= v2, v1.y >= v2);
 }
 
 template <typename T>
-inline bvec3 operator>=(const vec3<T> & v1, const T & v2) {
+constexpr bvec3 operator>=(const vec3<T> & v1, const T & v2) {
     return bvec3(v1.x >= v2, v1.y >= v2, v1.z >= v2);
 }
 
 template <typename T>
-inline bvec4 operator>=(const vec4<T> & v1, const T & v2) {
+constexpr bvec4 operator>=(const vec4<T> & v1, const T & v2) {
     return bvec4(v1.x >= v2, v1.y >= v2, v1.z >= v2, v1.w >= v2);
 }
 
 template <typename T>
-inline bvec1 operator>=(const T & v1, const vec1<T> & v2) {
+constexpr bvec1 operator>=(const T & v1, const vec1<T> & v2) {
     return bvec1(v1 >= v2.x);
 }
 
 template <typename T>
-inline bvec2 operator>=(const T & v1, const vec2<T> & v2) {
+constexpr bvec2 operator>=(const T & v1, const vec2<T> & v2) {
     return bvec2(v1 >= v2.x, v1 >= v2.y);
 }
 
 template <typename T>
-inline bvec3 operator>=(const T & v1, const vec3<T> & v2) {
+constexpr bvec3 operator>=(const T & v1, const vec3<T> & v2) {
     return bvec3(v1 >= v2.x, v1 >= v2.y, v1 >= v2.z);
 }
 
 template <typename T>
-inline bvec4 operator>=(const T & v1, const vec4<T> & v2) {
+constexpr bvec4 operator>=(const T & v1, const vec4<T> & v2) {
     return bvec4(v1 >= v2.x, v1 >= v2.y, v1 >= v2.z, v1 >= v2.w);
 }
 
@@ -2769,14 +2931,29 @@ inline bvec4 operator>=(const T & v1, const vec4<T> & v2) {
 
 
 
-template <typename T, nat t_n>
-inline std::ostream & operator<<(std::ostream & os, const vec<T, t_n> & v) {
-    return os << v.toString();
+template <typename T>
+inline std::ostream & operator<<(std::ostream & os, const vec1<T> & v) {
+    return os << "[ " << v.x << " ]";
+}
+
+template <typename T>
+inline std::ostream & operator<<(std::ostream & os, const vec2<T> & v) {
+    return os << "[ " << v.x << " " << v.y << " ]";
+}
+
+template <typename T>
+inline std::ostream & operator<<(std::ostream & os, const vec3<T> & v) {
+    return os << "[ " << v.x << " " << v.y << " " << v.z << " ]";
+}
+
+template <typename T>
+inline std::ostream & operator<<(std::ostream & os, const vec4<T> & v) {
+    return os << "[ " << v.x << " " << v.y << " " << v.z << " " << v.w << " ]";
 }
 
 template <typename T, nat t_n>
 inline std::ostream & operator<<(std::ostream & os, const span<T, t_n> & s) {
-    return os << s.toString();
+    return os << "[ " << s.min << " " << s.max << " ]";
 }
 
 
@@ -2812,63 +2989,63 @@ inline T magnitude2(const vec4<T> & v) {
 }
 
 template <typename T, nat t_n, enable_if_floating_t<T>>
-inline vec<T, t_n> normalize(const vec<T, t_n> & v) {
+inline vec<T, t_n> norm(const vec<T, t_n> & v) {
     T m(magnitude(v));
     if (zero(m)) {
         return vec<T, t_n>();
     }
-    return v * (static_cast<T>(1) / m);
+    return v * (static_cast<T>(1.0) / m);
 }
 
 template <typename T>
-inline T dot(const vec1<T> & v1, const vec1<T> & v2) {
+constexpr T dot(const vec1<T> & v1, const vec1<T> & v2) {
     return v1.x * v2.x;
 }
 
 template <typename T>
-inline T dot(const vec2<T> & v1, const vec2<T> & v2) {
+constexpr T dot(const vec2<T> & v1, const vec2<T> & v2) {
     return v1.x * v2.x + v1.y * v2.y;
 }
 
 template <typename T>
-inline T dot(const vec3<T> & v1, const vec3<T> & v2) {
+constexpr T dot(const vec3<T> & v1, const vec3<T> & v2) {
     return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
 }
 
 template <typename T>
-inline T dot(const vec4<T> & v1, const vec4<T> & v2) {
+constexpr T dot(const vec4<T> & v1, const vec4<T> & v2) {
     return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z + v1.w * v2.w;
 }
 
 template <typename T>
-inline T cross(const vec2<T> & v1, const vec2<T> & v2) {
+constexpr T cross(const vec2<T> & v1, const vec2<T> & v2) {
     return v1.x * v2.y - v1.y * v2.x;
 }
 
 template <typename T>
-inline vec3<T> cross(const vec3<T> & v1, const vec3<T> & v2) {
+constexpr vec3<T> cross(const vec3<T> & v1, const vec3<T> & v2) {
     return vec3<T>(v1.y * v2.z - v1.z * v2.y, v1.z * v2.x - v1.x * v2.z, v1.x * v2.y - v1.y * v2.x);
 }
 
 template <typename T, nat t_n>
-inline bool parallel(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
-    return equal(std::abs(dot(v1, v2)), static_cast<T>(1.0));
+constexpr bool parallel(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
+    return equal(abs(dot(v1, v2)), static_cast<T>(1.0));
 }
 
 template <typename T, nat t_n>
-inline bool orthogonal(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
+constexpr bool orthogonal(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
     return zero(dot(v1, v2));
 }
 
 template <typename T>
-inline vec2<T> ortho(const vec2<T> & v) {
+constexpr vec2<T> ortho(const vec2<T> & v) {
     return vec2<T>(-v.y, v.x);
 }
 
 template <typename T>
-inline vec3<T> ortho(const vec3<T> & v) {    
-    if (std::abs(v.x) < std::abs(v.y)) {
-        if (std::abs(v.x) <= std::abs(v.z)) {   // x is smallest
+constexpr vec3<T> ortho(const vec3<T> & v) {    
+    if (abs(v.x) < abs(v.y)) {
+        if (abs(v.x) <= abs(v.z)) {   // x or z is smallest
             return vec3<T>(0, -v.z, v.y);       // rotate around x
         }
         else {                                  // z is smallest
@@ -2876,18 +3053,47 @@ inline vec3<T> ortho(const vec3<T> & v) {
         }
     }
     else {
-        if (std::abs(v.y) < std::abs(v.z)) {    // y is smallest
+        if (abs(v.y) < abs(v.z)) {    // y or x is smallest
             return vec3<T>(v.z, 0, -v.x);       // rotate around y
         }
-        else {                                  // z is smallest
+        else {                                  // z or y is smallest
             return vec3<T>(-v.y, v.x, 0);       // rotate around z
         }
     }
 }
 
+template <typename T>
+inline void orthogonalize(const vec2<T> & v1, vec2<T> & v2) {
+    v2.x = -v1.y;
+    v2.y = v1.x;
+}
+
+template <typename T, enable_if_floating_t<T>>
+inline void orthogonalize(const vec3<T> & v1, vec3<T> & v2, vec3<T> & v3) {
+    orthogonalize_n(v1, v2, v3);
+    v2 = norm(v2);
+    v3 = norm(v3);
+}
+
+// in order of priority
+template <typename T, enable_if_floating_t<T>>
+inline void orthogonalize_n(const vec3<T> & v1, vec3<T> & v2, vec3<T> & v3) {
+    if (parallel(v1, v2)) {
+        if (parallel(v2, v3)) {
+            v2 = ortho(v1);
+        }
+        else {
+            v2 = cross(v1, v3);
+        }
+    }
+
+    v3 = cross(v2, v1);
+    v2 = cross(v1, v3);
+}
+
 template <typename T, nat t_n, enable_if_floating_t<T>>
 inline vec<T, t_n> reflect(const vec<T, t_n> & v, const vec<T, t_n> & n) {
-    return reflect_n(v, normalize(n));
+    return reflect_n(v, norm(n));
 }
 
 template <typename T, nat t_n, enable_if_floating_t<T>>
@@ -2897,7 +3103,7 @@ inline vec<T, t_n> reflect_n(const vec<T, t_n> & v, const vec<T, t_n> & n) {
 
 template <typename T, nat t_n, enable_if_floating_t<T>>
 inline T angle(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
-    return angle_n(normalize(v1), normalize(v2));
+    return angle_n(norm(v1), norm(v2));
 }
 template <typename T, nat t_n, enable_if_floating_t<T>>
 inline T angle_n(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
@@ -2905,94 +3111,134 @@ inline T angle_n(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
 }
 
 template <typename T>
-inline T min(const vec1<T> & v) {
+constexpr T min(const vec1<T> & v) {
     return v.x;
 }
 
 template <typename T>
-inline T min(const vec2<T> & v) {
+constexpr T min(const vec2<T> & v) {
     return min(v.x, v.y);
 }
 
 template <typename T>
-inline T min(const vec3<T> & v) {
+constexpr T min(const vec3<T> & v) {
     return min(v.x, v.y, v.z);
 }
 
 template <typename T>
-inline T min(const vec4<T> & v) {
+constexpr T min(const vec4<T> & v) {
     return min(v.x, v.y, v.z, v.w);
 }
 
 template <typename T>
-inline T max(const vec1<T> & v) {
+constexpr T max(const vec1<T> & v) {
     return v.x;
 }
 
 template <typename T>
-inline T max(const vec2<T> & v) {
+constexpr T max(const vec2<T> & v) {
     return max(v.x, v.y);
 }
 
 template <typename T>
-inline T max(const vec3<T> & v) {
+constexpr T max(const vec3<T> & v) {
     return max(v.x, v.y, v.z);
 }
 
 template <typename T>
-inline T max(const vec4<T> & v) {
+constexpr T max(const vec4<T> & v) {
     return max(v.x, v.y, v.z, v.w);
 }
 
 template <typename T>
-inline vec1<T> min(const vec1<T> & v1, const vec1<T> & v2) {
+constexpr vec1<T> min(const vec1<T> & v1, const vec1<T> & v2) {
     return vec1<T>(min(v1.x, v2.x));
 }
 
 template <typename T>
-inline vec2<T> min(const vec2<T> & v1, const vec2<T> & v2) {
+constexpr vec2<T> min(const vec2<T> & v1, const vec2<T> & v2) {
     return vec2<T>(min(v1.x, v2.x), min(v1.y, v2.y));
 }
 
 template <typename T>
-inline vec3<T> min(const vec3<T> & v1, const vec3<T> & v2) {
+constexpr vec3<T> min(const vec3<T> & v1, const vec3<T> & v2) {
     return vec3<T>(min(v1.x, v2.x), min(v1.y, v2.y), min(v1.z, v2.z));
 }
 
 template <typename T>
-inline vec4<T> min(const vec4<T> & v1, const vec4<T> & v2) {
+constexpr vec4<T> min(const vec4<T> & v1, const vec4<T> & v2) {
     return vec4<T>(min(v1.x, v2.x), min(v1.y, v2.y), min(v1.z, v2.z), min(v1.w, v2.w));
 }
 
+template <typename T, typename... Ts>
+constexpr vec1<T> min(const vec1<T> & v1, const vec1<T> & v2, const vec1<Ts> &... rest) {
+    return vec1<T>(detail::min<0>(v1, v2, rest...));
+}
+
+template <typename T, typename... Ts>
+constexpr vec2<T> min(const vec2<T> & v1, const vec2<T> & v2, const vec2<Ts> &... rest) {
+    return vec2<T>(detail::min<0>(v1, v2, rest...), detail::min<1>(v1, v2, rest...));
+}
+
+template <typename T, typename... Ts>
+constexpr vec3<T> min(const vec3<T> & v1, const vec3<T> & v2, const vec3<Ts> &... rest) {
+    return vec3<T>(detail::min<0>(v1, v2, rest...), detail::min<1>(v1, v2, rest...), detail::min<2>(v1, v2, rest...));
+}
+
+template <typename T, typename... Ts>
+constexpr vec4<T> min(const vec4<T> & v1, const vec4<T> & v2, const vec4<Ts> &... rest) {
+    return vec4<T>(detail::min<0>(v1, v2, rest...), detail::min<1>(v1, v2, rest...), detail::min<2>(v1, v2, rest...), detail::min<3>(v1, v2, rest...));
+}
+
 template <typename T>
-inline vec1<T> max(const vec1<T> & v1, const vec1<T> & v2) {
+constexpr vec1<T> max(const vec1<T> & v1, const vec1<T> & v2) {
     return vec1<T>(max(v1.x, v2.x));
 }
 
 template <typename T>
-inline vec2<T> max(const vec2<T> & v1, const vec2<T> & v2) {
+constexpr vec2<T> max(const vec2<T> & v1, const vec2<T> & v2) {
     return vec2<T>(max(v1.x, v2.x), max(v1.y, v2.y));
 }
 
 template <typename T>
-inline vec3<T> max(const vec3<T> & v1, const vec3<T> & v2) {
+constexpr vec3<T> max(const vec3<T> & v1, const vec3<T> & v2) {
     return vec3<T>(max(v1.x, v2.x), max(v1.y, v2.y), max(v1.z, v2.z));
 }
 
 template <typename T>
-inline vec4<T> max(const vec4<T> & v1, const vec4<T> & v2) {
+constexpr vec4<T> max(const vec4<T> & v1, const vec4<T> & v2) {
     return vec4<T>(max(v1.x, v2.x), max(v1.y, v2.y), max(v1.z, v2.z), max(v1.w, v2.w));
 }
 
+template <typename T, typename... Ts>
+constexpr vec1<T> max(const vec1<T> & v1, const vec1<T> & v2, const vec1<Ts> &... rest) {
+    return vec1<T>(detail::max<0>(v1, v2, rest...));
+}
+
+template <typename T, typename... Ts>
+constexpr vec2<T> max(const vec2<T> & v1, const vec2<T> & v2, const vec2<Ts> &... rest) {
+    return vec2<T>(detail::max<0>(v1, v2, rest...), detail::max<1>(v1, v2, rest...));
+}
+
+template <typename T, typename... Ts>
+constexpr vec3<T> max(const vec3<T> & v1, const vec3<T> & v2, const vec3<Ts> &... rest) {
+    return vec3<T>(detail::max<0>(v1, v2, rest...), detail::max<1>(v1, v2, rest...), detail::max<2>(v1, v2, rest...));
+}
+
+template <typename T, typename... Ts>
+constexpr vec4<T> max(const vec4<T> & v1, const vec4<T> & v2, const vec4<Ts> &... rest) {
+    return vec4<T>(detail::max<0>(v1, v2, rest...), detail::max<1>(v1, v2, rest...), detail::max<2>(v1, v2, rest...), detail::max<3>(v1, v2, rest...));
+}
+
 template <typename T>
-inline vec1<T> clamp(const vec1<T> & v, const T & min, const T & max) {
+constexpr vec1<T> clamp(const vec1<T> & v, const T & min, const T & max) {
     return vec1<T>(
         clamp(v.x, min, max)
     );
 }
 
 template <typename T>
-inline vec2<T> clamp(const vec2<T> & v, const T & min, const T & max) {
+constexpr vec2<T> clamp(const vec2<T> & v, const T & min, const T & max) {
     return vec2<T>(
         clamp(v.x, min, max),
         clamp(v.y, min, max)
@@ -3000,7 +3246,7 @@ inline vec2<T> clamp(const vec2<T> & v, const T & min, const T & max) {
 }
 
 template <typename T>
-inline vec3<T> clamp(const vec3<T> & v, const T & min, const T & max) {
+constexpr vec3<T> clamp(const vec3<T> & v, const T & min, const T & max) {
     return vec3<T>(
         clamp(v.x, min, max),
         clamp(v.y, min, max),
@@ -3009,7 +3255,7 @@ inline vec3<T> clamp(const vec3<T> & v, const T & min, const T & max) {
 }
 
 template <typename T>
-inline vec4<T> clamp(const vec4<T> & v, const T & min, const T & max) {
+constexpr vec4<T> clamp(const vec4<T> & v, const T & min, const T & max) {
     return vec4<T>(
         clamp(v.x, min, max),
         clamp(v.y, min, max),
@@ -3019,14 +3265,14 @@ inline vec4<T> clamp(const vec4<T> & v, const T & min, const T & max) {
 }
 
 template <typename T>
-inline vec1<T> clamp(const vec1<T> & v, const vec1<T> & min, const vec1<T> & max) {
+constexpr vec1<T> clamp(const vec1<T> & v, const vec1<T> & min, const vec1<T> & max) {
     return vec1<T>(
         clamp(v.x, min.x, max.x)
     );
 }
 
 template <typename T>
-inline vec2<T> clamp(const vec2<T> & v, const vec2<T> & min, const vec2<T> & max) {
+constexpr vec2<T> clamp(const vec2<T> & v, const vec2<T> & min, const vec2<T> & max) {
     return vec2<T>(
         clamp(v.x, min.x, max.x),
         clamp(v.y, min.y, max.y)
@@ -3034,7 +3280,7 @@ inline vec2<T> clamp(const vec2<T> & v, const vec2<T> & min, const vec2<T> & max
 }
 
 template <typename T>
-inline vec3<T> clamp(const vec3<T> & v, const vec3<T> & min, const vec3<T> & max) {
+constexpr vec3<T> clamp(const vec3<T> & v, const vec3<T> & min, const vec3<T> & max) {
     return vec3<T>(
         clamp(v.x, min.x, max.x),
         clamp(v.y, min.y, max.y),
@@ -3043,7 +3289,7 @@ inline vec3<T> clamp(const vec3<T> & v, const vec3<T> & min, const vec3<T> & max
 }
 
 template <typename T>
-inline vec4<T> clamp(const vec4<T> & v, const vec4<T> & min, const vec4<T> & max) {
+constexpr vec4<T> clamp(const vec4<T> & v, const vec4<T> & min, const vec4<T> & max) {
     return vec4<T>(
         clamp(v.x, min.x, max.x),
         clamp(v.y, min.y, max.y),
@@ -3053,52 +3299,52 @@ inline vec4<T> clamp(const vec4<T> & v, const vec4<T> & min, const vec4<T> & max
 }
 
 template <typename T, nat t_n, enable_if_floating_t<T>>
-inline vec<T, t_n> mix(const vec<T, t_n> & v1, const vec<T, t_n> & v2, T t) {
+constexpr vec<T, t_n> mix(const vec<T, t_n> & v1, const vec<T, t_n> & v2, T t) {
     return (static_cast<T>(1) - t) * v1 + t * v2;
 }
 
 template <typename T>
-inline span1<T> toSpan(const bound1<T> & b) {
-    return span1<T>(b.loc, b.loc + b.size);
+constexpr span1<T> toSpan(const bound1<T> & b) {
+    return span1<T>(b.min, b.min + b.max); // using min/max rather than loc/size for constexpr union issues
 }
 
 template <typename T>
-inline span2<T> toSpan(const bound2<T> & b) {
-    return span2<T>(b.loc, b.loc + b.size);
+constexpr span2<T> toSpan(const bound2<T> & b) {
+    return span2<T>(b.min, b.min + b.max);
 }
 
 template <typename T>
-inline span3<T> toSpan(const bound3<T> & b) {
-    return span3<T>(b.loc, b.loc + b.size);
+constexpr span3<T> toSpan(const bound3<T> & b) {
+    return span3<T>(b.min, b.min + b.max);
 }
 
 template <typename T>
-inline span4<T> toSpan(const bound4<T> & b) {
-    return span4<T>(b.loc, b.loc + b.size);
+constexpr span4<T> toSpan(const bound4<T> & b) {
+    return span4<T>(b.min, b.min + b.max);
 }
 
 template <typename T>
-inline bound1<T> toBound(const span1<T> & s) {
+constexpr bound1<T> toBound(const span1<T> & s) {
     return bound1<T>(s.min, s.max - s.min);
 }
 
 template <typename T>
-inline bound2<T> toBound(const span2<T> & s) {
+constexpr bound2<T> toBound(const span2<T> & s) {
     return bound2<T>(s.min, s.max - s.min);
 }
 
 template <typename T>
-inline bound3<T> toBound(const span3<T> & s) {
+constexpr bound3<T> toBound(const span3<T> & s) {
     return bound3<T>(s.min, s.max - s.min);
 }
 
 template <typename T>
-inline bound4<T> toBound(const span4<T> & s) {
+constexpr bound4<T> toBound(const span4<T> & s) {
     return bound4<T>(s.min, s.max - s.min);
 }
 
 template <typename T>
-inline span1<T> intersect(const span1<T> & s1, const span1<T> & s2) {
+constexpr span1<T> intersect(const span1<T> & s1, const span1<T> & s2) {
     return span1<T>(
         vec1<T>(
             max(s1.min.x, s2.min.x)
@@ -3110,7 +3356,7 @@ inline span1<T> intersect(const span1<T> & s1, const span1<T> & s2) {
 }
 
 template <typename T>
-inline span2<T> intersect(const span2<T> & s1, const span2<T> & s2) {
+constexpr span2<T> intersect(const span2<T> & s1, const span2<T> & s2) {
     return span2<T>(
         vec2<T>(
             max(s1.min.x, s2.min.x),
@@ -3124,7 +3370,7 @@ inline span2<T> intersect(const span2<T> & s1, const span2<T> & s2) {
 }
 
 template <typename T>
-inline span3<T> intersect(const span3<T> & s1, const span3<T> & s2) {
+constexpr span3<T> intersect(const span3<T> & s1, const span3<T> & s2) {
     return span3<T>(
         vec3<T>(
             max(s1.min.x, s2.min.x),
@@ -3140,7 +3386,7 @@ inline span3<T> intersect(const span3<T> & s1, const span3<T> & s2) {
 }
 
 template <typename T>
-inline span4<T> intersect(const span4<T> & s1, const span4<T> & s2) {
+constexpr span4<T> intersect(const span4<T> & s1, const span4<T> & s2) {
     return span4<T>(
         vec4<T>(
             max(s1.min.x, s2.min.x),
@@ -3157,67 +3403,67 @@ inline span4<T> intersect(const span4<T> & s1, const span4<T> & s2) {
     );
 }
 
-inline bool and(const bvec1 & v) {
+constexpr bool and(const bvec1 & v) {
     return v.x;
 }
 
-inline bool and(const bvec2 & v) {
+constexpr bool and(const bvec2 & v) {
     return v.x && v.y;
 }
 
-inline bool and(const bvec3 & v) {
+constexpr bool and(const bvec3 & v) {
     return v.x && v.y && v.z;
 }
 
-inline bool and(const bvec4 & v) {
+constexpr bool and(const bvec4 & v) {
     return v.x && v.y && v.z && v.w;
 }
 
-inline bool or(const bvec1 & v) {
+constexpr bool or(const bvec1 & v) {
     return v.x;
 }
 
-inline bool or(const bvec2 & v) {
+constexpr bool or(const bvec2 & v) {
     return v.x || v.y;
 }
 
-inline bool or(const bvec3 & v) {
+constexpr bool or(const bvec3 & v) {
     return v.x || v.y || v.z;
 }
 
-inline bool or(const bvec4 & v) {
+constexpr bool or(const bvec4 & v) {
     return v.x || v.y || v.z || v.w;
 }
 
-inline bool xor(const bvec1 & v) {
+constexpr bool xor(const bvec1 & v) {
     return v.x;
 }
 
-inline bool xor(const bvec2 & v) {
+constexpr bool xor(const bvec2 & v) {
     return v.x ^ v.y;
 }
 
-inline bool xor(const bvec3 & v) {
+constexpr bool xor(const bvec3 & v) {
     return v.x ^ v.y ^ v.z;
 }
 
-inline bool xor(const bvec4 & v) {
+constexpr bool xor(const bvec4 & v) {
     return v.x ^ v.y ^ v.z ^ v.w;
 }
 
-inline bvec1 not(const bvec1 & v) {
+constexpr bvec1 not(const bvec1 & v) {
     return bvec1(!v.x);
 }
 
-inline bvec2 not(const bvec2 & v) {
+constexpr bvec2 not(const bvec2 & v) {
     return bvec2(!v.x, !v.y);
 }
 
-inline bvec3 not(const bvec3 & v) {
+constexpr bvec3 not(const bvec3 & v) {
     return bvec3(!v.x, !v.y, !v.z);
 }
 
-inline bvec4 not(const bvec4 & v) {
+constexpr bvec4 not(const bvec4 & v) {
     return bvec4(!v.x, !v.y, !v.z, !v.w);
 }
 

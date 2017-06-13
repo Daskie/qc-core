@@ -2,9 +2,9 @@
 
 #include "Vector.hpp"
 #include "Matrix.hpp"
-#include "Quaternion.hpp"
-#include "Math.hpp"
-#include "Utils.hpp"
+//#include "Quaternion.hpp"
+//#include "Math.hpp"
+//#include "Utils.hpp"
 
 // Including SDKDDKVer.h defines the highest available Windows platform.
 
