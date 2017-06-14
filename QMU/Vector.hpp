@@ -845,13 +845,22 @@ template <typename T, nat t_n> std::ostream & operator<<(std::ostream & os, cons
 
 //--- uncategorized ---
 
-template <typename T, nat t_n, enable_if_floating_t<T> = 0>
+template <typename T, nat t_n, eif_floating_t<T>...>
+vec<T, t_n> pow(const vec<T, t_n> & v, T p);
+
+template <typename T, nat t_n, eif_floating_t<T>...>
+vec<T, t_n> pow(const vec<T, t_n> & v, const vec<T, t_n> & p);
+
+template <typename T, nat t_n, eif_t<std::is_floating_point<T>::value>...>
+vec<T, t_n> exp(const vec<T, t_n> & v);
+
+template <typename T, nat t_n, eif_floating_t<T>...>
 T magnitude(const vec<T, t_n> & v);
 
 template <typename T, nat t_n>
 T magnitude2(const vec<T, t_n> & v);
 
-template <typename T, nat t_n, enable_if_floating_t<T> = 0>
+template <typename T, nat t_n, eif_floating_t<T>...>
 vec<T, t_n> norm(const vec<T, t_n> & v);
 
 template <typename T, nat t_n>
@@ -872,19 +881,19 @@ constexpr vec<T, t_n> ortho(const vec<T, t_n> & v);
 template <typename T>
 void orthogonalize(const vec2<T> & v1, vec2<T> & v2);
 
-template <typename T, enable_if_floating_t<T> = 0>
+template <typename T, eif_floating_t<T>...>
 void orthogonalize(const vec3<T> & v1, vec3<T> & v2, vec3<T> & v3);
-template <typename T, enable_if_floating_t<T> = 0>
+template <typename T, eif_floating_t<T>...>
 void orthogonalize_n(const vec3<T> & v1, vec3<T> & v2, vec3<T> & v3);
 
-template <typename T, nat t_n, enable_if_floating_t<T> = 0>
+template <typename T, nat t_n, eif_floating_t<T>...>
 vec<T, t_n> reflect(const vec<T, t_n> & v, const vec<T, t_n> & n);
-template <typename T, nat t_n, enable_if_floating_t<T> = 0>
+template <typename T, nat t_n, eif_floating_t<T>...>
 vec<T, t_n> reflect_n(const vec<T, t_n> & v, const vec<T, t_n> & n);
 
-template <typename T, nat t_n, enable_if_floating_t<T> = 0>
+template <typename T, nat t_n, eif_floating_t<T>...>
 T angle(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
-template <typename T, nat t_n, enable_if_floating_t<T> = 0>
+template <typename T, nat t_n, eif_floating_t<T>...>
 T angle_n(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 
 template <typename T, nat t_n>
@@ -911,7 +920,7 @@ constexpr vec<T, t_n> clamp(const vec<T, t_n> & v, const T & min, const T & max)
 template <typename T, nat t_n>
 constexpr vec<T, t_n> clamp(const vec<T, t_n> & v, const vec<T, t_n> & min, const vec<T, t_n> & max);
 
-template <typename T, nat t_n, enable_if_floating_t<T> = 0>
+template <typename T, nat t_n, eif_floating_t<T>...>
 constexpr vec<T, t_n> mix(const vec<T, t_n> & v1, const vec <T, t_n> & v2, T t);
 
 template <typename T, nat t_n>
@@ -2971,7 +2980,67 @@ inline std::ostream & operator<<(std::ostream & os, const span<T, t_n> & s) {
 
 
 
-template <typename T, nat t_n, enable_if_floating_t<T>>
+template <typename T, eif_floating_t<T>...>
+inline vec1<T> pow(const vec1<T> & v, T p) {
+    return vec1<T>(std::pow(v.x, p));
+}
+
+template <typename T, eif_floating_t<T>...>
+inline vec2<T> pow(const vec2<T> & v, T p) {
+    return vec2<T>(std::pow(v.x, p), std::pow(v.y, p));
+}
+
+template <typename T, eif_floating_t<T>...>
+inline vec3<T> pow(const vec3<T> & v, T p) {
+    return vec3<T>(std::pow(v.x, p), std::pow(v.y, p), std::pow(v.z, p));
+}
+
+template <typename T, eif_floating_t<T>...>
+inline vec4<T> pow(const vec4<T> & v, T p) {
+    return vec4<T>(std::pow(v.x, p), std::pow(v.y, p), std::pow(v.z, p), std::pow(v.w, p));
+}
+
+template <typename T, eif_floating_t<T>...>
+inline vec1<T> pow(const vec1<T> & v, const vec1<T> & p) {
+    return vec1<T>(std::pow(v.x, p.x));
+}
+
+template <typename T, eif_floating_t<T>...>
+inline vec2<T> pow(const vec2<T> & v, const vec2<T> & p) {
+    return vec2<T>(std::pow(v.x, p.x), std::pow(v.y, p.y));
+}
+
+template <typename T, eif_floating_t<T>...>
+inline vec3<T> pow(const vec3<T> & v, const vec3<T> & p) {
+    return vec3<T>(std::pow(v.x, p.x), std::pow(v.y, p.y), std::pow(v.z, p.z));
+}
+
+template <typename T, eif_floating_t<T>...>
+inline vec4<T> pow(const vec4<T> & v, const vec4<T> & p) {
+    return vec4<T>(std::pow(v.x, p.x), std::pow(v.y, p.y), std::pow(v.z, p.z), std::pow(v.w, p.w));
+}
+
+template <typename T, typename eif_t<std::is_floating_point<T>::value>...>
+inline vec1<T> exp(const vec1<T> & v) {
+    return vec1<T>(std::exp(v.x));
+}
+
+template <typename T, typename eif_t<std::is_floating_point<T>::value>...>
+inline vec2<T> exp(const vec2<T> & v) {
+    return vec2<T>(std::exp(v.x), std::exp(v.y));
+}
+
+template <typename T, typename eif_t<std::is_floating_point<T>::value>...>
+inline vec3<T> exp(const vec3<T> & v) {
+    return vec3<T>(std::exp(v.x), std::exp(v.y), std::exp(v.z));
+}
+
+template <typename T, typename eif_t<std::is_floating_point<T>::value>...>
+inline vec4<T> exp(const vec4<T> & v) {
+    return vec4<T>(std::exp(v.x), std::exp(v.y), std::exp(v.z), std::exp(v.w));
+}
+
+template <typename T, nat t_n, eif_floating_t<T>...>
 inline T magnitude(const vec<T, t_n> & v) {
     return static_cast<T>(std::sqrt(magnitude2(v)));
 }
@@ -2996,7 +3065,7 @@ inline T magnitude2(const vec4<T> & v) {
     return v.x * v.x + v.y * v.y + v.z * v.z + v.w * v.w;
 }
 
-template <typename T, nat t_n, enable_if_floating_t<T>>
+template <typename T, nat t_n, eif_floating_t<T>...>
 inline vec<T, t_n> norm(const vec<T, t_n> & v) {
     T m(magnitude(v));
     if (zero(m)) {
@@ -3076,7 +3145,7 @@ inline void orthogonalize(const vec2<T> & v1, vec2<T> & v2) {
     v2.y = v1.x;
 }
 
-template <typename T, enable_if_floating_t<T>>
+template <typename T, eif_floating_t<T>...>
 inline void orthogonalize(const vec3<T> & v1, vec3<T> & v2, vec3<T> & v3) {
     orthogonalize_n(v1, v2, v3);
     v2 = norm(v2);
@@ -3084,7 +3153,7 @@ inline void orthogonalize(const vec3<T> & v1, vec3<T> & v2, vec3<T> & v3) {
 }
 
 // in order of priority
-template <typename T, enable_if_floating_t<T>>
+template <typename T, eif_floating_t<T>...>
 inline void orthogonalize_n(const vec3<T> & v1, vec3<T> & v2, vec3<T> & v3) {
     if (parallel(v1, v2)) {
         if (parallel(v2, v3)) {
@@ -3099,21 +3168,21 @@ inline void orthogonalize_n(const vec3<T> & v1, vec3<T> & v2, vec3<T> & v3) {
     v2 = cross(v1, v3);
 }
 
-template <typename T, nat t_n, enable_if_floating_t<T>>
+template <typename T, nat t_n, eif_floating_t<T>...>
 inline vec<T, t_n> reflect(const vec<T, t_n> & v, const vec<T, t_n> & n) {
     return reflect_n(v, norm(n));
 }
 
-template <typename T, nat t_n, enable_if_floating_t<T>>
+template <typename T, nat t_n, eif_floating_t<T>...>
 inline vec<T, t_n> reflect_n(const vec<T, t_n> & v, const vec<T, t_n> & n) {
-    return static_cast<T>(2 * dot(v, n)) * n - v;
+    return (static_cast<T>(2.0) * dot(v, n)) * n - v;
 }
 
-template <typename T, nat t_n, enable_if_floating_t<T>>
+template <typename T, nat t_n, eif_floating_t<T>...>
 inline T angle(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
     return angle_n(norm(v1), norm(v2));
 }
-template <typename T, nat t_n, enable_if_floating_t<T>>
+template <typename T, nat t_n, eif_floating_t<T>...>
 inline T angle_n(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
     return static_cast<T>(std::acos(dot(v1, v2)));
 }
@@ -3306,7 +3375,7 @@ constexpr vec4<T> clamp(const vec4<T> & v, const vec4<T> & min, const vec4<T> & 
     );
 }
 
-template <typename T, nat t_n, enable_if_floating_t<T>>
+template <typename T, nat t_n, eif_floating_t<T>...>
 constexpr vec<T, t_n> mix(const vec<T, t_n> & v1, const vec<T, t_n> & v2, T t) {
     return (static_cast<T>(1) - t) * v1 + t * v2;
 }

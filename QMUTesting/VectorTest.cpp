@@ -677,6 +677,21 @@ void compileFunctionsT() {
 
     // uncategorized
 
+    pow(v1, v);
+    pow(v2, v);
+    pow(v3, v);
+    pow(v4, v);
+
+    pow(v1, v1);
+    pow(v2, v2);
+    pow(v3, v3);
+    pow(v4, v4);
+
+    exp(v1);
+    exp(v2);
+    exp(v3);
+    exp(v4);
+
     magnitude(v1);
     magnitude(v2);
     magnitude(v3);

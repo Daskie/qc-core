@@ -504,17 +504,8 @@ constexpr void compileFunctionsConstexprT() {
     translate(v1);
     translate(v2);
     translate(v3);
-    translate(m2, v1);
-    translate(m3, v2);
-    translate(m4, v3);
     scale(v2);
     scale(v3);
-    scale(m2, v1);
-    scale(m2, v2);
-    scale(m3, v2);
-    scale(m3, v3);
-    scale(m4, v3);
-    scale(m4, v4);
     map(v2, v2, v2, v2);
     map_o(v2, v2, v2, v2);
     map(v3, v3, v3, v3, v3, v3);

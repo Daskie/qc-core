@@ -12,7 +12,7 @@ namespace qmu {
 
 
 
-template <typename T, enable_if_floating_t<T> = 0>
+template <typename T, eif_floating_t<T>...>
 inline vec2<T> polarToCartesian(const vec2<T> & v) {
     return vec2<T>(
         v.rad * std::cos(v.theta),
@@ -20,7 +20,7 @@ inline vec2<T> polarToCartesian(const vec2<T> & v) {
     );
 }
 
-template <typename T, enable_if_floating_t<T> = 0>
+template <typename T, eif_floating_t<T>...>
 inline vec2<T> cartesianToPolar(const vec2<T> & v) {
     return vec2<T>(
         magnitude(v),
@@ -29,7 +29,7 @@ inline vec2<T> cartesianToPolar(const vec2<T> & v) {
 }
 
 //r is radius, theta is angle on xy plane, phi is angle from z axis
-template <typename T, enable_if_floating_t<T> = 0>
+template <typename T, eif_floating_t<T>...>
 inline vec3<T> sphericalToCartesian(const vec3<T> & v) {
     T sinTheta = std::sin(v.theta);
     T cosTheta = std::cos(v.theta);
@@ -43,7 +43,7 @@ inline vec3<T> sphericalToCartesian(const vec3<T> & v) {
     );
 }
 
-template <typename T, enable_if_floating_t<T> = 0>
+template <typename T, eif_floating_t<T>...>
 inline vec3<T> cartesianToSpherical(const vec3<T> & v) {
     T rad(magnitude(v));
     return vec3<T>(
@@ -53,7 +53,7 @@ inline vec3<T> cartesianToSpherical(const vec3<T> & v) {
     );
 }
 
-template <typename T, enable_if_floating_t<T> = 0>
+template <typename T, eif_floating_t<T>...>
 inline vec3<T> cylindricToCartesian(const vec3<T> & v) {
     return vec3<T>(
         v.rad * std::cos(v.theta),
@@ -62,7 +62,7 @@ inline vec3<T> cylindricToCartesian(const vec3<T> & v) {
     );
 }
 
-template <typename T, enable_if_floating_t<T> = 0>
+template <typename T, eif_floating_t<T>...>
 inline vec3<T> cartesianToCylindric(const vec3<T> & v) {
     return vec3<T>(
         magnitude(v),
@@ -142,7 +142,7 @@ inline fvec3 baryFromAngleC(float angle, float c) {
     return v;
 }
 
-template <typename T, enable_if_floating_t<T> = 0>
+template <typename T, eif_floating_t<T>...>
 inline vec2<T> pointOnDiscFibonacci(nat i, nat n) {
     return polarToCartesian(qmu::vec2<T>(
         std::sqrt(static_cast<T>(i) / static_cast<T>(n)),
@@ -150,7 +150,7 @@ inline vec2<T> pointOnDiscFibonacci(nat i, nat n) {
     ));
 }
 
-template <typename T, enable_if_floating_t<T> = 0>
+template <typename T, eif_floating_t<T>...>
 inline vec3<T> pointOnSphereFibonacci(nat i, nat n) {
     T z((1 - 1 / static_cast<T>(n)) * (1 - 2 * static_cast<T>(i) /  static_cast<T>(n - 1)));
     return cylindricToCartesian(qmu::vec3<T>(

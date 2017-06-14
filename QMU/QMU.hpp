@@ -74,17 +74,22 @@ constexpr nat k_nat_p = sizeof(nat);
 template <typename T1, typename T2>
 using match_sign_t = std::conditional_t<std::is_signed<T2>::value, std::make_signed_t<T1>, std::make_unsigned_t<T1>>;
 
-template <typename T>
-using enable_if_floating_t = std::enable_if_t<std::is_floating_point<T>::value, int>;
+namespace detail { enum class enabler {}; }
+
+template <bool t_b>
+using eif_t = std::enable_if_t<t_b, detail::enabler>;
 
 template <typename T>
-using enable_if_integral_t = std::enable_if_t<std::is_integral<T>::value, int>;
+using eif_floating_t = eif_t<std::is_floating_point<T>::value>;
+
+template <typename T>
+using eif_integral_t = eif_t<std::is_integral<T>::value>;
 
 
 
 namespace detail {
 
-template <typename T, enable_if_floating_t<T> = 0>
+template <typename T, eif_floating_t<T>...>
 constexpr T sqrt_constexpr_helper(T v, T curr, T prev) {
     if (curr == prev) {
         return curr;
@@ -93,7 +98,7 @@ constexpr T sqrt_constexpr_helper(T v, T curr, T prev) {
     return sqrt_constexpr_helper(v, static_cast<T>(0.5) * (curr + v / curr), curr);
 }
 
-template <typename T, enable_if_floating_t<T> = 0>
+template <typename T, eif_floating_t<T>...>
 constexpr T sqrt_constexpr(T v) {
     if (v == static_cast<T>(0.0) || v == std::numeric_limits<T>::infinity()) {
         return v;
@@ -118,12 +123,12 @@ constexpr T sqrt_constexpr(T v) {
 //  extended |   80 |     21
 //      quad |  128 |     36
 
-template <typename T, enable_if_floating_t<T> = 0> constexpr T  pi = static_cast<T>(3.14159265358979323846264338327950288L);
-template <typename T, enable_if_floating_t<T> = 0> constexpr T   e = static_cast<T>(2.71828182845904523536028747135266250L);
-template <typename T, enable_if_floating_t<T> = 0> constexpr T phi = static_cast<T>(1.61803398874989484820458683436563812L);
+template <typename T, eif_floating_t<T>...> constexpr T  pi = static_cast<T>(3.14159265358979323846264338327950288L);
+template <typename T, eif_floating_t<T>...> constexpr T   e = static_cast<T>(2.71828182845904523536028747135266250L);
+template <typename T, eif_floating_t<T>...> constexpr T phi = static_cast<T>(1.61803398874989484820458683436563812L);
 
-template <typename T, nat t_v, enable_if_floating_t<T> = 0> constexpr T sqrt = detail::sqrt_constexpr(static_cast<T>(t_v));
-template <typename T, enable_if_floating_t<T> = 0> constexpr T infinity = std::numeric_limits<T>::infinity();
+template <typename T, nat t_v, eif_floating_t<T>...> constexpr T sqrt = detail::sqrt_constexpr(static_cast<T>(t_v));
+template <typename T, eif_floating_t<T>...> constexpr T infinity = std::numeric_limits<T>::infinity();
 
 
 
@@ -152,32 +157,32 @@ constexpr T clamp(const T & v, const T & min, const T & max) {
     return qmu::min(qmu::max(v, min), max);
 }
 
-template <typename T, std::enable_if_t<std::is_signed<T>::value, int> = 0>
+template <typename T, eif_t<std::is_signed<T>::value>...>
 constexpr T abs(T v) {
     return v < static_cast<T>(0) ? -v : v; 
 }
 
-template <typename T, std::enable_if_t<std::is_unsigned<T>::value, int> = 0>
+template <typename T, eif_t<std::is_unsigned<T>::value>...>
 constexpr T abs(T v) {
     return v; 
 }
 
-template <typename T, enable_if_floating_t<T> = 0>
+template <typename T, eif_floating_t<T>...>
 constexpr bool zero(T v, T e = std::numeric_limits<T>::min()) {
     return abs(v) < e;
 }
 
-template <typename T, enable_if_integral_t<T> = 0>
+template <typename T, eif_integral_t<T>...>
 constexpr bool zero(T v) {
     return v == static_cast<T>(0);
 }
 
-template <typename T, enable_if_floating_t<T> = 0>
+template <typename T, eif_floating_t<T>...>
 constexpr bool equal(T v1, T v2) {
     return zero(v1 - v2, std::numeric_limits<T>::min());
 }
 
-template <typename T, std::enable_if_t<!std::is_floating_point<T>::value, int> = 0>
+template <typename T, eif_t<!std::is_floating_point<T>::value>...>
 constexpr bool equal(const T & v1, const T & v2) {
     return v1 == v2;
 }
@@ -187,22 +192,22 @@ constexpr bool equal(const T & v1, const T & v2, const Ts &... rest) {
     return equal(v1, v2) && equal(v2, rest...);
 }
 
-template <typename T, enable_if_integral_t<T> = 0>
+template <typename T, eif_integral_t<T>...>
 constexpr bool zero(const T & v1, const T & v2) {
     return zero(v1 - v2);
 }
 
-template <typename T, std::enable_if_t<std::is_signed<T>::value, int> = 0>
+template <typename T, eif_t<std::is_signed<T>::value>...>
 constexpr T sign(T v) {
     return static_cast<T>(static_cast<T>(0) < v) - static_cast<T>(v < static_cast<T>(0));
 }
 
-template <typename T, std::enable_if_t<std::is_unsigned<T>::value, int> = 0>
+template <typename T, eif_t<std::is_unsigned<T>::value>...>
 constexpr T sign(T v) {
     return static_cast<T>(v > static_cast<T>(0));
 }
 
-template <typename T, std::enable_if_t<std::is_integral<T>::value && sizeof(T) == 1, int> = 0>
+template <typename T, eif_t<std::is_integral<T>::value && sizeof(T) == 1>...>
 constexpr match_sign_t<nat, T> log2(T x) {
     match_sign_t<nat, T> log(0);
     if (x & 0xF0) { x >>=  4; log +=  4; }
@@ -211,7 +216,7 @@ constexpr match_sign_t<nat, T> log2(T x) {
     return log;
 }
 
-template <typename T, std::enable_if_t<std::is_integral<T>::value && sizeof(T) == 2, int> = 0>
+template <typename T, eif_t<std::is_integral<T>::value && sizeof(T) == 2>...>
 constexpr match_sign_t<nat, T> log2(T x) {
     match_sign_t<nat, T> log(0);
     if (x & 0xFF00) { x >>=  8; log +=  8; }
@@ -221,7 +226,7 @@ constexpr match_sign_t<nat, T> log2(T x) {
     return log;
 }
 
-template <typename T, std::enable_if_t<std::is_integral<T>::value && sizeof(T) == 4, int> = 0>
+template <typename T, eif_t<std::is_integral<T>::value && sizeof(T) == 4>...>
 constexpr match_sign_t<nat, T> log2(T x) {
     match_sign_t<nat, T> log(0);
     if (x & 0xFFFF0000) { x >>= 16; log += 16; }
@@ -232,7 +237,7 @@ constexpr match_sign_t<nat, T> log2(T x) {
     return log;
 }
 
-template <typename T, std::enable_if_t<std::is_integral<T>::value && sizeof(T) == 8, int> = 0>
+template <typename T, eif_t<std::is_integral<T>::value && sizeof(T) == 8>...>
 constexpr match_sign_t<nat, T> log2(T x) {
     match_sign_t<nat, T> log(0);
     if (x & 0xFFFFFFFF00000000) { x >>= 32; log += 32; }
@@ -244,29 +249,29 @@ constexpr match_sign_t<nat, T> log2(T x) {
     return log;
 }
 
-template <typename T, enable_if_floating_t<T> = 0>
+template <typename T, eif_floating_t<T>...>
 constexpr T log2(T v) {
     return std::log2(v);
 }
 
-template <typename T, enable_if_integral_t<T> = 0>
+template <typename T, eif_integral_t<T>...>
 constexpr bool isPow2(T v) {
     return (v & (v - 1)) == 0;
 }
 
-template <typename T, enable_if_integral_t<T> = 0>
+template <typename T, eif_integral_t<T>...>
 constexpr T floor2(T v) {
     if (v == 0) return 0;
     return T(1) << log2(v);
 }
 
-template <typename T, enable_if_integral_t<T> = 0>
+template <typename T, eif_integral_t<T>...>
 constexpr T ceil2(T v) {
     if (v == 0) return 0;
     return floor2(v * 2 - 1);
 }
 
-template <typename T, enable_if_integral_t<T> = 0>
+template <typename T, eif_integral_t<T>...>
 constexpr T highBit(T v) {
     using UT = std::make_unsigned_t<T>;
     constexpr UT mask(static_cast<UT>(1) << (sizeof(T) * 8 - 1));
@@ -274,32 +279,32 @@ constexpr T highBit(T v) {
     return static_cast<T>(static_cast<UT>(v) & mask);
 }
 
-template <typename T, enable_if_integral_t<T> = 0>
+template <typename T, eif_integral_t<T>...>
 constexpr T lowBit(T v) {
     return v & static_cast<T>(1);
 }
 
-template <typename T, enable_if_floating_t<T> = 0>
+template <typename T, eif_floating_t<T>...>
 constexpr nat trunc(T v) {
     return static_cast<nat>(v);
 }
 
-template <typename T, enable_if_floating_t<T> = 0>
+template <typename T, eif_floating_t<T>...>
 constexpr T fract(T v) {
     return v - static_cast<T>(trunc(v));
 }
 
-template <typename T, enable_if_floating_t<T> = 0>
+template <typename T, eif_floating_t<T>...>
 constexpr T mix(T v1, T v2, T t) {
     return (static_cast<T>(1.0) - t) * v1 + t * v2;
 }
 
-template <typename T, enable_if_floating_t<T> = 0>
+template <typename T, eif_floating_t<T>...>
 constexpr T radians(T degrees) {
     return degrees * pi<T> / static_cast<T>(180.0);
 }
 
-template <typename T, enable_if_floating_t<T> = 0>
+template <typename T, eif_floating_t<T>...>
 constexpr T degrees(T radians) {
     return radians * static_cast<T>(180.0) / pi<T>;
 }

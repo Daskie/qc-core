@@ -135,7 +135,7 @@ inline unsigned char trailingZeroes(u32 x) {
     return count;
 }
 
-template <typename T, enable_if_floating_t<T> = 0>
+template <typename T, eif_floating_t<T>...>
 inline T rand() {
     static std::mt19937 mt(static_cast<std::mt19937::result_type>(std::chrono::system_clock::now().time_since_epoch().count()));
     //static std::mt19937 mt(0);
@@ -144,19 +144,19 @@ inline T rand() {
     return dist(mt);
 }
 
-template <typename T, enable_if_floating_t<T> = 0>
+template <typename T, eif_floating_t<T>...>
 inline T rand(T min, T max) {
     return rand<T>() * (max - min) + min;
 }
 
-template <typename T, enable_if_floating_t<T> = 0>
+template <typename T, eif_floating_t<T>...>
 inline T randCheap() {
     constexpr T inv_max(static_cast<T>(1.0) / RAND_MAX);
 
     return std::rand() * inv_max;
 }
 
-template <typename T, enable_if_floating_t<T> = 0>
+template <typename T, eif_floating_t<T>...>
 inline T randCheap(T min, T max) {
     return randCheap<T>() * (max - min) + min;
 }
@@ -290,7 +290,7 @@ inline std::wstring convert(const std::string & str) {
     return converter.from_bytes(str);
 }
 
-template <typename T, enable_if_floating_t<T> = 0>
+template <typename T, eif_floating_t<T>...>
 inline vec3<T> rgb2hsl(const vec3<T> & rgb) {
     vec3<T> hsl(0, 0, 0);
 
@@ -323,7 +323,7 @@ inline vec3<T> rgb2hsl(const vec3<T> & rgb) {
     return hsl;
 }
 
-template <typename T, enable_if_floating_t<T> = 0>
+template <typename T, eif_floating_t<T>...>
 inline vec3<T> hsl2rgb(const vec3<T> & hsl) {
     if (hsl.y == 0) {
         return vec3<T>(hsl.z, hsl.z, hsl.z);
