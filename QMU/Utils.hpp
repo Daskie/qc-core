@@ -255,14 +255,14 @@ class TriWeb {
         nat a1, b1, c1, a2, b2, c2;
         nat * toInc1, * toDec1, * toInc2 *toDec2;
         switch (s1) {
-            case AB: a1 = size; b1 = 0; c1 = 0; toInc1 = &b1; toDec1 = &a1; break;
-            case BC: a1 = 0; b1 = size; c1 = 0; toInc1 = &c1; toDec1 = &b1; break;
-            case CA: a1 = 0; b1 = 0; c1 = size; toInc1 = &a1; toDec1 = &c1; break;
+            case AB : a1 = size; b1 = 0; c1 = 0; toInc1 = &b1; toDec1 = &a1; break;
+            case BC : a1 = 0; b1 = size; c1 = 0; toInc1 = &c1; toDec1 = &b1; break;
+            case CA : a1 = 0; b1 = 0; c1 = size; toInc1 = &a1; toDec1 = &c1; break;
         }
         switch (s2) {
-            case AB: a1 = 0; b1 = size; c1 = 0; toInc2 = &a2; toDec2 = &b2; break;
-            case BC: a1 = 0; b1 = 0; c1 = size; toInc2 = &b2; toDec2 = &c2; break;
-            case CA: a1 = size; b1 = 0; c1 = 0; toInc2 = &c2; toDec2 = &a2; break;
+            case AB : a1 = 0; b1 = size; c1 = 0; toInc2 = &a2; toDec2 = &b2; break;
+            case BC : a1 = 0; b1 = 0; c1 = size; toInc2 = &b2; toDec2 = &c2; break;
+            case CA : a1 = size; b1 = 0; c1 = 0; toInc2 = &c2; toDec2 = &a2; break;
         }
         for (nat i(0); i <= size; ++i) {
             tris_[i1].at(a1, b1, c1) = tris_[i2].at(a2, b2, c2);
