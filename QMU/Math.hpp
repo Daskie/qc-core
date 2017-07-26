@@ -146,7 +146,7 @@ template <typename T, eif_floating_t<T>...>
 inline vec2<T> pointOnDiscFibonacci(nat i, nat n) {
     return polarToCartesian(qmu::vec2<T>(
         std::sqrt(static_cast<T>(i) / static_cast<T>(n)),
-        phi<T>() * static_cast<T>(i)
+        phi<T> * static_cast<T>(i)
     ));
 }
 

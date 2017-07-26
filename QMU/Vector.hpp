@@ -3106,7 +3106,8 @@ constexpr vec3<T> cross(const vec3<T> & v1, const vec3<T> & v2) {
 
 template <typename T, nat t_n>
 constexpr bool parallel(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
-    return equal(abs(dot(v1, v2)), static_cast<T>(1.0));
+    T d(dot(v1, v2));
+    return equal(d * d, magnitude2(v1) * magnitude2(v2));
 }
 
 template <typename T, nat t_n>

@@ -14,7 +14,7 @@
 
 
 
-#define MS_SUCK_A_DICK
+#define INTELLISENSE_WORKAROUND
 
 
 
@@ -464,11 +464,11 @@ template <typename T, nat t_m, nat t_n = t_m> constexpr mat<T, t_m, t_n> nullMat
 
 
 template <typename T, nat t_n> constexpr mat<T, t_n + 1> translate(const vec<T, t_n> & delta);
-template <typename T, nat t_n> mat<T, t_n + 1> translate(mat<T, t_n + 1> & mat, const vec<T, t_n> & delta);
+template <typename T, nat t_n> mat<T, t_n + 1> & translate(mat<T, t_n + 1> & mat, const vec<T, t_n> & delta);
 
 template <typename T, nat t_n> constexpr mat<T, t_n> scale(const vec<T, t_n> & scale);
-template <typename T, nat t_n> mat<T, t_n> scale(mat<T, t_n> & mat, const vec<T, t_n> & scale);
-template <typename T, nat t_n> mat<T, t_n + 1> scale(mat<T, t_n + 1> & mat, const vec<T, t_n> & scale);
+template <typename T, nat t_n> mat<T, t_n> & scale(mat<T, t_n> & mat, const vec<T, t_n> & scale);
+template <typename T, nat t_n> mat<T, t_n + 1> & scale(mat<T, t_n + 1> & mat, const vec<T, t_n> & scale);
 
 template <typename T> mat2<T> rotate(T theta);
 
@@ -538,7 +538,7 @@ template <typename T> mat4<T> view_on(const vec3<T> & camLoc, const vec3<T> & ca
 // IMPLEMENTATION //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#ifdef MS_SUCK_A_DICK
+#ifndef INTELLISENSE_WORKAROUND
 
 
 
@@ -2446,14 +2446,14 @@ constexpr mat4<T> translate(const vec3<T> & delta) {
 }
 
 template <typename T>
-inline mat2<T> translate(mat2<T> & mat, const vec1<T> & delta) {
+inline mat2<T> & translate(mat2<T> & mat, const vec1<T> & delta) {
     mat.x1 += delta.x * mat.y1;
     mat.x2 += delta.x * mat.y2;
     return mat;
 }
 
 template <typename T>
-inline mat3<T> translate(mat3<T> & mat, const vec2<T> & delta) {
+inline mat3<T> & translate(mat3<T> & mat, const vec2<T> & delta) {
     mat.x1 += delta.x * mat.z1;
     mat.x2 += delta.x * mat.z2;
     mat.x3 += delta.x * mat.z3;
@@ -2464,7 +2464,7 @@ inline mat3<T> translate(mat3<T> & mat, const vec2<T> & delta) {
 }
 
 template <typename T>
-inline mat4<T> translate(mat4<T> & mat, const vec3<T> & delta) {
+inline mat4<T> & translate(mat4<T> & mat, const vec3<T> & delta) {
     mat.x1 += delta.x * mat.w1;
     mat.x2 += delta.x * mat.w2;
     mat.x3 += delta.x * mat.w3;
@@ -2498,14 +2498,14 @@ constexpr mat3<T> scale(const vec3<T> & scale) {
 }
 
 template <typename T>
-inline mat2<T> scale(mat2<T> & mat, const vec1<T> & scale) {
+inline mat2<T> & scale(mat2<T> & mat, const vec1<T> & scale) {
     mat.x1 *= scale.x;
     mat.x2 *= scale.x;
     return mat;
 }
 
 template <typename T>
-inline mat2<T> scale(mat2<T> & mat, const vec2<T> & scale) {
+inline mat2<T> & scale(mat2<T> & mat, const vec2<T> & scale) {
     mat.x1 *= scale.x;
     mat.x2 *= scale.x;
     mat.y1 *= scale.y;
@@ -2514,7 +2514,7 @@ inline mat2<T> scale(mat2<T> & mat, const vec2<T> & scale) {
 }
 
 template <typename T>
-inline mat3<T> scale(mat3<T> & mat, const vec2<T> & scale) {
+inline mat3<T> & scale(mat3<T> & mat, const vec2<T> & scale) {
     mat.x1 *= scale.x;
     mat.x2 *= scale.x;
     mat.x3 *= scale.x;
@@ -2525,7 +2525,7 @@ inline mat3<T> scale(mat3<T> & mat, const vec2<T> & scale) {
 }
 
 template <typename T>
-inline mat3<T> scale(mat3<T> & mat, const vec3<T> & scale) {
+inline mat3<T> & scale(mat3<T> & mat, const vec3<T> & scale) {
     mat.x1 *= scale.x;
     mat.x2 *= scale.x;
     mat.x3 *= scale.x;
@@ -2539,7 +2539,7 @@ inline mat3<T> scale(mat3<T> & mat, const vec3<T> & scale) {
 }
 
 template <typename T>
-inline mat4<T> scale(mat4<T> & mat, const vec3<T> & scale) {
+inline mat4<T> & scale(mat4<T> & mat, const vec3<T> & scale) {
     mat.x1 *= scale.x;
     mat.x2 *= scale.x;
     mat.x3 *= scale.x;
@@ -2556,7 +2556,7 @@ inline mat4<T> scale(mat4<T> & mat, const vec3<T> & scale) {
 }
 
 template <typename T>
-inline mat4<T> scale(mat4<T> & mat, const vec4<T> & scale) {
+inline mat4<T> & scale(mat4<T> & mat, const vec4<T> & scale) {
     mat.x1 *= scale.x;
     mat.x2 *= scale.x;
     mat.x3 *= scale.x;
@@ -2841,4 +2841,4 @@ inline mat4<T> view_on(const vec3<T> & camLoc, const vec3<T> & camX, const vec3<
 
 
 
-#endif // MS_SUCK_A_DICK
+#endif // INTELLISENSE_WORKAROUND
