@@ -858,7 +858,7 @@ template <typename T, nat t_n, eif_floating_t<T>...>
 T magnitude(const vec<T, t_n> & v);
 
 template <typename T, nat t_n>
-T magnitude2(const vec<T, t_n> & v);
+constexpr T magnitude2(const vec<T, t_n> & v);
 
 template <typename T, nat t_n, eif_floating_t<T>...>
 vec<T, t_n> norm(const vec<T, t_n> & v);
@@ -3046,22 +3046,22 @@ inline T magnitude(const vec<T, t_n> & v) {
 }
 
 template <typename T>
-inline T magnitude2(const vec1<T> & v) {
+constexpr T magnitude2(const vec1<T> & v) {
     return v.x * v.x;
 }
 
 template <typename T>
-inline T magnitude2(const vec2<T> & v) {
+constexpr T magnitude2(const vec2<T> & v) {
     return v.x * v.x + v.y * v.y;
 }
 
 template <typename T>
-inline T magnitude2(const vec3<T> & v) {
+constexpr T magnitude2(const vec3<T> & v) {
     return v.x * v.x + v.y * v.y + v.z * v.z;
 }
 
 template <typename T>
-inline T magnitude2(const vec4<T> & v) {
+constexpr T magnitude2(const vec4<T> & v) {
     return v.x * v.x + v.y * v.y + v.z * v.z + v.w * v.w;
 }
 

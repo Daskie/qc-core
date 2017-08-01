@@ -696,11 +696,6 @@ void compileFunctionsT() {
     magnitude(v2);
     magnitude(v3);
     magnitude(v4);
-    
-    magnitude2(v1);
-    magnitude2(v2);
-    magnitude2(v3);
-    magnitude2(v4);
 
     norm(v1);
     norm(v2);
@@ -1004,6 +999,11 @@ constexpr void compileFunctionsConstexprT() {
     v >= v4;
 
     // uncategorized
+    
+    magnitude2(v1);
+    magnitude2(v2);
+    magnitude2(v3);
+    magnitude2(v4);
 
     dot(v1, v1);
     dot(v2, v2);

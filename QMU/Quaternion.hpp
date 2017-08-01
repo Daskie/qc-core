@@ -54,6 +54,13 @@ struct quat {
 
 };
 
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// QUAT FUNCTIONS ------------------------------------------------------------------------------------------------------
+
+
+
 //--- arithmetic assignment ---
 
 template <typename T> quat<T> & operator+=(quat<T> & q1, const quat<T> & q2);
@@ -88,17 +95,11 @@ template <typename T> constexpr bool operator==(const quat<T> & q1, const quat<T
 
 template <typename T> constexpr bool operator!=(const quat<T> & q1, const quat<T> & q2);
 
-
 //--- other ---
 
 template <typename T> std::ostream & operator<<(std::ostream & os, const quat<T> & q);
 
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// QUAT FUNCTIONS ------------------------------------------------------------------------------------------------------
-
-
+//--- uncategorized ---
 
 template <typename T> constexpr T dot(const quat<T> & q1, const quat<T> & q2);
 
@@ -223,6 +224,25 @@ inline quat<T> & quat<T>::operator=(quat<T> && q) {
 
 
 //------------------------------------------------------------------------------
+// Other
+
+
+
+template <typename T>
+inline std::string quat<T>::toString() const {
+    std::stringstream ss;
+    ss << *this;
+    return ss.str();
+}
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// QUAT FUNCTIONS IMPLEMENTATION ---------------------------------------------------------------------------------------
+
+
+
+//------------------------------------------------------------------------------
 // Arithmetic Assignment
 
 
@@ -333,21 +353,14 @@ constexpr bool operator!=(const quat<T> & q1, const quat<T> & q2) {
 
 
 template <typename T>
-inline std::string quat<T>::toString() const {
-    std::stringstream ss;
-    ss << *this;
-    return ss.str();
-}
-
-template <typename T>
 inline std::ostream & operator<<(std::ostream & os, const quat<T> & q) {
     return os << "[ " << q.a.x << " " << q.a.y << " " << q.a.z << " | " << q.w << " ]";
 }
 
 
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// QUAT FUNCTIONS IMPLEMENTATION ---------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+// Uncategorized
 
 
 

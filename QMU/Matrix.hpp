@@ -14,7 +14,7 @@
 
 
 
-#define INTELLISENSE_WORKAROUND
+//#define INTELLISENSE_WORKAROUND
 
 
 
@@ -143,57 +143,6 @@ struct mat<T, 2, 2> {
 
 };
 
-//--- arithmetic assignment ---
-
-template <typename T> mat2<T> & operator+=(mat2<T> & m, T v);
-template <typename T> mat2<T> & operator+=(mat2<T> & m1, const mat2<T> & m2);
-
-template <typename T> mat2<T> & operator-=(mat2<T> & m, T v);
-template <typename T> mat2<T> & operator-=(mat2<T> & m1, const mat2<T> & m2);
-
-template <typename T> mat2<T> & operator*=(mat2<T> & m, T v);
-template <typename T> mat2<T> & operator*=(mat2<T> & m1, const mat2<T> & m2);
-
-template <typename T> mat2<T> & operator/=(mat2<T> & m, T v);
-
-template <typename T> mat2<T> & operator++(mat2<T> & m);
-template <typename T> mat2<T>   operator++(mat2<T> & m, int);
-
-template <typename T> mat2<T> & operator--(mat2<T> & m);
-template <typename T> mat2<T>   operator--(mat2<T> & m, int);
-
-//--- arithmetic operators ---
-
-template <typename T> constexpr mat2<T> operator+(const mat2<T> & m);
-
-template <typename T> constexpr mat2<T> operator-(const mat2<T> & m);
-
-template <typename T> constexpr mat2<T> operator+(const mat2<T> & m1, const mat2<T> & m2);
-template <typename T> constexpr mat2<T> operator+(const mat2<T> & m, T v);
-template <typename T> constexpr mat2<T> operator+(T v, const mat2<T> & m1);
-
-template <typename T> constexpr mat2<T> operator-(const mat2<T> & m1, const mat2<T> & m2);
-template <typename T> constexpr mat2<T> operator-(const mat2<T> & m, T v);
-template <typename T> constexpr mat2<T> operator-(T v, const mat2<T> &  m);
-
-template <typename T> constexpr mat2<T> operator*(const mat2<T> & m1, const mat2<T> & m2);
-template <typename T> constexpr mat2<T> operator*(const mat2<T> & m, T v);
-template <typename T> constexpr mat2<T> operator*(T v, const mat2<T> &  m);
-template <typename T> constexpr vec2<T> operator*(const mat2<T> & m, const vec2<T> & v);
-
-template <typename T> constexpr mat2<T> operator/(const mat2<T> & m, T v);
-template <typename T> constexpr mat2<T> operator/(T v, const mat2<T> & m);
-
-//--- comparison operators ---
-
-template <typename T> constexpr bool operator==(const mat2<T> & m1, const mat2<T> & m2);
-template <typename T> constexpr bool operator!=(const mat2<T> & m1, const mat2<T> & m2);
-
-//--- other ---
-
-template <typename T>
-std::ostream & operator<<(std::ostream & os, const mat2<T> & m);
-
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -261,57 +210,6 @@ struct mat<T, 3, 3> {
     std::string toString() const;
 
 };
-
-//--- arithmetic assignment ---
-
-template <typename T> mat3<T> & operator+=(mat3<T> & m, T v);
-template <typename T> mat3<T> & operator+=(mat3<T> & m1, const mat3<T> & m2);
-
-template <typename T> mat3<T> & operator-=(mat3<T> & m, T v);
-template <typename T> mat3<T> & operator-=(mat3<T> & m1, const mat3<T> & m2);
-
-template <typename T> mat3<T> & operator*=(mat3<T> & m, T v);
-template <typename T> mat3<T> & operator*=(mat3<T> & m1, const mat3<T> & m2);
-
-template <typename T> mat3<T> & operator/=(mat3<T> & m, T v);
-
-template <typename T> mat3<T> & operator++(mat3<T> & m);
-template <typename T> mat3<T>   operator++(mat3<T> & m, int);
-
-template <typename T> mat3<T> & operator--(mat3<T> & m);
-template <typename T> mat3<T>   operator--(mat3<T> & m, int);
-
-//--- arithmetic operators ---
-
-template <typename T> constexpr mat3<T> operator+(const mat3<T> & m);
-
-template <typename T> constexpr mat3<T> operator-(const mat3<T> & m);
-
-template <typename T> constexpr mat3<T> operator+(const mat3<T> & m1, const mat3<T> & m2);
-template <typename T> constexpr mat3<T> operator+(const mat3<T> & m, T v);
-template <typename T> constexpr mat3<T> operator+(T v, const mat3<T> & m);
-
-template <typename T> constexpr mat3<T> operator-(const mat3<T> & m1, const mat3<T> & m2);
-template <typename T> constexpr mat3<T> operator-(const mat3<T> & m, T v);
-template <typename T> constexpr mat3<T> operator-(T v, const mat3<T> & m);
-
-template <typename T> constexpr mat3<T> operator*(const mat3<T> & m1, const mat3<T> & m2);
-template <typename T> constexpr mat3<T> operator*(const mat3<T> & m, T v);
-template <typename T> constexpr mat3<T> operator*(T v, const mat3<T> & m);
-template <typename T> constexpr vec3<T> operator*(const mat3<T> & m1, const vec3<T> & v);
-
-template <typename T> constexpr mat3<T> operator/(const mat3<T> & m1, T v);
-template <typename T> constexpr mat3<T> operator/(T v, const mat3<T> & m);
-
-//--- comparison operators ---
-
-template <typename T> constexpr bool operator==(const mat3<T> & m1, const mat3<T> & m2);
-
-template <typename T> constexpr bool operator!=(const mat3<T> & m1, const mat3<T> & m2);
-
-//--- other ---
-
-template <typename T> std::ostream & operator<<(std::ostream & os, const mat3<T> & m);
 
 
 
@@ -384,63 +282,65 @@ struct mat<T, 4, 4> {
 
 };
 
-//--- arithmetic assignment ---
-
-template <typename T> mat4<T> & operator+=(mat4<T> & m, T v);
-template <typename T> mat4<T> & operator+=(mat4<T> & m1, const mat4<T> & m2);
-
-template <typename T> mat4<T> & operator-=(mat4<T> & m, T v);
-template <typename T> mat4<T> & operator-=(mat4<T> & m1, const mat4<T> & m2);
-
-template <typename T> mat4<T> & operator*=(mat4<T> & m, T v);
-template <typename T> mat4<T> & operator*=(mat4<T> & m1, const mat4<T> & m2);
-
-template <typename T> mat4<T> & operator/=(mat4<T> & m, T v);
-
-template <typename T> mat4<T> & operator++(mat4<T> & m);
-template <typename T> mat4<T>   operator++(mat4<T> & m, int);
-
-template <typename T> mat4<T> & operator--(mat4<T> & m);
-template <typename T> mat4<T>   operator--(mat4<T> & m, int);
-
-//--- arithmetic operators ---
-
-template <typename T> constexpr mat4<T> operator+(const mat4<T> & m);
-
-template <typename T> constexpr mat4<T> operator-(const mat4<T> & m);
-
-template <typename T> constexpr mat4<T> operator+(const mat4<T> & m1, const mat4<T> & m2);
-template <typename T> constexpr mat4<T> operator+(const mat4<T> & m, T v);
-template <typename T> constexpr mat4<T> operator+(T v, const mat4<T> & m);
-
-template <typename T> constexpr mat4<T> operator-(const mat4<T> & m1, const mat4<T> & m2);
-template <typename T> constexpr mat4<T> operator-(const mat4<T> & m, T v);
-template <typename T> constexpr mat4<T> operator-(T v, const mat4<T> & m);
-
-template <typename T> constexpr mat4<T> operator*(const mat4<T> & m1, const mat4<T> & m2);
-template <typename T> constexpr mat4<T> operator*(const mat4<T> & m, T v);
-template <typename T> constexpr mat4<T> operator*(T v, const mat4<T> & m);
-template <typename T> constexpr vec4<T> operator*(const mat4<T> & m, const vec4<T> & v);
-
-template <typename T> constexpr mat4<T> operator/(const mat4<T> & m, T v);
-template <typename T> constexpr mat4<T> operator/(T v, const mat4<T> & m);
-
-//--- comparison operators ---
-
-template <typename T> constexpr bool operator==(const mat4<T> & m1, const mat4<T> & m2);
-
-template <typename T> constexpr bool operator!=(const mat4<T> & m1, const mat4<T> & m2);
-
-//--- other ---
-
-template <typename T> std::ostream & operator<<(std::ostream & os, const mat4<T> & m);
-
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // MAT FUNCTIONS -------------------------------------------------------------------------------------------------------
 
 
+
+//--- arithmetic assignment ---
+
+template <typename T, nat t_m, nat t_n> mat<T, t_m, t_n> & operator+=(mat<T, t_m, t_n> & m, T v);
+template <typename T, nat t_m, nat t_n> mat<T, t_m, t_n> & operator+=(mat<T, t_m, t_n> & m1, const mat<T, t_m, t_n> & m2);
+
+template <typename T, nat t_m, nat t_n> mat<T, t_m, t_n> & operator-=(mat<T, t_m, t_n> & m, T v);
+template <typename T, nat t_m, nat t_n> mat<T, t_m, t_n> & operator-=(mat<T, t_m, t_n> & m1, const mat<T, t_m, t_n> & m2);
+
+template <typename T, nat t_m, nat t_n> mat<T, t_m, t_n> & operator*=(mat<T, t_m, t_n> & m, T v);
+template <typename T, nat t_m, nat t_n> mat<T, t_m, t_n> & operator*=(mat<T, t_m, t_n> & m1, const mat<T, t_m, t_n> & m2);
+
+template <typename T, nat t_m, nat t_n> mat<T, t_m, t_n> & operator/=(mat<T, t_m, t_n> & m, T v);
+
+template <typename T, nat t_m, nat t_n> mat<T, t_m, t_n> & operator++(mat<T, t_m, t_n> & m);
+template <typename T, nat t_m, nat t_n> mat<T, t_m, t_n>   operator++(mat<T, t_m, t_n> & m, int);
+
+template <typename T, nat t_m, nat t_n> mat<T, t_m, t_n> & operator--(mat<T, t_m, t_n> & m);
+template <typename T, nat t_m, nat t_n> mat<T, t_m, t_n>   operator--(mat<T, t_m, t_n> & m, int);
+
+//--- arithmetic operators ---
+
+template <typename T, nat t_m, nat t_n> constexpr mat<T, t_m, t_n> operator+(const mat<T, t_m, t_n> & m);
+
+template <typename T, nat t_m, nat t_n> constexpr mat<T, t_m, t_n> operator-(const mat<T, t_m, t_n> & m);
+
+template <typename T, nat t_m, nat t_n> constexpr mat<T, t_m, t_n> operator+(const mat<T, t_m, t_n> & m1, const mat<T, t_m, t_n> & m2);
+template <typename T, nat t_m, nat t_n> constexpr mat<T, t_m, t_n> operator+(const mat<T, t_m, t_n> & m, T v);
+template <typename T, nat t_m, nat t_n> constexpr mat<T, t_m, t_n> operator+(T v, const mat<T, t_m, t_n> & m);
+
+template <typename T, nat t_m, nat t_n> constexpr mat<T, t_m, t_n> operator-(const mat<T, t_m, t_n> & m1, const mat<T, t_m, t_n> & m2);
+template <typename T, nat t_m, nat t_n> constexpr mat<T, t_m, t_n> operator-(const mat<T, t_m, t_n> & m, T v);
+template <typename T, nat t_m, nat t_n> constexpr mat<T, t_m, t_n> operator-(T v, const mat<T, t_m, t_n> & m);
+
+template <typename T, nat t_m1, nat t_n1m2, nat t_n2> constexpr mat<T, t_m1, t_n2> operator*(const mat<T, t_m1, t_n1m2> & m1, const mat<T, t_n1m2, t_n2> & m2);
+template <typename T, nat t_m, nat t_n> constexpr mat<T, t_m, t_n> operator*(const mat<T, t_m, t_n> & m, T v);
+template <typename T, nat t_m, nat t_n> constexpr mat<T, t_m, t_n> operator*(T v, const mat<T, t_m, t_n> & m);
+template <typename T, nat t_m, nat t_n> constexpr vec<T, t_m> operator*(const mat<T, t_m, t_n> & m, const vec<T, t_n> & v);
+
+template <typename T, nat t_m, nat t_n> constexpr mat<T, t_m, t_n> operator/(const mat<T, t_m, t_n> & m, T v);
+template <typename T, nat t_m, nat t_n> constexpr mat<T, t_m, t_n> operator/(T v, const mat<T, t_m, t_n> & m);
+
+//--- comparison operators ---
+
+template <typename T, nat t_m, nat t_n> constexpr bool operator==(const mat<T, t_m, t_n> & m1, const mat<T, t_m, t_n> & m2);
+
+template <typename T, nat t_m, nat t_n> constexpr bool operator!=(const mat<T, t_m, t_n> & m1, const mat<T, t_m, t_n> & m2);
+
+//--- other ---
+
+template <typename T, nat t_m, nat t_n> std::ostream & operator<<(std::ostream & os, const mat<T, t_m, t_n> & m);
+
+//--- uncategorized ---
 
 template <typename T, nat t_m, nat t_n> constexpr mat<T, t_m, t_n> transpose(const mat<T, t_m, t_n> & m);
 
@@ -902,255 +802,6 @@ constexpr vec2<T> mat<T, 2, 2>::col() const {
 
 
 //------------------------------------------------------------------------------
-// Arithmetic Assignment
-
-
-
-//--- add assign ---
-
-template <typename T>
-inline mat2<T> & operator+=(mat2<T> & m, T v) {
-    return m = m + v;
-}
-
-template <typename T>
-inline mat2<T> & operator+=(mat2<T> & m1, const mat2<T> & m2) {
-    return m1 = m1 + m2;
-}
-
-//--- subtract assign ---
-
-template <typename T>
-inline mat2<T> & operator-=(mat2<T> & m, T v) {
-    return m = m - v;
-}
-
-template <typename T>
-inline mat2<T> & operator-=(mat2<T> & m1, const mat2<T> & m2) {
-    return m1 = m1 - m2;
-}
-
-//--- multiply assign ---
-
-template <typename T>
-inline mat2<T> & operator*=(mat2<T> & m, T v) {
-    return m = m * v;
-}
-
-template <typename T>
-inline mat2<T> & operator*=(mat2<T> & m1, const mat2<T> & m2) {
-    return m1 = m1 * m2;
-}
-
-//--- divide assign ---
-
-template <typename T>
-inline mat2<T> & operator/=(mat2<T> & m, T v) {
-    return m = m / v;
-}
-
-//--- pre increment ---
-
-template <typename T>
-inline mat2<T> & operator++(mat2<T> & m) {
-    ++m.x1; ++m.y1;
-    ++m.x2; ++m.y2;
-
-    return m;
-}
-
-//--- post increment ---
-
-template <typename T>
-inline mat2<T> operator++(mat2<T> & m, int) {
-    mat2<T> temp(m);
-    ++m;
-
-    return temp;
-}
-
-//--- pre decrement ---
-
-template <typename T>
-inline mat2<T> & operator--(mat2<T> & m) {
-    --m.x1; --m.y1;
-    --m.x2; --m.y2;
-
-    return m;
-}
-
-//--- post decrement ---
-
-template <typename T>
-inline mat2<T> operator--(mat2<T> & m, int) {
-    mat2<T> temp(m);
-    --m;
-
-    return temp;
-}
-
-
-
-//------------------------------------------------------------------------------
-// Arithmetic Operators
-
-
-
-//--- positive ---
-
-template <typename T>
-constexpr mat2<T> operator+(const mat2<T> & m) {
-    return mat2<T>(
-        +m.x1, +m.y1,
-        +m.x2, +m.y2
-    );
-}
-
-//--- negative ---
-
-template <typename T>
-constexpr mat2<T> operator-(const mat2<T> & m) {
-    return mat2<T>(
-        -m.x1, -m.y1,
-        -m.x2, -m.y2
-    );
-}
-
-//--- add ---
-
-template <typename T>
-constexpr mat2<T> operator+(const mat2<T> & m1, const mat2<T> & m2) {
-    return mat2<T>(
-        m1.x1 + m2.x1, m1.y1 + m2.y1,
-        m1.x2 + m2.x2, m1.y2 + m2.y2
-    );
-}
-
-template <typename T>
-constexpr mat2<T> operator+(const mat2<T> & m, T v) {
-    return mat2<T>(
-        m.x1 + v, m.y1 + v,
-        m.x2 + v, m.y2 + v
-    );
-}
-
-template <typename T>
-constexpr mat2<T> operator+(T v, const mat2<T> & m) {
-    return mat2<T>(
-        v + m.x1, v + m.y1,
-        v + m.x2, v + m.y2
-    );
-}
-
-//--- subtract ---
-
-template <typename T>
-constexpr mat2<T> operator-(const mat2<T> & m1, const mat2<T> & m2) {
-    return mat2<T>(
-        m1.x1 - m2.x1, m1.y1 - m2.y1,
-        m1.x2 - m2.x2, m1.y2 - m2.y2
-    );
-}
-
-template <typename T>
-constexpr mat2<T> operator-(const mat2<T> & m, T v) {
-    return mat2<T>(
-        m.x1 - v, m.y1 - v,
-        m.x2 - v, m.y2 - v
-    );
-}
-
-template <typename T>
-constexpr mat2<T> operator-(T v, const mat2<T> & m) {
-    return mat2<T>(
-        v - m.x1, v - m.y1,
-        v - m.x2, v - m.y2
-    );
-}
-
-//--- multiply ---
-
-template <typename T>
-constexpr mat2<T> operator*(const mat2<T> & m1, const mat2<T> & m2) {
-    return mat2<T>(
-        m1.x1 * m2.x1 + m1.x2 * m2.y1,
-        m1.y1 * m2.x1 + m1.y2 * m2.y1,
-
-        m1.x1 * m2.x2 + m1.x2 * m2.y2,
-        m1.y1 * m2.x2 + m1.y2 * m2.y2
-    );
-}
-
-template <typename T>
-constexpr mat2<T> operator*(const mat2<T> & m, T v) {
-    return mat2<T>(
-        m.x1 * v, m.y1 * v,
-        m.x2 * v, m.y2 * v
-    );
-}
-
-template <typename T>
-constexpr mat2<T> operator*(T v, const mat2<T> & m) {
-    return mat2<T>(
-        v * m.x1, v * m.y1,
-        v * m.x2, v * m.y2
-    );
-}
-
-template <typename T>
-constexpr vec2<T> operator*(const mat2<T> & m, const vec2<T> & v) {
-    return vec2<T>(
-        v.x * m.x1 + v.y * m.x2,
-        v.x * m.y1 + v.y * m.y2
-    );
-}
-
-//--- divide ---
-
-template <typename T>
-constexpr mat2<T> operator/(const mat2<T> & m, T v) {
-    return mat2<T>(
-        m.x1 / v, m.y1 / v,
-        m.x2 / v, m.y2 / v
-    );
-}
-
-template <typename T>
-constexpr mat2<T> operator/(T v, const mat2<T> & m) {
-    return mat2<T>(
-        v / m.x1, v / m.y1,
-        v / m.x2, v / m.y2
-    );
-}
-
-
-
-//------------------------------------------------------------------------------
-// Comparison Operators
-
-
-
-//--- equal to ---
-
-template <typename T>
-constexpr bool operator==(const mat2<T> & m1, const mat2<T> & m2) {
-    return
-        m1.x1 == m2.x1 && m1.y1 == m2.y1 &&
-        m1.x2 == m2.x2 && m1.y2 == m2.y2;
-}
-
-//--- not equal to ---
-
-template <typename T>
-constexpr bool operator!=(const mat2<T> & m1, const mat2<T> & m2) {
-    return
-        m1.x1 != m2.x1 || m1.y1 != m2.y1 ||
-        m1.x2 != m2.x2 || m1.y2 != m2.y2;
-}
-
-
-
-//------------------------------------------------------------------------------
 // Other
 
 
@@ -1160,16 +811,6 @@ inline std::string mat<T, 2, 2>::toString() const {
     std::stringstream ss;
     ss << *this;
     return ss.str();
-}
-
-template <typename T>
-inline std::ostream & operator<<(std::ostream & os, const mat2<T> & m) {
-    return os
-        << "[ "
-        << m.x1 << " " << m.y1
-        << " | "
-        << m.x2 << " " << m.y2
-        << " ]";
 }
 
 
@@ -1347,278 +988,6 @@ constexpr vec3<T> mat<T, 3, 3>::col() const {
 
 
 //------------------------------------------------------------------------------
-// Arithmetic Assignment
-
-
-
-//--- add assign ---
-
-template <typename T>
-inline mat3<T> & operator+=(mat3<T> & m, T v) {
-    return m = m + v;
-}
-
-template <typename T>
-inline mat3<T> & operator+=(mat3<T> & m1, const mat3<T> & m2) {
-    return m1 = m1 + m2;
-}
-
-//--- subtract assign ---
-
-template <typename T>
-inline mat3<T> & operator-=(mat3<T> & m, T v) {
-    return m = m - v;
-}
-
-template <typename T>
-inline mat3<T> & operator-=(mat3<T> & m1, const mat3<T> & m2) {
-    return m1 = m1 - m2;
-}
-
-//--- multiply assign ---
-
-template <typename T>
-inline mat3<T> & operator*=(mat3<T> & m, T v) {
-    return m = m * v;
-}
-
-template <typename T>
-inline mat3<T> & operator*=(mat3<T> & m1, const mat3<T> & m2) {
-    return m1 = m1 * m2;
-}
-
-//--- divide assign ---
-
-template <typename T>
-inline mat3<T> & operator/=(mat3<T> & m, T v) {
-    return m = m / v;
-}
-
-//--- pre increment ---
-
-template <typename T>
-inline mat3<T> & operator++(mat3<T> & m) {
-    ++m.x1; ++m.y1; ++m.z1;
-    ++m.x2; ++m.y2; ++m.z2;
-    ++m.x3; ++m.y3; ++m.z3;
-
-    return m;
-}
-
-//--- post increment ---
-
-template <typename T>
-inline mat3<T> operator++(mat3<T> & m, int) {
-    mat3<T> temp(m);
-    ++m;
-
-    return temp;
-}
-
-//--- pre decrement ---
-
-template <typename T>
-inline mat3<T> & operator--(mat3<T> & m) {
-    --m.x1; --m.y1; --m.z1;
-    --m.x2; --m.y2; --m.z2;
-    --m.x3; --m.y3; --m.z3;
-
-    return m;
-}
-
-//--- post decrement ---
-
-template <typename T>
-inline mat3<T> operator--(mat3<T> & m, int) {
-    mat3<T> temp(m);
-    --m;
-
-    return temp;
-}
-
-
-
-//------------------------------------------------------------------------------
-// Arithmetic Operators
-
-
-
-//--- positive ---
-
-template <typename T>
-constexpr mat3<T> operator+(const mat3<T> & m) {
-    return mat3<T>(
-        +m.x1, +m.y1, +m.z1,
-        +m.x2, +m.y2, +m.z2,
-        +m.x3, +m.y3, +m.z3
-    );
-}
-
-//--- negative ---
-
-template <typename T>
-constexpr mat3<T> operator-(const mat3<T> & m) {
-    return mat3<T>(
-        -m.x1, -m.y1, -m.z1,
-        -m.x2, -m.y2, -m.z2,
-        -m.x3, -m.y3, -m.z3
-    );
-}
-
-//--- add ---
-
-template <typename T>
-constexpr mat3<T> operator+(const mat3<T> & m1, const mat3<T> & m2) {
-    return mat3<T>(
-        m1.x1 + m2.x1, m1.y1 + m2.y1, m1.z1 + m2.z1,
-        m1.x2 + m2.x2, m1.y2 + m2.y2, m1.z2 + m2.z2,
-        m1.x3 + m2.x3, m1.y3 + m2.y3, m1.z3 + m2.z3
-    );
-}
-
-template <typename T>
-constexpr mat3<T> operator+(const mat3<T> & m, T v) {
-    return mat3<T>(
-        m.x1 + v, m.y1 + v, m.z1 + v,
-        m.x2 + v, m.y2 + v, m.z2 + v,
-        m.x3 + v, m.y3 + v, m.z3 + v
-    );
-}
-
-template <typename T>
-constexpr mat3<T> operator+(T v, const mat3<T> & m) {
-    return mat3<T>(
-        v + m.x1, v + m.y1, v + m.z1,
-        v + m.x2, v + m.y2, v + m.z2,
-        v + m.x3, v + m.y3, v + m.z3
-    );
-}
-
-//--- subtract ---
-
-template <typename T>
-constexpr mat3<T> operator-(const mat3<T> & m1, const mat3<T> & m2) {
-    return mat3<T>(
-        m1.x1 - m2.x1, m1.y1 - m2.y1, m1.z1 - m2.z1,
-        m1.x2 - m2.x2, m1.y2 - m2.y2, m1.z2 - m2.z2,
-        m1.x3 - m2.x3, m1.y3 - m2.y3, m1.z3 - m2.z3
-    );
-}
-
-template <typename T>
-constexpr mat3<T> operator-(const mat3<T> & m, T v) {
-    return mat3<T>(
-        m.x1 - v, m.y1 - v, m.z1 - v,
-        m.x2 - v, m.y2 - v, m.z2 - v,
-        m.x3 - v, m.y3 - v, m.z3 - v
-    );
-}
-
-template <typename T>
-constexpr mat3<T> operator-(T v, const mat3<T> & m) {
-    return mat3<T>(
-        v - m.x1, v - m.y1, v - m.z1,
-        v - m.x2, v - m.y2, v - m.z2,
-        v - m.x3, v - m.y3, v - m.z3
-    );
-}
-
-//--- multiply ---
-
-template <typename T>
-constexpr mat3<T> operator*(const mat3<T> & m1, const mat3<T> & m2) {
-    return mat3<T>(
-        m1.x1 * m2.x1 + m1.x2 * m2.y1 + m1.x3 * m2.z1,
-        m1.y1 * m2.x1 + m1.y2 * m2.y1 + m1.y3 * m2.z1,
-        m1.z1 * m2.x1 + m1.z2 * m2.y1 + m1.z3 * m2.z1,
-
-        m1.x1 * m2.x2 + m1.x2 * m2.y2 + m1.x3 * m2.z2,
-        m1.y1 * m2.x2 + m1.y2 * m2.y2 + m1.y3 * m2.z2,
-        m1.z1 * m2.x2 + m1.z2 * m2.y2 + m1.z3 * m2.z2,
-
-        m1.x1 * m2.x3 + m1.x2 * m2.y3 + m1.x3 * m2.z3,
-        m1.y1 * m2.x3 + m1.y2 * m2.y3 + m1.y3 * m2.z3,
-        m1.z1 * m2.x3 + m1.z2 * m2.y3 + m1.z3 * m2.z3
-    );
-}
-
-template <typename T>
-constexpr mat3<T> operator*(const mat3<T> & m, T v) {
-    return mat3<T>(
-        m.x1 * v, m.y1 * v, m.z1 * v,
-        m.x2 * v, m.y2 * v, m.z2 * v,
-        m.x3 * v, m.y3 * v, m.z3 * v
-    );
-}
-
-template <typename T>
-constexpr mat3<T> operator*(T v, const mat3<T> & m) {
-    return mat3<T>(
-        v * m.x1, v * m.y1, v * m.z1,
-        v * m.x2, v * m.y2, v * m.z2,
-        v * m.x3, v * m.y3, v * m.z3
-    );
-}
-
-template <typename T>
-constexpr vec3<T> operator*(const mat3<T> & m, const vec3<T> & v) {
-    return vec3<T>(
-        v.x * m.x1 + v.y * m.x2 + v.z * m.x3,
-        v.x * m.y1 + v.y * m.y2 + v.z * m.y3,
-        v.x * m.z1 + v.y * m.z2 + v.z * m.z3
-    );
-}
-
-//--- divide ---
-
-template <typename T>
-constexpr mat3<T> operator/(const mat3<T> & m, T v) {
-    return mat3<T>(
-        m.x1 / v, m.y1 / v, m.z1 / v,
-        m.x2 / v, m.y2 / v, m.z2 / v,
-        m.x3 / v, m.y3 / v, m.z3 / v
-    );
-}
-
-template <typename T>
-constexpr mat3<T> operator/(T v, const mat3<T> & m) {
-    return mat3<T>(
-        v / m.x1, v / m.y1, v / m.z1,
-        v / m.x2, v / m.y2, v / m.z2,
-        v / m.x3, v / m.y3, v / m.z3
-    );
-}
-
-
-
-//------------------------------------------------------------------------------
-// Comparison Operators
-
-
-
-//--- equal to ---
-
-template <typename T>
-constexpr bool operator==(const mat3<T> & m1, const mat3<T> & m2) {
-    return
-        m1.x1 == m2.x1 && m1.y1 == m2.y1 && m1.z1 == m2.z1 &&
-        m1.x2 == m2.x2 && m1.y2 == m2.y2 && m1.z2 == m2.z2 &&
-        m1.x3 == m2.x3 && m1.y3 == m2.y3 && m1.z3 == m2.z3;
-}
-
-//--- not equal to ---
-
-template <typename T>
-constexpr bool operator!=(const mat3<T> & m1, const mat3<T> & m2) {
-    return
-        m1.x1 != m2.x1 || m1.y1 != m2.y1 || m1.z1 != m2.z1 ||
-        m1.x2 != m2.x2 || m1.y2 != m2.y2 || m1.z2 != m2.z2 ||
-        m1.x3 != m2.x3 || m1.y3 != m2.y3 || m1.z3 != m2.z3;
-}
-
-
-
-//------------------------------------------------------------------------------
 // Other
 
 
@@ -1628,20 +997,6 @@ inline std::string mat<T, 3, 3>::toString() const {
     std::stringstream ss;
     ss << *this;
     return ss.str();
-}
-
-
-
-template <typename T>
-inline std::ostream & operator<<(std::ostream & os, const mat3<T> & m) {
-    return os
-        << "[ "
-        << m.x1 << " " << m.y1 << " " << m.z1
-        << " | "
-        << m.x2 << " " << m.y2 << " " << m.z2
-        << " | "
-        << m.x3 << " " << m.y3 << " " << m.z3
-        << " ]";
 }
 
 
@@ -1832,54 +1187,90 @@ constexpr vec4<T> mat<T, 4, 4>::col() const {
 
 
 //------------------------------------------------------------------------------
+// Other
+
+
+
+template <typename T>
+inline std::string mat<T, 4, 4>::toString() const {
+    std::stringstream ss;
+    ss << *this;
+    return ss.str();
+}
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// MAT FUNCTIONS IMPLEMENTATION ----------------------------------------------------------------------------------------
+
+
+
+//------------------------------------------------------------------------------
 // Arithmetic Assignment
 
 
 
 //--- add assign ---
 
-template <typename T>
-inline mat4<T> & operator+=(mat4<T> & m, T v) {
+template <typename T, nat t_m, nat t_n>
+inline mat<T, t_m, t_n> & operator+=(mat<T, t_m, t_n> & m, T v) {
     return m = m + v;
 }
 
-template <typename T>
-inline mat4<T> & operator+=(mat4<T> & m1, const mat4<T> & m2) {
+template <typename T, nat t_m, nat t_n>
+inline mat<T, t_m, t_n> & operator+=(mat<T, t_m, t_n> & m1, const mat<T, t_m, t_n> & m2) {
     return m1 = m1 + m2;
 }
 
 //--- subtract assign ---
 
-template <typename T>
-inline mat4<T> & operator-=(mat4<T> & m, T v) {
+template <typename T, nat t_m, nat t_n>
+inline mat<T, t_m, t_n> & operator-=(mat<T, t_m, t_n> & m, T v) {
     return m = m - v;
 }
 
-template <typename T>
-inline mat4<T> & operator-=(mat4<T> & m1, const mat4<T> & m2) {
+template <typename T, nat t_m, nat t_n>
+inline mat<T, t_m, t_n> & operator-=(mat<T, t_m, t_n> & m1, const mat<T, t_m, t_n> & m2) {
     return m1 = m1 - m2;
 }
 
 //--- multiply assign ---
 
-template <typename T>
-inline mat4<T> & operator*=(mat4<T> & m, T v) {
+template <typename T, nat t_m, nat t_n>
+inline mat<T, t_m, t_n> & operator*=(mat<T, t_m, t_n> & m, T v) {
     return m = m * v;
 }
 
-template <typename T>
-inline mat4<T> & operator*=(mat4<T> & m1, const mat4<T> & m2) {
+template <typename T, nat t_m, nat t_n>
+inline mat<T, t_m, t_n> & operator*=(mat<T, t_m, t_n> & m1, const mat<T, t_m, t_n> & m2) {
     return m1 = m1 * m2;
 }
 
 //--- divide assign ---
 
-template <typename T>
-inline mat4<T> & operator/=(mat4<T> & m, T v) {
+template <typename T, nat t_m, nat t_n>
+inline mat<T, t_m, t_n> & operator/=(mat<T, t_m, t_n> & m, T v) {
     return m = m / v;
 }
 
 //--- pre increment ---
+
+template <typename T>
+inline mat2<T> & operator++(mat2<T> & m) {
+    ++m.x1; ++m.y1;
+    ++m.x2; ++m.y2;
+
+    return m;
+}
+
+template <typename T>
+inline mat3<T> & operator++(mat3<T> & m) {
+    ++m.x1; ++m.y1; ++m.z1;
+    ++m.x2; ++m.y2; ++m.z2;
+    ++m.x3; ++m.y3; ++m.z3;
+
+    return m;
+}
 
 template <typename T>
 inline mat4<T> & operator++(mat4<T> & m) {
@@ -1893,15 +1284,32 @@ inline mat4<T> & operator++(mat4<T> & m) {
 
 //--- post increment ---
 
-template <typename T>
-inline mat4<T> operator++(mat4<T> & m, int) {
-    mat4<T> temp(m);
+template <typename T, nat t_m, nat t_n>
+inline mat<T, t_m, t_n> operator++(mat<T, t_m, t_n> & m, int) {
+    mat<T, t_m, t_n> temp(m);
     ++m;
 
     return temp;
 }
 
 //--- pre decrement ---
+
+template <typename T>
+inline mat2<T> & operator--(mat2<T> & m) {
+    --m.x1; --m.y1;
+    --m.x2; --m.y2;
+
+    return m;
+}
+
+template <typename T>
+inline mat3<T> & operator--(mat3<T> & m) {
+    --m.x1; --m.y1; --m.z1;
+    --m.x2; --m.y2; --m.z2;
+    --m.x3; --m.y3; --m.z3;
+
+    return m;
+}
 
 template <typename T>
 inline mat4<T> & operator--(mat4<T> & m) {
@@ -1915,9 +1323,9 @@ inline mat4<T> & operator--(mat4<T> & m) {
 
 //--- post decrement ---
 
-template <typename T>
-inline mat4<T> operator--(mat4<T> & m, int) {
-    mat4<T> temp(m);
+template <typename T, nat t_m, nat t_n>
+inline mat<T, t_m, t_n> operator--(mat<T, t_m, t_n> & m, int) {
+    mat<T, t_m, t_n> temp(m);
     --m;
 
     return temp;
@@ -1932,17 +1340,29 @@ inline mat4<T> operator--(mat4<T> & m, int) {
 
 //--- positive ---
 
-template <typename T>
-constexpr mat4<T> operator+(const mat4<T> & m) {
-    return mat4<T>(
-        +m.x1, +m.y1, +m.z1, +m.w1,
-        +m.x2, +m.y2, +m.z2, +m.w2,
-        +m.x3, +m.y3, +m.z3, +m.w3,
-        +m.x4, +m.y4, +m.z4, +m.w4
-    );
+template <typename T, nat t_m, nat t_n>
+constexpr mat<T, t_m, t_n> operator+(const mat<T, t_m, t_n> & m) {
+    return m;
 }
 
 //--- negative ---
+
+template <typename T>
+constexpr mat2<T> operator-(const mat2<T> & m) {
+    return mat2<T>(
+        -m.x1, -m.y1,
+        -m.x2, -m.y2
+    );
+}
+
+template <typename T>
+constexpr mat3<T> operator-(const mat3<T> & m) {
+    return mat3<T>(
+        -m.x1, -m.y1, -m.z1,
+        -m.x2, -m.y2, -m.z2,
+        -m.x3, -m.y3, -m.z3
+    );
+}
 
 template <typename T>
 constexpr mat4<T> operator-(const mat4<T> & m) {
@@ -1957,6 +1377,23 @@ constexpr mat4<T> operator-(const mat4<T> & m) {
 //--- add ---
 
 template <typename T>
+constexpr mat2<T> operator+(const mat2<T> & m1, const mat2<T> & m2) {
+    return mat2<T>(
+        m1.x1 + m2.x1, m1.y1 + m2.y1,
+        m1.x2 + m2.x2, m1.y2 + m2.y2
+    );
+}
+
+template <typename T>
+constexpr mat3<T> operator+(const mat3<T> & m1, const mat3<T> & m2) {
+    return mat3<T>(
+        m1.x1 + m2.x1, m1.y1 + m2.y1, m1.z1 + m2.z1,
+        m1.x2 + m2.x2, m1.y2 + m2.y2, m1.z2 + m2.z2,
+        m1.x3 + m2.x3, m1.y3 + m2.y3, m1.z3 + m2.z3
+    );
+}
+
+template <typename T>
 constexpr mat4<T> operator+(const mat4<T> & m1, const mat4<T> & m2) {
     return mat4<T>(
         m1.x1 + m2.x1, m1.y1 + m2.y1, m1.z1 + m2.z1, m1.w1 + m2.w1,
@@ -1967,12 +1404,46 @@ constexpr mat4<T> operator+(const mat4<T> & m1, const mat4<T> & m2) {
 }
 
 template <typename T>
+constexpr mat2<T> operator+(const mat2<T> & m, T v) {
+    return mat2<T>(
+        m.x1 + v, m.y1 + v,
+        m.x2 + v, m.y2 + v
+    );
+}
+
+template <typename T>
+constexpr mat3<T> operator+(const mat3<T> & m, T v) {
+    return mat3<T>(
+        m.x1 + v, m.y1 + v, m.z1 + v,
+        m.x2 + v, m.y2 + v, m.z2 + v,
+        m.x3 + v, m.y3 + v, m.z3 + v
+    );
+}
+
+template <typename T>
 constexpr mat4<T> operator+(const mat4<T> & m, T v) {
     return mat4<T>(
         m.x1 + v, m.y1 + v, m.z1 + v, m.w1 + v,
         m.x2 + v, m.y2 + v, m.z2 + v, m.w2 + v,
         m.x3 + v, m.y3 + v, m.z3 + v, m.w3 + v,
         m.x4 + v, m.y4 + v, m.z4 + v, m.w4 + v
+    );
+}
+
+template <typename T>
+constexpr mat2<T> operator+(T v, const mat2<T> & m) {
+    return mat2<T>(
+        v + m.x1, v + m.y1,
+        v + m.x2, v + m.y2
+    );
+}
+
+template <typename T>
+constexpr mat3<T> operator+(T v, const mat3<T> & m) {
+    return mat3<T>(
+        v + m.x1, v + m.y1, v + m.z1,
+        v + m.x2, v + m.y2, v + m.z2,
+        v + m.x3, v + m.y3, v + m.z3
     );
 }
 
@@ -1989,12 +1460,46 @@ constexpr mat4<T> operator+(T v, const mat4<T> & m) {
 //--- subtract ---
 
 template <typename T>
+constexpr mat2<T> operator-(const mat2<T> & m1, const mat2<T> & m2) {
+    return mat2<T>(
+        m1.x1 - m2.x1, m1.y1 - m2.y1,
+        m1.x2 - m2.x2, m1.y2 - m2.y2
+    );
+}
+
+template <typename T>
+constexpr mat3<T> operator-(const mat3<T> & m1, const mat3<T> & m2) {
+    return mat3<T>(
+        m1.x1 - m2.x1, m1.y1 - m2.y1, m1.z1 - m2.z1,
+        m1.x2 - m2.x2, m1.y2 - m2.y2, m1.z2 - m2.z2,
+        m1.x3 - m2.x3, m1.y3 - m2.y3, m1.z3 - m2.z3
+    );
+}
+
+template <typename T>
 constexpr mat4<T> operator-(const mat4<T> & m1, const mat4<T> & m2) {
     return mat4<T>(
         m1.x1 - m2.x1, m1.y1 - m2.y1, m1.z1 - m2.z1, m1.w1 - m2.w1,
         m1.x2 - m2.x2, m1.y2 - m2.y2, m1.z2 - m2.z2, m1.w2 - m2.w2,
         m1.x3 - m2.x3, m1.y3 - m2.y3, m1.z3 - m2.z3, m1.w3 - m2.w3,
         m1.x4 - m2.x4, m1.y4 - m2.y4, m1.z4 - m2.z4, m1.w4 - m2.w4
+    );
+}
+
+template <typename T>
+constexpr mat2<T> operator-(const mat2<T> & m, T v) {
+    return mat2<T>(
+        m.x1 - v, m.y1 - v,
+        m.x2 - v, m.y2 - v
+    );
+}
+
+template <typename T>
+constexpr mat3<T> operator-(const mat3<T> & m, T v) {
+    return mat3<T>(
+        m.x1 - v, m.y1 - v, m.z1 - v,
+        m.x2 - v, m.y2 - v, m.z2 - v,
+        m.x3 - v, m.y3 - v, m.z3 - v
     );
 }
 
@@ -2009,6 +1514,23 @@ constexpr mat4<T> operator-(const mat4<T> & m, T v) {
 }
 
 template <typename T>
+constexpr mat2<T> operator-(T v, const mat2<T> & m) {
+    return mat2<T>(
+        v - m.x1, v - m.y1,
+        v - m.x2, v - m.y2
+    );
+}
+
+template <typename T>
+constexpr mat3<T> operator-(T v, const mat3<T> & m) {
+    return mat3<T>(
+        v - m.x1, v - m.y1, v - m.z1,
+        v - m.x2, v - m.y2, v - m.z2,
+        v - m.x3, v - m.y3, v - m.z3
+    );
+}
+
+template <typename T>
 constexpr mat4<T> operator-(T v, const mat4<T> & m) {
     return mat4<T>(
         v - m.x1, v - m.y1, v - m.z1, v - m.w1,
@@ -2019,6 +1541,34 @@ constexpr mat4<T> operator-(T v, const mat4<T> & m) {
 }
 
 //--- multiply ---
+
+template <typename T>
+constexpr mat2<T> operator*(const mat2<T> & m1, const mat2<T> & m2) {
+    return mat2<T>(
+        m1.x1 * m2.x1 + m1.x2 * m2.y1,
+        m1.y1 * m2.x1 + m1.y2 * m2.y1,
+
+        m1.x1 * m2.x2 + m1.x2 * m2.y2,
+        m1.y1 * m2.x2 + m1.y2 * m2.y2
+    );
+}
+
+template <typename T>
+constexpr mat3<T> operator*(const mat3<T> & m1, const mat3<T> & m2) {
+    return mat3<T>(
+        m1.x1 * m2.x1 + m1.x2 * m2.y1 + m1.x3 * m2.z1,
+        m1.y1 * m2.x1 + m1.y2 * m2.y1 + m1.y3 * m2.z1,
+        m1.z1 * m2.x1 + m1.z2 * m2.y1 + m1.z3 * m2.z1,
+
+        m1.x1 * m2.x2 + m1.x2 * m2.y2 + m1.x3 * m2.z2,
+        m1.y1 * m2.x2 + m1.y2 * m2.y2 + m1.y3 * m2.z2,
+        m1.z1 * m2.x2 + m1.z2 * m2.y2 + m1.z3 * m2.z2,
+
+        m1.x1 * m2.x3 + m1.x2 * m2.y3 + m1.x3 * m2.z3,
+        m1.y1 * m2.x3 + m1.y2 * m2.y3 + m1.y3 * m2.z3,
+        m1.z1 * m2.x3 + m1.z2 * m2.y3 + m1.z3 * m2.z3
+    );
+}
 
 template <typename T>
 constexpr mat4<T> operator*(const mat4<T> & m1, const mat4<T> & m2) {
@@ -2046,6 +1596,23 @@ constexpr mat4<T> operator*(const mat4<T> & m1, const mat4<T> & m2) {
 }
 
 template <typename T>
+constexpr mat2<T> operator*(const mat2<T> & m, T v) {
+    return mat2<T>(
+        m.x1 * v, m.y1 * v,
+        m.x2 * v, m.y2 * v
+    );
+}
+
+template <typename T>
+constexpr mat3<T> operator*(const mat3<T> & m, T v) {
+    return mat3<T>(
+        m.x1 * v, m.y1 * v, m.z1 * v,
+        m.x2 * v, m.y2 * v, m.z2 * v,
+        m.x3 * v, m.y3 * v, m.z3 * v
+    );
+}
+
+template <typename T>
 constexpr mat4<T> operator*(const mat4<T> & m, T v) {
     return mat4<T>(
         m.x1 * v, m.y1 * v, m.z1 * v, m.w1 * v,
@@ -2056,12 +1623,46 @@ constexpr mat4<T> operator*(const mat4<T> & m, T v) {
 }
 
 template <typename T>
+constexpr mat2<T> operator*(T v, const mat2<T> & m) {
+    return mat2<T>(
+        v * m.x1, v * m.y1,
+        v * m.x2, v * m.y2
+    );
+}
+
+template <typename T>
+constexpr mat3<T> operator*(T v, const mat3<T> & m) {
+    return mat3<T>(
+        v * m.x1, v * m.y1, v * m.z1,
+        v * m.x2, v * m.y2, v * m.z2,
+        v * m.x3, v * m.y3, v * m.z3
+    );
+}
+
+template <typename T>
 constexpr mat4<T> operator*(T v, const mat4<T> & m) {
     return mat4<T>(
         v * m.x1, v * m.y1, v * m.z1, v * m.w1,
         v * m.x2, v * m.y2, v * m.z2, v * m.w2,
         v * m.x3, v * m.y3, v * m.z3, v * m.w3,
         v * m.x4, v * m.y4, v * m.z4, v * m.w4
+    );
+}
+
+template <typename T>
+constexpr vec2<T> operator*(const mat2<T> & m, const vec2<T> & v) {
+    return vec2<T>(
+        v.x * m.x1 + v.y * m.x2,
+        v.x * m.y1 + v.y * m.y2
+    );
+}
+
+template <typename T>
+constexpr vec3<T> operator*(const mat3<T> & m, const vec3<T> & v) {
+    return vec3<T>(
+        v.x * m.x1 + v.y * m.x2 + v.z * m.x3,
+        v.x * m.y1 + v.y * m.y2 + v.z * m.y3,
+        v.x * m.z1 + v.y * m.z2 + v.z * m.z3
     );
 }
 
@@ -2078,12 +1679,46 @@ constexpr vec4<T> operator*(const mat4<T> & m, const vec4<T> & v) {
 //--- divide ---
 
 template <typename T>
+constexpr mat2<T> operator/(const mat2<T> & m, T v) {
+    return mat2<T>(
+        m.x1 / v, m.y1 / v,
+        m.x2 / v, m.y2 / v
+    );
+}
+
+template <typename T>
+constexpr mat3<T> operator/(const mat3<T> & m, T v) {
+    return mat3<T>(
+        m.x1 / v, m.y1 / v, m.z1 / v,
+        m.x2 / v, m.y2 / v, m.z2 / v,
+        m.x3 / v, m.y3 / v, m.z3 / v
+    );
+}
+
+template <typename T>
 constexpr mat4<T> operator/(const mat4<T> & m, T v) {
     return mat4<T>(
         m.x1 / v, m.y1 / v, m.z1 / v, m.w1 / v,
         m.x2 / v, m.y2 / v, m.z2 / v, m.w2 / v,
         m.x3 / v, m.y3 / v, m.z3 / v, m.w3 / v,
         m.x4 / v, m.y4 / v, m.z4 / v, m.w4 / v
+    );
+}
+
+template <typename T>
+constexpr mat2<T> operator/(T v, const mat2<T> & m) {
+    return mat2<T>(
+        v / m.x1, v / m.y1,
+        v / m.x2, v / m.y2
+    );
+}
+
+template <typename T>
+constexpr mat3<T> operator/(T v, const mat3<T> & m) {
+    return mat3<T>(
+        v / m.x1, v / m.y1, v / m.z1,
+        v / m.x2, v / m.y2, v / m.z2,
+        v / m.x3, v / m.y3, v / m.z3
     );
 }
 
@@ -2107,6 +1742,21 @@ constexpr mat4<T> operator/(T v, const mat4<T> & m) {
 //--- equal to ---
 
 template <typename T>
+constexpr bool operator==(const mat2<T> & m1, const mat2<T> & m2) {
+    return
+        m1.x1 == m2.x1 && m1.y1 == m2.y1 &&
+        m1.x2 == m2.x2 && m1.y2 == m2.y2;
+}
+
+template <typename T>
+constexpr bool operator==(const mat3<T> & m1, const mat3<T> & m2) {
+    return
+        m1.x1 == m2.x1 && m1.y1 == m2.y1 && m1.z1 == m2.z1 &&
+        m1.x2 == m2.x2 && m1.y2 == m2.y2 && m1.z2 == m2.z2 &&
+        m1.x3 == m2.x3 && m1.y3 == m2.y3 && m1.z3 == m2.z3;
+}
+
+template <typename T>
 constexpr bool operator==(const mat4<T> & m1, const mat4<T> & m2) {
     return
         m1.x1 == m2.x1 && m1.y1 == m2.y1 && m1.z1 == m2.z1 && m1.w1 == m2.w1 &&
@@ -2117,13 +1767,9 @@ constexpr bool operator==(const mat4<T> & m1, const mat4<T> & m2) {
 
 //--- not equal to ---
 
-template <typename T>
-constexpr bool operator!=(const mat4<T> & m1, const mat4<T> & m2) {
-    return
-        m1.x1 != m2.x1 || m1.y1 != m2.y1 || m1.z1 != m2.z1 || m1.w1 != m2.w1 ||
-        m1.x2 != m2.x2 || m1.y2 != m2.y2 || m1.z2 != m2.z2 || m1.w2 != m2.w2 ||
-        m1.x3 != m2.x3 || m1.y3 != m2.y3 || m1.z3 != m2.z3 || m1.w3 != m2.w3 ||
-        m1.x4 != m2.x4 || m1.y4 != m2.y4 || m1.z4 != m2.z4 || m1.w4 != m2.w4;
+template <typename T, nat t_m, nat t_n>
+constexpr bool operator!=(const mat<T, t_m, t_n> & m1, const mat<T, t_m, t_n> & m2) {
+    return !(m1 == m2);
 }
 
 
@@ -2131,13 +1777,26 @@ constexpr bool operator!=(const mat4<T> & m1, const mat4<T> & m2) {
 //------------------------------------------------------------------------------
 // Other
 
-
+template <typename T>
+inline std::ostream & operator<<(std::ostream & os, const mat2<T> & m) {
+    return os
+        << "[ "
+        << m.x1 << " " << m.y1
+        << " | "
+        << m.x2 << " " << m.y2
+        << " ]";
+}
 
 template <typename T>
-inline std::string mat<T, 4, 4>::toString() const {
-    std::stringstream ss;
-    ss << *this;
-    return ss.str();
+inline std::ostream & operator<<(std::ostream & os, const mat3<T> & m) {
+    return os
+        << "[ "
+        << m.x1 << " " << m.y1 << " " << m.z1
+        << " | "
+        << m.x2 << " " << m.y2 << " " << m.z2
+        << " | "
+        << m.x3 << " " << m.y3 << " " << m.z3
+        << " ]";
 }
 
 template <typename T>
@@ -2156,8 +1815,8 @@ inline std::ostream & operator<<(std::ostream & os, const mat4<T> & m) {
 
 
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MAT FUNCTIONS IMPLEMENTATION ----------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+// Other
 
 
 
