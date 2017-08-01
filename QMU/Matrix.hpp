@@ -310,31 +310,31 @@ template <typename T, nat t_m, nat t_n> mat<T, t_m, t_n>   operator--(mat<T, t_m
 
 //--- arithmetic operators ---
 
-template <typename T, nat t_m, nat t_n> constexpr mat<T, t_m, t_n> operator+(const mat<T, t_m, t_n> & m);
+template <typename T, nat t_m, nat t_n> mat<T, t_m, t_n> operator+(const mat<T, t_m, t_n> & m);
 
-template <typename T, nat t_m, nat t_n> constexpr mat<T, t_m, t_n> operator-(const mat<T, t_m, t_n> & m);
+template <typename T, nat t_m, nat t_n> mat<T, t_m, t_n> operator-(const mat<T, t_m, t_n> & m);
 
-template <typename T, nat t_m, nat t_n> constexpr mat<T, t_m, t_n> operator+(const mat<T, t_m, t_n> & m1, const mat<T, t_m, t_n> & m2);
-template <typename T, nat t_m, nat t_n> constexpr mat<T, t_m, t_n> operator+(const mat<T, t_m, t_n> & m, T v);
-template <typename T, nat t_m, nat t_n> constexpr mat<T, t_m, t_n> operator+(T v, const mat<T, t_m, t_n> & m);
+template <typename T, nat t_m, nat t_n> mat<T, t_m, t_n> operator+(const mat<T, t_m, t_n> & m1, const mat<T, t_m, t_n> & m2);
+template <typename T, nat t_m, nat t_n> mat<T, t_m, t_n> operator+(const mat<T, t_m, t_n> & m, T v);
+template <typename T, nat t_m, nat t_n> mat<T, t_m, t_n> operator+(T v, const mat<T, t_m, t_n> & m);
 
-template <typename T, nat t_m, nat t_n> constexpr mat<T, t_m, t_n> operator-(const mat<T, t_m, t_n> & m1, const mat<T, t_m, t_n> & m2);
-template <typename T, nat t_m, nat t_n> constexpr mat<T, t_m, t_n> operator-(const mat<T, t_m, t_n> & m, T v);
-template <typename T, nat t_m, nat t_n> constexpr mat<T, t_m, t_n> operator-(T v, const mat<T, t_m, t_n> & m);
+template <typename T, nat t_m, nat t_n> mat<T, t_m, t_n> operator-(const mat<T, t_m, t_n> & m1, const mat<T, t_m, t_n> & m2);
+template <typename T, nat t_m, nat t_n> mat<T, t_m, t_n> operator-(const mat<T, t_m, t_n> & m, T v);
+template <typename T, nat t_m, nat t_n> mat<T, t_m, t_n> operator-(T v, const mat<T, t_m, t_n> & m);
 
-template <typename T, nat t_m1, nat t_n1m2, nat t_n2> constexpr mat<T, t_m1, t_n2> operator*(const mat<T, t_m1, t_n1m2> & m1, const mat<T, t_n1m2, t_n2> & m2);
-template <typename T, nat t_m, nat t_n> constexpr mat<T, t_m, t_n> operator*(const mat<T, t_m, t_n> & m, T v);
-template <typename T, nat t_m, nat t_n> constexpr mat<T, t_m, t_n> operator*(T v, const mat<T, t_m, t_n> & m);
-template <typename T, nat t_m, nat t_n> constexpr vec<T, t_m> operator*(const mat<T, t_m, t_n> & m, const vec<T, t_n> & v);
+template <typename T, nat t_m1, nat t_n1m2, nat t_n2> mat<T, t_m1, t_n2> operator*(const mat<T, t_m1, t_n1m2> & m1, const mat<T, t_n1m2, t_n2> & m2);
+template <typename T, nat t_m, nat t_n> mat<T, t_m, t_n> operator*(const mat<T, t_m, t_n> & m, T v);
+template <typename T, nat t_m, nat t_n> mat<T, t_m, t_n> operator*(T v, const mat<T, t_m, t_n> & m);
+template <typename T, nat t_m, nat t_n> vec<T, t_m> operator*(const mat<T, t_m, t_n> & m, const vec<T, t_n> & v);
 
-template <typename T, nat t_m, nat t_n> constexpr mat<T, t_m, t_n> operator/(const mat<T, t_m, t_n> & m, T v);
-template <typename T, nat t_m, nat t_n> constexpr mat<T, t_m, t_n> operator/(T v, const mat<T, t_m, t_n> & m);
+template <typename T, nat t_m, nat t_n> mat<T, t_m, t_n> operator/(const mat<T, t_m, t_n> & m, T v);
+template <typename T, nat t_m, nat t_n> mat<T, t_m, t_n> operator/(T v, const mat<T, t_m, t_n> & m);
 
 //--- comparison operators ---
 
-template <typename T, nat t_m, nat t_n> constexpr bool operator==(const mat<T, t_m, t_n> & m1, const mat<T, t_m, t_n> & m2);
+template <typename T, nat t_m, nat t_n> bool operator==(const mat<T, t_m, t_n> & m1, const mat<T, t_m, t_n> & m2);
 
-template <typename T, nat t_m, nat t_n> constexpr bool operator!=(const mat<T, t_m, t_n> & m1, const mat<T, t_m, t_n> & m2);
+template <typename T, nat t_m, nat t_n> bool operator!=(const mat<T, t_m, t_n> & m1, const mat<T, t_m, t_n> & m2);
 
 //--- other ---
 
@@ -342,15 +342,15 @@ template <typename T, nat t_m, nat t_n> std::ostream & operator<<(std::ostream &
 
 //--- uncategorized ---
 
-template <typename T, nat t_m, nat t_n> constexpr mat<T, t_m, t_n> transpose(const mat<T, t_m, t_n> & m);
+template <typename T, nat t_m, nat t_n> mat<T, t_m, t_n> transpose(const mat<T, t_m, t_n> & m);
 
-template <typename T, nat t_m, nat t_n> constexpr mat<T, t_m, t_n> cofactor(const mat<T, t_m, t_n> & m);
+template <typename T, nat t_m, nat t_n> mat<T, t_m, t_n> cofactor(const mat<T, t_m, t_n> & m);
 
-template <typename T, nat t_m, nat t_n> constexpr mat<T, t_m, t_n> adjoint(const mat<T, t_m, t_n> & m);
+template <typename T, nat t_m, nat t_n> mat<T, t_m, t_n> adjoint(const mat<T, t_m, t_n> & m);
 
-template <typename T, nat t_m, nat t_n> constexpr T determinant(const mat<T, t_m, t_n> & m);
+template <typename T, nat t_m, nat t_n> T determinant(const mat<T, t_m, t_n> & m);
 
-template <typename T, nat t_m, nat t_n> constexpr mat<T, t_m, t_n> inverse(const mat<T, t_m, t_n> & m);
+template <typename T, nat t_m, nat t_n> mat<T, t_m, t_n> inverse(const mat<T, t_m, t_n> & m);
 
 template <typename T, nat t_m, nat t_n = t_m> constexpr mat<T, t_m, t_n> fullMat(T v);
 
@@ -363,10 +363,10 @@ template <typename T, nat t_m, nat t_n = t_m> constexpr mat<T, t_m, t_n> nullMat
 
 
 
-template <typename T, nat t_n> constexpr mat<T, t_n + 1> translate(const vec<T, t_n> & delta);
+template <typename T, nat t_n> mat<T, t_n + 1> translate(const vec<T, t_n> & delta);
 template <typename T, nat t_n> mat<T, t_n + 1> & translate(mat<T, t_n + 1> & mat, const vec<T, t_n> & delta);
 
-template <typename T, nat t_n> constexpr mat<T, t_n> scale(const vec<T, t_n> & scale);
+template <typename T, nat t_n> mat<T, t_n> scale(const vec<T, t_n> & scale);
 template <typename T, nat t_n> mat<T, t_n> & scale(mat<T, t_n> & mat, const vec<T, t_n> & scale);
 template <typename T, nat t_n> mat<T, t_n + 1> & scale(mat<T, t_n + 1> & mat, const vec<T, t_n> & scale);
 
@@ -398,21 +398,21 @@ template <typename T> mat3<T> align_n(const vec3<T> & forward1, const vec3<T> & 
 // _o variants (orthogonal) usable when the transformation matrix, T, from basis
 // A to B is orthogonal i.e. A's basis vectors don't need to be orthogonal, nor
 // B's, but the angles between A's basis vectors must be the same as B's
-template <typename T> mat2<T> constexpr map(const vec2<T> & x1, const vec2<T> & y1, const vec2<T> & x2, const vec2<T> & y2);
-template <typename T> mat2<T> constexpr map_o(const vec2<T> & x1, const vec2<T> & y1, const vec2<T> & x2, const vec2<T> & y2);
-template <typename T> mat3<T> constexpr map(const vec3<T> & x1, const vec3<T> & y1, const vec3<T> & z1, const vec3<T> & x2, const vec3<T> & y2, const vec3<T> & z2);
-template <typename T> mat3<T> constexpr map_o(const vec3<T> & x1, const vec3<T> & y1, const vec3<T> & z1, const vec3<T> & x2, const vec3<T> & y2, const vec3<T> & z2);
+template <typename T> mat2<T> map(const vec2<T> & x1, const vec2<T> & y1, const vec2<T> & x2, const vec2<T> & y2);
+template <typename T> mat2<T> map_o(const vec2<T> & x1, const vec2<T> & y1, const vec2<T> & x2, const vec2<T> & y2);
+template <typename T> mat3<T> map(const vec3<T> & x1, const vec3<T> & y1, const vec3<T> & z1, const vec3<T> & x2, const vec3<T> & y2, const vec3<T> & z2);
+template <typename T> mat3<T> map_o(const vec3<T> & x1, const vec3<T> & y1, const vec3<T> & z1, const vec3<T> & x2, const vec3<T> & y2, const vec3<T> & z2);
 
-template <typename T> mat2<T> constexpr mapTo(const vec2<T> & x, const vec2<T> & y);
-template <typename T> mat2<T> constexpr mapTo_o(const vec2<T> & x, const vec2<T> & y);
-template <typename T> mat3<T> constexpr mapTo(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z);
-template <typename T> mat3<T> constexpr mapTo_o(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z);
+template <typename T> mat2<T> mapTo(const vec2<T> & x, const vec2<T> & y);
+template <typename T> mat2<T> mapTo_o(const vec2<T> & x, const vec2<T> & y);
+template <typename T> mat3<T> mapTo(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z);
+template <typename T> mat3<T> mapTo_o(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z);
 
-template <typename T> mat2<T> constexpr mapFrom(const vec2<T> & x, const vec2<T> & y);
-template <typename T> mat3<T> constexpr mapFrom(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z);
+template <typename T> mat2<T> mapFrom(const vec2<T> & x, const vec2<T> & y);
+template <typename T> mat3<T> mapFrom(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z);
 
-template <typename T> mat4<T> constexpr orthoProj(T width, T height, T near, T far);
-template <typename T> mat4<T> constexpr orthoProjAsym(T left, T right, T bottom, T top, T near, T far);
+template <typename T> mat4<T> orthoProj(T width, T height, T near, T far);
+template <typename T> mat4<T> orthoProjAsym(T left, T right, T bottom, T top, T near, T far);
 
 //fov is angle in radians between top and bottom planes, aspectRatio is screen width / height, zNear is distance to near plane, zFar is distance to far plane
 template <typename T> mat4<T> perspProj(T fov, T aspectRatio, T near, T far);
@@ -1341,14 +1341,14 @@ inline mat<T, t_m, t_n> operator--(mat<T, t_m, t_n> & m, int) {
 //--- positive ---
 
 template <typename T, nat t_m, nat t_n>
-constexpr mat<T, t_m, t_n> operator+(const mat<T, t_m, t_n> & m) {
+inline mat<T, t_m, t_n> operator+(const mat<T, t_m, t_n> & m) {
     return m;
 }
 
 //--- negative ---
 
 template <typename T>
-constexpr mat2<T> operator-(const mat2<T> & m) {
+inline mat2<T> operator-(const mat2<T> & m) {
     return mat2<T>(
         -m.x1, -m.y1,
         -m.x2, -m.y2
@@ -1356,7 +1356,7 @@ constexpr mat2<T> operator-(const mat2<T> & m) {
 }
 
 template <typename T>
-constexpr mat3<T> operator-(const mat3<T> & m) {
+inline mat3<T> operator-(const mat3<T> & m) {
     return mat3<T>(
         -m.x1, -m.y1, -m.z1,
         -m.x2, -m.y2, -m.z2,
@@ -1365,7 +1365,7 @@ constexpr mat3<T> operator-(const mat3<T> & m) {
 }
 
 template <typename T>
-constexpr mat4<T> operator-(const mat4<T> & m) {
+inline mat4<T> operator-(const mat4<T> & m) {
     return mat4<T>(
         -m.x1, -m.y1, -m.z1, -m.w1,
         -m.x2, -m.y2, -m.z2, -m.w2,
@@ -1377,7 +1377,7 @@ constexpr mat4<T> operator-(const mat4<T> & m) {
 //--- add ---
 
 template <typename T>
-constexpr mat2<T> operator+(const mat2<T> & m1, const mat2<T> & m2) {
+inline mat2<T> operator+(const mat2<T> & m1, const mat2<T> & m2) {
     return mat2<T>(
         m1.x1 + m2.x1, m1.y1 + m2.y1,
         m1.x2 + m2.x2, m1.y2 + m2.y2
@@ -1385,7 +1385,7 @@ constexpr mat2<T> operator+(const mat2<T> & m1, const mat2<T> & m2) {
 }
 
 template <typename T>
-constexpr mat3<T> operator+(const mat3<T> & m1, const mat3<T> & m2) {
+inline mat3<T> operator+(const mat3<T> & m1, const mat3<T> & m2) {
     return mat3<T>(
         m1.x1 + m2.x1, m1.y1 + m2.y1, m1.z1 + m2.z1,
         m1.x2 + m2.x2, m1.y2 + m2.y2, m1.z2 + m2.z2,
@@ -1394,7 +1394,7 @@ constexpr mat3<T> operator+(const mat3<T> & m1, const mat3<T> & m2) {
 }
 
 template <typename T>
-constexpr mat4<T> operator+(const mat4<T> & m1, const mat4<T> & m2) {
+inline mat4<T> operator+(const mat4<T> & m1, const mat4<T> & m2) {
     return mat4<T>(
         m1.x1 + m2.x1, m1.y1 + m2.y1, m1.z1 + m2.z1, m1.w1 + m2.w1,
         m1.x2 + m2.x2, m1.y2 + m2.y2, m1.z2 + m2.z2, m1.w2 + m2.w2,
@@ -1404,7 +1404,7 @@ constexpr mat4<T> operator+(const mat4<T> & m1, const mat4<T> & m2) {
 }
 
 template <typename T>
-constexpr mat2<T> operator+(const mat2<T> & m, T v) {
+inline mat2<T> operator+(const mat2<T> & m, T v) {
     return mat2<T>(
         m.x1 + v, m.y1 + v,
         m.x2 + v, m.y2 + v
@@ -1412,7 +1412,7 @@ constexpr mat2<T> operator+(const mat2<T> & m, T v) {
 }
 
 template <typename T>
-constexpr mat3<T> operator+(const mat3<T> & m, T v) {
+inline mat3<T> operator+(const mat3<T> & m, T v) {
     return mat3<T>(
         m.x1 + v, m.y1 + v, m.z1 + v,
         m.x2 + v, m.y2 + v, m.z2 + v,
@@ -1421,7 +1421,7 @@ constexpr mat3<T> operator+(const mat3<T> & m, T v) {
 }
 
 template <typename T>
-constexpr mat4<T> operator+(const mat4<T> & m, T v) {
+inline mat4<T> operator+(const mat4<T> & m, T v) {
     return mat4<T>(
         m.x1 + v, m.y1 + v, m.z1 + v, m.w1 + v,
         m.x2 + v, m.y2 + v, m.z2 + v, m.w2 + v,
@@ -1431,7 +1431,7 @@ constexpr mat4<T> operator+(const mat4<T> & m, T v) {
 }
 
 template <typename T>
-constexpr mat2<T> operator+(T v, const mat2<T> & m) {
+inline mat2<T> operator+(T v, const mat2<T> & m) {
     return mat2<T>(
         v + m.x1, v + m.y1,
         v + m.x2, v + m.y2
@@ -1439,7 +1439,7 @@ constexpr mat2<T> operator+(T v, const mat2<T> & m) {
 }
 
 template <typename T>
-constexpr mat3<T> operator+(T v, const mat3<T> & m) {
+inline mat3<T> operator+(T v, const mat3<T> & m) {
     return mat3<T>(
         v + m.x1, v + m.y1, v + m.z1,
         v + m.x2, v + m.y2, v + m.z2,
@@ -1448,7 +1448,7 @@ constexpr mat3<T> operator+(T v, const mat3<T> & m) {
 }
 
 template <typename T>
-constexpr mat4<T> operator+(T v, const mat4<T> & m) {
+inline mat4<T> operator+(T v, const mat4<T> & m) {
     return mat4<T>(
         v + m.x1, v + m.y1, v + m.z1, v + m.w1,
         v + m.x2, v + m.y2, v + m.z2, v + m.w2,
@@ -1460,7 +1460,7 @@ constexpr mat4<T> operator+(T v, const mat4<T> & m) {
 //--- subtract ---
 
 template <typename T>
-constexpr mat2<T> operator-(const mat2<T> & m1, const mat2<T> & m2) {
+inline mat2<T> operator-(const mat2<T> & m1, const mat2<T> & m2) {
     return mat2<T>(
         m1.x1 - m2.x1, m1.y1 - m2.y1,
         m1.x2 - m2.x2, m1.y2 - m2.y2
@@ -1468,7 +1468,7 @@ constexpr mat2<T> operator-(const mat2<T> & m1, const mat2<T> & m2) {
 }
 
 template <typename T>
-constexpr mat3<T> operator-(const mat3<T> & m1, const mat3<T> & m2) {
+inline mat3<T> operator-(const mat3<T> & m1, const mat3<T> & m2) {
     return mat3<T>(
         m1.x1 - m2.x1, m1.y1 - m2.y1, m1.z1 - m2.z1,
         m1.x2 - m2.x2, m1.y2 - m2.y2, m1.z2 - m2.z2,
@@ -1477,7 +1477,7 @@ constexpr mat3<T> operator-(const mat3<T> & m1, const mat3<T> & m2) {
 }
 
 template <typename T>
-constexpr mat4<T> operator-(const mat4<T> & m1, const mat4<T> & m2) {
+inline mat4<T> operator-(const mat4<T> & m1, const mat4<T> & m2) {
     return mat4<T>(
         m1.x1 - m2.x1, m1.y1 - m2.y1, m1.z1 - m2.z1, m1.w1 - m2.w1,
         m1.x2 - m2.x2, m1.y2 - m2.y2, m1.z2 - m2.z2, m1.w2 - m2.w2,
@@ -1487,7 +1487,7 @@ constexpr mat4<T> operator-(const mat4<T> & m1, const mat4<T> & m2) {
 }
 
 template <typename T>
-constexpr mat2<T> operator-(const mat2<T> & m, T v) {
+inline mat2<T> operator-(const mat2<T> & m, T v) {
     return mat2<T>(
         m.x1 - v, m.y1 - v,
         m.x2 - v, m.y2 - v
@@ -1495,7 +1495,7 @@ constexpr mat2<T> operator-(const mat2<T> & m, T v) {
 }
 
 template <typename T>
-constexpr mat3<T> operator-(const mat3<T> & m, T v) {
+inline mat3<T> operator-(const mat3<T> & m, T v) {
     return mat3<T>(
         m.x1 - v, m.y1 - v, m.z1 - v,
         m.x2 - v, m.y2 - v, m.z2 - v,
@@ -1504,7 +1504,7 @@ constexpr mat3<T> operator-(const mat3<T> & m, T v) {
 }
 
 template <typename T>
-constexpr mat4<T> operator-(const mat4<T> & m, T v) {
+inline mat4<T> operator-(const mat4<T> & m, T v) {
     return mat4<T>(
         m.x1 - v, m.y1 - v, m.z1 - v, m.w1 - v,
         m.x2 - v, m.y2 - v, m.z2 - v, m.w2 - v,
@@ -1514,7 +1514,7 @@ constexpr mat4<T> operator-(const mat4<T> & m, T v) {
 }
 
 template <typename T>
-constexpr mat2<T> operator-(T v, const mat2<T> & m) {
+inline mat2<T> operator-(T v, const mat2<T> & m) {
     return mat2<T>(
         v - m.x1, v - m.y1,
         v - m.x2, v - m.y2
@@ -1522,7 +1522,7 @@ constexpr mat2<T> operator-(T v, const mat2<T> & m) {
 }
 
 template <typename T>
-constexpr mat3<T> operator-(T v, const mat3<T> & m) {
+inline mat3<T> operator-(T v, const mat3<T> & m) {
     return mat3<T>(
         v - m.x1, v - m.y1, v - m.z1,
         v - m.x2, v - m.y2, v - m.z2,
@@ -1531,7 +1531,7 @@ constexpr mat3<T> operator-(T v, const mat3<T> & m) {
 }
 
 template <typename T>
-constexpr mat4<T> operator-(T v, const mat4<T> & m) {
+inline mat4<T> operator-(T v, const mat4<T> & m) {
     return mat4<T>(
         v - m.x1, v - m.y1, v - m.z1, v - m.w1,
         v - m.x2, v - m.y2, v - m.z2, v - m.w2,
@@ -1543,7 +1543,7 @@ constexpr mat4<T> operator-(T v, const mat4<T> & m) {
 //--- multiply ---
 
 template <typename T>
-constexpr mat2<T> operator*(const mat2<T> & m1, const mat2<T> & m2) {
+inline mat2<T> operator*(const mat2<T> & m1, const mat2<T> & m2) {
     return mat2<T>(
         m1.x1 * m2.x1 + m1.x2 * m2.y1,
         m1.y1 * m2.x1 + m1.y2 * m2.y1,
@@ -1554,7 +1554,7 @@ constexpr mat2<T> operator*(const mat2<T> & m1, const mat2<T> & m2) {
 }
 
 template <typename T>
-constexpr mat3<T> operator*(const mat3<T> & m1, const mat3<T> & m2) {
+inline mat3<T> operator*(const mat3<T> & m1, const mat3<T> & m2) {
     return mat3<T>(
         m1.x1 * m2.x1 + m1.x2 * m2.y1 + m1.x3 * m2.z1,
         m1.y1 * m2.x1 + m1.y2 * m2.y1 + m1.y3 * m2.z1,
@@ -1571,7 +1571,7 @@ constexpr mat3<T> operator*(const mat3<T> & m1, const mat3<T> & m2) {
 }
 
 template <typename T>
-constexpr mat4<T> operator*(const mat4<T> & m1, const mat4<T> & m2) {
+inline mat4<T> operator*(const mat4<T> & m1, const mat4<T> & m2) {
     return mat4<T>(
         m1.x1 * m2.x1 + m1.x2 * m2.y1 + m1.x3 * m2.z1 + m1.x4 * m2.w1,
         m1.y1 * m2.x1 + m1.y2 * m2.y1 + m1.y3 * m2.z1 + m1.y4 * m2.w1,
@@ -1596,7 +1596,7 @@ constexpr mat4<T> operator*(const mat4<T> & m1, const mat4<T> & m2) {
 }
 
 template <typename T>
-constexpr mat2<T> operator*(const mat2<T> & m, T v) {
+inline mat2<T> operator*(const mat2<T> & m, T v) {
     return mat2<T>(
         m.x1 * v, m.y1 * v,
         m.x2 * v, m.y2 * v
@@ -1604,7 +1604,7 @@ constexpr mat2<T> operator*(const mat2<T> & m, T v) {
 }
 
 template <typename T>
-constexpr mat3<T> operator*(const mat3<T> & m, T v) {
+inline mat3<T> operator*(const mat3<T> & m, T v) {
     return mat3<T>(
         m.x1 * v, m.y1 * v, m.z1 * v,
         m.x2 * v, m.y2 * v, m.z2 * v,
@@ -1613,7 +1613,7 @@ constexpr mat3<T> operator*(const mat3<T> & m, T v) {
 }
 
 template <typename T>
-constexpr mat4<T> operator*(const mat4<T> & m, T v) {
+inline mat4<T> operator*(const mat4<T> & m, T v) {
     return mat4<T>(
         m.x1 * v, m.y1 * v, m.z1 * v, m.w1 * v,
         m.x2 * v, m.y2 * v, m.z2 * v, m.w2 * v,
@@ -1623,7 +1623,7 @@ constexpr mat4<T> operator*(const mat4<T> & m, T v) {
 }
 
 template <typename T>
-constexpr mat2<T> operator*(T v, const mat2<T> & m) {
+inline mat2<T> operator*(T v, const mat2<T> & m) {
     return mat2<T>(
         v * m.x1, v * m.y1,
         v * m.x2, v * m.y2
@@ -1631,7 +1631,7 @@ constexpr mat2<T> operator*(T v, const mat2<T> & m) {
 }
 
 template <typename T>
-constexpr mat3<T> operator*(T v, const mat3<T> & m) {
+inline mat3<T> operator*(T v, const mat3<T> & m) {
     return mat3<T>(
         v * m.x1, v * m.y1, v * m.z1,
         v * m.x2, v * m.y2, v * m.z2,
@@ -1640,7 +1640,7 @@ constexpr mat3<T> operator*(T v, const mat3<T> & m) {
 }
 
 template <typename T>
-constexpr mat4<T> operator*(T v, const mat4<T> & m) {
+inline mat4<T> operator*(T v, const mat4<T> & m) {
     return mat4<T>(
         v * m.x1, v * m.y1, v * m.z1, v * m.w1,
         v * m.x2, v * m.y2, v * m.z2, v * m.w2,
@@ -1650,7 +1650,7 @@ constexpr mat4<T> operator*(T v, const mat4<T> & m) {
 }
 
 template <typename T>
-constexpr vec2<T> operator*(const mat2<T> & m, const vec2<T> & v) {
+inline vec2<T> operator*(const mat2<T> & m, const vec2<T> & v) {
     return vec2<T>(
         v.x * m.x1 + v.y * m.x2,
         v.x * m.y1 + v.y * m.y2
@@ -1658,7 +1658,7 @@ constexpr vec2<T> operator*(const mat2<T> & m, const vec2<T> & v) {
 }
 
 template <typename T>
-constexpr vec3<T> operator*(const mat3<T> & m, const vec3<T> & v) {
+inline vec3<T> operator*(const mat3<T> & m, const vec3<T> & v) {
     return vec3<T>(
         v.x * m.x1 + v.y * m.x2 + v.z * m.x3,
         v.x * m.y1 + v.y * m.y2 + v.z * m.y3,
@@ -1667,7 +1667,7 @@ constexpr vec3<T> operator*(const mat3<T> & m, const vec3<T> & v) {
 }
 
 template <typename T>
-constexpr vec4<T> operator*(const mat4<T> & m, const vec4<T> & v) {
+inline vec4<T> operator*(const mat4<T> & m, const vec4<T> & v) {
     return vec4<T>(
         v.x * m.x1 + v.y * m.x2 + v.z * m.x3 + v.w * m.x4,
         v.x * m.y1 + v.y * m.y2 + v.z * m.y3 + v.w * m.y4,
@@ -1679,7 +1679,7 @@ constexpr vec4<T> operator*(const mat4<T> & m, const vec4<T> & v) {
 //--- divide ---
 
 template <typename T>
-constexpr mat2<T> operator/(const mat2<T> & m, T v) {
+inline mat2<T> operator/(const mat2<T> & m, T v) {
     return mat2<T>(
         m.x1 / v, m.y1 / v,
         m.x2 / v, m.y2 / v
@@ -1687,7 +1687,7 @@ constexpr mat2<T> operator/(const mat2<T> & m, T v) {
 }
 
 template <typename T>
-constexpr mat3<T> operator/(const mat3<T> & m, T v) {
+inline mat3<T> operator/(const mat3<T> & m, T v) {
     return mat3<T>(
         m.x1 / v, m.y1 / v, m.z1 / v,
         m.x2 / v, m.y2 / v, m.z2 / v,
@@ -1696,7 +1696,7 @@ constexpr mat3<T> operator/(const mat3<T> & m, T v) {
 }
 
 template <typename T>
-constexpr mat4<T> operator/(const mat4<T> & m, T v) {
+inline mat4<T> operator/(const mat4<T> & m, T v) {
     return mat4<T>(
         m.x1 / v, m.y1 / v, m.z1 / v, m.w1 / v,
         m.x2 / v, m.y2 / v, m.z2 / v, m.w2 / v,
@@ -1706,7 +1706,7 @@ constexpr mat4<T> operator/(const mat4<T> & m, T v) {
 }
 
 template <typename T>
-constexpr mat2<T> operator/(T v, const mat2<T> & m) {
+inline mat2<T> operator/(T v, const mat2<T> & m) {
     return mat2<T>(
         v / m.x1, v / m.y1,
         v / m.x2, v / m.y2
@@ -1714,7 +1714,7 @@ constexpr mat2<T> operator/(T v, const mat2<T> & m) {
 }
 
 template <typename T>
-constexpr mat3<T> operator/(T v, const mat3<T> & m) {
+inline mat3<T> operator/(T v, const mat3<T> & m) {
     return mat3<T>(
         v / m.x1, v / m.y1, v / m.z1,
         v / m.x2, v / m.y2, v / m.z2,
@@ -1723,7 +1723,7 @@ constexpr mat3<T> operator/(T v, const mat3<T> & m) {
 }
 
 template <typename T>
-constexpr mat4<T> operator/(T v, const mat4<T> & m) {
+inline mat4<T> operator/(T v, const mat4<T> & m) {
     return mat4<T>(
         v / m.x1, v / m.y1, v / m.z1, v / m.w1,
         v / m.x2, v / m.y2, v / m.z2, v / m.w2,
@@ -1742,14 +1742,14 @@ constexpr mat4<T> operator/(T v, const mat4<T> & m) {
 //--- equal to ---
 
 template <typename T>
-constexpr bool operator==(const mat2<T> & m1, const mat2<T> & m2) {
+inline bool operator==(const mat2<T> & m1, const mat2<T> & m2) {
     return
         m1.x1 == m2.x1 && m1.y1 == m2.y1 &&
         m1.x2 == m2.x2 && m1.y2 == m2.y2;
 }
 
 template <typename T>
-constexpr bool operator==(const mat3<T> & m1, const mat3<T> & m2) {
+inline bool operator==(const mat3<T> & m1, const mat3<T> & m2) {
     return
         m1.x1 == m2.x1 && m1.y1 == m2.y1 && m1.z1 == m2.z1 &&
         m1.x2 == m2.x2 && m1.y2 == m2.y2 && m1.z2 == m2.z2 &&
@@ -1757,7 +1757,7 @@ constexpr bool operator==(const mat3<T> & m1, const mat3<T> & m2) {
 }
 
 template <typename T>
-constexpr bool operator==(const mat4<T> & m1, const mat4<T> & m2) {
+inline bool operator==(const mat4<T> & m1, const mat4<T> & m2) {
     return
         m1.x1 == m2.x1 && m1.y1 == m2.y1 && m1.z1 == m2.z1 && m1.w1 == m2.w1 &&
         m1.x2 == m2.x2 && m1.y2 == m2.y2 && m1.z2 == m2.z2 && m1.w2 == m2.w2 &&
@@ -1768,7 +1768,7 @@ constexpr bool operator==(const mat4<T> & m1, const mat4<T> & m2) {
 //--- not equal to ---
 
 template <typename T, nat t_m, nat t_n>
-constexpr bool operator!=(const mat<T, t_m, t_n> & m1, const mat<T, t_m, t_n> & m2) {
+inline bool operator!=(const mat<T, t_m, t_n> & m1, const mat<T, t_m, t_n> & m2) {
     return !(m1 == m2);
 }
 
@@ -1823,7 +1823,7 @@ inline std::ostream & operator<<(std::ostream & os, const mat4<T> & m) {
 //--- transpose ---
 
 template <typename T>
-constexpr mat2<T> transpose(const mat2<T> & m) {
+inline mat2<T> transpose(const mat2<T> & m) {
     return mat2<T>(
         m.x1, m.x2,
         m.y1, m.y2
@@ -1831,7 +1831,7 @@ constexpr mat2<T> transpose(const mat2<T> & m) {
 }
 
 template <typename T>
-constexpr mat3<T> transpose(const mat3<T> & m) {
+inline mat3<T> transpose(const mat3<T> & m) {
     return mat3<T>(
         m.x1, m.x2, m.x3,
         m.y1, m.y2, m.y3,
@@ -1840,7 +1840,7 @@ constexpr mat3<T> transpose(const mat3<T> & m) {
 }
 
 template <typename T>
-constexpr mat4<T> transpose(const mat4<T> & m) {
+inline mat4<T> transpose(const mat4<T> & m) {
     return mat4<T>(
         m.x1, m.x2, m.x3, m.x4,
         m.y1, m.y2, m.y3, m.y4,
@@ -1852,7 +1852,7 @@ constexpr mat4<T> transpose(const mat4<T> & m) {
 //--- cofactor ---
 
 template <typename T>
-constexpr mat2<T> cofactor(const mat2<T> & m) {
+inline mat2<T> cofactor(const mat2<T> & m) {
     return mat2<T>(
         m.y2, -m.x2,
         -m.y1, m.x1
@@ -1860,7 +1860,7 @@ constexpr mat2<T> cofactor(const mat2<T> & m) {
 }
 
 template <typename T>
-constexpr mat3<T> cofactor(const mat3<T> & m) {
+inline mat3<T> cofactor(const mat3<T> & m) {
     return mat3<T>(
         +(m.y2 * m.z3 - m.y3 * m.z2), -(m.x2 * m.z3 - m.x3 * m.z2), +(m.x2 * m.y3 - m.x3 * m.y2),
         -(m.y1 * m.z3 - m.y3 * m.z1), +(m.x1 * m.z3 - m.x3 * m.z1), -(m.x1 * m.y3 - m.x3 * m.y1),
@@ -1869,7 +1869,7 @@ constexpr mat3<T> cofactor(const mat3<T> & m) {
 }
 
 template <typename T>
-constexpr mat4<T> cofactor(const mat4<T> & m) {
+inline mat4<T> cofactor(const mat4<T> & m) {
     //T xy12(m.x1 * m.y2 - m.x2 * m.y1);
     //T xy13(m.x1 * m.y3 - m.x3 * m.y1);
     //T xy14(m.x1 * m.y4 - m.x4 * m.y1);
@@ -1935,33 +1935,33 @@ constexpr mat4<T> cofactor(const mat4<T> & m) {
 //-- adjoint ---
 
 template <typename T>
-constexpr mat2<T> adjoint(const mat2<T> & m) {
+inline mat2<T> adjoint(const mat2<T> & m) {
     return transpose(cofactor(m));
 
 }
 
 template <typename T>
-constexpr mat3<T> adjoint(const mat3<T> & m) {
+inline mat3<T> adjoint(const mat3<T> & m) {
     return transpose(cofactor(m));
 
 }
 
 template <typename T>
-constexpr mat4<T> adjoint(const mat4<T> & m) {
+inline mat4<T> adjoint(const mat4<T> & m) {
     return transpose(cofactor(m));
 }
 
 //--- determinant ---
 
 template <typename T>
-constexpr T determinant(const mat2<T> & m) {
+inline T determinant(const mat2<T> & m) {
     return
         + m.x1 * m.y2
         - m.x2 * m.y1;
 }
 
 template <typename T>
-constexpr T determinant(const mat3<T> & m) {
+inline T determinant(const mat3<T> & m) {
     return
         + m.x1 * (m.y2 * m.z3 - m.y3 * m.z2)
         - m.x2 * (m.y1 * m.z3 - m.y3 * m.z1)
@@ -1969,7 +1969,7 @@ constexpr T determinant(const mat3<T> & m) {
 }
 
 template <typename T>
-constexpr T determinant(const mat4<T> & m) {
+inline T determinant(const mat4<T> & m) {
     T zw12 = m.z1 * m.w2 - m.z2 * m.w1;
     T zw13 = m.z1 * m.w3 - m.z3 * m.w1;
     T zw14 = m.z1 * m.w4 - m.z4 * m.w1;
@@ -1988,7 +1988,7 @@ constexpr T determinant(const mat4<T> & m) {
 //--- inverse ---
 
 template <typename T>
-constexpr mat2<T> inverse(const mat2<T> & m) {
+inline mat2<T> inverse(const mat2<T> & m) {
     T det(determinant(m));
     if (zero(det)) {
         return nullMat<T, 2>();
@@ -1998,7 +1998,7 @@ constexpr mat2<T> inverse(const mat2<T> & m) {
 }
 
 template <typename T>
-constexpr mat3<T> inverse(const mat3<T> & m) {
+inline mat3<T> inverse(const mat3<T> & m) {
     T det(determinant(m));
     if (zero(det)) {
         return nullMat<T, 3>();
@@ -2008,7 +2008,7 @@ constexpr mat3<T> inverse(const mat3<T> & m) {
 }
 
 template <typename T>
-constexpr mat4<T> inverse(const mat4<T> & m) {
+inline mat4<T> inverse(const mat4<T> & m) {
     T det(determinant(m));
     if (zero(det)) {
         return nullMat<T, 4>();
@@ -2078,7 +2078,7 @@ constexpr mat<T, t_m, t_n> nullMat() {
 
 
 template <typename T>
-constexpr mat2<T> translate(const vec1<T> & delta) {
+inline mat2<T> translate(const vec1<T> & delta) {
     return mat2<T>(
         static_cast<T>(1.0), static_cast<T>(0.0),
         delta.x,             static_cast<T>(1.0)
@@ -2086,7 +2086,7 @@ constexpr mat2<T> translate(const vec1<T> & delta) {
 }
 
 template <typename T>
-constexpr mat3<T> translate(const vec2<T> & delta) {
+inline mat3<T> translate(const vec2<T> & delta) {
     return mat3<T>(
         static_cast<T>(1.0), static_cast<T>(0.0), static_cast<T>(0.0),
         static_cast<T>(0.0), static_cast<T>(1.0), static_cast<T>(0.0),
@@ -2095,7 +2095,7 @@ constexpr mat3<T> translate(const vec2<T> & delta) {
 }
 
 template <typename T>
-constexpr mat4<T> translate(const vec3<T> & delta) {
+inline mat4<T> translate(const vec3<T> & delta) {
     return mat4<T>(
         static_cast<T>(1.0), static_cast<T>(0.0), static_cast<T>(0.0), static_cast<T>(0.0),
         static_cast<T>(0.0), static_cast<T>(1.0), static_cast<T>(0.0), static_cast<T>(0.0),
@@ -2140,7 +2140,7 @@ inline mat4<T> & translate(mat4<T> & mat, const vec3<T> & delta) {
 }
 
 template <typename T>
-constexpr mat2<T> scale(const vec2<T> & scale) {
+inline mat2<T> scale(const vec2<T> & scale) {
     return mat2<T>(
         scale.x,             static_cast<T>(0.0),
         static_cast<T>(0.0), scale.y
@@ -2148,7 +2148,7 @@ constexpr mat2<T> scale(const vec2<T> & scale) {
 }
 
 template <typename T>
-constexpr mat3<T> scale(const vec3<T> & scale) {
+inline mat3<T> scale(const vec3<T> & scale) {
     return mat3<T>(
         scale.x,             static_cast<T>(0.0), static_cast<T>(0.0),
         static_cast<T>(0.0), scale.y,             static_cast<T>(0.0),
@@ -2357,7 +2357,7 @@ inline mat3<T> align_n(const vec3<T> & forward1, const vec3<T> & up1, const vec3
 }
 
 template <typename T>
-constexpr mat2<T> map(const vec2<T> & x1, const vec2<T> & y1, const vec2<T> & x2, const vec2<T> & y2) {
+inline mat2<T> map(const vec2<T> & x1, const vec2<T> & y1, const vec2<T> & x2, const vec2<T> & y2) {
     mat2<T> a(x1, y1);
     mat2<T> b(x2, y2);
 
@@ -2365,7 +2365,7 @@ constexpr mat2<T> map(const vec2<T> & x1, const vec2<T> & y1, const vec2<T> & x2
 }
 
 template <typename T>
-constexpr mat2<T> map_o(const vec2<T> & x1, const vec2<T> & y1, const vec2<T> & x2, const vec2<T> & y2) {
+inline mat2<T> map_o(const vec2<T> & x1, const vec2<T> & y1, const vec2<T> & x2, const vec2<T> & y2) {
     mat2<T> a(x1, y1);
     mat2<T> b(x2, y2);
 
@@ -2373,7 +2373,7 @@ constexpr mat2<T> map_o(const vec2<T> & x1, const vec2<T> & y1, const vec2<T> & 
 }
 
 template <typename T>
-constexpr mat3<T> map(const vec3<T> & x1, const vec3<T> & y1, const vec3<T> & z1, const vec3<T> & x2, const vec3<T> & y2, const vec3<T> & z2) {
+inline mat3<T> map(const vec3<T> & x1, const vec3<T> & y1, const vec3<T> & z1, const vec3<T> & x2, const vec3<T> & y2, const vec3<T> & z2) {
     mat3<T> a(x1, y1, z1);
     mat3<T> b(x2, y2, z2);
 
@@ -2381,7 +2381,7 @@ constexpr mat3<T> map(const vec3<T> & x1, const vec3<T> & y1, const vec3<T> & z1
 }
 
 template <typename T>
-constexpr mat3<T> map_o(const vec3<T> & x1, const vec3<T> & y1, const vec3<T> & z1, const vec3<T> & x2, const vec3<T> & y2, const vec3<T> & z2) {
+inline mat3<T> map_o(const vec3<T> & x1, const vec3<T> & y1, const vec3<T> & z1, const vec3<T> & x2, const vec3<T> & y2, const vec3<T> & z2) {
     mat3<T> a(x1, y1, z1);
     mat3<T> b(x2, y2, z2);
 
@@ -2389,37 +2389,37 @@ constexpr mat3<T> map_o(const vec3<T> & x1, const vec3<T> & y1, const vec3<T> & 
 }
 
 template <typename T>
-constexpr mat2<T> mapTo(const vec2<T> & x, const vec2<T> & y) {
+inline mat2<T> mapTo(const vec2<T> & x, const vec2<T> & y) {
     return inverse(mat2<T>(x, y));
 }
 
 template <typename T>
-constexpr mat2<T> mapTo_o(const vec2<T> & x, const vec2<T> & y) {
+inline mat2<T> mapTo_o(const vec2<T> & x, const vec2<T> & y) {
     return transpose(mat2<T>(x, y));
 }
 
 template <typename T>
-constexpr mat3<T> mapTo(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z) {
+inline mat3<T> mapTo(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z) {
     return inverse(mat3<T>(x, y, z));
 }
 
 template <typename T>
-constexpr mat3<T> mapTo_o(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z) {
+inline mat3<T> mapTo_o(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z) {
     return transpose(mat3<T>(x, y, z));
 }
 
 template <typename T>
-constexpr mat2<T> mapFrom(const vec2<T> & x, const vec2<T> & y) {
+inline mat2<T> mapFrom(const vec2<T> & x, const vec2<T> & y) {
     return mat2<T>(x, y);
 }
 
 template <typename T>
-constexpr mat3<T> mapFrom(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z) {
+inline mat3<T> mapFrom(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z) {
     return mat3<T>(x, y, z);
 }
 
 template <typename T>
-constexpr mat4<T> orthoProj(T width, T height, T near, T far) {
+inline mat4<T> orthoProj(T width, T height, T near, T far) {
     return mat4<T>(
         static_cast<T>(2.0) / width, static_cast<T>(0.0),          static_cast<T>(0.0),                static_cast<T>(0.0),
         static_cast<T>(0.0),         static_cast<T>(2.0) / height, static_cast<T>(0.0),                static_cast<T>(0.0),
@@ -2429,7 +2429,7 @@ constexpr mat4<T> orthoProj(T width, T height, T near, T far) {
 }
 
 template <typename T>
-constexpr mat4<T> orthoProjAsym(T left, T right, T bottom, T top, T near, T far) {
+inline mat4<T> orthoProjAsym(T left, T right, T bottom, T top, T near, T far) {
     return mat4<T>(
         static_cast<T>(2.0) / (right - left), static_cast<T>(0.0),                  static_cast<T>(0.0),                static_cast<T>(0.0),
         static_cast<T>(0.0),                  static_cast<T>(2.0) / (top - bottom), static_cast<T>(0.0),                static_cast<T>(0.0),

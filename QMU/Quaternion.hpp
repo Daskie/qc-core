@@ -74,26 +74,26 @@ template <typename T> quat<T> & operator/=(quat<T> & q1, const quat<T> & q2);
 
 //--- arithmetic operators ---
 
-template <typename T> constexpr quat<T> operator+(const quat<T> & q);
+template <typename T> quat<T> operator+(const quat<T> & q);
 
-template <typename T> constexpr quat<T> operator-(const quat<T> & q);
+template <typename T> quat<T> operator-(const quat<T> & q);
 
-template <typename T> constexpr quat<T> operator+(const quat<T> & q1, const quat<T> & q2);
+template <typename T> quat<T> operator+(const quat<T> & q1, const quat<T> & q2);
 
-template <typename T> constexpr quat<T> operator-(const quat<T> & q1, const quat<T> & q2);
+template <typename T> quat<T> operator-(const quat<T> & q1, const quat<T> & q2);
 
-template <typename T> constexpr quat<T> operator*(const quat<T> & q1, const quat<T> & q2);
-template <typename T> constexpr quat<T> operator*(const quat<T> &  q, T v);
-template <typename T> constexpr quat<T> operator*(const T v, const quat<T> &  q);
-template <typename T> constexpr vec3<T> operator*(const quat<T> &  q, const vec3<T> &  v);
+template <typename T> quat<T> operator*(const quat<T> & q1, const quat<T> & q2);
+template <typename T> quat<T> operator*(const quat<T> &  q, T v);
+template <typename T> quat<T> operator*(const T v, const quat<T> &  q);
+template <typename T> vec3<T> operator*(const quat<T> &  q, const vec3<T> &  v);
 
-template <typename T> constexpr quat<T> operator/(const quat<T> & q1, const quat<T> & q2);
+template <typename T> quat<T> operator/(const quat<T> & q1, const quat<T> & q2);
 
 //--- comparison operators ---
 
-template <typename T> constexpr bool operator==(const quat<T> & q1, const quat<T> & q2);
+template <typename T> bool operator==(const quat<T> & q1, const quat<T> & q2);
 
-template <typename T> constexpr bool operator!=(const quat<T> & q1, const quat<T> & q2);
+template <typename T> bool operator!=(const quat<T> & q1, const quat<T> & q2);
 
 //--- other ---
 
@@ -101,7 +101,7 @@ template <typename T> std::ostream & operator<<(std::ostream & os, const quat<T>
 
 //--- uncategorized ---
 
-template <typename T> constexpr T dot(const quat<T> & q1, const quat<T> & q2);
+template <typename T> T dot(const quat<T> & q1, const quat<T> & q2);
 
 template <typename T> T magnitude(const quat<T> & q);
 
@@ -109,14 +109,14 @@ template <typename T> T magnitude2(const quat<T> & q);
 
 template <typename T> quat<T> norm(const quat<T> & q);
 
-template <typename T> constexpr quat<T> inverse(const quat<T> & q);
+template <typename T> quat<T> inverse(const quat<T> & q);
 
 template <typename T> T angle(const quat<T> & q);
 
 template <typename T> vec3<T> axis(const quat<T> & q);
 template <typename T> vec3<T> axis_n(const quat<T> & q);
 
-template <typename T> constexpr quat<T> mix(const quat<T> & q1, const quat<T> & q2, T t);
+template <typename T> quat<T> mix(const quat<T> & q1, const quat<T> & q2, T t);
 
 
 
@@ -280,27 +280,27 @@ inline quat<T> & operator/=(quat<T> & q1, const quat<T> & q2) {
 
 
 template <typename T>
-constexpr quat<T> operator+(const quat<T> & q) {
+inline quat<T> operator+(const quat<T> & q) {
     return quat<T>(+q.a, +q.w);
 }
 
 template <typename T>
-constexpr quat<T> operator-(const quat<T> & q) {
+inline quat<T> operator-(const quat<T> & q) {
     return quat<T>(-q.a, -q.w);
 }
 
 template <typename T>
-constexpr quat<T> operator+(const quat<T> & q1, const quat<T> & q2) {
+inline quat<T> operator+(const quat<T> & q1, const quat<T> & q2) {
     return quat<T>(q1.a + q2.a, q1.w + q2.w);
 }
 
 template <typename T>
-constexpr quat<T> operator-(const quat<T> & q1, const quat<T> & q2) {
+inline quat<T> operator-(const quat<T> & q1, const quat<T> & q2) {
     return quat<T>(q1.a - q2.a, q1.w - q2.w);
 }
 
 template <typename T>
-constexpr quat<T> operator*(const quat<T> & q1, const quat<T> & q2) {
+inline quat<T> operator*(const quat<T> & q1, const quat<T> & q2) {
     return quat<T>(
         q1.w * q2.a + q2.w * q1.a + cross(q1.a, q2.a),
         q1.w * q2.w - dot(q1.a, q2.a)
@@ -308,23 +308,23 @@ constexpr quat<T> operator*(const quat<T> & q1, const quat<T> & q2) {
 }
 
 template <typename T>
-constexpr quat<T> operator*(const quat<T> & q, T v) {
+inline quat<T> operator*(const quat<T> & q, T v) {
     return quat<T>(q.a * v, q.w * v);
 }
 
 template <typename T>
-constexpr quat<T> operator*(T v, const quat<T> & q) {
+inline quat<T> operator*(T v, const quat<T> & q) {
     return quat<T>(v * q.a, v * q.w);
 }
 
 template <typename T>
-constexpr vec3<T> operator*(const quat<T> & q, const vec3<T> & v) {
+inline vec3<T> operator*(const quat<T> & q, const vec3<T> & v) {
     vec3<T> t(static_cast<T>(static_cast<T>(2.0)) * cross(q.a, v));
     return v + q.w * t + cross(q.a, t);
 }
 
 template <typename T>
-constexpr quat<T> operator/(const quat<T> & q1, const quat<T> & q2) {
+inline quat<T> operator/(const quat<T> & q1, const quat<T> & q2) {
     return quat<T>(q1.a * q2.w - q2.a * q1.w - cross(q1.a, q2.a), dot(q1, q2));
 }
 
@@ -336,12 +336,12 @@ constexpr quat<T> operator/(const quat<T> & q1, const quat<T> & q2) {
 
 
 template <typename T>
-constexpr bool operator==(const quat<T> & q1, const quat<T> & q2) {
+inline bool operator==(const quat<T> & q1, const quat<T> & q2) {
     return q1.a == q2.a && q1.w == q2.w;
 }
 
 template <typename T>
-constexpr bool operator!=(const quat<T> & q1, const quat<T> & q2) {
+inline bool operator!=(const quat<T> & q1, const quat<T> & q2) {
     return q1.a != q2.a || q1.w != q2.w;
 }
 
@@ -365,7 +365,7 @@ inline std::ostream & operator<<(std::ostream & os, const quat<T> & q) {
 
 
 template <typename T>
-constexpr T dot(const quat<T> & q1, const quat<T> & q2) {
+inline T dot(const quat<T> & q1, const quat<T> & q2) {
     return dot(q1.a, q2.a) + q1.w * q2.w;
 }
 
@@ -390,7 +390,7 @@ inline quat<T> norm(const quat<T> & q) {
 }
 
 template <typename T>
-constexpr quat<T> inverse(const quat<T> & q) {
+inline quat<T> inverse(const quat<T> & q) {
     return quat<T>(-q.a, q.w);
 }
 
@@ -403,6 +403,7 @@ template <typename T>
 inline vec3<T> axis(const quat<T> & q) {
     return axis_n(norm(q));
 }
+
 template <typename T>
 inline vec3<T> axis_n(const quat<T> & q) {
     T d2(static_cast<T>(1.0) - q.w * q.w);
@@ -413,7 +414,7 @@ inline vec3<T> axis_n(const quat<T> & q) {
 }
 
 template <typename T>
-constexpr quat<T> mix(const quat<T> & q1, const quat<T> & q2, T t) {
+inline quat<T> mix(const quat<T> & q1, const quat<T> & q2, T t) {
     T s(static_cast<T>(1.0) - t);
     return quat<T>(s * q1.a + t * q2.a, s * q1.w + t * q2.w);
 }

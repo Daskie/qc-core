@@ -87,21 +87,6 @@ constexpr void compileClassesConstexprT() {
     quat<T> q_4(v3, v);
     quat<T> q_6(v3);
     quat<T> q_7(v4);
-
-    // arithmetic operators
-    +q;
-    -q;
-    q + q;
-    q - q;
-    q * q;
-    q * v;
-    v * q;
-    q * v3;
-    q / q;
-
-    // comparison operators
-    q == q;
-    q != q;
 }
 
 constexpr bool compileClassesConstexpr() {
@@ -156,10 +141,6 @@ constexpr void compileFunctionsConstexprT() {
     constexpr vec4<T> v4(1.0);
     constexpr mat3<T> m3(v3, v3, v3);
     constexpr quat<T> q(v4);
-
-    dot(q, q);
-    inverse(q);
-    mix(q, q, v);
 
     toMat(q);
 }

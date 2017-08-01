@@ -266,26 +266,6 @@ constexpr void compileClassesConstexprT() {
     m2.row<0>(); m2.row<1>();
     m2.col<0>(); m2.col<1>();
 
-    // arithmetic operators
-    +m2;
-    -m2;
-    m2 + m2;
-    m2 + v;
-    v + m2;
-    m2 - m2;
-    m2 - v;
-    v - m2;
-    m2 * m2;
-    m2 * v;
-    v * m2;
-    m2 * v2;
-    m2 / T(1);
-    T(1) / m2;
-
-    // comparison operators
-    m2 == m2;
-    m2 != m2;
-
     //--------------------------------------------------------------------------
     // Mat3
 
@@ -306,26 +286,6 @@ constexpr void compileClassesConstexprT() {
 
     m3.row<0>(); m3.row<1>(); m3.row<2>();
     m3.col<0>(); m3.col<1>(); m3.col<2>();
-
-    // arithmetic operators
-    +m3;
-    -m3;
-    m3 + m3;
-    m3 + v;
-    v + m3;
-    m3 - m3;
-    m3 - v;
-    v - m3;
-    m3 * m3;
-    m3 * v;
-    v * m3;
-    m3 * v3;
-    m3 / T(1);
-    T(1) / m3;
-
-    // comparison operators
-    m3 == m3;
-    m3 != m3;
 
     //--------------------------------------------------------------------------
     // Mat4
@@ -348,26 +308,6 @@ constexpr void compileClassesConstexprT() {
 
     m4.row<0>(); m4.row<1>(); m4.row<2>(); m4.row<3>();
     m4.col<0>(); m4.col<1>(); m4.col<2>(); m4.col<3>();
-
-    // arithmetic operators
-    +m4;
-    -m4;
-    m4 + m4;
-    m4 + v;
-    v + m4;
-    m4 - m4;
-    m4 - v;
-    v - m4;
-    m4 * m4;
-    m4 * v;
-    v * m4;
-    m4 * v4;
-    m4 / T(1);
-    T(1) / m4;
-
-    // comparison operators
-    m4 == m4;
-    m4 != m4;
 }
 
 constexpr bool compileClassesConstexpr() {
@@ -479,45 +419,12 @@ constexpr void compileFunctionsConstexprT() {
     constexpr mat3<T> m3(v3, v3, v3);
     constexpr mat4<T> m4(v4, v4, v4, v4);
 
-    transpose(m2);
-    transpose(m3);
-    transpose(m4);
-    cofactor(m2);
-    cofactor(m3);
-    cofactor(m4);
-    adjoint(m2);
-    adjoint(m3);
-    adjoint(m4);
-    determinant(m2);
-    determinant(m3);
-    determinant(m4);
-    inverse(m2);
-    inverse(m3);
-    inverse(m4);
     fullMat<T, 2>(v);
     fullMat<T, 3>(v);
     fullMat<T, 4>(v);
     nullMat<T, 2>();
     nullMat<T, 3>();
     nullMat<T, 4>();
-
-    translate(v1);
-    translate(v2);
-    translate(v3);
-    scale(v2);
-    scale(v3);
-    map(v2, v2, v2, v2);
-    map_o(v2, v2, v2, v2);
-    map(v3, v3, v3, v3, v3, v3);
-    map_o(v3, v3, v3, v3, v3, v3);
-    mapTo(v2, v2);
-    mapTo_o(v2, v2);
-    mapTo(v3, v3, v3);
-    mapTo_o(v3, v3, v3);
-    mapFrom(v2, v2);
-    mapFrom(v3, v3, v3);
-    orthoProj(T(1.0), T(1.0), T(-1.0), T(1.0));
-    orthoProjAsym(T(-1.0), T(1.0), T(-1.0), T(1.0), T(-1.0), T(1.0));
 }
 
 constexpr bool compileFunctionsConstexpr() {
