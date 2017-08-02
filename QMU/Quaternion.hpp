@@ -128,8 +128,8 @@ template <typename T> quat<T> mix(const quat<T> & q1, const quat<T> & q2, T t);
 //template <typename T>
 //quat<T> pow(const quat<T> & q, T t);
 
-template <typename T> quat<T> rotateQ(const vec3<T> & axis, T theta);
-template <typename T> quat<T> rotateQ_n(const vec3<T> & axis, T theta);
+template <typename T> quat<T> rotateQ(const vec3<T> & axis, T angle);
+template <typename T> quat<T> rotateQ_n(const vec3<T> & axis, T angle);
 
 template <typename T> quat<T> alignQ(const vec3<T> & v1, const vec3<T> & v2);
 template <typename T> quat<T> alignQ_n(const vec3<T> & v1, const vec3<T> & v2);
@@ -431,14 +431,14 @@ inline quat<T> mix(const quat<T> & q1, const quat<T> & q2, T t) {
 }*/
 
 template <typename T>
-inline quat<T> rotateQ(const vec3<T> & axis, T theta) {
-    return rotateQ_n(norm(axis), theta);
+inline quat<T> rotateQ(const vec3<T> & axis, T angle) {
+    return rotateQ_n(norm(axis), angle);
 }
 template <typename T>
-inline quat<T> rotateQ_n(const vec3<T> & axis, T theta) {
+inline quat<T> rotateQ_n(const vec3<T> & axis, T angle) {
     return quat<T>(
-        std::sin(theta / 2) * axis,
-        std::cos(theta / 2)
+        std::sin(angle * static_cast<T>(0.5)) * axis,
+        std::cos(angle * static_cast<T>(0.5))
     );
 }
 

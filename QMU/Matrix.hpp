@@ -366,19 +366,19 @@ template <typename T, nat t_n> mat<T, t_n> scale(const vec<T, t_n> & scale);
 template <typename T, nat t_n> mat<T, t_n> & scale(mat<T, t_n> & mat, const vec<T, t_n> & scale);
 template <typename T, nat t_n> mat<T, t_n + 1> & scale(mat<T, t_n + 1> & mat, const vec<T, t_n> & scale);
 
-template <typename T> mat2<T> rotate(T theta);
+template <typename T> mat2<T> rotate(T angle);
 
-template <typename T> mat3<T> rotateX(T theta);
+template <typename T> mat3<T> rotateX(T angle);
 
-template <typename T> mat3<T> rotateY(T theta);
+template <typename T> mat3<T> rotateY(T angle);
 
-template <typename T> mat3<T> rotateZ(T theta);
+template <typename T> mat3<T> rotateZ(T angle);
 
 template <typename T> mat3<T> rotate(const vec3<T> & axis, T sinTheta, T cosTheta);
 template <typename T> mat3<T> rotate_n(const vec3<T> & axis, T sinTheta, T cosTheta);
 
-template <typename T> mat3<T> rotate(const vec3<T> & axis, T theta);
-template <typename T> mat3<T> rotate_n(const vec3<T> & axis, T theta);
+template <typename T> mat3<T> rotate(const vec3<T> & axis, T angle);
+template <typename T> mat3<T> rotate_n(const vec3<T> & axis, T angle);
 
 //theta: thumb points up, phi: right, psi: forward
 template <typename T> mat3<T> euler(const vec3<T> & forward, const vec3<T> & up, T theta, T phi, T psi);
@@ -2133,9 +2133,9 @@ inline mat4<T> & scale(mat4<T> & mat, const vec4<T> & scale) {
 }
 
 template <typename T>
-inline mat2<T> rotate(T theta) {
-    T s(std::sin(theta));
-    T c(std::cos(theta));
+inline mat2<T> rotate(T angle) {
+    T s(std::sin(angle));
+    T c(std::cos(angle));
 
     return mat2<T>(
          c, s,
@@ -2144,11 +2144,11 @@ inline mat2<T> rotate(T theta) {
 }
 
 template <typename T>
-inline mat3<T> rotateX(T theta) {
+inline mat3<T> rotateX(T angle) {
     constexpr T _0(static_cast<T>(0.0)), _1(static_cast<T>(1.0));
 
-    T s(std::sin(theta));
-    T c(std::cos(theta));
+    T s(std::sin(angle));
+    T c(std::cos(angle));
 
     return mat3<T>(
         _1, _0, _0,
@@ -2158,11 +2158,11 @@ inline mat3<T> rotateX(T theta) {
 }
 
 template <typename T>
-inline mat3<T> rotateY(T theta) {
+inline mat3<T> rotateY(T angle) {
     constexpr T _0(static_cast<T>(0.0)), _1(static_cast<T>(1.0));
 
-    T s(std::sin(theta));
-    T c(std::cos(theta));
+    T s(std::sin(angle));
+    T c(std::cos(angle));
 
     return mat3<T>(
          c, _0, -s,
@@ -2172,11 +2172,11 @@ inline mat3<T> rotateY(T theta) {
 }
 
 template <typename T>
-inline mat3<T> rotateZ(T theta) {
+inline mat3<T> rotateZ(T angle) {
     constexpr T _0(static_cast<T>(0.0)), _1(static_cast<T>(1.0));
 
-    T s(std::sin(theta));
-    T c(std::cos(theta));
+    T s(std::sin(angle));
+    T c(std::cos(angle));
 
     return mat3<T>(
          c,  s, _0,
@@ -2214,12 +2214,12 @@ inline mat3<T> rotate_n(const vec3<T> & axis, T s, T c) {
 }
 
 template <typename T>
-inline mat3<T> rotate(const vec3<T> & axis, T theta) {
-    return rotate(axis, std::sin(theta), std::cos(theta));
+inline mat3<T> rotate(const vec3<T> & axis, T angle) {
+    return rotate(axis, std::sin(angle), std::cos(angle));
 }
 template <typename T>
-inline mat3<T> rotate_n(const vec3<T> & axis, T theta) {
-    return rotate_n(axis, std::sin(theta), std::cos(theta));
+inline mat3<T> rotate_n(const vec3<T> & axis, T angle) {
+    return rotate_n(axis, std::sin(angle), std::cos(angle));
 }
 
 template <typename T>

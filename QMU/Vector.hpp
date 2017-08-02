@@ -2477,6 +2477,7 @@ constexpr vec1<T> operator/(const vec1<T> & v1, const vec1<T> & v2) {
     return vec1<T>(v1.x / v2.x);
 }
 
+
 template <typename T>
 constexpr vec2<T> operator/(const vec2<T> & v1, const vec2<T> & v2) {
     return vec2<T>(v1.x / v2.x, v1.y / v2.y);
@@ -2497,17 +2498,35 @@ constexpr vec1<T> operator/(const vec1<T> & v1, const T & v2) {
     return vec1<T>(v1.x / v2);
 }
 
-template <typename T>
+template <typename T, eif_floating_t<T> = 0>
+constexpr vec2<T> operator/(const vec2<T> & v1, const T & v2) {
+    T inv(static_cast<T>(1.0) / v2);
+    return vec2<T>(v1.x * inv, v1.y * inv);
+}
+
+template <typename T, eif_t<!std::is_floating_point<T>::value> = 0>
 constexpr vec2<T> operator/(const vec2<T> & v1, const T & v2) {
     return vec2<T>(v1.x / v2, v1.y / v2);
 }
 
-template <typename T>
+template <typename T, eif_floating_t<T> = 0>
+constexpr vec3<T> operator/(const vec3<T> & v1, const T & v2) {
+    T inv(static_cast<T>(1.0) / v2);
+    return vec3<T>(v1.x * inv, v1.y * inv, v1.z * inv);
+}
+
+template <typename T, eif_t<!std::is_floating_point<T>::value> = 0>
 constexpr vec3<T> operator/(const vec3<T> & v1, const T & v2) {
     return vec3<T>(v1.x / v2, v1.y / v2, v1.z / v2);
 }
 
-template <typename T>
+template <typename T, eif_floating_t<T> = 0>
+constexpr vec4<T> operator/(const vec4<T> & v1, const T & v2) {
+    T inv(static_cast<T>(1.0) / v2);
+    return vec4<T>(v1.x * inv, v1.y * inv, v1.z * inv, v1.w * inv);
+}
+
+template <typename T, eif_t<!std::is_floating_point<T>::value> = 0>
 constexpr vec4<T> operator/(const vec4<T> & v1, const T & v2) {
     return vec4<T>(v1.x / v2, v1.y / v2, v1.z / v2, v1.w / v2);
 }
