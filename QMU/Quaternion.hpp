@@ -319,7 +319,7 @@ inline quat<T> operator*(T v, const quat<T> & q) {
 
 template <typename T>
 inline vec3<T> operator*(const quat<T> & q, const vec3<T> & v) {
-    vec3<T> t(static_cast<T>(static_cast<T>(2.0)) * cross(q.a, v));
+    vec3<T> t(static_cast<T>(2.0) * cross(q.a, v));
     return v + q.w * t + cross(q.a, t);
 }
 

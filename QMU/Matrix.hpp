@@ -2287,11 +2287,20 @@ inline mat3<T> rotate(const vec3<T> & axis, T sinTheta, T cosTheta) {
 template <typename T>
 inline mat3<T> rotate_n(const vec3<T> & axis, T s, T c) {
     T cm(static_cast<T>(1.0) - c);
+    T xs(axis.x * s);
+    T ys(axis.y * s);
+    T zs(axis.z * s);
+    T xcm(axis.x * cm);
+    T ycm(axis.y * cm);
+    T zcm(axis.z * cm);
+    T xycm(xcm * axis.y);
+    T yzcm(ycm * axis.z);
+    T zxcm(xcm * axis.x);
 
     return mat3<T>(
-        c + axis.x * axis.x * cm,          axis.y * axis.x * cm + axis.z * s, axis.z * axis.x * cm - axis.y * s,
-        axis.x * axis.y * cm - axis.z * s, c + axis.y * axis.y * cm,          axis.z * axis.y * cm + axis.x * s,
-        axis.x * axis.z * cm + axis.y * s, axis.y * axis.z * cm - axis.x * s, c + axis.z * axis.z * cm
+        c + xcm * axis.x, xycm + zs,        zxcm - ys,
+        xycm - zs,        c + ycm * axis.y, yzcm + xs,
+        zxcm + ys,        yzcm - xs,        c + zcm * axis.z
     );
 }
 
