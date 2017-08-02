@@ -258,14 +258,6 @@ constexpr void compileClassesConstexprT() {
     constexpr mat2<T> m2_6(m4);
     constexpr mat2<T> m2_7(v2, v2);
 
-    // access
-
-    m2.at<0, 0>(); m2.at<0, 1>();
-    m2.at<1, 0>(); m2.at<1, 1>();
-
-    m2.row<0>(); m2.row<1>();
-    m2.col<0>(); m2.col<1>();
-
     //--------------------------------------------------------------------------
     // Mat3
 
@@ -277,15 +269,6 @@ constexpr void compileClassesConstexprT() {
     constexpr mat3<T> m3_5(m2);
     constexpr mat3<T> m3_6(m4);
     constexpr mat3<T> m3_7(v3, v3, v3);
-
-    // access
-
-    m3.at<0, 0>(); m3.at<0, 1>(); m3.at<0, 2>();
-    m3.at<1, 0>(); m3.at<1, 1>(); m3.at<1, 2>();
-    m3.at<2, 0>(); m3.at<2, 1>(); m3.at<2, 2>();
-
-    m3.row<0>(); m3.row<1>(); m3.row<2>();
-    m3.col<0>(); m3.col<1>(); m3.col<2>();
 
     //--------------------------------------------------------------------------
     // Mat4
@@ -299,15 +282,6 @@ constexpr void compileClassesConstexprT() {
     constexpr mat4<T> m4_6(m3);
     constexpr mat4<T> m4_7(v4, v4, v4, v4);
 
-    // access
-
-    m4.at<0, 0>(); m4.at<0, 1>(); m4.at<0, 2>(); m4.at<0, 3>();
-    m4.at<1, 0>(); m4.at<1, 1>(); m4.at<1, 2>(); m4.at<1, 3>();
-    m4.at<2, 0>(); m4.at<2, 1>(); m4.at<2, 2>(); m4.at<2, 3>();
-    m4.at<3, 0>(); m4.at<3, 1>(); m4.at<3, 2>(); m4.at<3, 3>();
-
-    m4.row<0>(); m4.row<1>(); m4.row<2>(); m4.row<3>();
-    m4.col<0>(); m4.col<1>(); m4.col<2>(); m4.col<3>();
 }
 
 constexpr bool compileClassesConstexpr() {

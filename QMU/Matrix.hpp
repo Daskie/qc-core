@@ -125,13 +125,13 @@ struct mat<T, 2, 2> {
     T operator[](nat i) const;
 
     template <nat t_i, nat t_j> T & at();
-    template <nat t_i, nat t_j> constexpr T at() const;
+    template <nat t_i, nat t_j> T at() const;
 
     vec2<T> col(nat i) const;
     vec2<T> row(nat i) const;
 
-    template <nat t_i> constexpr vec2<T> row() const;
-    template <nat t_j> constexpr vec2<T> col() const;
+    template <nat t_i> vec2<T> row() const;
+    template <nat t_j> vec2<T> col() const;
 
     //--- other ---
 
@@ -193,13 +193,13 @@ struct mat<T, 3, 3> {
     T operator[](nat i) const;
 
     template <nat t_i, nat t_j> T & at();
-    template <nat t_i, nat t_j> constexpr T at() const;
+    template <nat t_i, nat t_j> T at() const;
 
     vec3<T> col(nat i) const;
     vec3<T> row(nat i) const;
 
-    template <nat t_i> constexpr vec3<T> row() const;
-    template <nat t_j> constexpr vec3<T> col() const;
+    template <nat t_i> vec3<T> row() const;
+    template <nat t_j> vec3<T> col() const;
 
     //--- other ---
 
@@ -264,13 +264,13 @@ struct mat<T, 4, 4> {
     T operator[](nat i) const;
 
     template <nat t_i, nat t_j> T & at();
-    template <nat t_i, nat t_j> constexpr T at() const;
+    template <nat t_i, nat t_j> T at() const;
 
     vec4<T> col(nat i) const;
     vec4<T> row(nat i) const;
 
-    template <nat t_i> constexpr vec4<T> row() const;
-    template <nat t_j> constexpr vec4<T> col() const;
+    template <nat t_i> vec4<T> row() const;
+    template <nat t_j> vec4<T> col() const;
 
     //--- other ---
 
@@ -454,7 +454,7 @@ struct MatAccessor<0, 0> {
         return m.x1;
     }
     template <typename T, nat t_m, nat t_n>
-    static constexpr T access(const mat<T, t_m, t_n> & m) {
+    static T access(const mat<T, t_m, t_n> & m) {
         return m.x1;
     }
 };
@@ -466,7 +466,7 @@ struct MatAccessor<0, 1> {
         return m.x2;
     }
     template <typename T, nat t_m, nat t_n>
-    static constexpr T access(const mat<T, t_m, t_n> & m) {
+    static T access(const mat<T, t_m, t_n> & m) {
         return m.x2;
     }
 };
@@ -478,7 +478,7 @@ struct MatAccessor<0, 2> {
         return m.x3;
     }
     template <typename T, nat t_m, nat t_n>
-    static constexpr T access(const mat<T, t_m, t_n> & m) {
+    static T access(const mat<T, t_m, t_n> & m) {
         return m.x3;
     }
 };
@@ -490,7 +490,7 @@ struct MatAccessor<0, 3> {
         return m.x4;
     }
     template <typename T, nat t_m, nat t_n>
-    static constexpr T access(const mat<T, t_m, t_n> & m) {
+    static T access(const mat<T, t_m, t_n> & m) {
         return m.x4;
     }
 };
@@ -501,7 +501,7 @@ struct MatAccessor<1, 0> {
         return m.y1;
     }
     template <typename T, nat t_m, nat t_n>
-    static constexpr T access(const mat<T, t_m, t_n> & m) {
+    static T access(const mat<T, t_m, t_n> & m) {
         return m.y1;
     }
 };
@@ -513,7 +513,7 @@ struct MatAccessor<1, 1> {
         return m.y2;
     }
     template <typename T, nat t_m, nat t_n>
-    static constexpr T access(const mat<T, t_m, t_n> & m) {
+    static T access(const mat<T, t_m, t_n> & m) {
         return m.y2;
     }
 };
@@ -525,7 +525,7 @@ struct MatAccessor<1, 2> {
         return m.y3;
     }
     template <typename T, nat t_m, nat t_n>
-    static constexpr T access(const mat<T, t_m, t_n> & m) {
+    static T access(const mat<T, t_m, t_n> & m) {
         return m.y3;
     }
 };
@@ -537,7 +537,7 @@ struct MatAccessor<1, 3> {
         return m.y4;
     }
     template <typename T, nat t_m, nat t_n>
-    static constexpr T access(const mat<T, t_m, t_n> & m) {
+    static T access(const mat<T, t_m, t_n> & m) {
         return m.y4;
     }
 };
@@ -548,7 +548,7 @@ struct MatAccessor<2, 0> {
         return m.z1;
     }
     template <typename T, nat t_m, nat t_n>
-    static constexpr T access(const mat<T, t_m, t_n> & m) {
+    static T access(const mat<T, t_m, t_n> & m) {
         return m.z1;
     }
 };
@@ -560,7 +560,7 @@ struct MatAccessor<2, 1> {
         return m.z2;
     }
     template <typename T, nat t_m, nat t_n>
-    static constexpr T access(const mat<T, t_m, t_n> & m) {
+    static T access(const mat<T, t_m, t_n> & m) {
         return m.z2;
     }
 };
@@ -572,7 +572,7 @@ struct MatAccessor<2, 2> {
         return m.z3;
     }
     template <typename T, nat t_m, nat t_n>
-    static constexpr T access(const mat<T, t_m, t_n> & m) {
+    static T access(const mat<T, t_m, t_n> & m) {
         return m.z3;
     }
 };
@@ -584,7 +584,7 @@ struct MatAccessor<2, 3> {
         return m.z4;
     }
     template <typename T, nat t_m, nat t_n>
-    static constexpr T access(const mat<T, t_m, t_n> & m) {
+    static T access(const mat<T, t_m, t_n> & m) {
         return m.z4;
     }
 };
@@ -595,7 +595,7 @@ struct MatAccessor<3, 0> {
         return m.w1;
     }
     template <typename T, nat t_m, nat t_n>
-    static constexpr T access(const mat<T, t_m, t_n> & m) {
+    static T access(const mat<T, t_m, t_n> & m) {
         return m.w1;
     }
 };
@@ -607,7 +607,7 @@ struct MatAccessor<3, 1> {
         return m.w2;
     }
     template <typename T, nat t_m, nat t_n>
-    static constexpr T access(const mat<T, t_m, t_n> & m) {
+    static T access(const mat<T, t_m, t_n> & m) {
         return m.w2;
     }
 };
@@ -619,7 +619,7 @@ struct MatAccessor<3, 2> {
         return m.w3;
     }
     template <typename T, nat t_m, nat t_n>
-    static constexpr T access(const mat<T, t_m, t_n> & m) {
+    static T access(const mat<T, t_m, t_n> & m) {
         return m.w3;
     }
 };
@@ -631,7 +631,7 @@ struct MatAccessor<3, 3> {
         return m.w4;
     }
     template <typename T, nat t_m, nat t_n>
-    static constexpr T access(const mat<T, t_m, t_n> & m) {
+    static T access(const mat<T, t_m, t_n> & m) {
         return m.w4;
     }
 };
@@ -766,7 +766,7 @@ inline T & mat<T, 2, 2>::at() {
 
 template <typename T>
 template <nat t_i, nat t_j>
-constexpr T mat<T, 2, 2>::at() const {
+inline T mat<T, 2, 2>::at() const {
     return detail::MatAccessor<t_i, t_j>::access(*this);
 }
 
@@ -783,13 +783,13 @@ inline vec2<T> mat<T, 2, 2>::row(nat i) const {
 
 template <typename T>
 template <nat t_i>
-constexpr vec2<T> mat<T, 2, 2>::row() const {
+inline vec2<T> mat<T, 2, 2>::row() const {
     return vec2<T>(at<t_i, 0>(), at<t_i, 1>());
 }
 
 template <typename T>
 template <nat t_j>
-constexpr vec2<T> mat<T, 2, 2>::col() const {
+inline vec2<T> mat<T, 2, 2>::col() const {
     return vec2<T>(at<0, t_j>(), at<1, t_j>());
 }
 
@@ -952,7 +952,7 @@ inline T & mat<T, 3, 3>::at() {
 
 template <typename T>
 template <nat t_i, nat t_j>
-constexpr T mat<T, 3, 3>::at() const {
+inline T mat<T, 3, 3>::at() const {
     return detail::MatAccessor<t_i, t_j>::access(*this);
 }
 
@@ -969,13 +969,13 @@ inline vec3<T> mat<T, 3, 3>::row(nat i) const {
 
 template <typename T>
 template <nat t_i>
-constexpr vec3<T> mat<T, 3, 3>::row() const {
+inline vec3<T> mat<T, 3, 3>::row() const {
     return vec3<T>(at<t_i, 0>(), at<t_i, 1>(), at<t_i, 2>());
 }
 
 template <typename T>
 template <nat t_j>
-constexpr vec3<T> mat<T, 3, 3>::col() const {
+inline vec3<T> mat<T, 3, 3>::col() const {
     return vec3<T>(at<0, t_j>(), at<1, t_j>(), at<2, t_j>());
 }
 
@@ -1151,7 +1151,7 @@ inline T & mat<T, 4, 4>::at() {
 
 template <typename T>
 template <nat t_i, nat t_j>
-constexpr T mat<T, 4, 4>::at() const {
+inline T mat<T, 4, 4>::at() const {
     return detail::MatAccessor<t_i, t_j>::access(*this);
 }
 
@@ -1168,13 +1168,13 @@ inline vec4<T> mat<T, 4, 4>::row(nat i) const {
 
 template <typename T>
 template <nat t_i>
-constexpr vec4<T> mat<T, 4, 4>::row() const {
+inline vec4<T> mat<T, 4, 4>::row() const {
     return vec4<T>(at<t_i, 0>(), at<t_i, 1>(), at<t_i, 2>(), at<t_i, 3>());
 }
 
 template <typename T>
 template <nat t_j>
-constexpr vec4<T> mat<T, 4, 4>::col() const {
+inline vec4<T> mat<T, 4, 4>::col() const {
     return vec4<T>(at<0, t_j>(), at<1, t_j>(), at<2, t_j>(), at<3, t_j>());
 }
 
