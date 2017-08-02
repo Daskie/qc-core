@@ -24,14 +24,16 @@ void compileTyping() {
     qmu::s64 s64_; s64_;
     qmu::u64 u64_; u64_;
 
-    qmu::precision< 8>::stype p8s_;  p8s_;
-    qmu::precision< 8>::utype p8u_;  p8u_;
-    qmu::precision<16>::stype p16s_; p16s_;
-    qmu::precision<16>::utype p16u_; p16u_;
-    qmu::precision<32>::stype p32s_; p32s_;
-    qmu::precision<32>::utype p32u_; p32u_;
-    qmu::precision<64>::stype p64s_; p64s_;
-    qmu::precision<64>::utype p64u_; p64u_;
+    qmu::precision<1>::stype p08s_; p08s_;
+    qmu::precision<2>::stype p16s_; p16s_;
+    qmu::precision<4>::stype p32s_; p32s_;
+    qmu::precision<8>::stype p64s_; p64s_;
+    qmu::precision<1>::utype p08u_; p08u_;
+    qmu::precision<2>::utype p16u_; p16u_;
+    qmu::precision<4>::utype p32u_; p32u_;
+    qmu::precision<8>::utype p64u_; p64u_;
+    qmu::precision<4>::ftype p32f_; p32f_;
+    qmu::precision<8>::ftype p64f_; p64f_;
 }
 
 template <typename T>
@@ -52,7 +54,8 @@ void compileConstants() {
 
 template <typename T>
 void compileFunctionsT() {
-    T v(0);
+    T v(1);
+    T w;
 
     qmu::min(v, v);
     qmu::min(v, v, v);
@@ -70,14 +73,21 @@ void compileFunctionsT() {
     qmu::equal(v, v, v);
 
     qmu::sign(v);
+
+    qmu::floor(v);
+
+    qmu::ceil(v);
+
+    qmu::mod(v, v, w);
+    qmu::mod(v, v);
 }
 
 template <typename T>
 void compileFunctionsFT() {
-    T v(0.0);
+    T v(1.0);
+    qmu::nat n;
 
-    qmu::trunc(v);
-
+    qmu::fract(v, n);
     qmu::fract(v);
 
     qmu::mix(v, v, v);
@@ -89,7 +99,7 @@ void compileFunctionsFT() {
 
 template <typename T>
 void compileFunctionsIT() {
-    T v(0);
+    T v(1);
 
     qmu::log2(v);
 
@@ -102,6 +112,14 @@ void compileFunctionsIT() {
     qmu::highBit(v);
 
     qmu::lowBit(v);
+}
+
+void compileFunctionsBT() {
+    bool v(true);
+
+    qmu::equal(v, v);
+    qmu::equal(v, v, v);
+
 }
 
 void compileFunctions() {
@@ -118,7 +136,6 @@ void compileFunctions() {
     compileFunctionsT<unsigned long>();
     compileFunctionsT<signed long long>();
     compileFunctionsT<signed long long>();
-    compileFunctionsT<bool>();
 
     compileFunctionsFT<float>();
     compileFunctionsFT<double>();
@@ -134,11 +151,13 @@ void compileFunctions() {
     compileFunctionsIT<unsigned long>();
     compileFunctionsIT<signed long long>();
     compileFunctionsIT<signed long long>();
+
+    compileFunctionsBT();
 }
 
 template <typename T>
 constexpr void compileFunctionsConstexprT() {
-    constexpr T v(0);
+    constexpr T v(1);
 
     qmu::min(v, v);
     qmu::min(v, v, v);
@@ -156,13 +175,17 @@ constexpr void compileFunctionsConstexprT() {
     qmu::equal(v, v, v);
 
     qmu::sign(v);
+
+    qmu::floor(v);
+
+    qmu::ceil(v);
+
+    qmu::mod(v, v);
 }
 
 template <typename T>
 constexpr void compileFunctionsConstexprFT() {
-    constexpr T v(0.0);
-
-    qmu::trunc(v);
+    constexpr T v(1.0);
 
     qmu::fract(v);
 
@@ -175,7 +198,7 @@ constexpr void compileFunctionsConstexprFT() {
 
 template <typename T>
 constexpr void compileFunctionsConstexprIT() {
-    constexpr T v(0);
+    constexpr T v(1);
 
     qmu::log2(v);
 
@@ -188,6 +211,14 @@ constexpr void compileFunctionsConstexprIT() {
     qmu::highBit(v);
 
     qmu::lowBit(v);
+}
+
+constexpr void compileFunctionsConstexprBT() {
+    constexpr bool v(true);
+
+    qmu::equal(v, v);
+    qmu::equal(v, v, v);
+
 }
 
 constexpr bool compileFunctionsConstexpr() {
@@ -204,7 +235,6 @@ constexpr bool compileFunctionsConstexpr() {
     compileFunctionsConstexprT<unsigned long>();
     compileFunctionsConstexprT<signed long long>();
     compileFunctionsConstexprT<signed long long>();
-    compileFunctionsConstexprT<bool>();
 
     compileFunctionsConstexprFT<float>();
     compileFunctionsConstexprFT<double>();
@@ -220,6 +250,8 @@ constexpr bool compileFunctionsConstexpr() {
     compileFunctionsConstexprIT<unsigned long>();
     compileFunctionsConstexprIT<signed long long>();
     compileFunctionsConstexprIT<signed long long>();
+    
+    compileFunctionsConstexprBT();
 
     return true;
 }

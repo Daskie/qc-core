@@ -81,7 +81,7 @@ double Clock::time() const {
 }
 
 nat Clock::cycles() const {
-    return trunc(age());
+    return static_cast<nat>(age());
 }
 
 void Clock::recycle() {
