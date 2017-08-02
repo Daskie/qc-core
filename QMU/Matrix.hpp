@@ -444,196 +444,83 @@ namespace detail {
 
 
 
-template <nat t_i, nat t_j>
-struct MatAccessor;
+template <nat t_i, nat t_j> struct MatAccessor;
 
-template <>
-struct MatAccessor<0, 0> {
-    template <typename T, nat t_m, nat t_n>
-    static T & access(mat<T, t_m, t_n> & m) {
-        return m.x1;
-    }
-    template <typename T, nat t_m, nat t_n>
-    static T access(const mat<T, t_m, t_n> & m) {
-        return m.x1;
-    }
+template <> struct MatAccessor<0, 0> {
+    template <typename T, nat t_m, nat t_n> static T & access(      mat<T, t_m, t_n> & m) { return m.x1; }
+    template <typename T, nat t_m, nat t_n> static T   access(const mat<T, t_m, t_n> & m) { return m.x1; }
 };
 
-template <>
-struct MatAccessor<0, 1> {
-    template <typename T, nat t_m, nat t_n>
-    static T & access(mat<T, t_m, t_n> & m) {
-        return m.x2;
-    }
-    template <typename T, nat t_m, nat t_n>
-    static T access(const mat<T, t_m, t_n> & m) {
-        return m.x2;
-    }
+template <> struct MatAccessor<0, 1> {
+    template <typename T, nat t_m, nat t_n> static T & access(      mat<T, t_m, t_n> & m) { return m.x2; }
+    template <typename T, nat t_m, nat t_n> static T   access(const mat<T, t_m, t_n> & m) { return m.x2; }
 };
 
-template <>
-struct MatAccessor<0, 2> {
-    template <typename T, nat t_m, nat t_n>
-    static T & access(mat<T, t_m, t_n> & m) {
-        return m.x3;
-    }
-    template <typename T, nat t_m, nat t_n>
-    static T access(const mat<T, t_m, t_n> & m) {
-        return m.x3;
-    }
+template <> struct MatAccessor<0, 2> {
+    template <typename T, nat t_m, nat t_n> static T & access(      mat<T, t_m, t_n> & m) { return m.x3; }
+    template <typename T, nat t_m, nat t_n> static T   access(const mat<T, t_m, t_n> & m) { return m.x3; }
 };
 
-template <>
-struct MatAccessor<0, 3> {
-    template <typename T, nat t_m, nat t_n>
-    static T & access(mat<T, t_m, t_n> & m) {
-        return m.x4;
-    }
-    template <typename T, nat t_m, nat t_n>
-    static T access(const mat<T, t_m, t_n> & m) {
-        return m.x4;
-    }
+template <> struct MatAccessor<0, 3> {
+    template <typename T, nat t_m, nat t_n> static T & access(      mat<T, t_m, t_n> & m) { return m.x4; }
+    template <typename T, nat t_m, nat t_n> static T   access(const mat<T, t_m, t_n> & m) { return m.x4; }
 };
-template <>
-struct MatAccessor<1, 0> {
-    template <typename T, nat t_m, nat t_n>
-    static T & access(mat<T, t_m, t_n> & m) {
-        return m.y1;
-    }
-    template <typename T, nat t_m, nat t_n>
-    static T access(const mat<T, t_m, t_n> & m) {
-        return m.y1;
-    }
+template <> struct MatAccessor<1, 0> {
+    template <typename T, nat t_m, nat t_n> static T & access(      mat<T, t_m, t_n> & m) { return m.y1; }
+    template <typename T, nat t_m, nat t_n> static T   access(const mat<T, t_m, t_n> & m) { return m.y1; }
 };
 
-template <>
-struct MatAccessor<1, 1> {
-    template <typename T, nat t_m, nat t_n>
-    static T & access(mat<T, t_m, t_n> & m) {
-        return m.y2;
-    }
-    template <typename T, nat t_m, nat t_n>
-    static T access(const mat<T, t_m, t_n> & m) {
-        return m.y2;
-    }
+template <> struct MatAccessor<1, 1> {
+    template <typename T, nat t_m, nat t_n> static T & access(      mat<T, t_m, t_n> & m) { return m.y2; }
+    template <typename T, nat t_m, nat t_n> static T   access(const mat<T, t_m, t_n> & m) { return m.y2; }
 };
 
-template <>
-struct MatAccessor<1, 2> {
-    template <typename T, nat t_m, nat t_n>
-    static T & access(mat<T, t_m, t_n> & m) {
-        return m.y3;
-    }
-    template <typename T, nat t_m, nat t_n>
-    static T access(const mat<T, t_m, t_n> & m) {
-        return m.y3;
-    }
+template <> struct MatAccessor<1, 2> {
+    template <typename T, nat t_m, nat t_n> static T & access(      mat<T, t_m, t_n> & m) { return m.y3; }
+    template <typename T, nat t_m, nat t_n> static T   access(const mat<T, t_m, t_n> & m) { return m.y3; }
 };
 
-template <>
-struct MatAccessor<1, 3> {
-    template <typename T, nat t_m, nat t_n>
-    static T & access(mat<T, t_m, t_n> & m) {
-        return m.y4;
-    }
-    template <typename T, nat t_m, nat t_n>
-    static T access(const mat<T, t_m, t_n> & m) {
-        return m.y4;
-    }
+template <> struct MatAccessor<1, 3> {
+    template <typename T, nat t_m, nat t_n> static T & access(      mat<T, t_m, t_n> & m) { return m.y4; }
+    template <typename T, nat t_m, nat t_n> static T   access(const mat<T, t_m, t_n> & m) { return m.y4; }
 };
-template <>
-struct MatAccessor<2, 0> {
-    template <typename T, nat t_m, nat t_n>
-    static T & access(mat<T, t_m, t_n> & m) {
-        return m.z1;
-    }
-    template <typename T, nat t_m, nat t_n>
-    static T access(const mat<T, t_m, t_n> & m) {
-        return m.z1;
-    }
+template <> struct MatAccessor<2, 0> {
+    template <typename T, nat t_m, nat t_n> static T & access(      mat<T, t_m, t_n> & m) { return m.z1; }
+    template <typename T, nat t_m, nat t_n> static T   access(const mat<T, t_m, t_n> & m) { return m.z1; }
 };
 
-template <>
-struct MatAccessor<2, 1> {
-    template <typename T, nat t_m, nat t_n>
-    static T & access(mat<T, t_m, t_n> & m) {
-        return m.z2;
-    }
-    template <typename T, nat t_m, nat t_n>
-    static T access(const mat<T, t_m, t_n> & m) {
-        return m.z2;
-    }
+template <> struct MatAccessor<2, 1> {
+    template <typename T, nat t_m, nat t_n> static T & access(      mat<T, t_m, t_n> & m) { return m.z2; }
+    template <typename T, nat t_m, nat t_n> static T   access(const mat<T, t_m, t_n> & m) { return m.z2; }
 };
 
-template <>
-struct MatAccessor<2, 2> {
-    template <typename T, nat t_m, nat t_n>
-    static T & access(mat<T, t_m, t_n> & m) {
-        return m.z3;
-    }
-    template <typename T, nat t_m, nat t_n>
-    static T access(const mat<T, t_m, t_n> & m) {
-        return m.z3;
-    }
+template <> struct MatAccessor<2, 2> {
+    template <typename T, nat t_m, nat t_n> static T & access(      mat<T, t_m, t_n> & m) { return m.z3; }
+    template <typename T, nat t_m, nat t_n> static T   access(const mat<T, t_m, t_n> & m) { return m.z3; }
 };
 
-template <>
-struct MatAccessor<2, 3> {
-    template <typename T, nat t_m, nat t_n>
-    static T & access(mat<T, t_m, t_n> & m) {
-        return m.z4;
-    }
-    template <typename T, nat t_m, nat t_n>
-    static T access(const mat<T, t_m, t_n> & m) {
-        return m.z4;
-    }
+template <> struct MatAccessor<2, 3> {
+    template <typename T, nat t_m, nat t_n> static T & access(      mat<T, t_m, t_n> & m) { return m.z4; }
+    template <typename T, nat t_m, nat t_n> static T   access(const mat<T, t_m, t_n> & m) { return m.z4; }
 };
-template <>
-struct MatAccessor<3, 0> {
-    template <typename T, nat t_m, nat t_n>
-    static T & access(mat<T, t_m, t_n> & m) {
-        return m.w1;
-    }
-    template <typename T, nat t_m, nat t_n>
-    static T access(const mat<T, t_m, t_n> & m) {
-        return m.w1;
-    }
+template <> struct MatAccessor<3, 0> {
+    template <typename T, nat t_m, nat t_n> static T & access(      mat<T, t_m, t_n> & m) { return m.w1; }
+    template <typename T, nat t_m, nat t_n> static T   access(const mat<T, t_m, t_n> & m) { return m.w1; }
 };
 
-template <>
-struct MatAccessor<3, 1> {
-    template <typename T, nat t_m, nat t_n>
-    static T & access(mat<T, t_m, t_n> & m) {
-        return m.w2;
-    }
-    template <typename T, nat t_m, nat t_n>
-    static T access(const mat<T, t_m, t_n> & m) {
-        return m.w2;
-    }
+template <> struct MatAccessor<3, 1> {
+    template <typename T, nat t_m, nat t_n> static T & access(      mat<T, t_m, t_n> & m) { return m.w2; }
+    template <typename T, nat t_m, nat t_n> static T   access(const mat<T, t_m, t_n> & m) { return m.w2; }
 };
 
-template <>
-struct MatAccessor<3, 2> {
-    template <typename T, nat t_m, nat t_n>
-    static T & access(mat<T, t_m, t_n> & m) {
-        return m.w3;
-    }
-    template <typename T, nat t_m, nat t_n>
-    static T access(const mat<T, t_m, t_n> & m) {
-        return m.w3;
-    }
+template <> struct MatAccessor<3, 2> {
+    template <typename T, nat t_m, nat t_n> static T & access(      mat<T, t_m, t_n> & m) { return m.w3; }
+    template <typename T, nat t_m, nat t_n> static T   access(const mat<T, t_m, t_n> & m) { return m.w3; }
 };
 
-template <>
-struct MatAccessor<3, 3> {
-    template <typename T, nat t_m, nat t_n>
-    static T & access(mat<T, t_m, t_n> & m) {
-        return m.w4;
-    }
-    template <typename T, nat t_m, nat t_n>
-    static T access(const mat<T, t_m, t_n> & m) {
-        return m.w4;
-    }
+template <> struct MatAccessor<3, 3> {
+    template <typename T, nat t_m, nat t_n> static T & access(      mat<T, t_m, t_n> & m) { return m.w4; }
+    template <typename T, nat t_m, nat t_n> static T   access(const mat<T, t_m, t_n> & m) { return m.w4; }
 };
 
 
@@ -860,8 +747,8 @@ constexpr mat<T, 3, 3>::mat(
 
 template <typename T>
 constexpr mat<T, 3, 3>::mat(const mat2<T> & m) :
-    x1(m.x1),                y1(m.y1),                z1(static_cast<T>(0.0)),
-    x2(m.x2),                y2(m.y2),                z2(static_cast<T>(0.0)),
+    x1(               m.x1), y1(               m.y1), z1(static_cast<T>(0.0)),
+    x2(               m.x2), y2(               m.y2), z2(static_cast<T>(0.0)),
     x3(static_cast<T>(0.0)), y3(static_cast<T>(0.0)), z3(static_cast<T>(1.0))
 {}
 
@@ -910,9 +797,11 @@ inline mat3<T> & mat<T, 3, 3>::operator=(mat3<T> && m) {
 
 template <typename T>
 inline mat3<T> & mat<T, 3, 3>::operator=(const mat2<T> & m) {
-    x1 = m.x1;                y1 = m.y1;                z1 = static_cast<T>(0.0);
-    x2 = m.x2;                y2 = m.y2;                z2 = static_cast<T>(0.0);
-    x3 = static_cast<T>(0.0); y3 = static_cast<T>(0.0); z3 = static_cast<T>(1.0);
+    constexpr T _0(static_cast<T>(0.0)), _1(static_cast<T>(1.0));
+
+    x1 = m.x1; y1 = m.y1; z1 = _0;
+    x2 = m.x2; y2 = m.y2; z2 = _0;
+    x3 =   _0; y3 =   _0; z3 = _1;
 
     return *this;
 
@@ -1052,17 +941,17 @@ constexpr mat<T, 4, 4>::mat(
 
 template <typename T>
 constexpr mat<T, 4, 4>::mat(const mat2<T> & m) :
-    x1(m.x1),                y1(m.y1),                z1(static_cast<T>(0.0)), w1(static_cast<T>(0.0)),
-    x2(m.x2),                y2(m.y2),                z2(static_cast<T>(0.0)), w2(static_cast<T>(0.0)),
+    x1(               m.x1), y1(               m.y1), z1(static_cast<T>(0.0)), w1(static_cast<T>(0.0)),
+    x2(               m.x2), y2(               m.y2), z2(static_cast<T>(0.0)), w2(static_cast<T>(0.0)),
     x3(static_cast<T>(0.0)), y3(static_cast<T>(0.0)), z3(static_cast<T>(1.0)), w3(static_cast<T>(0.0)),
     x4(static_cast<T>(0.0)), y4(static_cast<T>(0.0)), z4(static_cast<T>(0.0)), w4(static_cast<T>(1.0))
 {}
 
 template <typename T>
 constexpr mat<T, 4, 4>::mat(const mat3<T> & m) :
-    x1(m.x1),                y1(m.y1),                z1(m.z1),                w1(static_cast<T>(0.0)),
-    x2(m.x2),                y2(m.y2),                z2(m.z2),                w2(static_cast<T>(0.0)),
-    x3(m.x3),                y3(m.y3),                z3(m.z3),                w3(static_cast<T>(0.0)),
+    x1(               m.x1), y1(               m.y1), z1(               m.z1), w1(static_cast<T>(0.0)),
+    x2(               m.x2), y2(               m.y2), z2(               m.z2), w2(static_cast<T>(0.0)),
+    x3(               m.x3), y3(               m.y3), z3(               m.z3), w3(static_cast<T>(0.0)),
     x4(static_cast<T>(0.0)), y4(static_cast<T>(0.0)), z4(static_cast<T>(0.0)), w4(static_cast<T>(1.0))
 {}
 
@@ -1108,20 +997,24 @@ inline mat4<T> & mat<T, 4, 4>::operator=(mat4<T> && m) {
 
 template <typename T>
 inline mat4<T> & mat<T, 4, 4>::operator=(const mat2<T> & m) {
-    x1 = m.x1;                y1 = m.y1;                z1 = static_cast<T>(0.0); w1 = static_cast<T>(0.0);
-    x2 = m.x2;                y2 = m.y2;                z2 = static_cast<T>(0.0); w2 = static_cast<T>(0.0);
-    x3 = static_cast<T>(0.0); y3 = static_cast<T>(0.0); z3 = static_cast<T>(1.0); w3 = static_cast<T>(0.0);
-    x4 = static_cast<T>(0.0); y4 = static_cast<T>(0.0); z4 = static_cast<T>(0.0); w4 = static_cast<T>(1.0);
+    constexpr T _0(static_cast<T>(0.0)), _1(static_cast<T>(1.0));
+
+    x1 = m.x1; y1 = m.y1; z1 = _0; w1 = _0;
+    x2 = m.x2; y2 = m.y2; z2 = _0; w2 = _0;
+    x3 =   _0; y3 =   _0; z3 = _1; w3 = _0;
+    x4 =   _0; y4 =   _0; z4 = _0; w4 = _1;
 
     return *this;
 }
 
 template <typename T>
 inline mat4<T> & mat<T, 4, 4>::operator=(const mat3<T> & m) {
-    x1 = m.x1;                y1 = m.y1;                z1 = m.z1;                w1 = static_cast<T>(0.0);
-    x2 = m.x2;                y2 = m.y2;                z2 = m.z2;                w2 = static_cast<T>(0.0);
-    x3 = m.x3;                y3 = m.y3;                z3 = m.z3;                w3 = static_cast<T>(0.0);
-    x4 = static_cast<T>(0.0); y4 = static_cast<T>(0.0); z4 = static_cast<T>(0.0); w4 = static_cast<T>(1.0);
+    constexpr T _0(static_cast<T>(0.0)), _1(static_cast<T>(1.0));
+
+    x1 = m.x1; y1 = m.y1; z1 = m.z1; w1 = _0;
+    x2 = m.x2; y2 = m.y2; z2 = m.z2; w2 = _0;
+    x3 = m.x3; y3 = m.y3; z3 = m.z3; w3 = _0;
+    x4 =   _0; y4 =   _0; z4 =   _0; w4 = _1;
 
     return *this;
 }
@@ -1674,28 +1567,31 @@ inline vec4<T> operator*(const mat4<T> & m, const vec4<T> & v) {
 
 template <typename T>
 inline mat2<T> operator/(const mat2<T> & m, T v) {
+    v = static_cast<T>(1.0) / v;
     return mat2<T>(
-        m.x1 / v, m.y1 / v,
-        m.x2 / v, m.y2 / v
+        m.x1 * v, m.y1 * v,
+        m.x2 * v, m.y2 * v
     );
 }
 
 template <typename T>
 inline mat3<T> operator/(const mat3<T> & m, T v) {
+    v = static_cast<T>(1.0) / v;
     return mat3<T>(
-        m.x1 / v, m.y1 / v, m.z1 / v,
-        m.x2 / v, m.y2 / v, m.z2 / v,
-        m.x3 / v, m.y3 / v, m.z3 / v
+        m.x1 * v, m.y1 * v, m.z1 * v,
+        m.x2 * v, m.y2 * v, m.z2 * v,
+        m.x3 * v, m.y3 * v, m.z3 * v
     );
 }
 
 template <typename T>
 inline mat4<T> operator/(const mat4<T> & m, T v) {
+    v = static_cast<T>(1.0) / v;
     return mat4<T>(
-        m.x1 / v, m.y1 / v, m.z1 / v, m.w1 / v,
-        m.x2 / v, m.y2 / v, m.z2 / v, m.w2 / v,
-        m.x3 / v, m.y3 / v, m.z3 / v, m.w3 / v,
-        m.x4 / v, m.y4 / v, m.z4 / v, m.w4 / v
+        m.x1 * v, m.y1 * v, m.z1 * v, m.w1 * v,
+        m.x2 * v, m.y2 * v, m.z2 * v, m.w2 * v,
+        m.x3 * v, m.y3 * v, m.z3 * v, m.w3 * v,
+        m.x4 * v, m.y4 * v, m.z4 * v, m.w4 * v
     );
 }
 
@@ -1848,8 +1744,8 @@ inline mat4<T> transpose(const mat4<T> & m) {
 template <typename T>
 inline mat2<T> cofactor(const mat2<T> & m) {
     return mat2<T>(
-        m.y2, -m.x2,
-        -m.y1, m.x1
+        +m.y2, -m.x2,
+        -m.y1, +m.x1
     );
 }
 
@@ -1971,12 +1867,11 @@ inline T determinant(const mat4<T> & m) {
     T zw24 = m.z2 * m.w4 - m.z4 * m.w2;
     T zw34 = m.z3 * m.w4 - m.z4 * m.w3;
 
-    T yzw123 = m.y1 * zw23 - m.y2 * zw13 + m.y3 * zw12;
-    T yzw124 = m.y1 * zw24 - m.y2 * zw14 + m.y4 * zw12;
-    T yzw134 = m.y1 * zw34 - m.y3 * zw14 + m.y4 * zw13;
-    T yzw234 = m.y2 * zw34 - m.y3 * zw24 + m.y4 * zw23;
-
-    return m.x1 * yzw234 - m.x2 * yzw134 + m.x3 * yzw124 - m.x4 * yzw123;
+    return
+        + m.x1 * (m.y2 * zw34 - m.y3 * zw24 + m.y4 * zw23)
+        - m.x2 * (m.y1 * zw34 - m.y3 * zw14 + m.y4 * zw13)
+        + m.x3 * (m.y1 * zw24 - m.y2 * zw14 + m.y4 * zw12)
+        - m.x4 * (m.y1 * zw23 - m.y2 * zw13 + m.y3 * zw12);
 }
 
 //--- inverse ---
@@ -2073,28 +1968,34 @@ constexpr mat<T, t_m, t_n> nullMat() {
 
 template <typename T>
 inline mat2<T> translate(const vec1<T> & delta) {
+    constexpr T _0(static_cast<T>(0.0)), _1(static_cast<T>(1.0));
+
     return mat2<T>(
-        static_cast<T>(1.0), static_cast<T>(0.0),
-        delta.x,             static_cast<T>(1.0)
+             _1, _0,
+        delta.x, _1
     );
 }
 
 template <typename T>
 inline mat3<T> translate(const vec2<T> & delta) {
+    constexpr T _0(static_cast<T>(0.0)), _1(static_cast<T>(1.0));
+
     return mat3<T>(
-        static_cast<T>(1.0), static_cast<T>(0.0), static_cast<T>(0.0),
-        static_cast<T>(0.0), static_cast<T>(1.0), static_cast<T>(0.0),
-        delta.x,             delta.y,             static_cast<T>(1.0)
+             _1,      _0, _0,
+             _0,      _1, _0,
+        delta.x, delta.y, _1
     );
 }
 
 template <typename T>
 inline mat4<T> translate(const vec3<T> & delta) {
+    constexpr T _0(static_cast<T>(0.0)), _1(static_cast<T>(1.0));
+
     return mat4<T>(
-        static_cast<T>(1.0), static_cast<T>(0.0), static_cast<T>(0.0), static_cast<T>(0.0),
-        static_cast<T>(0.0), static_cast<T>(1.0), static_cast<T>(0.0), static_cast<T>(0.0),
-        static_cast<T>(0.0), static_cast<T>(0.0), static_cast<T>(1.0), static_cast<T>(0.0),
-        delta.x,             delta.y,             delta.z,             static_cast<T>(1.0)
+             _1,      _0,      _0, _0,
+             _0,      _1,      _0, _0,
+             _0,      _0,      _1, _0,
+        delta.x, delta.y, delta.z, _1
     );
 }
 
@@ -2143,10 +2044,12 @@ inline mat2<T> scale(const vec2<T> & scale) {
 
 template <typename T>
 inline mat3<T> scale(const vec3<T> & scale) {
+    constexpr T _0(static_cast<T>(0.0));
+
     return mat3<T>(
-        scale.x,             static_cast<T>(0.0), static_cast<T>(0.0),
-        static_cast<T>(0.0), scale.y,             static_cast<T>(0.0),
-        static_cast<T>(0.0), static_cast<T>(0.0), scale.z
+        scale.x,      _0,      _0,
+             _0, scale.y,      _0,
+             _0,      _0, scale.z
     );
 }
 
@@ -2235,44 +2138,50 @@ inline mat2<T> rotate(T theta) {
     T c(std::cos(theta));
 
     return mat2<T>(
-        c, s,
+         c, s,
         -s, c
     );
 }
 
 template <typename T>
 inline mat3<T> rotateX(T theta) {
+    constexpr T _0(static_cast<T>(0.0)), _1(static_cast<T>(1.0));
+
     T s(std::sin(theta));
     T c(std::cos(theta));
 
     return mat3<T>(
-        static_cast<T>(1.0), static_cast<T>(0.0), static_cast<T>(0.0),
-        static_cast<T>(0.0), c,                   s,
-        static_cast<T>(0.0), -s,                  c
+        _1, _0, _0,
+        _0,  c,  s,
+        _0, -s,  c
     );
 }
 
 template <typename T>
 inline mat3<T> rotateY(T theta) {
+    constexpr T _0(static_cast<T>(0.0)), _1(static_cast<T>(1.0));
+
     T s(std::sin(theta));
     T c(std::cos(theta));
 
     return mat3<T>(
-        c,                   static_cast<T>(0.0), -s,
-        static_cast<T>(0.0), static_cast<T>(1.0), static_cast<T>(0.0),
-        s,                   static_cast<T>(0.0), c
+         c, _0, -s,
+        _0, _1, _0,
+         s, _0,  c
     );
 }
 
 template <typename T>
 inline mat3<T> rotateZ(T theta) {
+    constexpr T _0(static_cast<T>(0.0)), _1(static_cast<T>(1.0));
+
     T s(std::sin(theta));
     T c(std::cos(theta));
 
     return mat3<T>(
-        c,                   s,                   static_cast<T>(0.0),
-        -s,                  c,                   static_cast<T>(0.0),
-        static_cast<T>(0.0), static_cast<T>(0.0), static_cast<T>(1.0)
+         c,  s, _0,
+        -s,  c, _0,
+        _0, _0, _1
     );
 }
 
@@ -2298,9 +2207,9 @@ inline mat3<T> rotate_n(const vec3<T> & axis, T s, T c) {
     T zxcm(xcm * axis.x);
 
     return mat3<T>(
-        c + xcm * axis.x, xycm + zs,        zxcm - ys,
-        xycm - zs,        c + ycm * axis.y, yzcm + xs,
-        zxcm + ys,        yzcm - xs,        c + zcm * axis.z
+         xcm * axis.x +  c, xycm          + zs, zxcm          - ys,
+        xycm          - zs,  ycm * axis.y +  c, yzcm          + xs,
+        zxcm          + ys, yzcm          - xs,  zcm * axis.z +  c
     );
 }
 
@@ -2423,48 +2332,56 @@ inline mat3<T> mapFrom(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z) 
 
 template <typename T>
 inline mat4<T> orthoProj(T width, T height, T near, T far) {
+    constexpr T _0(static_cast<T>(0.0)), _1(static_cast<T>(1.0)), _2(static_cast<T>(2.0));
+
     return mat4<T>(
-        static_cast<T>(2.0) / width, static_cast<T>(0.0),          static_cast<T>(0.0),                static_cast<T>(0.0),
-        static_cast<T>(0.0),         static_cast<T>(2.0) / height, static_cast<T>(0.0),                static_cast<T>(0.0),
-        static_cast<T>(0.0),         static_cast<T>(0.0),          static_cast<T>(2.0) / (near - far), static_cast<T>(0.0),
-        static_cast<T>(0.0),         static_cast<T>(0.0),          (far + near) / (near - far),        static_cast<T>(1.0)
+        _2 / width,          _0,                          _0, _0,
+                _0, _2 / height,                          _0, _0,
+                _0,          _0,           _2 / (near - far), _0,
+                _0,          _0, (far + near) / (near - far), _1
     );
 }
 
 template <typename T>
 inline mat4<T> orthoProjAsym(T left, T right, T bottom, T top, T near, T far) {
+    constexpr T _0(static_cast<T>(0.0)), _1(static_cast<T>(1.0)), _2(static_cast<T>(2.0));
+
     return mat4<T>(
-        static_cast<T>(2.0) / (right - left), static_cast<T>(0.0),                  static_cast<T>(0.0),                static_cast<T>(0.0),
-        static_cast<T>(0.0),                  static_cast<T>(2.0) / (top - bottom), static_cast<T>(0.0),                static_cast<T>(0.0),
-        static_cast<T>(0.0),                  static_cast<T>(0.0),                  static_cast<T>(2.0) / (near - far), static_cast<T>(0.0),
-        (right + left) / (left - right),      (top + bottom) / (bottom - top),      (far + near) / (near - far),        static_cast<T>(1.0)
+                    _2 / (right - left),                              _0,                          _0, _0,
+                                     _0,             _2 / (top - bottom),                          _0, _0,
+                                     _0,                              _0,           _2 / (near - far), _0,
+        (right + left) / (left - right), (top + bottom) / (bottom - top), (far + near) / (near - far), _1
     );
 }
 
 template <typename T>
 inline mat4<T> perspProj(T fov, T aspectRatio, T near, T far) {
+    constexpr T _0(static_cast<T>(0.0)), _1(static_cast<T>(1.0)), _2(static_cast<T>(2.0));
+
     T near_right(static_cast<T>(1.0) / std::tan(fov / static_cast<T>(2.0)));
 
     return mat4<T>(
-        near_right,          static_cast<T>(0.0),      static_cast<T>(0.0),                             static_cast<T>(0.0),
-        static_cast<T>(0.0), near_right / aspectRatio, static_cast<T>(0.0),                             static_cast<T>(0.0),
-        static_cast<T>(0.0), static_cast<T>(0.0),      (far + near) / (near - far),                     static_cast<T>(-1.0),
-        static_cast<T>(0.0), static_cast<T>(0.0),      static_cast<T>(2.0) * far * near / (near - far), static_cast<T>(0.0)
+        near_right,                       _0,                             _0,  _0,
+                _0, near_right / aspectRatio,                             _0,  _0,
+                _0,                       _0,    (far + near) / (near - far), -_1,
+                _0,                       _0, _2 * far * near / (near - far),  _0
     );
 }
 
 template <typename T>
 inline mat4<T> perspProjAsym(T fovLeft, T fovRight, T fovBottom, T fovTop, T near, T far) {
+    constexpr T _0(static_cast<T>(0.0)), _1(static_cast<T>(1.0)), _2(static_cast<T>(2.0));
+
     T left(near * -std::tan(fovLeft));
     T right(near * std::tan(fovRight));
     T bottom(near * -std::tan(fovBottom));
     T top(near * std::tan(fovTop));
 
     return mat4<T>(
-        static_cast<T>(2.0) * near / (right - left), static_cast<T>(0.0),                         static_cast<T>(0.0),                             static_cast<T>(0.0),
-        static_cast<T>(0.0),                         static_cast<T>(2.0) * near / (top - bottom), static_cast<T>(0.0),                             static_cast<T>(0.0),
-        (right + left) / (right - left),             (top + bottom) / (top - bottom),             (far + near) / (near - far),                     static_cast<T>(-1.0),
-        static_cast<T>(0.0),                         static_cast<T>(0.0),                         static_cast<T>(2.0) * far * near / (near - far), static_cast<T>(0.0)
+             _2 * near / (right - left),                              _0,                             _0,  _0,
+                                     _0,      _2 * near / (top - bottom),                             _0,  _0,
+        (right + left) / (right - left), (top + bottom) / (top - bottom),    (far + near) / (near - far), -_1,
+                                     _0,                              _0, _2 * far * near / (near - far),  _0
     );
 }
 
