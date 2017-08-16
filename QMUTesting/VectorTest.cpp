@@ -198,6 +198,7 @@ void compileClassesT() {
     span<T, 1> s1_2(s1);
     span<T, 1> s1_3(std::move(s1));
     span<T, 1> s1_7(v1, v1);
+    span<T, 1> s1_8(v, v);
 
     // asignment operators
     s1 = s1;
@@ -214,6 +215,7 @@ void compileClassesT() {
     span<T, 2> s2_2(s2);
     span<T, 2> s2_3(std::move(s2));
     span<T, 2> s2_7(v2, v2);
+    span<T, 2> s2_8(v, v);
 
     // asignment operators
     s2 = s2;
@@ -230,6 +232,7 @@ void compileClassesT() {
     span<T, 3> s3_2(s3);
     span<T, 3> s3_3(std::move(s3));
     span<T, 3> s3_7(v3, v3);
+    span<T, 3> s3_8(v, v);
 
     // asignment operators
     s3 = s3;
@@ -246,6 +249,7 @@ void compileClassesT() {
     span<T, 4> s4_2(s4);
     span<T, 4> s4_3(std::move(s4));
     span<T, 4> s4_7(v4, v4);
+    span<T, 4> s4_8(v, v);
 
     // asignment operators
     s4 = s4;
@@ -400,6 +404,7 @@ constexpr void compileClassesConstexprT() {
     constexpr span<T, 1> s1_2(s1);
     constexpr span<T, 1> s1_3(std::move(s1));
     constexpr span<T, 1> s1_7(v1, v1);
+    constexpr span<T, 1> s1_8(v, v);
 
     //--------------------------------------------------------------------------
     // Span2
@@ -409,6 +414,7 @@ constexpr void compileClassesConstexprT() {
     constexpr span<T, 2> s2_2(s2);
     constexpr span<T, 2> s2_3(std::move(s2));
     constexpr span<T, 2> s2_7(v2, v2);
+    constexpr span<T, 2> s2_8(v, v);
 
     //--------------------------------------------------------------------------
     // Span3
@@ -418,6 +424,7 @@ constexpr void compileClassesConstexprT() {
     constexpr span<T, 3> s3_2(s3);
     constexpr span<T, 3> s3_3(std::move(s3));
     constexpr span<T, 3> s3_7(v3, v3);
+    constexpr span<T, 3> s3_8(v, v);
 
     //--------------------------------------------------------------------------
     // Span4
@@ -427,6 +434,7 @@ constexpr void compileClassesConstexprT() {
     constexpr span<T, 4> s4_2(s4);
     constexpr span<T, 4> s4_3(std::move(s4));
     constexpr span<T, 4> s4_7(v4, v4);
+    constexpr span<T, 4> s4_8(v, v);
 }
 
 constexpr bool compileClassesConstexpr() {
@@ -1231,13 +1239,55 @@ void compileMembers() {
     v4 = s4.loc; v4 = s4.size;
 }
 
-void compileAxes() {
-    fvec3 px(posX<float>);
-    fvec3 nx(posX<float>);
-    fvec3 py(posY<float>);
-    fvec3 ny(posY<float>);
-    fvec3 pz(posZ<float>);
-    fvec3 nz(negZ<float>);
+template <typename T>
+constexpr void compileConstantsT() {
+    constexpr vec3<T> axp(axisX<T,  true>);
+    constexpr vec3<T> axn(axisX<T, false>);
+    constexpr vec3<T> ayp(axisY<T,  true>);
+    constexpr vec3<T> ayn(axisY<T, false>);
+    constexpr vec3<T> azp(axisZ<T,  true>);
+    constexpr vec3<T> azn(axisZ<T, false>);
+    constexpr vec3<T> px(posX<T>);
+    constexpr vec3<T> nx(posX<T>);
+    constexpr vec3<T> py(posY<T>);
+    constexpr vec3<T> ny(posY<T>);
+    constexpr vec3<T> pz(posZ<T>);
+    constexpr vec3<T> nz(negZ<T>);
+}
+
+template <typename T>
+constexpr void compileConstantsFT() {
+    constexpr vec1<T> nv1(nanvec<T, 1>);
+    constexpr vec2<T> nv2(nanvec<T, 2>);
+    constexpr vec3<T> nv3(nanvec<T, 3>);
+    constexpr vec4<T> nv4(nanvec<T, 4>);
+
+    constexpr span1<T> ns1(nanspan<T, 1>);
+    constexpr span2<T> ns2(nanspan<T, 2>);
+    constexpr span3<T> ns3(nanspan<T, 3>);
+    constexpr span4<T> ns4(nanspan<T, 4>);
+
+    constexpr bound1<T> nb1(nanbound<T, 1>);
+    constexpr bound2<T> nb2(nanbound<T, 2>);
+    constexpr bound3<T> nb3(nanbound<T, 3>);
+    constexpr bound4<T> nb4(nanbound<T, 4>);
+}
+
+constexpr bool compileConstants() {
+    compileConstantsT<      float>();
+    compileConstantsT<     double>();
+    compileConstantsT<long double>();
+    compileConstantsT<       char>();
+    compileConstantsT<      short>();
+    compileConstantsT<        int>();
+    compileConstantsT<       long>();
+    compileConstantsT<  long long>();
+
+    compileConstantsFT<      float>();
+    compileConstantsFT<     double>();
+    compileConstantsFT<long double>();
+
+    return true;
 }
 
 
@@ -1254,5 +1304,5 @@ void testVector() {
     testProperties();
     compileCasts();
     compileMembers();
-    compileAxes();
+    static_assert(compileConstants(), "");
 }

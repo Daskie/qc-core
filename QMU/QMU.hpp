@@ -131,6 +131,7 @@ template <typename T, eif_floating_t<T> = 0> constexpr T phi = static_cast<T>(1.
 
 template <typename T, nat t_v, eif_floating_t<T> = 0> constexpr T sqrt = detail::sqrtConstexpr(static_cast<T>(t_v));
 template <typename T, eif_floating_t<T> = 0> constexpr T infinity = std::numeric_limits<T>::infinity();
+template <typename T, eif_floating_t<T> = 0> constexpr T nan = std::numeric_limits<T>::quiet_NaN();
 
 
 
