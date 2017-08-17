@@ -813,25 +813,25 @@ void compileBoolFunctions() {
     bvec3 b3;
     bvec4 b4;
 
-    and(b1);
-    and(b2);
-    and(b3);
-    and(b4);
+    vand(b1);
+    vand(b2);
+    vand(b3);
+    vand(b4);
 
-    or(b1);
-    or(b2);
-    or(b3);
-    or(b4);
+    vor(b1);
+    vor(b2);
+    vor(b3);
+    vor(b4);
 
-    xor(b1);
-    xor(b2);
-    xor(b3);
-    xor(b4);
+    vxor(b1);
+    vxor(b2);
+    vxor(b3);
+    vxor(b4);
 
-    not(b1);
-    not(b2);
-    not(b3);
-    not(b4);
+    vnot(b1);
+    vnot(b2);
+    vnot(b3);
+    vnot(b4);
 }
 
 void compileFunctions() {
@@ -1101,25 +1101,25 @@ constexpr void compileBoolFunctionsConstexpr() {
     bvec3 b3;
     bvec4 b4;
 
-    and(b1);
-    and(b2);
-    and(b3);
-    and(b4);
+    vand(b1);
+    vand(b2);
+    vand(b3);
+    vand(b4);
 
-    or(b1);
-    or(b2);
-    or(b3);
-    or(b4);
+    vor(b1);
+    vor(b2);
+    vor(b3);
+    vor(b4);
 
-    xor(b1);
-    xor(b2);
-    xor(b3);
-    xor(b4);
+    vxor(b1);
+    vxor(b2);
+    vxor(b3);
+    vxor(b4);
 
-    not(b1);
-    not(b2);
-    not(b3);
-    not(b4);
+    vnot(b1);
+    vnot(b2);
+    vnot(b3);
+    vnot(b4);
 }
 
 constexpr bool compileFunctionsConstexpr() {

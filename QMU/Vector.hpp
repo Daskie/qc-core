@@ -1107,16 +1107,16 @@ constexpr span<T, t_n> intersect(const span<T, t_n> & s1, const span<T, t_n> & s
 //------------------------------------------------------------------------------
 
 template <nat t_n>
-constexpr bool and(const bvec<t_n> & v);
+constexpr bool vand(const bvec<t_n> & v);
 
 template <nat t_n>
-constexpr bool or(const bvec<t_n> & v);
+constexpr bool vor(const bvec<t_n> & v);
 
 template <nat t_n>
-constexpr bool xor(const bvec<t_n> & v);
+constexpr bool vxor(const bvec<t_n> & v);
 
 template <nat t_n>
-constexpr bvec<t_n> not(const bvec<t_n> & v);
+constexpr bvec<t_n> vnot(const bvec<t_n> & v);
 
 
 
@@ -3700,67 +3700,67 @@ constexpr span4<T> intersect(const span4<T> & s1, const span4<T> & s2) {
     );
 }
 
-constexpr bool and(const bvec1 & v) {
+constexpr bool vand(const bvec1 & v) {
     return v.x;
 }
 
-constexpr bool and(const bvec2 & v) {
+constexpr bool vand(const bvec2 & v) {
     return v.x && v.y;
 }
 
-constexpr bool and(const bvec3 & v) {
+constexpr bool vand(const bvec3 & v) {
     return v.x && v.y && v.z;
 }
 
-constexpr bool and(const bvec4 & v) {
+constexpr bool vand(const bvec4 & v) {
     return v.x && v.y && v.z && v.w;
 }
 
-constexpr bool or(const bvec1 & v) {
+constexpr bool vor(const bvec1 & v) {
     return v.x;
 }
 
-constexpr bool or(const bvec2 & v) {
+constexpr bool vor(const bvec2 & v) {
     return v.x || v.y;
 }
 
-constexpr bool or(const bvec3 & v) {
+constexpr bool vor(const bvec3 & v) {
     return v.x || v.y || v.z;
 }
 
-constexpr bool or(const bvec4 & v) {
+constexpr bool vor(const bvec4 & v) {
     return v.x || v.y || v.z || v.w;
 }
 
-constexpr bool xor(const bvec1 & v) {
+constexpr bool vxor(const bvec1 & v) {
     return v.x;
 }
 
-constexpr bool xor(const bvec2 & v) {
+constexpr bool vxor(const bvec2 & v) {
     return v.x ^ v.y;
 }
 
-constexpr bool xor(const bvec3 & v) {
+constexpr bool vxor(const bvec3 & v) {
     return v.x ^ v.y ^ v.z;
 }
 
-constexpr bool xor(const bvec4 & v) {
+constexpr bool vxor(const bvec4 & v) {
     return v.x ^ v.y ^ v.z ^ v.w;
 }
 
-constexpr bvec1 not(const bvec1 & v) {
+constexpr bvec1 vnot(const bvec1 & v) {
     return bvec1(!v.x);
 }
 
-constexpr bvec2 not(const bvec2 & v) {
+constexpr bvec2 vnot(const bvec2 & v) {
     return bvec2(!v.x, !v.y);
 }
 
-constexpr bvec3 not(const bvec3 & v) {
+constexpr bvec3 vnot(const bvec3 & v) {
     return bvec3(!v.x, !v.y, !v.z);
 }
 
-constexpr bvec4 not(const bvec4 & v) {
+constexpr bvec4 vnot(const bvec4 & v) {
     return bvec4(!v.x, !v.y, !v.z, !v.w);
 }
 
