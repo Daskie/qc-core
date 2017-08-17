@@ -1106,17 +1106,18 @@ constexpr span<T, t_n> intersect(const span<T, t_n> & s1, const span<T, t_n> & s
 // Logical Operators
 //------------------------------------------------------------------------------
 
-template <nat t_n>
-constexpr bool vand(const bvec<t_n> & v);
+template <nat t_n> constexpr bvec<t_n> vand(const bvec<t_n> & v1, const bvec<t_n> & v2);
+template <nat t_n, typename... Ts> constexpr bvec<t_n> vand(const bvec<t_n> & v1, const bvec<t_n> & v2, const Ts &... rest);
+template <nat t_n> constexpr bvec<t_n> operator&&(const bvec<t_n> & v1, const bvec<t_n> & v2);
+template <nat t_n> constexpr bool vand(const bvec<t_n> & v);
 
-template <nat t_n>
-constexpr bool vor(const bvec<t_n> & v);
+template <nat t_n> constexpr bvec<t_n> vor(const bvec<t_n> & v1, const bvec<t_n> & v2);
+template <nat t_n, typename... Ts> constexpr bvec<t_n> vor(const bvec<t_n> & v1, const bvec<t_n> & v2, const Ts &... rest);
+template <nat t_n> constexpr bvec<t_n> operator||(const bvec<t_n> & v1, const bvec<t_n> & v2);
+template <nat t_n> constexpr bool vor(const bvec<t_n> & v);
 
-template <nat t_n>
-constexpr bool vxor(const bvec<t_n> & v);
-
-template <nat t_n>
-constexpr bvec<t_n> vnot(const bvec<t_n> & v);
+template <nat t_n> constexpr bvec<t_n> vnot(const bvec<t_n> & v);
+template <nat t_n> constexpr bvec<t_n> operator!(const bvec<t_n> & v1);
 
 
 
@@ -3700,6 +3701,32 @@ constexpr span4<T> intersect(const span4<T> & s1, const span4<T> & s2) {
     );
 }
 
+constexpr bvec1 vand(const bvec1 & v1, const bvec1 & v2) {
+    return bvec1(v1.x && v2.x);
+}
+
+constexpr bvec2 vand(const bvec2 & v1, const bvec2 & v2) {
+    return bvec2(v1.x && v2.x, v1.y && v2.y);
+}
+
+constexpr bvec3 vand(const bvec3 & v1, const bvec3 & v2) {
+    return bvec3(v1.x && v2.x, v1.y && v2.y, v1.z && v2.z);
+}
+
+constexpr bvec4 vand(const bvec4 & v1, const bvec4 & v2) {
+    return bvec4(v1.x && v2.x, v1.y && v2.y, v1.z && v2.z, v1.w && v2.w);
+}
+
+template <nat t_n, typename... Ts>
+constexpr bvec<t_n> vand(const bvec<t_n> & v1, const bvec<t_n> & v2, const Ts &... rest) {
+    return vand(vand(v1, v2), rest...);
+}
+
+template <nat t_n>
+constexpr bvec<t_n> operator&&(const bvec<t_n> & v1, const bvec<t_n> & v2) {
+    return vand(v1, v2);
+}
+
 constexpr bool vand(const bvec1 & v) {
     return v.x;
 }
@@ -3714,6 +3741,32 @@ constexpr bool vand(const bvec3 & v) {
 
 constexpr bool vand(const bvec4 & v) {
     return v.x && v.y && v.z && v.w;
+}
+
+constexpr bvec1 vor(const bvec1 & v1, const bvec1 & v2) {
+    return bvec1(v1.x || v2.x);
+}
+
+constexpr bvec2 vor(const bvec2 & v1, const bvec2 & v2) {
+    return bvec2(v1.x || v2.x, v1.y || v2.y);
+}
+
+constexpr bvec3 vor(const bvec3 & v1, const bvec3 & v2) {
+    return bvec3(v1.x || v2.x, v1.y || v2.y, v1.z || v2.z);
+}
+
+constexpr bvec4 vor(const bvec4 & v1, const bvec4 & v2) {
+    return bvec4(v1.x || v2.x, v1.y || v2.y, v1.z || v2.z, v1.w || v2.w);
+}
+
+template <nat t_n, typename... Ts>
+constexpr bvec<t_n> vor(const bvec<t_n> & v1, const bvec<t_n> & v2, const Ts &... rest) {
+    return vor(vor(v1, v2), rest...);
+}
+
+template <nat t_n>
+constexpr bvec<t_n> operator||(const bvec<t_n> & v1, const bvec<t_n> & v2) {
+    return vor(v1, v2);
 }
 
 constexpr bool vor(const bvec1 & v) {
@@ -3732,22 +3785,6 @@ constexpr bool vor(const bvec4 & v) {
     return v.x || v.y || v.z || v.w;
 }
 
-constexpr bool vxor(const bvec1 & v) {
-    return v.x;
-}
-
-constexpr bool vxor(const bvec2 & v) {
-    return v.x ^ v.y;
-}
-
-constexpr bool vxor(const bvec3 & v) {
-    return v.x ^ v.y ^ v.z;
-}
-
-constexpr bool vxor(const bvec4 & v) {
-    return v.x ^ v.y ^ v.z ^ v.w;
-}
-
 constexpr bvec1 vnot(const bvec1 & v) {
     return bvec1(!v.x);
 }
@@ -3762,6 +3799,11 @@ constexpr bvec3 vnot(const bvec3 & v) {
 
 constexpr bvec4 vnot(const bvec4 & v) {
     return bvec4(!v.x, !v.y, !v.z, !v.w);
+}
+
+template <nat t_n>
+constexpr bvec<t_n> operator!(const bvec<t_n> & v) {
+    return vnot(v);
 }
 
 

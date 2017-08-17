@@ -813,25 +813,55 @@ void compileBoolFunctions() {
     bvec3 b3;
     bvec4 b4;
 
+    vand(b1, b1);
+    vand(b2, b2);
+    vand(b3, b3);
+    vand(b4, b4);
+
+    vand(b1, b1, b1);
+    vand(b2, b2, b2);
+    vand(b3, b3, b3);
+    vand(b4, b4, b4);
+
+    b1 && b1;
+    b2 && b2;
+    b3 && b3;
+    b4 && b4;
+
     vand(b1);
     vand(b2);
     vand(b3);
     vand(b4);
+
+    vor(b1, b1);
+    vor(b2, b2);
+    vor(b3, b3);
+    vor(b4, b4);
+
+    vor(b1, b1, b1);
+    vor(b2, b2, b2);
+    vor(b3, b3, b3);
+    vor(b4, b4, b4);
+
+    b1 || b1;
+    b2 || b2;
+    b3 || b3;
+    b4 || b4;
 
     vor(b1);
     vor(b2);
     vor(b3);
     vor(b4);
 
-    vxor(b1);
-    vxor(b2);
-    vxor(b3);
-    vxor(b4);
-
     vnot(b1);
     vnot(b2);
     vnot(b3);
     vnot(b4);
+
+    !b1;
+    !b2;
+    !b3;
+    !b4;
 }
 
 void compileFunctions() {
@@ -1101,25 +1131,55 @@ constexpr void compileBoolFunctionsConstexpr() {
     bvec3 b3;
     bvec4 b4;
 
+    vand(b1, b1);
+    vand(b2, b2);
+    vand(b3, b3);
+    vand(b4, b4);
+
+    vand(b1, b1, b1);
+    vand(b2, b2, b2);
+    vand(b3, b3, b3);
+    vand(b4, b4, b4);
+
+    b1 && b1;
+    b2 && b2;
+    b3 && b3;
+    b4 && b4;
+
     vand(b1);
     vand(b2);
     vand(b3);
     vand(b4);
+
+    vor(b1, b1);
+    vor(b2, b2);
+    vor(b3, b3);
+    vor(b4, b4);
+
+    b1 || b1;
+    b2 || b2;
+    b3 || b3;
+    b4 || b4;
 
     vor(b1);
     vor(b2);
     vor(b3);
     vor(b4);
 
-    vxor(b1);
-    vxor(b2);
-    vxor(b3);
-    vxor(b4);
+    vor(b1, b1, b1);
+    vor(b2, b2, b2);
+    vor(b3, b3, b3);
+    vor(b4, b4, b4);
 
     vnot(b1);
     vnot(b2);
     vnot(b3);
     vnot(b4);
+
+    !b1;
+    !b2;
+    !b3;
+    !b4;
 }
 
 constexpr bool compileFunctionsConstexpr() {
