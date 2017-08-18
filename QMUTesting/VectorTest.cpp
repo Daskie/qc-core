@@ -808,6 +808,21 @@ void compileFunctionsT() {
     clamp(v3, v3, v3);
     clamp(v4, v4, v4);
 
+    abs(v1);
+    abs(v2);
+    abs(v3);
+    abs(v4);
+
+    floor(v1);
+    floor(v2);
+    floor(v3);
+    floor(v4);
+
+    ceil(v1);
+    ceil(v2);
+    ceil(v3);
+    ceil(v4);
+
     mix(v1, v1, v);
     mix(v2, v2, v);
     mix(v3, v3, v);
@@ -1113,6 +1128,21 @@ constexpr void compileFunctionsConstexprT() {
     clamp(v2, v2, v2);
     clamp(v3, v3, v3);
     clamp(v4, v4, v4);
+
+    abs(v1);
+    abs(v2);
+    abs(v3);
+    abs(v4);
+
+    floor(v1);
+    floor(v2);
+    floor(v3);
+    floor(v4);
+
+    ceil(v1);
+    ceil(v2);
+    ceil(v3);
+    ceil(v4);
 
     mix(v1, v1, v);
     mix(v2, v2, v);

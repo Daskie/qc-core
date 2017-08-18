@@ -1074,6 +1074,33 @@ constexpr vec<T, t_n> clamp(const vec<T, t_n> & v, const vec<T, t_n> & min, cons
 
 
 //==============================================================================
+// abs
+//------------------------------------------------------------------------------
+
+template <typename T, nat t_n>
+constexpr vec<T, t_n> abs(const vec<T, t_n> & v);
+
+
+
+//==============================================================================
+// floor
+//------------------------------------------------------------------------------
+
+template <typename T, nat t_n>
+constexpr vec<T, t_n> floor(const vec<T, t_n> & v);
+
+
+
+//==============================================================================
+// ceil
+//------------------------------------------------------------------------------
+
+template <typename T, nat t_n>
+constexpr vec<T, t_n> ceil(const vec<T, t_n> & v);
+
+
+
+//==============================================================================
 // mix
 //------------------------------------------------------------------------------
 
@@ -3699,6 +3726,66 @@ constexpr vec4<T> clamp(const vec4<T> & v, const vec4<T> & min, const vec4<T> & 
         clamp(v.z, min.z, max.z),
         clamp(v.w, min.w, max.w)
     );
+}
+
+template <typename T>
+constexpr vec1<T> abs(const vec1<T> & v) {
+    return vec1<T>(abs(v.x));
+}
+
+template <typename T>
+constexpr vec2<T> abs(const vec2<T> & v) {
+    return vec2<T>(abs(v.x), abs(v.y));
+}
+
+template <typename T>
+constexpr vec3<T> abs(const vec3<T> & v) {
+    return vec3<T>(abs(v.x), abs(v.y), abs(v.z));
+}
+
+template <typename T>
+constexpr vec4<T> abs(const vec4<T> & v) {
+    return vec4<T>(abs(v.x), abs(v.y), abs(v.z), abs(v.w));
+}
+
+template <typename T>
+constexpr vec1<T> floor(const vec1<T> & v) {
+    return vec1<T>(static_cast<T>(floor(v.x)));
+}
+
+template <typename T>
+constexpr vec2<T> floor(const vec2<T> & v) {
+    return vec2<T>(static_cast<T>(floor(v.x)), static_cast<T>(floor(v.y)));
+}
+
+template <typename T>
+constexpr vec3<T> floor(const vec3<T> & v) {
+    return vec3<T>(static_cast<T>(floor(v.x)), static_cast<T>(floor(v.y)), static_cast<T>(floor(v.z)));
+}
+
+template <typename T>
+constexpr vec4<T> floor(const vec4<T> & v) {
+    return vec4<T>(static_cast<T>(floor(v.x)), static_cast<T>(floor(v.y)), static_cast<T>(floor(v.z)), static_cast<T>(floor(v.w)));
+}
+
+template <typename T>
+constexpr vec1<T> ceil(const vec1<T> & v) {
+    return vec1<T>(static_cast<T>(ceil(v.x)));
+}
+
+template <typename T>
+constexpr vec2<T> ceil(const vec2<T> & v) {
+    return vec2<T>(static_cast<T>(ceil(v.x)), static_cast<T>(ceil(v.y)));
+}
+
+template <typename T>
+constexpr vec3<T> ceil(const vec3<T> & v) {
+    return vec3<T>(static_cast<T>(ceil(v.x)), static_cast<T>(ceil(v.y)), static_cast<T>(ceil(v.z)));
+}
+
+template <typename T>
+constexpr vec4<T> ceil(const vec4<T> & v) {
+    return vec4<T>(static_cast<T>(ceil(v.x)), static_cast<T>(ceil(v.y)), static_cast<T>(ceil(v.z)), static_cast<T>(ceil(v.w)));
 }
 
 template <typename T, nat t_n, eif_floating_t<T>>
