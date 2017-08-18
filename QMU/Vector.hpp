@@ -855,6 +855,10 @@ template <typename T, nat t_n> vec<T, t_n> constexpr operator/(const vec<T, t_n>
 template <typename T, nat t_n> vec<T, t_n> constexpr operator/(const vec<T, t_n> & v1, const           T & v2);
 template <typename T, nat t_n> vec<T, t_n> constexpr operator/(const           T & v1, const vec<T, t_n> & v2);
 
+template <typename T, nat t_n> vec<T, t_n> constexpr operator%(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, nat t_n> vec<T, t_n> constexpr operator%(const vec<T, t_n> & v1, const           T & v2);
+template <typename T, nat t_n> vec<T, t_n> constexpr operator%(const           T & v1, const vec<T, t_n> & v2);
+
 
 
 //==============================================================================
@@ -1106,17 +1110,12 @@ constexpr span<T, t_n> intersect(const span<T, t_n> & s1, const span<T, t_n> & s
 // Logical Operators
 //------------------------------------------------------------------------------
 
-template <nat t_n> constexpr bvec<t_n> vand(const bvec<t_n> & v1, const bvec<t_n> & v2);
-template <nat t_n, typename... Ts> constexpr bvec<t_n> vand(const bvec<t_n> & v1, const bvec<t_n> & v2, const Ts &... rest);
 template <nat t_n> constexpr bvec<t_n> operator&&(const bvec<t_n> & v1, const bvec<t_n> & v2);
 template <nat t_n> constexpr bool vand(const bvec<t_n> & v);
 
-template <nat t_n> constexpr bvec<t_n> vor(const bvec<t_n> & v1, const bvec<t_n> & v2);
-template <nat t_n, typename... Ts> constexpr bvec<t_n> vor(const bvec<t_n> & v1, const bvec<t_n> & v2, const Ts &... rest);
 template <nat t_n> constexpr bvec<t_n> operator||(const bvec<t_n> & v1, const bvec<t_n> & v2);
 template <nat t_n> constexpr bool vor(const bvec<t_n> & v);
 
-template <nat t_n> constexpr bvec<t_n> vnot(const bvec<t_n> & v);
 template <nat t_n> constexpr bvec<t_n> operator!(const bvec<t_n> & v1);
 
 
@@ -2678,7 +2677,6 @@ constexpr vec1<T> operator/(const vec1<T> & v1, const vec1<T> & v2) {
     return vec1<T>(v1.x / v2.x);
 }
 
-
 template <typename T>
 constexpr vec2<T> operator/(const vec2<T> & v1, const vec2<T> & v2) {
     return vec2<T>(v1.x / v2.x, v1.y / v2.y);
@@ -2750,6 +2748,68 @@ constexpr vec3<T> operator/(const T & v1, const vec3<T> & v2) {
 template <typename T>
 constexpr vec4<T> operator/(const T & v1, const vec4<T> & v2) {
     return vec4<T>(v1 / v2.x, v1 / v2.y, v1 / v2.z, v1 / v2.w);
+}
+
+//--- modulus ---
+
+template <typename T>
+constexpr vec1<T> operator%(const vec1<T> & v1, const vec1<T> & v2) {
+    return vec1<T>(mod(v1.x, v2.x));
+}
+
+template <typename T>
+constexpr vec2<T> operator%(const vec2<T> & v1, const vec2<T> & v2) {
+    return vec2<T>(mod(v1.x, v2.x), mod(v1.y, v2.y));
+}
+
+template <typename T>
+constexpr vec3<T> operator%(const vec3<T> & v1, const vec3<T> & v2) {
+    return vec3<T>(mod(v1.x, v2.x), mod(v1.y, v2.y), mod(v1.z, v2.z));
+}
+
+template <typename T>
+constexpr vec4<T> operator%(const vec4<T> & v1, const vec4<T> & v2) {
+    return vec4<T>(mod(v1.x, v2.x), mod(v1.y, v2.y), mod(v1.z, v2.z), mod(v1.w, v2.w));
+}
+
+template <typename T>
+constexpr vec1<T> operator%(const vec1<T> & v1, const T & v2) {
+    return vec1<T>(mod(v1.x, v2));
+}
+
+template <typename T>
+constexpr vec2<T> operator%(const vec2<T> & v1, const T & v2) {
+    return vec2<T>(mod(v1.x, v2), mod(v1.y, v2));
+}
+
+template <typename T>
+constexpr vec3<T> operator%(const vec3<T> & v1, const T & v2) {
+    return vec3<T>(mod(v1.x, v2), mod(v1.y, v2), mod(v1.z, v2));
+}
+
+template <typename T>
+constexpr vec4<T> operator%(const vec4<T> & v1, const T & v2) {
+    return vec4<T>(mod(v1.x, v2), mod(v1.y, v2), mod(v1.z, v2), mod(v1.w, v2));
+}
+
+template <typename T>
+constexpr vec1<T> operator%(const T & v1, const vec1<T> & v2) {
+    return vec1<T>(mod(v1, v2.x));
+}
+
+template <typename T>
+constexpr vec2<T> operator%(const T & v1, const vec2<T> & v2) {
+    return vec2<T>(mod(v1, v2.x), mod(v1, v2.y));
+}
+
+template <typename T>
+constexpr vec3<T> operator%(const T & v1, const vec3<T> & v2) {
+    return vec3<T>(mod(v1, v2.x), mod(v1, v2.y), mod(v1, v2.z));
+}
+
+template <typename T>
+constexpr vec4<T> operator%(const T & v1, const vec4<T> & v2) {
+    return vec4<T>(mod(v1, v2.x), mod(v1, v2.y), mod(v1, v2.z), mod(v1, v2.w));
 }
 
 
@@ -3701,30 +3761,20 @@ constexpr span4<T> intersect(const span4<T> & s1, const span4<T> & s2) {
     );
 }
 
-constexpr bvec1 vand(const bvec1 & v1, const bvec1 & v2) {
+constexpr bvec1 operator&&(const bvec1 & v1, const bvec1 & v2) {
     return bvec1(v1.x && v2.x);
 }
 
-constexpr bvec2 vand(const bvec2 & v1, const bvec2 & v2) {
+constexpr bvec2 operator&&(const bvec2 & v1, const bvec2 & v2) {
     return bvec2(v1.x && v2.x, v1.y && v2.y);
 }
 
-constexpr bvec3 vand(const bvec3 & v1, const bvec3 & v2) {
+constexpr bvec3 operator&&(const bvec3 & v1, const bvec3 & v2) {
     return bvec3(v1.x && v2.x, v1.y && v2.y, v1.z && v2.z);
 }
 
-constexpr bvec4 vand(const bvec4 & v1, const bvec4 & v2) {
+constexpr bvec4 operator&&(const bvec4 & v1, const bvec4 & v2) {
     return bvec4(v1.x && v2.x, v1.y && v2.y, v1.z && v2.z, v1.w && v2.w);
-}
-
-template <nat t_n, typename... Ts>
-constexpr bvec<t_n> vand(const bvec<t_n> & v1, const bvec<t_n> & v2, const Ts &... rest) {
-    return vand(vand(v1, v2), rest...);
-}
-
-template <nat t_n>
-constexpr bvec<t_n> operator&&(const bvec<t_n> & v1, const bvec<t_n> & v2) {
-    return vand(v1, v2);
 }
 
 constexpr bool vand(const bvec1 & v) {
@@ -3743,30 +3793,20 @@ constexpr bool vand(const bvec4 & v) {
     return v.x && v.y && v.z && v.w;
 }
 
-constexpr bvec1 vor(const bvec1 & v1, const bvec1 & v2) {
+constexpr bvec1 operator||(const bvec1 & v1, const bvec1 & v2) {
     return bvec1(v1.x || v2.x);
 }
 
-constexpr bvec2 vor(const bvec2 & v1, const bvec2 & v2) {
+constexpr bvec2 operator||(const bvec2 & v1, const bvec2 & v2) {
     return bvec2(v1.x || v2.x, v1.y || v2.y);
 }
 
-constexpr bvec3 vor(const bvec3 & v1, const bvec3 & v2) {
+constexpr bvec3 operator||(const bvec3 & v1, const bvec3 & v2) {
     return bvec3(v1.x || v2.x, v1.y || v2.y, v1.z || v2.z);
 }
 
-constexpr bvec4 vor(const bvec4 & v1, const bvec4 & v2) {
+constexpr bvec4 operator||(const bvec4 & v1, const bvec4 & v2) {
     return bvec4(v1.x || v2.x, v1.y || v2.y, v1.z || v2.z, v1.w || v2.w);
-}
-
-template <nat t_n, typename... Ts>
-constexpr bvec<t_n> vor(const bvec<t_n> & v1, const bvec<t_n> & v2, const Ts &... rest) {
-    return vor(vor(v1, v2), rest...);
-}
-
-template <nat t_n>
-constexpr bvec<t_n> operator||(const bvec<t_n> & v1, const bvec<t_n> & v2) {
-    return vor(v1, v2);
 }
 
 constexpr bool vor(const bvec1 & v) {
@@ -3785,25 +3825,20 @@ constexpr bool vor(const bvec4 & v) {
     return v.x || v.y || v.z || v.w;
 }
 
-constexpr bvec1 vnot(const bvec1 & v) {
+constexpr bvec1 operator!(const bvec1 & v) {
     return bvec1(!v.x);
 }
 
-constexpr bvec2 vnot(const bvec2 & v) {
+constexpr bvec2 operator!(const bvec2 & v) {
     return bvec2(!v.x, !v.y);
 }
 
-constexpr bvec3 vnot(const bvec3 & v) {
+constexpr bvec3 operator!(const bvec3 & v) {
     return bvec3(!v.x, !v.y, !v.z);
 }
 
-constexpr bvec4 vnot(const bvec4 & v) {
+constexpr bvec4 operator!(const bvec4 & v) {
     return bvec4(!v.x, !v.y, !v.z, !v.w);
-}
-
-template <nat t_n>
-constexpr bvec<t_n> operator!(const bvec<t_n> & v) {
-    return vnot(v);
 }
 
 

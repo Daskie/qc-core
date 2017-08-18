@@ -583,6 +583,19 @@ void compileFunctionsT() {
     v / vec3<T>(1);
     v / vec4<T>(1);
 
+    v1 % vec1<T>(1);
+    v2 % vec2<T>(1);
+    v3 % vec3<T>(1);
+    v4 % vec4<T>(1);
+    v1 % T(1);
+    v2 % T(v);
+    v3 % T(v);
+    v4 % T(v);
+    v % vec1<T>(1);
+    v % vec2<T>(1);
+    v % vec3<T>(1);
+    v % vec4<T>(1);
+
 
     // comparison
 
@@ -813,16 +826,6 @@ void compileBoolFunctions() {
     bvec3 b3;
     bvec4 b4;
 
-    vand(b1, b1);
-    vand(b2, b2);
-    vand(b3, b3);
-    vand(b4, b4);
-
-    vand(b1, b1, b1);
-    vand(b2, b2, b2);
-    vand(b3, b3, b3);
-    vand(b4, b4, b4);
-
     b1 && b1;
     b2 && b2;
     b3 && b3;
@@ -833,16 +836,6 @@ void compileBoolFunctions() {
     vand(b3);
     vand(b4);
 
-    vor(b1, b1);
-    vor(b2, b2);
-    vor(b3, b3);
-    vor(b4, b4);
-
-    vor(b1, b1, b1);
-    vor(b2, b2, b2);
-    vor(b3, b3, b3);
-    vor(b4, b4, b4);
-
     b1 || b1;
     b2 || b2;
     b3 || b3;
@@ -852,11 +845,6 @@ void compileBoolFunctions() {
     vor(b2);
     vor(b3);
     vor(b4);
-
-    vnot(b1);
-    vnot(b2);
-    vnot(b3);
-    vnot(b4);
 
     !b1;
     !b2;
@@ -946,6 +934,19 @@ constexpr void compileFunctionsConstexprT() {
     v / vec2<T>(1);
     v / vec3<T>(1);
     v / vec4<T>(1);
+
+    v1 % vec1<T>(1);
+    v2 % vec2<T>(1);
+    v3 % vec3<T>(1);
+    v4 % vec4<T>(1);
+    v1 % T(1);
+    v2 % T(v);
+    v3 % T(v);
+    v4 % T(v);
+    v % vec1<T>(1);
+    v % vec2<T>(1);
+    v % vec3<T>(1);
+    v % vec4<T>(1);
 
 
     // comparison
@@ -1131,16 +1132,6 @@ constexpr void compileBoolFunctionsConstexpr() {
     bvec3 b3;
     bvec4 b4;
 
-    vand(b1, b1);
-    vand(b2, b2);
-    vand(b3, b3);
-    vand(b4, b4);
-
-    vand(b1, b1, b1);
-    vand(b2, b2, b2);
-    vand(b3, b3, b3);
-    vand(b4, b4, b4);
-
     b1 && b1;
     b2 && b2;
     b3 && b3;
@@ -1151,11 +1142,6 @@ constexpr void compileBoolFunctionsConstexpr() {
     vand(b3);
     vand(b4);
 
-    vor(b1, b1);
-    vor(b2, b2);
-    vor(b3, b3);
-    vor(b4, b4);
-
     b1 || b1;
     b2 || b2;
     b3 || b3;
@@ -1165,16 +1151,6 @@ constexpr void compileBoolFunctionsConstexpr() {
     vor(b2);
     vor(b3);
     vor(b4);
-
-    vor(b1, b1, b1);
-    vor(b2, b2, b2);
-    vor(b3, b3, b3);
-    vor(b4, b4, b4);
-
-    vnot(b1);
-    vnot(b2);
-    vnot(b3);
-    vnot(b4);
 
     !b1;
     !b2;
