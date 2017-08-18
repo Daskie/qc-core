@@ -501,6 +501,15 @@ void compileFunctionsT() {
     v3 /= T(1);
     v4 /= T(1);
 
+    v1 %= vec1<T>(1);
+    v2 %= vec2<T>(1);
+    v3 %= vec3<T>(1);
+    v4 %= vec4<T>(1);
+    v1 %= T(1);
+    v2 %= T(1);
+    v3 %= T(1);
+    v4 %= T(1);
+
     ++v1;
     ++v2;
     ++v3;

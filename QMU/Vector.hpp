@@ -829,6 +829,9 @@ template <typename T, nat t_n> vec<T, t_n> & operator*=(vec<T, t_n> & v1, const 
 template <typename T, nat t_n> vec<T, t_n> & operator/=(vec<T, t_n> & v1, const vec<T, t_n> & v2);
 template <typename T, nat t_n> vec<T, t_n> & operator/=(vec<T, t_n> & v1, const           T & v2);
 
+template <typename T, nat t_n> vec<T, t_n> & operator%=(vec<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, nat t_n> vec<T, t_n> & operator%=(vec<T, t_n> & v1, const           T & v2);
+
 
 
 //==============================================================================
@@ -2431,6 +2434,48 @@ inline vec3<T> & operator/=(vec3<T> & v1, const T & v2) {
 template <typename T>
 inline vec4<T> & operator/=(vec4<T> & v1, const T & v2) {
     return v1 = v1 / v2;
+}
+
+//--- modulus assign ---
+
+template <typename T>
+inline vec1<T> & operator%=(vec1<T> & v1, const vec1<T> & v2) {
+    return v1 = v1 % v2;
+}
+
+template <typename T>
+inline vec2<T> & operator%=(vec2<T> & v1, const vec2<T> & v2) {
+    return v1 = v1 % v2;
+}
+
+template <typename T>
+inline vec3<T> & operator%=(vec3<T> & v1, const vec3<T> & v2) {
+    return v1 = v1 % v2;
+}
+
+template <typename T>
+inline vec4<T> & operator%=(vec4<T> & v1, const vec4<T> & v2) {
+    return v1 = v1 % v2;
+}
+
+template <typename T>
+inline vec1<T> & operator%=(vec1<T> & v1, const T & v2) {
+    return v1 = v1 % v2;
+}
+
+template <typename T>
+inline vec2<T> & operator%=(vec2<T> & v1, const T & v2) {
+    return v1 = v1 % v2;
+}
+
+template <typename T>
+inline vec3<T> & operator%=(vec3<T> & v1, const T & v2) {
+    return v1 = v1 % v2;
+}
+
+template <typename T>
+inline vec4<T> & operator%=(vec4<T> & v1, const T & v2) {
+    return v1 = v1 % v2;
 }
 
 
