@@ -155,7 +155,7 @@ constexpr bool compileFunctionsConstexpr() {
 
 template <typename T>
 void testPropertiesT() {
-    static_assert(std::is_standard_layout<quat<T>>::value, "");
+    static_assert(std::is_standard_layout_v<quat<T>>, "");
     static_assert(sizeof(quat<T>) == 4 * sizeof(T), "");
 }
 

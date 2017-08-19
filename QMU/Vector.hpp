@@ -924,7 +924,7 @@ vec<T, t_n> pow(const vec<T, t_n> & v, const vec<T, t_n> & p);
 // exp
 //------------------------------------------------------------------------------
 
-template <typename T, nat t_n, eif_t<std::is_floating_point<T>::value> = 0>
+template <typename T, nat t_n, eif_t<std::is_floating_point_v<T>> = 0>
 vec<T, t_n> exp(const vec<T, t_n> & v);
 
 
@@ -937,7 +937,7 @@ template <typename T, nat t_n, eif_floating_t<T> = 0>
 T magnitude(const vec<T, t_n> & v);
 
 template <typename T, nat t_n>
-constexpr T magnitude2(const vec<T, t_n> & v);
+T magnitude2(const vec<T, t_n> & v);
 
 
 
@@ -955,7 +955,7 @@ vec<T, t_n> norm(const vec<T, t_n> & v);
 //------------------------------------------------------------------------------
 
 template <typename T, nat t_n>
-constexpr T dot(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+T dot(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 
 
 
@@ -964,7 +964,7 @@ constexpr T dot(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 //------------------------------------------------------------------------------
 
 template <typename T, nat t_n>
-constexpr vec<T, t_n> cross(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+vec<T, t_n> cross(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 
 
 
@@ -973,7 +973,7 @@ constexpr vec<T, t_n> cross(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 //------------------------------------------------------------------------------
 
 template <typename T, nat t_n>
-constexpr bool parallel(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+bool parallel(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 
 
 
@@ -982,7 +982,7 @@ constexpr bool parallel(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 //------------------------------------------------------------------------------
 
 template <typename T, nat t_n>
-constexpr bool orthogonal(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+bool orthogonal(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 
 
 
@@ -991,7 +991,7 @@ constexpr bool orthogonal(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 //------------------------------------------------------------------------------
 
 template <typename T, nat t_n>
-constexpr vec<T, t_n> ortho(const vec<T, t_n> & v);
+vec<T, t_n> ortho(const vec<T, t_n> & v);
 
 
 
@@ -1087,7 +1087,7 @@ constexpr vec<T, t_n> abs(const vec<T, t_n> & v);
 //------------------------------------------------------------------------------
 
 template <typename T, nat t_n>
-constexpr vec<T, t_n> floor(const vec<T, t_n> & v);
+constexpr nvec<t_n> floor(const vec<T, t_n> & v);
 
 
 
@@ -1096,7 +1096,7 @@ constexpr vec<T, t_n> floor(const vec<T, t_n> & v);
 //------------------------------------------------------------------------------
 
 template <typename T, nat t_n>
-constexpr vec<T, t_n> ceil(const vec<T, t_n> & v);
+constexpr nvec<t_n> ceil(const vec<T, t_n> & v);
 
 
 
@@ -1132,7 +1132,7 @@ constexpr bound<T, t_n> toBound(const span<T, t_n> & s);
 //------------------------------------------------------------------------------
 
 template <typename T, nat t_n>
-constexpr span<T, t_n> intersect(const span<T, t_n> & s1, const span<T, t_n> & s2);
+span<T, t_n> intersect(const span<T, t_n> & s1, const span<T, t_n> & s2);
 
 
 
@@ -1184,89 +1184,6 @@ template <typename T, nat t_n, eif_floating_t<T> = 0> constexpr bound<T, t_n> na
 
 
 namespace qmu {
-
-
-
-namespace detail {
-
-
-
-template <nat t_i>
-struct VecAccessor;
-
-template <>
-struct VecAccessor<0> {
-    template <typename T, nat t_n>
-    static T & access(vec<T, t_n> & v) {
-        return v.x;
-    }
-    template <typename T, nat t_n>
-    static constexpr T access(const vec<T, t_n> & v) {
-        return v.x;
-    }
-};
-
-template <>
-struct VecAccessor<1> {
-    template <typename T, nat t_n>
-    static T & access(vec<T, t_n> & v) {
-        return v.y;
-    }
-    template <typename T, nat t_n>
-    static constexpr T access(const vec<T, t_n> & v) {
-        return v.y;
-    }
-};
-
-template <>
-struct VecAccessor<2> {
-    template <typename T, nat t_n>
-    static T & access(vec<T, t_n> & v) {
-        return v.z;
-    }
-    template <typename T, nat t_n>
-    static constexpr T access(const vec<T, t_n> & v) {
-        return v.z;
-    }
-};
-
-template <>
-struct VecAccessor<3> {
-    template <typename T, nat t_n>
-    static T & access(vec<T, t_n> & v) {
-        return v.w;
-    }
-    template <typename T, nat t_n>
-    static constexpr T access(const vec<T, t_n> & v) {
-        return v.w;
-    }
-};
-
-
-
-template <nat t_i, typename T, nat t_n>
-constexpr T min(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
-    return qmu::min(v1.at<t_i>(), v2.at<t_i>());
-}
-
-template <nat t_i, typename T, nat t_n, typename... Ts>
-constexpr T min(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const Ts &... rest) {
-    return min<t_i>(v1.at<t_i>() < v2.at<t_i>() ? v1 : v2, rest...);
-}
-
-template <nat t_i, typename T, nat t_n>
-constexpr T max(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
-    return qmu::max(v1.at<t_i>(), v2.at<t_i>());
-}
-
-template <nat t_i, typename T, nat t_n, typename... Ts>
-constexpr T max(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const Ts &... rest) {
-    return max<t_i>(v1.at<t_i>() > v2.at<t_i>() ? v1 : v2, rest...);
-}
-
-
-
-}
 
 
 
@@ -1390,13 +1307,15 @@ inline const T & vec<T, 1>::operator[](nat i) const {
 template <typename T>
 template <nat t_i>
 inline T & vec<T, 1>::at() {
-    return detail::VecAccessor<t_i>::access(*this);
+    static_assert(t_i == 0, "index out of bounds");
+    if constexpr (t_i == 0) return x;
 }
 
 template <typename T>
 template <nat t_i>
 constexpr T vec<T, 1>::at() const {
-    return detail::VecAccessor<t_i>::access(*this);
+    static_assert(t_i == 0, "index out of bounds");
+    if constexpr (t_i == 0) return x;
 }
 
 
@@ -1555,13 +1474,17 @@ inline const T & vec<T, 2>::operator[](nat i) const {
 template <typename T>
 template <nat t_i>
 inline T & vec<T, 2>::at() {
-    return detail::VecAccessor<t_i>::access(*this);
+    static_assert(t_i >= 0 && t_i <= 1, "index out of bounds");
+    if constexpr (t_i == 0) return x;
+    if constexpr (t_i == 1) return y;
 }
 
 template <typename T>
 template <nat t_i>
 constexpr T vec<T, 2>::at() const {
-    return detail::VecAccessor<t_i>::access(*this);
+    static_assert(t_i >= 0 && t_i <= 1, "index out of bounds");
+    if constexpr (t_i == 0) return x;
+    if constexpr (t_i == 1) return y;
 }
 
 
@@ -1760,13 +1683,19 @@ inline const T & vec<T, 3>::operator[](nat i) const {
 template <typename T>
 template <nat t_i>
 inline T & vec<T, 3>::at() {
-    return detail::VecAccessor<t_i>::access(*this);
+    static_assert(t_i >= 0 && t_i <= 2, "index out of bounds");
+    if constexpr (t_i == 0) return x;
+    if constexpr (t_i == 1) return y;
+    if constexpr (t_i == 2) return z;
 }
 
 template <typename T>
 template <nat t_i>
 constexpr T vec<T, 3>::at() const {
-    return detail::VecAccessor<t_i>::access(*this);
+    static_assert(t_i >= 0 && t_i <= 2, "index out of bounds");
+    if constexpr (t_i == 0) return x;
+    if constexpr (t_i == 1) return y;
+    if constexpr (t_i == 2) return z;
 }
 
 
@@ -2070,13 +1999,21 @@ inline const T & vec<T, 4>::operator[](nat i) const {
 template <typename T>
 template <nat t_i>
 inline T & vec<T, 4>::at() {
-    return detail::VecAccessor<t_i>::access(*this);
+    static_assert(t_i >= 0 && t_i <= 3, "index out of bounds");
+    if constexpr (t_i == 0) return x;
+    if constexpr (t_i == 1) return y;
+    if constexpr (t_i == 2) return z;
+    if constexpr (t_i == 3) return w;
 }
 
 template <typename T>
 template <nat t_i>
 constexpr T vec<T, 4>::at() const {
-    return detail::VecAccessor<t_i>::access(*this);
+    static_assert(t_i >= 0 && t_i <= 3, "index out of bounds");
+    if constexpr (t_i == 0) return x;
+    if constexpr (t_i == 1) return y;
+    if constexpr (t_i == 2) return z;
+    if constexpr (t_i == 3) return w;
 }
 
 
@@ -2297,211 +2234,61 @@ inline vec4<T> operator--(vec4<T> & v, int) {
 
 //--- add assign ---
 
-template <typename T>
-inline vec1<T> & operator+=(vec1<T> & v1, const vec1<T> & v2) {
+template <typename T, nat t_n>
+inline vec<T, t_n> & operator+=(vec<T, t_n> & v1, const vec<T, t_n> & v2) {
     return v1 = v1 + v2;
 }
 
-template <typename T>
-inline vec2<T> & operator+=(vec2<T> & v1, const vec2<T> & v2) {
-    return v1 = v1 + v2;
-}
-
-template <typename T>
-inline vec3<T> & operator+=(vec3<T> & v1, const vec3<T> & v2) {
-    return v1 = v1 + v2;
-}
-
-template <typename T>
-inline vec4<T> & operator+=(vec4<T> & v1, const vec4<T> & v2) {
-    return v1 = v1 + v2;
-}
-
-template <typename T>
-inline vec1<T> & operator+=(vec1<T> & v1, const T & v2) {
-    return v1 = v1 + v2;
-}
-
-template <typename T>
-inline vec2<T> & operator+=(vec2<T> & v1, const T & v2) {
-    return v1 = v1 + v2;
-}
-
-template <typename T>
-inline vec3<T> & operator+=(vec3<T> & v1, const T & v2) {
-    return v1 = v1 + v2;
-}
-
-template <typename T>
-inline vec4<T> & operator+=(vec4<T> & v1, const T & v2) {
+template <typename T, nat t_n>
+inline vec<T, t_n> & operator+=(vec<T, t_n> & v1, const T & v2) {
     return v1 = v1 + v2;
 }
 
 //--- subtract assign ---
 
-template <typename T>
-inline vec1<T> & operator-=(vec1<T> & v1, const vec1<T> & v2) {
+template <typename T, nat t_n>
+inline vec<T, t_n> & operator-=(vec<T, t_n> & v1, const vec<T, t_n> & v2) {
     return v1 = v1 - v2;
 }
 
-template <typename T>
-inline vec2<T> & operator-=(vec2<T> & v1, const vec2<T> & v2) {
-    return v1 = v1 - v2;
-}
-
-template <typename T>
-inline vec3<T> & operator-=(vec3<T> & v1, const vec3<T> & v2) {
-    return v1 = v1 - v2;
-}
-
-template <typename T>
-inline vec4<T> & operator-=(vec4<T> & v1, const vec4<T> & v2) {
-    return v1 = v1 - v2;
-}
-
-template <typename T>
-inline vec1<T> & operator-=(vec1<T> & v1, const T & v2) {
-    return v1 = v1 - v2;
-}
-
-template <typename T>
-inline vec2<T> & operator-=(vec2<T> & v1, const T & v2) {
-    return v1 = v1 - v2;
-}
-
-template <typename T>
-inline vec3<T> & operator-=(vec3<T> & v1, const T & v2) {
-    return v1 = v1 - v2;
-}
-
-template <typename T>
-inline vec4<T> & operator-=(vec4<T> & v1, const T & v2) {
+template <typename T, nat t_n>
+inline vec<T, t_n> & operator-=(vec<T, t_n> & v1, const T & v2) {
     return v1 = v1 - v2;
 }
 
 //--- multiply assign ---
 
-template <typename T>
-inline vec1<T> & operator*=(vec1<T> & v1, const vec1<T> & v2) {
+template <typename T, nat t_n>
+inline vec<T, t_n> & operator*=(vec<T, t_n> & v1, const vec<T, t_n> & v2) {
     return v1 = v1 * v2;
 }
 
-template <typename T>
-inline vec2<T> & operator*=(vec2<T> & v1, const vec2<T> & v2) {
-    return v1 = v1 * v2;
-}
-
-template <typename T>
-inline vec3<T> & operator*=(vec3<T> & v1, const vec3<T> & v2) {
-    return v1 = v1 * v2;
-}
-
-template <typename T>
-inline vec4<T> & operator*=(vec4<T> & v1, const vec4<T> & v2) {
-    return v1 = v1 * v2;
-}
-
-template <typename T>
-inline vec1<T> & operator*=(vec1<T> & v1, const T & v2) {
-    return v1 = v1 * v2;
-}
-
-template <typename T>
-inline vec2<T> & operator*=(vec2<T> & v1, const T & v2) {
-    return v1 = v1 * v2;
-}
-
-template <typename T>
-inline vec3<T> & operator*=(vec3<T> & v1, const T & v2) {
-    return v1 = v1 * v2;
-}
-
-template <typename T>
-inline vec4<T> & operator*=(vec4<T> & v1, const T & v2) {
+template <typename T, nat t_n>
+inline vec<T, t_n> & operator*=(vec<T, t_n> & v1, const T & v2) {
     return v1 = v1 * v2;
 }
 
 //--- divide assign ---
 
-template <typename T>
-inline vec1<T> & operator/=(vec1<T> & v1, const vec1<T> & v2) {
+template <typename T, nat t_n>
+inline vec<T, t_n> & operator/=(vec<T, t_n> & v1, const vec<T, t_n> & v2) {
     return v1 = v1 / v2;
 }
 
-template <typename T>
-inline vec2<T> & operator/=(vec2<T> & v1, const vec2<T> & v2) {
-    return v1 = v1 / v2;
-}
-
-template <typename T>
-inline vec3<T> & operator/=(vec3<T> & v1, const vec3<T> & v2) {
-    return v1 = v1 / v2;
-}
-
-template <typename T>
-inline vec4<T> & operator/=(vec4<T> & v1, const vec4<T> & v2) {
-    return v1 = v1 / v2;
-}
-
-template <typename T>
-inline vec1<T> & operator/=(vec1<T> & v1, const T & v2) {
-    return v1 = v1 / v2;
-}
-
-template <typename T>
-inline vec2<T> & operator/=(vec2<T> & v1, const T & v2) {
-    return v1 = v1 / v2;
-}
-
-template <typename T>
-inline vec3<T> & operator/=(vec3<T> & v1, const T & v2) {
-    return v1 = v1 / v2;
-}
-
-template <typename T>
-inline vec4<T> & operator/=(vec4<T> & v1, const T & v2) {
+template <typename T, nat t_n>
+inline vec<T, t_n> & operator/=(vec<T, t_n> & v1, const T & v2) {
     return v1 = v1 / v2;
 }
 
 //--- modulus assign ---
 
-template <typename T>
-inline vec1<T> & operator%=(vec1<T> & v1, const vec1<T> & v2) {
+template <typename T, nat t_n>
+inline vec<T, t_n> & operator%=(vec<T, t_n> & v1, const vec<T, t_n> & v2) {
     return v1 = v1 % v2;
 }
 
-template <typename T>
-inline vec2<T> & operator%=(vec2<T> & v1, const vec2<T> & v2) {
-    return v1 = v1 % v2;
-}
-
-template <typename T>
-inline vec3<T> & operator%=(vec3<T> & v1, const vec3<T> & v2) {
-    return v1 = v1 % v2;
-}
-
-template <typename T>
-inline vec4<T> & operator%=(vec4<T> & v1, const vec4<T> & v2) {
-    return v1 = v1 % v2;
-}
-
-template <typename T>
-inline vec1<T> & operator%=(vec1<T> & v1, const T & v2) {
-    return v1 = v1 % v2;
-}
-
-template <typename T>
-inline vec2<T> & operator%=(vec2<T> & v1, const T & v2) {
-    return v1 = v1 % v2;
-}
-
-template <typename T>
-inline vec3<T> & operator%=(vec3<T> & v1, const T & v2) {
-    return v1 = v1 % v2;
-}
-
-template <typename T>
-inline vec4<T> & operator%=(vec4<T> & v1, const T & v2) {
+template <typename T, nat t_n>
+inline vec<T, t_n> & operator%=(vec<T, t_n> & v1, const T & v2) {
     return v1 = v1 % v2;
 }
 
@@ -2769,37 +2556,37 @@ constexpr vec1<T> operator/(const vec1<T> & v1, const T & v2) {
     return vec1<T>(v1.x / v2);
 }
 
-template <typename T, eif_floating_t<T> = 0>
+template <typename T>
 constexpr vec2<T> operator/(const vec2<T> & v1, const T & v2) {
-    T inv(static_cast<T>(1.0) / v2);
-    return vec2<T>(v1.x * inv, v1.y * inv);
+    if constexpr (std::is_floating_point_v<T>) {
+        T inv(static_cast<T>(1.0) / v2);
+        return vec2<T>(v1.x * inv, v1.y * inv);
+    }
+    else {
+        return vec2<T>(v1.x / v2, v1.y / v2);
+    }
 }
 
-template <typename T, eif_t<!std::is_floating_point<T>::value> = 0>
-constexpr vec2<T> operator/(const vec2<T> & v1, const T & v2) {
-    return vec2<T>(v1.x / v2, v1.y / v2);
-}
-
-template <typename T, eif_floating_t<T> = 0>
+template <typename T>
 constexpr vec3<T> operator/(const vec3<T> & v1, const T & v2) {
-    T inv(static_cast<T>(1.0) / v2);
-    return vec3<T>(v1.x * inv, v1.y * inv, v1.z * inv);
+    if constexpr (std::is_floating_point_v<T>) {
+        T inv(static_cast<T>(1.0) / v2);
+        return vec3<T>(v1.x * inv, v1.y * inv, v1.z * inv);
+    }
+    else {
+        return vec3<T>(v1.x / v2, v1.y / v2, v1.z / v2);
+    }
 }
 
-template <typename T, eif_t<!std::is_floating_point<T>::value> = 0>
-constexpr vec3<T> operator/(const vec3<T> & v1, const T & v2) {
-    return vec3<T>(v1.x / v2, v1.y / v2, v1.z / v2);
-}
-
-template <typename T, eif_floating_t<T> = 0>
+template <typename T>
 constexpr vec4<T> operator/(const vec4<T> & v1, const T & v2) {
-    T inv(static_cast<T>(1.0) / v2);
-    return vec4<T>(v1.x * inv, v1.y * inv, v1.z * inv, v1.w * inv);
-}
-
-template <typename T, eif_t<!std::is_floating_point<T>::value> = 0>
-constexpr vec4<T> operator/(const vec4<T> & v1, const T & v2) {
-    return vec4<T>(v1.x / v2, v1.y / v2, v1.z / v2, v1.w / v2);
+    if constexpr (std::is_floating_point_v<T>) {
+        T inv(static_cast<T>(1.0) / v2);
+        return vec4<T>(v1.x * inv, v1.y * inv, v1.z * inv, v1.w * inv);
+    }
+    else {
+        return vec4<T>(v1.x / v2, v1.y / v2, v1.z / v2, v1.w / v2);
+    }
 }
 
 template <typename T>
@@ -3398,22 +3185,22 @@ inline T magnitude(const vec<T, t_n> & v) {
 }
 
 template <typename T>
-constexpr T magnitude2(const vec1<T> & v) {
+inline T magnitude2(const vec1<T> & v) {
     return v.x * v.x;
 }
 
 template <typename T>
-constexpr T magnitude2(const vec2<T> & v) {
+inline T magnitude2(const vec2<T> & v) {
     return v.x * v.x + v.y * v.y;
 }
 
 template <typename T>
-constexpr T magnitude2(const vec3<T> & v) {
+inline T magnitude2(const vec3<T> & v) {
     return v.x * v.x + v.y * v.y + v.z * v.z;
 }
 
 template <typename T>
-constexpr T magnitude2(const vec4<T> & v) {
+inline T magnitude2(const vec4<T> & v) {
     return v.x * v.x + v.y * v.y + v.z * v.z + v.w * v.w;
 }
 
@@ -3427,53 +3214,53 @@ inline vec<T, t_n> norm(const vec<T, t_n> & v) {
 }
 
 template <typename T>
-constexpr T dot(const vec1<T> & v1, const vec1<T> & v2) {
+inline T dot(const vec1<T> & v1, const vec1<T> & v2) {
     return v1.x * v2.x;
 }
 
 template <typename T>
-constexpr T dot(const vec2<T> & v1, const vec2<T> & v2) {
+inline T dot(const vec2<T> & v1, const vec2<T> & v2) {
     return v1.x * v2.x + v1.y * v2.y;
 }
 
 template <typename T>
-constexpr T dot(const vec3<T> & v1, const vec3<T> & v2) {
+inline T dot(const vec3<T> & v1, const vec3<T> & v2) {
     return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
 }
 
 template <typename T>
-constexpr T dot(const vec4<T> & v1, const vec4<T> & v2) {
+inline T dot(const vec4<T> & v1, const vec4<T> & v2) {
     return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z + v1.w * v2.w;
 }
 
 template <typename T>
-constexpr T cross(const vec2<T> & v1, const vec2<T> & v2) {
+inline T cross(const vec2<T> & v1, const vec2<T> & v2) {
     return v1.x * v2.y - v1.y * v2.x;
 }
 
 template <typename T>
-constexpr vec3<T> cross(const vec3<T> & v1, const vec3<T> & v2) {
+inline vec3<T> cross(const vec3<T> & v1, const vec3<T> & v2) {
     return vec3<T>(v1.y * v2.z - v1.z * v2.y, v1.z * v2.x - v1.x * v2.z, v1.x * v2.y - v1.y * v2.x);
 }
 
 template <typename T, nat t_n>
-constexpr bool parallel(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
+inline bool parallel(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
     T d(dot(v1, v2));
     return equal(d * d, magnitude2(v1) * magnitude2(v2));
 }
 
 template <typename T, nat t_n>
-constexpr bool orthogonal(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
+inline bool orthogonal(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
     return zero(dot(v1, v2));
 }
 
 template <typename T>
-constexpr vec2<T> ortho(const vec2<T> & v) {
+inline vec2<T> ortho(const vec2<T> & v) {
     return vec2<T>(-v.y, v.x);
 }
 
 template <typename T>
-constexpr vec3<T> ortho(const vec3<T> & v) {    
+inline vec3<T> ortho(const vec3<T> & v) {    
     if (abs(v.x) < abs(v.y)) {
         if (abs(v.x) <= abs(v.z)) {   // x or z is smallest
             return vec3<T>(0, -v.z, v.y);       // rotate around x
@@ -3600,24 +3387,9 @@ constexpr vec4<T> min(const vec4<T> & v1, const vec4<T> & v2) {
     return vec4<T>(min(v1.x, v2.x), min(v1.y, v2.y), min(v1.z, v2.z), min(v1.w, v2.w));
 }
 
-template <typename T, typename... Ts>
-constexpr vec1<T> min(const vec1<T> & v1, const vec1<T> & v2, const vec1<Ts> &... rest) {
-    return vec1<T>(detail::min<0>(v1, v2, rest...));
-}
-
-template <typename T, typename... Ts>
-constexpr vec2<T> min(const vec2<T> & v1, const vec2<T> & v2, const vec2<Ts> &... rest) {
-    return vec2<T>(detail::min<0>(v1, v2, rest...), detail::min<1>(v1, v2, rest...));
-}
-
-template <typename T, typename... Ts>
-constexpr vec3<T> min(const vec3<T> & v1, const vec3<T> & v2, const vec3<Ts> &... rest) {
-    return vec3<T>(detail::min<0>(v1, v2, rest...), detail::min<1>(v1, v2, rest...), detail::min<2>(v1, v2, rest...));
-}
-
-template <typename T, typename... Ts>
-constexpr vec4<T> min(const vec4<T> & v1, const vec4<T> & v2, const vec4<Ts> &... rest) {
-    return vec4<T>(detail::min<0>(v1, v2, rest...), detail::min<1>(v1, v2, rest...), detail::min<2>(v1, v2, rest...), detail::min<3>(v1, v2, rest...));
+template <typename T, nat t_n, typename... Ts>
+constexpr vec<T, t_n> min(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<Ts, t_n> &... rest) {
+    return min(min(v1, v2), rest...);
 }
 
 template <typename T>
@@ -3640,24 +3412,9 @@ constexpr vec4<T> max(const vec4<T> & v1, const vec4<T> & v2) {
     return vec4<T>(max(v1.x, v2.x), max(v1.y, v2.y), max(v1.z, v2.z), max(v1.w, v2.w));
 }
 
-template <typename T, typename... Ts>
-constexpr vec1<T> max(const vec1<T> & v1, const vec1<T> & v2, const vec1<Ts> &... rest) {
-    return vec1<T>(detail::max<0>(v1, v2, rest...));
-}
-
-template <typename T, typename... Ts>
-constexpr vec2<T> max(const vec2<T> & v1, const vec2<T> & v2, const vec2<Ts> &... rest) {
-    return vec2<T>(detail::max<0>(v1, v2, rest...), detail::max<1>(v1, v2, rest...));
-}
-
-template <typename T, typename... Ts>
-constexpr vec3<T> max(const vec3<T> & v1, const vec3<T> & v2, const vec3<Ts> &... rest) {
-    return vec3<T>(detail::max<0>(v1, v2, rest...), detail::max<1>(v1, v2, rest...), detail::max<2>(v1, v2, rest...));
-}
-
-template <typename T, typename... Ts>
-constexpr vec4<T> max(const vec4<T> & v1, const vec4<T> & v2, const vec4<Ts> &... rest) {
-    return vec4<T>(detail::max<0>(v1, v2, rest...), detail::max<1>(v1, v2, rest...), detail::max<2>(v1, v2, rest...), detail::max<3>(v1, v2, rest...));
+template <typename T, nat t_n, typename... Ts>
+constexpr vec<T, t_n> max(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<Ts, t_n> &... rest) {
+    return max(max(v1, v2), rest...);
 }
 
 template <typename T>
@@ -3749,43 +3506,43 @@ constexpr vec4<T> abs(const vec4<T> & v) {
 }
 
 template <typename T>
-constexpr vec1<T> floor(const vec1<T> & v) {
-    return vec1<T>(static_cast<T>(floor(v.x)));
+constexpr nvec1 floor(const vec1<T> & v) {
+    return nvec1(floor(v.x));
 }
 
 template <typename T>
-constexpr vec2<T> floor(const vec2<T> & v) {
-    return vec2<T>(static_cast<T>(floor(v.x)), static_cast<T>(floor(v.y)));
+constexpr nvec2 floor(const vec2<T> & v) {
+    return nvec2(floor(v.x), floor(v.y));
 }
 
 template <typename T>
-constexpr vec3<T> floor(const vec3<T> & v) {
-    return vec3<T>(static_cast<T>(floor(v.x)), static_cast<T>(floor(v.y)), static_cast<T>(floor(v.z)));
+constexpr nvec3 floor(const vec3<T> & v) {
+    return nvec3(floor(v.x), floor(v.y), floor(v.z));
 }
 
 template <typename T>
-constexpr vec4<T> floor(const vec4<T> & v) {
-    return vec4<T>(static_cast<T>(floor(v.x)), static_cast<T>(floor(v.y)), static_cast<T>(floor(v.z)), static_cast<T>(floor(v.w)));
+constexpr nvec4 floor(const vec4<T> & v) {
+    return nvec4(floor(v.x), floor(v.y), floor(v.z), floor(v.w));
 }
 
 template <typename T>
-constexpr vec1<T> ceil(const vec1<T> & v) {
-    return vec1<T>(static_cast<T>(ceil(v.x)));
+constexpr nvec1 ceil(const vec1<T> & v) {
+    return nvec1(ceil(v.x));
 }
 
 template <typename T>
-constexpr vec2<T> ceil(const vec2<T> & v) {
-    return vec2<T>(static_cast<T>(ceil(v.x)), static_cast<T>(ceil(v.y)));
+constexpr nvec2 ceil(const vec2<T> & v) {
+    return nvec2(ceil(v.x), ceil(v.y));
 }
 
 template <typename T>
-constexpr vec3<T> ceil(const vec3<T> & v) {
-    return vec3<T>(static_cast<T>(ceil(v.x)), static_cast<T>(ceil(v.y)), static_cast<T>(ceil(v.z)));
+constexpr nvec3 ceil(const vec3<T> & v) {
+    return nvec3(ceil(v.x), ceil(v.y), ceil(v.z));
 }
 
 template <typename T>
-constexpr vec4<T> ceil(const vec4<T> & v) {
-    return vec4<T>(static_cast<T>(ceil(v.x)), static_cast<T>(ceil(v.y)), static_cast<T>(ceil(v.z)), static_cast<T>(ceil(v.w)));
+constexpr nvec4 ceil(const vec4<T> & v) {
+    return nvec4(ceil(v.x), ceil(v.y), ceil(v.z), ceil(v.w));
 }
 
 template <typename T, nat t_n, eif_floating_t<T>>
@@ -3834,7 +3591,7 @@ constexpr bound4<T> toBound(const span4<T> & s) {
 }
 
 template <typename T>
-constexpr span1<T> intersect(const span1<T> & s1, const span1<T> & s2) {
+inline span1<T> intersect(const span1<T> & s1, const span1<T> & s2) {
     return span1<T>(
         vec1<T>(
             max(s1.min.x, s2.min.x)
@@ -3846,7 +3603,7 @@ constexpr span1<T> intersect(const span1<T> & s1, const span1<T> & s2) {
 }
 
 template <typename T>
-constexpr span2<T> intersect(const span2<T> & s1, const span2<T> & s2) {
+inline span2<T> intersect(const span2<T> & s1, const span2<T> & s2) {
     return span2<T>(
         vec2<T>(
             max(s1.min.x, s2.min.x),
@@ -3860,7 +3617,7 @@ constexpr span2<T> intersect(const span2<T> & s1, const span2<T> & s2) {
 }
 
 template <typename T>
-constexpr span3<T> intersect(const span3<T> & s1, const span3<T> & s2) {
+inline span3<T> intersect(const span3<T> & s1, const span3<T> & s2) {
     return span3<T>(
         vec3<T>(
             max(s1.min.x, s2.min.x),
@@ -3876,7 +3633,7 @@ constexpr span3<T> intersect(const span3<T> & s1, const span3<T> & s2) {
 }
 
 template <typename T>
-constexpr span4<T> intersect(const span4<T> & s1, const span4<T> & s2) {
+inline span4<T> intersect(const span4<T> & s1, const span4<T> & s2) {
     return span4<T>(
         vec4<T>(
             max(s1.min.x, s2.min.x),

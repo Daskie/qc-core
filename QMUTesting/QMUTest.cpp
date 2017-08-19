@@ -55,7 +55,6 @@ void compileConstants() {
 template <typename T>
 void compileFunctionsT() {
     T v(1);
-    T w;
 
     qmu::min(v, v);
     qmu::min(v, v, v);
@@ -78,17 +77,16 @@ void compileFunctionsT() {
 
     qmu::ceil(v);
 
-    qmu::mod(v, v, w);
     qmu::mod(v, v);
+    qmu::mod_q(v, v);
 }
 
 template <typename T>
 void compileFunctionsFT() {
     T v(1.0);
-    qmu::nat n;
 
-    qmu::fract(v, n);
     qmu::fract(v);
+    qmu::fract_i(v);
 
     qmu::mix(v, v, v);
 
@@ -181,6 +179,7 @@ constexpr void compileFunctionsConstexprT() {
     qmu::ceil(v);
 
     qmu::mod(v, v);
+    qmu::mod_q(v, v);
 }
 
 template <typename T>
@@ -188,6 +187,7 @@ constexpr void compileFunctionsConstexprFT() {
     constexpr T v(1.0);
 
     qmu::fract(v);
+    qmu::fract_i(v);
 
     qmu::mix(v, v, v);
 

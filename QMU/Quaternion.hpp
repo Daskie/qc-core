@@ -26,7 +26,7 @@ using ldquat = quat<long double>;
 template <typename T>
 struct quat {
 
-    static_assert(std::is_floating_point<T>::value, "quat<T> must have floating point T");
+    static_assert(std::is_floating_point_v<T>, "quat<T> must have floating point T");
 
     vec3<T> a;
     T w;

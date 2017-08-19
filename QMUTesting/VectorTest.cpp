@@ -295,7 +295,7 @@ constexpr void compileClassesConstexprT() {
     constexpr vec1<T> v1_7(v4);
 
     // access
-    static_assert(v1.at<0>() || true, "");
+    v1.at<0>();
 
     //--------------------------------------------------------------------------
     // Vec2
@@ -1062,32 +1062,6 @@ constexpr void compileFunctionsConstexprT() {
     v >= v4;
 
     // uncategorized
-    
-    magnitude2(v1);
-    magnitude2(v2);
-    magnitude2(v3);
-    magnitude2(v4);
-
-    dot(v1, v1);
-    dot(v2, v2);
-    dot(v3, v3);
-    dot(v4, v4);
-
-    cross(v2, v2);
-    cross(v3, v3);
-
-    parallel(v1, v1);
-    parallel(v2, v2);
-    parallel(v3, v3);
-    parallel(v4, v4);
-
-    orthogonal(v1, v1);
-    orthogonal(v2, v2);
-    orthogonal(v3, v3);
-    orthogonal(v4, v4);
-
-    ortho(v2);
-    ortho(v3);
 
     min(v1);
     min(v2);
@@ -1149,11 +1123,6 @@ constexpr void compileFunctionsConstexprT() {
     mix(v3, v3, v);
     mix(v4, v4, v);
 
-    intersect(s1, s1);
-    intersect(s2, s2);
-    intersect(s3, s3);
-    intersect(s4, s4);
-
     toSpan(s1);
     toSpan(s2);
     toSpan(s3);
@@ -1208,7 +1177,7 @@ constexpr bool compileFunctionsConstexpr() {
 
 template <typename T, nat t_n>
 void testPropertiesTN() {
-    static_assert(std::is_standard_layout<vec<T, t_n>>::value, "");
+    static_assert(std::is_standard_layout_v<vec<T, t_n>>, "");
     static_assert(sizeof(vec<T, t_n>) == t_n * sizeof(T), "");
 }
 

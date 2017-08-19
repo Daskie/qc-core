@@ -6,6 +6,7 @@
 #include <type_traits>
 #include <cmath>
 #include <limits>
+#include <tuple>
 
 
 
@@ -71,21 +72,20 @@ template <nat t_p> using precision_ft = typename precision<t_p>::ftype;
 constexpr nat k_nat_p = sizeof(nat);
 
 template <typename T1, typename T2>
-using match_sign_t = std::conditional_t<std::is_signed<T2>::value, std::make_signed_t<T1>, std::make_unsigned_t<T1>>;
+using match_sign_t = std::conditional_t<std::is_signed_v<T2>, std::make_signed_t<T1>, std::make_unsigned_t<T1>>;
 
 //namespace detail { enum class enabler {}; }
 
-template <bool t_b>
-using eif_t = std::enable_if_t<t_b, int>;
+template <bool t_b> using eif_t = std::enable_if_t<t_b, int>;
 // would be std::enable_if_t<t_b, detail::enabler>, used as
 // template <typename T, eif_t<T, bool>...>
 // but IntelliSense doesn't like variadic SFINAE
 
-template <typename T>
-using eif_floating_t = eif_t<std::is_floating_point<T>::value>;
+template <typename T> using eif_floating_t = eif_t<std::is_floating_point_v<T>>;
 
-template <typename T>
-using eif_integral_t = eif_t<std::is_integral<T>::value>;
+template <typename T> using eif_integral_t = eif_t<std::is_integral_v<T>>;
+
+template <typename T> using eif_arithmetic_t = eif_t<std::is_arithmetic_v<T>>;
 
 
 
@@ -151,32 +151,19 @@ template <typename T>
 constexpr T clamp(const T & v, const T & min, const T & max);
 
 // similar performance to std but allows constexpr
-template <typename T, eif_t<std::is_unsigned<T>::value> = 0>
+template <typename T, eif_arithmetic_t<T> = 0>
 constexpr T abs(T v);
 
-// similar performance to std but allows constexpr
-template <typename T, eif_t<std::is_signed<T>::value> = 0>
-constexpr T abs(T v);
-
-template <typename T, eif_floating_t<T> = 0>
+template <typename T, eif_arithmetic_t<T> = 0>
 constexpr bool zero(T v, T e = std::numeric_limits<T>::min());
 
-template <typename T, eif_integral_t<T> = 0>
-constexpr bool zero(T v);
-
-template <typename T, eif_floating_t<T> = 0>
-constexpr bool equal(T v1, T v2);
-
-template <typename T, eif_t<!std::is_floating_point<T>::value> = 0>
+template <typename T>
 constexpr bool equal(const T & v1, const T & v2);
 
 template <typename T, typename... Ts>
 constexpr bool equal(const T & v1, const T & v2, const Ts &... rest);
 
-template <typename T, eif_t<std::is_signed<T>::value> = 0>
-constexpr T sign(T v);
-
-template <typename T, eif_t<std::is_unsigned<T>::value> = 0>
+template <typename T, eif_arithmetic_t<T> = 0>
 constexpr T sign(T v);
 
 // ~2x faster than std::floor
@@ -193,10 +180,7 @@ constexpr nat ceil(T v);
 template <typename T, eif_integral_t<T> = 0>
 constexpr T ceil(T v);
 
-template <typename T, eif_integral_t<T> = 0>
-constexpr match_sign_t<nat, T> log2(T v);
-
-template <typename T, eif_floating_t<T> = 0>
+template <typename T, eif_arithmetic_t<T> = 0>
 constexpr T log2(T v);
 
 template <typename T, eif_integral_t<T> = 0>
@@ -216,23 +200,17 @@ constexpr T lowBit(T v);
 
 // ~3.3x faster than std::modf
 template <typename T, eif_floating_t<T> = 0>
-T fract(T v, nat & i);
-
-template <typename T, eif_floating_t<T> = 0>
 constexpr T fract(T v);
 
+template <typename T, eif_floating_t<T> = 0>
+constexpr std::pair<T, nat> fract_i(T v);
+
 // ~2.5x faster than std::fmod
-template <typename T, eif_floating_t<T> = 0>
-T mod(T v, T d, T & q);
-
-template <typename T, eif_floating_t<T> = 0>
+template <typename T, eif_arithmetic_t<T> = 0>
 constexpr T mod(T v, T d);
 
-template <typename T, eif_integral_t<T> = 0>
-T mod(T v, T d, T & q);
-
-template <typename T, eif_integral_t<T> = 0>
-constexpr T mod(T v, T d);
+template <typename T, eif_arithmetic_t<T> = 0>
+constexpr std::pair<T, T> mod_q(T v, T d);
 
 template <typename T, eif_floating_t<T> = 0>
 constexpr T mix(T v1, T v2, T t);
@@ -278,14 +256,14 @@ constexpr T clamp(const T & v, const T & min, const T & max) {
     return qmu::min(qmu::max(v, min), max);
 }
 
-template <typename T, eif_t<std::is_unsigned<T>::value>>
+template <typename T, eif_arithmetic_t<T>>
 constexpr T abs(T v) {
-    return v; 
-}
-
-template <typename T, eif_t<std::is_signed<T>::value>>
-constexpr T abs(T v) {
-    return v < static_cast<T>(0) ? -v : v;
+    if constexpr (std::is_unsigned_v<T>) {
+        return v;
+    }
+    else {
+        return v < static_cast<T>(0) ? -v : v;
+    }
 }
 
 // constexpr does not allow reinterpret_cast
@@ -300,24 +278,24 @@ constexpr T abs(T v) {
 }
 */
 
-template <typename T, eif_floating_t<T>>
+template <typename T, eif_arithmetic_t<T>>
 constexpr bool zero(T v, T e) {
-    return abs(v) < e;
+    if (std::is_floating_point_v<T>) {
+        return abs(v) < e;
+    }
+    else {
+        return v == static_cast<T>(0);
+    }
 }
 
-template <typename T, eif_integral_t<T>>
-constexpr bool zero(T v) {
-    return v == static_cast<T>(0);
-}
-
-template <typename T, eif_floating_t<T>>
-constexpr bool equal(T v1, T v2) {
-    return zero(v1 - v2, std::numeric_limits<T>::min());
-}
-
-template <typename T, eif_t<!std::is_floating_point<T>::value>>
+template <typename T>
 constexpr bool equal(const T & v1, const T & v2) {
-    return v1 == v2;
+    if constexpr (std::is_floating_point_v<T>) {
+        return zero(v1 - v2);
+    }
+    else {
+        return v1 == v2;
+    }
 }
 
 template <typename T, typename... Ts>
@@ -325,14 +303,14 @@ constexpr bool equal(const T & v1, const T & v2, const Ts &... rest) {
     return equal(v1, v2) && equal(v2, rest...);
 }
 
-template <typename T, eif_t<std::is_signed<T>::value>>
+template <typename T, eif_arithmetic_t<T>>
 constexpr T sign(T v) {
-    return static_cast<T>(static_cast<T>(0) < v) - static_cast<T>(v < static_cast<T>(0));
-}
-
-template <typename T, eif_t<std::is_unsigned<T>::value>>
-constexpr T sign(T v) {
-    return static_cast<T>(v > static_cast<T>(0));
+    if constexpr (std::is_signed_v<T>) {
+        return static_cast<T>(static_cast<T>(0) < v) - static_cast<T>(v < static_cast<T>(0));
+    }
+    else {
+        return static_cast<T>(v > static_cast<T>(0));
+    }
 }
 
 template <typename T, eif_floating_t<T>>
@@ -357,27 +335,28 @@ constexpr T ceil(T v) {
     return v;
 }
 
-template <typename T, eif_integral_t<T>>
-constexpr match_sign_t<nat, T> log2(T v) {
-    match_sign_t<nat, T> log(0);
-    if (sizeof(T) >= 8) {
-        if (v & 0xFFFFFFFF00000000) { v >>= 32; log += 32; }
-    }
-    if (sizeof(T) >= 4) {
-        if (v & 0x00000000FFFF0000) { v >>= 16; log += 16; }
-    }
-    if (sizeof(T) >= 2) {
-        if (v & 0x000000000000FF00) { v >>=  8; log +=  8; }
-    }
-    if (v & 0x00000000000000F0) { v >>=  4; log +=  4; }
-    if (v & 0x000000000000000C) { v >>=  2; log +=  2; }
-    if (v & 0x0000000000000002) {			log +=  1; }
-    return log;
-}
-
-template <typename T, eif_floating_t<T>>
+template <typename T, eif_arithmetic_t<T>>
 constexpr T log2(T v) {
-    return std::log2(v);
+    if constexpr (std::is_integral_v<T>) {
+        static_assert(sizeof(T) <= 8, "log2 function needs updated for larger integer types");
+        T log(0);
+        if constexpr (sizeof(T) >= 8) {
+            if (v & 0xFFFFFFFF00000000ULL) { v >>= 32; log += 32; }
+        }
+        if constexpr (sizeof(T) >= 4) {
+            if (v & 0x00000000FFFF0000ULL) { v >>= 16; log += 16; }
+        }
+        if constexpr (sizeof(T) >= 2) {
+            if (v & 0x000000000000FF00ULL) { v >>=  8; log +=  8; }
+        }
+        if (    v & 0x00000000000000F0ULL) { v >>=  4; log +=  4; }
+        if (    v & 0x000000000000000CULL) { v >>=  2; log +=  2; }
+        if (    v & 0x0000000000000002ULL) {           log +=  1; }
+        return log;
+    }
+    else {
+        return std::log2(v);
+    }
 }
 
 template <typename T, eif_integral_t<T>>
@@ -411,37 +390,37 @@ constexpr T lowBit(T v) {
 }
 
 template <typename T, eif_floating_t<T>>
-inline T fract(T v, nat & i) {
-    i = static_cast<nat>(v);
-    return v - i;
-}
-
-template <typename T, eif_floating_t<T>>
 constexpr T fract(T v) {
     return v - static_cast<nat>(v);
 }
 
 template <typename T, eif_floating_t<T>>
-inline T mod(T v, T d, T & q) {
-    q = v / d;
-    return fract(q) * d;
+constexpr std::pair<T, nat> fract_i(T v) {
+    nat i(static_cast<nat>(v));
+    return { v - i, i };
 }
 
-template <typename T, eif_floating_t<T>>
+template <typename T, eif_arithmetic_t<T>>
 constexpr T mod(T v, T d) {
-    return fract(v / d) * d;
+    if constexpr (std::is_floating_point_v<T>) {
+        return fract(v / d) * d;
+    }
+    else {
+        return v % d;
+    }
 }
 
-template <typename T, eif_integral_t<T>>
-inline T mod(T v, T d, T & q) {
-    d = abs(d);
-    q = v / d;
-    return v - q * d;
-}
-
-template <typename T, eif_integral_t<T>>
-constexpr T mod(T v, T d) {
-    return v % d;
+template <typename T, eif_arithmetic_t<T>>
+constexpr std::pair<T, T> mod_q(T v, T d) {
+    if constexpr (std::is_floating_point_v<T>) {
+        T q(v / d);
+        return { fract(q) * d, q };
+    }
+    else {
+        d = abs(d);
+        T q(v / d);
+        return { v - q * d, q };
+    }
 }
 
 template <typename T, eif_floating_t<T>>
