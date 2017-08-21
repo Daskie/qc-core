@@ -261,7 +261,7 @@ constexpr T abs(T v) {
     if constexpr (std::is_unsigned_v<T>) {
         return v;
     }
-    else {
+    if constexpr (std::is_signed_v<T>) {
         return v < static_cast<T>(0) ? -v : v;
     }
 }
@@ -280,10 +280,10 @@ constexpr T abs(T v) {
 
 template <typename T, eif_arithmetic_t<T>>
 constexpr bool zero(T v, T e) {
-    if (std::is_floating_point_v<T>) {
+    if constexpr (std::is_floating_point_v<T>) {
         return abs(v) < e;
     }
-    else {
+    if constexpr (std::is_integral_v<T>) {
         return v == static_cast<T>(0);
     }
 }
@@ -293,7 +293,7 @@ constexpr bool equal(const T & v1, const T & v2) {
     if constexpr (std::is_floating_point_v<T>) {
         return zero(v1 - v2);
     }
-    else {
+    if constexpr (std::is_integral_v<T>) {
         return v1 == v2;
     }
 }
@@ -308,7 +308,7 @@ constexpr T sign(T v) {
     if constexpr (std::is_signed_v<T>) {
         return static_cast<T>(static_cast<T>(0) < v) - static_cast<T>(v < static_cast<T>(0));
     }
-    else {
+    if constexpr (std::is_unsigned_v<T>) {
         return static_cast<T>(v > static_cast<T>(0));
     }
 }
@@ -354,7 +354,7 @@ constexpr T log2(T v) {
         if (    v & 0x0000000000000002ULL) {           log +=  1; }
         return log;
     }
-    else {
+    if constexpr (std::is_floating_point_v<T>) {
         return std::log2(v);
     }
 }
@@ -405,7 +405,7 @@ constexpr T mod(T v, T d) {
     if constexpr (std::is_floating_point_v<T>) {
         return fract(v / d) * d;
     }
-    else {
+    if constexpr (std::is_integral_v<T>) {
         return v % d;
     }
 }
@@ -416,7 +416,7 @@ constexpr std::pair<T, T> mod_q(T v, T d) {
         T q(v / d);
         return { fract(q) * d, q };
     }
-    else {
+    if constexpr (std::is_integral_v<T>) {
         d = abs(d);
         T q(v / d);
         return { v - q * d, q };
