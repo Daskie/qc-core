@@ -99,9 +99,13 @@ template <typename T>
 void compileFunctionsIT() {
     T v(1);
 
-    qmu::log2(v);
+    qmu::pow2<T>(v);
 
     qmu::isPow2(v);
+
+    qmu::log2Floor(v);
+
+    qmu::log2Ceil(v);
 
     qmu::floor2(v);
 
@@ -110,6 +114,14 @@ void compileFunctionsIT() {
     qmu::highBit(v);
 
     qmu::lowBit(v);
+
+    qmu::bits::rotateL(v, 0);
+
+    qmu::bits::rotateR(v, 0);
+
+    qmu::bits::interleave(v);
+
+    qmu::bits::scramble(v);
 }
 
 void compileFunctionsBT() {
@@ -151,6 +163,13 @@ void compileFunctions() {
     compileFunctionsIT<signed long long>();
 
     compileFunctionsBT();
+
+    qmu::bits::spread<qmu::u08, qmu::u16>(-1);
+    qmu::bits::spread<qmu::u08, qmu::u32>(-1);
+    qmu::bits::spread<qmu::u08, qmu::u64>(-1);
+    qmu::bits::spread<qmu::u16, qmu::u32>(-1);
+    qmu::bits::spread<qmu::u16, qmu::u64>(-1);
+    qmu::bits::spread<qmu::u32, qmu::u64>(-1);
 }
 
 template <typename T>
@@ -200,9 +219,13 @@ template <typename T>
 constexpr void compileFunctionsConstexprIT() {
     constexpr T v(1);
 
-    qmu::log2(v);
+    qmu::pow2<T>(v);
 
     qmu::isPow2(v);
+
+    qmu::log2Floor(v);
+
+    qmu::log2Ceil(v);
 
     qmu::floor2(v);
 
@@ -211,6 +234,14 @@ constexpr void compileFunctionsConstexprIT() {
     qmu::highBit(v);
 
     qmu::lowBit(v);
+
+    qmu::bits::rotateL(v, 0);
+
+    qmu::bits::rotateR(v, 0);
+
+    qmu::bits::interleave(v);
+
+    qmu::bits::scramble(v);
 }
 
 constexpr void compileFunctionsConstexprBT() {
@@ -252,6 +283,13 @@ constexpr bool compileFunctionsConstexpr() {
     compileFunctionsConstexprIT<signed long long>();
     
     compileFunctionsConstexprBT();
+
+    qmu::bits::spread<qmu::u08, qmu::u16>(-1);
+    qmu::bits::spread<qmu::u08, qmu::u32>(-1);
+    qmu::bits::spread<qmu::u08, qmu::u64>(-1);
+    qmu::bits::spread<qmu::u16, qmu::u32>(-1);
+    qmu::bits::spread<qmu::u16, qmu::u64>(-1);
+    qmu::bits::spread<qmu::u32, qmu::u64>(-1);
 
     return true;
 }

@@ -396,124 +396,12 @@ inline std::string timeString(double seconds) {
 }
 
 inline nat mipmaps(nat size) {
-    return log2(size) + 1;
+    return log2Floor(size) + 1;
 }
 
 template <nat t_n>
 inline nat mipmaps(const nvec<t_n> & size) {
     return mipmaps(max(size));
-}
-
-
-
-namespace bits {
-
-
-
-template <typename SrcT, typename DstT, eif_t<std::is_integral_v<SrcT> && std::is_integral_v<DstT> && (sizeof(DstT) > sizeof(SrcT))> = 0>
-DstT spread(SrcT v) {
-    constexpr nat factor(sizeof(DstT) / sizeof(SrcT) - 1);
-    
-    DstT w(v);
-
-    if constexpr (sizeof(SrcT) >= 4) {
-        w = ((w << (16 * factor)) | w) & DstT(0x0000FFFF0000FFFFULL);
-    }
-    if constexpr (sizeof(SrcT) >= 2) {
-        w = ((w << ( 8 * factor)) | w) & DstT(0x00FF00FF00FF00FFULL);
-    }
-        w = ((w << ( 4 * factor)) | w) & DstT(0x0F0F0F0F0F0F0F0FULL);
-        w = ((w << ( 2 * factor)) | w) & DstT(0x3333333333333333ULL);
-        w = ((w << ( 1 * factor)) | w) & DstT(0x5555555555555555ULL);
-
-    return w;
-}
-
-template <typename T, eif_integral_t<T> = 0>
-T interleave(T v) {
-    if constexpr (sizeof(T) > 1) {
-        using H = match_sign_t<precision_ut<sizeof(T) / 2>, T>;
-
-        H h1(static_cast<H>(v >> sizeof(H) * 8)), h2(static_cast<H>(v));
-
-        return (spreadBits<H, T>(h1) << 1) | spreadBits<H, T>(h2);
-    }
-    if constexpr (sizeof(T) == 1) {
-        T h1(v >> 4), h2(v);
-
-        h1 = ((h1 << 2) | h1) & T(0x33);
-        h1 = ((h1 << 1) | h1) & T(0x55);
-        h2 = ((h2 << 2) | h2) & T(0x33);
-        h2 = ((h2 << 1) | h2) & T(0x55);
-
-        return (h1 << 1) | h2;
-    }
-}
-
-template <typename T, eif_integral_t<T> = 0>
-T rotateL(T v, nat n) {
-    if constexpr (std::is_unsigned_v<T>) {
-        return (v << n) | (v >> (sizeof(T) * 8 - n));
-    }
-    if constexpr (std::is_signed_v<T>) {
-        return rotateBitsL(static_cast<std::make_unsigned_t<T>>(v));
-    }
-}
-
-template <typename T, eif_integral_t<T> = 0>
-T rotateR(T v, nat n) {
-    if constexpr (std::is_unsigned_v<T>) {
-        return (v >> n) | (v << (sizeof(T) * 8 - n));
-    }
-    if constexpr (std::is_signed_v<T>) {
-        return rotateBitsR(static_cast<std::make_unsigned_t<T>>(v));
-    }
-}
-
-template <typename T, eif_integral_t<T> = 0>
-T scramble(T v) {
-    if constexpr (sizeof(T) == 1) {
-        return v;
-    }
-
-    if constexpr (sizeof(T) == 2) {
-        u64 w(0);
-
-        w |= spreadBits<u08, u64>(u08(v)) << 0; v >>= 8;
-        w |= spreadBits<u08, u64>(u08(v)) << 4; v >>= 8;
-
-        return u16(w >> 45) | u16(w >> 30) | u16(w >> 15) | u16(w);
-    }
-
-    if constexpr (sizeof(T) == 4) {
-        u64 w(0);
-
-        w |= spreadBits<u08, u64>(u08(v)) << 0; v >>= 8;
-        w |= spreadBits<u08, u64>(u08(v)) << 2; v >>= 8;
-        w |= spreadBits<u08, u64>(u08(v)) << 4; v >>= 8;
-        w |= spreadBits<u08, u64>(u08(v)) << 6; v >>= 8;
-
-        return u32(w >> 31) | u32(w);
-    }
-
-    if constexpr (sizeof(T) == 8) {
-        u64 w(0);
-
-        w |= spreadBits<u08, u64>(u08(v)) << 0; v >>= 8;
-        w |= spreadBits<u08, u64>(u08(v)) << 1; v >>= 8;
-        w |= spreadBits<u08, u64>(u08(v)) << 2; v >>= 8;
-        w |= spreadBits<u08, u64>(u08(v)) << 3; v >>= 8;
-        w |= spreadBits<u08, u64>(u08(v)) << 4; v >>= 8;
-        w |= spreadBits<u08, u64>(u08(v)) << 5; v >>= 8;
-        w |= spreadBits<u08, u64>(u08(v)) << 6; v >>= 8;
-        w |= spreadBits<u08, u64>(u08(v)) << 7; v >>= 8;
-
-        return w;
-    }
-}
-
-
-
 }
 
 

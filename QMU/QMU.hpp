@@ -3,8 +3,6 @@
 
 
 #include <cstdint>
-#include <type_traits>
-#include <cmath>
 #include <limits>
 #include <tuple>
 
@@ -180,11 +178,17 @@ constexpr nat ceil(T v);
 template <typename T, eif_integral_t<T> = 0>
 constexpr T ceil(T v);
 
-template <typename T, eif_arithmetic_t<T> = 0>
-constexpr T log2(T v);
+template <typename T = nat>
+constexpr T pow2(nat v);
 
 template <typename T, eif_integral_t<T> = 0>
 constexpr bool isPow2(T v);
+
+template <typename T, eif_integral_t<T> = 0>
+constexpr T log2Floor(T v);
+
+template <typename T, eif_integral_t<T> = 0>
+constexpr T log2Ceil(T v);
 
 template <typename T, eif_integral_t<T> = 0>
 constexpr T floor2(T v);
@@ -220,6 +224,31 @@ constexpr T radians(T degrees);
 
 template <typename T, eif_floating_t<T> = 0>
 constexpr T degrees(T radians);
+
+
+
+namespace bits {
+
+
+
+template <typename T, eif_integral_t<T> = 0>
+constexpr T rotateL(T v, nat n);
+
+template <typename T, eif_integral_t<T> = 0>
+constexpr T rotateR(T v, nat n);
+
+template <typename SrcT, typename DstT, eif_t<std::is_integral_v<SrcT> && std::is_integral_v<DstT> && (sizeof(DstT) > sizeof(SrcT))> = 0>
+constexpr DstT spread(SrcT v);
+
+template <typename T, eif_integral_t<T> = 0>
+constexpr T interleave(T v);
+
+template <typename T, eif_integral_t<T> = 0>
+constexpr T scramble(T v);
+
+
+
+}
 
 
 
@@ -335,28 +364,9 @@ constexpr T ceil(T v) {
     return v;
 }
 
-template <typename T, eif_arithmetic_t<T>>
-constexpr T log2(T v) {
-    if constexpr (std::is_integral_v<T>) {
-        static_assert(sizeof(T) <= 8, "log2 function needs updated for larger integer types");
-        T log(0);
-        if constexpr (sizeof(T) >= 8) {
-            if (v & 0xFFFFFFFF00000000ULL) { v >>= 32; log += 32; }
-        }
-        if constexpr (sizeof(T) >= 4) {
-            if (v & 0x00000000FFFF0000ULL) { v >>= 16; log += 16; }
-        }
-        if constexpr (sizeof(T) >= 2) {
-            if (v & 0x000000000000FF00ULL) { v >>=  8; log +=  8; }
-        }
-        if (    v & 0x00000000000000F0ULL) { v >>=  4; log +=  4; }
-        if (    v & 0x000000000000000CULL) { v >>=  2; log +=  2; }
-        if (    v & 0x0000000000000002ULL) {           log +=  1; }
-        return log;
-    }
-    if constexpr (std::is_floating_point_v<T>) {
-        return std::log2(v);
-    }
+template <typename T>
+constexpr T pow2(nat v) {
+    return T(1) << v;
 }
 
 template <typename T, eif_integral_t<T>>
@@ -365,15 +375,40 @@ constexpr bool isPow2(T v) {
 }
 
 template <typename T, eif_integral_t<T>>
+constexpr T log2Floor(T v) {
+    static_assert(sizeof(T) <= 8, "log2 function needs updated for larger integer types");
+
+    T log(0);
+
+    if constexpr (sizeof(T) >= 8) {
+        if (v & 0xFFFFFFFF00000000ULL) { v >>= 32; log += 32; }
+    }
+    if constexpr (sizeof(T) >= 4) {
+        if (v & 0x00000000FFFF0000ULL) { v >>= 16; log += 16; }
+    }
+    if constexpr (sizeof(T) >= 2) {
+        if (v & 0x000000000000FF00ULL) { v >>=  8; log +=  8; }
+    }
+    if (    v & 0x00000000000000F0ULL) { v >>=  4; log +=  4; }
+    if (    v & 0x000000000000000CULL) { v >>=  2; log +=  2; }
+    if (    v & 0x0000000000000002ULL) {           log +=  1; }
+
+    return log;
+}
+
+template <typename T, eif_integral_t<T>>
+constexpr T log2Ceil(T v) {
+    return log2Floor(2 * v - 1);
+}
+
+template <typename T, eif_integral_t<T>>
 constexpr T floor2(T v) {
-    if (v == 0) return 0;
-    return T(1) << log2(v);
+    return T(1) << log2Floor(v);
 }
 
 template <typename T, eif_integral_t<T>>
 constexpr T ceil2(T v) {
-    if (v == 0) return 0;
-    return floor2(v * 2 - 1);
+    return T(1) << log2Ceil(v);
 }
 
 template <typename T, eif_integral_t<T>>
@@ -436,6 +471,118 @@ constexpr T radians(T degrees) {
 template <typename T, eif_floating_t<T>>
 constexpr T degrees(T radians) {
     return radians * static_cast<T>(180.0) / pi<T>;
+}
+
+
+
+namespace bits {
+
+
+
+template <typename SrcT, typename DstT, eif_t<std::is_integral_v<SrcT> && std::is_integral_v<DstT> && (sizeof(DstT) > sizeof(SrcT))>>
+constexpr DstT spread(SrcT v) {
+    constexpr nat factor(sizeof(DstT) / sizeof(SrcT) - 1);
+    
+    DstT w(v);
+
+    if constexpr (sizeof(SrcT) >= 4) {
+        w = ((w << (16 * factor)) | w) & DstT(0x0000FFFF0000FFFFULL);
+    }
+    if constexpr (sizeof(SrcT) >= 2) {
+        w = ((w << ( 8 * factor)) | w) & DstT(0x00FF00FF00FF00FFULL);
+    }
+        w = ((w << ( 4 * factor)) | w) & DstT(0x0F0F0F0F0F0F0F0FULL);
+        w = ((w << ( 2 * factor)) | w) & DstT(0x3333333333333333ULL);
+        w = ((w << ( 1 * factor)) | w) & DstT(0x5555555555555555ULL);
+
+    return w;
+}
+
+template <typename T, eif_integral_t<T>>
+constexpr T interleave(T v) {
+    if constexpr (sizeof(T) > 1) {
+        using H = match_sign_t<precision_ut<sizeof(T) / 2>, T>;
+
+        H h1(static_cast<H>(v >> sizeof(H) * 8)), h2(static_cast<H>(v));
+
+        return (spread<H, T>(h1) << 1) | spread<H, T>(h2);
+    }
+    if constexpr (sizeof(T) == 1) {
+        T h1(v >> 4), h2(v);
+
+        h1 = ((h1 << 2) | h1) & T(0x33);
+        h1 = ((h1 << 1) | h1) & T(0x55);
+        h2 = ((h2 << 2) | h2) & T(0x33);
+        h2 = ((h2 << 1) | h2) & T(0x55);
+
+        return (h1 << 1) | h2;
+    }
+}
+
+template <typename T, eif_integral_t<T>>
+constexpr T rotateL(T v, nat n) {
+    if constexpr (std::is_unsigned_v<T>) {
+        return (v << n) | (v >> (sizeof(T) * 8 - n));
+    }
+    if constexpr (std::is_signed_v<T>) {
+        return rotateL(std::make_unsigned_t<T>(v), n);
+    }
+}
+
+template <typename T, eif_integral_t<T>>
+constexpr T rotateR(T v, nat n) {
+    if constexpr (std::is_unsigned_v<T>) {
+        return (v >> n) | (v << (sizeof(T) * 8 - n));
+    }
+    if constexpr (std::is_signed_v<T>) {
+        return rotateR(std::make_unsigned_t<T>(v), n);
+    }
+}
+
+template <typename T, eif_integral_t<T>>
+constexpr T scramble(T v) {
+    if constexpr (sizeof(T) == 1) {
+        return v;
+    }
+
+    if constexpr (sizeof(T) == 2) {
+        u64 w(0);
+
+        w |= spread<u08, u64>(u08(v)) << 0; v >>= 8;
+        w |= spread<u08, u64>(u08(v)) << 4; v >>= 8;
+
+        return u16(w >> 45) | u16(w >> 30) | u16(w >> 15) | u16(w);
+    }
+
+    if constexpr (sizeof(T) == 4) {
+        u64 w(0);
+
+        w |= spread<u08, u64>(u08(v)) << 0; v >>= 8;
+        w |= spread<u08, u64>(u08(v)) << 2; v >>= 8;
+        w |= spread<u08, u64>(u08(v)) << 4; v >>= 8;
+        w |= spread<u08, u64>(u08(v)) << 6; v >>= 8;
+
+        return u32(w >> 31) | u32(w);
+    }
+
+    if constexpr (sizeof(T) == 8) {
+        u64 w(0);
+
+        w |= spread<u08, u64>(u08(v)) << 0; v >>= 8;
+        w |= spread<u08, u64>(u08(v)) << 1; v >>= 8;
+        w |= spread<u08, u64>(u08(v)) << 2; v >>= 8;
+        w |= spread<u08, u64>(u08(v)) << 3; v >>= 8;
+        w |= spread<u08, u64>(u08(v)) << 4; v >>= 8;
+        w |= spread<u08, u64>(u08(v)) << 5; v >>= 8;
+        w |= spread<u08, u64>(u08(v)) << 6; v >>= 8;
+        w |= spread<u08, u64>(u08(v)) << 7; v >>= 8;
+
+        return w;
+    }
+}
+
+
+
 }
 
 
