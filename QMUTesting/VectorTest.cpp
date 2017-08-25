@@ -1315,6 +1315,21 @@ constexpr void compileConstantsFT() {
     constexpr bound2<T> nb2(nanbound<T, 2>);
     constexpr bound3<T> nb3(nanbound<T, 3>);
     constexpr bound4<T> nb4(nanbound<T, 4>);
+
+    constexpr vec1<T> iv1(infvec<T, 1>);
+    constexpr vec2<T> iv2(infvec<T, 2>);
+    constexpr vec3<T> iv3(infvec<T, 3>);
+    constexpr vec4<T> iv4(infvec<T, 4>);
+
+    constexpr span1<T> is1(infspan<T, 1>);
+    constexpr span2<T> is2(infspan<T, 2>);
+    constexpr span3<T> is3(infspan<T, 3>);
+    constexpr span4<T> is4(infspan<T, 4>);
+
+    constexpr span1<T> nulls1(nullspan<T, 1>);
+    constexpr span2<T> nulls2(nullspan<T, 2>);
+    constexpr span3<T> nulls3(nullspan<T, 3>);
+    constexpr span4<T> nulls4(nullspan<T, 4>);
 }
 
 constexpr bool compileConstants() {

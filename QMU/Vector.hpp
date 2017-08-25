@@ -6,7 +6,7 @@
 #include <string>
 #include <sstream>
 
-#include "QMU.hpp"
+#include "Core.hpp"
 
 
 
@@ -1165,9 +1165,14 @@ template <typename T> constexpr vec3<T> negY = axisY<T, false>;
 template <typename T> constexpr vec3<T> posZ = axisZ<T,  true>;
 template <typename T> constexpr vec3<T> negZ = axisZ<T, false>;
 
-template <typename T, nat t_n, eif_floating_t<T> = 0> constexpr   vec<T, t_n>   nanvec =   vec<T, t_n>(nan<T>);
-template <typename T, nat t_n, eif_floating_t<T> = 0> constexpr  span<T, t_n>  nanspan =  span<T, t_n>(nan<T>, nan<T>);
+template <typename T, nat t_n, eif_floating_t<T> = 0> constexpr   vec<T, t_n>   nanvec = vec<T, t_n>(nan<T>);
+template <typename T, nat t_n, eif_floating_t<T> = 0> constexpr  span<T, t_n>  nanspan = span<T, t_n>(nan<T>, nan<T>);
 template <typename T, nat t_n, eif_floating_t<T> = 0> constexpr bound<T, t_n> nanbound = bound<T, t_n>(nan<T>, nan<T>);
+
+template <typename T, nat t_n, eif_floating_t<T> = 0> constexpr   vec<T, t_n>  infvec = vec<T, t_n>(infinity<T>);
+template <typename T, nat t_n, eif_floating_t<T> = 0> constexpr  span<T, t_n> infspan = span<T, t_n>(-infinity<T>, infinity<T>);
+
+template <typename T, nat t_n, eif_floating_t<T> = 0> constexpr span<T, t_n> nullspan = span<T, t_n>(infinity<T>, -infinity<T>);
 
 
 

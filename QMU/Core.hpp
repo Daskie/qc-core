@@ -85,6 +85,8 @@ template <typename T> using eif_integral_t = eif_t<std::is_integral_v<T>>;
 
 template <typename T> using eif_arithmetic_t = eif_t<std::is_arithmetic_v<T>>;
 
+template <typename T1, typename T2> constexpr bool equivocal_v = std::is_same_v<std::decay_t<T1>, std::decay_t<T2>>;
+
 
 
 namespace detail {
@@ -111,7 +113,6 @@ constexpr T sqrtConstexpr(T v) {
 }
 
 }
-
 
 
 // unique identification of floating point numbers
