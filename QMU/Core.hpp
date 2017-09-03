@@ -24,8 +24,10 @@ using s16 =  int16_t;
 using u16 = uint16_t;
 using s32 =  int32_t;
 using u32 = uint32_t;
+using f32 =    float;
 using s64 =  int64_t;
 using u64 = uint64_t;
+using f64 =   double;
 
 
 
@@ -39,19 +41,19 @@ using qmu::operator""_un;
 
 }
 
-namespace itypes {
+namespace size_types {
 
 using qmu::s08; using qmu::u08;
 using qmu::s16; using qmu::u16;
-using qmu::s32; using qmu::u32;
-using qmu::s64; using qmu::u64;
+using qmu::s32; using qmu::u32; using qmu::f32;
+using qmu::s64; using qmu::u64; using qmu::f64;
 
 }
 
 namespace types {
 
 using namespace ntypes;
-using namespace itypes;
+using namespace size_types;
 
 }
 
@@ -60,8 +62,8 @@ using namespace itypes;
 template <nat t_p> struct precision;
 template <> struct precision<1> { using stype = s08; using utype = u08; };
 template <> struct precision<2> { using stype = s16; using utype = u16; };
-template <> struct precision<4> { using stype = s32; using utype = u32; using ftype =  float; };
-template <> struct precision<8> { using stype = s64; using utype = u64; using ftype = double; };
+template <> struct precision<4> { using stype = s32; using utype = u32; using ftype = f32; };
+template <> struct precision<8> { using stype = s64; using utype = u64; using ftype = f64; };
 
 template <nat t_p> using precision_st = typename precision<t_p>::stype;
 template <nat t_p> using precision_ut = typename precision<t_p>::utype;

@@ -21,8 +21,10 @@ void compileTyping() {
     qmu::u16 u16_; u16_;
     qmu::s32 s32_; s32_;
     qmu::u32 u32_; u32_;
+    qmu::f32 f32_; f32_;
     qmu::s64 s64_; s64_;
     qmu::u64 u64_; u64_;
+    qmu::f64 f64_; f64_;
 
     qmu::precision<1>::stype p08s_; p08s_;
     qmu::precision<2>::stype p16s_; p16s_;
