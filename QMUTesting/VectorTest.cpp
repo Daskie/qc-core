@@ -1285,18 +1285,16 @@ void compileMembers() {
 
 template <typename T>
 constexpr void compileConstantsT() {
-    constexpr vec3<T> axp(axisX<T,  true>);
-    constexpr vec3<T> axn(axisX<T, false>);
-    constexpr vec3<T> ayp(axisY<T,  true>);
-    constexpr vec3<T> ayn(axisY<T, false>);
-    constexpr vec3<T> azp(axisZ<T,  true>);
-    constexpr vec3<T> azn(axisZ<T, false>);
-    constexpr vec3<T> px(posX<T>);
-    constexpr vec3<T> nx(posX<T>);
-    constexpr vec3<T> py(posY<T>);
-    constexpr vec3<T> ny(posY<T>);
-    constexpr vec3<T> pz(posZ<T>);
-    constexpr vec3<T> nz(negZ<T>);
+    constexpr vec1<T> ax1(axis1X<T>);
+    constexpr vec2<T> ax2(axis2X<T>);
+    constexpr vec3<T> ax3(axis3X<T>);
+    constexpr vec4<T> ax4(axis4X<T>);
+    constexpr vec2<T> ay2(axis2Y<T>);
+    constexpr vec3<T> ay3(axis3Y<T>);
+    constexpr vec4<T> ay4(axis4Y<T>);
+    constexpr vec3<T> az3(axis3Z<T>);
+    constexpr vec4<T> az4(axis4Z<T>);
+    constexpr vec4<T> aw4(axis4W<T>);
 }
 
 template <typename T>

@@ -110,9 +110,9 @@ void compileFunctionsT() {
     magnitude2(q);
     norm(q);
     inverse(q);
-    angle(q);
-    axis(q);
-    axis_n(q);
+    quatAngle(q);
+    quatAxis(q);
+    quatAxis_n(q);
     mix(q, q, v);
 
     rotateQ(v3, v);

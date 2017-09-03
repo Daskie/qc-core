@@ -111,10 +111,10 @@ template <typename T> quat<T> norm(const quat<T> & q);
 
 template <typename T> quat<T> inverse(const quat<T> & q);
 
-template <typename T> T angle(const quat<T> & q);
+template <typename T> T quatAngle(const quat<T> & q);
 
-template <typename T> vec3<T> axis(const quat<T> & q);
-template <typename T> vec3<T> axis_n(const quat<T> & q);
+template <typename T> vec3<T> quatAxis(const quat<T> & q);
+template <typename T> vec3<T> quatAxis_n(const quat<T> & q);
 
 template <typename T> quat<T> mix(const quat<T> & q1, const quat<T> & q2, T t);
 
@@ -395,17 +395,17 @@ inline quat<T> inverse(const quat<T> & q) {
 }
 
 template <typename T>
-inline T angle(const quat<T> & q) {
+inline T quatAngle(const quat<T> & q) {
     return std::acos(q.w) * static_cast<T>(2.0);
 }
 
 template <typename T>
-inline vec3<T> axis(const quat<T> & q) {
-    return axis_n(norm(q));
+inline vec3<T> quatAxis(const quat<T> & q) {
+    return quatAxis_n(norm(q));
 }
 
 template <typename T>
-inline vec3<T> axis_n(const quat<T> & q) {
+inline vec3<T> quatAxis_n(const quat<T> & q) {
     T d2(static_cast<T>(1.0) - q.w * q.w);
     if (zero(d2)) {
         return vec3<T>();
