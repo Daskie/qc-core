@@ -522,17 +522,8 @@ struct vec<T, 2> {
     //--------------------------------------------------------------------------
     // Instance Variables
 
-    // easier on the compiler
-    //union { T x, r, s,   rad; };
-    //union { T y, g, t, theta; };
-
-    // nicer when debugging
-    union {
-        struct { T x, y; };
-        struct { T r, g; };
-        struct { T s, t; };
-        struct { T rad, theta; };
-    };
+    union { T x, r, s,   rad; };
+    union { T y, g, t, theta; };
 
     //--------------------------------------------------------------------------
     // Construction
@@ -600,19 +591,9 @@ struct vec<T, 3> {
     //--------------------------------------------------------------------------
     // Instance Variables
 
-    // easier on the compiler
-    //union { T x, r, s,   rad, alpha; };
-    //union { T y, g, t, theta,  beta; };
-    //union { T z, b, p,   phi, gamma; };
-
-    // nicer when debugging
-    union {
-        struct { T x, y, z; };
-        struct { T r, g, b; };
-        struct { T s, t, p; };
-        struct { T rad, theta, phi; };
-        struct { T alpha, beta, gamma; };
-    };
+    union { T x, r, s,   rad, alpha; };
+    union { T y, g, t, theta,  beta; };
+    union { T z, b, p,   phi, gamma; };
 
     //--------------------------------------------------------------------------
     // Construction
@@ -688,18 +669,10 @@ struct vec<T, 4> {
     //--------------------------------------------------------------------------
     // Instance Variables
     
-    // easier on the compiler
-    //union { T x, r, s; };
-    //union { T y, g, t; };
-    //union { T z, b, p; };
-    //union { T w, a, q; };
-
-    // nicer when debugging
-    union {
-        struct { T x, y, z, w; };
-        struct { T r, g, b, a; };
-        struct { T s, t, p, q; };
-    };
+    union { T x, r, s; };
+    union { T y, g, t; };
+    union { T z, b, p; };
+    union { T w, a, q; };
     
     //--------------------------------------------------------------------------
     // Construction
@@ -796,15 +769,8 @@ struct span {
     //--------------------------------------------------------------------------
     // Instance Variables
 
-    // easier on the compiler
-    //union { vec<T, t_n> min,  loc; };
-    //union { vec<T, t_n> max, size; };
-
-    // nicer when debugging
-    union {
-        struct { vec<T, t_n> min, max; };
-        struct { vec<T, t_n> loc, size; };
-    };
+    union { vec<T, t_n> min,  loc; };
+    union { vec<T, t_n> max, size; };
 
     //--------------------------------------------------------------------------
     // Construction
