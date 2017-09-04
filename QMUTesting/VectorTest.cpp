@@ -783,20 +783,30 @@ void compileFunctionsT() {
     min(v3, v3);
     min(v4, v4);
 
-    max(v1, v1);
-    max(v2, v2);
-    max(v3, v3);
-    max(v4, v4);
-
     min(v1, v1, v1, v1, v1);
     min(v2, v2, v2, v2, v2);
     min(v3, v3, v3, v3, v3);
     min(v4, v4, v4, v4, v4);
 
+    max(v1, v1);
+    max(v2, v2);
+    max(v3, v3);
+    max(v4, v4);
+
     max(v1, v1, v1, v1, v1);
     max(v2, v2, v2, v2, v2);
     max(v3, v3, v3, v3, v3);
     max(v4, v4, v4, v4, v4);
+
+    minmax(v1);
+    minmax(v2);
+    minmax(v3);
+    minmax(v4);
+
+    sort(v1);
+    sort(v2);
+    sort(v3);
+    sort(v4);
 
     clamp(v1, v, v);
     clamp(v2, v, v);
@@ -1083,15 +1093,20 @@ constexpr void compileFunctionsConstexprT() {
     max(v3, v3);
     max(v4, v4);
 
+    max(v1, v1, v1, v1, v1);
+    max(v2, v2, v2, v2, v2);
+    max(v3, v3, v3, v3, v3);
+    max(v4, v4, v4, v4, v4);
+
     min(v1, v1, v1, v1, v1);
     min(v2, v2, v2, v2, v2);
     min(v3, v3, v3, v3, v3);
     min(v4, v4, v4, v4, v4);
 
-    max(v1, v1, v1, v1, v1);
-    max(v2, v2, v2, v2, v2);
-    max(v3, v3, v3, v3, v3);
-    max(v4, v4, v4, v4, v4);
+    minmax(v1);
+    minmax(v2);
+    minmax(v3);
+    minmax(v4);
 
     clamp(v1, v, v);
     clamp(v2, v, v);

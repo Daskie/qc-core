@@ -55,17 +55,17 @@ inline void fill(T * arr, nat n, const T & val) {
 
 template <typename T>
 inline void copy(const T * src, T * dest, nat n) {
-    memcpy(dest, src, n * sizeof(T));
+    std::memcpy(dest, src, n * sizeof(T));
 }
 
 template <typename T>
 inline void copy(const T * src, T * dest, nat n, nat offset, nat stride, nat grouping) {
     if (stride <= grouping) {
-        memcpy(dest + offset, src, n * sizeof(T));
+        std::memcpy(dest + offset, src, n * sizeof(T));
         return;
     }
 
-    nat i = 0, j, k = offset;
+    nat i(0), j, k(offset);
     while (i < n) {
         for (j = 0; j < grouping; ++j, ++i) {
             dest[k + j] = src[i];

@@ -138,15 +138,22 @@ template <typename T, eif_floating_t<T> = 0> constexpr T nan = std::numeric_limi
 
 template <typename T>
 constexpr const T & min(const T & a, const T & b);
-
 template <typename T, typename... Ts>
 constexpr const T & min(const T & a, const T & b, const Ts &... rest);
 
 template <typename T>
 constexpr const T & max(const T & a, const T & b);
-
 template <typename T, typename... Ts>
 constexpr const T & max(const T & a, const T & b, const Ts &... rest);
+
+template <typename T>
+constexpr std::pair<const T &, const T &> minmax(const T & a, const T & b);
+template <typename T>
+constexpr std::pair<const T &, const T &> minmax(const T & a, const T & b, const T & c);
+template <typename T>
+constexpr std::pair<const T &, const T &> minmax(const T & a, const T & b, const T & c, const T & d);
+template <typename T, typename... Ts>
+constexpr std::pair<const T &, const T &> minmax(const T & a, const T & b, const T & c, const T & d, const Ts &... rest);
 
 template <typename T>
 constexpr T clamp(const T & v, const T & min, const T & max);
@@ -281,6 +288,41 @@ constexpr const T & max(const T & a, const T & b) {
 template <typename T, typename... Ts>
 constexpr const T & max(const T & a, const T & b, const Ts &... rest) {
     return max(a > b ? a : b, rest...);
+}
+
+template <typename T>
+constexpr std::pair<const T &, const T &> minmax(const T & a) {
+    return { a, a };
+}
+
+template <typename T>
+constexpr std::pair<const T &, const T &> minmax(const T & a, const T & b) {
+    if (a < b) {
+        return { a, b };
+    }
+    else {
+        return { b, a };
+    }
+}
+
+template <typename T>
+constexpr std::pair<const T &, const T &> minmax(const T & a, const T & b, const T & c) {
+    auto mm(minmax(a, b)); // apparently can't use structed bindings in constexpr function
+    return { min(mm.first, c), max(mm.second, c) };
+}
+
+template <typename T>
+constexpr std::pair<const T &, const T &> minmax(const T & a, const T & b, const T & c, const T & d) {
+    auto mm1(minmax(a, b));
+    auto mm2(minmax(c, d));
+    return { min(mm1.first, mm2.first), max(mm1.second, mm2.second) };
+}
+
+template <typename T, typename... Ts>
+constexpr std::pair<const T &, const T &> minmax(const T & a, const T & b, const T & c, const T & d, const Ts &... rest) {
+    auto mm1(minmax(a, b, c, d));
+    auto mm2(minmax(rest...));
+    return { min(mm1.first, mm2.first), max(mm1.second, mm2.second) };
 }
 
 template <typename T>

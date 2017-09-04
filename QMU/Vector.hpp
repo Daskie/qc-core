@@ -1036,7 +1036,7 @@ T angle_n(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 //------------------------------------------------------------------------------
 
 template <typename T, nat t_n>
-constexpr T min(const vec<T, t_n> & v);
+constexpr const T & min(const vec<T, t_n> & v);
 
 template <typename T, nat t_n>
 constexpr vec<T, t_n> min(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
@@ -1051,13 +1051,31 @@ constexpr vec<T, t_n> min(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const 
 //------------------------------------------------------------------------------
 
 template <typename T, nat t_n>
-constexpr T max(const vec<T, t_n> & v);
+constexpr const T & max(const vec<T, t_n> & v);
 
 template <typename T, nat t_n>
 constexpr vec<T, t_n> max(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 
 template <typename T, nat t_n, typename... Ts>
 constexpr vec<T, t_n> max(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<Ts, t_n> &... rest);
+
+
+
+//==============================================================================
+// minmax
+//------------------------------------------------------------------------------
+
+template <typename T, nat t_n>
+constexpr std::pair<const T &, const T &> minmax(const vec<T, t_n> & v);
+
+
+
+//==============================================================================
+// sort
+//------------------------------------------------------------------------------
+
+template <typename T, nat t_n>
+void sort(const vec<T, t_n> & v);
 
 
 
@@ -3350,43 +3368,23 @@ inline T angle_n(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
 }
 
 template <typename T>
-constexpr T min(const vec1<T> & v) {
+constexpr const T & min(const vec1<T> & v) {
     return v.x;
 }
 
 template <typename T>
-constexpr T min(const vec2<T> & v) {
+constexpr const T & min(const vec2<T> & v) {
     return min(v.x, v.y);
 }
 
 template <typename T>
-constexpr T min(const vec3<T> & v) {
+constexpr const T & min(const vec3<T> & v) {
     return min(v.x, v.y, v.z);
 }
 
 template <typename T>
-constexpr T min(const vec4<T> & v) {
+constexpr const T & min(const vec4<T> & v) {
     return min(v.x, v.y, v.z, v.w);
-}
-
-template <typename T>
-constexpr T max(const vec1<T> & v) {
-    return v.x;
-}
-
-template <typename T>
-constexpr T max(const vec2<T> & v) {
-    return max(v.x, v.y);
-}
-
-template <typename T>
-constexpr T max(const vec3<T> & v) {
-    return max(v.x, v.y, v.z);
-}
-
-template <typename T>
-constexpr T max(const vec4<T> & v) {
-    return max(v.x, v.y, v.z, v.w);
 }
 
 template <typename T>
@@ -3415,6 +3413,26 @@ constexpr vec<T, t_n> min(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const 
 }
 
 template <typename T>
+constexpr const T & max(const vec1<T> & v) {
+    return v.x;
+}
+
+template <typename T>
+constexpr const T & max(const vec2<T> & v) {
+    return max(v.x, v.y);
+}
+
+template <typename T>
+constexpr const T & max(const vec3<T> & v) {
+    return max(v.x, v.y, v.z);
+}
+
+template <typename T>
+constexpr const T & max(const vec4<T> & v) {
+    return max(v.x, v.y, v.z, v.w);
+}
+
+template <typename T>
 constexpr vec1<T> max(const vec1<T> & v1, const vec1<T> & v2) {
     return vec1<T>(max(v1.x, v2.x));
 }
@@ -3437,6 +3455,40 @@ constexpr vec4<T> max(const vec4<T> & v1, const vec4<T> & v2) {
 template <typename T, nat t_n, typename... Ts>
 constexpr vec<T, t_n> max(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<Ts, t_n> &... rest) {
     return max(max(v1, v2), rest...);
+}
+
+template <typename T, nat t_n>
+constexpr std::pair<const T &, const T &> minmax(const vec<T, t_n> & v) {
+    if constexpr (t_n == 1) return minmax(v.x);
+    if constexpr (t_n == 2) return minmax(v.x, v.y);
+    if constexpr (t_n == 3) return minmax(v.x, v.y, v.z);
+    if constexpr (t_n == 4) return minmax(v.x, v.y, v.z, v.w);
+}
+
+template <typename T>
+inline void sort(vec1<T> & v) {
+    
+}
+
+template <typename T>
+inline void sort(vec2<T> & v) {
+    if (v.x > v.y) std::swap(v.x, v.y);
+}
+
+template <typename T>
+inline void sort(vec3<T> & v) {
+    if (v.x > v.y) std::swap(v.x, v.y);
+    if (v.y > v.z) std::swap(v.y, v.z);
+    if (v.x > v.y) std::swap(v.x, v.y);
+}
+
+template <typename T>
+inline void sort(vec4<T> & v) {
+    if (v.x > v.y) std::swap(v.x, v.y);
+    if (v.z > v.w) std::swap(v.z, v.w);
+    if (v.y > v.z) std::swap(v.y, v.z);
+    if (v.x > v.y) std::swap(v.x, v.y);
+    if (v.z > v.w) std::swap(v.z, v.w);
 }
 
 template <typename T>

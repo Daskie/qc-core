@@ -64,6 +64,15 @@ void compileFunctionsT() {
     qmu::max(v, v);
     qmu::max(v, v, v);
 
+    qmu::minmax(v);
+    qmu::minmax(v, v);
+    qmu::minmax(v, v, v);
+    qmu::minmax(v, v, v, v);
+    qmu::minmax(v, v, v, v, v);
+    qmu::minmax(v, v, v, v, v, v);
+    qmu::minmax(v, v, v, v, v, v, v);
+    qmu::minmax(v, v, v, v, v, v, v, v);
+
     qmu::abs(v);
 
     qmu::clamp(v, v, v);
@@ -183,6 +192,15 @@ constexpr void compileFunctionsConstexprT() {
 
     qmu::max(v, v);
     qmu::max(v, v, v);
+
+    qmu::minmax(v);
+    qmu::minmax(v, v);
+    qmu::minmax(v, v, v);
+    qmu::minmax(v, v, v, v);
+    qmu::minmax(v, v, v, v, v);
+    qmu::minmax(v, v, v, v, v, v);
+    qmu::minmax(v, v, v, v, v, v, v);
+    qmu::minmax(v, v, v, v, v, v, v, v);
 
     qmu::abs(v);
 
