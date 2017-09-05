@@ -124,6 +124,9 @@ void compileClassesT() {
     v3.at<1>();
     v3.at<2>();
 
+    v3.xy(); v3.rg(); v3.st();
+    v3.yz(); v3.gb(); v3.tp();
+
     // other
     v3.toString();
 
@@ -186,6 +189,12 @@ void compileClassesT() {
     v4.at<1>();
     v4.at<2>();
     v4.at<3>();
+
+    v4.xy(); v4.rg(); v4.st();
+    v4.yz(); v4.gb(); v4.tp();
+    v4.zw(); v4.ba(); v4.pq();
+    v4.xyz(); v4.rgb(); v4.stp();
+    v4.yzw(); v4.gba(); v4.tpq();
 
     // other
     v4.toString();

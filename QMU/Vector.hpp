@@ -642,6 +642,21 @@ struct vec<T, 3> {
     template <nat t_i> T & at();
     template <nat t_i> constexpr T at() const;
 
+    vec2<T> & xy();
+    vec2<T> & yz();
+    const vec2<T> & xy() const;
+    const vec2<T> & yz() const;
+    
+    vec2<T> & rg();
+    vec2<T> & gb();
+    const vec2<T> & rg() const;
+    const vec2<T> & gb() const;
+    
+    vec2<T> & st();
+    vec2<T> & tp();
+    const vec2<T> & st() const;
+    const vec2<T> & tp() const;
+
     //--------------------------------------------------------------------------
     // Other
 
@@ -741,6 +756,39 @@ struct vec<T, 4> {
 
     template <nat t_i> T & at();
     template <nat t_i> constexpr T at() const;
+
+    vec2<T> & xy();
+    vec2<T> & yz();
+    vec2<T> & zw();
+    vec3<T> & xyz();
+    vec3<T> & yzw();
+    const vec2<T> & xy() const;
+    const vec2<T> & yz() const;
+    const vec2<T> & zw() const;
+    const vec3<T> & xyz() const;
+    const vec3<T> & yzw() const;
+
+    vec2<T> & rg();
+    vec2<T> & gb();
+    vec2<T> & ba();
+    vec3<T> & rgb();
+    vec3<T> & gba();
+    const vec2<T> & rg() const;
+    const vec2<T> & gb() const;
+    const vec2<T> & ba() const;
+    const vec3<T> & rgb() const;
+    const vec3<T> & gba() const;
+
+    vec2<T> & st();
+    vec2<T> & tp();
+    vec2<T> & pq();
+    vec3<T> & stp();
+    vec3<T> & tpq();
+    const vec2<T> & st() const;
+    const vec2<T> & tp() const;
+    const vec2<T> & pq() const;
+    const vec3<T> & stp() const;
+    const vec3<T> & tpq() const;
 
     //--------------------------------------------------------------------------
     // Other
@@ -1720,8 +1768,6 @@ inline const T & vec<T, 3>::operator[](nat i) const {
     return *(&x + i);
 }
 
-
-
 template <typename T>
 template <nat t_i>
 inline T & vec<T, 3>::at() {
@@ -1738,6 +1784,66 @@ constexpr T vec<T, 3>::at() const {
     if constexpr (t_i == 0) return x;
     if constexpr (t_i == 1) return y;
     if constexpr (t_i == 2) return z;
+}
+
+template <typename T>
+inline vec2<T> & vec<T, 3>::xy() {
+    return *reinterpret_cast<vec2<T> *>(&x);
+}
+
+template <typename T>
+inline vec2<T> & vec<T, 3>::yz() {
+    return *reinterpret_cast<vec2<T> *>(&y);
+}
+
+template <typename T>
+inline const vec2<T> & vec<T, 3>::xy() const {
+    return *reinterpret_cast<vec2<T> *>(&x);
+}
+
+template <typename T>
+inline const vec2<T> & vec<T, 3>::yz() const {
+    return *reinterpret_cast<vec2<T> *>(&y);
+}
+
+template <typename T>
+inline vec2<T> & vec<T, 3>::rg() {
+    return *reinterpret_cast<vec2<T> *>(&r);
+}
+
+template <typename T>
+inline vec2<T> & vec<T, 3>::gb() {
+    return *reinterpret_cast<vec2<T> *>(&g);
+}
+
+template <typename T>
+inline const vec2<T> & vec<T, 3>::rg() const {
+    return *reinterpret_cast<vec2<T> *>(&r);
+}
+
+template <typename T>
+inline const vec2<T> & vec<T, 3>::gb() const {
+    return *reinterpret_cast<vec2<T> *>(&g);
+}
+
+template <typename T>
+inline vec2<T> & vec<T, 3>::st() {
+    return *reinterpret_cast<vec2<T> *>(&s);
+}
+
+template <typename T>
+inline vec2<T> & vec<T, 3>::tp() {
+    return *reinterpret_cast<vec2<T> *>(&t);
+}
+
+template <typename T>
+inline const vec2<T> & vec<T, 3>::st() const {
+    return *reinterpret_cast<vec2<T> *>(&s);
+}
+
+template <typename T>
+inline const vec2<T> & vec<T, 3>::tp() const {
+    return *reinterpret_cast<vec2<T> *>(&t);
 }
 
 
@@ -2036,8 +2142,6 @@ inline const T & vec<T, 4>::operator[](nat i) const {
     return *(&x + i);
 }
 
-
-
 template <typename T>
 template <nat t_i>
 inline T & vec<T, 4>::at() {
@@ -2056,6 +2160,156 @@ constexpr T vec<T, 4>::at() const {
     if constexpr (t_i == 1) return y;
     if constexpr (t_i == 2) return z;
     if constexpr (t_i == 3) return w;
+}
+
+template <typename T>
+inline vec2<T> & vec<T, 4>::xy() {
+    return *reinterpret_cast<vec2<T> *>(&x);
+}
+
+template <typename T>
+inline vec2<T> & vec<T, 4>::yz() {
+    return *reinterpret_cast<vec2<T> *>(&y);
+}
+
+template <typename T>
+inline vec2<T> & vec<T, 4>::zw() {
+    return *reinterpret_cast<vec2<T> *>(&z);
+}
+
+template <typename T>
+inline vec3<T> & vec<T, 4>::xyz() {
+    return *reinterpret_cast<vec3<T> *>(&x);
+}
+
+template <typename T>
+inline vec3<T> & vec<T, 4>::yzw() {
+    return *reinterpret_cast<vec3<T> *>(&y);
+}
+
+template <typename T>
+inline const vec2<T> & vec<T, 4>::xy() const {
+    return *reinterpret_cast<vec2<T> *>(&x);
+}
+
+template <typename T>
+inline const vec2<T> & vec<T, 4>::yz() const {
+    return *reinterpret_cast<vec2<T> *>(&y);
+}
+
+template <typename T>
+inline const vec2<T> & vec<T, 4>::zw() const {
+    return *reinterpret_cast<vec2<T> *>(&z);
+}
+
+template <typename T>
+inline const vec3<T> & vec<T, 4>::xyz() const {
+    return *reinterpret_cast<vec3<T> *>(&x);
+}
+
+template <typename T>
+inline const vec3<T> & vec<T, 4>::yzw() const {
+    return *reinterpret_cast<vec3<T> *>(&y);
+}
+
+template <typename T>
+inline vec2<T> & vec<T, 4>::rg() {
+    return *reinterpret_cast<vec2<T> *>(&r);
+}
+
+template <typename T>
+inline vec2<T> & vec<T, 4>::gb() {
+    return *reinterpret_cast<vec2<T> *>(&g);
+}
+
+template <typename T>
+inline vec2<T> & vec<T, 4>::ba() {
+    return *reinterpret_cast<vec2<T> *>(&b);
+}
+
+template <typename T>
+inline vec3<T> & vec<T, 4>::rgb() {
+    return *reinterpret_cast<vec3<T> *>(&r);
+}
+
+template <typename T>
+inline vec3<T> & vec<T, 4>::gba() {
+    return *reinterpret_cast<vec3<T> *>(&g);
+}
+
+template <typename T>
+inline const vec2<T> & vec<T, 4>::rg() const {
+    return *reinterpret_cast<vec2<T> *>(&r);
+}
+
+template <typename T>
+inline const vec2<T> & vec<T, 4>::gb() const {
+    return *reinterpret_cast<vec2<T> *>(&g);
+}
+
+template <typename T>
+inline const vec2<T> & vec<T, 4>::ba() const {
+    return *reinterpret_cast<vec2<T> *>(&b);
+}
+
+template <typename T>
+inline const vec3<T> & vec<T, 4>::rgb() const {
+    return *reinterpret_cast<vec3<T> *>(&r);
+}
+
+template <typename T>
+inline const vec3<T> & vec<T, 4>::gba() const {
+    return *reinterpret_cast<vec3<T> *>(&g);
+}
+
+template <typename T>
+inline vec2<T> & vec<T, 4>::st() {
+    return *reinterpret_cast<vec2<T> *>(&s);
+}
+
+template <typename T>
+inline vec2<T> & vec<T, 4>::tp() {
+    return *reinterpret_cast<vec2<T> *>(&t);
+}
+
+template <typename T>
+inline vec2<T> & vec<T, 4>::pq() {
+    return *reinterpret_cast<vec2<T> *>(&p);
+}
+
+template <typename T>
+inline vec3<T> & vec<T, 4>::stp() {
+    return *reinterpret_cast<vec3<T> *>(&s);
+}
+
+template <typename T>
+inline vec3<T> & vec<T, 4>::tpq() {
+    return *reinterpret_cast<vec3<T> *>(&t);
+}
+
+template <typename T>
+inline const vec2<T> & vec<T, 4>::st() const {
+    return *reinterpret_cast<vec2<T> *>(&s);
+}
+
+template <typename T>
+inline const vec2<T> & vec<T, 4>::tp() const {
+    return *reinterpret_cast<vec2<T> *>(&t);
+}
+
+template <typename T>
+inline const vec2<T> & vec<T, 4>::pq() const {
+    return *reinterpret_cast<vec2<T> *>(&p);
+}
+
+template <typename T>
+inline const vec3<T> & vec<T, 4>::stp() const {
+    return *reinterpret_cast<vec3<T> *>(&s);
+}
+
+template <typename T>
+inline const vec3<T> & vec<T, 4>::tpq() const {
+    return *reinterpret_cast<vec3<T> *>(&t);
 }
 
 
