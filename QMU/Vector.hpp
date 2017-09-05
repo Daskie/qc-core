@@ -802,6 +802,51 @@ struct span {
 
 
 //======================================================================================================================
+// Constants ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//----------------------------------------------------------------------------------------------------------------------
+
+
+
+template <typename T, nat t_n, nat t_d> constexpr vec<T, t_n> axis = vec<T, t_n>();
+template <typename T> constexpr vec<T, 1> axis<T, 1, 0> = vec1<T>(static_cast<T>(1));
+template <typename T> constexpr vec<T, 2> axis<T, 2, 0> = vec2<T>(static_cast<T>(1), static_cast<T>(0));
+template <typename T> constexpr vec<T, 2> axis<T, 2, 1> = vec2<T>(static_cast<T>(0), static_cast<T>(1));
+template <typename T> constexpr vec<T, 3> axis<T, 3, 0> = vec3<T>(static_cast<T>(1), static_cast<T>(0), static_cast<T>(0));
+template <typename T> constexpr vec<T, 3> axis<T, 3, 1> = vec3<T>(static_cast<T>(0), static_cast<T>(1), static_cast<T>(0));
+template <typename T> constexpr vec<T, 3> axis<T, 3, 2> = vec3<T>(static_cast<T>(0), static_cast<T>(0), static_cast<T>(1));
+template <typename T> constexpr vec<T, 4> axis<T, 4, 0> = vec4<T>(static_cast<T>(1), static_cast<T>(0), static_cast<T>(0), static_cast<T>(0));
+template <typename T> constexpr vec<T, 4> axis<T, 4, 1> = vec4<T>(static_cast<T>(0), static_cast<T>(1), static_cast<T>(0), static_cast<T>(0));
+template <typename T> constexpr vec<T, 4> axis<T, 4, 2> = vec4<T>(static_cast<T>(0), static_cast<T>(0), static_cast<T>(1), static_cast<T>(0));
+template <typename T> constexpr vec<T, 4> axis<T, 4, 2> = vec4<T>(static_cast<T>(0), static_cast<T>(0), static_cast<T>(0), static_cast<T>(1));
+
+template <typename T, nat t_n> constexpr vec<T, t_n> axisX = axis<T, t_n, 0>;
+template <typename T, nat t_n> constexpr vec<T, t_n> axisY = axis<T, t_n, 1>;
+template <typename T, nat t_n> constexpr vec<T, t_n> axisZ = axis<T, t_n, 2>;
+template <typename T, nat t_n> constexpr vec<T, t_n> axisW = axis<T, t_n, 3>;
+
+template <typename T> constexpr vec1<T> axis1X = axisX<T, 1>;
+template <typename T> constexpr vec2<T> axis2X = axisX<T, 2>;
+template <typename T> constexpr vec2<T> axis2Y = axisY<T, 2>;
+template <typename T> constexpr vec3<T> axis3X = axisX<T, 3>;
+template <typename T> constexpr vec3<T> axis3Y = axisY<T, 3>;
+template <typename T> constexpr vec3<T> axis3Z = axisZ<T, 3>;
+template <typename T> constexpr vec4<T> axis4X = axisX<T, 4>;
+template <typename T> constexpr vec4<T> axis4Y = axisY<T, 4>;
+template <typename T> constexpr vec4<T> axis4Z = axisZ<T, 4>;
+template <typename T> constexpr vec4<T> axis4W = axisW<T, 4>;
+
+template <typename T, nat t_n> constexpr   vec<T, t_n>   nanvec =   vec<T, t_n>(nan<T>);
+template <typename T, nat t_n> constexpr  span<T, t_n>  nanspan =  span<T, t_n>(nan<T>, nan<T>);
+template <typename T, nat t_n> constexpr bound<T, t_n> nanbound = bound<T, t_n>(nan<T>, nan<T>);
+
+template <typename T, nat t_n> constexpr  vec<T, t_n>  infvec =  vec<T, t_n>(infinity<T>);
+template <typename T, nat t_n> constexpr span<T, t_n> infspan = span<T, t_n>(-infinity<T>, infinity<T>);
+
+template <typename T, nat t_n> constexpr span<T, t_n> nullspan = span<T, t_n>(infinity<T>, -infinity<T>);
+
+
+
+//======================================================================================================================
 // Functions ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //======================================================================================================================
 
@@ -999,8 +1044,8 @@ vec<T, t_n> ortho(const vec<T, t_n> & v);
 // orthogonalize
 //------------------------------------------------------------------------------
 
-template <typename T>
-void orthogonalize(const vec2<T> & v1, vec2<T> & v2);
+template <typename T, nat t_n, eif_floating_t<T> = 0>
+void orthogonalize(const vec<T, t_n> & v1, vec<T, t_n> & v2);
 
 template <typename T, eif_floating_t<T> = 0>
 void orthogonalize(const vec3<T> & v1, vec3<T> & v2, vec3<T> & v3);
@@ -1165,49 +1210,6 @@ template <nat t_n> constexpr bvec<t_n> operator||(const bvec<t_n> & v1, const bv
 template <nat t_n> constexpr bool vor(const bvec<t_n> & v);
 
 template <nat t_n> constexpr bvec<t_n> operator!(const bvec<t_n> & v1);
-
-
-
-//==============================================================================
-// Constants
-//------------------------------------------------------------------------------
-
-template <typename T, nat t_n, nat t_d> constexpr vec<T, t_n> axis = vec<T, t_n>();
-template <typename T> constexpr vec<T, 1> axis<T, 1, 0> = vec1<T>(static_cast<T>(1));
-template <typename T> constexpr vec<T, 2> axis<T, 2, 0> = vec2<T>(static_cast<T>(1), static_cast<T>(0));
-template <typename T> constexpr vec<T, 2> axis<T, 2, 1> = vec2<T>(static_cast<T>(0), static_cast<T>(1));
-template <typename T> constexpr vec<T, 3> axis<T, 3, 0> = vec3<T>(static_cast<T>(1), static_cast<T>(0), static_cast<T>(0));
-template <typename T> constexpr vec<T, 3> axis<T, 3, 1> = vec3<T>(static_cast<T>(0), static_cast<T>(1), static_cast<T>(0));
-template <typename T> constexpr vec<T, 3> axis<T, 3, 2> = vec3<T>(static_cast<T>(0), static_cast<T>(0), static_cast<T>(1));
-template <typename T> constexpr vec<T, 4> axis<T, 4, 0> = vec4<T>(static_cast<T>(1), static_cast<T>(0), static_cast<T>(0), static_cast<T>(0));
-template <typename T> constexpr vec<T, 4> axis<T, 4, 1> = vec4<T>(static_cast<T>(0), static_cast<T>(1), static_cast<T>(0), static_cast<T>(0));
-template <typename T> constexpr vec<T, 4> axis<T, 4, 2> = vec4<T>(static_cast<T>(0), static_cast<T>(0), static_cast<T>(1), static_cast<T>(0));
-template <typename T> constexpr vec<T, 4> axis<T, 4, 2> = vec4<T>(static_cast<T>(0), static_cast<T>(0), static_cast<T>(0), static_cast<T>(1));
-
-template <typename T, nat t_n> constexpr vec<T, t_n> axisX = axis<T, t_n, 0>;
-template <typename T, nat t_n> constexpr vec<T, t_n> axisY = axis<T, t_n, 1>;
-template <typename T, nat t_n> constexpr vec<T, t_n> axisZ = axis<T, t_n, 2>;
-template <typename T, nat t_n> constexpr vec<T, t_n> axisW = axis<T, t_n, 3>;
-
-template <typename T> constexpr vec1<T> axis1X = axisX<T, 1>;
-template <typename T> constexpr vec2<T> axis2X = axisX<T, 2>;
-template <typename T> constexpr vec2<T> axis2Y = axisY<T, 2>;
-template <typename T> constexpr vec3<T> axis3X = axisX<T, 3>;
-template <typename T> constexpr vec3<T> axis3Y = axisY<T, 3>;
-template <typename T> constexpr vec3<T> axis3Z = axisZ<T, 3>;
-template <typename T> constexpr vec4<T> axis4X = axisX<T, 4>;
-template <typename T> constexpr vec4<T> axis4Y = axisY<T, 4>;
-template <typename T> constexpr vec4<T> axis4Z = axisZ<T, 4>;
-template <typename T> constexpr vec4<T> axis4W = axisW<T, 4>;
-
-template <typename T, nat t_n> constexpr   vec<T, t_n>   nanvec =   vec<T, t_n>(nan<T>);
-template <typename T, nat t_n> constexpr  span<T, t_n>  nanspan =  span<T, t_n>(nan<T>, nan<T>);
-template <typename T, nat t_n> constexpr bound<T, t_n> nanbound = bound<T, t_n>(nan<T>, nan<T>);
-
-template <typename T, nat t_n> constexpr  vec<T, t_n>  infvec =  vec<T, t_n>(infinity<T>);
-template <typename T, nat t_n> constexpr span<T, t_n> infspan = span<T, t_n>(-infinity<T>, infinity<T>);
-
-template <typename T, nat t_n> constexpr span<T, t_n> nullspan = span<T, t_n>(infinity<T>, -infinity<T>);
 
 
 
@@ -3319,12 +3321,17 @@ inline vec3<T> ortho(const vec3<T> & v) {
     }
 }
 
-template <typename T>
-inline void orthogonalize(const vec2<T> & v1, vec2<T> & v2) {
-    v2.x = -v1.y;
-    v2.y = v1.x;
+template <typename T, nat t_n, eif_floating_t<T>>
+inline void orthogonalize(const vec<T, t_n> & v1, vec<T, t_n> & v2) {
+    if constexpr (t_n == 1) {
+        v2 = vec1<T>();
+    }
+    if constexpr (t_n > 1) {
+        v2 = norm(v2 - dot(v1, v2) * v1);
+    }
 }
 
+// in order of priority
 template <typename T, eif_floating_t<T>>
 inline void orthogonalize(const vec3<T> & v1, vec3<T> & v2, vec3<T> & v3) {
     orthogonalize_n(v1, v2, v3);
@@ -3335,17 +3342,8 @@ inline void orthogonalize(const vec3<T> & v1, vec3<T> & v2, vec3<T> & v3) {
 // in order of priority
 template <typename T, eif_floating_t<T>>
 inline void orthogonalize_n(const vec3<T> & v1, vec3<T> & v2, vec3<T> & v3) {
-    if (parallel(v1, v2)) {
-        if (parallel(v2, v3)) {
-            v2 = ortho(v1);
-        }
-        else {
-            v2 = cross(v1, v3);
-        }
-    }
-
+    orthogonalize(v1, v2);
     v3 = cross(v2, v1);
-    v2 = cross(v1, v3);
 }
 
 template <typename T, nat t_n, eif_floating_t<T>>

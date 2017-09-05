@@ -753,8 +753,12 @@ void compileFunctionsT() {
     ortho(v2);
     ortho(v3);
 
+    orthogonalize(v1, v1);
     orthogonalize(v2, v2);
+    orthogonalize(v3, v3);
+    orthogonalize(v4, v4);
     orthogonalize(v3, v3, v3);
+    orthogonalize_n(v3, v3, v3);
 
     reflect(v2, v2);
     reflect(v3, v3);
