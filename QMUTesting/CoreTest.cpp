@@ -26,6 +26,9 @@ void compileTyping() {
     qmu::u64 u64_; u64_;
     qmu::f64 f64_; f64_;
 
+    qmu::array_t<int> a0{ 1, 2, 3 }; a0;
+    qmu::array_t<int, 1> a1; a1;
+
     qmu::precision<1>::stype p08s_; p08s_;
     qmu::precision<2>::stype p16s_; p16s_;
     qmu::precision<4>::stype p32s_; p32s_;

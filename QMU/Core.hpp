@@ -59,6 +59,8 @@ using namespace size_types;
 
 
 
+template <typename T, nat t_n = 0> using array_t = std::conditional_t<t_n == 0, T[], T[t_n]>;
+
 template <nat t_p> struct precision;
 template <> struct precision<1> { using stype = s08; using utype = u08; };
 template <> struct precision<2> { using stype = s16; using utype = u16; };
