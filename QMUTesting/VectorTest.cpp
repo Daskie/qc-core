@@ -850,9 +850,18 @@ void compileFunctionsT() {
     mix(v2, v2, v);
     mix(v3, v3, v);
     mix(v4, v4, v);
-
+    
+    mix(v1, v1, v2);
     mix(v2, v2, v2);
+    mix(v3, v3, v2);
+    mix(v4, v4, v2);
+    mix(v1, v1, v1, v3);
+    mix(v2, v2, v2, v3);
     mix(v3, v3, v3, v3);
+    mix(v4, v4, v4, v3);
+    mix(v1, v1, v1, v1, v4);
+    mix(v2, v2, v2, v2, v4);
+    mix(v3, v3, v3, v3, v4);
     mix(v4, v4, v4, v4, v4);
 
     intersect(s1, s1);
@@ -1155,8 +1164,17 @@ constexpr void compileFunctionsConstexprT() {
     mix(v3, v3, v);
     mix(v4, v4, v);
 
+    mix(v1, v1, v2);
     mix(v2, v2, v2);
+    mix(v3, v3, v2);
+    mix(v4, v4, v2);
+    mix(v1, v1, v1, v3);
+    mix(v2, v2, v2, v3);
     mix(v3, v3, v3, v3);
+    mix(v4, v4, v4, v3);
+    mix(v1, v1, v1, v1, v4);
+    mix(v2, v2, v2, v2, v4);
+    mix(v3, v3, v3, v3, v4);
     mix(v4, v4, v4, v4, v4);
 
     toSpan(s1);
