@@ -851,6 +851,10 @@ void compileFunctionsT() {
     mix(v3, v3, v);
     mix(v4, v4, v);
 
+    mix(v2, v2, v2);
+    mix(v3, v3, v3, v3);
+    mix(v4, v4, v4, v4, v4);
+
     intersect(s1, s1);
     intersect(s2, s2);
     intersect(s3, s3);
@@ -1150,6 +1154,10 @@ constexpr void compileFunctionsConstexprT() {
     mix(v2, v2, v);
     mix(v3, v3, v);
     mix(v4, v4, v);
+
+    mix(v2, v2, v2);
+    mix(v3, v3, v3, v3);
+    mix(v4, v4, v4, v4, v4);
 
     toSpan(s1);
     toSpan(s2);

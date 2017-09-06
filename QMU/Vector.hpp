@@ -1216,7 +1216,16 @@ constexpr nvec<t_n> ceil(const vec<T, t_n> & v);
 //------------------------------------------------------------------------------
 
 template <typename T, nat t_n, eif_floating_t<T> = 0>
-constexpr vec<T, t_n> mix(const vec<T, t_n> & v1, const vec <T, t_n> & v2, T t);
+constexpr vec<T, t_n> mix(const vec<T, t_n> & v1, const vec<T, t_n> & v2, T t);
+
+template <typename T, eif_floating_t<T> = 0>
+constexpr vec2<T> mix(const vec2<T> & v1, const vec2<T> & v2, const vec2<T> & weights);
+
+template <typename T, eif_floating_t<T> = 0>
+constexpr vec3<T> mix(const vec3<T> & v1, const vec3<T> & v2, const vec3<T> & v3, const vec3<T> & weights);
+
+template <typename T, eif_floating_t<T> = 0>
+constexpr vec4<T> mix(const vec4<T> & v1, const vec4<T> & v2, const vec4<T> & v3, const vec4<T> & v4, const vec4<T> & weights);
 
 
 
@@ -3874,6 +3883,21 @@ constexpr nvec4 ceil(const vec4<T> & v) {
 template <typename T, nat t_n, eif_floating_t<T>>
 constexpr vec<T, t_n> mix(const vec<T, t_n> & v1, const vec<T, t_n> & v2, T t) {
     return (static_cast<T>(1) - t) * v1 + t * v2;
+}
+
+template <typename T, eif_floating_t<T>>
+constexpr vec2<T> mix(const vec2<T> & v1, const vec2<T> & v2, const vec2<T> & weights) {
+    return weights.x * v1 + weights.y * v2;
+}
+
+template <typename T, eif_floating_t<T>>
+constexpr vec3<T> mix(const vec3<T> & v1, const vec3<T> & v2, const vec3<T> & v3, const vec3<T> & weights) {
+    return weights.x * v1 + weights.y * v2 + weights.z * v3;
+}
+
+template <typename T, eif_floating_t<T>>
+constexpr vec4<T> mix(const vec4<T> & v1, const vec4<T> & v2, const vec4<T> & v3, const vec4<T> & v4, const vec4<T> & weights) {
+    return weights.x * v1 + weights.y * v2 + weights.z * v3 + weights.w * v4;
 }
 
 template <typename T>
