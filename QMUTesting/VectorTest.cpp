@@ -703,6 +703,18 @@ void compileFunctionsT() {
     v >= v3;
     v >= v4;
 
+    // condensation
+
+    sum(v1);
+    sum(v2);
+    sum(v3);
+    sum(v4);
+
+    product(v1);
+    product(v2);
+    product(v3);
+    product(v4);
+
     // other
 
     os << v1;
@@ -897,25 +909,25 @@ void compileBoolFunctions() {
     b3 && b3;
     b4 && b4;
 
-    vand(b1);
-    vand(b2);
-    vand(b3);
-    vand(b4);
-
     b1 || b1;
     b2 || b2;
     b3 || b3;
     b4 || b4;
 
-    vor(b1);
-    vor(b2);
-    vor(b3);
-    vor(b4);
-
     !b1;
     !b2;
     !b3;
     !b4;
+    
+    conjunction(b1);
+    conjunction(b2);
+    conjunction(b3);
+    conjunction(b4);
+
+    disjunction(b1);
+    disjunction(b2);
+    disjunction(b3);
+    disjunction(b4);
 }
 
 void compileFunctions() {
@@ -1103,6 +1115,18 @@ constexpr void compileFunctionsConstexprT() {
     v >= v3;
     v >= v4;
 
+    // condensation
+
+    sum(v1);
+    sum(v2);
+    sum(v3);
+    sum(v4);
+
+    product(v1);
+    product(v2);
+    product(v3);
+    product(v4);
+
     // uncategorized
 
     min(v1);
@@ -1211,25 +1235,25 @@ constexpr void compileBoolFunctionsConstexpr() {
     b3 && b3;
     b4 && b4;
 
-    vand(b1);
-    vand(b2);
-    vand(b3);
-    vand(b4);
-
     b1 || b1;
     b2 || b2;
     b3 || b3;
     b4 || b4;
 
-    vor(b1);
-    vor(b2);
-    vor(b3);
-    vor(b4);
-
     !b1;
     !b2;
     !b3;
     !b4;
+
+    conjunction(b1);
+    conjunction(b2);
+    conjunction(b3);
+    conjunction(b4);
+
+    disjunction(b1);
+    disjunction(b2);
+    disjunction(b3);
+    disjunction(b4);
 }
 
 constexpr bool compileFunctionsConstexpr() {

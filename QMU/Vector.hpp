@@ -962,6 +962,34 @@ template <typename T, nat t_n> constexpr bool operator!=(const span<T, t_n> & s1
 
 
 //==============================================================================
+// Logic
+//------------------------------------------------------------------------------
+
+template <typename T, nat t_n> constexpr bvec<t_n> operator&&(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+
+template <typename T, nat t_n> constexpr bvec<t_n> operator||(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+
+template <typename T, nat t_n> constexpr bvec<t_n> operator!(const vec<T, t_n> & v1);
+
+
+
+//==============================================================================
+// Condensation
+//------------------------------------------------------------------------------
+
+template <typename T, nat t_n> constexpr T sum(const vec<T, t_n> & v);
+
+template <typename T, nat t_n> constexpr T product(const vec<T, t_n> & v);
+
+template <typename T, nat t_n> constexpr bool disjunction(const vec<T, t_n> & v);
+
+template <typename T, nat t_n> constexpr bool conjunction(const vec<T, t_n> & v);
+
+
+
+
+
+//==============================================================================
 // Stream Output
 //------------------------------------------------------------------------------
 
@@ -1235,20 +1263,6 @@ constexpr bound<T, t_n> toBound(const span<T, t_n> & s);
 
 template <typename T, nat t_n>
 span<T, t_n> intersect(const span<T, t_n> & s1, const span<T, t_n> & s2);
-
-
-
-//==============================================================================
-// Logical Operators
-//------------------------------------------------------------------------------
-
-template <nat t_n> constexpr bvec<t_n> operator&&(const bvec<t_n> & v1, const bvec<t_n> & v2);
-template <nat t_n> constexpr bool vand(const bvec<t_n> & v);
-
-template <nat t_n> constexpr bvec<t_n> operator||(const bvec<t_n> & v1, const bvec<t_n> & v2);
-template <nat t_n> constexpr bool vor(const bvec<t_n> & v);
-
-template <nat t_n> constexpr bvec<t_n> operator!(const bvec<t_n> & v1);
 
 
 
@@ -3370,6 +3384,160 @@ constexpr bvec4 operator>=(const T & v1, const vec4<T> & v2) {
 
 
 //------------------------------------------------------------------------------
+// Logic Operators
+
+
+
+template <typename T>
+constexpr bvec1 operator&&(const vec1<T> & v1, const vec1<T> & v2) {
+    return bvec1(v1.x && v2.x);
+}
+
+template <typename T>
+constexpr bvec2 operator&&(const vec2<T> & v1, const vec2<T> & v2) {
+    return bvec2(v1.x && v2.x, v1.y && v2.y);
+}
+
+template <typename T>
+constexpr bvec3 operator&&(const vec3<T> & v1, const vec3<T> & v2) {
+    return bvec3(v1.x && v2.x, v1.y && v2.y, v1.z && v2.z);
+}
+
+template <typename T>
+constexpr bvec4 operator&&(const vec4<T> & v1, const vec4<T> & v2) {
+    return bvec4(v1.x && v2.x, v1.y && v2.y, v1.z && v2.z, v1.w && v2.w);
+}
+
+template <typename T>
+constexpr bvec1 operator||(const vec1<T> & v1, const vec1<T> & v2) {
+    return bvec1(v1.x || v2.x);
+}
+
+template <typename T>
+constexpr bvec2 operator||(const vec2<T> & v1, const vec2<T> & v2) {
+    return bvec2(v1.x || v2.x, v1.y || v2.y);
+}
+
+template <typename T>
+constexpr bvec3 operator||(const vec3<T> & v1, const vec3<T> & v2) {
+    return bvec3(v1.x || v2.x, v1.y || v2.y, v1.z || v2.z);
+}
+
+template <typename T>
+constexpr bvec4 operator||(const vec4<T> & v1, const vec4<T> & v2) {
+    return bvec4(v1.x || v2.x, v1.y || v2.y, v1.z || v2.z, v1.w || v2.w);
+}
+
+template <typename T>
+constexpr bvec1 operator!(const vec1<T> & v) {
+    return bvec1(!v.x);
+}
+
+template <typename T>
+constexpr bvec2 operator!(const vec2<T> & v) {
+    return bvec2(!v.x, !v.y);
+}
+
+template <typename T>
+constexpr bvec3 operator!(const vec3<T> & v) {
+    return bvec3(!v.x, !v.y, !v.z);
+}
+
+template <typename T>
+constexpr bvec4 operator!(const vec4<T> & v) {
+    return bvec4(!v.x, !v.y, !v.z, !v.w);
+}
+
+
+
+//------------------------------------------------------------------------------
+// Condensation
+
+
+
+template <typename T>
+constexpr T sum(const vec1<T> & v) {
+    return v.x;
+}
+
+template <typename T>
+constexpr T sum(const vec2<T> & v) {
+    return v.x + v.y;
+}
+
+template <typename T>
+constexpr T sum(const vec3<T> & v) {
+    return v.x + v.y + v.z;
+}
+
+template <typename T>
+constexpr T sum(const vec4<T> & v) {
+    return v.x + v.y + v.z + v.w;
+}
+
+template <typename T>
+constexpr T product(const vec1<T> & v) {
+    return v.x;
+}
+
+template <typename T>
+constexpr T product(const vec2<T> & v) {
+    return v.x + v.y;
+}
+
+template <typename T>
+constexpr T product(const vec3<T> & v) {
+    return v.x + v.y + v.z;
+}
+
+template <typename T>
+constexpr T product(const vec4<T> & v) {
+    return v.x + v.y + v.z + v.w;
+}
+
+template <typename T>
+constexpr bool conjunction(const vec1<T> & v) {
+    return v.x;
+}
+
+template <typename T>
+constexpr bool conjunction(const vec2<T> & v) {
+    return v.x && v.y;
+}
+
+template <typename T>
+constexpr bool conjunction(const vec3<T> & v) {
+    return v.x && v.y && v.z;
+}
+
+template <typename T>
+constexpr bool conjunction(const vec4<T> & v) {
+    return v.x && v.y && v.z && v.w;
+}
+
+template <typename T>
+constexpr bool disjunction(const vec1<T> & v) {
+    return v.x;
+}
+
+template <typename T>
+constexpr bool disjunction(const vec2<T> & v) {
+    return v.x || v.y;
+}
+
+template <typename T>
+constexpr bool disjunction(const vec3<T> & v) {
+    return v.x || v.y || v.z;
+}
+
+template <typename T>
+constexpr bool disjunction(const vec4<T> & v) {
+    return v.x || v.y || v.z || v.w;
+}
+
+
+
+//------------------------------------------------------------------------------
 // Other
 
 
@@ -3403,8 +3571,6 @@ inline std::ostream & operator<<(std::ostream & os, const span<T, t_n> & s) {
 
 //------------------------------------------------------------------------------
 // Uncategorized
-
-
 
 template <typename T, eif_floating_t<T> = 0>
 inline vec1<T> pow(const vec1<T> & v, T p) {
@@ -4030,86 +4196,6 @@ inline span4<T> intersect(const span4<T> & s1, const span4<T> & s2) {
             min(s1.max.w, s2.max.w)
         )
     );
-}
-
-constexpr bvec1 operator&&(const bvec1 & v1, const bvec1 & v2) {
-    return bvec1(v1.x && v2.x);
-}
-
-constexpr bvec2 operator&&(const bvec2 & v1, const bvec2 & v2) {
-    return bvec2(v1.x && v2.x, v1.y && v2.y);
-}
-
-constexpr bvec3 operator&&(const bvec3 & v1, const bvec3 & v2) {
-    return bvec3(v1.x && v2.x, v1.y && v2.y, v1.z && v2.z);
-}
-
-constexpr bvec4 operator&&(const bvec4 & v1, const bvec4 & v2) {
-    return bvec4(v1.x && v2.x, v1.y && v2.y, v1.z && v2.z, v1.w && v2.w);
-}
-
-constexpr bool vand(const bvec1 & v) {
-    return v.x;
-}
-
-constexpr bool vand(const bvec2 & v) {
-    return v.x && v.y;
-}
-
-constexpr bool vand(const bvec3 & v) {
-    return v.x && v.y && v.z;
-}
-
-constexpr bool vand(const bvec4 & v) {
-    return v.x && v.y && v.z && v.w;
-}
-
-constexpr bvec1 operator||(const bvec1 & v1, const bvec1 & v2) {
-    return bvec1(v1.x || v2.x);
-}
-
-constexpr bvec2 operator||(const bvec2 & v1, const bvec2 & v2) {
-    return bvec2(v1.x || v2.x, v1.y || v2.y);
-}
-
-constexpr bvec3 operator||(const bvec3 & v1, const bvec3 & v2) {
-    return bvec3(v1.x || v2.x, v1.y || v2.y, v1.z || v2.z);
-}
-
-constexpr bvec4 operator||(const bvec4 & v1, const bvec4 & v2) {
-    return bvec4(v1.x || v2.x, v1.y || v2.y, v1.z || v2.z, v1.w || v2.w);
-}
-
-constexpr bool vor(const bvec1 & v) {
-    return v.x;
-}
-
-constexpr bool vor(const bvec2 & v) {
-    return v.x || v.y;
-}
-
-constexpr bool vor(const bvec3 & v) {
-    return v.x || v.y || v.z;
-}
-
-constexpr bool vor(const bvec4 & v) {
-    return v.x || v.y || v.z || v.w;
-}
-
-constexpr bvec1 operator!(const bvec1 & v) {
-    return bvec1(!v.x);
-}
-
-constexpr bvec2 operator!(const bvec2 & v) {
-    return bvec2(!v.x, !v.y);
-}
-
-constexpr bvec3 operator!(const bvec3 & v) {
-    return bvec3(!v.x, !v.y, !v.z);
-}
-
-constexpr bvec4 operator!(const bvec4 & v) {
-    return bvec4(!v.x, !v.y, !v.z, !v.w);
 }
 
 
