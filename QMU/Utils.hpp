@@ -84,7 +84,7 @@ inline nat detFileSize(std::ifstream & ifs) {
     nat initpos = (nat)ifs.tellg();
     ifs.seekg(0, std::ios::end);
     nat size = (nat)ifs.tellg();
-    ifs.seekg(0, static_cast<int>(initpos));
+    ifs.seekg(0, int(initpos));
     return size;
 }
 
@@ -139,7 +139,7 @@ template <typename T, eif_floating_t<T> = 0>
 inline T rand() {
     static std::mt19937 mt(static_cast<std::mt19937::result_type>(std::chrono::system_clock::now().time_since_epoch().count()));
     //static std::mt19937 mt(0);
-    static std::uniform_real_distribution<T> dist(static_cast<T>(0.0), static_cast<T>(1.0));
+    static std::uniform_real_distribution<T> dist(T(0.0), T(1.0));
 
     return dist(mt);
 }
@@ -151,7 +151,7 @@ inline T rand(T min, T max) {
 
 template <typename T, eif_floating_t<T> = 0>
 inline T randCheap() {
-    constexpr T inv_max(static_cast<T>(1.0) / RAND_MAX);
+    constexpr T inv_max(T(1.0) / RAND_MAX);
 
     return std::rand() * inv_max;
 }
@@ -162,11 +162,11 @@ inline T randCheap(T min, T max) {
 }
 
 constexpr unsigned char toByte(float x) {
-    return static_cast<unsigned char>((x < 0.0f ? 0.0f : (x > 1.0f ? 1.0f : x)) * 255.0f);
+    return unsigned char((x < 0.0f ? 0.0f : (x > 1.0f ? 1.0f : x)) * 255.0f);
 }
 
 constexpr unsigned char toByte(double x) {
-    return static_cast<unsigned char>((x < 0.0 ? 0.0 : (x > 1.0 ? 1.0 : x)) * 255.0);
+    return unsigned char((x < 0.0 ? 0.0 : (x > 1.0 ? 1.0 : x)) * 255.0);
 }
 
 //generates n random values between min and 1, the sum of which equals 1
@@ -300,22 +300,22 @@ inline vec3<T> rgb2hsl(const vec3<T> & rgb) {
     if (rgb.b > rgb[maxI]) maxI = 2;
 
     // lightness
-    hsl.z = (rgb[minI] + rgb[maxI]) * static_cast<T>(0.5);
+    hsl.z = (rgb[minI] + rgb[maxI]) * T(0.5);
 
-    if (hsl.z > 0 && hsl.z < static_cast<T>(1.0)) {
+    if (hsl.z > 0 && hsl.z < T(1.0)) {
         // saturation
-        if (hsl.z > static_cast<T>(0.5)) {
-            hsl.y = (rgb[maxI] - rgb[minI]) / (static_cast<T>(2.0) - (hsl.z * static_cast<T>(2.0)));
+        if (hsl.z > T(0.5)) {
+            hsl.y = (rgb[maxI] - rgb[minI]) / (T(2.0) - (hsl.z * T(2.0)));
         }
         else {
-            hsl.y = (rgb[maxI] - rgb[minI]) / (hsl.z * static_cast<T>(2.0));
+            hsl.y = (rgb[maxI] - rgb[minI]) / (hsl.z * T(2.0));
         }
 
         if (hsl.y > 0) {
             // hue
-            hsl.x = maxI * static_cast<T>(1.0 / 3.0);
-            hsl.x += (rgb[(maxI + 1) % 3] - rgb[((maxI + 2) % 3)]) / (rgb[maxI] - rgb[minI]) * static_cast<T>(1.0 / 6.0);
-            hsl.x += static_cast<T>(1.0);
+            hsl.x = maxI * T(1.0 / 3.0);
+            hsl.x += (rgb[(maxI + 1) % 3] - rgb[((maxI + 2) % 3)]) / (rgb[maxI] - rgb[minI]) * T(1.0 / 6.0);
+            hsl.x += T(1.0);
             hsl.x -= std::floor(hsl.x);
         }
     }
@@ -333,25 +333,25 @@ inline vec3<T> hsl2rgb(const vec3<T> & hsl) {
     T temp;
 
     // hue
-    temp = std::round(hsl.x * static_cast<T>(3.0));
-    nat maxI(static_cast<nat>(temp) % 3);
-    rgb[maxI] = static_cast<T>(1.0);
-    T secondaryWeight((hsl.x * static_cast<T>(3.0) - temp) * static_cast<T>(2.0));
+    temp = std::round(hsl.x * T(3.0));
+    nat maxI(nat(temp) % 3);
+    rgb[maxI] = T(1.0);
+    T secondaryWeight((hsl.x * T(3.0) - temp) * T(2.0));
     nat midI((maxI + nat(secondaryWeight > 0 ? std::ceil(secondaryWeight) : std::floor(secondaryWeight)) + 3) % 3);
     rgb[midI] = abs(secondaryWeight);
 
     // saturation
-    temp = static_cast<T>(1.0) - hsl.y;
-    rgb.r += (static_cast<T>(0.5) - rgb.r) * temp;
-    rgb.g += (static_cast<T>(0.5) - rgb.g) * temp;
-    rgb.b += (static_cast<T>(0.5) - rgb.b) * temp;
+    temp = T(1.0) - hsl.y;
+    rgb.r += (T(0.5) - rgb.r) * temp;
+    rgb.g += (T(0.5) - rgb.g) * temp;
+    rgb.b += (T(0.5) - rgb.b) * temp;
 
     // lightness
-    temp = (hsl.z - static_cast<T>(0.5)) * static_cast<T>(2.0);
-    if (hsl.z > static_cast<T>(0.5)) {
-        rgb.r += (static_cast<T>(1.0) - rgb.r) * temp;
-        rgb.g += (static_cast<T>(1.0) - rgb.g) * temp;
-        rgb.b += (static_cast<T>(1.0) - rgb.b) * temp;
+    temp = (hsl.z - T(0.5)) * T(2.0);
+    if (hsl.z > T(0.5)) {
+        rgb.r += (T(1.0) - rgb.r) * temp;
+        rgb.g += (T(1.0) - rgb.g) * temp;
+        rgb.b += (T(1.0) - rgb.b) * temp;
     }
     else {
         rgb.r += rgb.r * temp;
@@ -387,10 +387,10 @@ inline std::string timeString(double seconds) {
     double minutes(std::floor(seconds / k_secondsPerMinute)); seconds -= minutes * k_secondsPerMinute;
 
     std::stringstream ss;
-    ss << std::setw(2) << std::setfill('0') << static_cast<nat>(days) << ":";
-    ss << std::setw(2) << std::setfill('0') << static_cast<nat>(hours) << ":";
-    ss << std::setw(2) << std::setfill('0') << static_cast<nat>(minutes) << ":";
-    ss << std::setw(2) << std::setfill('0') << static_cast<nat>(seconds);
+    ss << std::setw(2) << std::setfill('0') << nat(days) << ":";
+    ss << std::setw(2) << std::setfill('0') << nat(hours) << ":";
+    ss << std::setw(2) << std::setfill('0') << nat(minutes) << ":";
+    ss << std::setw(2) << std::setfill('0') << nat(seconds);
 
     return ss.str();
 }

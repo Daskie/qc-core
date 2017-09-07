@@ -169,7 +169,7 @@ template <typename T> quat<T> slerp(const quat<T> & q1, const quat<T> & q2, T t)
 
 template <typename T>
 constexpr quat<T>::quat() :
-    a(static_cast<T>(0.0)), w(static_cast<T>(1.0))
+    a(T(0.0)), w(T(1.0))
 {}
 
 template <typename T>
@@ -184,7 +184,7 @@ constexpr quat<T>::quat(quat<T> && q) :
 
 template <typename T> template <typename U>
 constexpr quat<T>::quat(const quat<U> & q) :
-    a(q.a), w(static_cast<T>(q.w))
+    a(q.a), w(T(q.w))
 {}
 
 template <typename T>
@@ -194,7 +194,7 @@ constexpr quat<T>::quat(const vec3<T> & a, T w) :
 
 template <typename T>
 constexpr quat<T>::quat(const vec3<T> & v) :
-    a(v), w(static_cast<T>(0.0))
+    a(v), w(T(0.0))
 {}
 
 template <typename T>
@@ -319,7 +319,7 @@ inline quat<T> operator*(T v, const quat<T> & q) {
 
 template <typename T>
 inline vec3<T> operator*(const quat<T> & q, const vec3<T> & v) {
-    vec3<T> t(static_cast<T>(2.0) * cross(q.a, v));
+    vec3<T> t(T(2.0) * cross(q.a, v));
     return v + q.w * t + cross(q.a, t);
 }
 
@@ -385,7 +385,7 @@ inline quat<T> norm(const quat<T> & q) {
     if (zero(m2)) {
         return quat<T>();
     }
-    T m_inv(static_cast<T>(1.0) / std::sqrt(m2));
+    T m_inv(T(1.0) / std::sqrt(m2));
     return quat<T>(q.a * m_inv, q.w * m_inv);
 }
 
@@ -396,7 +396,7 @@ inline quat<T> inverse(const quat<T> & q) {
 
 template <typename T>
 inline T quatAngle(const quat<T> & q) {
-    return std::acos(q.w) * static_cast<T>(2.0);
+    return std::acos(q.w) * T(2.0);
 }
 
 template <typename T>
@@ -406,16 +406,16 @@ inline vec3<T> quatAxis(const quat<T> & q) {
 
 template <typename T>
 inline vec3<T> quatAxis_n(const quat<T> & q) {
-    T d2(static_cast<T>(1.0) - q.w * q.w);
+    T d2(T(1.0) - q.w * q.w);
     if (zero(d2)) {
         return vec3<T>();
     }
-    return q.a * (static_cast<T>(1.0) / std::sqrt(d2));
+    return q.a * (T(1.0) / std::sqrt(d2));
 }
 
 template <typename T>
 inline quat<T> mix(const quat<T> & q1, const quat<T> & q2, T t) {
-    T s(static_cast<T>(1.0) - t);
+    T s(T(1.0) - t);
     return quat<T>(s * q1.a + t * q2.a, s * q1.w + t * q2.w);
 }
 
@@ -437,8 +437,8 @@ inline quat<T> rotateQ(const vec3<T> & axis, T angle) {
 template <typename T>
 inline quat<T> rotateQ_n(const vec3<T> & axis, T angle) {
     return quat<T>(
-        std::sin(angle * static_cast<T>(0.5)) * axis,
-        std::cos(angle * static_cast<T>(0.5))
+        std::sin(angle * T(0.5)) * axis,
+        std::cos(angle * T(0.5))
     );
 }
 
@@ -503,19 +503,19 @@ inline quat<T> slerp(const quat<T> & q1, const quat<T> & q2_, T t) {
     T cosHalfTheta(dot(q1, q2));
 
     //make sure to take the shorter route
-    if (cosHalfTheta < static_cast<T>(0.0)) {
+    if (cosHalfTheta < T(0.0)) {
         cosHalfTheta = -cosHalfTheta;
         q2 = -q2;
     }
     //if parallel, no interpolation necessary
-    if (equal(cosHalfTheta, static_cast<T>(1.0))) {
+    if (equal(cosHalfTheta, T(1.0))) {
         return q1;
     }
 
     T halfTheta(std::acos(cosHalfTheta));
-    T sinHalfTheta(std::sqrt(static_cast<T>(1.0) - cosHalfTheta * cosHalfTheta));
+    T sinHalfTheta(std::sqrt(T(1.0) - cosHalfTheta * cosHalfTheta));
 
-    return (q1 * std::sin((static_cast<T>(1.0) - t) * halfTheta) + q2 * std::sin(t * halfTheta)) * (static_cast<T>(1.0) / sinHalfTheta);
+    return (q1 * std::sin((T(1.0) - t) * halfTheta) + q2 * std::sin(t * halfTheta)) * (T(1.0) / sinHalfTheta);
 }
 
 

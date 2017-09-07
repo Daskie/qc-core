@@ -277,7 +277,7 @@ void compileClasses() {
 
 template <typename T>
 constexpr void compileClassesConstexprT() {
-    constexpr T v(static_cast<T>(0));
+    constexpr T v(T(0));
     constexpr qmu::vec1<T> v1;
     constexpr qmu::vec2<T> v2;
     constexpr qmu::vec3<T> v3;
@@ -1039,11 +1039,11 @@ void compileFunctions() {
 
 template <typename T1, typename T2>
 constexpr void compileFunctionsConstexprTT() {
-    constexpr T1 v(static_cast<T1>(1.0));
-    constexpr qmu::vec1<T1> v1(static_cast<T1>(1.0));
-    constexpr qmu::vec2<T1> v2(static_cast<T1>(1.0));
-    constexpr qmu::vec3<T1> v3(static_cast<T1>(1.0));
-    constexpr qmu::vec4<T1> v4(static_cast<T1>(1.0));
+    constexpr T1 v(T1(1.0));
+    constexpr qmu::vec1<T1> v1(T1(1.0));
+    constexpr qmu::vec2<T1> v2(T1(1.0));
+    constexpr qmu::vec3<T1> v3(T1(1.0));
+    constexpr qmu::vec4<T1> v4(T1(1.0));
     constexpr qmu::span1<T1> s1(v1, v1);
     constexpr qmu::span2<T1> s2(v2, v2);
     constexpr qmu::span3<T1> s3(v3, v3);
@@ -1068,11 +1068,11 @@ constexpr void compileFunctionsConstexprT() {
     compileFunctionsConstexprTT<T,   signed long   long>();
     compileFunctionsConstexprTT<T, unsigned long   long>();
 
-    constexpr T v(static_cast<T>(1.0));
-    constexpr qmu::vec1<T> v1(static_cast<T>(1.0));
-    constexpr qmu::vec2<T> v2(static_cast<T>(1.0));
-    constexpr qmu::vec3<T> v3(static_cast<T>(1.0));
-    constexpr qmu::vec4<T> v4(static_cast<T>(1.0));
+    constexpr T v(T(1.0));
+    constexpr qmu::vec1<T> v1(T(1.0));
+    constexpr qmu::vec2<T> v2(T(1.0));
+    constexpr qmu::vec3<T> v3(T(1.0));
+    constexpr qmu::vec4<T> v4(T(1.0));
     constexpr qmu::span1<T> s1(v1, v1);
     constexpr qmu::span2<T> s2(v2, v2);
     constexpr qmu::span3<T> s3(v3, v3);
@@ -1349,11 +1349,11 @@ constexpr void compileFunctionsConstexprT() {
 
 template <typename T>
 constexpr void compileFunctionsConstexprFT() {
-    constexpr T v(static_cast<T>(1.0));
-    constexpr qmu::vec1<T> v1(static_cast<T>(1.0));
-    constexpr qmu::vec2<T> v2(static_cast<T>(1.0));
-    constexpr qmu::vec3<T> v3(static_cast<T>(1.0));
-    constexpr qmu::vec4<T> v4(static_cast<T>(1.0));
+    constexpr T v(T(1.0));
+    constexpr qmu::vec1<T> v1(T(1.0));
+    constexpr qmu::vec2<T> v2(T(1.0));
+    constexpr qmu::vec3<T> v3(T(1.0));
+    constexpr qmu::vec4<T> v4(T(1.0));
     constexpr qmu::span1<T> s1(v1, v1);
     constexpr qmu::span2<T> s2(v2, v2);
     constexpr qmu::span3<T> s3(v3, v3);
@@ -1380,11 +1380,11 @@ constexpr void compileFunctionsConstexprFT() {
 
 template <typename T>
 constexpr void compileFunctionsConstexprIT() {
-    constexpr T v(static_cast<T>(1.0));
-    constexpr qmu::vec1<T> v1(static_cast<T>(1.0));
-    constexpr qmu::vec2<T> v2(static_cast<T>(1.0));
-    constexpr qmu::vec3<T> v3(static_cast<T>(1.0));
-    constexpr qmu::vec4<T> v4(static_cast<T>(1.0));
+    constexpr T v(T(1.0));
+    constexpr qmu::vec1<T> v1(T(1.0));
+    constexpr qmu::vec2<T> v2(T(1.0));
+    constexpr qmu::vec3<T> v3(T(1.0));
+    constexpr qmu::vec4<T> v4(T(1.0));
     constexpr qmu::span1<T> s1(v1, v1);
     constexpr qmu::span2<T> s2(v2, v2);
     constexpr qmu::span3<T> s3(v3, v3);

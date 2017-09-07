@@ -15,8 +15,8 @@ namespace qmu {
 using  nat =  intptr_t;
 using unat = uintptr_t;
 
-constexpr nat operator""_n(unsigned long long int v) { return static_cast<nat>(v); }
-constexpr unat operator""_un(unsigned long long int v) { return static_cast<unat>(v); }
+constexpr nat operator""_n(unsigned long long int v) { return nat(v); }
+constexpr unat operator""_un(unsigned long long int v) { return unat(v); }
 
 using s08 =   int8_t;
 using u08 =  uint8_t;
@@ -100,19 +100,19 @@ constexpr T sqrtConstexprHelper(T v, T curr, T prev) {
         return curr;
     }
 
-    return sqrtConstexprHelper(v, static_cast<T>(0.5) * (curr + v / curr), curr);
+    return sqrtConstexprHelper(v, T(0.5) * (curr + v / curr), curr);
 }
 
 template <typename T, eif_floating_t<T> = 0>
 constexpr T sqrtConstexpr(T v) {
-    if (v == static_cast<T>(0.0) || v == std::numeric_limits<T>::infinity()) {
+    if (v == T(0.0) || v == std::numeric_limits<T>::infinity()) {
         return v;
     }
-    if (v < static_cast<T>(0.0)) {
+    if (v < T(0.0)) {
         return std::numeric_limits<T>::quiet_NaN();
     }
 
-    return sqrtConstexprHelper(v, v, static_cast<T>(0.0));
+    return sqrtConstexprHelper(v, v, T(0.0));
 }
 
 }
@@ -127,11 +127,11 @@ constexpr T sqrtConstexpr(T v) {
 //  extended |   80 |     21
 //      quad |  128 |     36
 
-template <typename T, eif_floating_t<T> = 0> constexpr T  pi = static_cast<T>(3.14159265358979323846264338327950288L);
-template <typename T, eif_floating_t<T> = 0> constexpr T   e = static_cast<T>(2.71828182845904523536028747135266250L);
-template <typename T, eif_floating_t<T> = 0> constexpr T phi = static_cast<T>(1.61803398874989484820458683436563812L);
+template <typename T, eif_floating_t<T> = 0> constexpr T  pi = T(3.14159265358979323846264338327950288L);
+template <typename T, eif_floating_t<T> = 0> constexpr T   e = T(2.71828182845904523536028747135266250L);
+template <typename T, eif_floating_t<T> = 0> constexpr T phi = T(1.61803398874989484820458683436563812L);
 
-template <typename T, nat t_v, eif_floating_t<T> = 0> constexpr T sqrt = detail::sqrtConstexpr(static_cast<T>(t_v));
+template <typename T, nat t_v, eif_floating_t<T> = 0> constexpr T sqrt = detail::sqrtConstexpr(T(t_v));
 template <typename T, eif_floating_t<T> = 0> constexpr T infinity = std::numeric_limits<T>::infinity();
 template <typename T, eif_floating_t<T> = 0> constexpr T nan = std::numeric_limits<T>::quiet_NaN();
 
@@ -342,21 +342,9 @@ constexpr T abs(T v) {
         return v;
     }
     if constexpr (std::is_signed_v<T>) {
-        return v < static_cast<T>(0) ? -v : v;
+        return v < T(0) ? -v : v;
     }
 }
-
-// constexpr does not allow reinterpret_cast
-/*
-template <typename T, eif_floating_t<T> = 0>
-constexpr T abs(T v) {
-    using itype = precision_ut<sizeof(T)>;
-    constexpr itype mask = static_cast<itype>(-1) >> 1;
-
-    reinterpret_cast<itype &>(v) = reinterpret_cast<itype &>(v) & mask;
-    return v;
-}
-*/
 
 template <typename T, eif_arithmetic_t<T>>
 constexpr bool zero(T v, T e) {
@@ -364,7 +352,7 @@ constexpr bool zero(T v, T e) {
         return abs(v) < e;
     }
     if constexpr (std::is_integral_v<T>) {
-        return v == static_cast<T>(0);
+        return v == T(0);
     }
 }
 
@@ -373,7 +361,7 @@ constexpr bool equal(const T & v1, const T & v2) {
     if constexpr (std::is_floating_point_v<T>) {
         return zero(v1 - v2);
     }
-    if constexpr (std::is_integral_v<T>) {
+    if constexpr (!std::is_floating_point_v<T>) {
         return v1 == v2;
     }
 }
@@ -386,16 +374,16 @@ constexpr bool equal(const T & v1, const T & v2, const Ts &... rest) {
 template <typename T, eif_arithmetic_t<T>>
 constexpr T sign(T v) {
     if constexpr (std::is_signed_v<T>) {
-        return static_cast<T>(static_cast<T>(0) < v) - static_cast<T>(v < static_cast<T>(0));
+        return static_cast<T>(T(0) < v) - static_cast<T>(v < T(0));
     }
     if constexpr (std::is_unsigned_v<T>) {
-        return static_cast<T>(v > static_cast<T>(0));
+        return static_cast<T>(v > T(0));
     }
 }
 
 template <typename T, eif_floating_t<T>>
 constexpr nat floor(T v) {
-    nat i(static_cast<nat>(v));
+    nat i = nat(v);
     return i - (v < i);
 }
 
@@ -406,7 +394,7 @@ constexpr T floor(T v) {
 
 template <typename T, eif_floating_t<T>>
 constexpr nat ceil(T v) {
-    nat i(static_cast<nat>(v));
+    nat i = nat(v);
     return i + (v > i);
 }
 
@@ -465,24 +453,24 @@ constexpr T ceil2(T v) {
 template <typename T, eif_integral_t<T>>
 constexpr T highBit(T v) {
     using UT = std::make_unsigned_t<T>;
-    constexpr UT mask(static_cast<UT>(1) << (sizeof(T) * 8 - 1));
+    constexpr UT mask(UT(1) << (sizeof(T) * 8 - 1));
 
-    return static_cast<T>(static_cast<UT>(v) & mask);
+    return T(UT(v) & mask);
 }
 
 template <typename T, eif_integral_t<T>>
 constexpr T lowBit(T v) {
-    return v & static_cast<T>(1);
+    return v & T(1);
 }
 
 template <typename T, eif_floating_t<T>>
 constexpr T fract(T v) {
-    return v - static_cast<nat>(v);
+    return v - nat(v);
 }
 
 template <typename T, eif_floating_t<T>>
 constexpr std::pair<T, nat> fract_i(T v) {
-    nat i(static_cast<nat>(v));
+    nat i = nat(v);
     return { v - i, i };
 }
 
@@ -511,17 +499,17 @@ constexpr std::pair<T, T> mod_q(T v, T d) {
 
 template <typename T, eif_floating_t<T>>
 constexpr T mix(T v1, T v2, T t) {
-    return (static_cast<T>(1.0) - t) * v1 + t * v2;
+    return (T(1.0) - t) * v1 + t * v2;
 }
 
 template <typename T, eif_floating_t<T>>
 constexpr T radians(T degrees) {
-    return degrees * pi<T> / static_cast<T>(180.0);
+    return degrees * pi<T> / T(180.0);
 }
 
 template <typename T, eif_floating_t<T>>
 constexpr T degrees(T radians) {
-    return radians * static_cast<T>(180.0) / pi<T>;
+    return radians * T(180.0) / pi<T>;
 }
 
 template <typename To, typename From, eif_t<std::is_arithmetic_v<To> && std::is_arithmetic_v<From>>>
@@ -635,7 +623,7 @@ constexpr T interleave(T v) {
     if constexpr (sizeof(T) > 1) {
         using H = match_sign_t<precision_ut<sizeof(T) / 2>, T>;
 
-        H h1(static_cast<H>(v >> sizeof(H) * 8)), h2(static_cast<H>(v));
+        H h1 = H(v >> sizeof(H) * 8), h2 = H(v);
 
         return (spread<H, T>(h1) << 1) | spread<H, T>(h2);
     }

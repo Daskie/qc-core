@@ -818,16 +818,16 @@ struct span {
 
 
 template <typename T, nat t_n, nat t_d> constexpr vec<T, t_n> axis = vec<T, t_n>();
-template <typename T> constexpr vec<T, 1> axis<T, 1, 0> = vec1<T>(static_cast<T>(1));
-template <typename T> constexpr vec<T, 2> axis<T, 2, 0> = vec2<T>(static_cast<T>(1), static_cast<T>(0));
-template <typename T> constexpr vec<T, 2> axis<T, 2, 1> = vec2<T>(static_cast<T>(0), static_cast<T>(1));
-template <typename T> constexpr vec<T, 3> axis<T, 3, 0> = vec3<T>(static_cast<T>(1), static_cast<T>(0), static_cast<T>(0));
-template <typename T> constexpr vec<T, 3> axis<T, 3, 1> = vec3<T>(static_cast<T>(0), static_cast<T>(1), static_cast<T>(0));
-template <typename T> constexpr vec<T, 3> axis<T, 3, 2> = vec3<T>(static_cast<T>(0), static_cast<T>(0), static_cast<T>(1));
-template <typename T> constexpr vec<T, 4> axis<T, 4, 0> = vec4<T>(static_cast<T>(1), static_cast<T>(0), static_cast<T>(0), static_cast<T>(0));
-template <typename T> constexpr vec<T, 4> axis<T, 4, 1> = vec4<T>(static_cast<T>(0), static_cast<T>(1), static_cast<T>(0), static_cast<T>(0));
-template <typename T> constexpr vec<T, 4> axis<T, 4, 2> = vec4<T>(static_cast<T>(0), static_cast<T>(0), static_cast<T>(1), static_cast<T>(0));
-template <typename T> constexpr vec<T, 4> axis<T, 4, 2> = vec4<T>(static_cast<T>(0), static_cast<T>(0), static_cast<T>(0), static_cast<T>(1));
+template <typename T> constexpr vec<T, 1> axis<T, 1, 0> = vec1<T>(T(1));
+template <typename T> constexpr vec<T, 2> axis<T, 2, 0> = vec2<T>(T(1), T(0));
+template <typename T> constexpr vec<T, 2> axis<T, 2, 1> = vec2<T>(T(0), T(1));
+template <typename T> constexpr vec<T, 3> axis<T, 3, 0> = vec3<T>(T(1), T(0), T(0));
+template <typename T> constexpr vec<T, 3> axis<T, 3, 1> = vec3<T>(T(0), T(1), T(0));
+template <typename T> constexpr vec<T, 3> axis<T, 3, 2> = vec3<T>(T(0), T(0), T(1));
+template <typename T> constexpr vec<T, 4> axis<T, 4, 0> = vec4<T>(T(1), T(0), T(0), T(0));
+template <typename T> constexpr vec<T, 4> axis<T, 4, 1> = vec4<T>(T(0), T(1), T(0), T(0));
+template <typename T> constexpr vec<T, 4> axis<T, 4, 2> = vec4<T>(T(0), T(0), T(1), T(0));
+template <typename T> constexpr vec<T, 4> axis<T, 4, 2> = vec4<T>(T(0), T(0), T(0), T(1));
 
 template <typename T, nat t_n> constexpr vec<T, t_n> axisX = axis<T, t_n, 0>;
 template <typename T, nat t_n> constexpr vec<T, t_n> axisY = axis<T, t_n, 1>;
@@ -1302,7 +1302,7 @@ namespace qmu {
 
 template <typename T>
 constexpr vec<T, 1>::vec() :
-    x(static_cast<T>(0))
+    x(T(0))
 {}
 
 template <typename T>
@@ -1318,25 +1318,25 @@ constexpr vec<T, 1>::vec(vec1<T> && v) :
 template <typename T>
 template <typename U>
 constexpr vec<T, 1>::vec(const vec1<U> & v) :
-    x(static_cast<T>(v.x))
+    x(T(v.x))
 {}
 
 template <typename T>
 template <typename U>
 constexpr vec<T, 1>::vec(const vec2<U> & v) :
-    x(static_cast<T>(v.x))
+    x(T(v.x))
 {}
 
 template <typename T>
 template <typename U>
 constexpr vec<T, 1>::vec(const vec3<U> & v) :
-    x(static_cast<T>(v.x))
+    x(T(v.x))
 {}
 
 template <typename T>
 template <typename U>
 constexpr vec<T, 1>::vec(const vec4<U> & v) :
-    x(static_cast<T>(v.x))
+    x(T(v.x))
 {}
 
 template <typename T>
@@ -1438,7 +1438,7 @@ inline std::string vec<T, 1>::toString() const {
 
 template <typename T>
 constexpr vec<T, 2>::vec() :
-    x(static_cast<T>(0)), y(static_cast<T>(0))
+    x(T(0)), y(T(0))
 {}
 
 template <typename T>
@@ -1454,25 +1454,25 @@ constexpr vec<T, 2>::vec(vec2<T> && v) :
 template <typename T>
 template <typename U>
 constexpr vec<T, 2>::vec(const vec1<U> & v) :
-    x(static_cast<T>(v.x)), y(static_cast<T>(0))
+    x(T(v.x)), y(T(0))
 {}
 
 template <typename T>
 template <typename U>
 constexpr vec<T, 2>::vec(const vec2<U> & v) :
-    x(static_cast<T>(v.x)), y(static_cast<T>(v.y))
+    x(T(v.x)), y(T(v.y))
 {}
 
 template <typename T>
 template <typename U>
 constexpr vec<T, 2>::vec(const vec3<U> & v) :
-    x(static_cast<T>(v.x)), y(static_cast<T>(v.y))
+    x(T(v.x)), y(T(v.y))
 {}
 
 template <typename T>
 template <typename U>
 constexpr vec<T, 2>::vec(const vec4<U> & v) :
-    x(static_cast<T>(v.x)), y(static_cast<T>(v.y))
+    x(T(v.x)), y(T(v.y))
 {}
 
 template <typename T>
@@ -1530,7 +1530,7 @@ template <nat t_m>
 inline vec2<T> & vec<T, 2>::operator=(const vec<T, t_m> & v) {
     x = v.x;
     if constexpr (t_m >= 2) y = v.y;
-    if constexpr (t_m < 2) y = static_cast<T>(0);
+    if constexpr (t_m < 2) y = T(0);
     return *this;
 }
 
@@ -1598,7 +1598,7 @@ inline std::string vec<T, 2>::toString() const {
 
 template <typename T>
 constexpr vec<T, 3>::vec() :
-    x(static_cast<T>(0)), y(static_cast<T>(0)), z(static_cast<T>(0))
+    x(T(0)), y(T(0)), z(T(0))
 {}
 
 template <typename T>
@@ -1614,25 +1614,25 @@ constexpr vec<T, 3>::vec(vec3<T> && v) :
 template <typename T>
 template <typename U>
 constexpr vec<T, 3>::vec(const vec1<U> & v) :
-    x(static_cast<T>(v.x)), y(static_cast<T>(0)), z(static_cast<T>(0))
+    x(T(v.x)), y(T(0)), z(T(0))
 {}
 
 template <typename T>
 template <typename U>
 constexpr vec<T, 3>::vec(const vec2<U> & v) :
-    x(static_cast<T>(v.x)), y(static_cast<T>(v.y)), z(static_cast<T>(0))
+    x(T(v.x)), y(T(v.y)), z(T(0))
 {}
 
 template <typename T>
 template <typename U>
 constexpr vec<T, 3>::vec(const vec3<U> & v) :
-    x(static_cast<T>(v.x)), y(static_cast<T>(v.y)), z(static_cast<T>(v.z))
+    x(T(v.x)), y(T(v.y)), z(T(v.z))
 {}
 
 template <typename T>
 template <typename U>
 constexpr vec<T, 3>::vec(const vec4<U> & v) :
-    x(static_cast<T>(v.x)), y(static_cast<T>(v.y)), z(static_cast<T>(v.z))
+    x(T(v.x)), y(T(v.y)), z(T(v.z))
 {}
 
 template <typename T>
@@ -1730,9 +1730,9 @@ template <nat t_m>
 inline vec3<T> & vec<T, 3>::operator=(const vec<T, t_m> & v) {
     x = v.x; 
     if constexpr (t_m >= 2) y = v.y;
-    if constexpr (t_m < 2) y = static_cast<T>(0);
+    if constexpr (t_m < 2) y = T(0);
     if constexpr (t_m >= 3) z = v.z;
-    if constexpr (t_m < 3) z = static_cast<T>(0);
+    if constexpr (t_m < 3) z = T(0);
     return *this;
 }
 
@@ -1860,7 +1860,7 @@ inline std::string vec<T, 3>::toString() const {
 
 template <typename T>
 constexpr vec<T, 4>::vec() :
-    x(static_cast<T>(0)), y(static_cast<T>(0)), z(static_cast<T>(0)), w(static_cast<T>(0))
+    x(T(0)), y(T(0)), z(T(0)), w(T(0))
 {}
 
 template <typename T>
@@ -1876,25 +1876,25 @@ constexpr vec<T, 4>::vec(vec4<T> && v) :
 template <typename T>
 template <typename U>
 constexpr vec<T, 4>::vec(const vec1<U> & v) :
-    x(static_cast<T>(v.x)), y(static_cast<T>(0)), z(static_cast<T>(0)), w(static_cast<T>(0))
+    x(T(v.x)), y(T(0)), z(T(0)), w(T(0))
 {}
 
 template <typename T>
 template <typename U>
 constexpr vec<T, 4>::vec(const vec2<U> & v) :
-    x(static_cast<T>(v.x)), y(static_cast<T>(v.y)), z(static_cast<T>(0)), w(static_cast<T>(0))
+    x(T(v.x)), y(T(v.y)), z(T(0)), w(T(0))
 {}
 
 template <typename T>
 template <typename U>
 constexpr vec<T, 4>::vec(const vec3<U> & v) :
-    x(static_cast<T>(v.x)), y(static_cast<T>(v.y)), z(static_cast<T>(v.z)), w(static_cast<T>(0))
+    x(T(v.x)), y(T(v.y)), z(T(v.z)), w(T(0))
 {}
 
 template <typename T>
 template <typename U>
 constexpr vec<T, 4>::vec(const vec4<U> & v) :
-    x(static_cast<T>(v.x)), y(static_cast<T>(v.y)), z(static_cast<T>(v.z)), w(static_cast<T>(v.w))
+    x(T(v.x)), y(T(v.y)), z(T(v.z)), w(T(v.w))
 {}
 
 template <typename T>
@@ -2097,11 +2097,11 @@ template <nat t_m>
 inline vec4<T> & vec<T, 4>::operator=(const vec<T, t_m> & v) {
     x = v.x;
     if constexpr (t_m >= 2) y = v.y;
-    if constexpr (t_m < 2) y = static_cast<T>(0);
+    if constexpr (t_m < 2) y = T(0);
     if constexpr (t_m >= 3) z = v.z;
-    if constexpr (t_m < 3) z = static_cast<T>(0);
+    if constexpr (t_m < 3) z = T(0);
     if constexpr (t_m >= 4) w = v.w;
-    if constexpr (t_m < 4) w = static_cast<T>(0);
+    if constexpr (t_m < 4) w = T(0);
     return *this;
 }
 
@@ -2633,7 +2633,7 @@ constexpr vec<T, t_n> operator/(const vec<T, t_n> & v1, const vec<T, t_n> & v2) 
 template <typename T, nat t_n>
 constexpr vec<T, t_n> operator/(const vec<T, t_n> & v1, const T & v2) {
     if constexpr (t_n > 1 && std::is_floating_point_v<T>) {
-        return v1 * (static_cast<T>(1.0) / v2);
+        return v1 * (T(1.0) / v2);
     }
     if constexpr (t_n == 1) return vec1<T>(v1.x / v2);
     if constexpr (t_n == 2) return vec2<T>(v1.x / v2, v1.y / v2);
@@ -2974,7 +2974,7 @@ inline vec<T, t_n> exp(const vec<T, t_n> & v) {
 
 template <typename T, nat t_n, eif_floating_t<T>>
 inline T magnitude(const vec<T, t_n> & v) {
-    return static_cast<T>(std::sqrt(magnitude2(v)));
+    return T(std::sqrt(magnitude2(v)));
 }
 
 template <typename T, nat t_n>
@@ -2991,7 +2991,7 @@ inline vec<T, t_n> norm(const vec<T, t_n> & v) {
     if (zero(m)) {
         return vec<T, t_n>();
     }
-    return v * (static_cast<T>(1.0) / m);
+    return v * (T(1.0) / m);
 }
 
 template <typename T, nat t_n>
@@ -3080,7 +3080,7 @@ inline vec<T, t_n> reflect(const vec<T, t_n> & v, const vec<T, t_n> & n) {
 
 template <typename T, nat t_n, eif_floating_t<T>>
 inline vec<T, t_n> reflect_n(const vec<T, t_n> & v, const vec<T, t_n> & n) {
-    return (static_cast<T>(2.0) * dot(v, n)) * n - v;
+    return (T(2.0) * dot(v, n)) * n - v;
 }
 
 template <typename T, nat t_n, eif_floating_t<T>>
@@ -3089,7 +3089,7 @@ inline T angle(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
 }
 template <typename T, nat t_n, eif_floating_t<T>>
 inline T angle_n(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
-    return static_cast<T>(std::acos(dot(v1, v2)));
+    return T(std::acos(dot(v1, v2)));
 }
 
 template <typename T, nat t_n>
@@ -3226,7 +3226,7 @@ constexpr nvec<t_n> ceil(const vec<T, t_n> & v) {
 
 template <typename T, nat t_n, eif_floating_t<T>>
 constexpr vec<T, t_n> mix(const vec<T, t_n> & v1, const vec<T, t_n> & v2, T t) {
-    return (static_cast<T>(1.0) - t) * v1 + t * v2;
+    return (T(1.0) - t) * v1 + t * v2;
 }
 
 template <typename T, nat t_n, eif_floating_t<T>>

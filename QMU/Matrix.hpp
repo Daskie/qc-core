@@ -452,8 +452,8 @@ namespace qmu {
 
 template <typename T>
 constexpr mat<T, 2, 2>::mat() :
-    x1(static_cast<T>(1.0)), y1(static_cast<T>(0.0)),
-    x2(static_cast<T>(0.0)), y2(static_cast<T>(1.0))
+    x1(T(1.0)), y1(T(0.0)),
+    x2(T(0.0)), y2(T(1.0))
 {}
 
 template <typename T>
@@ -470,8 +470,8 @@ constexpr mat<T, 2, 2>::mat(mat2<T> && m) :
 
 template <typename T> template <typename U>
 constexpr mat<T, 2, 2>::mat(const mat2<U> & m) :
-    x1(static_cast<T>(m.x1)), y1(static_cast<T>(m.y1)),
-    x2(static_cast<T>(m.x2)), y2(static_cast<T>(m.y2))
+    x1(T(m.x1)), y1(T(m.y1)),
+    x2(T(m.x2)), y2(T(m.y2))
 {}
 
 template <typename T>
@@ -635,9 +635,9 @@ inline std::string mat<T, 2, 2>::toString() const {
 
 template <typename T>
 constexpr mat<T, 3, 3>::mat() :
-    x1(static_cast<T>(1.0)), y1(static_cast<T>(0.0)), z1(static_cast<T>(0.0)),
-    x2(static_cast<T>(0.0)), y2(static_cast<T>(1.0)), z2(static_cast<T>(0.0)),
-    x3(static_cast<T>(0.0)), y3(static_cast<T>(0.0)), z3(static_cast<T>(1.0))
+    x1(T(1.0)), y1(T(0.0)), z1(T(0.0)),
+    x2(T(0.0)), y2(T(1.0)), z2(T(0.0)),
+    x3(T(0.0)), y3(T(0.0)), z3(T(1.0))
 {}
 
 template <typename T>
@@ -656,9 +656,9 @@ constexpr mat<T, 3, 3>::mat(mat3<T> && m) :
 
 template <typename T> template <typename U>
 constexpr mat<T, 3, 3>::mat(const mat3<U> & m) :
-    x1(static_cast<T>(m.x1)), y1(static_cast<T>(m.y1)), z1(static_cast<T>(m.z1)),
-    x2(static_cast<T>(m.x2)), y2(static_cast<T>(m.y2)), z2(static_cast<T>(m.z2)),
-    x3(static_cast<T>(m.x3)), y3(static_cast<T>(m.y3)), z3(static_cast<T>(m.z3))
+    x1(T(m.x1)), y1(T(m.y1)), z1(T(m.z1)),
+    x2(T(m.x2)), y2(T(m.y2)), z2(T(m.z2)),
+    x3(T(m.x3)), y3(T(m.y3)), z3(T(m.z3))
 {}
 
 template <typename T>
@@ -674,9 +674,9 @@ constexpr mat<T, 3, 3>::mat(
 
 template <typename T>
 constexpr mat<T, 3, 3>::mat(const mat2<T> & m) :
-    x1(               m.x1), y1(               m.y1), z1(static_cast<T>(0.0)),
-    x2(               m.x2), y2(               m.y2), z2(static_cast<T>(0.0)),
-    x3(static_cast<T>(0.0)), y3(static_cast<T>(0.0)), z3(static_cast<T>(1.0))
+    x1(               m.x1), y1(               m.y1), z1(T(0.0)),
+    x2(               m.x2), y2(               m.y2), z2(T(0.0)),
+    x3(T(0.0)), y3(T(0.0)), z3(T(1.0))
 {}
 
 template <typename T>
@@ -724,7 +724,7 @@ inline mat3<T> & mat<T, 3, 3>::operator=(mat3<T> && m) {
 
 template <typename T>
 inline mat3<T> & mat<T, 3, 3>::operator=(const mat2<T> & m) {
-    constexpr T _0(static_cast<T>(0.0)), _1(static_cast<T>(1.0));
+    constexpr T _0(T(0.0)), _1(T(1.0));
 
     x1 = m.x1; y1 = m.y1; z1 = _0;
     x2 = m.x2; y2 = m.y2; z2 = _0;
@@ -853,10 +853,10 @@ inline std::string mat<T, 3, 3>::toString() const {
 
 template <typename T>
 constexpr mat<T, 4, 4>::mat() :
-    x1(static_cast<T>(1.0)), y1(static_cast<T>(0.0)), z1(static_cast<T>(0.0)), w1(static_cast<T>(0.0)),
-    x2(static_cast<T>(0.0)), y2(static_cast<T>(1.0)), z2(static_cast<T>(0.0)), w2(static_cast<T>(0.0)),
-    x3(static_cast<T>(0.0)), y3(static_cast<T>(0.0)), z3(static_cast<T>(1.0)), w3(static_cast<T>(0.0)),
-    x4(static_cast<T>(0.0)), y4(static_cast<T>(0.0)), z4(static_cast<T>(0.0)), w4(static_cast<T>(1.0))
+    x1(T(1.0)), y1(T(0.0)), z1(T(0.0)), w1(T(0.0)),
+    x2(T(0.0)), y2(T(1.0)), z2(T(0.0)), w2(T(0.0)),
+    x3(T(0.0)), y3(T(0.0)), z3(T(1.0)), w3(T(0.0)),
+    x4(T(0.0)), y4(T(0.0)), z4(T(0.0)), w4(T(1.0))
 {}
 
 template <typename T>
@@ -877,10 +877,10 @@ constexpr mat<T, 4, 4>::mat(mat4<T> && m) :
 
 template <typename T> template <typename U>
 constexpr mat<T, 4, 4>::mat(const mat4<U> & m) :
-    x1(static_cast<T>(m.x1)), y1(static_cast<T>(m.y1)), z1(static_cast<T>(m.z1)), w1(static_cast<T>(m.w1)),
-    x2(static_cast<T>(m.x2)), y2(static_cast<T>(m.y2)), z2(static_cast<T>(m.z2)), w2(static_cast<T>(m.w2)),
-    x3(static_cast<T>(m.x3)), y3(static_cast<T>(m.y3)), z3(static_cast<T>(m.z3)), w3(static_cast<T>(m.w3)),
-    x4(static_cast<T>(m.x4)), y4(static_cast<T>(m.y4)), z4(static_cast<T>(m.z4)), w4(static_cast<T>(m.w4))
+    x1(T(m.x1)), y1(T(m.y1)), z1(T(m.z1)), w1(T(m.w1)),
+    x2(T(m.x2)), y2(T(m.y2)), z2(T(m.z2)), w2(T(m.w2)),
+    x3(T(m.x3)), y3(T(m.y3)), z3(T(m.z3)), w3(T(m.w3)),
+    x4(T(m.x4)), y4(T(m.y4)), z4(T(m.z4)), w4(T(m.w4))
 {}
 
 template <typename T>
@@ -898,18 +898,18 @@ constexpr mat<T, 4, 4>::mat(
 
 template <typename T>
 constexpr mat<T, 4, 4>::mat(const mat2<T> & m) :
-    x1(               m.x1), y1(               m.y1), z1(static_cast<T>(0.0)), w1(static_cast<T>(0.0)),
-    x2(               m.x2), y2(               m.y2), z2(static_cast<T>(0.0)), w2(static_cast<T>(0.0)),
-    x3(static_cast<T>(0.0)), y3(static_cast<T>(0.0)), z3(static_cast<T>(1.0)), w3(static_cast<T>(0.0)),
-    x4(static_cast<T>(0.0)), y4(static_cast<T>(0.0)), z4(static_cast<T>(0.0)), w4(static_cast<T>(1.0))
+    x1(               m.x1), y1(               m.y1), z1(T(0.0)), w1(T(0.0)),
+    x2(               m.x2), y2(               m.y2), z2(T(0.0)), w2(T(0.0)),
+    x3(T(0.0)), y3(T(0.0)), z3(T(1.0)), w3(T(0.0)),
+    x4(T(0.0)), y4(T(0.0)), z4(T(0.0)), w4(T(1.0))
 {}
 
 template <typename T>
 constexpr mat<T, 4, 4>::mat(const mat3<T> & m) :
-    x1(               m.x1), y1(               m.y1), z1(               m.z1), w1(static_cast<T>(0.0)),
-    x2(               m.x2), y2(               m.y2), z2(               m.z2), w2(static_cast<T>(0.0)),
-    x3(               m.x3), y3(               m.y3), z3(               m.z3), w3(static_cast<T>(0.0)),
-    x4(static_cast<T>(0.0)), y4(static_cast<T>(0.0)), z4(static_cast<T>(0.0)), w4(static_cast<T>(1.0))
+    x1(               m.x1), y1(               m.y1), z1(               m.z1), w1(T(0.0)),
+    x2(               m.x2), y2(               m.y2), z2(               m.z2), w2(T(0.0)),
+    x3(               m.x3), y3(               m.y3), z3(               m.z3), w3(T(0.0)),
+    x4(T(0.0)), y4(T(0.0)), z4(T(0.0)), w4(T(1.0))
 {}
 
 template <typename T>
@@ -954,7 +954,7 @@ inline mat4<T> & mat<T, 4, 4>::operator=(mat4<T> && m) {
 
 template <typename T>
 inline mat4<T> & mat<T, 4, 4>::operator=(const mat2<T> & m) {
-    constexpr T _0(static_cast<T>(0.0)), _1(static_cast<T>(1.0));
+    constexpr T _0(T(0.0)), _1(T(1.0));
 
     x1 = m.x1; y1 = m.y1; z1 = _0; w1 = _0;
     x2 = m.x2; y2 = m.y2; z2 = _0; w2 = _0;
@@ -966,7 +966,7 @@ inline mat4<T> & mat<T, 4, 4>::operator=(const mat2<T> & m) {
 
 template <typename T>
 inline mat4<T> & mat<T, 4, 4>::operator=(const mat3<T> & m) {
-    constexpr T _0(static_cast<T>(0.0)), _1(static_cast<T>(1.0));
+    constexpr T _0(T(0.0)), _1(T(1.0));
 
     x1 = m.x1; y1 = m.y1; z1 = m.z1; w1 = _0;
     x2 = m.x2; y2 = m.y2; z2 = m.z2; w2 = _0;
@@ -1237,7 +1237,7 @@ inline mat<T, t_m, t_n> & operator*=(mat<T, t_m, t_n> & m1, const mat<T, t_m, t_
 
 template <typename T, nat t_m, nat t_n>
 inline mat<T, t_m, t_n> & operator/=(mat<T, t_m, t_n> & m, T v) {
-    return m *= static_cast<T>(1.0) / v;
+    return m *= T(1.0) / v;
 }
 
 //--- pre increment ---
@@ -1667,7 +1667,7 @@ inline vec4<T> operator*(const mat4<T> & m, const vec4<T> & v) {
 
 template <typename T>
 inline mat2<T> operator/(const mat2<T> & m, T v) {
-    v = static_cast<T>(1.0) / v;
+    v = T(1.0) / v;
     return mat2<T>(
         m.x1 * v, m.y1 * v,
         m.x2 * v, m.y2 * v
@@ -1676,7 +1676,7 @@ inline mat2<T> operator/(const mat2<T> & m, T v) {
 
 template <typename T>
 inline mat3<T> operator/(const mat3<T> & m, T v) {
-    v = static_cast<T>(1.0) / v;
+    v = T(1.0) / v;
     return mat3<T>(
         m.x1 * v, m.y1 * v, m.z1 * v,
         m.x2 * v, m.y2 * v, m.z2 * v,
@@ -1686,7 +1686,7 @@ inline mat3<T> operator/(const mat3<T> & m, T v) {
 
 template <typename T>
 inline mat4<T> operator/(const mat4<T> & m, T v) {
-    v = static_cast<T>(1.0) / v;
+    v = T(1.0) / v;
     return mat4<T>(
         m.x1 * v, m.y1 * v, m.z1 * v, m.w1 * v,
         m.x2 * v, m.y2 * v, m.z2 * v, m.w2 * v,
@@ -2014,7 +2014,7 @@ constexpr mat<T, t_m, t_n> fullMat(T v) {
 
 template <typename T, nat t_m, nat t_n>
 constexpr mat<T, t_m, t_n> nullMat() {
-    return fullMat<T, t_m, t_n>(static_cast<T>(0.0));
+    return fullMat<T, t_m, t_n>(T(0.0));
 }
 
 
@@ -2026,7 +2026,7 @@ constexpr mat<T, t_m, t_n> nullMat() {
 
 template <typename T>
 inline mat2<T> translate(const vec1<T> & delta) {
-    constexpr T _0(static_cast<T>(0.0)), _1(static_cast<T>(1.0));
+    constexpr T _0(T(0.0)), _1(T(1.0));
 
     return mat2<T>(
              _1, _0,
@@ -2036,7 +2036,7 @@ inline mat2<T> translate(const vec1<T> & delta) {
 
 template <typename T>
 inline mat3<T> translate(const vec2<T> & delta) {
-    constexpr T _0(static_cast<T>(0.0)), _1(static_cast<T>(1.0));
+    constexpr T _0(T(0.0)), _1(T(1.0));
 
     return mat3<T>(
              _1,      _0, _0,
@@ -2047,7 +2047,7 @@ inline mat3<T> translate(const vec2<T> & delta) {
 
 template <typename T>
 inline mat4<T> translate(const vec3<T> & delta) {
-    constexpr T _0(static_cast<T>(0.0)), _1(static_cast<T>(1.0));
+    constexpr T _0(T(0.0)), _1(T(1.0));
 
     return mat4<T>(
              _1,      _0,      _0, _0,
@@ -2095,14 +2095,14 @@ inline mat4<T> & translate(mat4<T> & mat, const vec3<T> & delta) {
 template <typename T>
 inline mat2<T> scale(const vec2<T> & scale) {
     return mat2<T>(
-        scale.x,             static_cast<T>(0.0),
-        static_cast<T>(0.0), scale.y
+        scale.x,             T(0.0),
+        T(0.0), scale.y
     );
 }
 
 template <typename T>
 inline mat3<T> scale(const vec3<T> & scale) {
-    constexpr T _0(static_cast<T>(0.0));
+    constexpr T _0(T(0.0));
 
     return mat3<T>(
         scale.x,      _0,      _0,
@@ -2203,7 +2203,7 @@ inline mat2<T> rotate(T angle) {
 
 template <typename T>
 inline mat3<T> rotateX(T angle) {
-    constexpr T _0(static_cast<T>(0.0)), _1(static_cast<T>(1.0));
+    constexpr T _0(T(0.0)), _1(T(1.0));
 
     T s(std::sin(angle));
     T c(std::cos(angle));
@@ -2217,7 +2217,7 @@ inline mat3<T> rotateX(T angle) {
 
 template <typename T>
 inline mat3<T> rotateY(T angle) {
-    constexpr T _0(static_cast<T>(0.0)), _1(static_cast<T>(1.0));
+    constexpr T _0(T(0.0)), _1(T(1.0));
 
     T s(std::sin(angle));
     T c(std::cos(angle));
@@ -2231,7 +2231,7 @@ inline mat3<T> rotateY(T angle) {
 
 template <typename T>
 inline mat3<T> rotateZ(T angle) {
-    constexpr T _0(static_cast<T>(0.0)), _1(static_cast<T>(1.0));
+    constexpr T _0(T(0.0)), _1(T(1.0));
 
     T s(std::sin(angle));
     T c(std::cos(angle));
@@ -2253,7 +2253,7 @@ inline mat3<T> rotate(const vec3<T> & axis, T sinTheta, T cosTheta) {
 }
 template <typename T>
 inline mat3<T> rotate_n(const vec3<T> & axis, T s, T c) {
-    T cm(static_cast<T>(1.0) - c);
+    T cm(T(1.0) - c);
     T xs(axis.x * s);
     T ys(axis.y * s);
     T zs(axis.z * s);
@@ -2298,22 +2298,22 @@ inline mat2<T> align_n(const vec2<T> & v1, const vec2<T> & v2) {
     T c(cross(v1, v2));
     T d(dot(v1, v2));
 
-    return rotate(c < static_cast<T>(0.0) ? -std::acos(d) : std::acos(d));
+    return rotate(c < T(0.0) ? -std::acos(d) : std::acos(d));
 }
 template <typename T>
 inline mat3<T> align_n(const vec3<T> & v1, const vec3<T> & v2) {
     T d(dot(v1, v2));
-    if (equal(d, static_cast<T>(1.0))) { // already aligned, and would break rotation
+    if (equal(d, T(1.0))) { // already aligned, and would break rotation
         return mat3<T>();
     }
-    if (equal(d, static_cast<T>(-1.0))) { // opposite direction, pick arbitrary axis to rotate around
+    if (equal(d, T(-1.0))) { // opposite direction, pick arbitrary axis to rotate around
         return rotate_n(ortho(v1), pi<T>);
     }
 
     vec3<T> c(cross(v1, v2));
     T m(magnitude(c));
 
-    return rotate_n(c * (static_cast<T>(1.0) / m), m, d);
+    return rotate_n(c * (T(1.0) / m), m, d);
 }
 
 template <typename T>
@@ -2390,7 +2390,7 @@ inline mat3<T> mapFrom(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z) 
 
 template <typename T>
 inline mat4<T> orthoProj(T width, T height, T near, T far) {
-    constexpr T _0(static_cast<T>(0.0)), _1(static_cast<T>(1.0)), _2(static_cast<T>(2.0));
+    constexpr T _0(T(0.0)), _1(T(1.0)), _2(T(2.0));
 
     return mat4<T>(
         _2 / width,          _0,                          _0, _0,
@@ -2402,7 +2402,7 @@ inline mat4<T> orthoProj(T width, T height, T near, T far) {
 
 template <typename T>
 inline mat4<T> orthoProjAsym(T left, T right, T bottom, T top, T near, T far) {
-    constexpr T _0(static_cast<T>(0.0)), _1(static_cast<T>(1.0)), _2(static_cast<T>(2.0));
+    constexpr T _0(T(0.0)), _1(T(1.0)), _2(T(2.0));
 
     return mat4<T>(
                     _2 / (right - left),                              _0,                          _0, _0,
@@ -2414,9 +2414,9 @@ inline mat4<T> orthoProjAsym(T left, T right, T bottom, T top, T near, T far) {
 
 template <typename T>
 inline mat4<T> perspProj(T fov, T aspectRatio, T near, T far) {
-    constexpr T _0(static_cast<T>(0.0)), _1(static_cast<T>(1.0)), _2(static_cast<T>(2.0));
+    constexpr T _0(T(0.0)), _1(T(1.0)), _2(T(2.0));
 
-    T near_right(static_cast<T>(1.0) / std::tan(fov / static_cast<T>(2.0)));
+    T near_right(T(1.0) / std::tan(fov / T(2.0)));
 
     return mat4<T>(
         near_right,                       _0,                             _0,  _0,
@@ -2428,7 +2428,7 @@ inline mat4<T> perspProj(T fov, T aspectRatio, T near, T far) {
 
 template <typename T>
 inline mat4<T> perspProjAsym(T fovLeft, T fovRight, T fovBottom, T fovTop, T near, T far) {
-    constexpr T _0(static_cast<T>(0.0)), _1(static_cast<T>(1.0)), _2(static_cast<T>(2.0));
+    constexpr T _0(T(0.0)), _1(T(1.0)), _2(T(2.0));
 
     T left(near * -std::tan(fovLeft));
     T right(near * std::tan(fovRight));
