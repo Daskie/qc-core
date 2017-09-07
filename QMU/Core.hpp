@@ -73,15 +73,14 @@ template <nat t_p> using precision_ft = typename precision<t_p>::ftype;
 
 constexpr nat k_nat_p = sizeof(nat);
 
-template <typename T1, typename T2>
-using match_sign_t = std::conditional_t<std::is_signed_v<T2>, std::make_signed_t<T1>, std::make_unsigned_t<T1>>;
+template <typename T1, typename T2> using match_sign_t = std::conditional_t<std::is_signed_v<T2>, std::make_signed_t<T1>, std::make_unsigned_t<T1>>;
 
 //namespace detail { enum class enabler {}; }
 
-template <bool t_b> using eif_t = std::enable_if_t<t_b, int>;
 // would be std::enable_if_t<t_b, detail::enabler>, used as
 // template <typename T, eif_t<T, bool>...>
 // but IntelliSense doesn't like variadic SFINAE
+template <bool t_b> using eif_t = std::enable_if_t<t_b, int>;
 
 template <typename T> using eif_floating_t = eif_t<std::is_floating_point_v<T>>;
 

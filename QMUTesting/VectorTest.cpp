@@ -785,11 +785,6 @@ void compileFunctionsT() {
     min(v2);
     min(v3);
     min(v4);
-    
-    max(v1);
-    max(v2);
-    max(v3);
-    max(v4);
 
     min(v1, v1);
     min(v2, v2);
@@ -801,6 +796,14 @@ void compileFunctionsT() {
     min(v3, v3, v3, v3, v3);
     min(v4, v4, v4, v4, v4);
 
+    min(v1, v); min(v2, v); min(v3, v); min(v4, v);
+    min(v, v1); min(v, v2); min(v, v3); min(v, v4);
+    
+    max(v1);
+    max(v2);
+    max(v3);
+    max(v4);
+
     max(v1, v1);
     max(v2, v2);
     max(v3, v3);
@@ -810,6 +813,9 @@ void compileFunctionsT() {
     max(v2, v2, v2, v2, v2);
     max(v3, v3, v3, v3, v3);
     max(v4, v4, v4, v4, v4);
+
+    max(v1, v); max(v2, v); max(v3, v); max(v4, v);
+    max(v, v1); max(v, v2); max(v, v3); max(v, v4);
 
     minmax(v1);
     minmax(v2);
@@ -1103,16 +1109,24 @@ constexpr void compileFunctionsConstexprT() {
     min(v2);
     min(v3);
     min(v4);
-    
-    max(v1);
-    max(v2);
-    max(v3);
-    max(v4);
 
     min(v1, v1);
     min(v2, v2);
     min(v3, v3);
     min(v4, v4);
+
+    min(v1, v1, v1, v1, v1);
+    min(v2, v2, v2, v2, v2);
+    min(v3, v3, v3, v3, v3);
+    min(v4, v4, v4, v4, v4);
+
+    min(v1, v); min(v2, v); min(v3, v); min(v4, v);
+    min(v, v1); min(v, v2); min(v, v3); min(v, v4);
+    
+    max(v1);
+    max(v2);
+    max(v3);
+    max(v4);
 
     max(v1, v1);
     max(v2, v2);
@@ -1124,10 +1138,8 @@ constexpr void compileFunctionsConstexprT() {
     max(v3, v3, v3, v3, v3);
     max(v4, v4, v4, v4, v4);
 
-    min(v1, v1, v1, v1, v1);
-    min(v2, v2, v2, v2, v2);
-    min(v3, v3, v3, v3, v3);
-    min(v4, v4, v4, v4, v4);
+    max(v1, v); max(v2, v); max(v3, v); max(v4, v);
+    max(v, v1); max(v, v2); max(v, v3); max(v, v4);
 
     minmax(v1);
     minmax(v2);

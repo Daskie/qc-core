@@ -1107,6 +1107,12 @@ constexpr vec<T, t_n> min(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 template <typename T, nat t_n, typename... Ts>
 constexpr vec<T, t_n> min(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<Ts, t_n> &... rest);
 
+template <typename T, nat t_n>
+constexpr vec<T, t_n> min(const vec<T, t_n> & v1, const T & v2);
+
+template <typename T, nat t_n>
+constexpr vec<T, t_n> min(const T & v1, const vec<T, t_n> & v2);
+
 
 
 //==============================================================================
@@ -1121,6 +1127,12 @@ constexpr vec<T, t_n> max(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 
 template <typename T, nat t_n, typename... Ts>
 constexpr vec<T, t_n> max(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<Ts, t_n> &... rest);
+
+template <typename T, nat t_n>
+constexpr vec<T, t_n> max(const vec<T, t_n> & v1, const T & v2);
+
+template <typename T, nat t_n>
+constexpr vec<T, t_n> max(const T & v1, const vec<T, t_n> & v2);
 
 
 
@@ -3644,6 +3656,31 @@ constexpr vec<T, t_n> min(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const 
 }
 
 template <typename T>
+constexpr vec1<T> min(const vec1<T> & v1, const T & v2) {
+    return vec1<T>(min(v1.x, v2));
+}
+
+template <typename T>
+constexpr vec2<T> min(const vec2<T> & v1, const T & v2) {
+    return vec2<T>(min(v1.x, v2), min(v1.y, v2));
+}
+
+template <typename T>
+constexpr vec3<T> min(const vec3<T> & v1, const T & v2) {
+    return vec3<T>(min(v1.x, v2), min(v1.y, v2), min(v1.z, v2));
+}
+
+template <typename T>
+constexpr vec4<T> min(const vec4<T> & v1, const T & v2) {
+    return vec4<T>(min(v1.x, v2), min(v1.y, v2), min(v1.z, v2), min(v1.w, v2));
+}
+
+template <typename T, nat t_n>
+constexpr vec<T, t_n> min(const T & v1, const vec<T, t_n> & v2) {
+    return min(v2, v1);
+}
+
+template <typename T>
 constexpr const T & max(const vec1<T> & v) {
     return v.x;
 }
@@ -3686,6 +3723,31 @@ constexpr vec4<T> max(const vec4<T> & v1, const vec4<T> & v2) {
 template <typename T, nat t_n, typename... Ts>
 constexpr vec<T, t_n> max(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<Ts, t_n> &... rest) {
     return max(max(v1, v2), rest...);
+}
+
+template <typename T>
+constexpr vec1<T> max(const vec1<T> & v1, const T & v2) {
+    return vec1<T>(max(v1.x, v2));
+}
+
+template <typename T>
+constexpr vec2<T> max(const vec2<T> & v1, const T & v2) {
+    return vec2<T>(max(v1.x, v2), max(v1.y, v2));
+}
+
+template <typename T>
+constexpr vec3<T> max(const vec3<T> & v1, const T & v2) {
+    return vec3<T>(max(v1.x, v2), max(v1.y, v2), max(v1.z, v2));
+}
+
+template <typename T>
+constexpr vec4<T> max(const vec4<T> & v1, const T & v2) {
+    return vec4<T>(max(v1.x, v2), max(v1.y, v2), max(v1.z, v2), max(v1.w, v2));
+}
+
+template <typename T, nat t_n>
+constexpr vec<T, t_n> max(const T & v1, const vec<T, t_n> & v2) {
+    return max(v2, v1);
 }
 
 template <typename T, nat t_n>
