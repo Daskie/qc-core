@@ -482,9 +482,7 @@ struct vec<T, 1> {
     inline vec1<T> & operator=(vec1<T> && v);
 
     inline vec1<T> & operator=(const T & v);
-    inline vec1<T> & operator=(const vec2<T> & v);
-    inline vec1<T> & operator=(const vec3<T> & v);
-    inline vec1<T> & operator=(const vec4<T> & v);
+    template <nat t_m> inline vec1<T> & operator=(const vec<T, t_m> & v);
 
     //--------------------------------------------------------------------------
     // Access
@@ -551,9 +549,7 @@ struct vec<T, 2> {
     inline vec2<T> & operator=(vec2<T> && v);
     
     inline vec2<T> & operator=(const T & v);
-    inline vec2<T> & operator=(const vec1<T> & v);
-    inline vec2<T> & operator=(const vec3<T> & v);
-    inline vec2<T> & operator=(const vec4<T> & v);
+    template <nat t_m> inline vec2<T> & operator=(const vec<T, t_m> & v);
 
     //--------------------------------------------------------------------------
     // Access
@@ -629,9 +625,7 @@ struct vec<T, 3> {
     inline vec3<T> & operator=(vec3<T> && v);
 
     inline vec3<T> & operator=(const T & v);
-    inline vec3<T> & operator=(const vec1<T> & v);
-    inline vec3<T> & operator=(const vec2<T> & v);
-    inline vec3<T> & operator=(const vec4<T> & v);
+    template <nat t_m> inline vec3<T> & operator=(const vec<T, t_m> & v);
 
     //--------------------------------------------------------------------------
     // Access
@@ -735,9 +729,7 @@ struct vec<T, 4> {
     inline vec4<T> & operator=(vec4<T> && v);
 
     inline vec4<T> & operator=(const T & v);
-    inline vec4<T> & operator=(const vec1<T> & v);
-    inline vec4<T> & operator=(const vec2<T> & v);
-    inline vec4<T> & operator=(const vec3<T> & v);
+    template <nat t_m> inline vec4<T> & operator=(const vec<T, t_m> & v);
 
     //--------------------------------------------------------------------------
     // Access
@@ -874,26 +866,26 @@ template <typename T, nat t_n> constexpr span<T, t_n> nullspan = span<T, t_n>(in
 // Arithmetic Assignment
 //------------------------------------------------------------------------------
 
-template <typename T, nat t_n> vec<T, t_n> & operator++(vec<T, t_n> & v);
-template <typename T, nat t_n> vec<T, t_n>   operator++(vec<T, t_n> & v, int);
+template <typename T, nat t_n> inline vec<T, t_n> & operator++(vec<T, t_n> & v);
+template <typename T, nat t_n> inline vec<T, t_n>   operator++(vec<T, t_n> & v, int);
 
-template <typename T, nat t_n> vec<T, t_n> & operator--(vec<T, t_n> & v);
-template <typename T, nat t_n> vec<T, t_n>   operator--(vec<T, t_n> & v, int);
+template <typename T, nat t_n> inline vec<T, t_n> & operator--(vec<T, t_n> & v);
+template <typename T, nat t_n> inline vec<T, t_n>   operator--(vec<T, t_n> & v, int);
 
-template <typename T, nat t_n> vec<T, t_n> & operator+=(vec<T, t_n> & v1, const vec<T, t_n> & v2);
-template <typename T, nat t_n> vec<T, t_n> & operator+=(vec<T, t_n> & v1, const           T & v2);
+template <typename T, nat t_n> inline vec<T, t_n> & operator+=(vec<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, nat t_n> inline vec<T, t_n> & operator+=(vec<T, t_n> & v1, const           T & v2);
 
-template <typename T, nat t_n> vec<T, t_n> & operator-=(vec<T, t_n> & v1, const vec<T, t_n> & v2);
-template <typename T, nat t_n> vec<T, t_n> & operator-=(vec<T, t_n> & v1, const           T & v2);
+template <typename T, nat t_n> inline vec<T, t_n> & operator-=(vec<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, nat t_n> inline vec<T, t_n> & operator-=(vec<T, t_n> & v1, const           T & v2);
 
-template <typename T, nat t_n> vec<T, t_n> & operator*=(vec<T, t_n> & v1, const vec<T, t_n> & v2);
-template <typename T, nat t_n> vec<T, t_n> & operator*=(vec<T, t_n> & v1, const           T & v2);
+template <typename T, nat t_n> inline vec<T, t_n> & operator*=(vec<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, nat t_n> inline vec<T, t_n> & operator*=(vec<T, t_n> & v1, const           T & v2);
 
-template <typename T, nat t_n> vec<T, t_n> & operator/=(vec<T, t_n> & v1, const vec<T, t_n> & v2);
-template <typename T, nat t_n> vec<T, t_n> & operator/=(vec<T, t_n> & v1, const           T & v2);
+template <typename T, nat t_n> inline vec<T, t_n> & operator/=(vec<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, nat t_n> inline vec<T, t_n> & operator/=(vec<T, t_n> & v1, const           T & v2);
 
-template <typename T, nat t_n> vec<T, t_n> & operator%=(vec<T, t_n> & v1, const vec<T, t_n> & v2);
-template <typename T, nat t_n> vec<T, t_n> & operator%=(vec<T, t_n> & v1, const           T & v2);
+template <typename T, nat t_n> inline vec<T, t_n> & operator%=(vec<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, nat t_n> inline vec<T, t_n> & operator%=(vec<T, t_n> & v1, const           T & v2);
 
 
 
@@ -901,29 +893,29 @@ template <typename T, nat t_n> vec<T, t_n> & operator%=(vec<T, t_n> & v1, const 
 // Arithmetic
 //------------------------------------------------------------------------------
 
-template <typename T, nat t_n> vec<T, t_n> constexpr operator+(const vec<T, t_n> & v);
+template <typename T, nat t_n> constexpr vec<T, t_n> operator+(const vec<T, t_n> & v);
 
-template <typename T, nat t_n> vec<T, t_n> constexpr operator-(const vec<T, t_n> & v);
+template <typename T, nat t_n> constexpr vec<T, t_n> operator-(const vec<T, t_n> & v);
 
-template <typename T, nat t_n> vec<T, t_n> constexpr operator+(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
-template <typename T, nat t_n> vec<T, t_n> constexpr operator+(const vec<T, t_n> & v1, const           T & v2);
-template <typename T, nat t_n> vec<T, t_n> constexpr operator+(const           T & v1, const vec<T, t_n> & v2);
+template <typename T, nat t_n> constexpr vec<T, t_n> operator+(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, nat t_n> constexpr vec<T, t_n> operator+(const vec<T, t_n> & v1, const           T & v2);
+template <typename T, nat t_n> constexpr vec<T, t_n> operator+(const           T & v1, const vec<T, t_n> & v2);
 
-template <typename T, nat t_n> vec<T, t_n> constexpr operator-(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
-template <typename T, nat t_n> vec<T, t_n> constexpr operator-(const vec<T, t_n> & v1, const           T & v2);
-template <typename T, nat t_n> vec<T, t_n> constexpr operator-(const           T & v1, const vec<T, t_n> & v2);
+template <typename T, nat t_n> constexpr vec<T, t_n> operator-(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, nat t_n> constexpr vec<T, t_n> operator-(const vec<T, t_n> & v1, const           T & v2);
+template <typename T, nat t_n> constexpr vec<T, t_n> operator-(const           T & v1, const vec<T, t_n> & v2);
 
-template <typename T, nat t_n> vec<T, t_n> constexpr operator*(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
-template <typename T, nat t_n> vec<T, t_n> constexpr operator*(const vec<T, t_n> & v1, const           T & v2);
-template <typename T, nat t_n> vec<T, t_n> constexpr operator*(const           T & v1, const vec<T, t_n> & v2);
+template <typename T, nat t_n> constexpr vec<T, t_n> operator*(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, nat t_n> constexpr vec<T, t_n> operator*(const vec<T, t_n> & v1, const           T & v2);
+template <typename T, nat t_n> constexpr vec<T, t_n> operator*(const           T & v1, const vec<T, t_n> & v2);
 
-template <typename T, nat t_n> vec<T, t_n> constexpr operator/(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
-template <typename T, nat t_n> vec<T, t_n> constexpr operator/(const vec<T, t_n> & v1, const           T & v2);
-template <typename T, nat t_n> vec<T, t_n> constexpr operator/(const           T & v1, const vec<T, t_n> & v2);
+template <typename T, nat t_n> constexpr vec<T, t_n> operator/(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, nat t_n> constexpr vec<T, t_n> operator/(const vec<T, t_n> & v1, const           T & v2);
+template <typename T, nat t_n> constexpr vec<T, t_n> operator/(const           T & v1, const vec<T, t_n> & v2);
 
-template <typename T, nat t_n> vec<T, t_n> constexpr operator%(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
-template <typename T, nat t_n> vec<T, t_n> constexpr operator%(const vec<T, t_n> & v1, const           T & v2);
-template <typename T, nat t_n> vec<T, t_n> constexpr operator%(const           T & v1, const vec<T, t_n> & v2);
+template <typename T, nat t_n> constexpr vec<T, t_n> operator%(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, nat t_n> constexpr vec<T, t_n> operator%(const vec<T, t_n> & v1, const           T & v2);
+template <typename T, nat t_n> constexpr vec<T, t_n> operator%(const           T & v1, const vec<T, t_n> & v2);
 
 
 
@@ -993,9 +985,9 @@ template <typename T, nat t_n> constexpr bool conjunction(const vec<T, t_n> & v)
 // Stream Output
 //------------------------------------------------------------------------------
 
-template <typename T, nat t_n> std::ostream & operator<<(std::ostream & os, const vec<T, t_n> & v);
+template <typename T, nat t_n> inline std::ostream & operator<<(std::ostream & os, const vec<T, t_n> & v);
 
-template <typename T, nat t_n> std::ostream & operator<<(std::ostream & os, const span<T, t_n> & s);
+template <typename T, nat t_n> inline std::ostream & operator<<(std::ostream & os, const span<T, t_n> & s);
 
 
 
@@ -1004,10 +996,10 @@ template <typename T, nat t_n> std::ostream & operator<<(std::ostream & os, cons
 //------------------------------------------------------------------------------
 
 template <typename T, nat t_n, eif_floating_t<T> = 0>
-vec<T, t_n> pow(const vec<T, t_n> & v, T p);
+inline vec<T, t_n> pow(const vec<T, t_n> & v, T p);
 
 template <typename T, nat t_n, eif_floating_t<T> = 0>
-vec<T, t_n> pow(const vec<T, t_n> & v, const vec<T, t_n> & p);
+inline vec<T, t_n> pow(const vec<T, t_n> & v, const vec<T, t_n> & p);
 
 
 
@@ -1016,7 +1008,7 @@ vec<T, t_n> pow(const vec<T, t_n> & v, const vec<T, t_n> & p);
 //------------------------------------------------------------------------------
 
 template <typename T, nat t_n, eif_t<std::is_floating_point_v<T>> = 0>
-vec<T, t_n> exp(const vec<T, t_n> & v);
+inline vec<T, t_n> exp(const vec<T, t_n> & v);
 
 
 
@@ -1025,10 +1017,10 @@ vec<T, t_n> exp(const vec<T, t_n> & v);
 //------------------------------------------------------------------------------
 
 template <typename T, nat t_n, eif_floating_t<T> = 0>
-T magnitude(const vec<T, t_n> & v);
+inline T magnitude(const vec<T, t_n> & v);
 
 template <typename T, nat t_n>
-T magnitude2(const vec<T, t_n> & v);
+inline T magnitude2(const vec<T, t_n> & v);
 
 
 
@@ -1037,7 +1029,7 @@ T magnitude2(const vec<T, t_n> & v);
 //------------------------------------------------------------------------------
 
 template <typename T, nat t_n, eif_floating_t<T> = 0>
-vec<T, t_n> norm(const vec<T, t_n> & v);
+inline vec<T, t_n> norm(const vec<T, t_n> & v);
 
 
 
@@ -1046,7 +1038,7 @@ vec<T, t_n> norm(const vec<T, t_n> & v);
 //------------------------------------------------------------------------------
 
 template <typename T, nat t_n>
-T dot(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+inline T dot(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 
 
 
@@ -1054,8 +1046,11 @@ T dot(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 // cross
 //------------------------------------------------------------------------------
 
-template <typename T, nat t_n>
-vec<T, t_n> cross(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T>
+inline T cross(const vec2<T> & v1, const vec2<T> & v2);
+
+template <typename T>
+inline vec3<T> cross(const vec3<T> & v1, const vec3<T> & v2);
 
 
 
@@ -1064,7 +1059,7 @@ vec<T, t_n> cross(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 //------------------------------------------------------------------------------
 
 template <typename T, nat t_n>
-bool parallel(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+inline bool parallel(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 
 
 
@@ -1073,7 +1068,7 @@ bool parallel(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 //------------------------------------------------------------------------------
 
 template <typename T, nat t_n>
-bool orthogonal(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+inline bool orthogonal(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 
 
 
@@ -1082,7 +1077,7 @@ bool orthogonal(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 //------------------------------------------------------------------------------
 
 template <typename T, nat t_n>
-vec<T, t_n> ortho(const vec<T, t_n> & v);
+inline vec<T, t_n> ortho(const vec<T, t_n> & v);
 
 
 
@@ -1091,12 +1086,12 @@ vec<T, t_n> ortho(const vec<T, t_n> & v);
 //------------------------------------------------------------------------------
 
 template <typename T, nat t_n, eif_floating_t<T> = 0>
-void orthogonalize(const vec<T, t_n> & v1, vec<T, t_n> & v2);
+inline void orthogonalize(const vec<T, t_n> & v1, vec<T, t_n> & v2);
 
 template <typename T, eif_floating_t<T> = 0>
-void orthogonalize(const vec3<T> & v1, vec3<T> & v2, vec3<T> & v3);
+inline void orthogonalize(const vec3<T> & v1, vec3<T> & v2, vec3<T> & v3);
 template <typename T, eif_floating_t<T> = 0>
-void orthogonalize_n(const vec3<T> & v1, vec3<T> & v2, vec3<T> & v3);
+inline void orthogonalize_n(const vec3<T> & v1, vec3<T> & v2, vec3<T> & v3);
 
 
 
@@ -1105,9 +1100,9 @@ void orthogonalize_n(const vec3<T> & v1, vec3<T> & v2, vec3<T> & v3);
 //------------------------------------------------------------------------------
 
 template <typename T, nat t_n, eif_floating_t<T> = 0>
-vec<T, t_n> reflect(const vec<T, t_n> & v, const vec<T, t_n> & n);
+inline vec<T, t_n> reflect(const vec<T, t_n> & v, const vec<T, t_n> & n);
 template <typename T, nat t_n, eif_floating_t<T> = 0>
-vec<T, t_n> reflect_n(const vec<T, t_n> & v, const vec<T, t_n> & n);
+inline vec<T, t_n> reflect_n(const vec<T, t_n> & v, const vec<T, t_n> & n);
 
 
 
@@ -1116,9 +1111,9 @@ vec<T, t_n> reflect_n(const vec<T, t_n> & v, const vec<T, t_n> & n);
 //------------------------------------------------------------------------------
 
 template <typename T, nat t_n, eif_floating_t<T> = 0>
-T angle(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+inline T angle(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 template <typename T, nat t_n, eif_floating_t<T> = 0>
-T angle_n(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+inline T angle_n(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 
 
 
@@ -1178,7 +1173,7 @@ constexpr std::pair<const T &, const T &> minmax(const vec<T, t_n> & v);
 //------------------------------------------------------------------------------
 
 template <typename T, nat t_n>
-void sort(const vec<T, t_n> & v);
+inline void sort(const vec<T, t_n> & v);
 
 
 
@@ -1240,6 +1235,18 @@ constexpr vec<T, t_n> mix(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const 
 
 
 //==============================================================================
+// transnorm
+//------------------------------------------------------------------------------
+// converts between normalized types
+// works with floats, signed, and unsigned integers
+//------------------------------------------------------------------------------
+
+template <typename To, typename From, nat t_n, eif_t<std::is_arithmetic_v<To> && std::is_arithmetic_v<From>> = 0>
+inline vec<To, t_n> transnorm(const vec<From, t_n> & v);
+
+
+
+//==============================================================================
 // toSpan
 //------------------------------------------------------------------------------
 
@@ -1262,7 +1269,7 @@ constexpr bound<T, t_n> toBound(const span<T, t_n> & s);
 //------------------------------------------------------------------------------
 
 template <typename T, nat t_n>
-span<T, t_n> intersect(const span<T, t_n> & s1, const span<T, t_n> & s2);
+inline span<T, t_n> intersect(const span<T, t_n> & s1, const span<T, t_n> & s2);
 
 
 
@@ -1363,19 +1370,8 @@ inline vec1<T> & vec<T, 1>::operator=(const T & v) {
 }
 
 template <typename T>
-inline vec1<T> & vec<T, 1>::operator=(const vec2<T> & v) {
-    x = v.x;
-    return *this;
-}
-
-template <typename T>
-inline vec1<T> & vec<T, 1>::operator=(const vec3<T> & v) {
-    x = v.x;
-    return *this;
-}
-
-template <typename T>
-inline vec1<T> & vec<T, 1>::operator=(const vec4<T> & v) {
+template <nat t_m>
+inline vec1<T> & vec<T, 1>::operator=(const vec<T, t_m> & v) {
     x = v.x;
     return *this;
 }
@@ -1530,20 +1526,11 @@ inline vec2<T> & vec<T, 2>::operator=(const T & v) {
 }
 
 template <typename T>
-inline vec2<T> & vec<T, 2>::operator=(const vec1<T> & v) {
-    x = v.x; y = static_cast<T>(0);
-    return *this;
-}
-
-template <typename T>
-inline vec2<T> & vec<T, 2>::operator=(const vec3<T> & v) {
-    x = v.x; y = v.y;
-    return *this;
-}
-
-template <typename T>
-inline vec2<T> & vec<T, 2>::operator=(const vec4<T> & v) {
-    x = v.x; y = v.y;
+template <nat t_m>
+inline vec2<T> & vec<T, 2>::operator=(const vec<T, t_m> & v) {
+    x = v.x;
+    if constexpr (t_m >= 2) y = v.y;
+    if constexpr (t_m < 2) y = static_cast<T>(0);
     return *this;
 }
 
@@ -1739,20 +1726,13 @@ inline vec3<T> & vec<T, 3>::operator=(const T & v) {
 }
 
 template <typename T>
-inline vec3<T> & vec<T, 3>::operator=(const vec1<T> & v) {
-    x = v.x; y = static_cast<T>(0); z = static_cast<T>(0);
-    return *this;
-}
-
-template <typename T>
-inline vec3<T> & vec<T, 3>::operator=(const vec2<T> & v) {
-    x = v.x; y = v.y; z = static_cast<T>(0);
-    return *this;
-}
-
-template <typename T>
-inline vec3<T> & vec<T, 3>::operator=(const vec4<T> & v) {
-    x = v.x; y = v.y; z = v.z;
+template <nat t_m>
+inline vec3<T> & vec<T, 3>::operator=(const vec<T, t_m> & v) {
+    x = v.x; 
+    if constexpr (t_m >= 2) y = v.y;
+    if constexpr (t_m < 2) y = static_cast<T>(0);
+    if constexpr (t_m >= 3) z = v.z;
+    if constexpr (t_m < 3) z = static_cast<T>(0);
     return *this;
 }
 
@@ -2113,20 +2093,15 @@ inline vec4<T> & vec<T, 4>::operator=(const T & v) {
 }
 
 template <typename T>
-inline vec4<T> & vec<T, 4>::operator=(const vec1<T> & v) {
-    x = v.x; y = static_cast<T>(0); z = static_cast<T>(0); w = static_cast<T>(0);
-    return *this;
-}
-
-template <typename T>
-inline vec4<T> & vec<T, 4>::operator=(const vec2<T> & v) {
-    x = v.x; y = v.y; z = static_cast<T>(0); w = static_cast<T>(0);
-    return *this;
-}
-
-template <typename T>
-inline vec4<T> & vec<T, 4>::operator=(const vec3<T> & v) {
-    x = v.x; y = v.y; z = v.z; w = static_cast<T>(0);
+template <nat t_m>
+inline vec4<T> & vec<T, 4>::operator=(const vec<T, t_m> & v) {
+    x = v.x;
+    if constexpr (t_m >= 2) y = v.y;
+    if constexpr (t_m < 2) y = static_cast<T>(0);
+    if constexpr (t_m >= 3) z = v.z;
+    if constexpr (t_m < 3) z = static_cast<T>(0);
+    if constexpr (t_m >= 4) w = v.w;
+    if constexpr (t_m < 4) w = static_cast<T>(0);
     return *this;
 }
 
@@ -2439,98 +2414,44 @@ inline std::string span<T, t_n>::toString() const {
 
 //--- pre increment ---
 
-template <typename T>
-inline vec1<T> & operator++(vec1<T> & v) {
+template <typename T, nat t_n>
+inline vec<T, t_n> & operator++(vec<T, t_n> & v) {
     ++v.x;
-    return v;
-}
-
-template <typename T>
-inline vec2<T> & operator++(vec2<T> & v) {
-    ++v.x; ++v.y;
-    return v;
-}
-
-template <typename T>
-inline vec3<T> & operator++(vec3<T> & v) {
-    ++v.x; ++v.y; ++v.z;
-    return v;
-}
-
-template <typename T>
-inline vec4<T> & operator++(vec4<T> & v) {
-    ++v.x; ++v.y; ++v.z; ++v.w;
+    if constexpr (t_n >= 2) ++v.y;
+    if constexpr (t_n >= 3) ++v.z;
+    if constexpr (t_n >= 4) ++v.w;
     return v;
 }
 
 //--- post increment ---
 
-template <typename T>
-inline vec1<T> operator++(vec1<T> & v, int) {
-    return vec1<T>(v.x++);
-}
-
-template <typename T>
-inline vec2<T> operator++(vec2<T> & v, int) {
-    return vec2<T>(v.x++, v.y++);
-}
-
-template <typename T>
-inline vec3<T> operator++(vec3<T> & v, int) {
-    return vec3<T>(v.x++, v.y++, v.z++);
-}
-
-template <typename T>
-inline vec4<T> operator++(vec4<T> & v, int) {
-    return vec4<T>(v.x++, v.y++, v.z++, v.w++);
+template <typename T, nat t_n>
+inline vec<T, t_n> operator++(vec<T, t_n> & v, int) {
+    if constexpr (t_n == 1) return vec1<T>(v.x++);
+    if constexpr (t_n == 2) return vec2<T>(v.x++, v.y++);
+    if constexpr (t_n == 3) return vec3<T>(v.x++, v.y++, v.z++);
+    if constexpr (t_n == 4) return vec4<T>(v.x++, v.y++, v.z++, v.w++);
 }
 
 //--- pre decrement ---
 
-template <typename T>
-inline vec1<T> & operator--(vec1<T> & v) {
+template <typename T, nat t_n>
+inline vec<T, t_n> & operator--(vec<T, t_n> & v) {
     --v.x;
-    return v;
-}
-
-template <typename T>
-inline vec2<T> & operator--(vec2<T> & v) {
-    --v.x; --v.y;
-    return v;
-}
-
-template <typename T>
-inline vec3<T> & operator--(vec3<T> & v) {
-    --v.x; --v.y; --v.z;
-    return v;
-}
-
-template <typename T>
-inline vec4<T> & operator--(vec4<T> & v) {
-    --v.x; --v.y; --v.z; --v.w;
+    if constexpr (t_n >= 2) --v.y;
+    if constexpr (t_n >= 3) --v.z;
+    if constexpr (t_n >= 4) --v.w;
     return v;
 }
 
 //--- post decrement ---
 
-template <typename T>
-inline vec1<T> operator--(vec1<T> & v, int) {
-    return vec1<T>(v.x--);
-}
-
-template <typename T>
-inline vec2<T> operator--(vec2<T> & v, int) {
-    return vec2<T>(v.x--, v.y--);
-}
-
-template <typename T>
-inline vec3<T> operator--(vec3<T> & v, int) {
-    return vec3<T>(v.x--, v.y--, v.z--);
-}
-
-template <typename T>
-inline vec4<T> operator--(vec4<T> & v, int) {
-    return vec4<T>(v.x--, v.y--, v.z--, v.w--);
+template <typename T, nat t_n>
+inline vec<T, t_n> operator--(vec<T, t_n> & v, int) {
+    if constexpr (t_n == 1) return vec1<T>(v.x--);
+    if constexpr (t_n == 2) return vec2<T>(v.x--, v.y--);
+    if constexpr (t_n == 3) return vec3<T>(v.x--, v.y--, v.z--);
+    if constexpr (t_n == 4) return vec4<T>(v.x--, v.y--, v.z--, v.w--);
 }
 
 //--- add assign ---
@@ -2602,374 +2523,156 @@ inline vec<T, t_n> & operator%=(vec<T, t_n> & v1, const T & v2) {
 
 //--- positive ---
 
-template <typename T>
-constexpr vec1<T> operator+(const vec1<T> & v) {
-    return vec1<T>(+v.x);
-}
-
-template <typename T>
-constexpr vec2<T> operator+(const vec2<T> & v) {
-    return vec2<T>(+v.x, +v.y);
-}
-
-template <typename T>
-constexpr vec3<T> operator+(const vec3<T> & v) {
-    return vec3<T>(+v.x, +v.y, +v.z);
-}
-
-template <typename T>
-constexpr vec4<T> operator+(const vec4<T> & v) {
-    return vec4<T>(+v.x, +v.y, +v.z, +v.w);
+template <typename T, nat t_n>
+constexpr vec<T, t_n> operator+(const vec<T, t_n> & v) {
+    if constexpr (t_n == 1) return vec1<T>(+v.x);
+    if constexpr (t_n == 2) return vec2<T>(+v.x, +v.y);
+    if constexpr (t_n == 3) return vec3<T>(+v.x, +v.y, +v.z);
+    if constexpr (t_n == 4) return vec4<T>(+v.x, +v.y, +v.z, +v.w);
 }
 
 //--- negative ---
 
-template <typename T>
-constexpr vec1<T> operator-(const vec1<T> & v) {
-    return vec1<T>(-v.x);
-}
-
-template <typename T>
-constexpr vec2<T> operator-(const vec2<T> & v) {
-    return vec2<T>(-v.x, -v.y);
-}
-
-template <typename T>
-constexpr vec3<T> operator-(const vec3<T> & v) {
-    return vec3<T>(-v.x, -v.y, -v.z);
-}
-
-template <typename T>
-constexpr vec4<T> operator-(const vec4<T> & v) {
-    return vec4<T>(-v.x, -v.y, -v.z, -v.w);
+template <typename T, nat t_n>
+constexpr vec<T, t_n> operator-(const vec<T, t_n> & v) {
+    if constexpr (std::is_unsigned_v<T>) return v;
+    if constexpr (t_n == 1) return vec1<T>(+v.x);
+    if constexpr (t_n == 2) return vec2<T>(+v.x, +v.y);
+    if constexpr (t_n == 3) return vec3<T>(+v.x, +v.y, +v.z);
+    if constexpr (t_n == 4) return vec4<T>(+v.x, +v.y, +v.z, +v.w);
 }
 
 //--- add ---
 
-template <typename T>
-constexpr vec1<T> operator+(const vec1<T> & v1, const vec1<T> & v2) {
-    return vec1<T>(v1.x + v2.x);
+template <typename T, nat t_n>
+constexpr vec<T, t_n> operator+(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
+    if constexpr (t_n == 1) return vec1<T>(v1.x + v2.x);
+    if constexpr (t_n == 2) return vec2<T>(v1.x + v2.x, v1.y + v2.y);
+    if constexpr (t_n == 3) return vec3<T>(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z);
+    if constexpr (t_n == 4) return vec4<T>(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z, v1.w + v2.w);
 }
 
-template <typename T>
-constexpr vec2<T> operator+(const vec2<T> & v1, const vec2<T> & v2) {
-    return vec2<T>(v1.x + v2.x, v1.y + v2.y);
+template <typename T, nat t_n>
+constexpr vec<T, t_n> operator+(const vec<T, t_n> & v1, const T & v2) {
+    if constexpr (t_n == 1) return vec1<T>(v1.x + v2);
+    if constexpr (t_n == 2) return vec2<T>(v1.x + v2, v1.y + v2);
+    if constexpr (t_n == 3) return vec3<T>(v1.x + v2, v1.y + v2, v1.z + v2);
+    if constexpr (t_n == 4) return vec4<T>(v1.x + v2, v1.y + v2, v1.z + v2, v1.w + v2);
 }
 
-template <typename T>
-constexpr vec3<T> operator+(const vec3<T> & v1, const vec3<T> & v2) {
-    return vec3<T>(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z);
-}
-
-template <typename T>
-constexpr vec4<T> operator+(const vec4<T> & v1, const vec4<T> & v2) {
-    return vec4<T>(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z, v1.w + v2.w);
-}
-
-template <typename T>
-constexpr vec1<T> operator+(const vec1<T> & v1, const T & v2) {
-    return vec1<T>(v1.x + v2);
-}
-
-template <typename T>
-constexpr vec2<T> operator+(const vec2<T> & v1, const T & v2) {
-    return vec2<T>(v1.x + v2, v1.y + v2);
-}
-
-template <typename T>
-constexpr vec3<T> operator+(const vec3<T> & v1, const T & v2) {
-    return vec3<T>(v1.x + v2, v1.y + v2, v1.z + v2);
-}
-
-template <typename T>
-constexpr vec4<T> operator+(const vec4<T> & v1, const T & v2) {
-    return vec4<T>(v1.x + v2, v1.y + v2, v1.z + v2, v1.w + v2);
-}
-
-template <typename T>
-constexpr vec1<T> operator+(const T & v1, const vec1<T> & v2) {
-    return vec1<T>(v1 + v2.x);
-}
-
-template <typename T>
-constexpr vec2<T> operator+(const T & v1, const vec2<T> & v2) {
-    return vec2<T>(v1 + v2.x, v1 + v2.y);
-}
-
-template <typename T>
-constexpr vec3<T> operator+(const T & v1, const vec3<T> & v2) {
-    return vec3<T>(v1 + v2.x, v1 + v2.y, v1 + v2.z);
-}
-
-template <typename T>
-constexpr vec4<T> operator+(const T & v1, const vec4<T> & v2) {
-    return vec4<T>(v1 + v2.x, v1 + v2.y, v1 + v2.z, v1 + v2.w);
+template <typename T, nat t_n>
+constexpr vec<T, t_n> operator+(const T & v1, const vec<T, t_n> & v2) {
+    if constexpr (t_n == 1) return vec1<T>(v1 + v2.x);
+    if constexpr (t_n == 2) return vec2<T>(v1 + v2.x, v1 + v2.y);
+    if constexpr (t_n == 3) return vec3<T>(v1 + v2.x, v1 + v2.y, v1 + v2.z);
+    if constexpr (t_n == 4) return vec4<T>(v1 + v2.x, v1 + v2.y, v1 + v2.z, v1 + v2.w);
 }
 
 //--- subtract ---
 
-template <typename T>
-constexpr vec1<T> operator-(const vec1<T> & v1, const vec1<T> & v2) {
-    return vec1<T>(v1.x - v2.x);
+template <typename T, nat t_n>
+constexpr vec<T, t_n> operator-(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
+    if constexpr (t_n == 1) return vec1<T>(v1.x - v2.x);
+    if constexpr (t_n == 2) return vec2<T>(v1.x - v2.x, v1.y - v2.y);
+    if constexpr (t_n == 3) return vec3<T>(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z);
+    if constexpr (t_n == 4) return vec4<T>(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z, v1.w - v2.w);
 }
 
-template <typename T>
-constexpr vec2<T> operator-(const vec2<T> & v1, const vec2<T> & v2) {
-    return vec2<T>(v1.x - v2.x, v1.y - v2.y);
+template <typename T, nat t_n>
+constexpr vec<T, t_n> operator-(const vec<T, t_n> & v1, const T & v2) {
+    if constexpr (t_n == 1) return vec1<T>(v1.x - v2);
+    if constexpr (t_n == 2) return vec2<T>(v1.x - v2, v1.y - v2);
+    if constexpr (t_n == 3) return vec3<T>(v1.x - v2, v1.y - v2, v1.z - v2);
+    if constexpr (t_n == 4) return vec4<T>(v1.x - v2, v1.y - v2, v1.z - v2, v1.w - v2);
 }
 
-template <typename T>
-constexpr vec3<T> operator-(const vec3<T> & v1, const vec3<T> & v2) {
-    return vec3<T>(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z);
-}
-
-template <typename T>
-constexpr vec4<T> operator-(const vec4<T> & v1, const vec4<T> & v2) {
-    return vec4<T>(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z, v1.w - v2.w);
-}
-
-template <typename T>
-constexpr vec1<T> operator-(const vec1<T> & v1, const T & v2) {
-    return vec1<T>(v1.x - v2);
-}
-
-template <typename T>
-constexpr vec2<T> operator-(const vec2<T> & v1, const T & v2) {
-    return vec2<T>(v1.x - v2, v1.y - v2);
-}
-
-template <typename T>
-constexpr vec3<T> operator-(const vec3<T> & v1, const T & v2) {
-    return vec3<T>(v1.x - v2, v1.y - v2, v1.z - v2);
-}
-
-template <typename T>
-constexpr vec4<T> operator-(const vec4<T> & v1, const T & v2) {
-    return vec4<T>(v1.x - v2, v1.y - v2, v1.z - v2, v1.w - v2);
-}
-
-template <typename T>
-constexpr vec1<T> operator-(const T & v1, const vec1<T> & v2) {
-    return vec1<T>(v1 - v2.x);
-}
-
-template <typename T>
-constexpr vec2<T> operator-(const T & v1, const vec2<T> & v2) {
-    return vec2<T>(v1 - v2.x, v1 - v2.y);
-}
-
-template <typename T>
-constexpr vec3<T> operator-(const T & v1, const vec3<T> & v2) {
-    return vec3<T>(v1 - v2.x, v1 - v2.y, v1 - v2.z);
-}
-
-template <typename T>
-constexpr vec4<T> operator-(const T & v1, const vec4<T> & v2) {
-    return vec4<T>(v1 - v2.x, v1 - v2.y, v1 - v2.z, v1 - v2.w);
+template <typename T, nat t_n>
+constexpr vec<T, t_n> operator-(const T & v1, const vec<T, t_n> & v2) {
+    if constexpr (t_n == 1) return vec1<T>(v1 - v2.x);
+    if constexpr (t_n == 2) return vec2<T>(v1 - v2.x, v1 - v2.y);
+    if constexpr (t_n == 3) return vec3<T>(v1 - v2.x, v1 - v2.y, v1 - v2.z);
+    if constexpr (t_n == 4) return vec4<T>(v1 - v2.x, v1 - v2.y, v1 - v2.z, v1 - v2.w);
 }
 
 //--- multiply ---
 
-template <typename T>
-constexpr vec1<T> operator*(const vec1<T> & v1, const vec1<T> & v2) {
-    return vec1<T>(v1.x * v2.x);
+template <typename T, nat t_n>
+constexpr vec<T, t_n> operator*(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
+    if constexpr (t_n == 1) return vec1<T>(v1.x * v2.x);
+    if constexpr (t_n == 2) return vec2<T>(v1.x * v2.x, v1.y * v2.y);
+    if constexpr (t_n == 3) return vec3<T>(v1.x * v2.x, v1.y * v2.y, v1.z * v2.z);
+    if constexpr (t_n == 4) return vec4<T>(v1.x * v2.x, v1.y * v2.y, v1.z * v2.z, v1.w * v2.w);
 }
 
-template <typename T>
-constexpr vec2<T> operator*(const vec2<T> & v1, const vec2<T> & v2) {
-    return vec2<T>(v1.x * v2.x, v1.y * v2.y);
+template <typename T, nat t_n>
+constexpr vec<T, t_n> operator*(const vec<T, t_n> & v1, const T & v2) {
+    if constexpr (t_n == 1) return vec1<T>(v1.x * v2);
+    if constexpr (t_n == 2) return vec2<T>(v1.x * v2, v1.y * v2);
+    if constexpr (t_n == 3) return vec3<T>(v1.x * v2, v1.y * v2, v1.z * v2);
+    if constexpr (t_n == 4) return vec4<T>(v1.x * v2, v1.y * v2, v1.z * v2, v1.w * v2);
 }
 
-template <typename T>
-constexpr vec3<T> operator*(const vec3<T> & v1, const vec3<T> & v2) {
-    return vec3<T>(v1.x * v2.x, v1.y * v2.y, v1.z * v2.z);
-}
-
-template <typename T>
-constexpr vec4<T> operator*(const vec4<T> & v1, const vec4<T> & v2) {
-    return vec4<T>(v1.x * v2.x, v1.y * v2.y, v1.z * v2.z, v1.w * v2.w);
-}
-
-template <typename T>
-constexpr vec1<T> operator*(const vec1<T> & v1, const T & v2) {
-    return vec1<T>(v1.x * v2);
-}
-
-template <typename T>
-constexpr vec2<T> operator*(const vec2<T> & v1, const T & v2) {
-    return vec2<T>(v1.x * v2, v1.y * v2);
-}
-
-template <typename T>
-constexpr vec3<T> operator*(const vec3<T> & v1, const T & v2) {
-    return vec3<T>(v1.x * v2, v1.y * v2, v1.z * v2);
-}
-
-template <typename T>
-constexpr vec4<T> operator*(const vec4<T> & v1, const T & v2) {
-    return vec4<T>(v1.x * v2, v1.y * v2, v1.z * v2, v1.w * v2);
-}
-
-template <typename T>
-constexpr vec1<T> operator*(const T & v1, const vec1<T> & v2) {
-    return vec1<T>(v1 * v2.x);
-}
-
-template <typename T>
-constexpr vec2<T> operator*(const T & v1, const vec2<T> & v2) {
-    return vec2<T>(v1 * v2.x, v1 * v2.y);
-}
-
-template <typename T>
-constexpr vec3<T> operator*(const T & v1, const vec3<T> & v2) {
-    return vec3<T>(v1 * v2.x, v1 * v2.y, v1 * v2.z);
-}
-
-template <typename T>
-constexpr vec4<T> operator*(const T & v1, const vec4<T> & v2) {
-    return vec4<T>(v1 * v2.x, v1 * v2.y, v1 * v2.z, v1 * v2.w);
+template <typename T, nat t_n>
+constexpr vec<T, t_n> operator*(const T & v1, const vec<T, t_n> & v2) {
+    if constexpr (t_n == 1) return vec1<T>(v1 * v2.x);
+    if constexpr (t_n == 2) return vec2<T>(v1 * v2.x, v1 * v2.y);
+    if constexpr (t_n == 3) return vec3<T>(v1 * v2.x, v1 * v2.y, v1 * v2.z);
+    if constexpr (t_n == 4) return vec4<T>(v1 * v2.x, v1 * v2.y, v1 * v2.z, v1 * v2.w);
 }
 
 //--- divide ---
 
-template <typename T>
-constexpr vec1<T> operator/(const vec1<T> & v1, const vec1<T> & v2) {
-    return vec1<T>(v1.x / v2.x);
+template <typename T, nat t_n>
+constexpr vec<T, t_n> operator/(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
+    if constexpr (t_n == 1) return vec1<T>(v1.x / v2.x);
+    if constexpr (t_n == 2) return vec2<T>(v1.x / v2.x, v1.y / v2.y);
+    if constexpr (t_n == 3) return vec3<T>(v1.x / v2.x, v1.y / v2.y, v1.z / v2.z);
+    if constexpr (t_n == 4) return vec4<T>(v1.x / v2.x, v1.y / v2.y, v1.z / v2.z, v1.w / v2.w);
 }
 
-template <typename T>
-constexpr vec2<T> operator/(const vec2<T> & v1, const vec2<T> & v2) {
-    return vec2<T>(v1.x / v2.x, v1.y / v2.y);
-}
-
-template <typename T>
-constexpr vec3<T> operator/(const vec3<T> & v1, const vec3<T> & v2) {
-    return vec3<T>(v1.x / v2.x, v1.y / v2.y, v1.z / v2.z);
-}
-
-template <typename T>
-constexpr vec4<T> operator/(const vec4<T> & v1, const vec4<T> & v2) {
-    return vec4<T>(v1.x / v2.x, v1.y / v2.y, v1.z / v2.z, v1.w / v2.w);
-}
-
-template <typename T>
-constexpr vec1<T> operator/(const vec1<T> & v1, const T & v2) {
-    return vec1<T>(v1.x / v2);
-}
-
-template <typename T>
-constexpr vec2<T> operator/(const vec2<T> & v1, const T & v2) {
-    if constexpr (std::is_floating_point_v<T>) {
-        T inv(static_cast<T>(1.0) / v2);
-        return vec2<T>(v1.x * inv, v1.y * inv);
+template <typename T, nat t_n>
+constexpr vec<T, t_n> operator/(const vec<T, t_n> & v1, const T & v2) {
+    if constexpr (t_n > 1 && std::is_floating_point_v<T>) {
+        return v1 * (static_cast<T>(1.0) / v2);
     }
-    else {
-        return vec2<T>(v1.x / v2, v1.y / v2);
-    }
+    if constexpr (t_n == 1) return vec1<T>(v1.x / v2);
+    if constexpr (t_n == 2) return vec2<T>(v1.x / v2, v1.y / v2);
+    if constexpr (t_n == 3) return vec3<T>(v1.x / v2, v1.y / v2, v1.z / v2);
+    if constexpr (t_n == 4) return vec4<T>(v1.x / v2, v1.y / v2, v1.z / v2, v1.w / v2);
 }
 
-template <typename T>
-constexpr vec3<T> operator/(const vec3<T> & v1, const T & v2) {
-    if constexpr (std::is_floating_point_v<T>) {
-        T inv(static_cast<T>(1.0) / v2);
-        return vec3<T>(v1.x * inv, v1.y * inv, v1.z * inv);
-    }
-    else {
-        return vec3<T>(v1.x / v2, v1.y / v2, v1.z / v2);
-    }
-}
-
-template <typename T>
-constexpr vec4<T> operator/(const vec4<T> & v1, const T & v2) {
-    if constexpr (std::is_floating_point_v<T>) {
-        T inv(static_cast<T>(1.0) / v2);
-        return vec4<T>(v1.x * inv, v1.y * inv, v1.z * inv, v1.w * inv);
-    }
-    else {
-        return vec4<T>(v1.x / v2, v1.y / v2, v1.z / v2, v1.w / v2);
-    }
-}
-
-template <typename T>
-constexpr vec1<T> operator/(const T & v1, const vec1<T> & v2) {
-    return vec1<T>(v1 / v2.x);
-}
-
-template <typename T>
-constexpr vec2<T> operator/(const T & v1, const vec2<T> & v2) {
-    return vec2<T>(v1 / v2.x, v1 / v2.y);
-}
-
-template <typename T>
-constexpr vec3<T> operator/(const T & v1, const vec3<T> & v2) {
-    return vec3<T>(v1 / v2.x, v1 / v2.y, v1 / v2.z);
-}
-
-template <typename T>
-constexpr vec4<T> operator/(const T & v1, const vec4<T> & v2) {
-    return vec4<T>(v1 / v2.x, v1 / v2.y, v1 / v2.z, v1 / v2.w);
+template <typename T, nat t_n>
+constexpr vec<T, t_n> operator/(const T & v1, const vec<T, t_n> & v2) {
+    if constexpr (t_n == 1) return vec1<T>(v1 / v2.x);
+    if constexpr (t_n == 2) return vec2<T>(v1 / v2.x, v1 / v2.y);
+    if constexpr (t_n == 3) return vec3<T>(v1 / v2.x, v1 / v2.y, v1 / v2.z);
+    if constexpr (t_n == 4) return vec4<T>(v1 / v2.x, v1 / v2.y, v1 / v2.z, v1 / v2.w);
 }
 
 //--- modulus ---
 
-template <typename T>
-constexpr vec1<T> operator%(const vec1<T> & v1, const vec1<T> & v2) {
-    return vec1<T>(mod(v1.x, v2.x));
+template <typename T, nat t_n>
+constexpr vec<T, t_n> operator%(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
+    if constexpr (t_n == 1) return vec1<T>(mod(v1.x, v2.x));
+    if constexpr (t_n == 2) return vec2<T>(mod(v1.x, v2.x), mod(v1.y, v2.y));
+    if constexpr (t_n == 3) return vec3<T>(mod(v1.x, v2.x), mod(v1.y, v2.y), mod(v1.z, v2.z));
+    if constexpr (t_n == 4) return vec4<T>(mod(v1.x, v2.x), mod(v1.y, v2.y), mod(v1.z, v2.z), mod(v1.w, v2.w));
 }
 
-template <typename T>
-constexpr vec2<T> operator%(const vec2<T> & v1, const vec2<T> & v2) {
-    return vec2<T>(mod(v1.x, v2.x), mod(v1.y, v2.y));
+template <typename T, nat t_n>
+constexpr vec<T, t_n> operator%(const vec<T, t_n> & v1, const T & v2) {
+    if constexpr (t_n == 1) return vec1<T>(mod(v1.x, v2));
+    if constexpr (t_n == 2) return vec2<T>(mod(v1.x, v2), mod(v1.y, v2));
+    if constexpr (t_n == 3) return vec3<T>(mod(v1.x, v2), mod(v1.y, v2), mod(v1.z, v2));
+    if constexpr (t_n == 4) return vec4<T>(mod(v1.x, v2), mod(v1.y, v2), mod(v1.z, v2), mod(v1.w, v2));
 }
 
-template <typename T>
-constexpr vec3<T> operator%(const vec3<T> & v1, const vec3<T> & v2) {
-    return vec3<T>(mod(v1.x, v2.x), mod(v1.y, v2.y), mod(v1.z, v2.z));
-}
-
-template <typename T>
-constexpr vec4<T> operator%(const vec4<T> & v1, const vec4<T> & v2) {
-    return vec4<T>(mod(v1.x, v2.x), mod(v1.y, v2.y), mod(v1.z, v2.z), mod(v1.w, v2.w));
-}
-
-template <typename T>
-constexpr vec1<T> operator%(const vec1<T> & v1, const T & v2) {
-    return vec1<T>(mod(v1.x, v2));
-}
-
-template <typename T>
-constexpr vec2<T> operator%(const vec2<T> & v1, const T & v2) {
-    return vec2<T>(mod(v1.x, v2), mod(v1.y, v2));
-}
-
-template <typename T>
-constexpr vec3<T> operator%(const vec3<T> & v1, const T & v2) {
-    return vec3<T>(mod(v1.x, v2), mod(v1.y, v2), mod(v1.z, v2));
-}
-
-template <typename T>
-constexpr vec4<T> operator%(const vec4<T> & v1, const T & v2) {
-    return vec4<T>(mod(v1.x, v2), mod(v1.y, v2), mod(v1.z, v2), mod(v1.w, v2));
-}
-
-template <typename T>
-constexpr vec1<T> operator%(const T & v1, const vec1<T> & v2) {
-    return vec1<T>(mod(v1, v2.x));
-}
-
-template <typename T>
-constexpr vec2<T> operator%(const T & v1, const vec2<T> & v2) {
-    return vec2<T>(mod(v1, v2.x), mod(v1, v2.y));
-}
-
-template <typename T>
-constexpr vec3<T> operator%(const T & v1, const vec3<T> & v2) {
-    return vec3<T>(mod(v1, v2.x), mod(v1, v2.y), mod(v1, v2.z));
-}
-
-template <typename T>
-constexpr vec4<T> operator%(const T & v1, const vec4<T> & v2) {
-    return vec4<T>(mod(v1, v2.x), mod(v1, v2.y), mod(v1, v2.z), mod(v1, v2.w));
+template <typename T, nat t_n>
+constexpr vec<T, t_n> operator%(const T & v1, const vec<T, t_n> & v2) {
+    if constexpr (t_n == 1) return vec1<T>(mod(v1, v2.x));
+    if constexpr (t_n == 2) return vec2<T>(mod(v1, v2.x), mod(v1, v2.y));
+    if constexpr (t_n == 3) return vec3<T>(mod(v1, v2.x), mod(v1, v2.y), mod(v1, v2.z));
+    if constexpr (t_n == 4) return vec4<T>(mod(v1, v2.x), mod(v1, v2.y), mod(v1, v2.z), mod(v1, v2.w));
 }
 
 
@@ -2981,74 +2684,28 @@ constexpr vec4<T> operator%(const T & v1, const vec4<T> & v2) {
 
 //--- equal to ---
 
-template <typename T>
-constexpr bool operator==(const vec1<T> & v1, const vec1<T> & v2) {
-    return v1.x == v2.x;
+template <typename T, nat t_n>
+constexpr bool operator==(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
+    if constexpr (t_n == 1) return v1.x == v2.x;
+    if constexpr (t_n == 2) return v1.x == v2.x && v1.y == v2.y;
+    if constexpr (t_n == 3) return v1.x == v2.x && v1.y == v2.y && v1.z == v2.z;
+    if constexpr (t_n == 4) return v1.x == v2.x && v1.y == v2.y && v1.z == v2.z && v1.w == v2.w;
 }
 
-template <typename T>
-constexpr bool operator==(const vec2<T> & v1, const vec2<T> & v2) {
-    return v1.x == v2.x && v1.y == v2.y;
+template <typename T, nat t_n>
+constexpr bvec<t_n> operator==(const vec<T, t_n> & v1, const T & v2) {
+    if constexpr (t_n == 1) return bvec1(v1.x == v2);
+    if constexpr (t_n == 2) return bvec2(v1.x == v2, v1.y == v2);
+    if constexpr (t_n == 3) return bvec3(v1.x == v2, v1.y == v2, v1.z == v2);
+    if constexpr (t_n == 4) return bvec4(v1.x == v2, v1.y == v2, v1.z == v2, v1.w == v2);
 }
 
-template <typename T>
-constexpr bool operator==(const vec3<T> & v1, const vec3<T> & v2) {
-    return v1.x == v2.x && v1.y == v2.y && v1.z == v2.z;
-}
-
-template <typename T>
-constexpr bool operator==(const vec4<T> & v1, const vec4<T> & v2) {
-    return v1.x == v2.x && v1.y == v2.y && v1.z == v2.z && v1.w == v2.w;
-}
-
-template <typename T>
-constexpr bool operator==(const vec<T, 6> & v1, const vec<T, 6> & v2) {
-    return v1.min == v2.min && v1.max == v2.max;
-}
-
-template <typename T>
-constexpr bool operator==(const vec<T, 8> & v1, const vec<T, 8> & v2) {
-    return v1.min == v2.min && v1.max == v2.max;
-}
-
-template <typename T>
-constexpr bvec1 operator==(const vec1<T> & v1, const T & v2) {
-    return bvec1(v1.x == v2);
-}
-
-template <typename T>
-constexpr bvec2 operator==(const vec2<T> & v1, const T & v2) {
-    return bvec2(v1.x == v2, v1.y == v2);
-}
-
-template <typename T>
-constexpr bvec3 operator==(const vec3<T> & v1, const T & v2) {
-    return bvec3(v1.x == v2, v1.y == v2, v1.z == v2);
-}
-
-template <typename T>
-constexpr bvec4 operator==(const vec4<T> & v1, const T & v2) {
-    return bvec4(v1.x == v2, v1.y == v2, v1.z == v2, v1.w == v2);
-}
-
-template <typename T>
-constexpr bvec1 operator==(const T & v1, const vec1<T> & v2) {
-    return bvec1(v1 == v2.x);
-}
-
-template <typename T>
-constexpr bvec2 operator==(const T & v1, const vec2<T> & v2) {
-    return bvec2(v1 == v2.x, v1 == v2.y);
-}
-
-template <typename T>
-constexpr bvec3 operator==(const T & v1, const vec3<T> & v2) {
-    return bvec3(v1 == v2.x, v1 == v2.y, v1 == v2.z);
-}
-
-template <typename T>
-constexpr bvec4 operator==(const T & v1, const vec4<T> & v2) {
-    return bvec4(v1 == v2.x, v1 == v2.y, v1 == v2.z, v1 == v2.w);
+template <typename T, nat t_n>
+constexpr bvec<t_n> operator==(const T & v1, const vec<T, t_n> & v2) {
+    if constexpr (t_n == 1) return bvec1(v1 == v2.x);
+    if constexpr (t_n == 2) return bvec2(v1 == v2.x, v1 == v2.y);
+    if constexpr (t_n == 3) return bvec3(v1 == v2.x, v1 == v2.y, v1 == v2.z);
+    if constexpr (t_n == 4) return bvec4(v1 == v2.x, v1 == v2.y, v1 == v2.z, v1 == v2.w);
 }
 
 template <typename T, nat t_n>
@@ -3058,74 +2715,28 @@ constexpr bool operator==(const span<T, t_n> & s1, const span<T, t_n> & s2) {
 
 //--- not equal to ---
 
-template <typename T>
-constexpr bool operator!=(const vec1<T> & v1, const vec1<T> & v2) {
-    return v1.x != v2.x;
+template <typename T, nat t_n>
+constexpr bool operator!=(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
+    if constexpr (t_n == 1) return v1.x != v2.x;
+    if constexpr (t_n == 2) return v1.x != v2.x || v1.y != v2.y;
+    if constexpr (t_n == 3) return v1.x != v2.x || v1.y != v2.y || v1.z != v2.z;
+    if constexpr (t_n == 4) return v1.x != v2.x || v1.y != v2.y || v1.z != v2.z || v1.w != v2.w;
 }
 
-template <typename T>
-constexpr bool operator!=(const vec2<T> & v1, const vec2<T> & v2) {
-    return v1.x != v2.x || v1.y != v2.y;
+template <typename T, nat t_n>
+constexpr bvec<t_n> operator!=(const vec<T, t_n> & v1, const T & v2) {
+    if constexpr (t_n == 1) return bvec1(v1.x != v2);
+    if constexpr (t_n == 2) return bvec2(v1.x != v2, v1.y != v2);
+    if constexpr (t_n == 3) return bvec3(v1.x != v2, v1.y != v2, v1.z != v2);
+    if constexpr (t_n == 4) return bvec4(v1.x != v2, v1.y != v2, v1.z != v2, v1.w != v2);
 }
 
-template <typename T>
-constexpr bool operator!=(const vec3<T> & v1, const vec3<T> & v2) {
-    return v1.x != v2.x || v1.y != v2.y || v1.z != v2.z;
-}
-
-template <typename T>
-constexpr bool operator!=(const vec4<T> & v1, const vec4<T> & v2) {
-    return v1.x != v2.x || v1.y != v2.y || v1.z != v2.z || v1.w != v2.w;
-}
-
-template <typename T>
-constexpr bool operator!=(const vec<T, 6> & v1, const vec<T, 6> & v2) {
-    return v1.min != v2.min || v1.max != v2.max;
-}
-
-template <typename T>
-constexpr bool operator!=(const vec<T, 8> & v1, const vec<T, 8> & v2) {
-    return v1.min != v2.min || v1.max != v2.max;
-}
-
-template <typename T>
-constexpr bvec1 operator!=(const vec1<T> & v1, const T & v2) {
-    return bvec1(v1.x != v2);
-}
-
-template <typename T>
-constexpr bvec2 operator!=(const vec2<T> & v1, const T & v2) {
-    return bvec2(v1.x != v2, v1.y != v2);
-}
-
-template <typename T>
-constexpr bvec3 operator!=(const vec3<T> & v1, const T & v2) {
-    return bvec3(v1.x != v2, v1.y != v2, v1.z != v2);
-}
-
-template <typename T>
-constexpr bvec4 operator!=(const vec4<T> & v1, const T & v2) {
-    return bvec4(v1.x != v2, v1.y != v2, v1.z != v2, v1.w != v2);
-}
-
-template <typename T>
-constexpr bvec1 operator!=(const T & v1, const vec1<T> & v2) {
-    return bvec1(v1 != v2.x);
-}
-
-template <typename T>
-constexpr bvec2 operator!=(const T & v1, const vec2<T> & v2) {
-    return bvec2(v1 != v2.x, v1 != v2.y);
-}
-
-template <typename T>
-constexpr bvec3 operator!=(const T & v1, const vec3<T> & v2) {
-    return bvec3(v1 != v2.x, v1 != v2.y, v1 != v2.z);
-}
-
-template <typename T>
-constexpr bvec4 operator!=(const T & v1, const vec4<T> & v2) {
-    return bvec4(v1 != v2.x, v1 != v2.y, v1 != v2.z, v1 != v2.w);
+template <typename T, nat t_n>
+constexpr bvec<t_n> operator!=(const T & v1, const vec<T, t_n> & v2) {
+    if constexpr (t_n == 1) return bvec1(v1 != v2.x);
+    if constexpr (t_n == 2) return bvec2(v1 != v2.x, v1 != v2.y);
+    if constexpr (t_n == 3) return bvec3(v1 != v2.x, v1 != v2.y, v1 != v2.z);
+    if constexpr (t_n == 4) return bvec4(v1 != v2.x, v1 != v2.y, v1 != v2.z, v1 != v2.w);
 }
 
 template <typename T, nat t_n>
@@ -3135,250 +2746,106 @@ constexpr bool operator!=(const span<T, t_n> & s1, const span<T, t_n> & s2) {
 
 //--- less than ---
 
-template <typename T>
-constexpr bvec1 operator<(const vec1<T> & v1, const vec1<T> & v2) {
-    return bvec1(v1.x < v2.x);
+template <typename T, nat t_n>
+constexpr bvec<t_n> operator<(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
+    if constexpr (t_n == 1) return bvec1(v1.x < v2.x);
+    if constexpr (t_n == 2) return bvec2(v1.x < v2.x, v1.y < v2.y);
+    if constexpr (t_n == 3) return bvec3(v1.x < v2.x, v1.y < v2.y, v1.z < v2.z);
+    if constexpr (t_n == 4) return bvec4(v1.x < v2.x, v1.y < v2.y, v1.z < v2.z, v1.w < v2.w);
 }
 
-template <typename T>
-constexpr bvec2 operator<(const vec2<T> & v1, const vec2<T> & v2) {
-    return bvec2(v1.x < v2.x, v1.y < v2.y);
+template <typename T, nat t_n>
+constexpr bvec<t_n> operator<(const vec<T, t_n> & v1, const T & v2) {
+    if constexpr (t_n == 1) return bvec1(v1.x < v2);
+    if constexpr (t_n == 2) return bvec2(v1.x < v2, v1.y < v2);
+    if constexpr (t_n == 3) return bvec3(v1.x < v2, v1.y < v2, v1.z < v2);
+    if constexpr (t_n == 4) return bvec4(v1.x < v2, v1.y < v2, v1.z < v2, v1.w < v2);
 }
 
-template <typename T>
-constexpr bvec3 operator<(const vec3<T> & v1, const vec3<T> & v2) {
-    return bvec3(v1.x < v2.x, v1.y < v2.y, v1.z < v2.z);
-}
-
-template <typename T>
-constexpr bvec4 operator<(const vec4<T> & v1, const vec4<T> & v2) {
-    return bvec4(v1.x < v2.x, v1.y < v2.y, v1.z < v2.z, v1.w < v2.w);
-}
-
-template <typename T>
-constexpr bvec1 operator<(const vec1<T> & v1, const T & v2) {
-    return bvec1(v1.x < v2);
-}
-
-template <typename T>
-constexpr bvec2 operator<(const vec2<T> & v1, const T & v2) {
-    return bvec2(v1.x < v2, v1.y < v2);
-}
-
-template <typename T>
-constexpr bvec3 operator<(const vec3<T> & v1, const T & v2) {
-    return bvec3(v1.x < v2, v1.y < v2, v1.z < v2);
-}
-
-template <typename T>
-constexpr bvec4 operator<(const vec4<T> & v1, const T & v2) {
-    return bvec4(v1.x < v2, v1.y < v2, v1.z < v2, v1.w < v2);
-}
-
-template <typename T>
-constexpr bvec1 operator<(const T & v1, const vec1<T> & v2) {
-    return bvec1(v1 < v2.x);
-}
-
-template <typename T>
-constexpr bvec2 operator<(const T & v1, const vec2<T> & v2) {
-    return bvec2(v1 < v2.x, v1 < v2.y);
-}
-
-template <typename T>
-constexpr bvec3 operator<(const T & v1, const vec3<T> & v2) {
-    return bvec3(v1 < v2.x, v1 < v2.y, v1 < v2.z);
-}
-
-template <typename T>
-constexpr bvec4 operator<(const T & v1, const vec4<T> & v2) {
-    return bvec4(v1 < v2.x, v1 < v2.y, v1 < v2.z, v1 < v2.w);
+template <typename T, nat t_n>
+constexpr bvec<t_n> operator<(const T & v1, const vec<T, t_n> & v2) {
+    if constexpr (t_n == 1) return bvec1(v1 < v2.x);
+    if constexpr (t_n == 2) return bvec2(v1 < v2.x, v1 < v2.y);
+    if constexpr (t_n == 3) return bvec3(v1 < v2.x, v1 < v2.y, v1 < v2.z);
+    if constexpr (t_n == 4) return bvec4(v1 < v2.x, v1 < v2.y, v1 < v2.z, v1 < v2.w);
 }
 
 //--- greater than ---
 
-template <typename T>
-constexpr bvec1 operator>(const vec1<T> & v1, const vec1<T> & v2) {
-    return bvec1(v1.x > v2.x);
+template <typename T, nat t_n>
+constexpr bvec<t_n> operator>(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
+    if constexpr (t_n == 1) return bvec1(v1.x > v2.x);
+    if constexpr (t_n == 2) return bvec2(v1.x > v2.x, v1.y > v2.y);
+    if constexpr (t_n == 3) return bvec3(v1.x > v2.x, v1.y > v2.y, v1.z > v2.z);
+    if constexpr (t_n == 4) return bvec4(v1.x > v2.x, v1.y > v2.y, v1.z > v2.z, v1.w > v2.w);
 }
 
-template <typename T>
-constexpr bvec2 operator>(const vec2<T> & v1, const vec2<T> & v2) {
-    return bvec2(v1.x > v2.x, v1.y > v2.y);
+template <typename T, nat t_n>
+constexpr bvec<t_n> operator>(const vec<T, t_n> & v1, const T & v2) {
+    if constexpr (t_n == 1) return bvec1(v1.x > v2);
+    if constexpr (t_n == 2) return bvec2(v1.x > v2, v1.y > v2);
+    if constexpr (t_n == 3) return bvec3(v1.x > v2, v1.y > v2, v1.z > v2);
+    if constexpr (t_n == 4) return bvec4(v1.x > v2, v1.y > v2, v1.z > v2, v1.w > v2);
 }
 
-template <typename T>
-constexpr bvec3 operator>(const vec3<T> & v1, const vec3<T> & v2) {
-    return bvec3(v1.x > v2.x, v1.y > v2.y, v1.z > v2.z);
-}
-
-template <typename T>
-constexpr bvec4 operator>(const vec4<T> & v1, const vec4<T> & v2) {
-    return bvec4(v1.x > v2.x, v1.y > v2.y, v1.z > v2.z, v1.w > v2.w);
-}
-
-template <typename T>
-constexpr bvec1 operator>(const vec1<T> & v1, const T & v2) {
-    return bvec1(v1.x > v2);
-}
-
-template <typename T>
-constexpr bvec2 operator>(const vec2<T> & v1, const T & v2) {
-    return bvec2(v1.x > v2, v1.y > v2);
-}
-
-template <typename T>
-constexpr bvec3 operator>(const vec3<T> & v1, const T & v2) {
-    return bvec3(v1.x > v2, v1.y > v2, v1.z > v2);
-}
-
-template <typename T>
-constexpr bvec4 operator>(const vec4<T> & v1, const T & v2) {
-    return bvec4(v1.x > v2, v1.y > v2, v1.z > v2, v1.w > v2);
-}
-
-template <typename T>
-constexpr bvec1 operator>(const T & v1, const vec1<T> & v2) {
-    return bvec1(v1 > v2.x);
-}
-
-template <typename T>
-constexpr bvec2 operator>(const T & v1, const vec2<T> & v2) {
-    return bvec2(v1 > v2.x, v1 > v2.y);
-}
-
-template <typename T>
-constexpr bvec3 operator>(const T & v1, const vec3<T> & v2) {
-    return bvec3(v1 > v2.x, v1 > v2.y, v1 > v2.z);
-}
-
-template <typename T>
-constexpr bvec4 operator>(const T & v1, const vec4<T> & v2) {
-    return bvec4(v1 > v2.x, v1 > v2.y, v1 > v2.z, v1 > v2.w);
+template <typename T, nat t_n>
+constexpr bvec<t_n> operator>(const T & v1, const vec<T, t_n> & v2) {
+    if constexpr (t_n == 1) return bvec1(v1 > v2.x);
+    if constexpr (t_n == 2) return bvec2(v1 > v2.x, v1 > v2.y);
+    if constexpr (t_n == 3) return bvec3(v1 > v2.x, v1 > v2.y, v1 > v2.z);
+    if constexpr (t_n == 4) return bvec4(v1 > v2.x, v1 > v2.y, v1 > v2.z, v1 > v2.w);
 }
 
 //--- less than or equal to ---
 
-template <typename T>
-constexpr bvec1 operator<=(const vec1<T> & v1, const vec1<T> & v2) {
-    return bvec1(v1.x <= v2.x);
+template <typename T, nat t_n>
+constexpr bvec<t_n> operator<=(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
+    if constexpr (t_n == 1) return bvec1(v1.x <= v2.x);
+    if constexpr (t_n == 2) return bvec2(v1.x <= v2.x, v1.y <= v2.y);
+    if constexpr (t_n == 3) return bvec3(v1.x <= v2.x, v1.y <= v2.y, v1.z <= v2.z);
+    if constexpr (t_n == 4) return bvec4(v1.x <= v2.x, v1.y <= v2.y, v1.z <= v2.z, v1.w <= v2.w);
 }
 
-template <typename T>
-constexpr bvec2 operator<=(const vec2<T> & v1, const vec2<T> & v2) {
-    return bvec2(v1.x <= v2.x, v1.y <= v2.y);
+template <typename T, nat t_n>
+constexpr bvec<t_n> operator<=(const vec<T, t_n> & v1, const T & v2) {
+    if constexpr (t_n == 1) return bvec1(v1.x <= v2);
+    if constexpr (t_n == 2) return bvec2(v1.x <= v2, v1.y <= v2);
+    if constexpr (t_n == 3) return bvec3(v1.x <= v2, v1.y <= v2, v1.z <= v2);
+    if constexpr (t_n == 4) return bvec4(v1.x <= v2, v1.y <= v2, v1.z <= v2, v1.w <= v2);
 }
 
-template <typename T>
-constexpr bvec3 operator<=(const vec3<T> & v1, const vec3<T> & v2) {
-    return bvec3(v1.x <= v2.x, v1.y <= v2.y, v1.z <= v2.z);
-}
-
-template <typename T>
-constexpr bvec4 operator<=(const vec4<T> & v1, const vec4<T> & v2) {
-    return bvec4(v1.x <= v2.x, v1.y <= v2.y, v1.z <= v2.z, v1.w <= v2.w);
-}
-
-template <typename T>
-constexpr bvec1 operator<=(const vec1<T> & v1, const T & v2) {
-    return bvec1(v1.x <= v2);
-}
-
-template <typename T>
-constexpr bvec2 operator<=(const vec2<T> & v1, const T & v2) {
-    return bvec2(v1.x <= v2, v1.y <= v2);
-}
-
-template <typename T>
-constexpr bvec3 operator<=(const vec3<T> & v1, const T & v2) {
-    return bvec3(v1.x <= v2, v1.y <= v2, v1.z <= v2);
-}
-
-template <typename T>
-constexpr bvec4 operator<=(const vec4<T> & v1, const T & v2) {
-    return bvec4(v1.x <= v2, v1.y <= v2, v1.z <= v2, v1.w <= v2);
-}
-
-template <typename T>
-constexpr bvec1 operator<=(const T & v1, const vec1<T> & v2) {
-    return bvec1(v1 <= v2.x);
-}
-
-template <typename T>
-constexpr bvec2 operator<=(const T & v1, const vec2<T> & v2) {
-    return bvec2(v1 <= v2.x, v1 <= v2.y);
-}
-
-template <typename T>
-constexpr bvec3 operator<=(const T & v1, const vec3<T> & v2) {
-    return bvec3(v1 <= v2.x, v1 <= v2.y, v1 <= v2.z);
-}
-
-template <typename T>
-constexpr bvec4 operator<=(const T & v1, const vec4<T> & v2) {
-    return bvec4(v1 <= v2.x, v1 <= v2.y, v1 <= v2.z, v1 <= v2.w);
+template <typename T, nat t_n>
+constexpr bvec<t_n> operator<=(const T & v1, const vec<T, t_n> & v2) {
+    if constexpr (t_n == 1) return bvec1(v1 <= v2.x);
+    if constexpr (t_n == 2) return bvec2(v1 <= v2.x, v1 <= v2.y);
+    if constexpr (t_n == 3) return bvec3(v1 <= v2.x, v1 <= v2.y, v1 <= v2.z);
+    if constexpr (t_n == 4) return bvec4(v1 <= v2.x, v1 <= v2.y, v1 <= v2.z, v1 <= v2.w);
 }
 
 //--- greater than or equal to ---
 
-template <typename T>
-constexpr bvec1 operator>=(const vec1<T> & v1, const vec1<T> & v2) {
-    return bvec1(v1.x >= v2.x);
+template <typename T, nat t_n>
+constexpr bvec<t_n> operator>=(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
+    if constexpr (t_n == 1) return bvec1(v1.x >= v2.x);
+    if constexpr (t_n == 2) return bvec2(v1.x >= v2.x, v1.y >= v2.y);
+    if constexpr (t_n == 3) return bvec3(v1.x >= v2.x, v1.y >= v2.y, v1.z >= v2.z);
+    if constexpr (t_n == 4) return bvec4(v1.x >= v2.x, v1.y >= v2.y, v1.z >= v2.z, v1.w >= v2.w);
 }
 
-template <typename T>
-constexpr bvec2 operator>=(const vec2<T> & v1, const vec2<T> & v2) {
-    return bvec2(v1.x >= v2.x, v1.y >= v2.y);
+template <typename T, nat t_n>
+constexpr bvec<t_n> operator>=(const vec<T, t_n> & v1, const T & v2) {
+    if constexpr (t_n == 1) return bvec1(v1.x >= v2);
+    if constexpr (t_n == 2) return bvec2(v1.x >= v2, v1.y >= v2);
+    if constexpr (t_n == 3) return bvec3(v1.x >= v2, v1.y >= v2, v1.z >= v2);
+    if constexpr (t_n == 4) return bvec4(v1.x >= v2, v1.y >= v2, v1.z >= v2, v1.w >= v2);
 }
 
-template <typename T>
-constexpr bvec3 operator>=(const vec3<T> & v1, const vec3<T> & v2) {
-    return bvec3(v1.x >= v2.x, v1.y >= v2.y, v1.z >= v2.z);
-}
-
-template <typename T>
-constexpr bvec4 operator>=(const vec4<T> & v1, const vec4<T> & v2) {
-    return bvec4(v1.x >= v2.x, v1.y >= v2.y, v1.z >= v2.z, v1.w >= v2.w);
-}
-
-template <typename T>
-constexpr bvec1 operator>=(const vec1<T> & v1, const T & v2) {
-    return bvec1(v1.x >= v2);
-}
-
-template <typename T>
-constexpr bvec2 operator>=(const vec2<T> & v1, const T & v2) {
-    return bvec2(v1.x >= v2, v1.y >= v2);
-}
-
-template <typename T>
-constexpr bvec3 operator>=(const vec3<T> & v1, const T & v2) {
-    return bvec3(v1.x >= v2, v1.y >= v2, v1.z >= v2);
-}
-
-template <typename T>
-constexpr bvec4 operator>=(const vec4<T> & v1, const T & v2) {
-    return bvec4(v1.x >= v2, v1.y >= v2, v1.z >= v2, v1.w >= v2);
-}
-
-template <typename T>
-constexpr bvec1 operator>=(const T & v1, const vec1<T> & v2) {
-    return bvec1(v1 >= v2.x);
-}
-
-template <typename T>
-constexpr bvec2 operator>=(const T & v1, const vec2<T> & v2) {
-    return bvec2(v1 >= v2.x, v1 >= v2.y);
-}
-
-template <typename T>
-constexpr bvec3 operator>=(const T & v1, const vec3<T> & v2) {
-    return bvec3(v1 >= v2.x, v1 >= v2.y, v1 >= v2.z);
-}
-
-template <typename T>
-constexpr bvec4 operator>=(const T & v1, const vec4<T> & v2) {
-    return bvec4(v1 >= v2.x, v1 >= v2.y, v1 >= v2.z, v1 >= v2.w);
+template <typename T, nat t_n>
+constexpr bvec<t_n> operator>=(const T & v1, const vec<T, t_n> & v2) {
+    if constexpr (t_n == 1) return bvec1(v1 >= v2.x);
+    if constexpr (t_n == 2) return bvec2(v1 >= v2.x, v1 >= v2.y);
+    if constexpr (t_n == 3) return bvec3(v1 >= v2.x, v1 >= v2.y, v1 >= v2.z);
+    if constexpr (t_n == 4) return bvec4(v1 >= v2.x, v1 >= v2.y, v1 >= v2.z, v1 >= v2.w);
 }
 
 
@@ -3388,64 +2855,28 @@ constexpr bvec4 operator>=(const T & v1, const vec4<T> & v2) {
 
 
 
-template <typename T>
-constexpr bvec1 operator&&(const vec1<T> & v1, const vec1<T> & v2) {
-    return bvec1(v1.x && v2.x);
+template <typename T, nat t_n>
+constexpr bvec<t_n> operator&&(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
+    if constexpr (t_n == 1) return bvec1(v1.x && v2.x);
+    if constexpr (t_n == 2) return bvec2(v1.x && v2.x, v1.y && v2.y);
+    if constexpr (t_n == 3) return bvec3(v1.x && v2.x, v1.y && v2.y, v1.z && v2.z);
+    if constexpr (t_n == 4) return bvec4(v1.x && v2.x, v1.y && v2.y, v1.z && v2.z, v1.w && v2.w);
 }
 
-template <typename T>
-constexpr bvec2 operator&&(const vec2<T> & v1, const vec2<T> & v2) {
-    return bvec2(v1.x && v2.x, v1.y && v2.y);
+template <typename T, nat t_n>
+constexpr bvec<t_n> operator||(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
+    if constexpr (t_n == 1) return bvec1(v1.x || v2.x);
+    if constexpr (t_n == 2) return bvec2(v1.x || v2.x, v1.y || v2.y);
+    if constexpr (t_n == 3) return bvec3(v1.x || v2.x, v1.y || v2.y, v1.z || v2.z);
+    if constexpr (t_n == 4) return bvec4(v1.x || v2.x, v1.y || v2.y, v1.z || v2.z, v1.w || v2.w);
 }
 
-template <typename T>
-constexpr bvec3 operator&&(const vec3<T> & v1, const vec3<T> & v2) {
-    return bvec3(v1.x && v2.x, v1.y && v2.y, v1.z && v2.z);
-}
-
-template <typename T>
-constexpr bvec4 operator&&(const vec4<T> & v1, const vec4<T> & v2) {
-    return bvec4(v1.x && v2.x, v1.y && v2.y, v1.z && v2.z, v1.w && v2.w);
-}
-
-template <typename T>
-constexpr bvec1 operator||(const vec1<T> & v1, const vec1<T> & v2) {
-    return bvec1(v1.x || v2.x);
-}
-
-template <typename T>
-constexpr bvec2 operator||(const vec2<T> & v1, const vec2<T> & v2) {
-    return bvec2(v1.x || v2.x, v1.y || v2.y);
-}
-
-template <typename T>
-constexpr bvec3 operator||(const vec3<T> & v1, const vec3<T> & v2) {
-    return bvec3(v1.x || v2.x, v1.y || v2.y, v1.z || v2.z);
-}
-
-template <typename T>
-constexpr bvec4 operator||(const vec4<T> & v1, const vec4<T> & v2) {
-    return bvec4(v1.x || v2.x, v1.y || v2.y, v1.z || v2.z, v1.w || v2.w);
-}
-
-template <typename T>
-constexpr bvec1 operator!(const vec1<T> & v) {
-    return bvec1(!v.x);
-}
-
-template <typename T>
-constexpr bvec2 operator!(const vec2<T> & v) {
-    return bvec2(!v.x, !v.y);
-}
-
-template <typename T>
-constexpr bvec3 operator!(const vec3<T> & v) {
-    return bvec3(!v.x, !v.y, !v.z);
-}
-
-template <typename T>
-constexpr bvec4 operator!(const vec4<T> & v) {
-    return bvec4(!v.x, !v.y, !v.z, !v.w);
+template <typename T, nat t_n>
+constexpr bvec<t_n> operator!(const vec<T, t_n> & v) {
+    if constexpr (t_n == 1) return bvec1(!v.x);
+    if constexpr (t_n == 2) return bvec2(!v.x, !v.y);
+    if constexpr (t_n == 3) return bvec3(!v.x, !v.y, !v.z);
+    if constexpr (t_n == 4) return bvec4(!v.x, !v.y, !v.z, !v.w);
 }
 
 
@@ -3455,84 +2886,36 @@ constexpr bvec4 operator!(const vec4<T> & v) {
 
 
 
-template <typename T>
-constexpr T sum(const vec1<T> & v) {
-    return v.x;
+template <typename T, nat t_n>
+constexpr T sum(const vec<T, t_n> & v) {
+    if constexpr (t_n == 1) return v.x;
+    if constexpr (t_n == 2) return v.x + v.y;
+    if constexpr (t_n == 3) return v.x + v.y + v.z;
+    if constexpr (t_n == 4) return v.x + v.y + v.z + v.w;
 }
 
-template <typename T>
-constexpr T sum(const vec2<T> & v) {
-    return v.x + v.y;
+template <typename T, nat t_n>
+constexpr T product(const vec<T, t_n> & v) {
+    if constexpr (t_n == 1) return v.x;
+    if constexpr (t_n == 2) return v.x * v.y;
+    if constexpr (t_n == 3) return v.x * v.y * v.z;
+    if constexpr (t_n == 4) return v.x * v.y * v.z * v.w;
 }
 
-template <typename T>
-constexpr T sum(const vec3<T> & v) {
-    return v.x + v.y + v.z;
+template <typename T, nat t_n>
+constexpr bool conjunction(const vec<T, t_n> & v) {
+    if constexpr (t_n == 1) return v.x;
+    if constexpr (t_n == 2) return v.x && v.y;
+    if constexpr (t_n == 3) return v.x && v.y && v.z;
+    if constexpr (t_n == 4) return v.x && v.y && v.z && v.w;
 }
 
-template <typename T>
-constexpr T sum(const vec4<T> & v) {
-    return v.x + v.y + v.z + v.w;
-}
-
-template <typename T>
-constexpr T product(const vec1<T> & v) {
-    return v.x;
-}
-
-template <typename T>
-constexpr T product(const vec2<T> & v) {
-    return v.x + v.y;
-}
-
-template <typename T>
-constexpr T product(const vec3<T> & v) {
-    return v.x + v.y + v.z;
-}
-
-template <typename T>
-constexpr T product(const vec4<T> & v) {
-    return v.x + v.y + v.z + v.w;
-}
-
-template <typename T>
-constexpr bool conjunction(const vec1<T> & v) {
-    return v.x;
-}
-
-template <typename T>
-constexpr bool conjunction(const vec2<T> & v) {
-    return v.x && v.y;
-}
-
-template <typename T>
-constexpr bool conjunction(const vec3<T> & v) {
-    return v.x && v.y && v.z;
-}
-
-template <typename T>
-constexpr bool conjunction(const vec4<T> & v) {
-    return v.x && v.y && v.z && v.w;
-}
-
-template <typename T>
-constexpr bool disjunction(const vec1<T> & v) {
-    return v.x;
-}
-
-template <typename T>
-constexpr bool disjunction(const vec2<T> & v) {
-    return v.x || v.y;
-}
-
-template <typename T>
-constexpr bool disjunction(const vec3<T> & v) {
-    return v.x || v.y || v.z;
-}
-
-template <typename T>
-constexpr bool disjunction(const vec4<T> & v) {
-    return v.x || v.y || v.z || v.w;
+template <typename T, nat t_n>
+constexpr bool disjunction(const vec<T, t_n> & v) {
+    if constexpr (t_n == 1) return v.x;
+    if constexpr (t_n == 2) return v.x || v.y;
+    if constexpr (t_n == 3) return v.x || v.y || v.z;
+    if constexpr (t_n == 4) return v.x || v.y || v.z || v.w;
 }
 
 
@@ -3542,24 +2925,15 @@ constexpr bool disjunction(const vec4<T> & v) {
 
 
 
-template <typename T>
-inline std::ostream & operator<<(std::ostream & os, const vec1<T> & v) {
-    return os << "[ " << v.x << " ]";
-}
-
-template <typename T>
-inline std::ostream & operator<<(std::ostream & os, const vec2<T> & v) {
-    return os << "[ " << v.x << " " << v.y << " ]";
-}
-
-template <typename T>
-inline std::ostream & operator<<(std::ostream & os, const vec3<T> & v) {
-    return os << "[ " << v.x << " " << v.y << " " << v.z << " ]";
-}
-
-template <typename T>
-inline std::ostream & operator<<(std::ostream & os, const vec4<T> & v) {
-    return os << "[ " << v.x << " " << v.y << " " << v.z << " " << v.w << " ]";
+template <typename T, nat t_n>
+inline std::ostream & operator<<(std::ostream & os, const vec<T, t_n> & v) {
+    os << "[ ";
+    os << v.x;
+    if constexpr (t_n >= 2) os << " " << v.y;
+    if constexpr (t_n >= 3) os << " " << v.z;
+    if constexpr (t_n >= 4) os << " " << v.w;
+    os << " ]";
+    return os;
 }
 
 template <typename T, nat t_n>
@@ -3572,64 +2946,30 @@ inline std::ostream & operator<<(std::ostream & os, const span<T, t_n> & s) {
 //------------------------------------------------------------------------------
 // Uncategorized
 
-template <typename T, eif_floating_t<T> = 0>
-inline vec1<T> pow(const vec1<T> & v, T p) {
-    return vec1<T>(std::pow(v.x, p));
+
+
+template <typename T, nat t_n, eif_floating_t<T>>
+inline vec<T, t_n> pow(const vec<T, t_n> & v, T p) {
+    if constexpr (t_n == 1) return vec1<T>(std::pow(v.x, p));
+    if constexpr (t_n == 2) return vec2<T>(std::pow(v.x, p), std::pow(v.y, p));
+    if constexpr (t_n == 3) return vec3<T>(std::pow(v.x, p), std::pow(v.y, p), std::pow(v.z, p));
+    if constexpr (t_n == 4) return vec4<T>(std::pow(v.x, p), std::pow(v.y, p), std::pow(v.z, p), std::pow(v.w, p));
 }
 
-template <typename T, eif_floating_t<T> = 0>
-inline vec2<T> pow(const vec2<T> & v, T p) {
-    return vec2<T>(std::pow(v.x, p), std::pow(v.y, p));
+template <typename T, nat t_n, eif_floating_t<T>>
+inline vec<T, t_n> pow(const vec<T, t_n> & v, const vec<T, t_n> & p) {
+    if constexpr (t_n == 1) return vec1<T>(std::pow(v.x, p.x));
+    if constexpr (t_n == 2) return vec2<T>(std::pow(v.x, p.x), std::pow(v.y, p.y));
+    if constexpr (t_n == 3) return vec3<T>(std::pow(v.x, p.x), std::pow(v.y, p.y), std::pow(v.z, p.z));
+    if constexpr (t_n == 4) return vec4<T>(std::pow(v.x, p.x), std::pow(v.y, p.y), std::pow(v.z, p.z), std::pow(v.w, p.w));
 }
 
-template <typename T, eif_floating_t<T> = 0>
-inline vec3<T> pow(const vec3<T> & v, T p) {
-    return vec3<T>(std::pow(v.x, p), std::pow(v.y, p), std::pow(v.z, p));
-}
-
-template <typename T, eif_floating_t<T> = 0>
-inline vec4<T> pow(const vec4<T> & v, T p) {
-    return vec4<T>(std::pow(v.x, p), std::pow(v.y, p), std::pow(v.z, p), std::pow(v.w, p));
-}
-
-template <typename T, eif_floating_t<T> = 0>
-inline vec1<T> pow(const vec1<T> & v, const vec1<T> & p) {
-    return vec1<T>(std::pow(v.x, p.x));
-}
-
-template <typename T, eif_floating_t<T> = 0>
-inline vec2<T> pow(const vec2<T> & v, const vec2<T> & p) {
-    return vec2<T>(std::pow(v.x, p.x), std::pow(v.y, p.y));
-}
-
-template <typename T, eif_floating_t<T> = 0>
-inline vec3<T> pow(const vec3<T> & v, const vec3<T> & p) {
-    return vec3<T>(std::pow(v.x, p.x), std::pow(v.y, p.y), std::pow(v.z, p.z));
-}
-
-template <typename T, eif_floating_t<T> = 0>
-inline vec4<T> pow(const vec4<T> & v, const vec4<T> & p) {
-    return vec4<T>(std::pow(v.x, p.x), std::pow(v.y, p.y), std::pow(v.z, p.z), std::pow(v.w, p.w));
-}
-
-template <typename T, eif_floating_t<T> = 0>
-inline vec1<T> exp(const vec1<T> & v) {
-    return vec1<T>(std::exp(v.x));
-}
-
-template <typename T, eif_floating_t<T> = 0>
-inline vec2<T> exp(const vec2<T> & v) {
-    return vec2<T>(std::exp(v.x), std::exp(v.y));
-}
-
-template <typename T, eif_floating_t<T> = 0>
-inline vec3<T> exp(const vec3<T> & v) {
-    return vec3<T>(std::exp(v.x), std::exp(v.y), std::exp(v.z));
-}
-
-template <typename T, eif_floating_t<T> = 0>
-inline vec4<T> exp(const vec4<T> & v) {
-    return vec4<T>(std::exp(v.x), std::exp(v.y), std::exp(v.z), std::exp(v.w));
+template <typename T, nat t_n, eif_floating_t<T>>
+inline vec<T, t_n> exp(const vec<T, t_n> & v) {
+    if constexpr (t_n == 1) return vec1<T>(std::exp(v.x));
+    if constexpr (t_n == 2) return vec2<T>(std::exp(v.x), std::exp(v.y));
+    if constexpr (t_n == 3) return vec3<T>(std::exp(v.x), std::exp(v.y), std::exp(v.z));
+    if constexpr (t_n == 4) return vec4<T>(std::exp(v.x), std::exp(v.y), std::exp(v.z), std::exp(v.w));
 }
 
 template <typename T, nat t_n, eif_floating_t<T>>
@@ -3637,24 +2977,12 @@ inline T magnitude(const vec<T, t_n> & v) {
     return static_cast<T>(std::sqrt(magnitude2(v)));
 }
 
-template <typename T>
-inline T magnitude2(const vec1<T> & v) {
-    return v.x * v.x;
-}
-
-template <typename T>
-inline T magnitude2(const vec2<T> & v) {
-    return v.x * v.x + v.y * v.y;
-}
-
-template <typename T>
-inline T magnitude2(const vec3<T> & v) {
-    return v.x * v.x + v.y * v.y + v.z * v.z;
-}
-
-template <typename T>
-inline T magnitude2(const vec4<T> & v) {
-    return v.x * v.x + v.y * v.y + v.z * v.z + v.w * v.w;
+template <typename T, nat t_n>
+inline T magnitude2(const vec<T, t_n> & v) {
+    if constexpr (t_n == 1) return v.x * v.x;
+    if constexpr (t_n == 2) return v.x * v.x + v.y * v.y;
+    if constexpr (t_n == 3) return v.x * v.x + v.y * v.y + v.z * v.z;
+    if constexpr (t_n == 4) return v.x * v.x + v.y * v.y + v.z * v.z + v.w * v.w;
 }
 
 template <typename T, nat t_n, eif_floating_t<T>>
@@ -3666,24 +2994,12 @@ inline vec<T, t_n> norm(const vec<T, t_n> & v) {
     return v * (static_cast<T>(1.0) / m);
 }
 
-template <typename T>
-inline T dot(const vec1<T> & v1, const vec1<T> & v2) {
-    return v1.x * v2.x;
-}
-
-template <typename T>
-inline T dot(const vec2<T> & v1, const vec2<T> & v2) {
-    return v1.x * v2.x + v1.y * v2.y;
-}
-
-template <typename T>
-inline T dot(const vec3<T> & v1, const vec3<T> & v2) {
-    return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
-}
-
-template <typename T>
-inline T dot(const vec4<T> & v1, const vec4<T> & v2) {
-    return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z + v1.w * v2.w;
+template <typename T, nat t_n>
+inline T dot(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
+    if constexpr (t_n == 1) return v1.x * v2.x;
+    if constexpr (t_n == 2) return v1.x * v2.x + v1.y * v2.y;
+    if constexpr (t_n == 3) return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
+    if constexpr (t_n == 4) return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z + v1.w * v2.w;
 }
 
 template <typename T>
@@ -3776,44 +3092,20 @@ inline T angle_n(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
     return static_cast<T>(std::acos(dot(v1, v2)));
 }
 
-template <typename T>
-constexpr const T & min(const vec1<T> & v) {
-    return v.x;
+template <typename T, nat t_n>
+constexpr const T & min(const vec<T, t_n> & v) {
+    if constexpr (t_n == 1) return v.x;
+    if constexpr (t_n == 2) return min(v.x, v.y);
+    if constexpr (t_n == 3) return min(v.x, v.y, v.z);
+    if constexpr (t_n == 4) return min(v.x, v.y, v.z, v.w);
 }
 
-template <typename T>
-constexpr const T & min(const vec2<T> & v) {
-    return min(v.x, v.y);
-}
-
-template <typename T>
-constexpr const T & min(const vec3<T> & v) {
-    return min(v.x, v.y, v.z);
-}
-
-template <typename T>
-constexpr const T & min(const vec4<T> & v) {
-    return min(v.x, v.y, v.z, v.w);
-}
-
-template <typename T>
-constexpr vec1<T> min(const vec1<T> & v1, const vec1<T> & v2) {
-    return vec1<T>(min(v1.x, v2.x));
-}
-
-template <typename T>
-constexpr vec2<T> min(const vec2<T> & v1, const vec2<T> & v2) {
-    return vec2<T>(min(v1.x, v2.x), min(v1.y, v2.y));
-}
-
-template <typename T>
-constexpr vec3<T> min(const vec3<T> & v1, const vec3<T> & v2) {
-    return vec3<T>(min(v1.x, v2.x), min(v1.y, v2.y), min(v1.z, v2.z));
-}
-
-template <typename T>
-constexpr vec4<T> min(const vec4<T> & v1, const vec4<T> & v2) {
-    return vec4<T>(min(v1.x, v2.x), min(v1.y, v2.y), min(v1.z, v2.z), min(v1.w, v2.w));
+template <typename T, nat t_n>
+constexpr vec<T, t_n> min(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
+    if constexpr (t_n == 1) return vec1<T>(min(v1.x, v2.x));
+    if constexpr (t_n == 2) return vec2<T>(min(v1.x, v2.x), min(v1.y, v2.y));
+    if constexpr (t_n == 3) return vec3<T>(min(v1.x, v2.x), min(v1.y, v2.y), min(v1.z, v2.z));
+    if constexpr (t_n == 4) return vec4<T>(min(v1.x, v2.x), min(v1.y, v2.y), min(v1.z, v2.z), min(v1.w, v2.w));
 }
 
 template <typename T, nat t_n, typename... Ts>
@@ -3821,24 +3113,12 @@ constexpr vec<T, t_n> min(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const 
     return min(min(v1, v2), rest...);
 }
 
-template <typename T>
-constexpr vec1<T> min(const vec1<T> & v1, const T & v2) {
-    return vec1<T>(min(v1.x, v2));
-}
-
-template <typename T>
-constexpr vec2<T> min(const vec2<T> & v1, const T & v2) {
-    return vec2<T>(min(v1.x, v2), min(v1.y, v2));
-}
-
-template <typename T>
-constexpr vec3<T> min(const vec3<T> & v1, const T & v2) {
-    return vec3<T>(min(v1.x, v2), min(v1.y, v2), min(v1.z, v2));
-}
-
-template <typename T>
-constexpr vec4<T> min(const vec4<T> & v1, const T & v2) {
-    return vec4<T>(min(v1.x, v2), min(v1.y, v2), min(v1.z, v2), min(v1.w, v2));
+template <typename T, nat t_n>
+constexpr vec<T, t_n> min(const vec<T, t_n> & v1, const T & v2) {
+    if constexpr (t_n == 1) return vec1<T>(min(v1.x, v2));
+    if constexpr (t_n == 2) return vec2<T>(min(v1.x, v2), min(v1.y, v2));
+    if constexpr (t_n == 3) return vec3<T>(min(v1.x, v2), min(v1.y, v2), min(v1.z, v2));
+    if constexpr (t_n == 4) return vec4<T>(min(v1.x, v2), min(v1.y, v2), min(v1.z, v2), min(v1.w, v2));
 }
 
 template <typename T, nat t_n>
@@ -3846,44 +3126,20 @@ constexpr vec<T, t_n> min(const T & v1, const vec<T, t_n> & v2) {
     return min(v2, v1);
 }
 
-template <typename T>
-constexpr const T & max(const vec1<T> & v) {
-    return v.x;
+template <typename T, nat t_n>
+constexpr const T & max(const vec<T, t_n> & v) {
+    if constexpr (t_n == 1) return v.x;
+    if constexpr (t_n == 2) return max(v.x, v.y);
+    if constexpr (t_n == 3) return max(v.x, v.y, v.z);
+    if constexpr (t_n == 4) return max(v.x, v.y, v.z, v.w);
 }
 
-template <typename T>
-constexpr const T & max(const vec2<T> & v) {
-    return max(v.x, v.y);
-}
-
-template <typename T>
-constexpr const T & max(const vec3<T> & v) {
-    return max(v.x, v.y, v.z);
-}
-
-template <typename T>
-constexpr const T & max(const vec4<T> & v) {
-    return max(v.x, v.y, v.z, v.w);
-}
-
-template <typename T>
-constexpr vec1<T> max(const vec1<T> & v1, const vec1<T> & v2) {
-    return vec1<T>(max(v1.x, v2.x));
-}
-
-template <typename T>
-constexpr vec2<T> max(const vec2<T> & v1, const vec2<T> & v2) {
-    return vec2<T>(max(v1.x, v2.x), max(v1.y, v2.y));
-}
-
-template <typename T>
-constexpr vec3<T> max(const vec3<T> & v1, const vec3<T> & v2) {
-    return vec3<T>(max(v1.x, v2.x), max(v1.y, v2.y), max(v1.z, v2.z));
-}
-
-template <typename T>
-constexpr vec4<T> max(const vec4<T> & v1, const vec4<T> & v2) {
-    return vec4<T>(max(v1.x, v2.x), max(v1.y, v2.y), max(v1.z, v2.z), max(v1.w, v2.w));
+template <typename T, nat t_n>
+constexpr vec<T, t_n> max(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
+    if constexpr (t_n == 1) return vec1<T>(max(v1.x, v2.x));
+    if constexpr (t_n == 2) return vec2<T>(max(v1.x, v2.x), max(v1.y, v2.y));
+    if constexpr (t_n == 3) return vec3<T>(max(v1.x, v2.x), max(v1.y, v2.y), max(v1.z, v2.z));
+    if constexpr (t_n == 4) return vec4<T>(max(v1.x, v2.x), max(v1.y, v2.y), max(v1.z, v2.z), max(v1.w, v2.w));
 }
 
 template <typename T, nat t_n, typename... Ts>
@@ -3891,24 +3147,12 @@ constexpr vec<T, t_n> max(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const 
     return max(max(v1, v2), rest...);
 }
 
-template <typename T>
-constexpr vec1<T> max(const vec1<T> & v1, const T & v2) {
-    return vec1<T>(max(v1.x, v2));
-}
-
-template <typename T>
-constexpr vec2<T> max(const vec2<T> & v1, const T & v2) {
-    return vec2<T>(max(v1.x, v2), max(v1.y, v2));
-}
-
-template <typename T>
-constexpr vec3<T> max(const vec3<T> & v1, const T & v2) {
-    return vec3<T>(max(v1.x, v2), max(v1.y, v2), max(v1.z, v2));
-}
-
-template <typename T>
-constexpr vec4<T> max(const vec4<T> & v1, const T & v2) {
-    return vec4<T>(max(v1.x, v2), max(v1.y, v2), max(v1.z, v2), max(v1.w, v2));
+template <typename T, nat t_n>
+constexpr vec<T, t_n> max(const vec<T, t_n> & v1, const T & v2) {
+    if constexpr (t_n == 1) return vec1<T>(max(v1.x, v2));
+    if constexpr (t_n == 2) return vec2<T>(max(v1.x, v2), max(v1.y, v2));
+    if constexpr (t_n == 3) return vec3<T>(max(v1.x, v2), max(v1.y, v2), max(v1.z, v2));
+    if constexpr (t_n == 4) return vec4<T>(max(v1.x, v2), max(v1.y, v2), max(v1.z, v2), max(v1.w, v2));
 }
 
 template <typename T, nat t_n>
@@ -3924,163 +3168,65 @@ constexpr std::pair<const T &, const T &> minmax(const vec<T, t_n> & v) {
     if constexpr (t_n == 4) return minmax(v.x, v.y, v.z, v.w);
 }
 
-template <typename T>
-inline void sort(vec1<T> & v) {
-    
+template <typename T, nat t_n>
+inline void sort(vec<T, t_n> & v) {
+    if constexpr (t_n >= 2) {
+        if (v.x > v.y) std::swap(v.x, v.y);
+    }
+    if constexpr (t_n >= 3) {
+        if (v.y > v.z) std::swap(v.y, v.z);
+        if (v.x > v.y) std::swap(v.x, v.y);
+    }
+    if constexpr (t_n >= 4) {
+        if (v.z > v.w) std::swap(v.z, v.w);
+        if (v.y > v.z) std::swap(v.y, v.z);
+        if (v.x > v.y) std::swap(v.x, v.y);
+    }
 }
 
-template <typename T>
-inline void sort(vec2<T> & v) {
-    if (v.x > v.y) std::swap(v.x, v.y);
+template <typename T, nat t_n>
+constexpr vec<T, t_n> clamp(const vec<T, t_n> & v, const T & min, const T & max) {
+    if constexpr (t_n == 1) return vec1<T>(clamp(v.x, min, max));
+    if constexpr (t_n == 2) return vec2<T>(clamp(v.x, min, max), clamp(v.y, min, max));
+    if constexpr (t_n == 3) return vec3<T>(clamp(v.x, min, max), clamp(v.y, min, max), clamp(v.z, min, max));
+    if constexpr (t_n == 4) return vec4<T>(clamp(v.x, min, max), clamp(v.y, min, max), clamp(v.z, min, max), clamp(v.w, min, max));
 }
 
-template <typename T>
-inline void sort(vec3<T> & v) {
-    if (v.x > v.y) std::swap(v.x, v.y);
-    if (v.y > v.z) std::swap(v.y, v.z);
-    if (v.x > v.y) std::swap(v.x, v.y);
+template <typename T, nat t_n>
+constexpr vec<T, t_n> clamp(const vec<T, t_n> & v, const vec<T, t_n> & min, const vec<T, t_n> & max) {
+    if constexpr (t_n == 1) return vec1<T>(clamp(v.x, min.x, max.x));
+    if constexpr (t_n == 2) return vec2<T>(clamp(v.x, min.x, max.x), clamp(v.y, min.y, max.y));
+    if constexpr (t_n == 3) return vec3<T>(clamp(v.x, min.x, max.x), clamp(v.y, min.y, max.y), clamp(v.z, min.z, max.z));
+    if constexpr (t_n == 4) return vec4<T>(clamp(v.x, min.x, max.x), clamp(v.y, min.y, max.y), clamp(v.z, min.z, max.z), clamp(v.w, min.w, max.w));
 }
 
-template <typename T>
-inline void sort(vec4<T> & v) {
-    if (v.x > v.y) std::swap(v.x, v.y);
-    if (v.z > v.w) std::swap(v.z, v.w);
-    if (v.y > v.z) std::swap(v.y, v.z);
-    if (v.x > v.y) std::swap(v.x, v.y);
-    if (v.z > v.w) std::swap(v.z, v.w);
+template <typename T, nat t_n>
+constexpr vec<T, t_n> abs(const vec<T, t_n> & v) {
+    if constexpr (t_n == 1) return vec1<T>(abs(v.x));
+    if constexpr (t_n == 2) return vec2<T>(abs(v.x), abs(v.y));
+    if constexpr (t_n == 3) return vec3<T>(abs(v.x), abs(v.y), abs(v.z));
+    if constexpr (t_n == 4) return vec4<T>(abs(v.x), abs(v.y), abs(v.z), abs(v.w));
 }
 
-template <typename T>
-constexpr vec1<T> clamp(const vec1<T> & v, const T & min, const T & max) {
-    return vec1<T>(
-        clamp(v.x, min, max)
-    );
+template <typename T, nat t_n>
+constexpr nvec<t_n> floor(const vec<T, t_n> & v) {
+    if constexpr (t_n == 1) return nvec1(floor(v.x));
+    if constexpr (t_n == 2) return nvec2(floor(v.x), floor(v.y));
+    if constexpr (t_n == 3) return nvec3(floor(v.x), floor(v.y), floor(v.z));
+    if constexpr (t_n == 4) return nvec4(floor(v.x), floor(v.y), floor(v.z), floor(v.w));
 }
 
-template <typename T>
-constexpr vec2<T> clamp(const vec2<T> & v, const T & min, const T & max) {
-    return vec2<T>(
-        clamp(v.x, min, max),
-        clamp(v.y, min, max)
-    );
-}
-
-template <typename T>
-constexpr vec3<T> clamp(const vec3<T> & v, const T & min, const T & max) {
-    return vec3<T>(
-        clamp(v.x, min, max),
-        clamp(v.y, min, max),
-        clamp(v.z, min, max)
-    );
-}
-
-template <typename T>
-constexpr vec4<T> clamp(const vec4<T> & v, const T & min, const T & max) {
-    return vec4<T>(
-        clamp(v.x, min, max),
-        clamp(v.y, min, max),
-        clamp(v.z, min, max),
-        clamp(v.w, min, max)
-    );
-}
-
-template <typename T>
-constexpr vec1<T> clamp(const vec1<T> & v, const vec1<T> & min, const vec1<T> & max) {
-    return vec1<T>(
-        clamp(v.x, min.x, max.x)
-    );
-}
-
-template <typename T>
-constexpr vec2<T> clamp(const vec2<T> & v, const vec2<T> & min, const vec2<T> & max) {
-    return vec2<T>(
-        clamp(v.x, min.x, max.x),
-        clamp(v.y, min.y, max.y)
-    );
-}
-
-template <typename T>
-constexpr vec3<T> clamp(const vec3<T> & v, const vec3<T> & min, const vec3<T> & max) {
-    return vec3<T>(
-        clamp(v.x, min.x, max.x),
-        clamp(v.y, min.y, max.y),
-        clamp(v.z, min.z, max.z)
-    );
-}
-
-template <typename T>
-constexpr vec4<T> clamp(const vec4<T> & v, const vec4<T> & min, const vec4<T> & max) {
-    return vec4<T>(
-        clamp(v.x, min.x, max.x),
-        clamp(v.y, min.y, max.y),
-        clamp(v.z, min.z, max.z),
-        clamp(v.w, min.w, max.w)
-    );
-}
-
-template <typename T>
-constexpr vec1<T> abs(const vec1<T> & v) {
-    return vec1<T>(abs(v.x));
-}
-
-template <typename T>
-constexpr vec2<T> abs(const vec2<T> & v) {
-    return vec2<T>(abs(v.x), abs(v.y));
-}
-
-template <typename T>
-constexpr vec3<T> abs(const vec3<T> & v) {
-    return vec3<T>(abs(v.x), abs(v.y), abs(v.z));
-}
-
-template <typename T>
-constexpr vec4<T> abs(const vec4<T> & v) {
-    return vec4<T>(abs(v.x), abs(v.y), abs(v.z), abs(v.w));
-}
-
-template <typename T>
-constexpr nvec1 floor(const vec1<T> & v) {
-    return nvec1(floor(v.x));
-}
-
-template <typename T>
-constexpr nvec2 floor(const vec2<T> & v) {
-    return nvec2(floor(v.x), floor(v.y));
-}
-
-template <typename T>
-constexpr nvec3 floor(const vec3<T> & v) {
-    return nvec3(floor(v.x), floor(v.y), floor(v.z));
-}
-
-template <typename T>
-constexpr nvec4 floor(const vec4<T> & v) {
-    return nvec4(floor(v.x), floor(v.y), floor(v.z), floor(v.w));
-}
-
-template <typename T>
-constexpr nvec1 ceil(const vec1<T> & v) {
-    return nvec1(ceil(v.x));
-}
-
-template <typename T>
-constexpr nvec2 ceil(const vec2<T> & v) {
-    return nvec2(ceil(v.x), ceil(v.y));
-}
-
-template <typename T>
-constexpr nvec3 ceil(const vec3<T> & v) {
-    return nvec3(ceil(v.x), ceil(v.y), ceil(v.z));
-}
-
-template <typename T>
-constexpr nvec4 ceil(const vec4<T> & v) {
-    return nvec4(ceil(v.x), ceil(v.y), ceil(v.z), ceil(v.w));
+template <typename T, nat t_n>
+constexpr nvec<t_n> ceil(const vec<T, t_n> & v) {
+    if constexpr (t_n == 1) return nvec1(ceil(v.x));
+    if constexpr (t_n == 2) return nvec2(ceil(v.x), ceil(v.y));
+    if constexpr (t_n == 3) return nvec3(ceil(v.x), ceil(v.y), ceil(v.z));
+    if constexpr (t_n == 4) return nvec4(ceil(v.x), ceil(v.y), ceil(v.z), ceil(v.w));
 }
 
 template <typename T, nat t_n, eif_floating_t<T>>
 constexpr vec<T, t_n> mix(const vec<T, t_n> & v1, const vec<T, t_n> & v2, T t) {
-    return (static_cast<T>(1) - t) * v1 + t * v2;
+    return (static_cast<T>(1.0) - t) * v1 + t * v2;
 }
 
 template <typename T, nat t_n, eif_floating_t<T>>
@@ -4098,103 +3244,41 @@ constexpr vec<T, t_n> mix(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const 
     return weights.x * v1 + weights.y * v2 + weights.z * v3 + weights.w * v4;
 }
 
-template <typename T>
-constexpr span1<T> toSpan(const bound1<T> & b) {
-    return span1<T>(b.min, b.min + b.max); // using min/max rather than loc/size for constexpr union issues
+template <typename To, typename From, nat t_n, eif_t<std::is_arithmetic_v<To> && std::is_arithmetic_v<From>>>
+inline vec<To, t_n> transnorm(const vec<From, t_n> & v) {
+    if constexpr (t_n == 1) return vec1<To>(transnorm<To>(v.x));
+    if constexpr (t_n == 2) return vec2<To>(transnorm<To>(v.x), transnorm<To>(v.y));
+    if constexpr (t_n == 3) return vec3<To>(transnorm<To>(v.x), transnorm<To>(v.y), transnorm<To>(v.z));
+    if constexpr (t_n == 4) return vec4<To>(transnorm<To>(v.x), transnorm<To>(v.y), transnorm<To>(v.z), transnorm<To>(v.w));
 }
 
-template <typename T>
-constexpr span2<T> toSpan(const bound2<T> & b) {
-    return span2<T>(b.min, b.min + b.max);
+template <typename T, nat t_n>
+constexpr span<T, t_n> toSpan(const bound<T, t_n> & b) {
+    return span<T, t_n>(b.min, b.min + b.max);
 }
 
-template <typename T>
-constexpr span3<T> toSpan(const bound3<T> & b) {
-    return span3<T>(b.min, b.min + b.max);
+template <typename T, nat t_n>
+constexpr bound<T, t_n> toBound(const span<T, t_n> & s) {
+    return bound<T, t_n>(s.min, s.max - s.min);
 }
 
-template <typename T>
-constexpr span4<T> toSpan(const bound4<T> & b) {
-    return span4<T>(b.min, b.min + b.max);
-}
-
-template <typename T>
-constexpr bound1<T> toBound(const span1<T> & s) {
-    return bound1<T>(s.min, s.max - s.min);
-}
-
-template <typename T>
-constexpr bound2<T> toBound(const span2<T> & s) {
-    return bound2<T>(s.min, s.max - s.min);
-}
-
-template <typename T>
-constexpr bound3<T> toBound(const span3<T> & s) {
-    return bound3<T>(s.min, s.max - s.min);
-}
-
-template <typename T>
-constexpr bound4<T> toBound(const span4<T> & s) {
-    return bound4<T>(s.min, s.max - s.min);
-}
-
-template <typename T>
-inline span1<T> intersect(const span1<T> & s1, const span1<T> & s2) {
-    return span1<T>(
-        vec1<T>(
-            max(s1.min.x, s2.min.x)
-        ),
-        vec1<T>(
-            min(s1.max.x, s2.max.x)
-        )
+template <typename T, nat t_n>
+inline span<T, t_n> intersect(const span<T, t_n> & s1, const span<T, t_n> & s2) {
+    if constexpr (t_n == 1) return span1<T>(
+        vec1<T>(max(s1.min.x, s2.min.x)),
+        vec1<T>(min(s1.max.x, s2.max.x))
     );
-}
-
-template <typename T>
-inline span2<T> intersect(const span2<T> & s1, const span2<T> & s2) {
-    return span2<T>(
-        vec2<T>(
-            max(s1.min.x, s2.min.x),
-            max(s1.min.y, s2.min.y)
-        ),
-        vec2<T>(
-            min(s1.max.x, s2.max.x),
-            min(s1.max.y, s2.max.y)
-        )
+    if constexpr (t_n == 2) return span2<T>(
+        vec2<T>(max(s1.min.x, s2.min.x), max(s1.min.y, s2.min.y)),
+        vec2<T>(min(s1.max.x, s2.max.x), min(s1.max.y, s2.max.y))
     );
-}
-
-template <typename T>
-inline span3<T> intersect(const span3<T> & s1, const span3<T> & s2) {
-    return span3<T>(
-        vec3<T>(
-            max(s1.min.x, s2.min.x),
-            max(s1.min.y, s2.min.y),
-            max(s1.min.z, s2.min.z)
-        ),
-        vec3<T>(
-            min(s1.max.x, s2.max.x),
-            min(s1.max.y, s2.max.y),
-            min(s1.max.z, s2.max.z)
-        )
+    if constexpr (t_n == 3) return span3<T>(
+        vec3<T>(max(s1.min.x, s2.min.x), max(s1.min.y, s2.min.y), max(s1.min.z, s2.min.z)),
+        vec3<T>(min(s1.max.x, s2.max.x), min(s1.max.y, s2.max.y), min(s1.max.z, s2.max.z))
     );
-}
-
-template <typename T>
-inline span4<T> intersect(const span4<T> & s1, const span4<T> & s2) {
-    return span4<T>(
-        vec4<T>(
-            max(s1.min.x, s2.min.x),
-            max(s1.min.y, s2.min.y),
-            max(s1.min.z, s2.min.z),
-            max(s1.min.w, s2.min.w)
-        ),
-        vec4<T>(
-            min(s1.max.x, s2.max.x),
-            min(s1.max.y, s2.max.y),
-            min(s1.max.z, s2.max.z),
-            min(s1.max.w, s2.max.w)
-        )
+    if constexpr (t_n == 4) return span4<T>(
+        vec4<T>(max(s1.min.x, s2.min.x), max(s1.min.y, s2.min.y), max(s1.min.z, s2.min.z), max(s1.min.w, s2.min.w)),
+        vec4<T>(min(s1.max.x, s2.max.x), min(s1.max.y, s2.max.y), min(s1.max.z, s2.max.z), min(s1.max.w, s2.max.w))
     );
 }
 

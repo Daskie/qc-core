@@ -57,8 +57,29 @@ void compileConstants() {
     compileConstantsT<long double>();
 }
 
+template <typename T1, typename T2>
+void compileFunctionsTT() {
+    T1 v(1);
+
+    qmu::transnorm<T2>(v);
+}
+
 template <typename T>
 void compileFunctionsT() {
+    compileFunctionsTT<T, float>();
+    compileFunctionsTT<T, double>();
+    compileFunctionsTT<T, long double>();
+    compileFunctionsTT<T, signed char>();
+    compileFunctionsTT<T, unsigned char>();
+    compileFunctionsTT<T, signed short>();
+    compileFunctionsTT<T, unsigned short>();
+    compileFunctionsTT<T, signed int>();
+    compileFunctionsTT<T, unsigned short>();
+    compileFunctionsTT<T, signed long>();
+    compileFunctionsTT<T, unsigned long>();
+    compileFunctionsTT<T, signed long long>();
+    compileFunctionsTT<T, unsigned long long>();
+
     T v(1);
 
     qmu::min(v, v);
@@ -93,20 +114,6 @@ void compileFunctionsT() {
 
     qmu::mod(v, v);
     qmu::mod_q(v, v);
-
-    qmu::transnorm<float>(v);
-    qmu::transnorm<double>(v);
-    qmu::transnorm<long double>(v);
-    qmu::transnorm<signed char>(v);
-    qmu::transnorm<unsigned char>(v);
-    qmu::transnorm<signed short>(v);
-    qmu::transnorm<unsigned short>(v);
-    qmu::transnorm<signed int>(v);
-    qmu::transnorm<unsigned int>(v);
-    qmu::transnorm<signed long>(v);
-    qmu::transnorm<unsigned long>(v);
-    qmu::transnorm<signed long long>(v);
-    qmu::transnorm<unsigned long long>(v);
 }
 
 template <typename T>
@@ -173,7 +180,7 @@ void compileFunctions() {
     compileFunctionsT<signed long>();
     compileFunctionsT<unsigned long>();
     compileFunctionsT<signed long long>();
-    compileFunctionsT<signed long long>();
+    compileFunctionsT<unsigned long long>();
 
     compileFunctionsFT<float>();
     compileFunctionsFT<double>();
@@ -188,7 +195,7 @@ void compileFunctions() {
     compileFunctionsIT<signed long>();
     compileFunctionsIT<unsigned long>();
     compileFunctionsIT<signed long long>();
-    compileFunctionsIT<signed long long>();
+    compileFunctionsIT<unsigned long long>();
 
     compileFunctionsBT();
 
@@ -200,8 +207,28 @@ void compileFunctions() {
     qmu::bits::spread<qmu::u32, qmu::u64>(-1);
 }
 
+template <typename T1, typename T2>
+constexpr void compileFunctionsConstexprTT() {
+    constexpr T1 v(1);
+
+}
+
 template <typename T>
 constexpr void compileFunctionsConstexprT() {
+    compileFunctionsConstexprTT<T, float>();
+    compileFunctionsConstexprTT<T, double>();
+    compileFunctionsConstexprTT<T, long double>();
+    compileFunctionsConstexprTT<T, signed char>();
+    compileFunctionsConstexprTT<T, unsigned char>();
+    compileFunctionsConstexprTT<T, signed short>();
+    compileFunctionsConstexprTT<T, unsigned short>();
+    compileFunctionsConstexprTT<T, signed int>();
+    compileFunctionsConstexprTT<T, unsigned short>();
+    compileFunctionsConstexprTT<T, signed long>();
+    compileFunctionsConstexprTT<T, unsigned long>();
+    compileFunctionsConstexprTT<T, signed long long>();
+    compileFunctionsConstexprTT<T, unsigned long long>();
+
     constexpr T v(1);
 
     qmu::min(v, v);
@@ -236,20 +263,6 @@ constexpr void compileFunctionsConstexprT() {
 
     qmu::mod(v, v);
     qmu::mod_q(v, v);
-
-    qmu::transnorm<float>(v);
-    qmu::transnorm<double>(v);
-    qmu::transnorm<long double>(v);
-    qmu::transnorm<signed char>(v);
-    qmu::transnorm<unsigned char>(v);
-    qmu::transnorm<signed short>(v);
-    qmu::transnorm<unsigned short>(v);
-    qmu::transnorm<signed int>(v);
-    qmu::transnorm<unsigned int>(v);
-    qmu::transnorm<signed long>(v);
-    qmu::transnorm<unsigned long>(v);
-    qmu::transnorm<signed long long>(v);
-    qmu::transnorm<unsigned long long>(v);
 }
 
 template <typename T>
@@ -316,7 +329,7 @@ constexpr bool compileFunctionsConstexpr() {
     compileFunctionsConstexprT<signed long>();
     compileFunctionsConstexprT<unsigned long>();
     compileFunctionsConstexprT<signed long long>();
-    compileFunctionsConstexprT<signed long long>();
+    compileFunctionsConstexprT<unsigned long long>();
 
     compileFunctionsConstexprFT<float>();
     compileFunctionsConstexprFT<double>();
@@ -331,7 +344,7 @@ constexpr bool compileFunctionsConstexpr() {
     compileFunctionsConstexprIT<signed long>();
     compileFunctionsConstexprIT<unsigned long>();
     compileFunctionsConstexprIT<signed long long>();
-    compileFunctionsConstexprIT<signed long long>();
+    compileFunctionsConstexprIT<unsigned long long>();
     
     compileFunctionsConstexprBT();
 

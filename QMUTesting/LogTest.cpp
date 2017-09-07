@@ -4,9 +4,6 @@
 
 
 
-using namespace qmu;
-
-
 
 namespace {
 

@@ -6,10 +6,6 @@
 
 
 
-using namespace qmu;
-
-
-
 namespace {
 
 

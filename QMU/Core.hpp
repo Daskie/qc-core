@@ -62,10 +62,10 @@ using namespace size_types;
 template <typename T, nat t_n = 0> using array_t = std::conditional_t<t_n == 0, T[], T[t_n]>;
 
 template <nat t_p> struct precision;
-template <> struct precision<1> { using stype = s08; using utype = u08; };
-template <> struct precision<2> { using stype = s16; using utype = u16; };
-template <> struct precision<4> { using stype = s32; using utype = u32; using ftype = f32; };
-template <> struct precision<8> { using stype = s64; using utype = u64; using ftype = f64; };
+template <> struct precision<1> { using stype = s08; using utype = u08; using ftype = void; };
+template <> struct precision<2> { using stype = s16; using utype = u16; using ftype = void; };
+template <> struct precision<4> { using stype = s32; using utype = u32; using ftype =  f32; };
+template <> struct precision<8> { using stype = s64; using utype = u64; using ftype =  f64; };
 
 template <nat t_p> using precision_st = typename precision<t_p>::stype;
 template <nat t_p> using precision_ut = typename precision<t_p>::utype;
@@ -239,7 +239,7 @@ constexpr T degrees(T radians);
 // converts between normalized types
 // works with floats and integers, signed and unsigned
 template <typename To, typename From, eif_t<std::is_arithmetic_v<To> && std::is_arithmetic_v<From>> = 0>
-constexpr To transnorm(From v);
+inline To transnorm(From v);
 
 
 
@@ -525,7 +525,7 @@ constexpr T degrees(T radians) {
 }
 
 template <typename To, typename From, eif_t<std::is_arithmetic_v<To> && std::is_arithmetic_v<From>>>
-constexpr To transnorm(From v) {
+inline To transnorm(From v) {
     if constexpr (std::is_same_v<From, To>) {
         return v;
     }
