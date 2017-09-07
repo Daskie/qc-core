@@ -236,6 +236,11 @@ constexpr T radians(T degrees);
 template <typename T, eif_floating_t<T> = 0>
 constexpr T degrees(T radians);
 
+// converts between normalized types
+// works with floats and integers, signed and unsigned
+template <typename To, typename From, eif_t<std::is_arithmetic_v<To> && std::is_arithmetic_v<From>> = 0>
+constexpr To transnorm(From v);
+
 
 
 namespace bits {
@@ -517,6 +522,87 @@ constexpr T radians(T degrees) {
 template <typename T, eif_floating_t<T>>
 constexpr T degrees(T radians) {
     return radians * static_cast<T>(180.0) / pi<T>;
+}
+
+template <typename To, typename From, eif_t<std::is_arithmetic_v<To> && std::is_arithmetic_v<From>>>
+constexpr To transnorm(From v) {
+    if constexpr (std::is_same_v<From, To>) {
+        return v;
+    }
+    // float -> float
+    if constexpr (std::is_floating_point_v<To> && std::is_floating_point_v<From>) {
+        return To(v);
+    }
+    if constexpr (std::is_integral_v<From> && std::is_integral_v<To>) {
+        // signed int -> signed int / unsigned int -> unsigned int
+        if constexpr (std::is_signed_v<From> == std::is_signed_v<To>) {
+            if constexpr (sizeof(From) < sizeof(To)) {
+                if (v == std::numeric_limits<From>::max()) return std::numeric_limits<To>::max();
+                return To(v) << ((sizeof(To) - sizeof(From)) * 8);
+            }
+            if constexpr (sizeof(From) > sizeof(To)) {
+                return To(v >> ((sizeof(From) - sizeof(To)) * 8));
+            }
+        }
+        // signed int -> unsigned int
+        if constexpr (std::is_signed_v<From>) {
+            if constexpr (sizeof(From) == sizeof(To)) {
+                if (v < From(0)) return To(0);
+                return To(v << 1);
+            }
+            if constexpr (sizeof(From) > sizeof(To)) {
+                if (v < From(0)) return To(0);
+                return To(v >> ((sizeof(From) - sizeof(To)) * 8 - 1));
+            }
+            if constexpr (sizeof(From) < sizeof(To)) {
+                if (v < From(0)) return To(0);
+                if (v == std::numeric_limits<From>::max()) return std::numeric_limits<To>::max();
+                return To(v) << ((sizeof(To) - sizeof(From)) * 8 + 1);
+            }
+        }
+        // unsigned int -> signed int
+        if constexpr (std::is_unsigned_v<From>) {
+            if constexpr (sizeof(From) == sizeof(To)) {
+                return To(v >> 1);
+            }
+            if constexpr (sizeof(From) > sizeof(To)) {
+                return To(v >> ((sizeof(From) - sizeof(To)) * 8 + 1));
+            }
+            if constexpr (sizeof(From) < sizeof(To)) {
+                if (v == std::numeric_limits<From>::max()) return std::numeric_limits<To>::max();
+                return To(v) << ((sizeof(To) - sizeof(From)) * 8 - 1);
+            }
+        }
+    }
+    if constexpr (std::is_floating_point_v<From> && std::is_integral_v<To>) {
+        // float -> signed int
+        if constexpr (std::is_signed_v<To>) {
+            constexpr To maxI(std::numeric_limits<To>::max());
+            constexpr From upperThreshold(From(1.0) - From(1.0) / (From(maxI) + From(1.0)));
+            if (v >= upperThreshold) return maxI;
+            if (v <= -upperThreshold) return -maxI;
+            return To(v * (From(maxI) + From(1.0)));
+        }
+        // float -> unsigned int
+        if constexpr (std::is_unsigned_v<To>) {
+            constexpr To maxI(std::numeric_limits<To>::max());
+            constexpr From upperThreshold(From(1.0) - From(1.0) / (From(maxI) + From(1.0)));
+            if (v < From(0.0)) return To(0);
+            if (v >= upperThreshold) return maxI;
+            return To(v * (From(maxI) + From(1.0)));
+        }
+    }
+    if constexpr (std::is_integral_v<From> && std::is_floating_point_v<To>) {
+        // signed int -> float
+        if constexpr (std::is_signed_v<From>) {
+            if (v == std::numeric_limits<From>::min()) return To(-1.0);
+            return To(v) * (To(1.0) / To(std::numeric_limits<From>::max()));
+        }
+        // unsigned int -> float
+        if constexpr (std::is_unsigned_v<From>) {
+            return To(v) * (To(1.0) / To(std::numeric_limits<From>::max()));
+        }
+    }
 }
 
 

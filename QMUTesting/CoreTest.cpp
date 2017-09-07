@@ -93,6 +93,20 @@ void compileFunctionsT() {
 
     qmu::mod(v, v);
     qmu::mod_q(v, v);
+
+    qmu::transnorm<float>(v);
+    qmu::transnorm<double>(v);
+    qmu::transnorm<long double>(v);
+    qmu::transnorm<signed char>(v);
+    qmu::transnorm<unsigned char>(v);
+    qmu::transnorm<signed short>(v);
+    qmu::transnorm<unsigned short>(v);
+    qmu::transnorm<signed int>(v);
+    qmu::transnorm<unsigned int>(v);
+    qmu::transnorm<signed long>(v);
+    qmu::transnorm<unsigned long>(v);
+    qmu::transnorm<signed long long>(v);
+    qmu::transnorm<unsigned long long>(v);
 }
 
 template <typename T>
@@ -222,6 +236,20 @@ constexpr void compileFunctionsConstexprT() {
 
     qmu::mod(v, v);
     qmu::mod_q(v, v);
+
+    qmu::transnorm<float>(v);
+    qmu::transnorm<double>(v);
+    qmu::transnorm<long double>(v);
+    qmu::transnorm<signed char>(v);
+    qmu::transnorm<unsigned char>(v);
+    qmu::transnorm<signed short>(v);
+    qmu::transnorm<unsigned short>(v);
+    qmu::transnorm<signed int>(v);
+    qmu::transnorm<unsigned int>(v);
+    qmu::transnorm<signed long>(v);
+    qmu::transnorm<unsigned long>(v);
+    qmu::transnorm<signed long long>(v);
+    qmu::transnorm<unsigned long long>(v);
 }
 
 template <typename T>
