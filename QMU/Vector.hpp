@@ -482,7 +482,7 @@ struct vec<T, 1> {
     inline vec1<T> & operator=(vec1<T> && v);
 
     inline vec1<T> & operator=(const T & v);
-    template <nat t_m> inline vec1<T> & operator=(const vec<T, t_m> & v);
+    template <nat t_n> inline vec1<T> & operator=(const vec<T, t_n> & v);
 
     //--------------------------------------------------------------------------
     // Access
@@ -549,7 +549,7 @@ struct vec<T, 2> {
     inline vec2<T> & operator=(vec2<T> && v);
     
     inline vec2<T> & operator=(const T & v);
-    template <nat t_m> inline vec2<T> & operator=(const vec<T, t_m> & v);
+    template <nat t_n> inline vec2<T> & operator=(const vec<T, t_n> & v);
 
     //--------------------------------------------------------------------------
     // Access
@@ -625,7 +625,7 @@ struct vec<T, 3> {
     inline vec3<T> & operator=(vec3<T> && v);
 
     inline vec3<T> & operator=(const T & v);
-    template <nat t_m> inline vec3<T> & operator=(const vec<T, t_m> & v);
+    template <nat t_n> inline vec3<T> & operator=(const vec<T, t_n> & v);
 
     //--------------------------------------------------------------------------
     // Access
@@ -729,7 +729,7 @@ struct vec<T, 4> {
     inline vec4<T> & operator=(vec4<T> && v);
 
     inline vec4<T> & operator=(const T & v);
-    template <nat t_m> inline vec4<T> & operator=(const vec<T, t_m> & v);
+    template <nat t_n> inline vec4<T> & operator=(const vec<T, t_n> & v);
 
     //--------------------------------------------------------------------------
     // Access
@@ -1370,9 +1370,10 @@ inline vec1<T> & vec<T, 1>::operator=(const T & v) {
 }
 
 template <typename T>
-template <nat t_m>
-inline vec1<T> & vec<T, 1>::operator=(const vec<T, t_m> & v) {
-    x = v.x;
+template <nat t_n>
+inline vec1<T> & vec<T, 1>::operator=(const vec<T, t_n> & v) {
+    if constexpr (t_n >= 1) x = v.x;
+    if constexpr (t_n < 1) x = T(0);
     return *this;
 }
 
@@ -1526,11 +1527,10 @@ inline vec2<T> & vec<T, 2>::operator=(const T & v) {
 }
 
 template <typename T>
-template <nat t_m>
-inline vec2<T> & vec<T, 2>::operator=(const vec<T, t_m> & v) {
-    x = v.x;
-    if constexpr (t_m >= 2) y = v.y;
-    if constexpr (t_m < 2) y = T(0);
+template <nat t_n>
+inline vec2<T> & vec<T, 2>::operator=(const vec<T, t_n> & v) {
+    if constexpr (t_n >= 1) x = v.x; if constexpr (t_n < 1) x = T(0);
+    if constexpr (t_n >= 2) y = v.y; if constexpr (t_n < 2) y = T(0);
     return *this;
 }
 
@@ -1726,13 +1726,11 @@ inline vec3<T> & vec<T, 3>::operator=(const T & v) {
 }
 
 template <typename T>
-template <nat t_m>
-inline vec3<T> & vec<T, 3>::operator=(const vec<T, t_m> & v) {
-    x = v.x; 
-    if constexpr (t_m >= 2) y = v.y;
-    if constexpr (t_m < 2) y = T(0);
-    if constexpr (t_m >= 3) z = v.z;
-    if constexpr (t_m < 3) z = T(0);
+template <nat t_n>
+inline vec3<T> & vec<T, 3>::operator=(const vec<T, t_n> & v) {
+    if constexpr (t_n >= 1) x = v.x; if constexpr (t_n < 1) x = T(0);
+    if constexpr (t_n >= 2) y = v.y; if constexpr (t_n < 2) y = T(0);
+    if constexpr (t_n >= 3) z = v.z; if constexpr (t_n < 3) z = T(0);
     return *this;
 }
 
@@ -2093,15 +2091,12 @@ inline vec4<T> & vec<T, 4>::operator=(const T & v) {
 }
 
 template <typename T>
-template <nat t_m>
-inline vec4<T> & vec<T, 4>::operator=(const vec<T, t_m> & v) {
-    x = v.x;
-    if constexpr (t_m >= 2) y = v.y;
-    if constexpr (t_m < 2) y = T(0);
-    if constexpr (t_m >= 3) z = v.z;
-    if constexpr (t_m < 3) z = T(0);
-    if constexpr (t_m >= 4) w = v.w;
-    if constexpr (t_m < 4) w = T(0);
+template <nat t_n>
+inline vec4<T> & vec<T, 4>::operator=(const vec<T, t_n> & v) {
+    if constexpr (t_n >= 1) x = v.x; if constexpr (t_n < 1) x = T(0);
+    if constexpr (t_n >= 2) y = v.y; if constexpr (t_n < 2) y = T(0);
+    if constexpr (t_n >= 3) z = v.z; if constexpr (t_n < 3) z = T(0);
+    if constexpr (t_n >= 4) w = v.w; if constexpr (t_n < 4) w = T(0);
     return *this;
 }
 
@@ -2416,7 +2411,7 @@ inline std::string span<T, t_n>::toString() const {
 
 template <typename T, nat t_n>
 inline vec<T, t_n> & operator++(vec<T, t_n> & v) {
-    ++v.x;
+    if constexpr (t_n >= 1) ++v.x;
     if constexpr (t_n >= 2) ++v.y;
     if constexpr (t_n >= 3) ++v.z;
     if constexpr (t_n >= 4) ++v.w;
@@ -2437,7 +2432,7 @@ inline vec<T, t_n> operator++(vec<T, t_n> & v, int) {
 
 template <typename T, nat t_n>
 inline vec<T, t_n> & operator--(vec<T, t_n> & v) {
-    --v.x;
+    if constexpr (t_n >= 1) --v.x;
     if constexpr (t_n >= 2) --v.y;
     if constexpr (t_n >= 3) --v.z;
     if constexpr (t_n >= 4) --v.w;
@@ -2458,60 +2453,101 @@ inline vec<T, t_n> operator--(vec<T, t_n> & v, int) {
 
 template <typename T, nat t_n>
 inline vec<T, t_n> & operator+=(vec<T, t_n> & v1, const vec<T, t_n> & v2) {
-    return v1 = v1 + v2;
+    if constexpr (t_n >= 1) v1.x += v2.x;
+    if constexpr (t_n >= 2) v1.y += v2.y;
+    if constexpr (t_n >= 3) v1.z += v2.z;
+    if constexpr (t_n >= 4) v1.w += v2.w;
+    return v1;
 }
 
 template <typename T, nat t_n>
 inline vec<T, t_n> & operator+=(vec<T, t_n> & v1, const T & v2) {
-    return v1 = v1 + v2;
+    if constexpr (t_n >= 1) v1.x += v2;
+    if constexpr (t_n >= 2) v1.y += v2;
+    if constexpr (t_n >= 3) v1.z += v2;
+    if constexpr (t_n >= 4) v1.w += v2;
+    return v1;
 }
 
 //--- subtract assign ---
 
 template <typename T, nat t_n>
 inline vec<T, t_n> & operator-=(vec<T, t_n> & v1, const vec<T, t_n> & v2) {
-    return v1 = v1 - v2;
+    if constexpr (t_n >= 1) v1.x -= v2.x;
+    if constexpr (t_n >= 2) v1.y -= v2.y;
+    if constexpr (t_n >= 3) v1.z -= v2.z;
+    if constexpr (t_n >= 4) v1.w -= v2.w;
+    return v1;
 }
 
 template <typename T, nat t_n>
 inline vec<T, t_n> & operator-=(vec<T, t_n> & v1, const T & v2) {
-    return v1 = v1 - v2;
+    if constexpr (t_n >= 1) v1.x -= v2;
+    if constexpr (t_n >= 2) v1.y -= v2;
+    if constexpr (t_n >= 3) v1.z -= v2;
+    if constexpr (t_n >= 4) v1.w -= v2;
+    return v1;
 }
 
 //--- multiply assign ---
 
 template <typename T, nat t_n>
 inline vec<T, t_n> & operator*=(vec<T, t_n> & v1, const vec<T, t_n> & v2) {
-    return v1 = v1 * v2;
+    if constexpr (t_n >= 1) v1.x *= v2.x;
+    if constexpr (t_n >= 2) v1.y *= v2.y;
+    if constexpr (t_n >= 3) v1.z *= v2.z;
+    if constexpr (t_n >= 4) v1.w *= v2.w;
+    return v1;
 }
 
 template <typename T, nat t_n>
 inline vec<T, t_n> & operator*=(vec<T, t_n> & v1, const T & v2) {
-    return v1 = v1 * v2;
+    if constexpr (t_n >= 1) v1.x *= v2;
+    if constexpr (t_n >= 2) v1.y *= v2;
+    if constexpr (t_n >= 3) v1.z *= v2;
+    if constexpr (t_n >= 4) v1.w *= v2;
+    return v1;
 }
 
 //--- divide assign ---
 
 template <typename T, nat t_n>
 inline vec<T, t_n> & operator/=(vec<T, t_n> & v1, const vec<T, t_n> & v2) {
-    return v1 = v1 / v2;
+    if constexpr (t_n >= 1) v1.x /= v2.x;
+    if constexpr (t_n >= 2) v1.y /= v2.y;
+    if constexpr (t_n >= 3) v1.z /= v2.z;
+    if constexpr (t_n >= 4) v1.w /= v2.w;
+    return v1;
 }
 
 template <typename T, nat t_n>
 inline vec<T, t_n> & operator/=(vec<T, t_n> & v1, const T & v2) {
-    return v1 = v1 / v2;
+    if constexpr (t_n > 1 && std::is_floating_point_v<T>) return v1 *= T(1.0) / v2;
+    if constexpr (t_n >= 1) v1.x /= v2;
+    if constexpr (t_n >= 2) v1.y /= v2;
+    if constexpr (t_n >= 3) v1.z /= v2;
+    if constexpr (t_n >= 4) v1.w /= v2;
+    return v1;
 }
 
 //--- modulus assign ---
 
 template <typename T, nat t_n>
 inline vec<T, t_n> & operator%=(vec<T, t_n> & v1, const vec<T, t_n> & v2) {
-    return v1 = v1 % v2;
+    if constexpr (t_n >= 1) v1.x = mod(v1.x, v2.x);
+    if constexpr (t_n >= 2) v1.y = mod(v1.y, v2.y);
+    if constexpr (t_n >= 3) v1.z = mod(v1.z, v2.z);
+    if constexpr (t_n >= 4) v1.w = mod(v1.w, v2.w);
+    return v1;
 }
 
 template <typename T, nat t_n>
 inline vec<T, t_n> & operator%=(vec<T, t_n> & v1, const T & v2) {
-    return v1 = v1 % v2;
+    if constexpr (t_n >= 1) v1.x = mod(v1.x, v2);
+    if constexpr (t_n >= 2) v1.y = mod(v1.y, v2);
+    if constexpr (t_n >= 3) v1.z = mod(v1.z, v2);
+    if constexpr (t_n >= 4) v1.w = mod(v1.w, v2);
+    return v1;
 }
 
 
@@ -2632,9 +2668,7 @@ constexpr vec<T, t_n> operator/(const vec<T, t_n> & v1, const vec<T, t_n> & v2) 
 
 template <typename T, nat t_n>
 constexpr vec<T, t_n> operator/(const vec<T, t_n> & v1, const T & v2) {
-    if constexpr (t_n > 1 && std::is_floating_point_v<T>) {
-        return v1 * (T(1.0) / v2);
-    }
+    if constexpr (t_n > 1 && std::is_floating_point_v<T>) return v1 * (T(1.0) / v2);
     if constexpr (t_n == 1) return vec1<T>(v1.x / v2);
     if constexpr (t_n == 2) return vec2<T>(v1.x / v2, v1.y / v2);
     if constexpr (t_n == 3) return vec3<T>(v1.x / v2, v1.y / v2, v1.z / v2);
@@ -2927,18 +2961,18 @@ constexpr bool disjunction(const vec<T, t_n> & v) {
 
 template <typename T, nat t_n>
 inline std::ostream & operator<<(std::ostream & os, const vec<T, t_n> & v) {
-    os << "[ ";
-    os << v.x;
-    if constexpr (t_n >= 2) os << " " << v.y;
-    if constexpr (t_n >= 3) os << " " << v.z;
-    if constexpr (t_n >= 4) os << " " << v.w;
-    os << " ]";
+    os << "[";
+    if constexpr (t_n >= 1) os << " " << v.x << " ";
+    if constexpr (t_n >= 2) os << v.y << " ";
+    if constexpr (t_n >= 3) os << v.z << " ";
+    if constexpr (t_n >= 4) os << v.w << " ";
+    os << "]";
     return os;
 }
 
 template <typename T, nat t_n>
 inline std::ostream & operator<<(std::ostream & os, const span<T, t_n> & s) {
-    return os << "[ " << s.min << " " << s.max << " ]";
+    return os << "[" << s.min << s.max << "]";
 }
 
 

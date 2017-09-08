@@ -58,10 +58,6 @@ void compileClassesT() {
     m2 *= v;
     m2 *= m2;
     m2 /= T(1);
-    ++m2;
-    m2++;
-    --m2;
-    m2--;
 
     // arithmetic operators
     +m2;
@@ -126,10 +122,6 @@ void compileClassesT() {
     m3 *= v;
     m3 *= m3;
     m3 /= T(1);
-    ++m3;
-    m3++;
-    --m3;
-    m3--;
 
     // arithmetic operators
     +m3;
@@ -195,10 +187,6 @@ void compileClassesT() {
     m4 *= v;
     m4 *= m4;
     m4 /= T(1);
-    ++m4;
-    m4++;
-    --m4;
-    m4--;
 
     // arithmetic operators
     +m4;
@@ -353,7 +341,6 @@ void compileFunctionsT() {
     qmu::scale(m3, v2);
     qmu::scale(m3, v3);
     qmu::scale(m4, v3);
-    qmu::scale(m4, v4);
     qmu::rotate(v);
     qmu::rotateX(v);
     qmu::rotateY(v);

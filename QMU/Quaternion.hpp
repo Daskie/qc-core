@@ -45,12 +45,12 @@ struct quat {
 
     //--- assignment ---
 
-    quat & operator=(const quat & q);
-    quat & operator=(quat && q);
+    inline quat & operator=(const quat & q);
+    inline quat & operator=(quat && q);
 
     //--- other ---
 
-    std::string toString() const;
+    inline std::string toString() const;
 
 };
 
