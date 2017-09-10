@@ -2572,10 +2572,12 @@ constexpr vec<T, t_n> operator+(const vec<T, t_n> & v) {
 template <typename T, nat t_n>
 constexpr vec<T, t_n> operator-(const vec<T, t_n> & v) {
     if constexpr (std::is_unsigned_v<T>) return v;
-    if constexpr (t_n == 1) return vec1<T>(-v.x);
-    if constexpr (t_n == 2) return vec2<T>(-v.x, -v.y);
-    if constexpr (t_n == 3) return vec3<T>(-v.x, -v.y, -v.z);
-    if constexpr (t_n == 4) return vec4<T>(-v.x, -v.y, -v.z, -v.w);
+    if constexpr (!std::is_unsigned_v<T>) {
+        if constexpr (t_n == 1) return vec1<T>(-v.x);
+        if constexpr (t_n == 2) return vec2<T>(-v.x, -v.y);
+        if constexpr (t_n == 3) return vec3<T>(-v.x, -v.y, -v.z);
+        if constexpr (t_n == 4) return vec4<T>(-v.x, -v.y, -v.z, -v.w);
+    }
 }
 
 //--- add ---
