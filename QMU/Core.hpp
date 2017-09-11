@@ -230,6 +230,12 @@ constexpr std::pair<T, T> mod_q(T v, T d);
 template <typename T, eif_floating_t<T> = 0>
 constexpr T mix(T v1, T v2, T t);
 
+template <typename T, typename... Args>
+constexpr T sum(const T & v, const Args &... args);
+
+template <typename T, eif_floating_t<T> = 0, typename... Args>
+constexpr T average(T v, Args... args);
+
 template <typename T, eif_floating_t<T> = 0>
 constexpr T radians(T degrees);
 
@@ -500,6 +506,21 @@ constexpr std::pair<T, T> mod_q(T v, T d) {
 template <typename T, eif_floating_t<T>>
 constexpr T mix(T v1, T v2, T t) {
     return (T(1.0) - t) * v1 + t * v2;
+}
+
+template <typename T, typename... Args>
+constexpr T sum(const T & v, const Args &... args) {
+    if constexpr (sizeof...(Args) == 0) {
+        return v;
+    }
+    if constexpr (sizeof...(Args) > 0) {
+        return v + sum(args...);
+    }
+}
+
+template <typename T, eif_floating_t<T>, typename... Args>
+constexpr T average(T v, Args... args) {
+    return sum(v, args...) / (T(1) + sizeof...(Args));
 }
 
 template <typename T, eif_floating_t<T>>

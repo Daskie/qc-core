@@ -114,6 +114,8 @@ void compileFunctionsT() {
 
     qmu::mod(v, v);
     qmu::mod_q(v, v);
+
+    qmu::sum(v, v, v, v, v);
 }
 
 template <typename T>
@@ -124,6 +126,8 @@ void compileFunctionsFT() {
     qmu::fract_i(v);
 
     qmu::mix(v, v, v);
+
+    qmu::average(v, v, v, v, v);
 
     qmu::radians(v);
 
@@ -263,6 +267,8 @@ constexpr void compileFunctionsConstexprT() {
 
     qmu::mod(v, v);
     qmu::mod_q(v, v);
+
+    qmu::sum(v, v, v, v, v);
 }
 
 template <typename T>
@@ -273,6 +279,8 @@ constexpr void compileFunctionsConstexprFT() {
     qmu::fract_i(v);
 
     qmu::mix(v, v, v);
+
+    qmu::average(v, v, v, v, v);
 
     qmu::radians(v);
 
