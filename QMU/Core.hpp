@@ -233,6 +233,9 @@ constexpr T mix(T v1, T v2, T t);
 template <typename T, typename... Args>
 constexpr T sum(const T & v, const Args &... args);
 
+template <typename T, typename... Args>
+constexpr T product(const T & v, const Args &... args);
+
 template <typename T, eif_floating_t<T> = 0, typename... Args>
 constexpr T average(T v, Args... args);
 
@@ -515,6 +518,16 @@ constexpr T sum(const T & v, const Args &... args) {
     }
     if constexpr (sizeof...(Args) > 0) {
         return v + sum(args...);
+    }
+}
+
+template <typename T, typename... Args>
+constexpr T product(const T & v, const Args &... args) {
+    if constexpr (sizeof...(Args) == 0) {
+        return v;
+    }
+    if constexpr (sizeof...(Args) > 0) {
+        return v * product(args...);
     }
 }
 

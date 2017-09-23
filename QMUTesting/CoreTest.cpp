@@ -116,6 +116,7 @@ void compileFunctionsT() {
     qmu::mod_q(v, v);
 
     qmu::sum(v, v, v, v, v);
+    qmu::product(v, v, v, v, v);
 }
 
 template <typename T>
@@ -267,8 +268,9 @@ constexpr void compileFunctionsConstexprT() {
 
     qmu::mod(v, v);
     qmu::mod_q(v, v);
-
+    
     qmu::sum(v, v, v, v, v);
+    qmu::product(v, v, v, v, v);
 }
 
 template <typename T>
