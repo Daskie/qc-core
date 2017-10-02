@@ -944,14 +944,17 @@ void compileFunctionsFT() {
     qmu::mix(v3, v3, v);
     qmu::mix(v4, v4, v);
     
+    qmu::mix(v, v, v2);
     qmu::mix(v1, v1, v2);
     qmu::mix(v2, v2, v2);
     qmu::mix(v3, v3, v2);
     qmu::mix(v4, v4, v2);
+    qmu::mix(v, v, v, v3);
     qmu::mix(v1, v1, v1, v3);
     qmu::mix(v2, v2, v2, v3);
     qmu::mix(v3, v3, v3, v3);
     qmu::mix(v4, v4, v4, v3);
+    qmu::mix(v, v, v, v, v4);
     qmu::mix(v1, v1, v1, v1, v4);
     qmu::mix(v2, v2, v2, v2, v4);
     qmu::mix(v3, v3, v3, v3, v4);
@@ -1364,14 +1367,17 @@ constexpr void compileFunctionsConstexprFT() {
     qmu::mix(v3, v3, v);
     qmu::mix(v4, v4, v);
 
+    qmu::mix(v, v, v2);
     qmu::mix(v1, v1, v2);
     qmu::mix(v2, v2, v2);
     qmu::mix(v3, v3, v2);
     qmu::mix(v4, v4, v2);
+    qmu::mix(v, v, v, v3);
     qmu::mix(v1, v1, v1, v3);
     qmu::mix(v2, v2, v2, v3);
     qmu::mix(v3, v3, v3, v3);
     qmu::mix(v4, v4, v4, v3);
+    qmu::mix(v, v, v, v, v4);
     qmu::mix(v1, v1, v1, v1, v4);
     qmu::mix(v2, v2, v2, v2, v4);
     qmu::mix(v3, v3, v3, v3, v4);
