@@ -155,13 +155,17 @@ void compileFunctionsIT() {
 
     qmu::lowBit(v);
 
-    qmu::bits::rotateL(v, 0);
+    if constexpr (std::is_unsigned_v<T>) {
 
-    qmu::bits::rotateR(v, 0);
+        qmu::bits::rotateL(v, 0);
 
-    qmu::bits::interleave(v);
+        qmu::bits::rotateR(v, 0);
 
-    qmu::bits::scramble(v);
+        qmu::bits::interleave(v);
+
+        qmu::bits::scramble(v);
+
+    }
 }
 
 void compileFunctionsBT() {
@@ -210,6 +214,13 @@ void compileFunctions() {
     qmu::bits::spread<qmu::u16, qmu::u32>(-1);
     qmu::bits::spread<qmu::u16, qmu::u64>(-1);
     qmu::bits::spread<qmu::u32, qmu::u64>(-1);
+
+    qmu::bits::repeat<qmu::u08, qmu::u16>(-1);
+    qmu::bits::repeat<qmu::u08, qmu::u32>(-1);
+    qmu::bits::repeat<qmu::u08, qmu::u64>(-1);
+    qmu::bits::repeat<qmu::u16, qmu::u32>(-1);
+    qmu::bits::repeat<qmu::u16, qmu::u64>(-1);
+    qmu::bits::repeat<qmu::u32, qmu::u64>(-1);
 }
 
 template <typename T1, typename T2>
@@ -308,14 +319,6 @@ constexpr void compileFunctionsConstexprIT() {
     qmu::highBit(v);
 
     qmu::lowBit(v);
-
-    qmu::bits::rotateL(v, 0);
-
-    qmu::bits::rotateR(v, 0);
-
-    qmu::bits::interleave(v);
-
-    qmu::bits::scramble(v);
 }
 
 constexpr void compileFunctionsConstexprBT() {
@@ -357,13 +360,6 @@ constexpr bool compileFunctionsConstexpr() {
     compileFunctionsConstexprIT<unsigned long long>();
     
     compileFunctionsConstexprBT();
-
-    qmu::bits::spread<qmu::u08, qmu::u16>(-1);
-    qmu::bits::spread<qmu::u08, qmu::u32>(-1);
-    qmu::bits::spread<qmu::u08, qmu::u64>(-1);
-    qmu::bits::spread<qmu::u16, qmu::u32>(-1);
-    qmu::bits::spread<qmu::u16, qmu::u64>(-1);
-    qmu::bits::spread<qmu::u32, qmu::u64>(-1);
 
     return true;
 }

@@ -86,6 +86,14 @@ template <typename T> using eif_floating_t = eif_t<std::is_floating_point_v<T>>;
 
 template <typename T> using eif_integral_t = eif_t<std::is_integral_v<T>>;
 
+template <typename T> using eif_signed_t = eif_t<std::is_signed_v<T>>;
+
+template <typename T> using eif_unsigned_t = eif_t<std::is_unsigned_v<T>>;
+
+template <typename T> using eif_sintegral_t = eif_t<std::is_signed_v<T> && std::is_integral_v<T>>;
+
+template <typename T> using eif_uintegral_t = eif_t<std::is_unsigned_v<T> && std::is_integral_v<T>>;
+
 template <typename T> using eif_arithmetic_t = eif_t<std::is_arithmetic_v<T>>;
 
 template <typename T1, typename T2> constexpr bool equivocal_v = std::is_same_v<std::decay_t<T1>, std::decay_t<T2>>;
@@ -256,20 +264,23 @@ namespace bits {
 
 
 
-template <typename T, eif_integral_t<T> = 0>
-constexpr T rotateL(T v, nat n);
+template <typename T, eif_uintegral_t<T> = 0>
+inline T rotateL(T v, nat n);
 
-template <typename T, eif_integral_t<T> = 0>
-constexpr T rotateR(T v, nat n);
+template <typename T, eif_uintegral_t<T> = 0>
+inline T rotateR(T v, nat n);
 
-template <typename SrcT, typename DstT, eif_t<std::is_integral_v<SrcT> && std::is_integral_v<DstT> && (sizeof(DstT) > sizeof(SrcT))> = 0>
-constexpr DstT spread(SrcT v);
+template <typename SrcT, typename DstT, eif_t<std::is_integral_v<SrcT> && std::is_integral_v<DstT> && std::is_unsigned_v<SrcT> && std::is_unsigned_v<DstT> && (sizeof(DstT) > sizeof(SrcT))> = 0>
+inline DstT spread(SrcT v);
 
-template <typename T, eif_integral_t<T> = 0>
-constexpr T interleave(T v);
+template <typename SrcT, typename DstT, eif_t<std::is_integral_v<SrcT> && std::is_integral_v<DstT> && std::is_unsigned_v<SrcT> && std::is_unsigned_v<DstT> && (sizeof(DstT) >= sizeof(SrcT))> = 0>
+inline DstT repeat(SrcT v);
 
-template <typename T, eif_integral_t<T> = 0>
-constexpr T scramble(T v);
+template <typename T, eif_uintegral_t<T> = 0>
+inline T interleave(T v);
+
+template <typename T, eif_uintegral_t<T> = 0>
+inline T scramble(T v);
 
 
 
@@ -462,7 +473,7 @@ constexpr T ceil2(T v) {
 template <typename T, eif_integral_t<T>>
 constexpr T highBit(T v) {
     using UT = std::make_unsigned_t<T>;
-    constexpr UT mask(UT(1) << (sizeof(T) * 8 - 1));
+    static constexpr UT mask(UT(1) << (sizeof(T) * 8 - 1));
 
     return T(UT(v) & mask);
 }
@@ -558,12 +569,13 @@ inline To transnorm(From v) {
     if constexpr (std::is_integral_v<From> && std::is_integral_v<To>) {
         // signed int -> signed int / unsigned int -> unsigned int
         if constexpr (std::is_signed_v<From> == std::is_signed_v<To>) {
-            if constexpr (sizeof(From) < sizeof(To)) {
-                if (v == std::numeric_limits<From>::max()) return std::numeric_limits<To>::max();
-                return To(v) << ((sizeof(To) - sizeof(From)) * 8);
-            }
             if constexpr (sizeof(From) > sizeof(To)) {
                 return To(v >> ((sizeof(From) - sizeof(To)) * 8));
+            }
+            if constexpr (sizeof(From) < sizeof(To)) {
+                ///if (v == std::numeric_limits<From>::max()) return std::numeric_limits<To>::max();
+                ///return To(v) << ((sizeof(To) - sizeof(From)) * 8);
+                return bits::repeat<std::make_unsigned_t<From>, std::make_unsigned_t<To>>(v);
             }
         }
         // signed int -> unsigned int
@@ -578,8 +590,11 @@ inline To transnorm(From v) {
             }
             if constexpr (sizeof(From) < sizeof(To)) {
                 if (v < From(0)) return To(0);
-                if (v == std::numeric_limits<From>::max()) return std::numeric_limits<To>::max();
-                return To(v) << ((sizeof(To) - sizeof(From)) * 8 + 1);
+                ///if (v == std::numeric_limits<From>::max()) return std::numeric_limits<To>::max();
+                ///return To(v) << ((sizeof(To) - sizeof(From)) * 8 + 1);
+                v <<= 1;
+                v |= From(bool(highBit(v)));
+                return bits::repeat<std::make_unsigned_t<From>, std::make_unsigned_t<To>>(v);
             }
         }
         // unsigned int -> signed int
@@ -591,8 +606,9 @@ inline To transnorm(From v) {
                 return To(v >> ((sizeof(From) - sizeof(To)) * 8 + 1));
             }
             if constexpr (sizeof(From) < sizeof(To)) {
-                if (v == std::numeric_limits<From>::max()) return std::numeric_limits<To>::max();
-                return To(v) << ((sizeof(To) - sizeof(From)) * 8 - 1);
+                ///if (v == std::numeric_limits<From>::max()) return std::numeric_limits<To>::max();
+                ///return To(v) << ((sizeof(To) - sizeof(From)) * 8 - 1);                
+                return bits::repeat<std::make_unsigned_t<From>, std::make_unsigned_t<To>>(v) >> 1;
             }
         }
     }
@@ -633,9 +649,9 @@ namespace bits {
 
 
 
-template <typename SrcT, typename DstT, eif_t<std::is_integral_v<SrcT> && std::is_integral_v<DstT> && (sizeof(DstT) > sizeof(SrcT))>>
-constexpr DstT spread(SrcT v) {
-    constexpr nat factor(sizeof(DstT) / sizeof(SrcT) - 1);
+template <typename SrcT, typename DstT, eif_t<std::is_integral_v<SrcT> && std::is_integral_v<DstT> && std::is_unsigned_v<SrcT> && std::is_unsigned_v<DstT> && (sizeof(DstT) > sizeof(SrcT))>>
+inline DstT spread(SrcT v) {
+    static constexpr nat factor(sizeof(DstT) / sizeof(SrcT) - 1);
     
     DstT w(v);
 
@@ -652,8 +668,27 @@ constexpr DstT spread(SrcT v) {
     return w;
 }
 
-template <typename T, eif_integral_t<T>>
-constexpr T interleave(T v) {
+template <typename SrcT, typename DstT, eif_t<std::is_integral_v<SrcT> && std::is_integral_v<DstT> && std::is_unsigned_v<SrcT> && std::is_unsigned_v<DstT> && (sizeof(DstT) >= sizeof(SrcT))>>
+inline DstT repeat(SrcT v) {
+    static constexpr nat factor(sizeof(DstT) / sizeof(SrcT));
+
+    DstT w(v);
+
+    if constexpr (factor >= 2) {
+        w |= w << (sizeof(SrcT) * 1 * 8);
+    }
+    if constexpr (factor >= 4) {
+        w |= w << (sizeof(SrcT) * 2 * 8);
+    }
+    if constexpr (factor >= 8) {
+        w |= w << (sizeof(SrcT) * 4 * 8);
+    }
+
+    return w;
+}
+
+template <typename T, eif_uintegral_t<T>>
+inline T interleave(T v) {
     if constexpr (sizeof(T) > 1) {
         using H = match_sign_t<precision_ut<sizeof(T) / 2>, T>;
 
@@ -673,8 +708,8 @@ constexpr T interleave(T v) {
     }
 }
 
-template <typename T, eif_integral_t<T>>
-constexpr T rotateL(T v, nat n) {
+template <typename T, eif_uintegral_t<T>>
+inline T rotateL(T v, nat n) {
     if constexpr (std::is_unsigned_v<T>) {
         return (v << n) | (v >> (sizeof(T) * 8 - n));
     }
@@ -683,8 +718,8 @@ constexpr T rotateL(T v, nat n) {
     }
 }
 
-template <typename T, eif_integral_t<T>>
-constexpr T rotateR(T v, nat n) {
+template <typename T, eif_uintegral_t<T>>
+inline T rotateR(T v, nat n) {
     if constexpr (std::is_unsigned_v<T>) {
         return (v >> n) | (v << (sizeof(T) * 8 - n));
     }
@@ -693,8 +728,8 @@ constexpr T rotateR(T v, nat n) {
     }
 }
 
-template <typename T, eif_integral_t<T>>
-constexpr T scramble(T v) {
+template <typename T, eif_uintegral_t<T>>
+inline T scramble(T v) {
     if constexpr (sizeof(T) == 1) {
         return v;
     }
