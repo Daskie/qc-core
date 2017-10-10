@@ -573,28 +573,29 @@ inline To transnorm(From v) {
                 return To(v >> ((sizeof(From) - sizeof(To)) * 8));
             }
             if constexpr (sizeof(From) < sizeof(To)) {
-                ///if (v == std::numeric_limits<From>::max()) return std::numeric_limits<To>::max();
-                ///return To(v) << ((sizeof(To) - sizeof(From)) * 8);
-                return bits::repeat<std::make_unsigned_t<From>, std::make_unsigned_t<To>>(v);
+                if (v == std::numeric_limits<From>::max()) return std::numeric_limits<To>::max();
+                return To(v) << ((sizeof(To) - sizeof(From)) * 8);
+                ///return bits::repeat<std::make_unsigned_t<From>, std::make_unsigned_t<To>>(v);
             }
         }
         // signed int -> unsigned int
         if constexpr (std::is_signed_v<From>) {
             if constexpr (sizeof(From) == sizeof(To)) {
-                if (v < From(0)) return To(0);
+                if (v <= From(0)) return To(0);
+                if (v == std::numeric_limits<From>::max()) return std::numeric_limits<To>::max();
                 return To(v << 1);
             }
             if constexpr (sizeof(From) > sizeof(To)) {
-                if (v < From(0)) return To(0);
+                if (v <= From(0)) return To(0);
                 return To(v >> ((sizeof(From) - sizeof(To)) * 8 - 1));
             }
             if constexpr (sizeof(From) < sizeof(To)) {
-                if (v < From(0)) return To(0);
-                ///if (v == std::numeric_limits<From>::max()) return std::numeric_limits<To>::max();
-                ///return To(v) << ((sizeof(To) - sizeof(From)) * 8 + 1);
-                v <<= 1;
-                v |= From(bool(highBit(v)));
-                return bits::repeat<std::make_unsigned_t<From>, std::make_unsigned_t<To>>(v);
+                if (v <= From(0)) return To(0);
+                if (v == std::numeric_limits<From>::max()) return std::numeric_limits<To>::max();
+                return To(v) << ((sizeof(To) - sizeof(From)) * 8 + 1);
+                ///v <<= 1;
+                ///v |= From(bool(highBit(v)));
+                ///return bits::repeat<std::make_unsigned_t<From>, std::make_unsigned_t<To>>(v);
             }
         }
         // unsigned int -> signed int
@@ -606,39 +607,42 @@ inline To transnorm(From v) {
                 return To(v >> ((sizeof(From) - sizeof(To)) * 8 + 1));
             }
             if constexpr (sizeof(From) < sizeof(To)) {
-                ///if (v == std::numeric_limits<From>::max()) return std::numeric_limits<To>::max();
-                ///return To(v) << ((sizeof(To) - sizeof(From)) * 8 - 1);                
-                return bits::repeat<std::make_unsigned_t<From>, std::make_unsigned_t<To>>(v) >> 1;
+                if (v == std::numeric_limits<From>::max()) return std::numeric_limits<To>::max();
+                return To(v) << ((sizeof(To) - sizeof(From)) * 8 - 1);                
+                ///return bits::repeat<std::make_unsigned_t<From>, std::make_unsigned_t<To>>(v) >> 1;
             }
         }
     }
     if constexpr (std::is_floating_point_v<From> && std::is_integral_v<To>) {
         // float -> signed int
         if constexpr (std::is_signed_v<To>) {
-            constexpr To maxI(std::numeric_limits<To>::max());
-            constexpr From upperThreshold(From(1.0) - From(1.0) / (From(maxI) + From(1.0)));
-            if (v >= upperThreshold) return maxI;
-            if (v <= -upperThreshold) return -maxI;
-            return To(v * (From(maxI) + From(1.0)));
+            static constexpr From maxVal(From(std::numeric_limits<To>::max()) + From(1.0));
+            static constexpr From upperThreshold(From(1.0) - From(1.0) / maxVal);
+            if (v >=  upperThreshold) return std::numeric_limits<To>::max();
+            if (v <= -upperThreshold) return std::numeric_limits<To>::min();
+            return To(v * maxVal);
         }
         // float -> unsigned int
         if constexpr (std::is_unsigned_v<To>) {
-            constexpr To maxI(std::numeric_limits<To>::max());
-            constexpr From upperThreshold(From(1.0) - From(1.0) / (From(maxI) + From(1.0)));
+            static constexpr From maxVal(From(std::numeric_limits<To>::max()) + From(1.0));
+            static constexpr From upperThreshold(From(1.0) - From(1.0) / maxVal);
             if (v < From(0.0)) return To(0);
-            if (v >= upperThreshold) return maxI;
-            return To(v * (From(maxI) + From(1.0)));
+            if (v >= upperThreshold) return std::numeric_limits<To>::max();
+            return To(v * maxVal);
         }
     }
     if constexpr (std::is_integral_v<From> && std::is_floating_point_v<To>) {
         // signed int -> float
         if constexpr (std::is_signed_v<From>) {
-            if (v == std::numeric_limits<From>::min()) return To(-1.0);
-            return To(v) * (To(1.0) / To(std::numeric_limits<From>::max()));
+            static constexpr To maxVal(To(std::numeric_limits<From>::max()) + To(1.0));
+            if (v == std::numeric_limits<From>::max()) return To(1.0);
+            return To(v) * (To(1.0) / maxVal);
         }
         // unsigned int -> float
         if constexpr (std::is_unsigned_v<From>) {
-            return To(v) * (To(1.0) / To(std::numeric_limits<From>::max()));
+            static constexpr To maxVal(To(std::numeric_limits<From>::max()) + To(1.0));
+            if (v == std::numeric_limits<From>::max()) return To(1.0);
+            return To(v) * (To(1.0) / maxVal);
         }
     }
 }
