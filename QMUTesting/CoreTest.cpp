@@ -262,23 +262,7 @@ constexpr void compileFunctionsConstexprT() {
     qmu::minmax(v, v, v, v, v, v, v);
     qmu::minmax(v, v, v, v, v, v, v, v);
 
-    qmu::abs(v);
-
     qmu::clamp(v, v, v);
-
-    qmu::zero(v);
-
-    qmu::equal(v, v);
-    qmu::equal(v, v, v);
-
-    qmu::sign(v);
-
-    qmu::floor(v);
-
-    qmu::ceil(v);
-
-    qmu::mod(v, v);
-    qmu::mod_q(v, v);
     
     qmu::sum(v, v, v, v, v);
     qmu::product(v, v, v, v, v);
@@ -288,16 +272,7 @@ template <typename T>
 constexpr void compileFunctionsConstexprFT() {
     constexpr T v(1.0);
 
-    qmu::fract(v);
-    qmu::fract_i(v);
-
-    qmu::mix(v, v, v);
-
     qmu::average(v, v, v, v, v);
-
-    qmu::radians(v);
-
-    qmu::degrees(v);
 }
 
 template <typename T>
@@ -307,26 +282,11 @@ constexpr void compileFunctionsConstexprIT() {
     qmu::pow2<T>(v);
 
     qmu::isPow2(v);
-
-    qmu::log2Floor(v);
-
-    qmu::log2Ceil(v);
-
-    qmu::floor2(v);
-
-    qmu::ceil2(v);
-
-    qmu::highBit(v);
-
-    qmu::lowBit(v);
 }
 
 constexpr void compileFunctionsConstexprBT() {
     constexpr bool v(true);
-
-    qmu::equal(v, v);
-    qmu::equal(v, v, v);
-
+    
 }
 
 constexpr bool compileFunctionsConstexpr() {

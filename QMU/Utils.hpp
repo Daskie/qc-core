@@ -278,17 +278,17 @@ class TriWeb {
 };
 
 
-inline std::string convert(const std::wstring & wstr) {
-    static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+//inline std::string convert(const std::wstring & wstr) {
+//    static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+//
+//    return converter.to_bytes(wstr);
+//}
 
-    return converter.to_bytes(wstr);
-}
-
-inline std::wstring convert(const std::string & str) {
-    static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-
-    return converter.from_bytes(str);
-}
+//inline std::wstring convert(const std::string & str) {
+//    static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+//
+//    return converter.from_bytes(str);
+//}
 
 template <typename T, eif_floating_t<T> = 0>
 inline vec3<T> rgb2hsl(const vec3<T> & rgb) {

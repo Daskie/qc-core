@@ -314,9 +314,9 @@ constexpr void compileClassesConstexprT() {
     constexpr qmu::vec2<T> v2_06(v3);
     constexpr qmu::vec2<T> v2_07(v4);
     constexpr qmu::vec2<T> v2_08(v, v);
-    constexpr qmu::vec2<T> v2_09(v1, v);
-    constexpr qmu::vec2<T> v2_10(v, v1);
-    constexpr qmu::vec2<T> v2_11(v1, v1);
+    //constexpr qmu::vec2<T> v2_09(v1, v);
+    //constexpr qmu::vec2<T> v2_10(v, v1);
+    //constexpr qmu::vec2<T> v2_11(v1, v1);
 
     // access
     v2.at<0>();
@@ -334,17 +334,17 @@ constexpr void compileClassesConstexprT() {
     constexpr qmu::vec3<T> v3_06(v2);
     constexpr qmu::vec3<T> v3_07(v4);
     constexpr qmu::vec3<T> v3_08(v, v, v);
-    constexpr qmu::vec3<T> v3_09(v1, v, v);
-    constexpr qmu::vec3<T> v3_10(v, v1, v);
-    constexpr qmu::vec3<T> v3_11(v, v, v1);
-    constexpr qmu::vec3<T> v3_12(v1, v1, v);
-    constexpr qmu::vec3<T> v3_13(v1, v, v1);
-    constexpr qmu::vec3<T> v3_14(v, v1, v1);
-    constexpr qmu::vec3<T> v3_15(v1, v1, v1);
-    constexpr qmu::vec3<T> v3_16(v2, v);
-    constexpr qmu::vec3<T> v3_17(v2, v1);
-    constexpr qmu::vec3<T> v3_18(v, v2);
-    constexpr qmu::vec3<T> v3_19(v1, v2);
+    //constexpr qmu::vec3<T> v3_09(v1, v, v);
+    //constexpr qmu::vec3<T> v3_10(v, v1, v);
+    //constexpr qmu::vec3<T> v3_11(v, v, v1);
+    //constexpr qmu::vec3<T> v3_12(v1, v1, v);
+    //constexpr qmu::vec3<T> v3_13(v1, v, v1);
+    //constexpr qmu::vec3<T> v3_14(v, v1, v1);
+    //constexpr qmu::vec3<T> v3_15(v1, v1, v1);
+    //constexpr qmu::vec3<T> v3_16(v2, v);
+    //constexpr qmu::vec3<T> v3_17(v2, v1);
+    //constexpr qmu::vec3<T> v3_18(v, v2);
+    //constexpr qmu::vec3<T> v3_19(v1, v2);
 
     // access
     v3.at<0>();
@@ -363,37 +363,37 @@ constexpr void compileClassesConstexprT() {
     constexpr qmu::vec4<T> v4_06(v2);
     constexpr qmu::vec4<T> v4_07(v3);
     constexpr qmu::vec4<T> v4_08(v, v, v, v);
-    constexpr qmu::vec4<T> v4_09(v1, v, v, v);
-    constexpr qmu::vec4<T> v4_10(v, v1, v, v);
-    constexpr qmu::vec4<T> v4_11(v, v, v1, v);
-    constexpr qmu::vec4<T> v4_12(v, v, v, v1);
-    constexpr qmu::vec4<T> v4_13(v1, v1, v, v);
-    constexpr qmu::vec4<T> v4_14(v1, v, v1, v);
-    constexpr qmu::vec4<T> v4_15(v1, v, v, v1);
-    constexpr qmu::vec4<T> v4_16(v, v1, v, v1);
-    constexpr qmu::vec4<T> v4_17(v, v, v1, v1);
-    constexpr qmu::vec4<T> v4_18(v1, v1, v1, v);
-    constexpr qmu::vec4<T> v4_19(v1, v1, v, v1);
-    constexpr qmu::vec4<T> v4_20(v1, v, v1, v1);
-    constexpr qmu::vec4<T> v4_21(v, v1, v1, v1);
-    constexpr qmu::vec4<T> v4_22(v1, v1, v1, v1);
-    constexpr qmu::vec4<T> v4_23(v2, v, v);
-    constexpr qmu::vec4<T> v4_24(v2, v1, v);
-    constexpr qmu::vec4<T> v4_25(v2, v, v1);
-    constexpr qmu::vec4<T> v4_26(v2, v1, v1);
-    constexpr qmu::vec4<T> v4_27(v, v2, v);
-    constexpr qmu::vec4<T> v4_28(v1, v2, v);
-    constexpr qmu::vec4<T> v4_29(v, v2, v1);
-    constexpr qmu::vec4<T> v4_30(v1, v2, v1);
-    constexpr qmu::vec4<T> v4_31(v, v, v2);
-    constexpr qmu::vec4<T> v4_32(v1, v, v2);
-    constexpr qmu::vec4<T> v4_33(v, v1, v2);
-    constexpr qmu::vec4<T> v4_34(v1, v1, v2);
-    constexpr qmu::vec4<T> v4_35(v2, v2);
-    constexpr qmu::vec4<T> v4_36(v3, v);
-    constexpr qmu::vec4<T> v4_37(v3, v1);
-    constexpr qmu::vec4<T> v4_38(v, v3);
-    constexpr qmu::vec4<T> v4_39(v1, v3);
+    //constexpr qmu::vec4<T> v4_09(v1, v, v, v);
+    //constexpr qmu::vec4<T> v4_10(v, v1, v, v);
+    //constexpr qmu::vec4<T> v4_11(v, v, v1, v);
+    //constexpr qmu::vec4<T> v4_12(v, v, v, v1);
+    //constexpr qmu::vec4<T> v4_13(v1, v1, v, v);
+    //constexpr qmu::vec4<T> v4_14(v1, v, v1, v);
+    //constexpr qmu::vec4<T> v4_15(v1, v, v, v1);
+    //constexpr qmu::vec4<T> v4_16(v, v1, v, v1);
+    //constexpr qmu::vec4<T> v4_17(v, v, v1, v1);
+    //constexpr qmu::vec4<T> v4_18(v1, v1, v1, v);
+    //constexpr qmu::vec4<T> v4_19(v1, v1, v, v1);
+    //constexpr qmu::vec4<T> v4_20(v1, v, v1, v1);
+    //constexpr qmu::vec4<T> v4_21(v, v1, v1, v1);
+    //constexpr qmu::vec4<T> v4_22(v1, v1, v1, v1);
+    //constexpr qmu::vec4<T> v4_23(v2, v, v);
+    //constexpr qmu::vec4<T> v4_24(v2, v1, v);
+    //constexpr qmu::vec4<T> v4_25(v2, v, v1);
+    //constexpr qmu::vec4<T> v4_26(v2, v1, v1);
+    //constexpr qmu::vec4<T> v4_27(v, v2, v);
+    //constexpr qmu::vec4<T> v4_28(v1, v2, v);
+    //constexpr qmu::vec4<T> v4_29(v, v2, v1);
+    //constexpr qmu::vec4<T> v4_30(v1, v2, v1);
+    //constexpr qmu::vec4<T> v4_31(v, v, v2);
+    //constexpr qmu::vec4<T> v4_32(v1, v, v2);
+    //constexpr qmu::vec4<T> v4_33(v, v1, v2);
+    //constexpr qmu::vec4<T> v4_34(v1, v1, v2);
+    //constexpr qmu::vec4<T> v4_35(v2, v2);
+    //constexpr qmu::vec4<T> v4_36(v3, v);
+    //constexpr qmu::vec4<T> v4_37(v3, v1);
+    //constexpr qmu::vec4<T> v4_38(v, v3);
+    //constexpr qmu::vec4<T> v4_39(v1, v3);
 
     // access
     v4.at<0>();
@@ -1081,184 +1081,6 @@ constexpr void compileFunctionsConstexprT() {
     constexpr qmu::span3<T> s3(v3, v3);
     constexpr qmu::span4<T> s4(v4, v4);
 
-    // arithmetic
-
-    +v1;
-    +v2;
-    +v3;
-    +v4;
-
-    -v1;
-    -v2;
-    -v3;
-    -v4;
-
-    v1 + v1;
-    v2 + v2;
-    v3 + v3;
-    v4 + v4;
-    v1 + v;
-    v2 + v;
-    v3 + v;
-    v4 + v;
-    v + v1;
-    v + v2;
-    v + v3;
-    v + v4;
-
-    v1 - v1;
-    v2 - v2;
-    v3 - v3;
-    v4 - v4;
-    v1 - v;
-    v2 - v;
-    v3 - v;
-    v4 - v;
-    v - v1;
-    v - v2;
-    v - v3;
-    v - v4;
-
-    v1 * v1;
-    v2 * v2;
-    v3 * v3;
-    v4 * v4;
-    v1 * v;
-    v2 * v;
-    v3 * v;
-    v4 * v;
-    v * v1;
-    v * v2;
-    v * v3;
-    v * v4;
-
-    v1 / qmu::vec1<T>(1);
-    v2 / qmu::vec2<T>(1);
-    v3 / qmu::vec3<T>(1);
-    v4 / qmu::vec4<T>(1);
-    v1 / T(1);
-    v2 / T(v);
-    v3 / T(v);
-    v4 / T(v);
-    v / qmu::vec1<T>(1);
-    v / qmu::vec2<T>(1);
-    v / qmu::vec3<T>(1);
-    v / qmu::vec4<T>(1);
-
-    v1 % qmu::vec1<T>(1);
-    v2 % qmu::vec2<T>(1);
-    v3 % qmu::vec3<T>(1);
-    v4 % qmu::vec4<T>(1);
-    v1 % T(1);
-    v2 % T(v);
-    v3 % T(v);
-    v4 % T(v);
-    v % qmu::vec1<T>(1);
-    v % qmu::vec2<T>(1);
-    v % qmu::vec3<T>(1);
-    v % qmu::vec4<T>(1);
-
-
-    // comparison
-
-    v1 == v1;
-    v2 == v2;
-    v3 == v3;
-    v4 == v4;
-    v1 == v;
-    v2 == v;
-    v3 == v;
-    v4 == v;
-    v == v1;
-    v == v2;
-    v == v3;
-    v == v4;
-    s1 == s1;
-    s2 == s2;
-    s3 == s3;
-    s4 == s4;
-
-    v1 != v1;
-    v2 != v2;
-    v3 != v3;
-    v4 != v4;
-    v1 != v;
-    v2 != v;
-    v3 != v;
-    v4 != v;
-    v != v1;
-    v != v2;
-    v != v3;
-    v != v4;
-    s1 != s1;
-    s2 != s2;
-    s3 != s3;
-    s4 != s4;
-
-    v1 < v1;
-    v2 < v2;
-    v3 < v3;
-    v4 < v4;
-    v1 < v;
-    v2 < v;
-    v3 < v;
-    v4 < v;
-    v < v1;
-    v < v2;
-    v < v3;
-    v < v4;
-
-    v1 > v1;
-    v2 > v2;
-    v3 > v3;
-    v4 > v4;
-    v1 > v;
-    v2 > v;
-    v3 > v;
-    v4 > v;
-    v > v1;
-    v > v2;
-    v > v3;
-    v > v4;
-
-    v1 <= v1;
-    v2 <= v2;
-    v3 <= v3;
-    v4 <= v4;
-    v1 <= v;
-    v2 <= v;
-    v3 <= v;
-    v4 <= v;
-    v <= v1;
-    v <= v2;
-    v <= v3;
-    v <= v4;
-
-    v1 >= v1;
-    v2 >= v2;
-    v3 >= v3;
-    v4 >= v4;
-    v1 >= v;
-    v2 >= v;
-    v3 >= v;
-    v4 >= v;
-    v >= v1;
-    v >= v2;
-    v >= v3;
-    v >= v4;
-
-    // condensation
-
-    qmu::sum(v1);
-    qmu::sum(v2);
-    qmu::sum(v3);
-    qmu::sum(v4);
-
-    qmu::product(v1);
-    qmu::product(v2);
-    qmu::product(v3);
-    qmu::product(v4);
-
     // uncategorized
 
     qmu::min(v1);
@@ -1313,41 +1135,6 @@ constexpr void compileFunctionsConstexprT() {
     qmu::minmax(v2);
     qmu::minmax(v3);
     qmu::minmax(v4);
-
-    qmu::clamp(v1, v, v);
-    qmu::clamp(v2, v, v);
-    qmu::clamp(v3, v, v);
-    qmu::clamp(v4, v, v);
-
-    qmu::clamp(v1, v1, v1);
-    qmu::clamp(v2, v2, v2);
-    qmu::clamp(v3, v3, v3);
-    qmu::clamp(v4, v4, v4);
-
-    qmu::abs(v1);
-    qmu::abs(v2);
-    qmu::abs(v3);
-    qmu::abs(v4);
-
-    qmu::floor(v1);
-    qmu::floor(v2);
-    qmu::floor(v3);
-    qmu::floor(v4);
-
-    qmu::ceil(v1);
-    qmu::ceil(v2);
-    qmu::ceil(v3);
-    qmu::ceil(v4);
-
-    qmu::toSpan(s1);
-    qmu::toSpan(s2);
-    qmu::toSpan(s3);
-    qmu::toSpan(s4);
-    
-    qmu::toBound(s1);
-    qmu::toBound(s2);
-    qmu::toBound(s3);
-    qmu::toBound(s4);
 }
 
 template <typename T>
@@ -1361,27 +1148,6 @@ constexpr void compileFunctionsConstexprFT() {
     constexpr qmu::span2<T> s2(v2, v2);
     constexpr qmu::span3<T> s3(v3, v3);
     constexpr qmu::span4<T> s4(v4, v4);
-
-    qmu::mix(v1, v1, v);
-    qmu::mix(v2, v2, v);
-    qmu::mix(v3, v3, v);
-    qmu::mix(v4, v4, v);
-
-    qmu::mix(v, v, v2);
-    qmu::mix(v1, v1, v2);
-    qmu::mix(v2, v2, v2);
-    qmu::mix(v3, v3, v2);
-    qmu::mix(v4, v4, v2);
-    qmu::mix(v, v, v, v3);
-    qmu::mix(v1, v1, v1, v3);
-    qmu::mix(v2, v2, v2, v3);
-    qmu::mix(v3, v3, v3, v3);
-    qmu::mix(v4, v4, v4, v3);
-    qmu::mix(v, v, v, v, v4);
-    qmu::mix(v1, v1, v1, v1, v4);
-    qmu::mix(v2, v2, v2, v2, v4);
-    qmu::mix(v3, v3, v3, v3, v4);
-    qmu::mix(v4, v4, v4, v4, v4);
 }
 
 template <typename T>
@@ -1402,31 +1168,6 @@ constexpr void compileBoolFunctionsConstexpr() {
     qmu::bvec2 b2;
     qmu::bvec3 b3;
     qmu::bvec4 b4;
-
-    b1 && b1;
-    b2 && b2;
-    b3 && b3;
-    b4 && b4;
-
-    b1 || b1;
-    b2 || b2;
-    b3 || b3;
-    b4 || b4;
-
-    !b1;
-    !b2;
-    !b3;
-    !b4;
-
-    qmu::conjunction(b1);
-    qmu::conjunction(b2);
-    qmu::conjunction(b3);
-    qmu::conjunction(b4);
-
-    qmu::disjunction(b1);
-    qmu::disjunction(b2);
-    qmu::disjunction(b3);
-    qmu::disjunction(b4);
 }
 
 constexpr bool compileFunctionsConstexpr() {
