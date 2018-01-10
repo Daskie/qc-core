@@ -34,7 +34,7 @@ class Clock {
     
     double time() const;
 
-    nat cycles() const;
+    long long cycles() const;
 
     void recycle();
 

@@ -18,6 +18,8 @@ using unat = uintptr_t;
 constexpr nat operator""_n(unsigned long long int v) { return nat(v); }
 constexpr unat operator""_un(unsigned long long int v) { return unat(v); }
 
+constexpr int k_nat_p = sizeof(nat);
+
 using s08 =   int8_t;
 using u08 =  uint8_t;
 using s16 =  int16_t;
@@ -31,16 +33,6 @@ using f64 =   double;
 
 
 
-namespace ntypes {
-
-using qmu::nat;
-using qmu::unat;
-
-using qmu::operator""_n;
-using qmu::operator""_un;
-
-}
-
 namespace size_types {
 
 using qmu::s08; using qmu::u08;
@@ -50,30 +42,7 @@ using qmu::s64; using qmu::u64; using qmu::f64;
 
 }
 
-namespace types {
 
-using namespace ntypes;
-using namespace size_types;
-
-}
-
-
-
-template <typename T, nat t_n = 0> using array_t = std::conditional_t<t_n == 0, T[], T[t_n]>;
-
-template <nat t_p> struct precision;
-template <> struct precision<1> { using stype = s08; using utype = u08; using ftype = void; };
-template <> struct precision<2> { using stype = s16; using utype = u16; using ftype = void; };
-template <> struct precision<4> { using stype = s32; using utype = u32; using ftype =  f32; };
-template <> struct precision<8> { using stype = s64; using utype = u64; using ftype =  f64; };
-
-template <nat t_p> using precision_st = typename precision<t_p>::stype;
-template <nat t_p> using precision_ut = typename precision<t_p>::utype;
-template <nat t_p> using precision_ft = typename precision<t_p>::ftype;
-
-constexpr nat k_nat_p = sizeof(nat);
-
-template <typename T1, typename T2> using match_sign_t = std::conditional_t<std::is_signed_v<T2>, std::make_signed_t<T1>, std::make_unsigned_t<T1>>;
 
 //namespace detail { enum class enabler {}; }
 
@@ -96,31 +65,53 @@ template <typename T> using eif_uintegral_t = eif_t<std::is_unsigned_v<T> && std
 
 template <typename T> using eif_arithmetic_t = eif_t<std::is_arithmetic_v<T>>;
 
+
+
+template <typename T, size_t t_n = 0> using array_t = std::conditional_t<t_n == 0, T[], T[t_n]>;
+
+template <int t_p> struct precision;
+template <> struct precision<1> { using stype = s08; using utype = u08; using ftype = void; };
+template <> struct precision<2> { using stype = s16; using utype = u16; using ftype = void; };
+template <> struct precision<4> { using stype = s32; using utype = u32; using ftype =  f32; };
+template <> struct precision<8> { using stype = s64; using utype = u64; using ftype =  f64; };
+
+template <int t_p> using precision_st = typename precision<t_p>::stype;
+template <int t_p> using precision_ut = typename precision<t_p>::utype;
+template <int t_p> using precision_ft = typename precision<t_p>::ftype;
+
+template <typename T1, typename T2> using match_sign_t = std::conditional_t<std::is_signed_v<T2>, std::make_signed_t<T1>, std::make_unsigned_t<T1>>;
+
 template <typename T1, typename T2> constexpr bool equivocal_v = std::is_same_v<std::decay_t<T1>, std::decay_t<T2>>;
+
+
+
+namespace types {
+
+using namespace size_types;
+
+}
 
 
 
 namespace detail {
 
-template <typename T, eif_floating_t<T> = 0>
-constexpr T sqrtConstexprHelper(T v, T curr, T prev) {
+constexpr f64 sqrtConstexprHelper(f64 v, f64 curr, f64 prev) {
     if (curr == prev) {
         return curr;
     }
 
-    return sqrtConstexprHelper(v, T(0.5) * (curr + v / curr), curr);
+    return sqrtConstexprHelper(v, 0.5 * (curr + v / curr), curr);
 }
 
-template <typename T, eif_floating_t<T> = 0>
-constexpr T sqrtConstexpr(T v) {
-    if (v == T(0.0) || v == std::numeric_limits<T>::infinity()) {
+constexpr f64 sqrtConstexpr(f64 v) {
+    if (v == 0.0 || v == std::numeric_limits<f64>::infinity()) {
         return v;
     }
-    if (v < T(0.0)) {
-        return std::numeric_limits<T>::quiet_NaN();
+    if (v < 0.0) {
+        return std::numeric_limits<f64>::quiet_NaN();
     }
 
-    return sqrtConstexprHelper(v, v, T(0.0));
+    return sqrtConstexprHelper(v, v, 0.0);
 }
 
 }
@@ -139,7 +130,7 @@ template <typename T, eif_floating_t<T> = 0> constexpr T  pi = T(3.1415926535897
 template <typename T, eif_floating_t<T> = 0> constexpr T   e = T(2.71828182845904523536028747135266250L);
 template <typename T, eif_floating_t<T> = 0> constexpr T phi = T(1.61803398874989484820458683436563812L);
 
-template <typename T, nat t_v, eif_floating_t<T> = 0> constexpr T sqrt = detail::sqrtConstexpr(T(t_v));
+template <u32 t_v> constexpr f64 sqrt = detail::sqrtConstexpr(f64(t_v));
 template <typename T, eif_floating_t<T> = 0> constexpr T infinity = std::numeric_limits<T>::infinity();
 template <typename T, eif_floating_t<T> = 0> constexpr T nan = std::numeric_limits<T>::quiet_NaN();
 
@@ -184,21 +175,23 @@ template <typename T, eif_arithmetic_t<T> = 0>
 T sign(T v);
 
 // ~2x faster than std::floor
+// doesn't work with some edge cases
 template <typename T, eif_floating_t<T> = 0>
-nat floor(T v);
+precision_st<sizeof(T)> floor(T v);
 
 template <typename T, eif_integral_t<T> = 0>
 T floor(T v);
 
 // ~2x faster than std::ceil
+// doesn't work with some edge cases
 template <typename T, eif_floating_t<T> = 0>
-nat ceil(T v);
+precision_st<sizeof(T)> ceil(T v);
 
 template <typename T, eif_integral_t<T> = 0>
 T ceil(T v);
 
-template <typename T = nat>
-constexpr T pow2(nat v);
+template <typename T>
+constexpr T pow2(int v);
 
 template <typename T, eif_integral_t<T> = 0>
 constexpr bool isPow2(T v);
@@ -222,14 +215,14 @@ template <typename T, eif_integral_t<T> = 0>
 T lowBit(T v);
 
 template <typename T, eif_integral_t<T> = 0>
-T iBit(T v, nat i);
+T iBit(T v, int i);
 
 // ~3.3x faster than std::modf
 template <typename T, eif_floating_t<T> = 0>
 T fract(T v);
 
 template <typename T, eif_floating_t<T> = 0>
-std::pair<T, nat> fract_i(T v);
+std::pair<T, precision_st<sizeof(T)>> fract_i(T v);
 
 // ~2.5x faster than std::fmod
 template <typename T, eif_arithmetic_t<T> = 0>
@@ -268,10 +261,10 @@ namespace bits {
 
 
 template <typename T, eif_uintegral_t<T> = 0>
-inline T rotateL(T v, nat n);
+inline T rotateL(T v, int n);
 
 template <typename T, eif_uintegral_t<T> = 0>
-inline T rotateR(T v, nat n);
+inline T rotateR(T v, int n);
 
 template <typename SrcT, typename DstT, eif_t<std::is_integral_v<SrcT> && std::is_integral_v<DstT> && std::is_unsigned_v<SrcT> && std::is_unsigned_v<DstT> && (sizeof(DstT) > sizeof(SrcT))> = 0>
 inline DstT spread(SrcT v);
@@ -407,8 +400,8 @@ inline T sign(T v) {
 }
 
 template <typename T, eif_floating_t<T>>
-inline nat floor(T v) {
-    nat i = nat(v);
+inline precision_st<sizeof(T)> floor(T v) {
+    precision_st<sizeof(T)> i = precision_st<sizeof(T)>(v);
     return i - (v < i);
 }
 
@@ -418,8 +411,8 @@ inline T floor(T v) {
 }
 
 template <typename T, eif_floating_t<T>>
-inline nat ceil(T v) {
-    nat i = nat(v);
+inline precision_st<sizeof(T)> ceil(T v) {
+    precision_st<sizeof(T)> i = precision_st<sizeof(T)>(v);
     return i + (v > i);
 }
 
@@ -429,7 +422,7 @@ inline T ceil(T v) {
 }
 
 template <typename T>
-constexpr T pow2(nat v) {
+constexpr T pow2(int v) {
     return T(1) << v;
 }
 
@@ -489,7 +482,7 @@ inline T lowBit(T v) {
 }
 
 template <typename T, eif_integral_t<T>>
-inline T iBit(T v, nat i) {
+inline T iBit(T v, int i) {
     using UT = std::make_unsigned_t<T>;
     constexpr UT mask(UT(1) << i);
 
@@ -498,12 +491,12 @@ inline T iBit(T v, nat i) {
 
 template <typename T, eif_floating_t<T>>
 inline T fract(T v) {
-    return v - nat(v);
+    return v - precision_st<sizeof(T)>(v);
 }
 
 template <typename T, eif_floating_t<T>>
-inline std::pair<T, nat> fract_i(T v) {
-    nat i = nat(v);
+inline std::pair<T, precision_st<sizeof(T)>> fract_i(T v) {
+    precision_st<sizeof(T)> i = precision_st<sizeof(T)>(v);
     return { v - i, i };
 }
 
@@ -663,7 +656,7 @@ namespace bits {
 
 template <typename SrcT, typename DstT, eif_t<std::is_integral_v<SrcT> && std::is_integral_v<DstT> && std::is_unsigned_v<SrcT> && std::is_unsigned_v<DstT> && (sizeof(DstT) > sizeof(SrcT))>>
 inline DstT spread(SrcT v) {
-    constexpr nat factor(sizeof(DstT) / sizeof(SrcT) - 1);
+    constexpr int factor(sizeof(DstT) / sizeof(SrcT) - 1);
     
     DstT w(v);
 
@@ -682,7 +675,7 @@ inline DstT spread(SrcT v) {
 
 template <typename SrcT, typename DstT, eif_t<std::is_integral_v<SrcT> && std::is_integral_v<DstT> && std::is_unsigned_v<SrcT> && std::is_unsigned_v<DstT> && (sizeof(DstT) >= sizeof(SrcT))>>
 inline DstT repeat(SrcT v) {
-    constexpr nat factor(sizeof(DstT) / sizeof(SrcT));
+    constexpr int factor(sizeof(DstT) / sizeof(SrcT));
 
     DstT w(v);
 
@@ -721,7 +714,7 @@ inline T interleave(T v) {
 }
 
 template <typename T, eif_uintegral_t<T>>
-inline T rotateL(T v, nat n) {
+inline T rotateL(T v, int n) {
     if constexpr (std::is_unsigned_v<T>) {
         return (v << n) | (v >> (sizeof(T) * 8 - n));
     }
@@ -731,7 +724,7 @@ inline T rotateL(T v, nat n) {
 }
 
 template <typename T, eif_uintegral_t<T>>
-inline T rotateR(T v, nat n) {
+inline T rotateR(T v, int n) {
     if constexpr (std::is_unsigned_v<T>) {
         return (v >> n) | (v << (sizeof(T) * 8 - n));
     }

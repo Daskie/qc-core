@@ -1179,7 +1179,7 @@ constexpr bool compileFunctionsConstexpr() {
     return true;
 }
 
-template <typename T, qmu::nat t_n>
+template <typename T, int t_n>
 void testPropertiesTN() {
     static_assert(std::is_standard_layout_v<qmu::vec<T, t_n>>, "");
     static_assert(sizeof(qmu::vec<T, t_n>) == t_n * sizeof(T), "");
@@ -1204,7 +1204,7 @@ void testProperties() {
     testPropertiesT<  long long>();
 }
 
-template <typename T1, typename T2, qmu::nat t_n>
+template <typename T1, typename T2, int t_n>
 void castCastsTTN() {
     static_cast<qmu::vec<T2, t_n>>(qmu::vec1<T1>());
     static_cast<qmu::vec<T2, t_n>>(qmu::vec2<T1>());

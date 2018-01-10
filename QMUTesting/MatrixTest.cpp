@@ -411,7 +411,7 @@ constexpr bool compileFunctionsConstexpr() {
     return true;
 }
 
-template <typename T, qmu::nat t_n>
+template <typename T, int t_n>
 void testPropertiesTN() {
     static_assert(std::is_standard_layout_v<qmu::mat<T, t_n>>, "");
     static_assert(sizeof(qmu::mat<T, t_n>) == t_n * t_n * sizeof(T), "");

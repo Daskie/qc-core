@@ -46,8 +46,6 @@ void compileConstantsT() {
     qmu::pi<T>;
     qmu::e<T>;
     qmu::phi<T>;
-    qmu::sqrt<T, 2>;
-    qmu::sqrt<T, 3>;
     qmu::infinity<T>;
 }
 
@@ -55,6 +53,8 @@ void compileConstants() {
     compileConstantsT<float>();
     compileConstantsT<double>();
     compileConstantsT<long double>();
+    qmu::sqrt<2>;
+    qmu::sqrt<1000>;
 }
 
 template <typename T1, typename T2>
@@ -139,7 +139,7 @@ template <typename T>
 void compileFunctionsIT() {
     T v(1);
 
-    qmu::pow2<T>(v);
+    qmu::pow2<T>(int(v));
 
     qmu::isPow2(v);
 

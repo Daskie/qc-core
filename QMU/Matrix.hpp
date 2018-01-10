@@ -28,15 +28,15 @@ namespace qmu {
 
 
 
-template <typename T, nat t_m, nat t_n = t_m> struct mat;
+template <typename T, int t_m, int t_n = t_m> struct mat;
 
 template <typename T> using mat2 = mat<T, 2>;
 template <typename T> using mat3 = mat<T, 3>;
 template <typename T> using mat4 = mat<T, 4>;
 
-template <nat t_m, nat t_n> using  fmat = mat<      float, t_m, t_n>;
-template <nat t_m, nat t_n> using  dmat = mat<     double, t_m, t_n>;
-template <nat t_m, nat t_n> using ldmat = mat<long double, t_m, t_n>;
+template <int t_m, int t_n> using  fmat = mat<      float, t_m, t_n>;
+template <int t_m, int t_n> using  dmat = mat<     double, t_m, t_n>;
+template <int t_m, int t_n> using ldmat = mat<long double, t_m, t_n>;
 
 using  fmat2 = mat<      float, 2>;
 using  fmat3 = mat<      float, 3>;
@@ -87,7 +87,7 @@ struct mat<T, 2, 2> {
     static_assert(std::is_floating_point_v<T>, "mat2<T> must have floating point T");
 
     using Type = T;
-    static constexpr nat M = 2, N = 2;
+    static constexpr int M = 2, N = 2;
 
     T x1, y1;
     T x2, y2;
@@ -116,21 +116,21 @@ struct mat<T, 2, 2> {
     inline mat2<T> & operator=(const mat2<T> & m);
     inline mat2<T> & operator=(mat2<T> && m);
 
-    template <nat t_m, nat t_n> inline mat2<T> & operator=(const mat<T, t_m, t_n> & m);
+    template <int t_m, int t_n> inline mat2<T> & operator=(const mat<T, t_m, t_n> & m);
 
     //--- access ---
 
-    inline T & operator[](nat i);
-    inline T operator[](nat i) const;
+    inline T & operator[](int i);
+    inline T operator[](int i) const;
 
-    template <nat t_i, nat t_j> inline T & at();
-    template <nat t_i, nat t_j> constexpr T at() const;
+    template <int t_i, int t_j> inline T & at();
+    template <int t_i, int t_j> constexpr T at() const;
 
-    inline vec2<T> col(nat i) const;
-    inline vec2<T> row(nat i) const;
+    inline vec2<T> col(int i) const;
+    inline vec2<T> row(int i) const;
 
-    template <nat t_i> constexpr vec2<T> row() const;
-    template <nat t_j> constexpr vec2<T> col() const;
+    template <int t_i> constexpr vec2<T> row() const;
+    template <int t_j> constexpr vec2<T> col() const;
 
     //--- other ---
 
@@ -151,7 +151,7 @@ struct mat<T, 3, 3> {
     static_assert(std::is_floating_point_v<T>, "mat3<T> must have floating point T");
 
     using Type = T;
-    static constexpr nat M = 3, N = 3;
+    static constexpr int M = 3, N = 3;
 
     T x1, y1, z1;
     T x2, y2, z2;
@@ -183,21 +183,21 @@ struct mat<T, 3, 3> {
     inline mat3<T> & operator=(const mat3<T> & m);
     inline mat3<T> & operator=(mat3<T> && m);
     
-    template <nat t_m, nat t_n> inline mat3<T> & operator=(const mat<T, t_m, t_n> & m);
+    template <int t_m, int t_n> inline mat3<T> & operator=(const mat<T, t_m, t_n> & m);
 
     //--- access ---
 
-    inline T & operator[](nat i);
-    inline T operator[](nat i) const;
+    inline T & operator[](int i);
+    inline T operator[](int i) const;
 
-    template <nat t_i, nat t_j> inline T & at();
-    template <nat t_i, nat t_j> constexpr T at() const;
+    template <int t_i, int t_j> inline T & at();
+    template <int t_i, int t_j> constexpr T at() const;
 
-    inline vec3<T> col(nat i) const;
-    inline vec3<T> row(nat i) const;
+    inline vec3<T> col(int i) const;
+    inline vec3<T> row(int i) const;
 
-    template <nat t_i> constexpr vec3<T> row() const;
-    template <nat t_j> constexpr vec3<T> col() const;
+    template <int t_i> constexpr vec3<T> row() const;
+    template <int t_j> constexpr vec3<T> col() const;
 
     //--- other ---
 
@@ -218,7 +218,7 @@ struct mat<T, 4, 4> {
     static_assert(std::is_floating_point_v<T>, "mat4<T> must have floating point T");
 
     using Type = T;
-    static constexpr nat M = 4, N = 4;
+    static constexpr int M = 4, N = 4;
 
     T x1, y1, z1, w1;
     T x2, y2, z2, w2;
@@ -253,21 +253,21 @@ struct mat<T, 4, 4> {
     inline mat4<T> & operator=(const mat4<T> & m);
     inline mat4<T> & operator=(mat4<T> && m);
     
-    template <nat t_m, nat t_n> mat4<T> & operator=(const mat<T, t_m, t_n> & m);
+    template <int t_m, int t_n> mat4<T> & operator=(const mat<T, t_m, t_n> & m);
 
     //--- access ---
 
-    inline T & operator[](nat i);
-    inline T operator[](nat i) const;
+    inline T & operator[](int i);
+    inline T operator[](int i) const;
 
-    template <nat t_i, nat t_j> inline T & at();
-    template <nat t_i, nat t_j> constexpr T at() const;
+    template <int t_i, int t_j> inline T & at();
+    template <int t_i, int t_j> constexpr T at() const;
 
-    inline vec4<T> col(nat i) const;
-    inline vec4<T> row(nat i) const;
+    inline vec4<T> col(int i) const;
+    inline vec4<T> row(int i) const;
 
-    template <nat t_i> constexpr vec4<T> row() const;
-    template <nat t_j> constexpr vec4<T> col() const;
+    template <int t_i> constexpr vec4<T> row() const;
+    template <int t_j> constexpr vec4<T> col() const;
 
     //--- other ---
 
@@ -284,64 +284,64 @@ struct mat<T, 4, 4> {
 
 //--- arithmetic assignment ---
 
-template <typename T, nat t_m, nat t_n> inline mat<T, t_m, t_n> & operator+=(mat<T, t_m, t_n> & m, T v);
-template <typename T, nat t_m, nat t_n> inline mat<T, t_m, t_n> & operator+=(mat<T, t_m, t_n> & m1, const mat<T, t_m, t_n> & m2);
+template <typename T, int t_m, int t_n> inline mat<T, t_m, t_n> & operator+=(mat<T, t_m, t_n> & m, T v);
+template <typename T, int t_m, int t_n> inline mat<T, t_m, t_n> & operator+=(mat<T, t_m, t_n> & m1, const mat<T, t_m, t_n> & m2);
 
-template <typename T, nat t_m, nat t_n> inline mat<T, t_m, t_n> & operator-=(mat<T, t_m, t_n> & m, T v);
-template <typename T, nat t_m, nat t_n> inline mat<T, t_m, t_n> & operator-=(mat<T, t_m, t_n> & m1, const mat<T, t_m, t_n> & m2);
+template <typename T, int t_m, int t_n> inline mat<T, t_m, t_n> & operator-=(mat<T, t_m, t_n> & m, T v);
+template <typename T, int t_m, int t_n> inline mat<T, t_m, t_n> & operator-=(mat<T, t_m, t_n> & m1, const mat<T, t_m, t_n> & m2);
 
-template <typename T, nat t_m, nat t_n> inline mat<T, t_m, t_n> & operator*=(mat<T, t_m, t_n> & m, T v);
-template <typename T, nat t_m, nat t_n, nat t_o> inline mat<T, t_m, t_o> & operator*=(mat<T, t_m, t_n> & m1, const mat<T, t_n, t_o> & m2);
+template <typename T, int t_m, int t_n> inline mat<T, t_m, t_n> & operator*=(mat<T, t_m, t_n> & m, T v);
+template <typename T, int t_m, int t_n, int t_o> inline mat<T, t_m, t_o> & operator*=(mat<T, t_m, t_n> & m1, const mat<T, t_n, t_o> & m2);
 
-template <typename T, nat t_m, nat t_n> inline mat<T, t_m, t_n> & operator/=(mat<T, t_m, t_n> & m, T v);
+template <typename T, int t_m, int t_n> inline mat<T, t_m, t_n> & operator/=(mat<T, t_m, t_n> & m, T v);
 
 //--- arithmetic operators ---
 
-template <typename T, nat t_m, nat t_n> inline mat<T, t_m, t_n> operator+(const mat<T, t_m, t_n> & m);
+template <typename T, int t_m, int t_n> inline mat<T, t_m, t_n> operator+(const mat<T, t_m, t_n> & m);
 
-template <typename T, nat t_m, nat t_n> inline mat<T, t_m, t_n> operator-(const mat<T, t_m, t_n> & m);
+template <typename T, int t_m, int t_n> inline mat<T, t_m, t_n> operator-(const mat<T, t_m, t_n> & m);
 
-template <typename T, nat t_m, nat t_n> inline mat<T, t_m, t_n> operator+(const mat<T, t_m, t_n> & m1, const mat<T, t_m, t_n> & m2);
-template <typename T, nat t_m, nat t_n> inline mat<T, t_m, t_n> operator+(const mat<T, t_m, t_n> & m, T v);
-template <typename T, nat t_m, nat t_n> inline mat<T, t_m, t_n> operator+(T v, const mat<T, t_m, t_n> & m);
+template <typename T, int t_m, int t_n> inline mat<T, t_m, t_n> operator+(const mat<T, t_m, t_n> & m1, const mat<T, t_m, t_n> & m2);
+template <typename T, int t_m, int t_n> inline mat<T, t_m, t_n> operator+(const mat<T, t_m, t_n> & m, T v);
+template <typename T, int t_m, int t_n> inline mat<T, t_m, t_n> operator+(T v, const mat<T, t_m, t_n> & m);
 
-template <typename T, nat t_m, nat t_n> inline mat<T, t_m, t_n> operator-(const mat<T, t_m, t_n> & m1, const mat<T, t_m, t_n> & m2);
-template <typename T, nat t_m, nat t_n> inline mat<T, t_m, t_n> operator-(const mat<T, t_m, t_n> & m, T v);
-template <typename T, nat t_m, nat t_n> inline mat<T, t_m, t_n> operator-(T v, const mat<T, t_m, t_n> & m);
+template <typename T, int t_m, int t_n> inline mat<T, t_m, t_n> operator-(const mat<T, t_m, t_n> & m1, const mat<T, t_m, t_n> & m2);
+template <typename T, int t_m, int t_n> inline mat<T, t_m, t_n> operator-(const mat<T, t_m, t_n> & m, T v);
+template <typename T, int t_m, int t_n> inline mat<T, t_m, t_n> operator-(T v, const mat<T, t_m, t_n> & m);
 
-template <typename T, nat t_m, nat t_n, nat t_o> inline mat<T, t_m, t_o> operator*(const mat<T, t_m, t_n> & m1, const mat<T, t_n, t_o> & m2);
-template <typename T, nat t_m, nat t_n> inline mat<T, t_m, t_n> operator*(const mat<T, t_m, t_n> & m, T v);
-template <typename T, nat t_m, nat t_n> inline mat<T, t_m, t_n> operator*(T v, const mat<T, t_m, t_n> & m);
-template <typename T, nat t_m, nat t_n> inline vec<T, t_m> operator*(const mat<T, t_m, t_n> & m, const vec<T, t_n> & v);
+template <typename T, int t_m, int t_n, int t_o> inline mat<T, t_m, t_o> operator*(const mat<T, t_m, t_n> & m1, const mat<T, t_n, t_o> & m2);
+template <typename T, int t_m, int t_n> inline mat<T, t_m, t_n> operator*(const mat<T, t_m, t_n> & m, T v);
+template <typename T, int t_m, int t_n> inline mat<T, t_m, t_n> operator*(T v, const mat<T, t_m, t_n> & m);
+template <typename T, int t_m, int t_n> inline vec<T, t_m> operator*(const mat<T, t_m, t_n> & m, const vec<T, t_n> & v);
 
-template <typename T, nat t_m, nat t_n> inline mat<T, t_m, t_n> operator/(const mat<T, t_m, t_n> & m, T v);
-template <typename T, nat t_m, nat t_n> inline mat<T, t_m, t_n> operator/(T v, const mat<T, t_m, t_n> & m);
+template <typename T, int t_m, int t_n> inline mat<T, t_m, t_n> operator/(const mat<T, t_m, t_n> & m, T v);
+template <typename T, int t_m, int t_n> inline mat<T, t_m, t_n> operator/(T v, const mat<T, t_m, t_n> & m);
 
 //--- comparison operators ---
 
-template <typename T, nat t_m, nat t_n> inline bool operator==(const mat<T, t_m, t_n> & m1, const mat<T, t_m, t_n> & m2);
+template <typename T, int t_m, int t_n> inline bool operator==(const mat<T, t_m, t_n> & m1, const mat<T, t_m, t_n> & m2);
 
-template <typename T, nat t_m, nat t_n> inline bool operator!=(const mat<T, t_m, t_n> & m1, const mat<T, t_m, t_n> & m2);
+template <typename T, int t_m, int t_n> inline bool operator!=(const mat<T, t_m, t_n> & m1, const mat<T, t_m, t_n> & m2);
 
 //--- other ---
 
-template <typename T, nat t_m, nat t_n> inline std::ostream & operator<<(std::ostream & os, const mat<T, t_m, t_n> & m);
+template <typename T, int t_m, int t_n> inline std::ostream & operator<<(std::ostream & os, const mat<T, t_m, t_n> & m);
 
 //--- uncategorized ---
 
-template <typename T, nat t_m, nat t_n> inline mat<T, t_n, t_m> transpose(const mat<T, t_m, t_n> & m);
+template <typename T, int t_m, int t_n> inline mat<T, t_n, t_m> transpose(const mat<T, t_m, t_n> & m);
 
-template <typename T, nat t_m, nat t_n> inline mat<T, t_m, t_n> cofactor(const mat<T, t_m, t_n> & m);
+template <typename T, int t_m, int t_n> inline mat<T, t_m, t_n> cofactor(const mat<T, t_m, t_n> & m);
 
-template <typename T, nat t_m, nat t_n> inline mat<T, t_m, t_n> adjoint(const mat<T, t_m, t_n> & m);
+template <typename T, int t_m, int t_n> inline mat<T, t_m, t_n> adjoint(const mat<T, t_m, t_n> & m);
 
-template <typename T, nat t_m, nat t_n> inline T determinant(const mat<T, t_m, t_n> & m);
+template <typename T, int t_m, int t_n> inline T determinant(const mat<T, t_m, t_n> & m);
 
-template <typename T, nat t_m, nat t_n> inline mat<T, t_m, t_n> inverse(const mat<T, t_m, t_n> & m);
+template <typename T, int t_m, int t_n> inline mat<T, t_m, t_n> inverse(const mat<T, t_m, t_n> & m);
 
-template <typename T, nat t_m, nat t_n = t_m> constexpr mat<T, t_m, t_n> fullMat(T v);
+template <typename T, int t_m, int t_n = t_m> constexpr mat<T, t_m, t_n> fullMat(T v);
 
-template <typename T, nat t_m, nat t_n = t_m> constexpr mat<T, t_m, t_n> nullMat();
+template <typename T, int t_m, int t_n = t_m> constexpr mat<T, t_m, t_n> nullMat();
 
 
 
@@ -350,11 +350,11 @@ template <typename T, nat t_m, nat t_n = t_m> constexpr mat<T, t_m, t_n> nullMat
 
 
 
-template <typename T, nat t_n> inline mat<T, t_n + 1> translate(const vec<T, t_n> & delta);
-template <typename T, nat t_m, nat t_n> inline mat<T, t_m> & translate(mat<T, t_m> & mat, const vec<T, t_n> & delta);
+template <typename T, int t_n> inline mat<T, t_n + 1> translate(const vec<T, t_n> & delta);
+template <typename T, int t_m, int t_n> inline mat<T, t_m> & translate(mat<T, t_m> & mat, const vec<T, t_n> & delta);
 
-template <typename T, nat t_n> inline mat<T, t_n> scale(const vec<T, t_n> & scale);
-template <typename T, nat t_m, nat t_n> inline mat<T, t_m> & scale(mat<T, t_m> & mat, const vec<T, t_n> & scale);
+template <typename T, int t_n> inline mat<T, t_n> scale(const vec<T, t_n> & scale);
+template <typename T, int t_m, int t_n> inline mat<T, t_m> & scale(mat<T, t_m> & mat, const vec<T, t_n> & scale);
 
 template <typename T> inline mat2<T> rotate(T angle);
 
@@ -374,8 +374,8 @@ template <typename T> inline mat3<T> rotate_n(const vec3<T> & axis, T angle);
 template <typename T> inline mat3<T> euler(const vec3<T> & forward, const vec3<T> & up, T theta, T phi, T psi);
 template <typename T> inline mat3<T> euler_n(const vec3<T> & forward, const vec3<T> & up, T theta, T phi, T psi);
 
-template <typename T, nat t_n> inline mat<T, t_n> align(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
-template <typename T, nat t_n> inline mat<T, t_n> align_n(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, int t_n> inline mat<T, t_n> align(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, int t_n> inline mat<T, t_n> align_n(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 
 //expects orthogonal fvectors
 template <typename T> inline mat3<T> align(const vec3<T> & forward1, const vec3<T> & up1, const vec3<T> & forward2, const vec3<T> & up2);
@@ -410,7 +410,7 @@ template <typename T> inline mat4<T> view(const vec3<T> & camLoc, const vec3<T> 
 
 template <typename T> inline mat4<T> view(const vec3<T> & camLoc, const vec3<T> & camX, const vec3<T> & camY, const vec3<T> & camZ);
 template <typename T> inline mat4<T> view_n(const vec3<T> & camLoc, const vec3<T> & camX, const vec3<T> & camY, const vec3<T> & camZ);
-//basis vectors are orthonormal (optimization)
+//basis vectors are orthonormal (optimination)
 template <typename T> inline mat4<T> view_o(const vec3<T> & camLoc, const vec3<T> & camX, const vec3<T> & camY, const vec3<T> & camZ);
 template <typename T> inline mat4<T> view_on(const vec3<T> & camLoc, const vec3<T> & camX, const vec3<T> & camY, const vec3<T> & camZ);
 
@@ -508,7 +508,7 @@ inline mat2<T> & mat<T, 2, 2>::operator=(mat2<T> && m) {
 }
 
 template <typename T>
-template <nat t_m, nat t_n>
+template <int t_m, int t_n>
 inline mat2<T> & mat<T, 2, 2>::operator=(const mat<T, t_m, t_n> & m) {
     if constexpr (t_n >= 1) {
         if constexpr (t_m >= 1) x1 = m.x1; if constexpr (t_m < 1) x1 = T(1);
@@ -529,17 +529,17 @@ inline mat2<T> & mat<T, 2, 2>::operator=(const mat<T, t_m, t_n> & m) {
 
 
 template <typename T>
-inline T & mat<T, 2, 2>::operator[](nat i) {
+inline T & mat<T, 2, 2>::operator[](int i) {
     return *(&x1 + i);
 }
 
 template <typename T>
-inline T mat<T, 2, 2>::operator[](nat i) const {
+inline T mat<T, 2, 2>::operator[](int i) const {
     return *(&x1 + i);
 }
 
 template <typename T>
-template <nat t_i, nat t_j>
+template <int t_i, int t_j>
 inline T & mat<T, 2, 2>::at() {
     static_assert(t_i >= 0 && t_i <= 1 && t_j >= 0 && t_j <= 1, "index out of bounds");
     if constexpr (t_i == 0) {
@@ -553,7 +553,7 @@ inline T & mat<T, 2, 2>::at() {
 }
 
 template <typename T>
-template <nat t_i, nat t_j>
+template <int t_i, int t_j>
 constexpr T mat<T, 2, 2>::at() const {
     static_assert(t_i >= 0 && t_i <= 1 && t_j >= 0 && t_j <= 1, "index out of bounds");
     if constexpr (t_i == 0) {
@@ -567,24 +567,24 @@ constexpr T mat<T, 2, 2>::at() const {
 }
 
 template <typename T>
-inline vec2<T> mat<T, 2, 2>::row(nat i) const {
+inline vec2<T> mat<T, 2, 2>::row(int i) const {
     return vec2<T>(*(&x1 + i), *(&y1 + i));
 }
 
 template <typename T>
-inline vec2<T> mat<T, 2, 2>::col(nat i) const {
-    nat stride(i * 2);
+inline vec2<T> mat<T, 2, 2>::col(int i) const {
+    int stride(i * 2);
     return vec2<T>(*(&x1 + stride), *(&y1 + stride));
 }
 
 template <typename T>
-template <nat t_i>
+template <int t_i>
 constexpr vec2<T> mat<T, 2, 2>::row() const {
     return vec2<T>(at<t_i, 0>(), at<t_i, 1>());
 }
 
 template <typename T>
-template <nat t_j>
+template <int t_j>
 constexpr vec2<T> mat<T, 2, 2>::col() const {
     return vec2<T>(at<0, t_j>(), at<1, t_j>());
 }
@@ -703,7 +703,7 @@ inline mat3<T> & mat<T, 3, 3>::operator=(mat3<T> && m) {
 }
 
 template <typename T>
-template <nat t_m, nat t_n>
+template <int t_m, int t_n>
 inline mat3<T> & mat<T, 3, 3>::operator=(const mat<T, t_m, t_n> & m) {
     if constexpr (t_n >= 1) {
         if constexpr (t_m >= 1) x1 = m.x1; if constexpr (t_m < 1) x1 = T(1);
@@ -731,17 +731,17 @@ inline mat3<T> & mat<T, 3, 3>::operator=(const mat<T, t_m, t_n> & m) {
 
 
 template <typename T>
-inline T & mat<T, 3, 3>::operator[](nat i) {
+inline T & mat<T, 3, 3>::operator[](int i) {
     return *(&x1 + i);
 }
 
 template <typename T>
-inline T mat<T, 3, 3>::operator[](nat i) const {
+inline T mat<T, 3, 3>::operator[](int i) const {
     return *(&x1 + i);
 }
 
 template <typename T>
-template <nat t_i, nat t_j>
+template <int t_i, int t_j>
 inline T & mat<T, 3, 3>::at() {
     static_assert(t_i >= 0 && t_i <= 2 && t_j >= 0 && t_j <= 2, "index out of bounds");
     if constexpr (t_i == 0) {
@@ -762,7 +762,7 @@ inline T & mat<T, 3, 3>::at() {
 }
 
 template <typename T>
-template <nat t_i, nat t_j>
+template <int t_i, int t_j>
 constexpr T mat<T, 3, 3>::at() const {
     static_assert(t_i >= 0 && t_i <= 2 && t_j >= 0 && t_j <= 2, "index out of bounds");
     if constexpr (t_i == 0) {
@@ -783,24 +783,24 @@ constexpr T mat<T, 3, 3>::at() const {
 }
 
 template <typename T>
-inline vec3<T> mat<T, 3, 3>::row(nat i) const {
+inline vec3<T> mat<T, 3, 3>::row(int i) const {
     return vec3<T>(*(&x1 + i), *(&y1 + i), *(&z1 + i));
 }
 
 template <typename T>
-inline vec3<T> mat<T, 3, 3>::col(nat i) const {
-    nat stride(i * 3);
+inline vec3<T> mat<T, 3, 3>::col(int i) const {
+    int stride(i * 3);
     return vec3<T>(*(&x1 + stride), *(&y1 + stride), *(&z1 + stride));
 }
 
 template <typename T>
-template <nat t_i>
+template <int t_i>
 constexpr vec3<T> mat<T, 3, 3>::row() const {
     return vec3<T>(at<t_i, 0>(), at<t_i, 1>(), at<t_i, 2>());
 }
 
 template <typename T>
-template <nat t_j>
+template <int t_j>
 constexpr vec3<T> mat<T, 3, 3>::col() const {
     return vec3<T>(at<0, t_j>(), at<1, t_j>(), at<2, t_j>());
 }
@@ -933,7 +933,7 @@ inline mat4<T> & mat<T, 4, 4>::operator=(mat4<T> && m) {
 }
 
 template <typename T>
-template <nat t_m, nat t_n>
+template <int t_m, int t_n>
 inline mat4<T> & mat<T, 4, 4>::operator=(const mat<T, t_m, t_n> & m) {
     if constexpr (t_n >= 1) {
         if constexpr (t_m >= 1) x1 = m.x1; if constexpr (t_m < 1) x1 = T(1);
@@ -970,17 +970,17 @@ inline mat4<T> & mat<T, 4, 4>::operator=(const mat<T, t_m, t_n> & m) {
 
 
 template <typename T>
-inline T & mat<T, 4, 4>::operator[](nat i) {
+inline T & mat<T, 4, 4>::operator[](int i) {
     return *(&x1 + i);
 }
 
 template <typename T>
-inline T mat<T, 4, 4>::operator[](nat i) const {
+inline T mat<T, 4, 4>::operator[](int i) const {
     return *(&x1 + i);
 }
 
 template <typename T>
-template <nat t_i, nat t_j>
+template <int t_i, int t_j>
 inline T & mat<T, 4, 4>::at() {
     static_assert(t_i >= 0 && t_i <= 3 && t_j >= 0 && t_j <= 3, "index out of bounds");
     if constexpr (t_i == 0) {
@@ -1010,7 +1010,7 @@ inline T & mat<T, 4, 4>::at() {
 }
 
 template <typename T>
-template <nat t_i, nat t_j>
+template <int t_i, int t_j>
 constexpr T mat<T, 4, 4>::at() const {
     static_assert(t_i >= 0 && t_i <= 3 && t_j >= 0 && t_j <= 3, "index out of bounds");
     if constexpr (t_i == 0) {
@@ -1040,24 +1040,24 @@ constexpr T mat<T, 4, 4>::at() const {
 }
 
 template <typename T>
-inline vec4<T> mat<T, 4, 4>::row(nat i) const {
+inline vec4<T> mat<T, 4, 4>::row(int i) const {
     return vec4<T>(*(&x1 + i), *(&y1 + i), *(&z1 + i), *(&w1 + i));
 }
 
 template <typename T>
-inline vec4<T> mat<T, 4, 4>::col(nat i) const {
-    nat stride(i * 4);
+inline vec4<T> mat<T, 4, 4>::col(int i) const {
+    int stride(i * 4);
     return vec4<T>(*(&x1 + stride), *(&y1 + stride), *(&z1 + stride), *(&w1 + stride));
 }
 
 template <typename T>
-template <nat t_i>
+template <int t_i>
 constexpr vec4<T> mat<T, 4, 4>::row() const {
     return vec4<T>(at<t_i, 0>(), at<t_i, 1>(), at<t_i, 2>(), at<t_i, 3>());
 }
 
 template <typename T>
-template <nat t_j>
+template <int t_j>
 constexpr vec4<T> mat<T, 4, 4>::col() const {
     return vec4<T>(at<0, t_j>(), at<1, t_j>(), at<2, t_j>(), at<3, t_j>());
 }
@@ -1090,7 +1090,7 @@ inline std::string mat<T, 4, 4>::toString() const {
 
 //--- add assign ---
 
-template <typename T, nat t_m, nat t_n>
+template <typename T, int t_m, int t_n>
 inline mat<T, t_m, t_n> & operator+=(mat<T, t_m, t_n> & m, T v) {
     if constexpr (t_n >= 1) {
         if constexpr (t_m >= 1) m.x1 += v;
@@ -1119,7 +1119,7 @@ inline mat<T, t_m, t_n> & operator+=(mat<T, t_m, t_n> & m, T v) {
     return m;
 }
 
-template <typename T, nat t_m, nat t_n>
+template <typename T, int t_m, int t_n>
 inline mat<T, t_m, t_n> & operator+=(mat<T, t_m, t_n> & m1, const mat<T, t_m, t_n> & m2) {
     if constexpr (t_n >= 1) {
         if constexpr (t_m >= 1) m1.x1 += m2.x1;
@@ -1150,7 +1150,7 @@ inline mat<T, t_m, t_n> & operator+=(mat<T, t_m, t_n> & m1, const mat<T, t_m, t_
 
 //--- subtract assign ---
 
-template <typename T, nat t_m, nat t_n>
+template <typename T, int t_m, int t_n>
 inline mat<T, t_m, t_n> & operator-=(mat<T, t_m, t_n> & m, T v) {
     if constexpr (t_n >= 1) {
         if constexpr (t_m >= 1) m.x1 -= v;
@@ -1179,7 +1179,7 @@ inline mat<T, t_m, t_n> & operator-=(mat<T, t_m, t_n> & m, T v) {
     return m;
 }
 
-template <typename T, nat t_m, nat t_n>
+template <typename T, int t_m, int t_n>
 inline mat<T, t_m, t_n> & operator-=(mat<T, t_m, t_n> & m1, const mat<T, t_m, t_n> & m2) {
     if constexpr (t_n >= 1) {
         if constexpr (t_m >= 1) m1.x1 -= m2.x1;
@@ -1210,7 +1210,7 @@ inline mat<T, t_m, t_n> & operator-=(mat<T, t_m, t_n> & m1, const mat<T, t_m, t_
 
 //--- multiply assign ---
 
-template <typename T, nat t_m, nat t_n>
+template <typename T, int t_m, int t_n>
 inline mat<T, t_m, t_n> & operator*=(mat<T, t_m, t_n> & m, T v) {
     if constexpr (t_n >= 1) {
         if constexpr (t_m >= 1) m.x1 *= v;
@@ -1241,7 +1241,7 @@ inline mat<T, t_m, t_n> & operator*=(mat<T, t_m, t_n> & m, T v) {
 
 namespace detail {
 
-template <nat t_i, nat t_j, typename T, nat t_m, nat t_n, nat t_o>
+template <int t_i, int t_j, typename T, int t_m, int t_n, int t_o>
 inline T mult(const mat<T, t_m, t_n> & m1, const mat<T, t_n, t_o> & m2) {
     if constexpr (t_n == 1) return m1.at<t_i, 0>() * m2.at<0, t_j>();
     if constexpr (t_n == 2) return m1.at<t_i, 0>() * m2.at<0, t_j>() + m1.at<t_i, 1>() * m2.at<1, t_j>();
@@ -1251,7 +1251,7 @@ inline T mult(const mat<T, t_m, t_n> & m1, const mat<T, t_n, t_o> & m2) {
 
 }
 
-template <typename T, nat t_m, nat t_n, nat t_o>
+template <typename T, int t_m, int t_n, int t_o>
 inline mat<T, t_m, t_o> & operator*=(mat<T, t_m, t_n> & m1, const mat<T, t_n, t_o> & m2) {
     if constexpr (t_o >= 1) {
         if constexpr (t_m >= 1) m1.x1 = detail::mult<0, 0>(m1, m2);
@@ -1282,7 +1282,7 @@ inline mat<T, t_m, t_o> & operator*=(mat<T, t_m, t_n> & m1, const mat<T, t_n, t_
 
 //--- divide assign ---
 
-template <typename T, nat t_m, nat t_n>
+template <typename T, int t_m, int t_n>
 inline mat<T, t_m, t_n> & operator/=(mat<T, t_m, t_n> & m, T v) {
     return m *= T(1.0) / v;
 }
@@ -1296,21 +1296,21 @@ inline mat<T, t_m, t_n> & operator/=(mat<T, t_m, t_n> & m, T v) {
 
 //--- positive ---
 
-template <typename T, nat t_m, nat t_n>
+template <typename T, int t_m, int t_n>
 inline mat<T, t_m, t_n> operator+(const mat<T, t_m, t_n> & m) {
     return m;
 }
 
 //--- negative ---
 
-template <typename T, nat t_m, nat t_n>
+template <typename T, int t_m, int t_n>
 inline mat<T, t_m, t_n> operator-(const mat<T, t_m, t_n> & m) {
     return m * T(-1.0);
 }
 
 namespace detail {
 
-template <nat t_j, typename T, nat t_m, nat t_n>
+template <int t_j, typename T, int t_m, int t_n>
 inline vec<T, t_m> addCol(const mat<T, t_m, t_n> & m1, const mat<T, t_m, t_n> & m2) {
     if constexpr (t_m == 1) return vec1<T>(m1.at<0, t_j>() + m2.at<0, t_j>());
     if constexpr (t_m == 2) return vec2<T>(m1.at<0, t_j>() + m2.at<0, t_j>(), m1.at<1, t_j>() + m2.at<1, t_j>());
@@ -1318,7 +1318,7 @@ inline vec<T, t_m> addCol(const mat<T, t_m, t_n> & m1, const mat<T, t_m, t_n> & 
     if constexpr (t_m == 4) return vec4<T>(m1.at<0, t_j>() + m2.at<0, t_j>(), m1.at<1, t_j>() + m2.at<1, t_j>(), m1.at<2, t_j>() + m2.at<2, t_j>(), m1.at<3, t_j>() + m2.at<3, t_j>());
 }
 
-template <nat t_j, typename T, nat t_m, nat t_n>
+template <int t_j, typename T, int t_m, int t_n>
 inline vec<T, t_m> addCol(const mat<T, t_m, t_n> & m, T v) {
     if constexpr (t_m == 1) return vec1<T>(m.at<0, t_j>() + v);
     if constexpr (t_m == 2) return vec2<T>(m.at<0, t_j>() + v, m.at<1, t_j>() + v);
@@ -1326,7 +1326,7 @@ inline vec<T, t_m> addCol(const mat<T, t_m, t_n> & m, T v) {
     if constexpr (t_m == 4) return vec4<T>(m.at<0, t_j>() + v, m.at<1, t_j>() + v, m.at<2, t_j>() + v, m.at<3, t_j>() + v);
 }
 
-template <nat t_j, typename T, nat t_m, nat t_n, nat t_o>
+template <int t_j, typename T, int t_m, int t_n, int t_o>
 inline vec<T, t_m> multCol(const mat<T, t_m, t_n> & m1, const mat<T, t_n, t_o> & m2) {
     if constexpr (t_m == 1) return vec1<T>(mult<0, t_j>(m1, m2));
     if constexpr (t_m == 2) return vec2<T>(mult<0, t_j>(m1, m2), mult<1, t_j>(m1, m2));
@@ -1334,7 +1334,7 @@ inline vec<T, t_m> multCol(const mat<T, t_m, t_n> & m1, const mat<T, t_n, t_o> &
     if constexpr (t_m == 4) return vec4<T>(mult<0, t_j>(m1, m2), mult<1, t_j>(m1, m2), mult<2, t_j>(m1, m2), mult<3, t_j>(m1, m2));
 }
 
-template <nat t_j, typename T, nat t_m, nat t_n>
+template <int t_j, typename T, int t_m, int t_n>
 inline vec<T, t_m> multCol(const mat<T, t_m, t_n> & m, T v) {
     if constexpr (t_m == 1) return vec1<T>(m.at<0, t_j>() * v);
     if constexpr (t_m == 2) return vec2<T>(m.at<0, t_j>() * v, m.at<1, t_j>() * v);
@@ -1342,7 +1342,7 @@ inline vec<T, t_m> multCol(const mat<T, t_m, t_n> & m, T v) {
     if constexpr (t_m == 4) return vec4<T>(m.at<0, t_j>() * v, m.at<1, t_j>() * v, m.at<2, t_j>() * v, m.at<3, t_j>() * v);
 }
 
-template <nat t_i, typename T, nat t_m, nat t_n>
+template <int t_i, typename T, int t_m, int t_n>
 inline T multRow(const mat<T, t_m, t_n> & m, const vec<T, t_n> & v) {
     if constexpr (t_n == 1) return m.at<t_i, 0>() * v.x;
     if constexpr (t_n == 2) return m.at<t_i, 0>() * v.x + m.at<t_i, 1>() * v.y;
@@ -1350,7 +1350,7 @@ inline T multRow(const mat<T, t_m, t_n> & m, const vec<T, t_n> & v) {
     if constexpr (t_n == 4) return m.at<t_i, 0>() * v.x + m.at<t_i, 1>() * v.y + m.at<t_i, 2>() * v.z + m.at<t_i, 3>() * v.w;
 }
 
-template <nat t_j, typename T, nat t_m, nat t_n>
+template <int t_j, typename T, int t_m, int t_n>
 inline vec<T, t_m> divCol(T v, const mat<T, t_m, t_n> & m) {
     if constexpr (t_m == 1) return vec1<T>(v / m.at<0, t_j>());
     if constexpr (t_m == 2) return vec2<T>(v / m.at<0, t_j>(), v / m.at<1, t_j>());
@@ -1362,7 +1362,7 @@ inline vec<T, t_m> divCol(T v, const mat<T, t_m, t_n> & m) {
 
 //--- add ---
 
-template <typename T, nat t_m, nat t_n>
+template <typename T, int t_m, int t_n>
 inline mat<T, t_m, t_n> operator+(const mat<T, t_m, t_n> & m1, const mat<T, t_m, t_n> & m2) {
     if constexpr (t_n == 1) return mat<T, t_m, t_n>(detail::addCol<0>(m1, m2));
     if constexpr (t_n == 2) return mat<T, t_m, t_n>(detail::addCol<0>(m1, m2), detail::addCol<1>(m1, m2));
@@ -1370,7 +1370,7 @@ inline mat<T, t_m, t_n> operator+(const mat<T, t_m, t_n> & m1, const mat<T, t_m,
     if constexpr (t_n == 4) return mat<T, t_m, t_n>(detail::addCol<0>(m1, m2), detail::addCol<1>(m1, m2), detail::addCol<2>(m1, m2), detail::addCol<3>(m1, m2));
 }
 
-template <typename T, nat t_m, nat t_n>
+template <typename T, int t_m, int t_n>
 inline mat<T, t_m, t_n> operator+(const mat<T, t_m, t_n> & m, T v) {
     if constexpr (t_n == 1) return mat<T, t_m, t_n>(detail::addCol<0>(m, v));
     if constexpr (t_n == 2) return mat<T, t_m, t_n>(detail::addCol<0>(m, v), detail::addCol<1>(m, v));
@@ -1378,31 +1378,31 @@ inline mat<T, t_m, t_n> operator+(const mat<T, t_m, t_n> & m, T v) {
     if constexpr (t_n == 4) return mat<T, t_m, t_n>(detail::addCol<0>(m, v), detail::addCol<1>(m, v), detail::addCol<2>(m, v), detail::addCol<3>(m, v));
 }
 
-template <typename T, nat t_m, nat t_n>
+template <typename T, int t_m, int t_n>
 inline mat<T, t_m, t_n> operator+(T v, const mat<T, t_m, t_n> & m) {
     return m + v;
 }
 
 //--- subtract ---
 
-template <typename T, nat t_m, nat t_n>
+template <typename T, int t_m, int t_n>
 inline mat<T, t_m, t_n> operator-(const mat<T, t_m, t_n> & m1, const mat<T, t_m, t_n> & m2) {
     return m1 + -m2;
 }
 
-template <typename T, nat t_m, nat t_n>
+template <typename T, int t_m, int t_n>
 inline mat<T, t_m, t_n> operator-(const mat<T, t_m, t_n> & m, T v) {
     return m + -v;
 }
 
-template <typename T, nat t_m, nat t_n>
+template <typename T, int t_m, int t_n>
 inline mat<T, t_m, t_n> operator-(T v, const mat<T, t_m, t_n> & m) {
     return v + -m;
 }
 
 //--- multiply ---
 
-template <typename T, nat t_m, nat t_n, nat t_o>
+template <typename T, int t_m, int t_n, int t_o>
 inline mat<T, t_m, t_o> operator*(const mat<T, t_m, t_n> & m1, const mat<T, t_n, t_o> & m2) {
     if constexpr (t_o == 1) return mat<T, t_m, 1>(detail::multCol<0>(m1, m2));
     if constexpr (t_o == 2) return mat<T, t_m, 2>(detail::multCol<0>(m1, m2), detail::multCol<1>(m1, m2));
@@ -1410,7 +1410,7 @@ inline mat<T, t_m, t_o> operator*(const mat<T, t_m, t_n> & m1, const mat<T, t_n,
     if constexpr (t_o == 4) return mat<T, t_m, 4>(detail::multCol<0>(m1, m2), detail::multCol<1>(m1, m2), detail::multCol<2>(m1, m2), detail::multCol<3>(m1, m2));
 }
 
-template <typename T, nat t_m, nat t_n>
+template <typename T, int t_m, int t_n>
 inline mat<T, t_m, t_n> operator*(const mat<T, t_m, t_n> & m, T v) {
     if constexpr (t_n == 1) return mat<T, t_m, t_n>(detail::multCol<0>(m, v));
     if constexpr (t_n == 2) return mat<T, t_m, t_n>(detail::multCol<0>(m, v), detail::multCol<1>(m, v));
@@ -1418,12 +1418,12 @@ inline mat<T, t_m, t_n> operator*(const mat<T, t_m, t_n> & m, T v) {
     if constexpr (t_n == 4) return mat<T, t_m, t_n>(detail::multCol<0>(m, v), detail::multCol<1>(m, v), detail::multCol<2>(m, v), detail::multCol<3>(m, v));
 }
 
-template <typename T, nat t_m, nat t_n>
+template <typename T, int t_m, int t_n>
 inline mat<T, t_m, t_n> operator*(T v, const mat<T, t_m, t_n> & m) {
     return m * v;
 }
 
-template <typename T, nat t_m, nat t_n>
+template <typename T, int t_m, int t_n>
 inline vec<T, t_m> operator*(const mat<T, t_m, t_n> & m, const vec<T, t_n> & v) {
     if constexpr (t_m == 1) return vec1<T>(detail::multRow<0>(m, v));
     if constexpr (t_m == 2) return vec2<T>(detail::multRow<0>(m, v), detail::multRow<1>(m, v));
@@ -1433,12 +1433,12 @@ inline vec<T, t_m> operator*(const mat<T, t_m, t_n> & m, const vec<T, t_n> & v) 
 
 //--- divide ---
 
-template <typename T, nat t_m, nat t_n>
+template <typename T, int t_m, int t_n>
 inline mat<T, t_m, t_n> operator/(const mat<T, t_m, t_n> & m, T v) {
     return m * (T(1.0) / v);
 }
 
-template <typename T, nat t_m, nat t_n>
+template <typename T, int t_m, int t_n>
 inline mat<T, t_m, t_n> operator/(T v, const mat<T, t_m, t_n> & m) {
     if constexpr (t_n == 1) return mat<T, t_m, t_n>(detail::divCol<0>(v, m));
     if constexpr (t_n == 2) return mat<T, t_m, t_n>(detail::divCol<0>(v, m), detail::divCol<1>(v, m));
@@ -1455,7 +1455,7 @@ inline mat<T, t_m, t_n> operator/(T v, const mat<T, t_m, t_n> & m) {
 
 //--- equal to ---
 
-template <typename T, nat t_m, nat t_n>
+template <typename T, int t_m, int t_n>
 inline bool operator==(const mat<T, t_m, t_n> & m1, const mat<T, t_m, t_n> & m2) {
     if constexpr (t_n == 1) return m1.col<0>() == m2.col<0>();
     if constexpr (t_n == 2) return m1.col<0>() == m2.col<0>() && m1.col<1>() == m2.col<1>();
@@ -1465,7 +1465,7 @@ inline bool operator==(const mat<T, t_m, t_n> & m1, const mat<T, t_m, t_n> & m2)
 
 //--- not equal to ---
 
-template <typename T, nat t_m, nat t_n>
+template <typename T, int t_m, int t_n>
 inline bool operator!=(const mat<T, t_m, t_n> & m1, const mat<T, t_m, t_n> & m2) {
     return !(m1 == m2);
 }
@@ -1499,7 +1499,7 @@ inline std::ostream & operator<<(std::ostream & os, const mat3<T> & m) {
 
 namespace detail {
 
-template <nat t_j, typename T, nat t_m, nat t_n>
+template <int t_j, typename T, int t_m, int t_n>
 inline std::ostream & printCol(std::ostream & os, const mat<T, t_m, t_n> & m) {
     if constexpr (t_m == 1) return os << m.at<0, t_j>();
     if constexpr (t_m == 2) return os << m.at<0, t_j>() << " " << m.at<1, t_j>();
@@ -1509,7 +1509,7 @@ inline std::ostream & printCol(std::ostream & os, const mat<T, t_m, t_n> & m) {
 
 }
 
-template <typename T, nat t_m, nat t_n>
+template <typename T, int t_m, int t_n>
 inline std::ostream & operator<<(std::ostream & os, const mat<T, t_m, t_n> & m) {
     os << "[";
     if constexpr (t_n >= 1) { os << " "; detail::printCol<0>(os, m); os << " "; }
@@ -1529,7 +1529,7 @@ inline std::ostream & operator<<(std::ostream & os, const mat<T, t_m, t_n> & m) 
 
 //--- transpose ---
 
-template <typename T, nat t_m, nat t_n>
+template <typename T, int t_m, int t_n>
 inline mat<T, t_n, t_m> transpose(const mat<T, t_m, t_n> & m) {
     if constexpr (t_m == 1) return mat<T, t_n, t_m>(m.row<0>());
     if constexpr (t_m == 2) return mat<T, t_n, t_m>(m.row<0>(), m.row<1>());
@@ -1539,7 +1539,7 @@ inline mat<T, t_n, t_m> transpose(const mat<T, t_m, t_n> & m) {
 
 //--- cofactor ---
 
-template <typename T, nat t_n>
+template <typename T, int t_n>
 inline mat<T, t_n> cofactor(const mat<T, t_n> & m) {
     if constexpr (t_n == 1) {
         return mat1<T>(T(1));
@@ -1608,14 +1608,14 @@ inline mat<T, t_n> cofactor(const mat<T, t_n> & m) {
 
 //-- adjoint ---
 
-template <typename T, nat t_n>
+template <typename T, int t_n>
 inline mat<T, t_n> adjoint(const mat<T, t_n> & m) {
     return transpose(cofactor(m));
 }
 
 //--- determinant ---
 
-template <typename T, nat t_n>
+template <typename T, int t_n>
 inline T determinant(const mat<T, t_n> & m) {
     if constexpr (t_n == 1) {
         return m.x1;
@@ -1652,7 +1652,7 @@ inline T determinant(const mat<T, t_n> & m) {
 
 //--- inverse ---
 
-template <typename T, nat t_n>
+template <typename T, int t_n>
 inline mat<T, t_n> inverse(const mat<T, t_n> & m) {
     T det(determinant(m));
     if (zero(det)) {
@@ -1662,7 +1662,7 @@ inline mat<T, t_n> inverse(const mat<T, t_n> & m) {
     return adjoint(m) / determinant(m);
 }
 
-template <typename T, nat t_m, nat t_n>
+template <typename T, int t_m, int t_n>
 constexpr mat<T, t_m, t_n> fullMat(T v) {
     if constexpr (t_n == 1) return mat<T, t_m, 1>(vec<T, t_m>(v));
     if constexpr (t_n == 2) return mat<T, t_m, 2>(vec<T, t_m>(v), vec<T, t_m>(v));
@@ -1670,7 +1670,7 @@ constexpr mat<T, t_m, t_n> fullMat(T v) {
     if constexpr (t_n == 4) return mat<T, t_m, 4>(vec<T, t_m>(v), vec<T, t_m>(v), vec<T, t_m>(v), vec<T, t_m>(v));
 }
 
-template <typename T, nat t_m, nat t_n>
+template <typename T, int t_m, int t_n>
 constexpr mat<T, t_m, t_n> nullMat() {
     return fullMat<T, t_m, t_n>(T(0.0));
 }
@@ -1682,7 +1682,7 @@ constexpr mat<T, t_m, t_n> nullMat() {
 
 
 
-template <typename T, nat t_n>
+template <typename T, int t_n>
 inline mat<T, t_n + 1> translate(const vec<T, t_n> & delta) {
     if constexpr (t_n == 1) {
         return mat2<T>(
@@ -1709,7 +1709,7 @@ inline mat<T, t_n + 1> translate(const vec<T, t_n> & delta) {
     }
 }
 
-template <typename T, nat t_m, nat t_n>
+template <typename T, int t_m, int t_n>
 inline mat<T, t_m> & translate(mat<T, t_m> & mat, const vec<T, t_n> & delta) {
     if constexpr (t_n == 1 && t_m == 2) {
         mat.x1 += delta.x * mat.y1;
@@ -1744,7 +1744,7 @@ inline mat<T, t_m> & translate(mat<T, t_m> & mat, const vec<T, t_n> & delta) {
     }
 }
 
-template <typename T, nat t_n>
+template <typename T, int t_n>
 inline mat<T, t_n> scale(const vec<T, t_n> & scale) {
     if constexpr (t_n == 1) {
         return mat1<T>(
@@ -1768,7 +1768,7 @@ inline mat<T, t_n> scale(const vec<T, t_n> & scale) {
     }    
 }
 
-template <typename T, nat t_m, nat t_n>
+template <typename T, int t_m, int t_n>
 inline mat<T, t_m> & scale(mat<T, t_m> & mat, const vec<T, t_n> & scale) {
     if constexpr (t_n == 1 && t_m == 1) {
         mat.x1 *= scale.x;
@@ -1925,7 +1925,7 @@ inline mat3<T> euler_n(const vec3<T> & forward, const vec3<T> & up, T theta, T p
     return rotate_n(up, theta) * rotate_n(cross(forward, up), phi) * rotate_n(forward, psi);
 }
 
-template <typename T, nat t_n>
+template <typename T, int t_n>
 inline mat<T, t_n> align(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
     return align_n(norm(v1), norm(v2));
 }
