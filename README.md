@@ -1,2 +1,2 @@
-# QMU
-Mathematics and Utilities Library
+# QCU
+Q Core Utilities Library
