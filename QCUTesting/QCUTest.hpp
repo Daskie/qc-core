@@ -2,7 +2,9 @@
 
 
 
-void testQCU();
+void testCore();
+
+void testBits();
 
 void testVector();
 

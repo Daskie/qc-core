@@ -314,9 +314,9 @@ constexpr void compileClassesConstexprT() {
     constexpr qcu::vec2<T> v2_06(v3);
     constexpr qcu::vec2<T> v2_07(v4);
     constexpr qcu::vec2<T> v2_08(v, v);
-    //constexpr qcu::vec2<T> v2_09(v1, v);
-    //constexpr qcu::vec2<T> v2_10(v, v1);
-    //constexpr qcu::vec2<T> v2_11(v1, v1);
+    constexpr qcu::vec2<T> v2_09(v1, v);
+    constexpr qcu::vec2<T> v2_10(v, v1);
+    constexpr qcu::vec2<T> v2_11(v1, v1);
 
     // access
     v2.at<0>();
@@ -334,17 +334,17 @@ constexpr void compileClassesConstexprT() {
     constexpr qcu::vec3<T> v3_06(v2);
     constexpr qcu::vec3<T> v3_07(v4);
     constexpr qcu::vec3<T> v3_08(v, v, v);
-    //constexpr qcu::vec3<T> v3_09(v1, v, v);
-    //constexpr qcu::vec3<T> v3_10(v, v1, v);
-    //constexpr qcu::vec3<T> v3_11(v, v, v1);
-    //constexpr qcu::vec3<T> v3_12(v1, v1, v);
-    //constexpr qcu::vec3<T> v3_13(v1, v, v1);
-    //constexpr qcu::vec3<T> v3_14(v, v1, v1);
-    //constexpr qcu::vec3<T> v3_15(v1, v1, v1);
-    //constexpr qcu::vec3<T> v3_16(v2, v);
-    //constexpr qcu::vec3<T> v3_17(v2, v1);
-    //constexpr qcu::vec3<T> v3_18(v, v2);
-    //constexpr qcu::vec3<T> v3_19(v1, v2);
+    constexpr qcu::vec3<T> v3_09(v1, v, v);
+    constexpr qcu::vec3<T> v3_10(v, v1, v);
+    constexpr qcu::vec3<T> v3_11(v, v, v1);
+    constexpr qcu::vec3<T> v3_12(v1, v1, v);
+    constexpr qcu::vec3<T> v3_13(v1, v, v1);
+    constexpr qcu::vec3<T> v3_14(v, v1, v1);
+    constexpr qcu::vec3<T> v3_15(v1, v1, v1);
+    constexpr qcu::vec3<T> v3_16(v2, v);
+    constexpr qcu::vec3<T> v3_17(v2, v1);
+    constexpr qcu::vec3<T> v3_18(v, v2);
+    constexpr qcu::vec3<T> v3_19(v1, v2);
 
     // access
     v3.at<0>();
@@ -363,37 +363,37 @@ constexpr void compileClassesConstexprT() {
     constexpr qcu::vec4<T> v4_06(v2);
     constexpr qcu::vec4<T> v4_07(v3);
     constexpr qcu::vec4<T> v4_08(v, v, v, v);
-    //constexpr qcu::vec4<T> v4_09(v1, v, v, v);
-    //constexpr qcu::vec4<T> v4_10(v, v1, v, v);
-    //constexpr qcu::vec4<T> v4_11(v, v, v1, v);
-    //constexpr qcu::vec4<T> v4_12(v, v, v, v1);
-    //constexpr qcu::vec4<T> v4_13(v1, v1, v, v);
-    //constexpr qcu::vec4<T> v4_14(v1, v, v1, v);
-    //constexpr qcu::vec4<T> v4_15(v1, v, v, v1);
-    //constexpr qcu::vec4<T> v4_16(v, v1, v, v1);
-    //constexpr qcu::vec4<T> v4_17(v, v, v1, v1);
-    //constexpr qcu::vec4<T> v4_18(v1, v1, v1, v);
-    //constexpr qcu::vec4<T> v4_19(v1, v1, v, v1);
-    //constexpr qcu::vec4<T> v4_20(v1, v, v1, v1);
-    //constexpr qcu::vec4<T> v4_21(v, v1, v1, v1);
-    //constexpr qcu::vec4<T> v4_22(v1, v1, v1, v1);
-    //constexpr qcu::vec4<T> v4_23(v2, v, v);
-    //constexpr qcu::vec4<T> v4_24(v2, v1, v);
-    //constexpr qcu::vec4<T> v4_25(v2, v, v1);
-    //constexpr qcu::vec4<T> v4_26(v2, v1, v1);
-    //constexpr qcu::vec4<T> v4_27(v, v2, v);
-    //constexpr qcu::vec4<T> v4_28(v1, v2, v);
-    //constexpr qcu::vec4<T> v4_29(v, v2, v1);
-    //constexpr qcu::vec4<T> v4_30(v1, v2, v1);
-    //constexpr qcu::vec4<T> v4_31(v, v, v2);
-    //constexpr qcu::vec4<T> v4_32(v1, v, v2);
-    //constexpr qcu::vec4<T> v4_33(v, v1, v2);
-    //constexpr qcu::vec4<T> v4_34(v1, v1, v2);
-    //constexpr qcu::vec4<T> v4_35(v2, v2);
-    //constexpr qcu::vec4<T> v4_36(v3, v);
-    //constexpr qcu::vec4<T> v4_37(v3, v1);
-    //constexpr qcu::vec4<T> v4_38(v, v3);
-    //constexpr qcu::vec4<T> v4_39(v1, v3);
+    constexpr qcu::vec4<T> v4_09(v1, v, v, v);
+    constexpr qcu::vec4<T> v4_10(v, v1, v, v);
+    constexpr qcu::vec4<T> v4_11(v, v, v1, v);
+    constexpr qcu::vec4<T> v4_12(v, v, v, v1);
+    constexpr qcu::vec4<T> v4_13(v1, v1, v, v);
+    constexpr qcu::vec4<T> v4_14(v1, v, v1, v);
+    constexpr qcu::vec4<T> v4_15(v1, v, v, v1);
+    constexpr qcu::vec4<T> v4_16(v, v1, v, v1);
+    constexpr qcu::vec4<T> v4_17(v, v, v1, v1);
+    constexpr qcu::vec4<T> v4_18(v1, v1, v1, v);
+    constexpr qcu::vec4<T> v4_19(v1, v1, v, v1);
+    constexpr qcu::vec4<T> v4_20(v1, v, v1, v1);
+    constexpr qcu::vec4<T> v4_21(v, v1, v1, v1);
+    constexpr qcu::vec4<T> v4_22(v1, v1, v1, v1);
+    constexpr qcu::vec4<T> v4_23(v2, v, v);
+    constexpr qcu::vec4<T> v4_24(v2, v1, v);
+    constexpr qcu::vec4<T> v4_25(v2, v, v1);
+    constexpr qcu::vec4<T> v4_26(v2, v1, v1);
+    constexpr qcu::vec4<T> v4_27(v, v2, v);
+    constexpr qcu::vec4<T> v4_28(v1, v2, v);
+    constexpr qcu::vec4<T> v4_29(v, v2, v1);
+    constexpr qcu::vec4<T> v4_30(v1, v2, v1);
+    constexpr qcu::vec4<T> v4_31(v, v, v2);
+    constexpr qcu::vec4<T> v4_32(v1, v, v2);
+    constexpr qcu::vec4<T> v4_33(v, v1, v2);
+    constexpr qcu::vec4<T> v4_34(v1, v1, v2);
+    constexpr qcu::vec4<T> v4_35(v2, v2);
+    constexpr qcu::vec4<T> v4_36(v3, v);
+    constexpr qcu::vec4<T> v4_37(v3, v1);
+    constexpr qcu::vec4<T> v4_38(v, v3);
+    constexpr qcu::vec4<T> v4_39(v1, v3);
 
     // access
     v4.at<0>();
@@ -1081,6 +1081,184 @@ constexpr void compileFunctionsConstexprT() {
     constexpr qcu::span3<T> s3(v3, v3);
     constexpr qcu::span4<T> s4(v4, v4);
 
+    // arithmetic
+
+    +v1;
+    +v2;
+    +v3;
+    +v4;
+
+    -v1;
+    -v2;
+    -v3;
+    -v4;
+
+    v1 + v1;
+    v2 + v2;
+    v3 + v3;
+    v4 + v4;
+    v1 + v;
+    v2 + v;
+    v3 + v;
+    v4 + v;
+    v + v1;
+    v + v2;
+    v + v3;
+    v + v4;
+
+    v1 - v1;
+    v2 - v2;
+    v3 - v3;
+    v4 - v4;
+    v1 - v;
+    v2 - v;
+    v3 - v;
+    v4 - v;
+    v - v1;
+    v - v2;
+    v - v3;
+    v - v4;
+
+    v1 * v1;
+    v2 * v2;
+    v3 * v3;
+    v4 * v4;
+    v1 * v;
+    v2 * v;
+    v3 * v;
+    v4 * v;
+    v * v1;
+    v * v2;
+    v * v3;
+    v * v4;
+
+    v1 / qcu::vec1<T>(1);
+    v2 / qcu::vec2<T>(1);
+    v3 / qcu::vec3<T>(1);
+    v4 / qcu::vec4<T>(1);
+    v1 / T(1);
+    v2 / T(v);
+    v3 / T(v);
+    v4 / T(v);
+    v / qcu::vec1<T>(1);
+    v / qcu::vec2<T>(1);
+    v / qcu::vec3<T>(1);
+    v / qcu::vec4<T>(1);
+
+    v1 % qcu::vec1<T>(1);
+    v2 % qcu::vec2<T>(1);
+    v3 % qcu::vec3<T>(1);
+    v4 % qcu::vec4<T>(1);
+    v1 % T(1);
+    v2 % T(v);
+    v3 % T(v);
+    v4 % T(v);
+    v % qcu::vec1<T>(1);
+    v % qcu::vec2<T>(1);
+    v % qcu::vec3<T>(1);
+    v % qcu::vec4<T>(1);
+
+
+    // comparison
+
+    v1 == v1;
+    v2 == v2;
+    v3 == v3;
+    v4 == v4;
+    v1 == v;
+    v2 == v;
+    v3 == v;
+    v4 == v;
+    v == v1;
+    v == v2;
+    v == v3;
+    v == v4;
+    s1 == s1;
+    s2 == s2;
+    s3 == s3;
+    s4 == s4;
+
+    v1 != v1;
+    v2 != v2;
+    v3 != v3;
+    v4 != v4;
+    v1 != v;
+    v2 != v;
+    v3 != v;
+    v4 != v;
+    v != v1;
+    v != v2;
+    v != v3;
+    v != v4;
+    s1 != s1;
+    s2 != s2;
+    s3 != s3;
+    s4 != s4;
+
+    v1 < v1;
+    v2 < v2;
+    v3 < v3;
+    v4 < v4;
+    v1 < v;
+    v2 < v;
+    v3 < v;
+    v4 < v;
+    v < v1;
+    v < v2;
+    v < v3;
+    v < v4;
+
+    v1 > v1;
+    v2 > v2;
+    v3 > v3;
+    v4 > v4;
+    v1 > v;
+    v2 > v;
+    v3 > v;
+    v4 > v;
+    v > v1;
+    v > v2;
+    v > v3;
+    v > v4;
+
+    v1 <= v1;
+    v2 <= v2;
+    v3 <= v3;
+    v4 <= v4;
+    v1 <= v;
+    v2 <= v;
+    v3 <= v;
+    v4 <= v;
+    v <= v1;
+    v <= v2;
+    v <= v3;
+    v <= v4;
+
+    v1 >= v1;
+    v2 >= v2;
+    v3 >= v3;
+    v4 >= v4;
+    v1 >= v;
+    v2 >= v;
+    v3 >= v;
+    v4 >= v;
+    v >= v1;
+    v >= v2;
+    v >= v3;
+    v >= v4;
+
+    // condensation
+
+    qcu::sum(v1);
+    qcu::sum(v2);
+    qcu::sum(v3);
+    qcu::sum(v4);
+
+    qcu::product(v1);
+    qcu::product(v2);
+    qcu::product(v3);
+    qcu::product(v4);
+
     // uncategorized
 
     qcu::min(v1);
@@ -1135,6 +1313,46 @@ constexpr void compileFunctionsConstexprT() {
     qcu::minmax(v2);
     qcu::minmax(v3);
     qcu::minmax(v4);
+
+    qcu::clamp(v1, v, v);
+    qcu::clamp(v2, v, v);
+    qcu::clamp(v3, v, v);
+    qcu::clamp(v4, v, v);
+
+    qcu::clamp(v1, v1, v1);
+    qcu::clamp(v2, v2, v2);
+    qcu::clamp(v3, v3, v3);
+    qcu::clamp(v4, v4, v4);
+
+    qcu::abs(v1);
+    qcu::abs(v2);
+    qcu::abs(v3);
+    qcu::abs(v4);
+
+    qcu::floor(v1);
+    qcu::floor(v2);
+    qcu::floor(v3);
+    qcu::floor(v4);
+
+    qcu::ceil(v1);
+    qcu::ceil(v2);
+    qcu::ceil(v3);
+    qcu::ceil(v4);
+
+    qcu::toSpan(s1);
+    qcu::toSpan(s2);
+    qcu::toSpan(s3);
+    qcu::toSpan(s4);
+    
+    qcu::toBound(s1);
+    qcu::toBound(s2);
+    qcu::toBound(s3);
+    qcu::toBound(s4);
+
+    qcu::intersect(s1, s1);
+    qcu::intersect(s2, s2);
+    qcu::intersect(s3, s3);
+    qcu::intersect(s4, s4);
 }
 
 template <typename T>
@@ -1148,6 +1366,27 @@ constexpr void compileFunctionsConstexprFT() {
     constexpr qcu::span2<T> s2(v2, v2);
     constexpr qcu::span3<T> s3(v3, v3);
     constexpr qcu::span4<T> s4(v4, v4);
+
+    qcu::mix(v1, v1, v);
+    qcu::mix(v2, v2, v);
+    qcu::mix(v3, v3, v);
+    qcu::mix(v4, v4, v);
+
+    qcu::mix(v, v, v2);
+    qcu::mix(v1, v1, v2);
+    qcu::mix(v2, v2, v2);
+    qcu::mix(v3, v3, v2);
+    qcu::mix(v4, v4, v2);
+    qcu::mix(v, v, v, v3);
+    qcu::mix(v1, v1, v1, v3);
+    qcu::mix(v2, v2, v2, v3);
+    qcu::mix(v3, v3, v3, v3);
+    qcu::mix(v4, v4, v4, v3);
+    qcu::mix(v, v, v, v, v4);
+    qcu::mix(v1, v1, v1, v1, v4);
+    qcu::mix(v2, v2, v2, v2, v4);
+    qcu::mix(v3, v3, v3, v3, v4);
+    qcu::mix(v4, v4, v4, v4, v4);
 }
 
 template <typename T>
@@ -1168,6 +1407,31 @@ constexpr void compileBoolFunctionsConstexpr() {
     qcu::bvec2 b2;
     qcu::bvec3 b3;
     qcu::bvec4 b4;
+
+    b1 && b1;
+    b2 && b2;
+    b3 && b3;
+    b4 && b4;
+
+    b1 || b1;
+    b2 || b2;
+    b3 || b3;
+    b4 || b4;
+
+    !b1;
+    !b2;
+    !b3;
+    !b4;
+
+    qcu::conjunction(b1);
+    qcu::conjunction(b2);
+    qcu::conjunction(b3);
+    qcu::conjunction(b4);
+
+    qcu::disjunction(b1);
+    qcu::disjunction(b2);
+    qcu::disjunction(b3);
+    qcu::disjunction(b4);
 }
 
 constexpr bool compileFunctionsConstexpr() {

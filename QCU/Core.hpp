@@ -158,37 +158,37 @@ constexpr std::pair<const T &, const T &> minmax(const T & a, const T & b, const
 template <typename T>
 constexpr T clamp(const T & v, const T & min, const T & max);
 
-// allows unsigned
+// allows unsigned and constexpr
 template <typename T, eif_arithmetic_t<T> = 0>
-T abs(T v);
+constexpr T abs(T v);
 
 template <typename T, eif_arithmetic_t<T> = 0>
-bool zero(T v, T e = std::numeric_limits<T>::min());
+constexpr bool zero(T v, T e = std::numeric_limits<T>::min());
 
 template <typename T>
-bool equal(const T & v1, const T & v2);
+constexpr bool equal(const T & v1, const T & v2);
 
 template <typename T, typename... Ts>
-bool equal(const T & v1, const T & v2, const Ts &... rest);
+constexpr bool equal(const T & v1, const T & v2, const Ts &... rest);
 
 template <typename T, eif_arithmetic_t<T> = 0>
-T sign(T v);
+constexpr T sign(T v);
 
 // ~2x faster than std::floor
 // doesn't work with some edge cases
 template <typename T, eif_floating_t<T> = 0>
-precision_st<sizeof(T)> floor(T v);
+constexpr nat floor(T v);
 
 template <typename T, eif_integral_t<T> = 0>
-T floor(T v);
+constexpr T floor(T v);
 
 // ~2x faster than std::ceil
 // doesn't work with some edge cases
 template <typename T, eif_floating_t<T> = 0>
-precision_st<sizeof(T)> ceil(T v);
+constexpr nat ceil(T v);
 
 template <typename T, eif_integral_t<T> = 0>
-T ceil(T v);
+constexpr T ceil(T v);
 
 template <typename T>
 constexpr T pow2(int v);
@@ -197,42 +197,42 @@ template <typename T, eif_integral_t<T> = 0>
 constexpr bool isPow2(T v);
 
 template <typename T, eif_integral_t<T> = 0>
-T log2Floor(T v);
+constexpr T log2Floor(T v);
 
 template <typename T, eif_integral_t<T> = 0>
-T log2Ceil(T v);
+constexpr T log2Ceil(T v);
 
 template <typename T, eif_integral_t<T> = 0>
-T floor2(T v);
+constexpr T floor2(T v);
 
 template <typename T, eif_integral_t<T> = 0>
-T ceil2(T v);
+constexpr T ceil2(T v);
 
 template <typename T, eif_integral_t<T> = 0>
-T highBit(T v);
+constexpr T highBit(T v);
 
 template <typename T, eif_integral_t<T> = 0>
-T lowBit(T v);
+constexpr T lowBit(T v);
 
 template <typename T, eif_integral_t<T> = 0>
-T iBit(T v, int i);
+constexpr T iBit(T v, int i);
 
 // ~3.3x faster than std::modf
 template <typename T, eif_floating_t<T> = 0>
-T fract(T v);
+constexpr T fract(T v);
 
 template <typename T, eif_floating_t<T> = 0>
-std::pair<T, precision_st<sizeof(T)>> fract_i(T v);
+constexpr std::pair<T, nat> fract_i(T v);
 
 // ~2.5x faster than std::fmod
 template <typename T, eif_arithmetic_t<T> = 0>
-T mod(T v, T d);
+constexpr T mod(T v, T d);
 
 template <typename T, eif_arithmetic_t<T> = 0>
-std::pair<T, T> mod_q(T v, T d);
+constexpr std::pair<T, T> mod_q(T v, T d);
 
 template <typename T, eif_floating_t<T> = 0>
-T mix(T v1, T v2, T t);
+constexpr T mix(T v1, T v2, T t);
 
 template <typename T, typename... Args>
 constexpr T sum(const T & v, const Args &... args);
@@ -252,35 +252,7 @@ T degrees(T radians);
 // converts between normalized types
 // works with floats and integers, signed and unsigned
 template <typename To, typename From, eif_t<std::is_arithmetic_v<To> && std::is_arithmetic_v<From>> = 0>
-inline To transnorm(From v);
-
-
-
-namespace bits {
-
-
-
-template <typename T, eif_uintegral_t<T> = 0>
-inline T rotateL(T v, int n);
-
-template <typename T, eif_uintegral_t<T> = 0>
-inline T rotateR(T v, int n);
-
-template <typename SrcT, typename DstT, eif_t<std::is_integral_v<SrcT> && std::is_integral_v<DstT> && std::is_unsigned_v<SrcT> && std::is_unsigned_v<DstT> && (sizeof(DstT) > sizeof(SrcT))> = 0>
-inline DstT spread(SrcT v);
-
-template <typename SrcT, typename DstT, eif_t<std::is_integral_v<SrcT> && std::is_integral_v<DstT> && std::is_unsigned_v<SrcT> && std::is_unsigned_v<DstT> && (sizeof(DstT) >= sizeof(SrcT))> = 0>
-inline DstT repeat(SrcT v);
-
-template <typename T, eif_uintegral_t<T> = 0>
-inline T interleave(T v);
-
-template <typename T, eif_uintegral_t<T> = 0>
-inline T scramble(T v);
-
-
-
-}
+To transnorm(From v);
 
 
 
@@ -289,6 +261,7 @@ inline T scramble(T v);
 // IMPLEMENTATION ==============================================================================================================================================
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //==============================================================================================================================================================
+#ifndef __INTELLISENSE__
 
 
 
@@ -353,19 +326,17 @@ constexpr T clamp(const T & v, const T & min, const T & max) {
 }
 
 template <typename T, eif_arithmetic_t<T>>
-inline T abs(T v) {
+constexpr T abs(T v) {
     if constexpr (std::is_unsigned_v<T>) {
         return v;
     }
     if constexpr (std::is_signed_v<T>) {
-        return std::abs(v);
-        /// constexpr version
-        ///return v < T(0) ? -v : v;
+        return v < T(0) ? -v : v;
     }
 }
 
 template <typename T, eif_arithmetic_t<T>>
-inline bool zero(T v, T e) {
+constexpr bool zero(T v, T e) {
     if constexpr (std::is_floating_point_v<T>) {
         return abs(v) < e;
     }
@@ -375,7 +346,7 @@ inline bool zero(T v, T e) {
 }
 
 template <typename T>
-inline bool equal(const T & v1, const T & v2) {
+constexpr bool equal(const T & v1, const T & v2) {
     if constexpr (std::is_floating_point_v<T>) {
         return zero(v1 - v2);
     }
@@ -385,12 +356,12 @@ inline bool equal(const T & v1, const T & v2) {
 }
 
 template <typename T, typename... Ts>
-inline bool equal(const T & v1, const T & v2, const Ts &... rest) {
+constexpr bool equal(const T & v1, const T & v2, const Ts &... rest) {
     return equal(v1, v2) && equal(v2, rest...);
 }
 
 template <typename T, eif_arithmetic_t<T>>
-inline T sign(T v) {
+constexpr T sign(T v) {
     if constexpr (std::is_signed_v<T>) {
         return static_cast<T>(T(0) < v) - static_cast<T>(v < T(0));
     }
@@ -400,24 +371,24 @@ inline T sign(T v) {
 }
 
 template <typename T, eif_floating_t<T>>
-inline precision_st<sizeof(T)> floor(T v) {
-    precision_st<sizeof(T)> i = precision_st<sizeof(T)>(v);
+constexpr nat floor(T v) {
+    nat i = nat(v);
     return i - (v < i);
 }
 
 template <typename T, eif_integral_t<T>>
-inline T floor(T v) {
+constexpr T floor(T v) {
     return v;
 }
 
 template <typename T, eif_floating_t<T>>
-inline precision_st<sizeof(T)> ceil(T v) {
-    precision_st<sizeof(T)> i = precision_st<sizeof(T)>(v);
+constexpr nat ceil(T v) {
+    nat i = nat(v);
     return i + (v > i);
 }
 
 template <typename T, eif_integral_t<T>>
-inline T ceil(T v) {
+constexpr T ceil(T v) {
     return v;
 }
 
@@ -432,7 +403,7 @@ constexpr bool isPow2(T v) {
 }
 
 template <typename T, eif_integral_t<T>>
-inline T log2Floor(T v) {
+constexpr T log2Floor(T v) {
     static_assert(sizeof(T) <= 8, "log2 function needs updated for larger integer types");
 
     T log(0);
@@ -454,22 +425,22 @@ inline T log2Floor(T v) {
 }
 
 template <typename T, eif_integral_t<T>>
-inline T log2Ceil(T v) {
+constexpr T log2Ceil(T v) {
     return log2Floor(2 * v - 1);
 }
 
 template <typename T, eif_integral_t<T>>
-inline T floor2(T v) {
+constexpr T floor2(T v) {
     return T(1) << log2Floor(v);
 }
 
 template <typename T, eif_integral_t<T>>
-inline T ceil2(T v) {
+constexpr T ceil2(T v) {
     return T(1) << log2Ceil(v);
 }
 
 template <typename T, eif_integral_t<T>>
-inline T highBit(T v) {
+constexpr T highBit(T v) {
     using UT = std::make_unsigned_t<T>;
     constexpr UT mask(UT(1) << (sizeof(T) * 8 - 1));
 
@@ -477,12 +448,12 @@ inline T highBit(T v) {
 }
 
 template <typename T, eif_integral_t<T>>
-inline T lowBit(T v) {
+constexpr T lowBit(T v) {
     return v & T(1);
 }
 
 template <typename T, eif_integral_t<T>>
-inline T iBit(T v, int i) {
+constexpr T iBit(T v, int i) {
     using UT = std::make_unsigned_t<T>;
     constexpr UT mask(UT(1) << i);
 
@@ -490,18 +461,18 @@ inline T iBit(T v, int i) {
 }
 
 template <typename T, eif_floating_t<T>>
-inline T fract(T v) {
-    return v - precision_st<sizeof(T)>(v);
+constexpr T fract(T v) {
+    return v - nat(v);
 }
 
 template <typename T, eif_floating_t<T>>
-inline std::pair<T, precision_st<sizeof(T)>> fract_i(T v) {
-    precision_st<sizeof(T)> i = precision_st<sizeof(T)>(v);
+constexpr std::pair<T, nat> fract_i(T v) {
+    nat i = nat(v);
     return { v - i, i };
 }
 
 template <typename T, eif_arithmetic_t<T>>
-inline T mod(T v, T d) {
+constexpr T mod(T v, T d) {
     if constexpr (std::is_floating_point_v<T>) {
         return fract(v / d) * d;
     }
@@ -511,7 +482,7 @@ inline T mod(T v, T d) {
 }
 
 template <typename T, eif_arithmetic_t<T>>
-inline std::pair<T, T> mod_q(T v, T d) {
+constexpr std::pair<T, T> mod_q(T v, T d) {
     if constexpr (std::is_floating_point_v<T>) {
         T q(v / d);
         return { fract(q) * d, q };
@@ -524,7 +495,7 @@ inline std::pair<T, T> mod_q(T v, T d) {
 }
 
 template <typename T, eif_floating_t<T>>
-inline T mix(T v1, T v2, T t) {
+constexpr T mix(T v1, T v2, T t) {
     return (T(1.0) - t) * v1 + t * v2;
 }
 
@@ -650,134 +621,7 @@ inline To transnorm(From v) {
 
 
 
-namespace bits {
-
-
-
-template <typename SrcT, typename DstT, eif_t<std::is_integral_v<SrcT> && std::is_integral_v<DstT> && std::is_unsigned_v<SrcT> && std::is_unsigned_v<DstT> && (sizeof(DstT) > sizeof(SrcT))>>
-inline DstT spread(SrcT v) {
-    constexpr int factor(sizeof(DstT) / sizeof(SrcT) - 1);
-    
-    DstT w(v);
-
-    if constexpr (sizeof(SrcT) >= 4) {
-        w = ((w << (16 * factor)) | w) & DstT(0x0000FFFF0000FFFFULL);
-    }
-    if constexpr (sizeof(SrcT) >= 2) {
-        w = ((w << ( 8 * factor)) | w) & DstT(0x00FF00FF00FF00FFULL);
-    }
-        w = ((w << ( 4 * factor)) | w) & DstT(0x0F0F0F0F0F0F0F0FULL);
-        w = ((w << ( 2 * factor)) | w) & DstT(0x3333333333333333ULL);
-        w = ((w << ( 1 * factor)) | w) & DstT(0x5555555555555555ULL);
-
-    return w;
-}
-
-template <typename SrcT, typename DstT, eif_t<std::is_integral_v<SrcT> && std::is_integral_v<DstT> && std::is_unsigned_v<SrcT> && std::is_unsigned_v<DstT> && (sizeof(DstT) >= sizeof(SrcT))>>
-inline DstT repeat(SrcT v) {
-    constexpr int factor(sizeof(DstT) / sizeof(SrcT));
-
-    DstT w(v);
-
-    if constexpr (factor >= 2) {
-        w |= w << (sizeof(SrcT) * 1 * 8);
-    }
-    if constexpr (factor >= 4) {
-        w |= w << (sizeof(SrcT) * 2 * 8);
-    }
-    if constexpr (factor >= 8) {
-        w |= w << (sizeof(SrcT) * 4 * 8);
-    }
-
-    return w;
-}
-
-template <typename T, eif_uintegral_t<T>>
-inline T interleave(T v) {
-    if constexpr (sizeof(T) > 1) {
-        using H = match_sign_t<precision_ut<sizeof(T) / 2>, T>;
-
-        H h1 = H(v >> sizeof(H) * 8), h2 = H(v);
-
-        return (spread<H, T>(h1) << 1) | spread<H, T>(h2);
-    }
-    if constexpr (sizeof(T) == 1) {
-        T h1(v >> 4), h2(v);
-
-        h1 = ((h1 << 2) | h1) & T(0x33);
-        h1 = ((h1 << 1) | h1) & T(0x55);
-        h2 = ((h2 << 2) | h2) & T(0x33);
-        h2 = ((h2 << 1) | h2) & T(0x55);
-
-        return (h1 << 1) | h2;
-    }
-}
-
-template <typename T, eif_uintegral_t<T>>
-inline T rotateL(T v, int n) {
-    if constexpr (std::is_unsigned_v<T>) {
-        return (v << n) | (v >> (sizeof(T) * 8 - n));
-    }
-    if constexpr (std::is_signed_v<T>) {
-        return rotateL(std::make_unsigned_t<T>(v), n);
-    }
-}
-
-template <typename T, eif_uintegral_t<T>>
-inline T rotateR(T v, int n) {
-    if constexpr (std::is_unsigned_v<T>) {
-        return (v >> n) | (v << (sizeof(T) * 8 - n));
-    }
-    if constexpr (std::is_signed_v<T>) {
-        return rotateR(std::make_unsigned_t<T>(v), n);
-    }
-}
-
-template <typename T, eif_uintegral_t<T>>
-inline T scramble(T v) {
-    if constexpr (sizeof(T) == 1) {
-        return v;
-    }
-
-    if constexpr (sizeof(T) == 2) {
-        u64 w(0);
-
-        w |= spread<u08, u64>(u08(v)) << 0; v >>= 8;
-        w |= spread<u08, u64>(u08(v)) << 4; v >>= 8;
-
-        return u16(w >> 45) | u16(w >> 30) | u16(w >> 15) | u16(w);
-    }
-
-    if constexpr (sizeof(T) == 4) {
-        u64 w(0);
-
-        w |= spread<u08, u64>(u08(v)) << 0; v >>= 8;
-        w |= spread<u08, u64>(u08(v)) << 2; v >>= 8;
-        w |= spread<u08, u64>(u08(v)) << 4; v >>= 8;
-        w |= spread<u08, u64>(u08(v)) << 6; v >>= 8;
-
-        return u32(w >> 31) | u32(w);
-    }
-
-    if constexpr (sizeof(T) == 8) {
-        u64 w(0);
-
-        w |= spread<u08, u64>(u08(v)) << 0; v >>= 8;
-        w |= spread<u08, u64>(u08(v)) << 1; v >>= 8;
-        w |= spread<u08, u64>(u08(v)) << 2; v >>= 8;
-        w |= spread<u08, u64>(u08(v)) << 3; v >>= 8;
-        w |= spread<u08, u64>(u08(v)) << 4; v >>= 8;
-        w |= spread<u08, u64>(u08(v)) << 5; v >>= 8;
-        w |= spread<u08, u64>(u08(v)) << 6; v >>= 8;
-        w |= spread<u08, u64>(u08(v)) << 7; v >>= 8;
-
-        return w;
-    }
-}
-
-
-
-}
+#endif
 
 
 

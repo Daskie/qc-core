@@ -154,18 +154,6 @@ void compileFunctionsIT() {
     qcu::highBit(v);
 
     qcu::lowBit(v);
-
-    if constexpr (std::is_unsigned_v<T>) {
-
-        qcu::bits::rotateL(v, 0);
-
-        qcu::bits::rotateR(v, 0);
-
-        qcu::bits::interleave(v);
-
-        qcu::bits::scramble(v);
-
-    }
 }
 
 void compileFunctionsBT() {
@@ -173,7 +161,6 @@ void compileFunctionsBT() {
 
     qcu::equal(v, v);
     qcu::equal(v, v, v);
-
 }
 
 void compileFunctions() {
@@ -207,20 +194,6 @@ void compileFunctions() {
     compileFunctionsIT<unsigned long long>();
 
     compileFunctionsBT();
-
-    qcu::bits::spread<qcu::u08, qcu::u16>(-1);
-    qcu::bits::spread<qcu::u08, qcu::u32>(-1);
-    qcu::bits::spread<qcu::u08, qcu::u64>(-1);
-    qcu::bits::spread<qcu::u16, qcu::u32>(-1);
-    qcu::bits::spread<qcu::u16, qcu::u64>(-1);
-    qcu::bits::spread<qcu::u32, qcu::u64>(-1);
-
-    qcu::bits::repeat<qcu::u08, qcu::u16>(-1);
-    qcu::bits::repeat<qcu::u08, qcu::u32>(-1);
-    qcu::bits::repeat<qcu::u08, qcu::u64>(-1);
-    qcu::bits::repeat<qcu::u16, qcu::u32>(-1);
-    qcu::bits::repeat<qcu::u16, qcu::u64>(-1);
-    qcu::bits::repeat<qcu::u32, qcu::u64>(-1);
 }
 
 template <typename T1, typename T2>
@@ -262,7 +235,23 @@ constexpr void compileFunctionsConstexprT() {
     qcu::minmax(v, v, v, v, v, v, v);
     qcu::minmax(v, v, v, v, v, v, v, v);
 
+    qcu::abs(v);
+
     qcu::clamp(v, v, v);
+
+    qcu::zero(v);
+
+    qcu::equal(v, v);
+    qcu::equal(v, v, v);
+
+    qcu::sign(v);
+
+    qcu::floor(v);
+
+    qcu::ceil(v);
+
+    qcu::mod(v, v);
+    qcu::mod_q(v, v);
     
     qcu::sum(v, v, v, v, v);
     qcu::product(v, v, v, v, v);
@@ -271,6 +260,11 @@ constexpr void compileFunctionsConstexprT() {
 template <typename T>
 constexpr void compileFunctionsConstexprFT() {
     constexpr T v(1.0);
+
+    qcu::fract(v);
+    qcu::fract_i(v);
+
+    qcu::mix(v, v, v);
 
     qcu::average(v, v, v, v, v);
 }
@@ -282,11 +276,25 @@ constexpr void compileFunctionsConstexprIT() {
     qcu::pow2<T>(v);
 
     qcu::isPow2(v);
+
+    qcu::log2Floor(v);
+
+    qcu::log2Ceil(v);
+
+    qcu::floor2(v);
+
+    qcu::ceil2(v);
+
+    qcu::highBit(v);
+
+    qcu::lowBit(v);
 }
 
 constexpr void compileFunctionsConstexprBT() {
     constexpr bool v(true);
-    
+
+    qcu::equal(v, v);
+    qcu::equal(v, v, v);    
 }
 
 constexpr bool compileFunctionsConstexpr() {
@@ -330,7 +338,7 @@ constexpr bool compileFunctionsConstexpr() {
 
 
 
-void testQCU() {
+void testCore() {
     compileTyping();
     compileConstants();
     compileFunctions();

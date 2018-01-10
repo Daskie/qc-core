@@ -5,7 +5,8 @@
 
 
 int main(void) {
-    testQCU();
+    testCore();
+    testBits();
     testVector();
     testMatrix();
     testQuaternion();
