@@ -8,7 +8,7 @@
 
 
 
-namespace qmu {
+namespace qcu {
 
 
 
@@ -35,10 +35,10 @@ using f64 =   double;
 
 namespace size_types {
 
-using qmu::s08; using qmu::u08;
-using qmu::s16; using qmu::u16;
-using qmu::s32; using qmu::u32; using qmu::f32;
-using qmu::s64; using qmu::u64; using qmu::f64;
+using qcu::s08; using qcu::u08;
+using qcu::s16; using qcu::u16;
+using qcu::s32; using qcu::u32; using qcu::f32;
+using qcu::s64; using qcu::u64; using qcu::f64;
 
 }
 
@@ -67,7 +67,7 @@ template <typename T> using eif_arithmetic_t = eif_t<std::is_arithmetic_v<T>>;
 
 
 
-template <typename T, size_t t_n = 0> using array_t = std::conditional_t<t_n == 0, T[], T[t_n]>;
+template <typename T, unat t_n = 0> using array_t = std::conditional_t<t_n == 0, T[], T[t_n]>;
 
 template <int t_p> struct precision;
 template <> struct precision<1> { using stype = s08; using utype = u08; using ftype = void; };
@@ -349,7 +349,7 @@ constexpr std::pair<const T &, const T &> minmax(const T & a, const T & b, const
 
 template <typename T>
 constexpr T clamp(const T & v, const T & min, const T & max) {
-    return qmu::min(qmu::max(v, min), max);
+    return qcu::min(qcu::max(v, min), max);
 }
 
 template <typename T, eif_arithmetic_t<T>>

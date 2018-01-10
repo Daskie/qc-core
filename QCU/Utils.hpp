@@ -17,7 +17,7 @@
 
 
 
-namespace qmu {
+namespace qcu {
 
 // So what's the deal with all this fancy rvalue shit? Perfect forwarding.
 //	(T &) &		=>	T&
@@ -38,34 +38,34 @@ namespace qmu {
 // the auto business is so you can use one lvalue and one rvalue argument
 
 template <typename T>
-inline std::unique_ptr<T []> make_unique_init(size_t size, const T & val) {
+inline std::unique_ptr<T []> make_unique_init(unat size, const T & val) {
     std::unique_ptr<T []> arr = std::make_unique<T []>(size);
-    for (size_t i(0); i < size; ++i) {
+    for (unat i(0); i < size; ++i) {
         arr[i] = val;
     }
     return std::move(arr);
 }
 
 template <typename T>
-inline void fill(T * arr, size_t n, const T & val) {
-    for (size_t i(0); i < n; ++i) {
+inline void fill(T * arr, unat n, const T & val) {
+    for (unat i(0); i < n; ++i) {
         arr[i] = val;
     }
 }
 
 template <typename T>
-inline void copy(const T * src, T * dest, size_t n) {
+inline void copy(const T * src, T * dest, unat n) {
     std::memcpy(dest, src, n * sizeof(T));
 }
 
 template <typename T>
-inline void copy(const T * src, T * dest, size_t n, size_t offset, size_t stride, size_t grouping) {
+inline void copy(const T * src, T * dest, unat n, unat offset, unat stride, unat grouping) {
     if (stride <= grouping) {
         std::memcpy(dest + offset, src, n * sizeof(T));
         return;
     }
 
-    size_t i(0), j, k(offset);
+    unat i(0), j, k(offset);
     while (i < n) {
         for (j = 0; j < grouping; ++j, ++i) {
             dest[k + j] = src[i];
@@ -80,10 +80,9 @@ inline bool fileExists(const std::string & path) {
     return stat(path.c_str(), &buffer) == 0;
 }
 
-inline size_t detFileSize(std::ifstream & ifs) {
-    size_t initpos(ifs.tellg());
+inline unat detFileSize(std::ifstream & ifs) {
     ifs.seekg(0, std::ios::end);
-    size_t size(ifs.tellg());
+    unat size(ifs.tellg());
     ifs.seekg(0);
     return size;
 }
@@ -171,17 +170,17 @@ constexpr unsigned char toByte(double x) {
 
 //generates n random values between min and 1, the sum of which equals 1
 //if min * n > 1, min will be scaled down so that min * n == 1
-inline void randomDistribution(size_t n, float * dest, float min) {
+inline void randomDistribution(unat n, float * dest, float min) {
     if (min * n > 1.0f) {
         min = 1.0f / n;
     }
     float total = 0.0f;
     float excess = max(1.0f - n * min, 0.0f);
-    for (size_t i(0); i < n; ++i) {
+    for (unat i(0); i < n; ++i) {
         dest[i] = rand(0.0f, 1.0f);
         total += dest[i];
     }
-    for (size_t i(0); i < n; ++i) {
+    for (unat i(0); i < n; ++i) {
         dest[i] = dest[i] / total * excess + min;
     }
 }

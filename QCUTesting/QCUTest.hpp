@@ -2,7 +2,7 @@
 
 
 
-void testQMU();
+void testQCU();
 
 void testVector();
 

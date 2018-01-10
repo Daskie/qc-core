@@ -1,11 +1,11 @@
 #include <iostream>
 
-#include "QMUTest.hpp"
+#include "QCUTest.hpp"
 
 
 
 int main(void) {
-    testQMU();
+    testQCU();
     testVector();
     testMatrix();
     testQuaternion();

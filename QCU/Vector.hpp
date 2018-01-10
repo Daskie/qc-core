@@ -10,7 +10,7 @@
 
 
 
-namespace qmu {
+namespace qcu {
 
 
 
@@ -307,23 +307,23 @@ using  uzbound4 =  uzspan4;
 
 
 
-namespace   tvecs { using qmu::   vec; using qmu::   vec1; using qmu::   vec2; using qmu::   vec3; using qmu::   vec4; }
-namespace   fvecs { using qmu::  fvec; using qmu::  fvec1; using qmu::  fvec2; using qmu::  fvec3; using qmu::  fvec4; }
-namespace   dvecs { using qmu::  dvec; using qmu::  dvec1; using qmu::  dvec2; using qmu::  dvec3; using qmu::  dvec4; }
-namespace  ldvecs { using qmu:: ldvec; using qmu:: ldvec1; using qmu:: ldvec2; using qmu:: ldvec3; using qmu:: ldvec4; }
-namespace   cvecs { using qmu::  cvec; using qmu::  cvec1; using qmu::  cvec2; using qmu::  cvec3; using qmu::  cvec4; }
-namespace  ucvecs { using qmu:: ucvec; using qmu:: ucvec1; using qmu:: ucvec2; using qmu:: ucvec3; using qmu:: ucvec4; }
-namespace   svecs { using qmu::  svec; using qmu::  svec1; using qmu::  svec2; using qmu::  svec3; using qmu::  svec4; }
-namespace  usvecs { using qmu:: usvec; using qmu:: usvec1; using qmu:: usvec2; using qmu:: usvec3; using qmu:: usvec4; }
-namespace   ivecs { using qmu::  ivec; using qmu::  ivec1; using qmu::  ivec2; using qmu::  ivec3; using qmu::  ivec4; }
-namespace  uivecs { using qmu:: uivec; using qmu:: uivec1; using qmu:: uivec2; using qmu:: uivec3; using qmu:: uivec4; }
-namespace   lvecs { using qmu::  lvec; using qmu::  lvec1; using qmu::  lvec2; using qmu::  lvec3; using qmu::  lvec4; }
-namespace  ulvecs { using qmu:: ulvec; using qmu:: ulvec1; using qmu:: ulvec2; using qmu:: ulvec3; using qmu:: ulvec4; }
-namespace  llvecs { using qmu:: llvec; using qmu:: llvec1; using qmu:: llvec2; using qmu:: llvec3; using qmu:: llvec4; }
-namespace ullvecs { using qmu::ullvec; using qmu::ullvec1; using qmu::ullvec2; using qmu::ullvec3; using qmu::ullvec4; }
-namespace   zvecs { using qmu::  zvec; using qmu::  zvec1; using qmu::  zvec2; using qmu::  zvec3; using qmu::  zvec4; }
-namespace  uzvecs { using qmu:: uzvec; using qmu:: uzvec1; using qmu:: uzvec2; using qmu:: uzvec3; using qmu:: uzvec4; }
-namespace   bvecs { using qmu::  bvec; using qmu::  bvec1; using qmu::  bvec2; using qmu::  bvec3; using qmu::  bvec4; }
+namespace   tvecs { using qcu::   vec; using qcu::   vec1; using qcu::   vec2; using qcu::   vec3; using qcu::   vec4; }
+namespace   fvecs { using qcu::  fvec; using qcu::  fvec1; using qcu::  fvec2; using qcu::  fvec3; using qcu::  fvec4; }
+namespace   dvecs { using qcu::  dvec; using qcu::  dvec1; using qcu::  dvec2; using qcu::  dvec3; using qcu::  dvec4; }
+namespace  ldvecs { using qcu:: ldvec; using qcu:: ldvec1; using qcu:: ldvec2; using qcu:: ldvec3; using qcu:: ldvec4; }
+namespace   cvecs { using qcu::  cvec; using qcu::  cvec1; using qcu::  cvec2; using qcu::  cvec3; using qcu::  cvec4; }
+namespace  ucvecs { using qcu:: ucvec; using qcu:: ucvec1; using qcu:: ucvec2; using qcu:: ucvec3; using qcu:: ucvec4; }
+namespace   svecs { using qcu::  svec; using qcu::  svec1; using qcu::  svec2; using qcu::  svec3; using qcu::  svec4; }
+namespace  usvecs { using qcu:: usvec; using qcu:: usvec1; using qcu:: usvec2; using qcu:: usvec3; using qcu:: usvec4; }
+namespace   ivecs { using qcu::  ivec; using qcu::  ivec1; using qcu::  ivec2; using qcu::  ivec3; using qcu::  ivec4; }
+namespace  uivecs { using qcu:: uivec; using qcu:: uivec1; using qcu:: uivec2; using qcu:: uivec3; using qcu:: uivec4; }
+namespace   lvecs { using qcu::  lvec; using qcu::  lvec1; using qcu::  lvec2; using qcu::  lvec3; using qcu::  lvec4; }
+namespace  ulvecs { using qcu:: ulvec; using qcu:: ulvec1; using qcu:: ulvec2; using qcu:: ulvec3; using qcu:: ulvec4; }
+namespace  llvecs { using qcu:: llvec; using qcu:: llvec1; using qcu:: llvec2; using qcu:: llvec3; using qcu:: llvec4; }
+namespace ullvecs { using qcu::ullvec; using qcu::ullvec1; using qcu::ullvec2; using qcu::ullvec3; using qcu::ullvec4; }
+namespace   zvecs { using qcu::  zvec; using qcu::  zvec1; using qcu::  zvec2; using qcu::  zvec3; using qcu::  zvec4; }
+namespace  uzvecs { using qcu:: uzvec; using qcu:: uzvec1; using qcu:: uzvec2; using qcu:: uzvec3; using qcu:: uzvec4; }
+namespace   bvecs { using qcu::  bvec; using qcu::  bvec1; using qcu::  bvec2; using qcu::  bvec3; using qcu::  bvec4; }
 
 namespace vecs {
 
@@ -355,22 +355,22 @@ using namespace   bvecs;
 
 
 
-namespace   tspans { using qmu::   span; using qmu::   span1; using qmu::   span2; using qmu::   span3; using qmu::   span4; }
-namespace   fspans { using qmu::  fspan; using qmu::  fspan1; using qmu::  fspan2; using qmu::  fspan3; using qmu::  fspan4; }
-namespace   dspans { using qmu::  dspan; using qmu::  dspan1; using qmu::  dspan2; using qmu::  dspan3; using qmu::  dspan4; }
-namespace  ldspans { using qmu:: ldspan; using qmu:: ldspan1; using qmu:: ldspan2; using qmu:: ldspan3; using qmu:: ldspan4; }
-namespace   cspans { using qmu::  cspan; using qmu::  cspan1; using qmu::  cspan2; using qmu::  cspan3; using qmu::  cspan4; }
-namespace  ucspans { using qmu:: ucspan; using qmu:: ucspan1; using qmu:: ucspan2; using qmu:: ucspan3; using qmu:: ucspan4; }
-namespace   sspans { using qmu::  sspan; using qmu::  sspan1; using qmu::  sspan2; using qmu::  sspan3; using qmu::  sspan4; }
-namespace  usspans { using qmu:: usspan; using qmu:: usspan1; using qmu:: usspan2; using qmu:: usspan3; using qmu:: usspan4; }
-namespace   ispans { using qmu::  ispan; using qmu::  ispan1; using qmu::  ispan2; using qmu::  ispan3; using qmu::  ispan4; }
-namespace  uispans { using qmu:: uispan; using qmu:: uispan1; using qmu:: uispan2; using qmu:: uispan3; using qmu:: uispan4; }
-namespace   lspans { using qmu::  lspan; using qmu::  lspan1; using qmu::  lspan2; using qmu::  lspan3; using qmu::  lspan4; }
-namespace  ulspans { using qmu:: ulspan; using qmu:: ulspan1; using qmu:: ulspan2; using qmu:: ulspan3; using qmu:: ulspan4; }
-namespace  llspans { using qmu:: llspan; using qmu:: llspan1; using qmu:: llspan2; using qmu:: llspan3; using qmu:: llspan4; }
-namespace ullspans { using qmu::ullspan; using qmu::ullspan1; using qmu::ullspan2; using qmu::ullspan3; using qmu::ullspan4; }
-namespace   zspans { using qmu::  zspan; using qmu::  zspan1; using qmu::  zspan2; using qmu::  zspan3; using qmu::  zspan4; }
-namespace  uzspans { using qmu:: uzspan; using qmu:: uzspan1; using qmu:: uzspan2; using qmu:: uzspan3; using qmu:: uzspan4; }
+namespace   tspans { using qcu::   span; using qcu::   span1; using qcu::   span2; using qcu::   span3; using qcu::   span4; }
+namespace   fspans { using qcu::  fspan; using qcu::  fspan1; using qcu::  fspan2; using qcu::  fspan3; using qcu::  fspan4; }
+namespace   dspans { using qcu::  dspan; using qcu::  dspan1; using qcu::  dspan2; using qcu::  dspan3; using qcu::  dspan4; }
+namespace  ldspans { using qcu:: ldspan; using qcu:: ldspan1; using qcu:: ldspan2; using qcu:: ldspan3; using qcu:: ldspan4; }
+namespace   cspans { using qcu::  cspan; using qcu::  cspan1; using qcu::  cspan2; using qcu::  cspan3; using qcu::  cspan4; }
+namespace  ucspans { using qcu:: ucspan; using qcu:: ucspan1; using qcu:: ucspan2; using qcu:: ucspan3; using qcu:: ucspan4; }
+namespace   sspans { using qcu::  sspan; using qcu::  sspan1; using qcu::  sspan2; using qcu::  sspan3; using qcu::  sspan4; }
+namespace  usspans { using qcu:: usspan; using qcu:: usspan1; using qcu:: usspan2; using qcu:: usspan3; using qcu:: usspan4; }
+namespace   ispans { using qcu::  ispan; using qcu::  ispan1; using qcu::  ispan2; using qcu::  ispan3; using qcu::  ispan4; }
+namespace  uispans { using qcu:: uispan; using qcu:: uispan1; using qcu:: uispan2; using qcu:: uispan3; using qcu:: uispan4; }
+namespace   lspans { using qcu::  lspan; using qcu::  lspan1; using qcu::  lspan2; using qcu::  lspan3; using qcu::  lspan4; }
+namespace  ulspans { using qcu:: ulspan; using qcu:: ulspan1; using qcu:: ulspan2; using qcu:: ulspan3; using qcu:: ulspan4; }
+namespace  llspans { using qcu:: llspan; using qcu:: llspan1; using qcu:: llspan2; using qcu:: llspan3; using qcu:: llspan4; }
+namespace ullspans { using qcu::ullspan; using qcu::ullspan1; using qcu::ullspan2; using qcu::ullspan3; using qcu::ullspan4; }
+namespace   zspans { using qcu::  zspan; using qcu::  zspan1; using qcu::  zspan2; using qcu::  zspan3; using qcu::  zspan4; }
+namespace  uzspans { using qcu:: uzspan; using qcu:: uzspan1; using qcu:: uzspan2; using qcu:: uzspan3; using qcu:: uzspan4; }
 
 namespace spans {
 
@@ -401,22 +401,22 @@ using namespace  uzspans;
 
 
 
-namespace   tbounds { using qmu::   bound; using qmu::   bound1; using qmu::   bound2; using qmu::   bound3; using qmu::   bound4; }
-namespace   fbounds { using qmu::  fbound; using qmu::  fbound1; using qmu::  fbound2; using qmu::  fbound3; using qmu::  fbound4; }
-namespace   dbounds { using qmu::  dbound; using qmu::  dbound1; using qmu::  dbound2; using qmu::  dbound3; using qmu::  dbound4; }
-namespace  ldbounds { using qmu:: ldbound; using qmu:: ldbound1; using qmu:: ldbound2; using qmu:: ldbound3; using qmu:: ldbound4; }
-namespace   cbounds { using qmu::  cbound; using qmu::  cbound1; using qmu::  cbound2; using qmu::  cbound3; using qmu::  cbound4; }
-namespace  ucbounds { using qmu:: ucbound; using qmu:: ucbound1; using qmu:: ucbound2; using qmu:: ucbound3; using qmu:: ucbound4; }
-namespace   sbounds { using qmu::  sbound; using qmu::  sbound1; using qmu::  sbound2; using qmu::  sbound3; using qmu::  sbound4; }
-namespace  usbounds { using qmu:: usbound; using qmu:: usbound1; using qmu:: usbound2; using qmu:: usbound3; using qmu:: usbound4; }
-namespace   ibounds { using qmu::  ibound; using qmu::  ibound1; using qmu::  ibound2; using qmu::  ibound3; using qmu::  ibound4; }
-namespace  uibounds { using qmu:: uibound; using qmu:: uibound1; using qmu:: uibound2; using qmu:: uibound3; using qmu:: uibound4; }
-namespace   lbounds { using qmu::  lbound; using qmu::  lbound1; using qmu::  lbound2; using qmu::  lbound3; using qmu::  lbound4; }
-namespace  ulbounds { using qmu:: ulbound; using qmu:: ulbound1; using qmu:: ulbound2; using qmu:: ulbound3; using qmu:: ulbound4; }
-namespace  llbounds { using qmu:: llbound; using qmu:: llbound1; using qmu:: llbound2; using qmu:: llbound3; using qmu:: llbound4; }
-namespace ullbounds { using qmu::ullbound; using qmu::ullbound1; using qmu::ullbound2; using qmu::ullbound3; using qmu::ullbound4; }
-namespace   zbounds { using qmu::  zbound; using qmu::  zbound1; using qmu::  zbound2; using qmu::  zbound3; using qmu::  zbound4; }
-namespace  uzbounds { using qmu:: uzbound; using qmu:: uzbound1; using qmu:: uzbound2; using qmu:: uzbound3; using qmu:: uzbound4; }
+namespace   tbounds { using qcu::   bound; using qcu::   bound1; using qcu::   bound2; using qcu::   bound3; using qcu::   bound4; }
+namespace   fbounds { using qcu::  fbound; using qcu::  fbound1; using qcu::  fbound2; using qcu::  fbound3; using qcu::  fbound4; }
+namespace   dbounds { using qcu::  dbound; using qcu::  dbound1; using qcu::  dbound2; using qcu::  dbound3; using qcu::  dbound4; }
+namespace  ldbounds { using qcu:: ldbound; using qcu:: ldbound1; using qcu:: ldbound2; using qcu:: ldbound3; using qcu:: ldbound4; }
+namespace   cbounds { using qcu::  cbound; using qcu::  cbound1; using qcu::  cbound2; using qcu::  cbound3; using qcu::  cbound4; }
+namespace  ucbounds { using qcu:: ucbound; using qcu:: ucbound1; using qcu:: ucbound2; using qcu:: ucbound3; using qcu:: ucbound4; }
+namespace   sbounds { using qcu::  sbound; using qcu::  sbound1; using qcu::  sbound2; using qcu::  sbound3; using qcu::  sbound4; }
+namespace  usbounds { using qcu:: usbound; using qcu:: usbound1; using qcu:: usbound2; using qcu:: usbound3; using qcu:: usbound4; }
+namespace   ibounds { using qcu::  ibound; using qcu::  ibound1; using qcu::  ibound2; using qcu::  ibound3; using qcu::  ibound4; }
+namespace  uibounds { using qcu:: uibound; using qcu:: uibound1; using qcu:: uibound2; using qcu:: uibound3; using qcu:: uibound4; }
+namespace   lbounds { using qcu::  lbound; using qcu::  lbound1; using qcu::  lbound2; using qcu::  lbound3; using qcu::  lbound4; }
+namespace  ulbounds { using qcu:: ulbound; using qcu:: ulbound1; using qcu:: ulbound2; using qcu:: ulbound3; using qcu:: ulbound4; }
+namespace  llbounds { using qcu:: llbound; using qcu:: llbound1; using qcu:: llbound2; using qcu:: llbound3; using qcu:: llbound4; }
+namespace ullbounds { using qcu::ullbound; using qcu::ullbound1; using qcu::ullbound2; using qcu::ullbound3; using qcu::ullbound4; }
+namespace   zbounds { using qcu::  zbound; using qcu::  zbound1; using qcu::  zbound2; using qcu::  zbound3; using qcu::  zbound4; }
+namespace  uzbounds { using qcu:: uzbound; using qcu:: uzbound1; using qcu:: uzbound2; using qcu:: uzbound3; using qcu:: uzbound4; }
 
 namespace bounds {
 

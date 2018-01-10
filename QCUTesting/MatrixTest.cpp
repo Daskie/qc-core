@@ -1,6 +1,6 @@
-#include "QMUTest.hpp"
+#include "QCUTest.hpp"
 
-#include "QMU/Matrix.hpp"
+#include "QCU/Matrix.hpp"
 
 
 
@@ -11,26 +11,26 @@ namespace {
 template <typename T>
 void compileClassesT() {
     T v(1.0);
-    qmu::vec1<T> v1;
-    qmu::vec2<T> v2;
-    qmu::vec3<T> v3;
-    qmu::vec4<T> v4;
-    qmu::mat2<T> m2;
-    qmu::mat3<T> m3;
-    qmu::mat4<T> m4;
+    qcu::vec1<T> v1;
+    qcu::vec2<T> v2;
+    qcu::vec3<T> v3;
+    qcu::vec4<T> v4;
+    qcu::mat2<T> m2;
+    qcu::mat3<T> m3;
+    qcu::mat4<T> m4;
     std::stringstream os;
 
     //--------------------------------------------------------------------------
     // Mat2
 
     // constructors
-    qmu::mat2<T> m2_1;
-    qmu::mat2<T> m2_2(m2);
-    qmu::mat2<T> m2_3(std::move(m2));
-    qmu::mat2<T> m2_4(v, v, v, v);
-    qmu::mat2<T> m2_5(m3);
-    qmu::mat2<T> m2_6(m4);
-    qmu::mat2<T> m2_7(v2, v2);
+    qcu::mat2<T> m2_1;
+    qcu::mat2<T> m2_2(m2);
+    qcu::mat2<T> m2_3(std::move(m2));
+    qcu::mat2<T> m2_4(v, v, v, v);
+    qcu::mat2<T> m2_5(m3);
+    qcu::mat2<T> m2_6(m4);
+    qcu::mat2<T> m2_7(v2, v2);
 
     // assignment
     m2 = m2;
@@ -87,13 +87,13 @@ void compileClassesT() {
     // Mat3
 
     // constructors
-    qmu::mat3<T> m3_1;
-    qmu::mat3<T> m3_2(m3);
-    qmu::mat3<T> m3_3(std::move(m3));
-    qmu::mat3<T> m3_4(v, v, v, v, v, v, v, v, v);
-    qmu::mat3<T> m3_5(m2);
-    qmu::mat3<T> m3_6(m4);
-    qmu::mat3<T> m3_7(v3, v3, v3);
+    qcu::mat3<T> m3_1;
+    qcu::mat3<T> m3_2(m3);
+    qcu::mat3<T> m3_3(std::move(m3));
+    qcu::mat3<T> m3_4(v, v, v, v, v, v, v, v, v);
+    qcu::mat3<T> m3_5(m2);
+    qcu::mat3<T> m3_6(m4);
+    qcu::mat3<T> m3_7(v3, v3, v3);
 
     // assignment
     m3 = m3;
@@ -151,13 +151,13 @@ void compileClassesT() {
     // Mat4
 
     // constructors
-    qmu::mat4<T> m4_1;
-    qmu::mat4<T> m4_2(m4);
-    qmu::mat4<T> m4_3(std::move(m4));
-    qmu::mat4<T> m4_4(v, v, v, v, v, v, v, v, v, v, v, v, v, v, v, v);
-    qmu::mat4<T> m4_5(m2);
-    qmu::mat4<T> m4_6(m3);
-    qmu::mat4<T> m4_7(v4, v4, v4, v4);
+    qcu::mat4<T> m4_1;
+    qcu::mat4<T> m4_2(m4);
+    qcu::mat4<T> m4_3(std::move(m4));
+    qcu::mat4<T> m4_4(v, v, v, v, v, v, v, v, v, v, v, v, v, v, v, v);
+    qcu::mat4<T> m4_5(m2);
+    qcu::mat4<T> m4_6(m3);
+    qcu::mat4<T> m4_7(v4, v4, v4, v4);
 
     // assignment
     m4 = m4;
@@ -222,25 +222,25 @@ void compileClasses() {
 template <typename T>
 constexpr void compileClassesConstexprT() {
     constexpr T v(T(1.0));
-    constexpr qmu::vec1<T> v1(T(1.0));
-    constexpr qmu::vec2<T> v2(T(1.0));
-    constexpr qmu::vec3<T> v3(T(1.0));
-    constexpr qmu::vec4<T> v4(T(1.0));
-    constexpr qmu::mat2<T> m2(v2, v2);
-    constexpr qmu::mat3<T> m3(v3, v3, v3);
-    constexpr qmu::mat4<T> m4(v4, v4, v4, v4);
+    constexpr qcu::vec1<T> v1(T(1.0));
+    constexpr qcu::vec2<T> v2(T(1.0));
+    constexpr qcu::vec3<T> v3(T(1.0));
+    constexpr qcu::vec4<T> v4(T(1.0));
+    constexpr qcu::mat2<T> m2(v2, v2);
+    constexpr qcu::mat3<T> m3(v3, v3, v3);
+    constexpr qcu::mat4<T> m4(v4, v4, v4, v4);
 
     //--------------------------------------------------------------------------
     // Mat2
 
     // constructors
-    constexpr qmu::mat2<T> m2_1;
-    constexpr qmu::mat2<T> m2_2(m2);
-    constexpr qmu::mat2<T> m2_3(std::move(m2));
-    constexpr qmu::mat2<T> m2_4(v, v, v, v);
-    constexpr qmu::mat2<T> m2_5(m3);
-    constexpr qmu::mat2<T> m2_6(m4);
-    constexpr qmu::mat2<T> m2_7(v2, v2);
+    constexpr qcu::mat2<T> m2_1;
+    constexpr qcu::mat2<T> m2_2(m2);
+    constexpr qcu::mat2<T> m2_3(std::move(m2));
+    constexpr qcu::mat2<T> m2_4(v, v, v, v);
+    constexpr qcu::mat2<T> m2_5(m3);
+    constexpr qcu::mat2<T> m2_6(m4);
+    constexpr qcu::mat2<T> m2_7(v2, v2);
 
     // access
 
@@ -251,13 +251,13 @@ constexpr void compileClassesConstexprT() {
     // Mat3
 
     // constructors
-    constexpr qmu::mat3<T> m3_1;
-    constexpr qmu::mat3<T> m3_2(m3);
-    constexpr qmu::mat3<T> m3_3(std::move(m3));
-    constexpr qmu::mat3<T> m3_4(v, v, v, v, v, v, v, v, v);
-    constexpr qmu::mat3<T> m3_5(m2);
-    constexpr qmu::mat3<T> m3_6(m4);
-    constexpr qmu::mat3<T> m3_7(v3, v3, v3);
+    constexpr qcu::mat3<T> m3_1;
+    constexpr qcu::mat3<T> m3_2(m3);
+    constexpr qcu::mat3<T> m3_3(std::move(m3));
+    constexpr qcu::mat3<T> m3_4(v, v, v, v, v, v, v, v, v);
+    constexpr qcu::mat3<T> m3_5(m2);
+    constexpr qcu::mat3<T> m3_6(m4);
+    constexpr qcu::mat3<T> m3_7(v3, v3, v3);
 
     // access
 
@@ -270,13 +270,13 @@ constexpr void compileClassesConstexprT() {
 
     // constructors
 
-    constexpr qmu::mat4<T> m4_1;
-    constexpr qmu::mat4<T> m4_2(m4);
-    constexpr qmu::mat4<T> m4_3(std::move(m4));
-    constexpr qmu::mat4<T> m4_4(v, v, v, v, v, v, v, v, v, v, v, v, v, v, v, v);
-    constexpr qmu::mat4<T> m4_5(m2);
-    constexpr qmu::mat4<T> m4_6(m3);
-    constexpr qmu::mat4<T> m4_7(v4, v4, v4, v4);
+    constexpr qcu::mat4<T> m4_1;
+    constexpr qcu::mat4<T> m4_2(m4);
+    constexpr qcu::mat4<T> m4_3(std::move(m4));
+    constexpr qcu::mat4<T> m4_4(v, v, v, v, v, v, v, v, v, v, v, v, v, v, v, v);
+    constexpr qcu::mat4<T> m4_5(m2);
+    constexpr qcu::mat4<T> m4_6(m3);
+    constexpr qcu::mat4<T> m4_7(v4, v4, v4, v4);
 
     // access
 
@@ -298,84 +298,84 @@ constexpr bool compileClassesConstexpr() {
 template <typename T>
 void compileFunctionsT() {
     T v(1.0);
-    qmu::vec1<T> v1;
-    qmu::vec2<T> v2;
-    qmu::vec3<T> v3;
-    qmu::vec4<T> v4;
-    qmu::mat2<T> m2;
-    qmu::mat3<T> m3;
-    qmu::mat4<T> m4;
+    qcu::vec1<T> v1;
+    qcu::vec2<T> v2;
+    qcu::vec3<T> v3;
+    qcu::vec4<T> v4;
+    qcu::mat2<T> m2;
+    qcu::mat3<T> m3;
+    qcu::mat4<T> m4;
 
-    qmu::transpose(m2);
-    qmu::transpose(m3);
-    qmu::transpose(m4);
-    qmu::cofactor(m2);
-    qmu::cofactor(m3);
-    qmu::cofactor(m4);
-    qmu::adjoint(m2);
-    qmu::adjoint(m3);
-    qmu::adjoint(m4);
-    qmu::determinant(m2);
-    qmu::determinant(m3);
-    qmu::determinant(m4);
-    qmu::inverse(m2);
-    qmu::inverse(m3);
-    qmu::inverse(m4);
-    qmu::fullMat<T, 2>(v);
-    qmu::fullMat<T, 3>(v);
-    qmu::fullMat<T, 4>(v);
-    qmu::nullMat<T, 2>();
-    qmu::nullMat<T, 3>();
-    qmu::nullMat<T, 4>();
+    qcu::transpose(m2);
+    qcu::transpose(m3);
+    qcu::transpose(m4);
+    qcu::cofactor(m2);
+    qcu::cofactor(m3);
+    qcu::cofactor(m4);
+    qcu::adjoint(m2);
+    qcu::adjoint(m3);
+    qcu::adjoint(m4);
+    qcu::determinant(m2);
+    qcu::determinant(m3);
+    qcu::determinant(m4);
+    qcu::inverse(m2);
+    qcu::inverse(m3);
+    qcu::inverse(m4);
+    qcu::fullMat<T, 2>(v);
+    qcu::fullMat<T, 3>(v);
+    qcu::fullMat<T, 4>(v);
+    qcu::nullMat<T, 2>();
+    qcu::nullMat<T, 3>();
+    qcu::nullMat<T, 4>();
 
-    qmu::translate(v1);
-    qmu::translate(v2);
-    qmu::translate(v3);
-    qmu::translate(m2, v1);
-    qmu::translate(m3, v2);
-    qmu::translate(m4, v3);
-    qmu::scale(v2);
-    qmu::scale(v3);
-    qmu::scale(m2, v1);
-    qmu::scale(m2, v2);
-    qmu::scale(m3, v2);
-    qmu::scale(m3, v3);
-    qmu::scale(m4, v3);
-    qmu::rotate(v);
-    qmu::rotateX(v);
-    qmu::rotateY(v);
-    qmu::rotateZ(v);
-    qmu::rotate(v3, v, v);
-    qmu::rotate_n(v3, v, v);
-    qmu::rotate(v3, v);
-    qmu::rotate_n(v3, v);
-    qmu::euler(v3, v3, v, v, v);
-    qmu::euler_n(v3, v3, v, v, v);
-    qmu::align(v2, v2);
-    qmu::align(v3, v3);
-    qmu::align_n(v2, v2);
-    qmu::align_n(v3, v3);
-    qmu::align(v3, v3, v3, v3);
-    qmu::align_n(v3, v3, v3, v3);
-    qmu::map(v2, v2, v2, v2);
-    qmu::map_o(v2, v2, v2, v2);
-    qmu::map(v3, v3, v3, v3, v3, v3);
-    qmu::map_o(v3, v3, v3, v3, v3, v3);
-    qmu::mapTo(v2, v2);
-    qmu::mapTo_o(v2, v2);
-    qmu::mapTo(v3, v3, v3);
-    qmu::mapTo_o(v3, v3, v3);
-    qmu::mapFrom(v2, v2);
-    qmu::mapFrom(v3, v3, v3);
-    qmu::orthoProj(v, v, v, v);
-    qmu::orthoProjAsym(v, v, v, v, v, v);
-    qmu::perspProj(v, v, v, v);
-    qmu::perspProjAsym(v, v, v, v, v, v);
-    qmu::view(v3, v3, v3);
-    qmu::view(v3, v3, v3, v3);
-    qmu::view_n(v3, v3, v3, v3);
-    qmu::view_o(v3, v3, v3, v3);
-    qmu::view_on(v3, v3, v3, v3);
+    qcu::translate(v1);
+    qcu::translate(v2);
+    qcu::translate(v3);
+    qcu::translate(m2, v1);
+    qcu::translate(m3, v2);
+    qcu::translate(m4, v3);
+    qcu::scale(v2);
+    qcu::scale(v3);
+    qcu::scale(m2, v1);
+    qcu::scale(m2, v2);
+    qcu::scale(m3, v2);
+    qcu::scale(m3, v3);
+    qcu::scale(m4, v3);
+    qcu::rotate(v);
+    qcu::rotateX(v);
+    qcu::rotateY(v);
+    qcu::rotateZ(v);
+    qcu::rotate(v3, v, v);
+    qcu::rotate_n(v3, v, v);
+    qcu::rotate(v3, v);
+    qcu::rotate_n(v3, v);
+    qcu::euler(v3, v3, v, v, v);
+    qcu::euler_n(v3, v3, v, v, v);
+    qcu::align(v2, v2);
+    qcu::align(v3, v3);
+    qcu::align_n(v2, v2);
+    qcu::align_n(v3, v3);
+    qcu::align(v3, v3, v3, v3);
+    qcu::align_n(v3, v3, v3, v3);
+    qcu::map(v2, v2, v2, v2);
+    qcu::map_o(v2, v2, v2, v2);
+    qcu::map(v3, v3, v3, v3, v3, v3);
+    qcu::map_o(v3, v3, v3, v3, v3, v3);
+    qcu::mapTo(v2, v2);
+    qcu::mapTo_o(v2, v2);
+    qcu::mapTo(v3, v3, v3);
+    qcu::mapTo_o(v3, v3, v3);
+    qcu::mapFrom(v2, v2);
+    qcu::mapFrom(v3, v3, v3);
+    qcu::orthoProj(v, v, v, v);
+    qcu::orthoProjAsym(v, v, v, v, v, v);
+    qcu::perspProj(v, v, v, v);
+    qcu::perspProjAsym(v, v, v, v, v, v);
+    qcu::view(v3, v3, v3);
+    qcu::view(v3, v3, v3, v3);
+    qcu::view_n(v3, v3, v3, v3);
+    qcu::view_o(v3, v3, v3, v3);
+    qcu::view_on(v3, v3, v3, v3);
 }
 
 void compileFunctions() {
@@ -387,20 +387,20 @@ void compileFunctions() {
 template <typename T>
 constexpr void compileFunctionsConstexprT() {
     constexpr T v(T(1.0));
-    constexpr qmu::vec1<T> v1(T(1.0));
-    constexpr qmu::vec2<T> v2(T(1.0));
-    constexpr qmu::vec3<T> v3(T(1.0));
-    constexpr qmu::vec4<T> v4(T(1.0));
-    constexpr qmu::mat2<T> m2(v2, v2);
-    constexpr qmu::mat3<T> m3(v3, v3, v3);
-    constexpr qmu::mat4<T> m4(v4, v4, v4, v4);
+    constexpr qcu::vec1<T> v1(T(1.0));
+    constexpr qcu::vec2<T> v2(T(1.0));
+    constexpr qcu::vec3<T> v3(T(1.0));
+    constexpr qcu::vec4<T> v4(T(1.0));
+    constexpr qcu::mat2<T> m2(v2, v2);
+    constexpr qcu::mat3<T> m3(v3, v3, v3);
+    constexpr qcu::mat4<T> m4(v4, v4, v4, v4);
 
-    qmu::fullMat<T, 2>(v);
-    qmu::fullMat<T, 3>(v);
-    qmu::fullMat<T, 4>(v);
-    qmu::nullMat<T, 2>();
-    qmu::nullMat<T, 3>();
-    qmu::nullMat<T, 4>();
+    qcu::fullMat<T, 2>(v);
+    qcu::fullMat<T, 3>(v);
+    qcu::fullMat<T, 4>(v);
+    qcu::nullMat<T, 2>();
+    qcu::nullMat<T, 3>();
+    qcu::nullMat<T, 4>();
 }
 
 constexpr bool compileFunctionsConstexpr() {
@@ -413,8 +413,8 @@ constexpr bool compileFunctionsConstexpr() {
 
 template <typename T, int t_n>
 void testPropertiesTN() {
-    static_assert(std::is_standard_layout_v<qmu::mat<T, t_n>>, "");
-    static_assert(sizeof(qmu::mat<T, t_n>) == t_n * t_n * sizeof(T), "");
+    static_assert(std::is_standard_layout_v<qcu::mat<T, t_n>>, "");
+    static_assert(sizeof(qcu::mat<T, t_n>) == t_n * t_n * sizeof(T), "");
 }
 
 template <typename T>
@@ -432,9 +432,9 @@ void testProperties() {
 
 template <typename T1, typename T2>
 void compileCastsTT() {
-    static_cast<qmu::mat2<T2>>(qmu::mat2<T1>());
-    static_cast<qmu::mat3<T2>>(qmu::mat3<T1>());
-    static_cast<qmu::mat4<T2>>(qmu::mat4<T1>());
+    static_cast<qcu::mat2<T2>>(qcu::mat2<T1>());
+    static_cast<qcu::mat3<T2>>(qcu::mat3<T1>());
+    static_cast<qcu::mat4<T2>>(qcu::mat4<T1>());
 }
 
 template <typename T>

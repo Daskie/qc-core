@@ -2,7 +2,7 @@
 
 
 
-namespace qmu {
+namespace qcu {
 
 namespace {
 

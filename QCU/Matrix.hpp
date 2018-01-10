@@ -14,7 +14,7 @@
 
 
 
-namespace qmu {
+namespace qcu {
 
 
 
@@ -60,10 +60,10 @@ using ldmat4 = mat<long double, 4>;
 
 
 
-namespace  tmats { using qmu::  mat; using qmu::  mat2; using qmu::  mat3; using qmu::  mat4; }
-namespace  fmats { using qmu:: fmat; using qmu:: fmat2; using qmu:: fmat3; using qmu:: fmat4; }
-namespace  dmats { using qmu:: dmat; using qmu:: dmat2; using qmu:: dmat3; using qmu:: dmat4; }
-namespace ldmats { using qmu::ldmat; using qmu::ldmat2; using qmu::ldmat3; using qmu::ldmat4; }
+namespace  tmats { using qcu::  mat; using qcu::  mat2; using qcu::  mat3; using qcu::  mat4; }
+namespace  fmats { using qcu:: fmat; using qcu:: fmat2; using qcu:: fmat3; using qcu:: fmat4; }
+namespace  dmats { using qcu:: dmat; using qcu:: dmat2; using qcu:: dmat3; using qcu:: dmat4; }
+namespace ldmats { using qcu::ldmat; using qcu::ldmat2; using qcu::ldmat3; using qcu::ldmat4; }
 
 namespace mats {
 

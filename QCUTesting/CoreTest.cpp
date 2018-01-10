@@ -1,6 +1,6 @@
-#include "QMUTest.hpp"
+#include "QCUTest.hpp"
 
-#include "QMU/Core.hpp"
+#include "QCU/Core.hpp"
 
 
 
@@ -9,59 +9,59 @@ namespace {
 
 
 void compileTyping() {
-    qmu::nat nat_;   nat_;
-    qmu::unat unat_; unat_;
+    qcu::nat nat_;   nat_;
+    qcu::unat unat_; unat_;
 
-    qmu::operator""_n(0);
-    qmu::operator""_un(0);
+    qcu::operator""_n(0);
+    qcu::operator""_un(0);
 
-    qmu::s08 s08_; s08_;
-    qmu::u08 u08_; u08_;
-    qmu::s16 s16_; s16_;
-    qmu::u16 u16_; u16_;
-    qmu::s32 s32_; s32_;
-    qmu::u32 u32_; u32_;
-    qmu::f32 f32_; f32_;
-    qmu::s64 s64_; s64_;
-    qmu::u64 u64_; u64_;
-    qmu::f64 f64_; f64_;
+    qcu::s08 s08_; s08_;
+    qcu::u08 u08_; u08_;
+    qcu::s16 s16_; s16_;
+    qcu::u16 u16_; u16_;
+    qcu::s32 s32_; s32_;
+    qcu::u32 u32_; u32_;
+    qcu::f32 f32_; f32_;
+    qcu::s64 s64_; s64_;
+    qcu::u64 u64_; u64_;
+    qcu::f64 f64_; f64_;
 
-    qmu::array_t<int> a0{ 1, 2, 3 }; a0;
-    qmu::array_t<int, 1> a1; a1;
+    qcu::array_t<int> a0{ 1, 2, 3 }; a0;
+    qcu::array_t<int, 1> a1; a1;
 
-    qmu::precision<1>::stype p08s_; p08s_;
-    qmu::precision<2>::stype p16s_; p16s_;
-    qmu::precision<4>::stype p32s_; p32s_;
-    qmu::precision<8>::stype p64s_; p64s_;
-    qmu::precision<1>::utype p08u_; p08u_;
-    qmu::precision<2>::utype p16u_; p16u_;
-    qmu::precision<4>::utype p32u_; p32u_;
-    qmu::precision<8>::utype p64u_; p64u_;
-    qmu::precision<4>::ftype p32f_; p32f_;
-    qmu::precision<8>::ftype p64f_; p64f_;
+    qcu::precision<1>::stype p08s_; p08s_;
+    qcu::precision<2>::stype p16s_; p16s_;
+    qcu::precision<4>::stype p32s_; p32s_;
+    qcu::precision<8>::stype p64s_; p64s_;
+    qcu::precision<1>::utype p08u_; p08u_;
+    qcu::precision<2>::utype p16u_; p16u_;
+    qcu::precision<4>::utype p32u_; p32u_;
+    qcu::precision<8>::utype p64u_; p64u_;
+    qcu::precision<4>::ftype p32f_; p32f_;
+    qcu::precision<8>::ftype p64f_; p64f_;
 }
 
 template <typename T>
 void compileConstantsT() {
-    qmu::pi<T>;
-    qmu::e<T>;
-    qmu::phi<T>;
-    qmu::infinity<T>;
+    qcu::pi<T>;
+    qcu::e<T>;
+    qcu::phi<T>;
+    qcu::infinity<T>;
 }
 
 void compileConstants() {
     compileConstantsT<float>();
     compileConstantsT<double>();
     compileConstantsT<long double>();
-    qmu::sqrt<2>;
-    qmu::sqrt<1000>;
+    qcu::sqrt<2>;
+    qcu::sqrt<1000>;
 }
 
 template <typename T1, typename T2>
 void compileFunctionsTT() {
     T1 v(1);
 
-    qmu::transnorm<T2>(v);
+    qcu::transnorm<T2>(v);
 }
 
 template <typename T>
@@ -82,88 +82,88 @@ void compileFunctionsT() {
 
     T v(1);
 
-    qmu::min(v, v);
-    qmu::min(v, v, v);
+    qcu::min(v, v);
+    qcu::min(v, v, v);
 
-    qmu::max(v, v);
-    qmu::max(v, v, v);
+    qcu::max(v, v);
+    qcu::max(v, v, v);
 
-    qmu::minmax(v);
-    qmu::minmax(v, v);
-    qmu::minmax(v, v, v);
-    qmu::minmax(v, v, v, v);
-    qmu::minmax(v, v, v, v, v);
-    qmu::minmax(v, v, v, v, v, v);
-    qmu::minmax(v, v, v, v, v, v, v);
-    qmu::minmax(v, v, v, v, v, v, v, v);
+    qcu::minmax(v);
+    qcu::minmax(v, v);
+    qcu::minmax(v, v, v);
+    qcu::minmax(v, v, v, v);
+    qcu::minmax(v, v, v, v, v);
+    qcu::minmax(v, v, v, v, v, v);
+    qcu::minmax(v, v, v, v, v, v, v);
+    qcu::minmax(v, v, v, v, v, v, v, v);
 
-    qmu::abs(v);
+    qcu::abs(v);
 
-    qmu::clamp(v, v, v);
+    qcu::clamp(v, v, v);
 
-    qmu::zero(v);
+    qcu::zero(v);
 
-    qmu::equal(v, v);
-    qmu::equal(v, v, v);
+    qcu::equal(v, v);
+    qcu::equal(v, v, v);
 
-    qmu::sign(v);
+    qcu::sign(v);
 
-    qmu::floor(v);
+    qcu::floor(v);
 
-    qmu::ceil(v);
+    qcu::ceil(v);
 
-    qmu::mod(v, v);
-    qmu::mod_q(v, v);
+    qcu::mod(v, v);
+    qcu::mod_q(v, v);
 
-    qmu::sum(v, v, v, v, v);
-    qmu::product(v, v, v, v, v);
+    qcu::sum(v, v, v, v, v);
+    qcu::product(v, v, v, v, v);
 }
 
 template <typename T>
 void compileFunctionsFT() {
     T v(1.0);
 
-    qmu::fract(v);
-    qmu::fract_i(v);
+    qcu::fract(v);
+    qcu::fract_i(v);
 
-    qmu::mix(v, v, v);
+    qcu::mix(v, v, v);
 
-    qmu::average(v, v, v, v, v);
+    qcu::average(v, v, v, v, v);
 
-    qmu::radians(v);
+    qcu::radians(v);
 
-    qmu::degrees(v);
+    qcu::degrees(v);
 }
 
 template <typename T>
 void compileFunctionsIT() {
     T v(1);
 
-    qmu::pow2<T>(int(v));
+    qcu::pow2<T>(int(v));
 
-    qmu::isPow2(v);
+    qcu::isPow2(v);
 
-    qmu::log2Floor(v);
+    qcu::log2Floor(v);
 
-    qmu::log2Ceil(v);
+    qcu::log2Ceil(v);
 
-    qmu::floor2(v);
+    qcu::floor2(v);
 
-    qmu::ceil2(v);
+    qcu::ceil2(v);
 
-    qmu::highBit(v);
+    qcu::highBit(v);
 
-    qmu::lowBit(v);
+    qcu::lowBit(v);
 
     if constexpr (std::is_unsigned_v<T>) {
 
-        qmu::bits::rotateL(v, 0);
+        qcu::bits::rotateL(v, 0);
 
-        qmu::bits::rotateR(v, 0);
+        qcu::bits::rotateR(v, 0);
 
-        qmu::bits::interleave(v);
+        qcu::bits::interleave(v);
 
-        qmu::bits::scramble(v);
+        qcu::bits::scramble(v);
 
     }
 }
@@ -171,8 +171,8 @@ void compileFunctionsIT() {
 void compileFunctionsBT() {
     bool v(true);
 
-    qmu::equal(v, v);
-    qmu::equal(v, v, v);
+    qcu::equal(v, v);
+    qcu::equal(v, v, v);
 
 }
 
@@ -208,19 +208,19 @@ void compileFunctions() {
 
     compileFunctionsBT();
 
-    qmu::bits::spread<qmu::u08, qmu::u16>(-1);
-    qmu::bits::spread<qmu::u08, qmu::u32>(-1);
-    qmu::bits::spread<qmu::u08, qmu::u64>(-1);
-    qmu::bits::spread<qmu::u16, qmu::u32>(-1);
-    qmu::bits::spread<qmu::u16, qmu::u64>(-1);
-    qmu::bits::spread<qmu::u32, qmu::u64>(-1);
+    qcu::bits::spread<qcu::u08, qcu::u16>(-1);
+    qcu::bits::spread<qcu::u08, qcu::u32>(-1);
+    qcu::bits::spread<qcu::u08, qcu::u64>(-1);
+    qcu::bits::spread<qcu::u16, qcu::u32>(-1);
+    qcu::bits::spread<qcu::u16, qcu::u64>(-1);
+    qcu::bits::spread<qcu::u32, qcu::u64>(-1);
 
-    qmu::bits::repeat<qmu::u08, qmu::u16>(-1);
-    qmu::bits::repeat<qmu::u08, qmu::u32>(-1);
-    qmu::bits::repeat<qmu::u08, qmu::u64>(-1);
-    qmu::bits::repeat<qmu::u16, qmu::u32>(-1);
-    qmu::bits::repeat<qmu::u16, qmu::u64>(-1);
-    qmu::bits::repeat<qmu::u32, qmu::u64>(-1);
+    qcu::bits::repeat<qcu::u08, qcu::u16>(-1);
+    qcu::bits::repeat<qcu::u08, qcu::u32>(-1);
+    qcu::bits::repeat<qcu::u08, qcu::u64>(-1);
+    qcu::bits::repeat<qcu::u16, qcu::u32>(-1);
+    qcu::bits::repeat<qcu::u16, qcu::u64>(-1);
+    qcu::bits::repeat<qcu::u32, qcu::u64>(-1);
 }
 
 template <typename T1, typename T2>
@@ -247,41 +247,41 @@ constexpr void compileFunctionsConstexprT() {
 
     constexpr T v(1);
 
-    qmu::min(v, v);
-    qmu::min(v, v, v);
+    qcu::min(v, v);
+    qcu::min(v, v, v);
 
-    qmu::max(v, v);
-    qmu::max(v, v, v);
+    qcu::max(v, v);
+    qcu::max(v, v, v);
 
-    qmu::minmax(v);
-    qmu::minmax(v, v);
-    qmu::minmax(v, v, v);
-    qmu::minmax(v, v, v, v);
-    qmu::minmax(v, v, v, v, v);
-    qmu::minmax(v, v, v, v, v, v);
-    qmu::minmax(v, v, v, v, v, v, v);
-    qmu::minmax(v, v, v, v, v, v, v, v);
+    qcu::minmax(v);
+    qcu::minmax(v, v);
+    qcu::minmax(v, v, v);
+    qcu::minmax(v, v, v, v);
+    qcu::minmax(v, v, v, v, v);
+    qcu::minmax(v, v, v, v, v, v);
+    qcu::minmax(v, v, v, v, v, v, v);
+    qcu::minmax(v, v, v, v, v, v, v, v);
 
-    qmu::clamp(v, v, v);
+    qcu::clamp(v, v, v);
     
-    qmu::sum(v, v, v, v, v);
-    qmu::product(v, v, v, v, v);
+    qcu::sum(v, v, v, v, v);
+    qcu::product(v, v, v, v, v);
 }
 
 template <typename T>
 constexpr void compileFunctionsConstexprFT() {
     constexpr T v(1.0);
 
-    qmu::average(v, v, v, v, v);
+    qcu::average(v, v, v, v, v);
 }
 
 template <typename T>
 constexpr void compileFunctionsConstexprIT() {
     constexpr T v(1);
 
-    qmu::pow2<T>(v);
+    qcu::pow2<T>(v);
 
-    qmu::isPow2(v);
+    qcu::isPow2(v);
 }
 
 constexpr void compileFunctionsConstexprBT() {
@@ -330,7 +330,7 @@ constexpr bool compileFunctionsConstexpr() {
 
 
 
-void testQMU() {
+void testQCU() {
     compileTyping();
     compileConstants();
     compileFunctions();
