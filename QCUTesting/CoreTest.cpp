@@ -235,23 +235,23 @@ constexpr void compileFunctionsConstexprT() {
     qcu::minmax(v, v, v, v, v, v, v);
     qcu::minmax(v, v, v, v, v, v, v, v);
 
-    qcu::abs(v);
+    //qcu::clamp(v, v, v);
 
-    qcu::clamp(v, v, v);
+    //qcu::abs(v);
 
-    qcu::zero(v);
+    //qcu::zero(v);
 
-    qcu::equal(v, v);
-    qcu::equal(v, v, v);
+    //qcu::equal(v, v);
+    //qcu::equal(v, v, v);
 
-    qcu::sign(v);
+    //qcu::sign(v);
 
-    qcu::floor(v);
+    //qcu::floor(v);
 
-    qcu::ceil(v);
+    //qcu::ceil(v);
 
-    qcu::mod(v, v);
-    qcu::mod_q(v, v);
+    //qcu::mod(v, v);
+    //qcu::mod_q(v, v);
     
     qcu::sum(v, v, v, v, v);
     qcu::product(v, v, v, v, v);
@@ -261,12 +261,12 @@ template <typename T>
 constexpr void compileFunctionsConstexprFT() {
     constexpr T v(1.0);
 
-    qcu::fract(v);
-    qcu::fract_i(v);
+    //qcu::fract(v);
+    //qcu::fract_i(v);
 
-    qcu::mix(v, v, v);
+    //qcu::mix(v, v, v);
 
-    qcu::average(v, v, v, v, v);
+    //qcu::average(v, v, v, v, v);
 }
 
 template <typename T>
@@ -277,24 +277,24 @@ constexpr void compileFunctionsConstexprIT() {
 
     qcu::isPow2(v);
 
-    qcu::log2Floor(v);
+    //qcu::log2Floor(v);
 
-    qcu::log2Ceil(v);
+    //qcu::log2Ceil(v);
 
-    qcu::floor2(v);
+    //qcu::floor2(v);
 
-    qcu::ceil2(v);
+    //qcu::ceil2(v);
 
-    qcu::highBit(v);
+    //qcu::highBit(v);
 
-    qcu::lowBit(v);
+    //qcu::lowBit(v);
 }
 
 constexpr void compileFunctionsConstexprBT() {
     constexpr bool v(true);
 
-    qcu::equal(v, v);
-    qcu::equal(v, v, v);    
+    //qcu::equal(v, v);
+    //qcu::equal(v, v, v);    
 }
 
 constexpr bool compileFunctionsConstexpr() {

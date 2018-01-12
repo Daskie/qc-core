@@ -8,6 +8,11 @@
 
 
 
+#define Q_CONSTEX constexpr // workaround for IntelliSense bug
+#define Q_CX_ABLE
+
+
+
 namespace qcu {
 
 
@@ -116,111 +121,111 @@ template <typename T, eif_floating_t<T> = 0> constexpr T nan = std::numeric_limi
 
 
 template <typename T>
-constexpr const T & min(const T & a, const T & b);
+Q_CONSTEX const T & min(const T & a, const T & b);
 template <typename T, typename... Ts>
-constexpr const T & min(const T & a, const T & b, const Ts &... rest);
+Q_CONSTEX const T & min(const T & a, const T & b, const Ts &... rest);
 
 template <typename T>
-constexpr const T & max(const T & a, const T & b);
+Q_CONSTEX const T & max(const T & a, const T & b);
 template <typename T, typename... Ts>
-constexpr const T & max(const T & a, const T & b, const Ts &... rest);
+Q_CONSTEX const T & max(const T & a, const T & b, const Ts &... rest);
 
 template <typename T>
-constexpr std::pair<const T &, const T &> minmax(const T & a, const T & b);
+Q_CONSTEX std::pair<const T &, const T &> minmax(const T & a, const T & b);
 template <typename T>
-constexpr std::pair<const T &, const T &> minmax(const T & a, const T & b, const T & c);
+Q_CONSTEX std::pair<const T &, const T &> minmax(const T & a, const T & b, const T & c);
 template <typename T>
-constexpr std::pair<const T &, const T &> minmax(const T & a, const T & b, const T & c, const T & d);
+Q_CONSTEX std::pair<const T &, const T &> minmax(const T & a, const T & b, const T & c, const T & d);
 template <typename T, typename... Ts>
-constexpr std::pair<const T &, const T &> minmax(const T & a, const T & b, const T & c, const T & d, const Ts &... rest);
+Q_CONSTEX std::pair<const T &, const T &> minmax(const T & a, const T & b, const T & c, const T & d, const Ts &... rest);
 
 template <typename T>
-constexpr T clamp(const T & v, const T & min, const T & max);
+Q_CX_ABLE T clamp(const T & v, const T & min, const T & max);
 
 // allows unsigned and constexpr
 template <typename T, eif_arithmetic_t<T> = 0>
-constexpr T abs(T v);
+Q_CX_ABLE T abs(T v);
 
 template <typename T, eif_arithmetic_t<T> = 0>
-constexpr bool zero(T v, T e = std::numeric_limits<T>::min());
+Q_CX_ABLE bool zero(T v, T e = std::numeric_limits<T>::min());
 
 template <typename T>
-constexpr bool equal(const T & v1, const T & v2);
+Q_CX_ABLE bool equal(const T & v1, const T & v2);
 
 template <typename T, typename... Ts>
-constexpr bool equal(const T & v1, const T & v2, const Ts &... rest);
+Q_CX_ABLE bool equal(const T & v1, const T & v2, const Ts &... rest);
 
 template <typename T, eif_arithmetic_t<T> = 0>
-constexpr T sign(T v);
+Q_CX_ABLE T sign(T v);
 
 // ~2x faster than std::floor
 // doesn't work with some edge cases
 template <typename T, eif_floating_t<T> = 0>
-constexpr nat floor(T v);
+Q_CX_ABLE nat floor(T v);
 
 template <typename T, eif_integral_t<T> = 0>
-constexpr T floor(T v);
+Q_CX_ABLE T floor(T v);
 
 // ~2x faster than std::ceil
 // doesn't work with some edge cases
 template <typename T, eif_floating_t<T> = 0>
-constexpr nat ceil(T v);
+Q_CX_ABLE nat ceil(T v);
 
 template <typename T, eif_integral_t<T> = 0>
-constexpr T ceil(T v);
+Q_CX_ABLE T ceil(T v);
 
 template <typename T>
-constexpr T pow2(int v);
+Q_CONSTEX T pow2(int v);
 
 template <typename T, eif_integral_t<T> = 0>
-constexpr bool isPow2(T v);
+Q_CONSTEX bool isPow2(T v);
 
 template <typename T, eif_integral_t<T> = 0>
-constexpr T log2Floor(T v);
+Q_CX_ABLE T log2Floor(T v);
 
 template <typename T, eif_integral_t<T> = 0>
-constexpr T log2Ceil(T v);
+Q_CX_ABLE T log2Ceil(T v);
 
 template <typename T, eif_integral_t<T> = 0>
-constexpr T floor2(T v);
+Q_CX_ABLE T floor2(T v);
 
 template <typename T, eif_integral_t<T> = 0>
-constexpr T ceil2(T v);
+Q_CX_ABLE T ceil2(T v);
 
 template <typename T, eif_integral_t<T> = 0>
-constexpr T highBit(T v);
+Q_CX_ABLE T highBit(T v);
 
 template <typename T, eif_integral_t<T> = 0>
-constexpr T lowBit(T v);
+Q_CX_ABLE T lowBit(T v);
 
 template <typename T, eif_integral_t<T> = 0>
-constexpr T iBit(T v, int i);
+Q_CX_ABLE T iBit(T v, int i);
 
 // ~3.3x faster than std::modf
 template <typename T, eif_floating_t<T> = 0>
-constexpr T fract(T v);
+Q_CX_ABLE T fract(T v);
 
 template <typename T, eif_floating_t<T> = 0>
-constexpr std::pair<T, nat> fract_i(T v);
+Q_CX_ABLE std::pair<T, nat> fract_i(T v);
 
 // ~2.5x faster than std::fmod
 template <typename T, eif_arithmetic_t<T> = 0>
-constexpr T mod(T v, T d);
+Q_CX_ABLE T mod(T v, T d);
 
 template <typename T, eif_arithmetic_t<T> = 0>
-constexpr std::pair<T, T> mod_q(T v, T d);
+Q_CX_ABLE std::pair<T, T> mod_q(T v, T d);
 
 template <typename T, eif_floating_t<T> = 0>
-constexpr T mix(T v1, T v2, T t);
+Q_CX_ABLE T mix(T v1, T v2, T t);
 
 template <typename T, typename... Args>
-constexpr T sum(const T & v, const Args &... args);
+Q_CONSTEX T sum(const T & v, const Args &... args);
 
 template <typename T, typename... Args>
-constexpr T product(const T & v, const Args &... args);
+Q_CONSTEX T product(const T & v, const Args &... args);
 
 template <typename T, eif_floating_t<T> = 0, typename... Args>
-constexpr T average(T v, Args... args);
+Q_CX_ABLE T average(T v, Args... args);
 
 template <typename T, eif_floating_t<T> = 0>
 T radians(T degrees);
@@ -240,37 +245,37 @@ To transnorm(From v);
 // IMPLEMENTATION ==============================================================================================================================================
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //==============================================================================================================================================================
-#ifndef __INTELLISENSE__
+//#ifndef __INTELLISENSE__
 
 
 
 template <typename T>
-constexpr const T & min(const T & a, const T & b) {
+Q_CONSTEX const T & min(const T & a, const T & b) {
     return a < b ? a : b;
 }
 
 template <typename T, typename... Ts>
-constexpr const T & min(const T & a, const T & b, const Ts &... rest) {
+Q_CONSTEX const T & min(const T & a, const T & b, const Ts &... rest) {
     return min(a < b ? a : b, rest...);
 }
 
 template <typename T>
-constexpr const T & max(const T & a, const T & b) {
+Q_CONSTEX const T & max(const T & a, const T & b) {
     return a > b ? a : b;
 }
 
 template <typename T, typename... Ts>
-constexpr const T & max(const T & a, const T & b, const Ts &... rest) {
+Q_CONSTEX const T & max(const T & a, const T & b, const Ts &... rest) {
     return max(a > b ? a : b, rest...);
 }
 
 template <typename T>
-constexpr std::pair<const T &, const T &> minmax(const T & a) {
+Q_CONSTEX std::pair<const T &, const T &> minmax(const T & a) {
     return { a, a };
 }
 
 template <typename T>
-constexpr std::pair<const T &, const T &> minmax(const T & a, const T & b) {
+Q_CONSTEX std::pair<const T &, const T &> minmax(const T & a, const T & b) {
     if (a < b) {
         return { a, b };
     }
@@ -280,32 +285,32 @@ constexpr std::pair<const T &, const T &> minmax(const T & a, const T & b) {
 }
 
 template <typename T>
-constexpr std::pair<const T &, const T &> minmax(const T & a, const T & b, const T & c) {
+Q_CONSTEX std::pair<const T &, const T &> minmax(const T & a, const T & b, const T & c) {
     auto mm(minmax(a, b)); // apparently can't use structed bindings in constexpr function
     return { min(mm.first, c), max(mm.second, c) };
 }
 
 template <typename T>
-constexpr std::pair<const T &, const T &> minmax(const T & a, const T & b, const T & c, const T & d) {
+Q_CONSTEX std::pair<const T &, const T &> minmax(const T & a, const T & b, const T & c, const T & d) {
     auto mm1(minmax(a, b));
     auto mm2(minmax(c, d));
     return { min(mm1.first, mm2.first), max(mm1.second, mm2.second) };
 }
 
 template <typename T, typename... Ts>
-constexpr std::pair<const T &, const T &> minmax(const T & a, const T & b, const T & c, const T & d, const Ts &... rest) {
+Q_CONSTEX std::pair<const T &, const T &> minmax(const T & a, const T & b, const T & c, const T & d, const Ts &... rest) {
     auto mm1(minmax(a, b, c, d));
     auto mm2(minmax(rest...));
     return { min(mm1.first, mm2.first), max(mm1.second, mm2.second) };
 }
 
 template <typename T>
-constexpr T clamp(const T & v, const T & min, const T & max) {
+Q_CX_ABLE T clamp(const T & v, const T & min, const T & max) {
     return qcu::min(qcu::max(v, min), max);
 }
 
 template <typename T, eif_arithmetic_t<T>>
-constexpr T abs(T v) {
+Q_CX_ABLE T abs(T v) {
     if constexpr (std::is_unsigned_v<T>) {
         return v;
     }
@@ -315,7 +320,7 @@ constexpr T abs(T v) {
 }
 
 template <typename T, eif_arithmetic_t<T>>
-constexpr bool zero(T v, T e) {
+Q_CX_ABLE bool zero(T v, T e) {
     if constexpr (std::is_floating_point_v<T>) {
         return abs(v) < e;
     }
@@ -325,7 +330,7 @@ constexpr bool zero(T v, T e) {
 }
 
 template <typename T>
-constexpr bool equal(const T & v1, const T & v2) {
+Q_CX_ABLE bool equal(const T & v1, const T & v2) {
     if constexpr (std::is_floating_point_v<T>) {
         return zero(v1 - v2);
     }
@@ -335,12 +340,12 @@ constexpr bool equal(const T & v1, const T & v2) {
 }
 
 template <typename T, typename... Ts>
-constexpr bool equal(const T & v1, const T & v2, const Ts &... rest) {
+Q_CX_ABLE bool equal(const T & v1, const T & v2, const Ts &... rest) {
     return equal(v1, v2) && equal(v2, rest...);
 }
 
 template <typename T, eif_arithmetic_t<T>>
-constexpr T sign(T v) {
+Q_CX_ABLE T sign(T v) {
     if constexpr (std::is_signed_v<T>) {
         return static_cast<T>(T(0) < v) - static_cast<T>(v < T(0));
     }
@@ -350,39 +355,39 @@ constexpr T sign(T v) {
 }
 
 template <typename T, eif_floating_t<T>>
-constexpr nat floor(T v) {
+Q_CX_ABLE nat floor(T v) {
     nat i = nat(v);
     return i - (v < i);
 }
 
 template <typename T, eif_integral_t<T>>
-constexpr T floor(T v) {
+Q_CX_ABLE T floor(T v) {
     return v;
 }
 
 template <typename T, eif_floating_t<T>>
-constexpr nat ceil(T v) {
+Q_CX_ABLE nat ceil(T v) {
     nat i = nat(v);
     return i + (v > i);
 }
 
 template <typename T, eif_integral_t<T>>
-constexpr T ceil(T v) {
+Q_CX_ABLE T ceil(T v) {
     return v;
 }
 
 template <typename T>
-constexpr T pow2(int v) {
+Q_CONSTEX T pow2(int v) {
     return T(1) << v;
 }
 
 template <typename T, eif_integral_t<T>>
-constexpr bool isPow2(T v) {
+Q_CONSTEX bool isPow2(T v) {
     return (v & (v - 1)) == 0;
 }
 
 template <typename T, eif_integral_t<T>>
-constexpr T log2Floor(T v) {
+Q_CX_ABLE T log2Floor(T v) {
     static_assert(sizeof(T) <= 8, "log2 function needs updated for larger integer types");
 
     T log(0);
@@ -404,22 +409,22 @@ constexpr T log2Floor(T v) {
 }
 
 template <typename T, eif_integral_t<T>>
-constexpr T log2Ceil(T v) {
+Q_CX_ABLE T log2Ceil(T v) {
     return log2Floor(2 * v - 1);
 }
 
 template <typename T, eif_integral_t<T>>
-constexpr T floor2(T v) {
+Q_CX_ABLE T floor2(T v) {
     return T(1) << log2Floor(v);
 }
 
 template <typename T, eif_integral_t<T>>
-constexpr T ceil2(T v) {
+Q_CX_ABLE T ceil2(T v) {
     return T(1) << log2Ceil(v);
 }
 
 template <typename T, eif_integral_t<T>>
-constexpr T highBit(T v) {
+Q_CX_ABLE T highBit(T v) {
     using UT = std::make_unsigned_t<T>;
     constexpr UT mask(UT(1) << (sizeof(T) * 8 - 1));
 
@@ -427,12 +432,12 @@ constexpr T highBit(T v) {
 }
 
 template <typename T, eif_integral_t<T>>
-constexpr T lowBit(T v) {
+Q_CX_ABLE T lowBit(T v) {
     return v & T(1);
 }
 
 template <typename T, eif_integral_t<T>>
-constexpr T iBit(T v, int i) {
+Q_CX_ABLE T iBit(T v, int i) {
     using UT = std::make_unsigned_t<T>;
     constexpr UT mask(UT(1) << i);
 
@@ -440,18 +445,18 @@ constexpr T iBit(T v, int i) {
 }
 
 template <typename T, eif_floating_t<T>>
-constexpr T fract(T v) {
+Q_CX_ABLE T fract(T v) {
     return v - nat(v);
 }
 
 template <typename T, eif_floating_t<T>>
-constexpr std::pair<T, nat> fract_i(T v) {
+Q_CX_ABLE std::pair<T, nat> fract_i(T v) {
     nat i = nat(v);
     return { v - i, i };
 }
 
 template <typename T, eif_arithmetic_t<T>>
-constexpr T mod(T v, T d) {
+Q_CX_ABLE T mod(T v, T d) {
     if constexpr (std::is_floating_point_v<T>) {
         return fract(v / d) * d;
     }
@@ -461,7 +466,7 @@ constexpr T mod(T v, T d) {
 }
 
 template <typename T, eif_arithmetic_t<T>>
-constexpr std::pair<T, T> mod_q(T v, T d) {
+Q_CX_ABLE std::pair<T, T> mod_q(T v, T d) {
     if constexpr (std::is_floating_point_v<T>) {
         T q(v / d);
         return { fract(q) * d, q };
@@ -474,12 +479,12 @@ constexpr std::pair<T, T> mod_q(T v, T d) {
 }
 
 template <typename T, eif_floating_t<T>>
-constexpr T mix(T v1, T v2, T t) {
+Q_CX_ABLE T mix(T v1, T v2, T t) {
     return (T(1.0) - t) * v1 + t * v2;
 }
 
 template <typename T, typename... Args>
-constexpr T sum(const T & v, const Args &... args) {
+Q_CONSTEX T sum(const T & v, const Args &... args) {
     if constexpr (sizeof...(Args) == 0) {
         return v;
     }
@@ -489,7 +494,7 @@ constexpr T sum(const T & v, const Args &... args) {
 }
 
 template <typename T, typename... Args>
-constexpr T product(const T & v, const Args &... args) {
+Q_CONSTEX T product(const T & v, const Args &... args) {
     if constexpr (sizeof...(Args) == 0) {
         return v;
     }
@@ -499,7 +504,7 @@ constexpr T product(const T & v, const Args &... args) {
 }
 
 template <typename T, eif_floating_t<T>, typename... Args>
-constexpr T average(T v, Args... args) {
+Q_CX_ABLE T average(T v, Args... args) {
     return sum(v, args...) / (T(1) + sizeof...(Args));
 }
 
@@ -600,7 +605,7 @@ inline To transnorm(From v) {
 
 
 
-#endif
+//#endif
 
 
 

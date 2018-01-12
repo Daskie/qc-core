@@ -142,7 +142,7 @@ template <typename T> quat<T> alignQ_n(const vec3<T> & forward1, const vec3<T> &
 template <typename T> quat<T> eulerQ(const vec3<T> & forward, const vec3<T> & up, T theta, T phi, T psi);
 template <typename T> quat<T> eulerQ_n(const vec3<T> & forward, const vec3<T> & up, T theta, T phi, T psi);
 
-template <typename T> constexpr mat3<T> toMat(const quat<T> & q);
+template <typename T> Q_CX_ABLE mat3<T> toMat(const quat<T> & q);
 
 //t is a "time" value between 0 and 1
 template <typename T> quat<T> nlerp(const quat<T> & q1, const quat<T> & q2, T t);
@@ -154,7 +154,7 @@ template <typename T> quat<T> slerp(const quat<T> & q1, const quat<T> & q2, T t)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#ifndef __INTELLISENSE__
+//#ifndef __INTELLISENSE__
 
 
 
@@ -472,7 +472,7 @@ inline quat<T> eulerQ_n(const vec3<T> & forward, const vec3<T> & up, T theta, T 
 }
 
 template <typename T>
-constexpr mat3<T> toMat(const quat<T> & q) {
+Q_CX_ABLE mat3<T> toMat(const quat<T> & q) {
     T wx(q.w   * q.a.x);
     T wy(q.w   * q.a.y);
     T wz(q.w   * q.a.z);
@@ -521,7 +521,7 @@ inline quat<T> slerp(const quat<T> & q1, const quat<T> & q2_, T t) {
 
 
 
-#endif
+//#endif
 
 
 

@@ -138,7 +138,7 @@ constexpr void compileFunctionsConstexprT() {
     constexpr qcu::mat3<T> m3(v3, v3, v3);
     constexpr qcu::quat<T> q(v4);
 
-    qcu::toMat(q);
+    //qcu::toMat(q);
 }
 
 constexpr bool compileFunctionsConstexpr() {

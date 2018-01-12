@@ -539,9 +539,9 @@ struct vec<T, 2> {
 
     // only select constructors are constexpr because IntelliSense is sensitive
     constexpr vec(const       T & v1, const      T  & v2);
-    constexpr vec(const vec1<T> & v1, const      T  & v2);
-    constexpr vec(const       T & v1, const vec1<T> & v2);
-    constexpr vec(const vec1<T> & v1, const vec1<T> & v2);
+    Q_CX_ABLE vec(const vec1<T> & v1, const      T  & v2);
+    Q_CX_ABLE vec(const       T & v1, const vec1<T> & v2);
+    Q_CX_ABLE vec(const vec1<T> & v1, const vec1<T> & v2);
 
     //--------------------------------------------------------------------------
     // Assignment
@@ -608,17 +608,17 @@ struct vec<T, 3> {
     
     // only select constructors are constexpr because IntelliSense is sensitive
     constexpr vec(const      T  & v1, const      T  & v2, const      T  & v3);
-    constexpr vec(const vec1<T> & v1, const      T  & v2, const      T  & v3);
-    constexpr vec(const      T  & v1, const vec1<T> & v2, const      T  & v3);
-    constexpr vec(const      T  & v1, const      T  & v2, const vec1<T> & v3);
-    constexpr vec(const vec1<T> & v1, const vec1<T> & v2, const      T  & v3);
-    constexpr vec(const vec1<T> & v1, const      T  & v2, const vec1<T> & v3);
-    constexpr vec(const      T  & v1, const vec1<T> & v2, const vec1<T> & v3);
-    constexpr vec(const vec1<T> & v1, const vec1<T> & v2, const vec1<T> & v3);
-    constexpr vec(const vec2<T> & v1, const      T  & v2);
-    constexpr vec(const vec2<T> & v1, const vec1<T> & v2);
-    constexpr vec(const      T  & v1, const vec2<T> & v2);
-    constexpr vec(const vec1<T> & v1, const vec2<T> & v2);
+    Q_CX_ABLE vec(const vec1<T> & v1, const      T  & v2, const      T  & v3);
+    Q_CX_ABLE vec(const      T  & v1, const vec1<T> & v2, const      T  & v3);
+    Q_CX_ABLE vec(const      T  & v1, const      T  & v2, const vec1<T> & v3);
+    Q_CX_ABLE vec(const vec1<T> & v1, const vec1<T> & v2, const      T  & v3);
+    Q_CX_ABLE vec(const vec1<T> & v1, const      T  & v2, const vec1<T> & v3);
+    Q_CX_ABLE vec(const      T  & v1, const vec1<T> & v2, const vec1<T> & v3);
+    Q_CX_ABLE vec(const vec1<T> & v1, const vec1<T> & v2, const vec1<T> & v3);
+    Q_CONSTEX vec(const vec2<T> & v1, const      T  & v2);
+    Q_CX_ABLE vec(const vec2<T> & v1, const vec1<T> & v2);
+    Q_CX_ABLE vec(const      T  & v1, const vec2<T> & v2);
+    Q_CX_ABLE vec(const vec1<T> & v1, const vec2<T> & v2);
 
     //--------------------------------------------------------------------------
     // Assignment
@@ -692,38 +692,38 @@ struct vec<T, 4> {
     
     // only select constructors are constexpr because IntelliSense is sensitive
     constexpr vec(const      T  & v1, const      T  & v2, const      T  & v3, const      T  & v4);
-    constexpr vec(const vec1<T> & v1, const      T  & v2, const      T  & v3, const      T  & v4);
-    constexpr vec(const      T  & v1, const vec1<T> & v2, const      T  & v3, const      T  & v4);
-    constexpr vec(const      T  & v1, const      T  & v2, const vec1<T> & v3, const      T  & v4);
-    constexpr vec(const      T  & v1, const      T  & v2, const      T  & v3, const vec1<T> & v4);
-    constexpr vec(const vec1<T> & v1, const vec1<T> & v2, const      T  & v3, const      T  & v4);
-    constexpr vec(const vec1<T> & v1, const      T  & v2, const vec1<T> & v3, const      T  & v4);
-    constexpr vec(const vec1<T> & v1, const      T  & v2, const      T  & v3, const vec1<T> & v4);
-    constexpr vec(const      T  & v1, const vec1<T> & v2, const vec1<T> & v3, const      T  & v4);
-    constexpr vec(const      T  & v1, const vec1<T> & v2, const      T  & v3, const vec1<T> & v4);
-    constexpr vec(const      T  & v1, const      T  & v2, const vec1<T> & v3, const vec1<T> & v4);
-    constexpr vec(const vec1<T> & v1, const vec1<T> & v2, const vec1<T> & v3, const      T  & v4);
-    constexpr vec(const vec1<T> & v1, const vec1<T> & v2, const      T  & v3, const vec1<T> & v4);
-    constexpr vec(const vec1<T> & v1, const      T  & v2, const vec1<T> & v3, const vec1<T> & v4);
-    constexpr vec(const      T  & v1, const vec1<T> & v2, const vec1<T> & v3, const vec1<T> & v4);
-    constexpr vec(const vec1<T> & v1, const vec1<T> & v2, const vec1<T> & v3, const vec1<T> & v4);
-    constexpr vec(const vec2<T> & v1, const      T  & v2, const      T  & v3);
-    constexpr vec(const vec2<T> & v1, const vec1<T> & v2, const      T  & v3);
-    constexpr vec(const vec2<T> & v1, const      T  & v2, const vec1<T> & v3);
-    constexpr vec(const vec2<T> & v1, const vec1<T> & v2, const vec1<T> & v3);
-    constexpr vec(const      T  & v1, const vec2<T> & v2, const      T  & v3);
-    constexpr vec(const vec1<T> & v1, const vec2<T> & v2, const      T  & v3);
-    constexpr vec(const      T  & v1, const vec2<T> & v2, const vec1<T> & v3);
-    constexpr vec(const vec1<T> & v1, const vec2<T> & v2, const vec1<T> & v3);
-    constexpr vec(const      T  & v1, const      T  & v2, const vec2<T> & v3);
-    constexpr vec(const vec1<T> & v1, const      T  & v2, const vec2<T> & v3);
-    constexpr vec(const      T  & v1, const vec1<T> & v2, const vec2<T> & v3);
-    constexpr vec(const vec1<T> & v1, const vec1<T> & v2, const vec2<T> & v3);
-    constexpr vec(const vec2<T> & v1, const vec2<T> & v2);
-    constexpr vec(const vec3<T> & v1, const      T  & v2);
-    constexpr vec(const vec3<T> & v1, const vec1<T> & v2);
-    constexpr vec(const      T  & v1, const vec3<T> & v2);
-    constexpr vec(const vec1<T> & v1, const vec3<T> & v2);
+    Q_CX_ABLE vec(const vec1<T> & v1, const      T  & v2, const      T  & v3, const      T  & v4);
+    Q_CX_ABLE vec(const      T  & v1, const vec1<T> & v2, const      T  & v3, const      T  & v4);
+    Q_CX_ABLE vec(const      T  & v1, const      T  & v2, const vec1<T> & v3, const      T  & v4);
+    Q_CX_ABLE vec(const      T  & v1, const      T  & v2, const      T  & v3, const vec1<T> & v4);
+    Q_CX_ABLE vec(const vec1<T> & v1, const vec1<T> & v2, const      T  & v3, const      T  & v4);
+    Q_CX_ABLE vec(const vec1<T> & v1, const      T  & v2, const vec1<T> & v3, const      T  & v4);
+    Q_CX_ABLE vec(const vec1<T> & v1, const      T  & v2, const      T  & v3, const vec1<T> & v4);
+    Q_CX_ABLE vec(const      T  & v1, const vec1<T> & v2, const vec1<T> & v3, const      T  & v4);
+    Q_CX_ABLE vec(const      T  & v1, const vec1<T> & v2, const      T  & v3, const vec1<T> & v4);
+    Q_CX_ABLE vec(const      T  & v1, const      T  & v2, const vec1<T> & v3, const vec1<T> & v4);
+    Q_CX_ABLE vec(const vec1<T> & v1, const vec1<T> & v2, const vec1<T> & v3, const      T  & v4);
+    Q_CX_ABLE vec(const vec1<T> & v1, const vec1<T> & v2, const      T  & v3, const vec1<T> & v4);
+    Q_CX_ABLE vec(const vec1<T> & v1, const      T  & v2, const vec1<T> & v3, const vec1<T> & v4);
+    Q_CX_ABLE vec(const      T  & v1, const vec1<T> & v2, const vec1<T> & v3, const vec1<T> & v4);
+    Q_CX_ABLE vec(const vec1<T> & v1, const vec1<T> & v2, const vec1<T> & v3, const vec1<T> & v4);
+    Q_CX_ABLE vec(const vec2<T> & v1, const      T  & v2, const      T  & v3);
+    Q_CX_ABLE vec(const vec2<T> & v1, const vec1<T> & v2, const      T  & v3);
+    Q_CX_ABLE vec(const vec2<T> & v1, const      T  & v2, const vec1<T> & v3);
+    Q_CX_ABLE vec(const vec2<T> & v1, const vec1<T> & v2, const vec1<T> & v3);
+    Q_CX_ABLE vec(const      T  & v1, const vec2<T> & v2, const      T  & v3);
+    Q_CX_ABLE vec(const vec1<T> & v1, const vec2<T> & v2, const      T  & v3);
+    Q_CX_ABLE vec(const      T  & v1, const vec2<T> & v2, const vec1<T> & v3);
+    Q_CX_ABLE vec(const vec1<T> & v1, const vec2<T> & v2, const vec1<T> & v3);
+    Q_CX_ABLE vec(const      T  & v1, const      T  & v2, const vec2<T> & v3);
+    Q_CX_ABLE vec(const vec1<T> & v1, const      T  & v2, const vec2<T> & v3);
+    Q_CX_ABLE vec(const      T  & v1, const vec1<T> & v2, const vec2<T> & v3);
+    Q_CX_ABLE vec(const vec1<T> & v1, const vec1<T> & v2, const vec2<T> & v3);
+    Q_CONSTEX vec(const vec2<T> & v1, const vec2<T> & v2);
+    Q_CONSTEX vec(const vec3<T> & v1, const      T  & v2);
+    Q_CX_ABLE vec(const vec3<T> & v1, const vec1<T> & v2);
+    Q_CX_ABLE vec(const      T  & v1, const vec3<T> & v2);
+    Q_CX_ABLE vec(const vec1<T> & v1, const vec3<T> & v2);
 
     //--------------------------------------------------------------------------
     // Assignment
@@ -896,29 +896,29 @@ template <typename T, int t_n> inline vec<T, t_n> & operator%=(vec<T, t_n> & v1,
 // Arithmetic
 //------------------------------------------------------------------------------
 
-template <typename T, int t_n> constexpr vec<T, t_n> operator+(const vec<T, t_n> & v);
+template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> operator+(const vec<T, t_n> & v);
 
-template <typename T, int t_n> constexpr vec<T, t_n> operator-(const vec<T, t_n> & v);
+template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> operator-(const vec<T, t_n> & v);
 
-template <typename T, int t_n> constexpr vec<T, t_n> operator+(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
-template <typename T, int t_n> constexpr vec<T, t_n> operator+(const vec<T, t_n> & v1, const           T & v2);
-template <typename T, int t_n> constexpr vec<T, t_n> operator+(const           T & v1, const vec<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> operator+(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> operator+(const vec<T, t_n> & v1, const           T & v2);
+template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> operator+(const           T & v1, const vec<T, t_n> & v2);
 
-template <typename T, int t_n> constexpr vec<T, t_n> operator-(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
-template <typename T, int t_n> constexpr vec<T, t_n> operator-(const vec<T, t_n> & v1, const           T & v2);
-template <typename T, int t_n> constexpr vec<T, t_n> operator-(const           T & v1, const vec<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> operator-(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> operator-(const vec<T, t_n> & v1, const           T & v2);
+template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> operator-(const           T & v1, const vec<T, t_n> & v2);
 
-template <typename T, int t_n> constexpr vec<T, t_n> operator*(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
-template <typename T, int t_n> constexpr vec<T, t_n> operator*(const vec<T, t_n> & v1, const           T & v2);
-template <typename T, int t_n> constexpr vec<T, t_n> operator*(const           T & v1, const vec<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> operator*(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> operator*(const vec<T, t_n> & v1, const           T & v2);
+template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> operator*(const           T & v1, const vec<T, t_n> & v2);
 
-template <typename T, int t_n> constexpr vec<T, t_n> operator/(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
-template <typename T, int t_n> constexpr vec<T, t_n> operator/(const vec<T, t_n> & v1, const           T & v2);
-template <typename T, int t_n> constexpr vec<T, t_n> operator/(const           T & v1, const vec<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> operator/(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> operator/(const vec<T, t_n> & v1, const           T & v2);
+template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> operator/(const           T & v1, const vec<T, t_n> & v2);
 
-template <typename T, int t_n> constexpr vec<T, t_n> operator%(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
-template <typename T, int t_n> constexpr vec<T, t_n> operator%(const vec<T, t_n> & v1, const           T & v2);
-template <typename T, int t_n> constexpr vec<T, t_n> operator%(const           T & v1, const vec<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> operator%(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> operator%(const vec<T, t_n> & v1, const           T & v2);
+template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> operator%(const           T & v1, const vec<T, t_n> & v2);
 
 
 
@@ -926,33 +926,33 @@ template <typename T, int t_n> constexpr vec<T, t_n> operator%(const           T
 // Comparison
 //------------------------------------------------------------------------------
 
-template <typename T, int t_n> constexpr bool operator==(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
-template <typename T, int t_n> constexpr bvec<t_n> operator==(const vec<T, t_n> & v1, const           T & v2);
-template <typename T, int t_n> constexpr bvec<t_n> operator==(const           T & v1, const vec<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE bool operator==(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE bvec<t_n> operator==(const vec<T, t_n> & v1, const           T & v2);
+template <typename T, int t_n> Q_CX_ABLE bvec<t_n> operator==(const           T & v1, const vec<T, t_n> & v2);
 
-template <typename T, int t_n> constexpr bool operator!=(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
-template <typename T, int t_n> constexpr bvec<t_n> operator!=(const vec<T, t_n> & v1, const           T & v2);
-template <typename T, int t_n> constexpr bvec<t_n> operator!=(const           T & v1, const vec<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE bool operator!=(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE bvec<t_n> operator!=(const vec<T, t_n> & v1, const           T & v2);
+template <typename T, int t_n> Q_CX_ABLE bvec<t_n> operator!=(const           T & v1, const vec<T, t_n> & v2);
 
-template <typename T, int t_n> constexpr bvec<t_n> operator<(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
-template <typename T, int t_n> constexpr bvec<t_n> operator<(const vec<T, t_n> & v1, const           T & v2);
-template <typename T, int t_n> constexpr bvec<t_n> operator<(const           T & v1, const vec<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE bvec<t_n> operator<(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE bvec<t_n> operator<(const vec<T, t_n> & v1, const           T & v2);
+template <typename T, int t_n> Q_CX_ABLE bvec<t_n> operator<(const           T & v1, const vec<T, t_n> & v2);
 
-template <typename T, int t_n> constexpr bvec<t_n> operator>(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
-template <typename T, int t_n> constexpr bvec<t_n> operator>(const vec<T, t_n> & v1, const           T & v2);
-template <typename T, int t_n> constexpr bvec<t_n> operator>(const           T & v1, const vec<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE bvec<t_n> operator>(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE bvec<t_n> operator>(const vec<T, t_n> & v1, const           T & v2);
+template <typename T, int t_n> Q_CX_ABLE bvec<t_n> operator>(const           T & v1, const vec<T, t_n> & v2);
 
-template <typename T, int t_n> constexpr bvec<t_n> operator<=(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
-template <typename T, int t_n> constexpr bvec<t_n> operator<=(const vec<T, t_n> & v1, const           T & v2);
-template <typename T, int t_n> constexpr bvec<t_n> operator<=(const           T & v1, const vec<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE bvec<t_n> operator<=(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE bvec<t_n> operator<=(const vec<T, t_n> & v1, const           T & v2);
+template <typename T, int t_n> Q_CX_ABLE bvec<t_n> operator<=(const           T & v1, const vec<T, t_n> & v2);
 
-template <typename T, int t_n> constexpr bvec<t_n> operator>=(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
-template <typename T, int t_n> constexpr bvec<t_n> operator>=(const vec<T, t_n> & v1, const           T & v2);
-template <typename T, int t_n> constexpr bvec<t_n> operator>=(const           T & v1, const vec<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE bvec<t_n> operator>=(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE bvec<t_n> operator>=(const vec<T, t_n> & v1, const           T & v2);
+template <typename T, int t_n> Q_CX_ABLE bvec<t_n> operator>=(const           T & v1, const vec<T, t_n> & v2);
 
-template <typename T, int t_n> constexpr bool operator==(const span<T, t_n> & s1, const span<T, t_n> & s2);
+template <typename T, int t_n> Q_CX_ABLE bool operator==(const span<T, t_n> & s1, const span<T, t_n> & s2);
 
-template <typename T, int t_n> constexpr bool operator!=(const span<T, t_n> & s1, const span<T, t_n> & s2);
+template <typename T, int t_n> Q_CX_ABLE bool operator!=(const span<T, t_n> & s1, const span<T, t_n> & s2);
 
 
 
@@ -960,11 +960,11 @@ template <typename T, int t_n> constexpr bool operator!=(const span<T, t_n> & s1
 // Logic
 //------------------------------------------------------------------------------
 
-template <typename T, int t_n> constexpr bvec<t_n> operator&&(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE bvec<t_n> operator&&(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 
-template <typename T, int t_n> constexpr bvec<t_n> operator||(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE bvec<t_n> operator||(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 
-template <typename T, int t_n> constexpr bvec<t_n> operator!(const vec<T, t_n> & v1);
+template <typename T, int t_n> Q_CX_ABLE bvec<t_n> operator!(const vec<T, t_n> & v1);
 
 
 
@@ -972,13 +972,13 @@ template <typename T, int t_n> constexpr bvec<t_n> operator!(const vec<T, t_n> &
 // Condensation
 //------------------------------------------------------------------------------
 
-template <typename T, int t_n> constexpr T sum(const vec<T, t_n> & v);
+template <typename T, int t_n> Q_CX_ABLE T sum(const vec<T, t_n> & v);
 
-template <typename T, int t_n> constexpr T product(const vec<T, t_n> & v);
+template <typename T, int t_n> Q_CX_ABLE T product(const vec<T, t_n> & v);
 
-template <typename T, int t_n> constexpr bool disjunction(const vec<T, t_n> & v);
+template <typename T, int t_n> Q_CX_ABLE bool disjunction(const vec<T, t_n> & v);
 
-template <typename T, int t_n> constexpr bool conjunction(const vec<T, t_n> & v);
+template <typename T, int t_n> Q_CX_ABLE bool conjunction(const vec<T, t_n> & v);
 
 
 
@@ -1125,19 +1125,19 @@ inline T angle_n(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 //------------------------------------------------------------------------------
 
 template <typename T, int t_n>
-constexpr const T & min(const vec<T, t_n> & v);
+Q_CX_ABLE const T & min(const vec<T, t_n> & v);
 
 template <typename T, int t_n>
-constexpr vec<T, t_n> min(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+Q_CX_ABLE vec<T, t_n> min(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 
 template <typename T, int t_n, typename... Ts>
-constexpr vec<T, t_n> min(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<Ts, t_n> &... rest);
+Q_CX_ABLE vec<T, t_n> min(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<Ts, t_n> &... rest);
 
 template <typename T, int t_n>
-constexpr vec<T, t_n> min(const vec<T, t_n> & v1, const T & v2);
+Q_CX_ABLE vec<T, t_n> min(const vec<T, t_n> & v1, const T & v2);
 
 template <typename T, int t_n>
-constexpr vec<T, t_n> min(const T & v1, const vec<T, t_n> & v2);
+Q_CX_ABLE vec<T, t_n> min(const T & v1, const vec<T, t_n> & v2);
 
 
 
@@ -1146,19 +1146,19 @@ constexpr vec<T, t_n> min(const T & v1, const vec<T, t_n> & v2);
 //------------------------------------------------------------------------------
 
 template <typename T, int t_n>
-constexpr const T & max(const vec<T, t_n> & v);
+Q_CX_ABLE const T & max(const vec<T, t_n> & v);
 
 template <typename T, int t_n>
-constexpr vec<T, t_n> max(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+Q_CX_ABLE vec<T, t_n> max(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 
 template <typename T, int t_n, typename... Ts>
-constexpr vec<T, t_n> max(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<Ts, t_n> &... rest);
+Q_CX_ABLE vec<T, t_n> max(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<Ts, t_n> &... rest);
 
 template <typename T, int t_n>
-constexpr vec<T, t_n> max(const vec<T, t_n> & v1, const T & v2);
+Q_CX_ABLE vec<T, t_n> max(const vec<T, t_n> & v1, const T & v2);
 
 template <typename T, int t_n>
-constexpr vec<T, t_n> max(const T & v1, const vec<T, t_n> & v2);
+Q_CX_ABLE vec<T, t_n> max(const T & v1, const vec<T, t_n> & v2);
 
 
 
@@ -1167,7 +1167,7 @@ constexpr vec<T, t_n> max(const T & v1, const vec<T, t_n> & v2);
 //------------------------------------------------------------------------------
 
 template <typename T, int t_n>
-constexpr std::pair<const T &, const T &> minmax(const vec<T, t_n> & v);
+Q_CX_ABLE std::pair<const T &, const T &> minmax(const vec<T, t_n> & v);
 
 
 
@@ -1185,10 +1185,10 @@ inline void sort(const vec<T, t_n> & v);
 //------------------------------------------------------------------------------
 
 template <typename T, int t_n>
-constexpr vec<T, t_n> clamp(const vec<T, t_n> & v, const T & min, const T & max);
+Q_CX_ABLE vec<T, t_n> clamp(const vec<T, t_n> & v, const T & min, const T & max);
 
 template <typename T, int t_n>
-constexpr vec<T, t_n> clamp(const vec<T, t_n> & v, const vec<T, t_n> & min, const vec<T, t_n> & max);
+Q_CX_ABLE vec<T, t_n> clamp(const vec<T, t_n> & v, const vec<T, t_n> & min, const vec<T, t_n> & max);
 
 
 
@@ -1197,7 +1197,7 @@ constexpr vec<T, t_n> clamp(const vec<T, t_n> & v, const vec<T, t_n> & min, cons
 //------------------------------------------------------------------------------
 
 template <typename T, int t_n>
-constexpr vec<T, t_n> abs(const vec<T, t_n> & v);
+Q_CX_ABLE vec<T, t_n> abs(const vec<T, t_n> & v);
 
 
 
@@ -1206,7 +1206,7 @@ constexpr vec<T, t_n> abs(const vec<T, t_n> & v);
 //------------------------------------------------------------------------------
 
 template <typename T, int t_n>
-constexpr vec<nat, t_n> floor(const vec<T, t_n> & v);
+Q_CX_ABLE vec<nat, t_n> floor(const vec<T, t_n> & v);
 
 
 
@@ -1215,7 +1215,7 @@ constexpr vec<nat, t_n> floor(const vec<T, t_n> & v);
 //------------------------------------------------------------------------------
 
 template <typename T, int t_n>
-constexpr vec<nat, t_n> ceil(const vec<T, t_n> & v);
+Q_CX_ABLE vec<nat, t_n> ceil(const vec<T, t_n> & v);
 
 
 
@@ -1224,22 +1224,22 @@ constexpr vec<nat, t_n> ceil(const vec<T, t_n> & v);
 //------------------------------------------------------------------------------
 
 template <typename T, int t_n, eif_floating_t<T> = 0>
-constexpr vec<T, t_n> mix(const vec<T, t_n> & v1, const vec<T, t_n> & v2, T t);
+Q_CX_ABLE vec<T, t_n> mix(const vec<T, t_n> & v1, const vec<T, t_n> & v2, T t);
 
 template <typename T, eif_floating_t<T> = 0>
-constexpr T mix(T v1, T v2, const vec2<T> & weights);
+Q_CX_ABLE T mix(T v1, T v2, const vec2<T> & weights);
 template <typename T, int t_n, eif_floating_t<T> = 0>
-constexpr vec<T, t_n> mix(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec2<T> & weights);
+Q_CX_ABLE vec<T, t_n> mix(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec2<T> & weights);
 
 template <typename T, eif_floating_t<T> = 0>
-constexpr T mix(T v1, T v2, T v3, const vec3<T> & weights);
+Q_CX_ABLE T mix(T v1, T v2, T v3, const vec3<T> & weights);
 template <typename T, int t_n, eif_floating_t<T> = 0>
-constexpr vec<T, t_n> mix(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<T, t_n> & v3, const vec3<T> & weights);
+Q_CX_ABLE vec<T, t_n> mix(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<T, t_n> & v3, const vec3<T> & weights);
 
 template <typename T, eif_floating_t<T> = 0>
-constexpr T mix(T v1, T v2, T v3, T v4, const vec4<T> & weights);
+Q_CX_ABLE T mix(T v1, T v2, T v3, T v4, const vec4<T> & weights);
 template <typename T, int t_n, eif_floating_t<T> = 0>
-constexpr vec<T, t_n> mix(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<T, t_n> & v3, const vec<T, t_n> & v4, const vec4<T> & weights);
+Q_CX_ABLE vec<T, t_n> mix(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<T, t_n> & v3, const vec<T, t_n> & v4, const vec4<T> & weights);
 
 
 
@@ -1260,7 +1260,7 @@ inline vec<To, t_n> transnorm(const vec<From, t_n> & v);
 //------------------------------------------------------------------------------
 
 template <typename T, int t_n>
-constexpr span<T, t_n> toSpan(const bound<T, t_n> & b);
+Q_CX_ABLE span<T, t_n> toSpan(const bound<T, t_n> & b);
 
 
 
@@ -1269,7 +1269,7 @@ constexpr span<T, t_n> toSpan(const bound<T, t_n> & b);
 //------------------------------------------------------------------------------
 
 template <typename T, int t_n>
-constexpr bound<T, t_n> toBound(const span<T, t_n> & s);
+Q_CX_ABLE bound<T, t_n> toBound(const span<T, t_n> & s);
 
 
 
@@ -1278,7 +1278,7 @@ constexpr bound<T, t_n> toBound(const span<T, t_n> & s);
 //------------------------------------------------------------------------------
 
 template <typename T, int t_n>
-constexpr span<T, t_n> intersect(const span<T, t_n> & s1, const span<T, t_n> & s2);
+Q_CX_ABLE span<T, t_n> intersect(const span<T, t_n> & s1, const span<T, t_n> & s2);
 
 
 
@@ -1287,7 +1287,7 @@ constexpr span<T, t_n> intersect(const span<T, t_n> & s1, const span<T, t_n> & s
 // IMPLEMENTATION //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //==============================================================================================================================================================
-#ifndef __INTELLISENSE__
+//#ifndef __INTELLISENSE__
 
 
 
@@ -1489,17 +1489,17 @@ constexpr vec<T, 2>::vec(const T & v1, const T & v2) :
 {}
 
 template <typename T>
-constexpr vec<T, 2>::vec(const vec1<T> & v1, const T & v2) :
+Q_CX_ABLE vec<T, 2>::vec(const vec1<T> & v1, const T & v2) :
     x(v1.x), y(v2)
 {}
 
 template <typename T>
-constexpr vec<T, 2>::vec(const T & v1, const vec1<T> & v2) :
+Q_CX_ABLE vec<T, 2>::vec(const T & v1, const vec1<T> & v2) :
     x(v1), y(v2.x)
 {}
 
 template <typename T>
-constexpr vec<T, 2>::vec(const vec1<T> & v1, const vec1<T> & v2) :
+Q_CX_ABLE vec<T, 2>::vec(const vec1<T> & v1, const vec1<T> & v2) :
     x(v1.x), y(v2.x)
 {}
 
@@ -1648,57 +1648,57 @@ constexpr vec<T, 3>::vec(const T & v1, const T & v2, const T & v3) :
 {}
 
 template <typename T>
-constexpr vec<T, 3>::vec(const vec1<T> & v1, const T & v2, const T & v3) :
+Q_CX_ABLE vec<T, 3>::vec(const vec1<T> & v1, const T & v2, const T & v3) :
     x(v1.x), y(v2), z(v3)
 {}
 
 template <typename T>
-constexpr vec<T, 3>::vec(const T & v1, const vec1<T> & v2, const T & v3) :
+Q_CX_ABLE vec<T, 3>::vec(const T & v1, const vec1<T> & v2, const T & v3) :
     x(v1), y(v2.x), z(v3)
 {}
 
 template <typename T>
-constexpr vec<T, 3>::vec(const T & v1, const T & v2, const vec1<T> & v3) :
+Q_CX_ABLE vec<T, 3>::vec(const T & v1, const T & v2, const vec1<T> & v3) :
     x(v1), y(v2), z(v3.x)
 {}
 
 template <typename T>
-constexpr vec<T, 3>::vec(const vec1<T> & v1, const vec1<T> & v2, const T & v3) :
+Q_CX_ABLE vec<T, 3>::vec(const vec1<T> & v1, const vec1<T> & v2, const T & v3) :
     x(v1.x), y(v2.x), z(v3)
 {}
 
 template <typename T>
-constexpr vec<T, 3>::vec(const vec1<T> & v1, const T & v2, const vec1<T> & v3) :
+Q_CX_ABLE vec<T, 3>::vec(const vec1<T> & v1, const T & v2, const vec1<T> & v3) :
     x(v1.x), y(v2), z(v3.x)
 {}
 
 template <typename T>
-constexpr vec<T, 3>::vec(const T & v1, const vec1<T> & v2, const vec1<T> & v3) :
+Q_CX_ABLE vec<T, 3>::vec(const T & v1, const vec1<T> & v2, const vec1<T> & v3) :
     x(v1), y(v2.x), z(v3.x)
 {}
 
 template <typename T>
-constexpr vec<T, 3>::vec(const vec1<T> & v1, const vec1<T> & v2, const vec1<T> & v3) :
+Q_CX_ABLE vec<T, 3>::vec(const vec1<T> & v1, const vec1<T> & v2, const vec1<T> & v3) :
     x(v1.x), y(v2.x), z(v3.x)
 {}
 
 template <typename T>
-constexpr vec<T, 3>::vec(const vec2<T> & v1, const T & v2) :
+Q_CONSTEX vec<T, 3>::vec(const vec2<T> & v1, const T & v2) :
     x(v1.x), y(v1.y), z(v2)
 {}
 
 template <typename T>
-constexpr vec<T, 3>::vec(const vec2<T> & v1, const vec1<T> & v2) :
+Q_CX_ABLE vec<T, 3>::vec(const vec2<T> & v1, const vec1<T> & v2) :
     x(v1.x), y(v1.y), z(v2.x)
 {}
 
 template <typename T>
-constexpr vec<T, 3>::vec(const T & v1, const vec2<T> & v2) :
+Q_CX_ABLE vec<T, 3>::vec(const T & v1, const vec2<T> & v2) :
     x(v1), y(v2.x), z(v2.y)
 {}
 
 template <typename T>
-constexpr vec<T, 3>::vec(const vec1<T> & v1, const vec2<T> & v2) :
+Q_CX_ABLE vec<T, 3>::vec(const vec1<T> & v1, const vec2<T> & v2) :
     x(v1.x), y(v2.x), z(v2.y)
 {}
 
@@ -1908,162 +1908,162 @@ constexpr vec<T, 4>::vec(const T & v1, const T & v2, const T & v3, const T & v4)
 {}
 
 template <typename T>
-constexpr vec<T, 4>::vec(const vec1<T> & v1, const T & v2, const T & v3, const T & v4) :
+Q_CX_ABLE vec<T, 4>::vec(const vec1<T> & v1, const T & v2, const T & v3, const T & v4) :
     x(v1.x), y(v2), z(v3), w(v4)
 {}
 
 template <typename T>
-constexpr vec<T, 4>::vec(const T & v1, const vec1<T> & v2, const T & v3, const T & v4) :
+Q_CX_ABLE vec<T, 4>::vec(const T & v1, const vec1<T> & v2, const T & v3, const T & v4) :
     x(v1), y(v2.x), z(v3), w(v4)
 {}
 
 template <typename T>
-constexpr vec<T, 4>::vec(const T & v1, const T & v2, const vec1<T> & v3, const T & v4) :
+Q_CX_ABLE vec<T, 4>::vec(const T & v1, const T & v2, const vec1<T> & v3, const T & v4) :
     x(v1), y(v2), z(v3.x), w(v4)
 {}
 
 template <typename T>
-constexpr vec<T, 4>::vec(const T & v1, const T & v2, const T & v3, const vec1<T> & v4) :
+Q_CX_ABLE vec<T, 4>::vec(const T & v1, const T & v2, const T & v3, const vec1<T> & v4) :
     x(v1), y(v2), z(v3), w(v4.x)
 {}
 
 template <typename T>
-constexpr vec<T, 4>::vec(const vec1<T> & v1, const vec1<T> & v2, const T & v3, const T & v4) :
+Q_CX_ABLE vec<T, 4>::vec(const vec1<T> & v1, const vec1<T> & v2, const T & v3, const T & v4) :
     x(v1.x), y(v2.x), z(v3), w(v4)
 {}
 
 template <typename T>
-constexpr vec<T, 4>::vec(const vec1<T> & v1, const T & v2, const vec1<T> & v3, const T & v4) :
+Q_CX_ABLE vec<T, 4>::vec(const vec1<T> & v1, const T & v2, const vec1<T> & v3, const T & v4) :
     x(v1.x), y(v2), z(v3.x), w(v4)
 {}
 
 template <typename T>
-constexpr vec<T, 4>::vec(const vec1<T> & v1, const T & v2, const T & v3, const vec1<T> & v4) :
+Q_CX_ABLE vec<T, 4>::vec(const vec1<T> & v1, const T & v2, const T & v3, const vec1<T> & v4) :
     x(v1.x), y(v2), z(v3), w(v4.x)
 {}
 
 template <typename T>
-constexpr vec<T, 4>::vec(const T & v1, const vec1<T> & v2, const vec1<T> & v3, const T & v4) :
+Q_CX_ABLE vec<T, 4>::vec(const T & v1, const vec1<T> & v2, const vec1<T> & v3, const T & v4) :
     x(v1), y(v2.x), z(v3.x), w(v4)
 {}
 
 template <typename T>
-constexpr vec<T, 4>::vec(const T & v1, const vec1<T> & v2, const T & v3, const vec1<T> & v4) :
+Q_CX_ABLE vec<T, 4>::vec(const T & v1, const vec1<T> & v2, const T & v3, const vec1<T> & v4) :
     x(v1), y(v2.x), z(v3), w(v4.x)
 {}
 
 template <typename T>
-constexpr vec<T, 4>::vec(const T & v1, const T & v2, const vec1<T> & v3, const vec1<T> & v4) :
+Q_CX_ABLE vec<T, 4>::vec(const T & v1, const T & v2, const vec1<T> & v3, const vec1<T> & v4) :
     x(v1), y(v2), z(v3.x), w(v4.x)
 {}
 
 template <typename T>
-constexpr vec<T, 4>::vec(const vec1<T> & v1, const vec1<T> & v2, const vec1<T> & v3, const T & v4) :
+Q_CX_ABLE vec<T, 4>::vec(const vec1<T> & v1, const vec1<T> & v2, const vec1<T> & v3, const T & v4) :
     x(v1.x), y(v2.x), z(v3.x), w(v4)
 {}
 
 template <typename T>
-constexpr vec<T, 4>::vec(const vec1<T> & v1, const vec1<T> & v2, const T & v3, const vec1<T> & v4) :
+Q_CX_ABLE vec<T, 4>::vec(const vec1<T> & v1, const vec1<T> & v2, const T & v3, const vec1<T> & v4) :
     x(v1.x), y(v2.x), z(v3), w(v4.x)
 {}
 
 template <typename T>
-constexpr vec<T, 4>::vec(const vec1<T> & v1, const T & v2, const vec1<T> & v3, const vec1<T> & v4) :
+Q_CX_ABLE vec<T, 4>::vec(const vec1<T> & v1, const T & v2, const vec1<T> & v3, const vec1<T> & v4) :
     x(v1.x), y(v2), z(v3.x), w(v4.x)
 {}
 
 template <typename T>
-constexpr vec<T, 4>::vec(const T & v1, const vec1<T> & v2, const vec1<T> & v3, const vec1<T> & v4) :
+Q_CX_ABLE vec<T, 4>::vec(const T & v1, const vec1<T> & v2, const vec1<T> & v3, const vec1<T> & v4) :
     x(v1), y(v2.x), z(v3.x), w(v4.x)
 {}
 
 template <typename T>
-constexpr vec<T, 4>::vec(const vec1<T> & v1, const vec1<T> & v2, const vec1<T> & v3, const vec1<T> & v4) :
+Q_CX_ABLE vec<T, 4>::vec(const vec1<T> & v1, const vec1<T> & v2, const vec1<T> & v3, const vec1<T> & v4) :
     x(v1.x), y(v2.x), z(v3.x), w(v4.x)
 {}
 
 template <typename T>
-constexpr vec<T, 4>::vec(const vec2<T> & v1, const T & v2, const T & v3) :
+Q_CX_ABLE vec<T, 4>::vec(const vec2<T> & v1, const T & v2, const T & v3) :
     x(v1.x), y(v1.y), z(v2), w(v3)
 {}
 
 template <typename T>
-constexpr vec<T, 4>::vec(const vec2<T> & v1, const vec1<T> & v2, const T & v3) :
+Q_CX_ABLE vec<T, 4>::vec(const vec2<T> & v1, const vec1<T> & v2, const T & v3) :
     x(v1.x), y(v1.y), z(v2.x), w(v3)
 {}
 
 template <typename T>
-constexpr vec<T, 4>::vec(const vec2<T> & v1, const T & v2, const vec1<T> & v3) :
+Q_CX_ABLE vec<T, 4>::vec(const vec2<T> & v1, const T & v2, const vec1<T> & v3) :
     x(v1.x), y(v1.y), z(v2), w(v3.x)
 {}
 
 template <typename T>
-constexpr vec<T, 4>::vec(const vec2<T> & v1, const vec1<T> & v2, const vec1<T> & v3) :
+Q_CX_ABLE vec<T, 4>::vec(const vec2<T> & v1, const vec1<T> & v2, const vec1<T> & v3) :
     x(v1.x), y(v1.y), z(v2.x), w(v3.x)
 {}
 
 template <typename T>
-constexpr vec<T, 4>::vec(const T & v1, const vec2<T> & v2, const T & v3) :
+Q_CX_ABLE vec<T, 4>::vec(const T & v1, const vec2<T> & v2, const T & v3) :
     x(v1), y(v2.x), z(v2.y), w(v3)
 {}
 
 template <typename T>
-constexpr vec<T, 4>::vec(const vec1<T> & v1, const vec2<T> & v2, const T & v3) :
+Q_CX_ABLE vec<T, 4>::vec(const vec1<T> & v1, const vec2<T> & v2, const T & v3) :
     x(v1.x), y(v2.x), z(v2.y), w(v3)
 {}
 
 template <typename T>
-constexpr vec<T, 4>::vec(const T & v1, const vec2<T> & v2, const vec1<T> & v3) :
+Q_CX_ABLE vec<T, 4>::vec(const T & v1, const vec2<T> & v2, const vec1<T> & v3) :
     x(v1), y(v2.x), z(v2.y), w(v3.x)
 {}
 
 template <typename T>
-constexpr vec<T, 4>::vec(const vec1<T> & v1, const vec2<T> & v2, const vec1<T> & v3) :
+Q_CX_ABLE vec<T, 4>::vec(const vec1<T> & v1, const vec2<T> & v2, const vec1<T> & v3) :
     x(v1.x), y(v2.x), z(v2.y), w(v3.x)
 {}
 
 template <typename T>
-constexpr vec<T, 4>::vec(const T & v1, const T & v2, const vec2<T> & v3) :
+Q_CX_ABLE vec<T, 4>::vec(const T & v1, const T & v2, const vec2<T> & v3) :
     x(v1), y(v2), z(v3.x), w(v3.y)
 {}
 
 template <typename T>
-constexpr vec<T, 4>::vec(const vec1<T> & v1, const T & v2, const vec2<T> & v3) :
+Q_CX_ABLE vec<T, 4>::vec(const vec1<T> & v1, const T & v2, const vec2<T> & v3) :
     x(v1.x), y(v2), z(v3.x), w(v3.y)
 {}
 
 template <typename T>
-constexpr vec<T, 4>::vec(const T & v1, const vec1<T> & v2, const vec2<T> & v3) :
+Q_CX_ABLE vec<T, 4>::vec(const T & v1, const vec1<T> & v2, const vec2<T> & v3) :
     x(v1), y(v2.x), z(v3.x), w(v3.y)
 {}
 
 template <typename T>
-constexpr vec<T, 4>::vec(const vec1<T> & v1, const vec1<T> & v2, const vec2<T> & v3) :
+Q_CX_ABLE vec<T, 4>::vec(const vec1<T> & v1, const vec1<T> & v2, const vec2<T> & v3) :
     x(v1.x), y(v2.x), z(v3.x), w(v3.y)
 {}
 
 template <typename T>
-constexpr vec<T, 4>::vec(const vec2<T> & v1, const vec2<T> & v2) :
+Q_CONSTEX vec<T, 4>::vec(const vec2<T> & v1, const vec2<T> & v2) :
     x(v1.x), y(v1.y), z(v2.x), w(v2.y)
 {}
 
 template <typename T>
-constexpr vec<T, 4>::vec(const vec3<T> & v1, const T & v2) :
+Q_CONSTEX vec<T, 4>::vec(const vec3<T> & v1, const T & v2) :
     x(v1.x), y(v1.y), z(v1.z), w(v2)
 {}
 
 template <typename T>
-constexpr vec<T, 4>::vec(const vec3<T> & v1, const vec1<T> & v2) :
+Q_CX_ABLE vec<T, 4>::vec(const vec3<T> & v1, const vec1<T> & v2) :
     x(v1.x), y(v1.y), z(v1.z), w(v2.x)
 {}
 
 template <typename T>
-constexpr vec<T, 4>::vec(const T & v1, const vec3<T> & v2) :
+Q_CX_ABLE vec<T, 4>::vec(const T & v1, const vec3<T> & v2) :
     x(v1), y(v2.x), z(v2.y), w(v2.z)
 {}
 
 template <typename T>
-constexpr vec<T, 4>::vec(const vec1<T> & v1, const vec3<T> & v2) :
+Q_CX_ABLE vec<T, 4>::vec(const vec1<T> & v1, const vec3<T> & v2) :
     x(v1.x), y(v2.x), z(v2.y), w(v2.z)
 {}
 
@@ -2562,7 +2562,7 @@ inline vec<T, t_n> & operator%=(vec<T, t_n> & v1, const T & v2) {
 //--- positive ---
 
 template <typename T, int t_n>
-constexpr vec<T, t_n> operator+(const vec<T, t_n> & v) {
+Q_CX_ABLE vec<T, t_n> operator+(const vec<T, t_n> & v) {
     if constexpr (t_n == 1) return vec1<T>(+v.x);
     if constexpr (t_n == 2) return vec2<T>(+v.x, +v.y);
     if constexpr (t_n == 3) return vec3<T>(+v.x, +v.y, +v.z);
@@ -2572,7 +2572,7 @@ constexpr vec<T, t_n> operator+(const vec<T, t_n> & v) {
 //--- negative ---
 
 template <typename T, int t_n>
-constexpr vec<T, t_n> operator-(const vec<T, t_n> & v) {
+Q_CX_ABLE vec<T, t_n> operator-(const vec<T, t_n> & v) {
     if constexpr (std::is_unsigned_v<T>) return v;
     if constexpr (!std::is_unsigned_v<T>) {
         if constexpr (t_n == 1) return vec1<T>(-v.x);
@@ -2585,7 +2585,7 @@ constexpr vec<T, t_n> operator-(const vec<T, t_n> & v) {
 //--- add ---
 
 template <typename T, int t_n>
-constexpr vec<T, t_n> operator+(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
+Q_CX_ABLE vec<T, t_n> operator+(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
     if constexpr (t_n == 1) return vec1<T>(v1.x + v2.x);
     if constexpr (t_n == 2) return vec2<T>(v1.x + v2.x, v1.y + v2.y);
     if constexpr (t_n == 3) return vec3<T>(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z);
@@ -2593,7 +2593,7 @@ constexpr vec<T, t_n> operator+(const vec<T, t_n> & v1, const vec<T, t_n> & v2) 
 }
 
 template <typename T, int t_n>
-constexpr vec<T, t_n> operator+(const vec<T, t_n> & v1, const T & v2) {
+Q_CX_ABLE vec<T, t_n> operator+(const vec<T, t_n> & v1, const T & v2) {
     if constexpr (t_n == 1) return vec1<T>(v1.x + v2);
     if constexpr (t_n == 2) return vec2<T>(v1.x + v2, v1.y + v2);
     if constexpr (t_n == 3) return vec3<T>(v1.x + v2, v1.y + v2, v1.z + v2);
@@ -2601,7 +2601,7 @@ constexpr vec<T, t_n> operator+(const vec<T, t_n> & v1, const T & v2) {
 }
 
 template <typename T, int t_n>
-constexpr vec<T, t_n> operator+(const T & v1, const vec<T, t_n> & v2) {
+Q_CX_ABLE vec<T, t_n> operator+(const T & v1, const vec<T, t_n> & v2) {
     if constexpr (t_n == 1) return vec1<T>(v1 + v2.x);
     if constexpr (t_n == 2) return vec2<T>(v1 + v2.x, v1 + v2.y);
     if constexpr (t_n == 3) return vec3<T>(v1 + v2.x, v1 + v2.y, v1 + v2.z);
@@ -2611,7 +2611,7 @@ constexpr vec<T, t_n> operator+(const T & v1, const vec<T, t_n> & v2) {
 //--- subtract ---
 
 template <typename T, int t_n>
-constexpr vec<T, t_n> operator-(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
+Q_CX_ABLE vec<T, t_n> operator-(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
     if constexpr (t_n == 1) return vec1<T>(v1.x - v2.x);
     if constexpr (t_n == 2) return vec2<T>(v1.x - v2.x, v1.y - v2.y);
     if constexpr (t_n == 3) return vec3<T>(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z);
@@ -2619,7 +2619,7 @@ constexpr vec<T, t_n> operator-(const vec<T, t_n> & v1, const vec<T, t_n> & v2) 
 }
 
 template <typename T, int t_n>
-constexpr vec<T, t_n> operator-(const vec<T, t_n> & v1, const T & v2) {
+Q_CX_ABLE vec<T, t_n> operator-(const vec<T, t_n> & v1, const T & v2) {
     if constexpr (t_n == 1) return vec1<T>(v1.x - v2);
     if constexpr (t_n == 2) return vec2<T>(v1.x - v2, v1.y - v2);
     if constexpr (t_n == 3) return vec3<T>(v1.x - v2, v1.y - v2, v1.z - v2);
@@ -2627,7 +2627,7 @@ constexpr vec<T, t_n> operator-(const vec<T, t_n> & v1, const T & v2) {
 }
 
 template <typename T, int t_n>
-constexpr vec<T, t_n> operator-(const T & v1, const vec<T, t_n> & v2) {
+Q_CX_ABLE vec<T, t_n> operator-(const T & v1, const vec<T, t_n> & v2) {
     if constexpr (t_n == 1) return vec1<T>(v1 - v2.x);
     if constexpr (t_n == 2) return vec2<T>(v1 - v2.x, v1 - v2.y);
     if constexpr (t_n == 3) return vec3<T>(v1 - v2.x, v1 - v2.y, v1 - v2.z);
@@ -2637,7 +2637,7 @@ constexpr vec<T, t_n> operator-(const T & v1, const vec<T, t_n> & v2) {
 //--- multiply ---
 
 template <typename T, int t_n>
-constexpr vec<T, t_n> operator*(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
+Q_CX_ABLE vec<T, t_n> operator*(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
     if constexpr (t_n == 1) return vec1<T>(v1.x * v2.x);
     if constexpr (t_n == 2) return vec2<T>(v1.x * v2.x, v1.y * v2.y);
     if constexpr (t_n == 3) return vec3<T>(v1.x * v2.x, v1.y * v2.y, v1.z * v2.z);
@@ -2645,7 +2645,7 @@ constexpr vec<T, t_n> operator*(const vec<T, t_n> & v1, const vec<T, t_n> & v2) 
 }
 
 template <typename T, int t_n>
-constexpr vec<T, t_n> operator*(const vec<T, t_n> & v1, const T & v2) {
+Q_CX_ABLE vec<T, t_n> operator*(const vec<T, t_n> & v1, const T & v2) {
     if constexpr (t_n == 1) return vec1<T>(v1.x * v2);
     if constexpr (t_n == 2) return vec2<T>(v1.x * v2, v1.y * v2);
     if constexpr (t_n == 3) return vec3<T>(v1.x * v2, v1.y * v2, v1.z * v2);
@@ -2653,7 +2653,7 @@ constexpr vec<T, t_n> operator*(const vec<T, t_n> & v1, const T & v2) {
 }
 
 template <typename T, int t_n>
-constexpr vec<T, t_n> operator*(const T & v1, const vec<T, t_n> & v2) {
+Q_CX_ABLE vec<T, t_n> operator*(const T & v1, const vec<T, t_n> & v2) {
     if constexpr (t_n == 1) return vec1<T>(v1 * v2.x);
     if constexpr (t_n == 2) return vec2<T>(v1 * v2.x, v1 * v2.y);
     if constexpr (t_n == 3) return vec3<T>(v1 * v2.x, v1 * v2.y, v1 * v2.z);
@@ -2663,7 +2663,7 @@ constexpr vec<T, t_n> operator*(const T & v1, const vec<T, t_n> & v2) {
 //--- divide ---
 
 template <typename T, int t_n>
-constexpr vec<T, t_n> operator/(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
+Q_CX_ABLE vec<T, t_n> operator/(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
     if constexpr (t_n == 1) return vec1<T>(v1.x / v2.x);
     if constexpr (t_n == 2) return vec2<T>(v1.x / v2.x, v1.y / v2.y);
     if constexpr (t_n == 3) return vec3<T>(v1.x / v2.x, v1.y / v2.y, v1.z / v2.z);
@@ -2671,7 +2671,7 @@ constexpr vec<T, t_n> operator/(const vec<T, t_n> & v1, const vec<T, t_n> & v2) 
 }
 
 template <typename T, int t_n>
-constexpr vec<T, t_n> operator/(const vec<T, t_n> & v1, const T & v2) {
+Q_CX_ABLE vec<T, t_n> operator/(const vec<T, t_n> & v1, const T & v2) {
     if constexpr (t_n > 1 && std::is_floating_point_v<T>) return v1 * (T(1.0) / v2);
     if constexpr (t_n == 1) return vec1<T>(v1.x / v2);
     if constexpr (t_n == 2) return vec2<T>(v1.x / v2, v1.y / v2);
@@ -2680,7 +2680,7 @@ constexpr vec<T, t_n> operator/(const vec<T, t_n> & v1, const T & v2) {
 }
 
 template <typename T, int t_n>
-constexpr vec<T, t_n> operator/(const T & v1, const vec<T, t_n> & v2) {
+Q_CX_ABLE vec<T, t_n> operator/(const T & v1, const vec<T, t_n> & v2) {
     if constexpr (t_n == 1) return vec1<T>(v1 / v2.x);
     if constexpr (t_n == 2) return vec2<T>(v1 / v2.x, v1 / v2.y);
     if constexpr (t_n == 3) return vec3<T>(v1 / v2.x, v1 / v2.y, v1 / v2.z);
@@ -2690,7 +2690,7 @@ constexpr vec<T, t_n> operator/(const T & v1, const vec<T, t_n> & v2) {
 //--- modulus ---
 
 template <typename T, int t_n>
-constexpr vec<T, t_n> operator%(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
+Q_CX_ABLE vec<T, t_n> operator%(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
     if constexpr (t_n == 1) return vec1<T>(mod(v1.x, v2.x));
     if constexpr (t_n == 2) return vec2<T>(mod(v1.x, v2.x), mod(v1.y, v2.y));
     if constexpr (t_n == 3) return vec3<T>(mod(v1.x, v2.x), mod(v1.y, v2.y), mod(v1.z, v2.z));
@@ -2698,7 +2698,7 @@ constexpr vec<T, t_n> operator%(const vec<T, t_n> & v1, const vec<T, t_n> & v2) 
 }
 
 template <typename T, int t_n>
-constexpr vec<T, t_n> operator%(const vec<T, t_n> & v1, const T & v2) {
+Q_CX_ABLE vec<T, t_n> operator%(const vec<T, t_n> & v1, const T & v2) {
     if constexpr (t_n == 1) return vec1<T>(mod(v1.x, v2));
     if constexpr (t_n == 2) return vec2<T>(mod(v1.x, v2), mod(v1.y, v2));
     if constexpr (t_n == 3) return vec3<T>(mod(v1.x, v2), mod(v1.y, v2), mod(v1.z, v2));
@@ -2706,7 +2706,7 @@ constexpr vec<T, t_n> operator%(const vec<T, t_n> & v1, const T & v2) {
 }
 
 template <typename T, int t_n>
-constexpr vec<T, t_n> operator%(const T & v1, const vec<T, t_n> & v2) {
+Q_CX_ABLE vec<T, t_n> operator%(const T & v1, const vec<T, t_n> & v2) {
     if constexpr (t_n == 1) return vec1<T>(mod(v1, v2.x));
     if constexpr (t_n == 2) return vec2<T>(mod(v1, v2.x), mod(v1, v2.y));
     if constexpr (t_n == 3) return vec3<T>(mod(v1, v2.x), mod(v1, v2.y), mod(v1, v2.z));
@@ -2723,7 +2723,7 @@ constexpr vec<T, t_n> operator%(const T & v1, const vec<T, t_n> & v2) {
 //--- equal to ---
 
 template <typename T, int t_n>
-constexpr bool operator==(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
+Q_CX_ABLE bool operator==(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
     if constexpr (t_n == 1) return v1.x == v2.x;
     if constexpr (t_n == 2) return v1.x == v2.x && v1.y == v2.y;
     if constexpr (t_n == 3) return v1.x == v2.x && v1.y == v2.y && v1.z == v2.z;
@@ -2731,7 +2731,7 @@ constexpr bool operator==(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
 }
 
 template <typename T, int t_n>
-constexpr bvec<t_n> operator==(const vec<T, t_n> & v1, const T & v2) {
+Q_CX_ABLE bvec<t_n> operator==(const vec<T, t_n> & v1, const T & v2) {
     if constexpr (t_n == 1) return bvec1(v1.x == v2);
     if constexpr (t_n == 2) return bvec2(v1.x == v2, v1.y == v2);
     if constexpr (t_n == 3) return bvec3(v1.x == v2, v1.y == v2, v1.z == v2);
@@ -2739,7 +2739,7 @@ constexpr bvec<t_n> operator==(const vec<T, t_n> & v1, const T & v2) {
 }
 
 template <typename T, int t_n>
-constexpr bvec<t_n> operator==(const T & v1, const vec<T, t_n> & v2) {
+Q_CX_ABLE bvec<t_n> operator==(const T & v1, const vec<T, t_n> & v2) {
     if constexpr (t_n == 1) return bvec1(v1 == v2.x);
     if constexpr (t_n == 2) return bvec2(v1 == v2.x, v1 == v2.y);
     if constexpr (t_n == 3) return bvec3(v1 == v2.x, v1 == v2.y, v1 == v2.z);
@@ -2747,14 +2747,14 @@ constexpr bvec<t_n> operator==(const T & v1, const vec<T, t_n> & v2) {
 }
 
 template <typename T, int t_n>
-constexpr bool operator==(const span<T, t_n> & s1, const span<T, t_n> & s2) {
+Q_CX_ABLE bool operator==(const span<T, t_n> & s1, const span<T, t_n> & s2) {
     return s1.min == s2.min && s1.max == s2.max;
 }
 
 //--- not equal to ---
 
 template <typename T, int t_n>
-constexpr bool operator!=(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
+Q_CX_ABLE bool operator!=(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
     if constexpr (t_n == 1) return v1.x != v2.x;
     if constexpr (t_n == 2) return v1.x != v2.x || v1.y != v2.y;
     if constexpr (t_n == 3) return v1.x != v2.x || v1.y != v2.y || v1.z != v2.z;
@@ -2762,7 +2762,7 @@ constexpr bool operator!=(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
 }
 
 template <typename T, int t_n>
-constexpr bvec<t_n> operator!=(const vec<T, t_n> & v1, const T & v2) {
+Q_CX_ABLE bvec<t_n> operator!=(const vec<T, t_n> & v1, const T & v2) {
     if constexpr (t_n == 1) return bvec1(v1.x != v2);
     if constexpr (t_n == 2) return bvec2(v1.x != v2, v1.y != v2);
     if constexpr (t_n == 3) return bvec3(v1.x != v2, v1.y != v2, v1.z != v2);
@@ -2770,7 +2770,7 @@ constexpr bvec<t_n> operator!=(const vec<T, t_n> & v1, const T & v2) {
 }
 
 template <typename T, int t_n>
-constexpr bvec<t_n> operator!=(const T & v1, const vec<T, t_n> & v2) {
+Q_CX_ABLE bvec<t_n> operator!=(const T & v1, const vec<T, t_n> & v2) {
     if constexpr (t_n == 1) return bvec1(v1 != v2.x);
     if constexpr (t_n == 2) return bvec2(v1 != v2.x, v1 != v2.y);
     if constexpr (t_n == 3) return bvec3(v1 != v2.x, v1 != v2.y, v1 != v2.z);
@@ -2778,14 +2778,14 @@ constexpr bvec<t_n> operator!=(const T & v1, const vec<T, t_n> & v2) {
 }
 
 template <typename T, int t_n>
-constexpr bool operator!=(const span<T, t_n> & s1, const span<T, t_n> & s2) {
+Q_CX_ABLE bool operator!=(const span<T, t_n> & s1, const span<T, t_n> & s2) {
     return s1.min != s2.min || s1.max != s2.max;
 }
 
 //--- less than ---
 
 template <typename T, int t_n>
-constexpr bvec<t_n> operator<(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
+Q_CX_ABLE bvec<t_n> operator<(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
     if constexpr (t_n == 1) return bvec1(v1.x < v2.x);
     if constexpr (t_n == 2) return bvec2(v1.x < v2.x, v1.y < v2.y);
     if constexpr (t_n == 3) return bvec3(v1.x < v2.x, v1.y < v2.y, v1.z < v2.z);
@@ -2793,7 +2793,7 @@ constexpr bvec<t_n> operator<(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
 }
 
 template <typename T, int t_n>
-constexpr bvec<t_n> operator<(const vec<T, t_n> & v1, const T & v2) {
+Q_CX_ABLE bvec<t_n> operator<(const vec<T, t_n> & v1, const T & v2) {
     if constexpr (t_n == 1) return bvec1(v1.x < v2);
     if constexpr (t_n == 2) return bvec2(v1.x < v2, v1.y < v2);
     if constexpr (t_n == 3) return bvec3(v1.x < v2, v1.y < v2, v1.z < v2);
@@ -2801,7 +2801,7 @@ constexpr bvec<t_n> operator<(const vec<T, t_n> & v1, const T & v2) {
 }
 
 template <typename T, int t_n>
-constexpr bvec<t_n> operator<(const T & v1, const vec<T, t_n> & v2) {
+Q_CX_ABLE bvec<t_n> operator<(const T & v1, const vec<T, t_n> & v2) {
     if constexpr (t_n == 1) return bvec1(v1 < v2.x);
     if constexpr (t_n == 2) return bvec2(v1 < v2.x, v1 < v2.y);
     if constexpr (t_n == 3) return bvec3(v1 < v2.x, v1 < v2.y, v1 < v2.z);
@@ -2811,7 +2811,7 @@ constexpr bvec<t_n> operator<(const T & v1, const vec<T, t_n> & v2) {
 //--- greater than ---
 
 template <typename T, int t_n>
-constexpr bvec<t_n> operator>(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
+Q_CX_ABLE bvec<t_n> operator>(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
     if constexpr (t_n == 1) return bvec1(v1.x > v2.x);
     if constexpr (t_n == 2) return bvec2(v1.x > v2.x, v1.y > v2.y);
     if constexpr (t_n == 3) return bvec3(v1.x > v2.x, v1.y > v2.y, v1.z > v2.z);
@@ -2819,7 +2819,7 @@ constexpr bvec<t_n> operator>(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
 }
 
 template <typename T, int t_n>
-constexpr bvec<t_n> operator>(const vec<T, t_n> & v1, const T & v2) {
+Q_CX_ABLE bvec<t_n> operator>(const vec<T, t_n> & v1, const T & v2) {
     if constexpr (t_n == 1) return bvec1(v1.x > v2);
     if constexpr (t_n == 2) return bvec2(v1.x > v2, v1.y > v2);
     if constexpr (t_n == 3) return bvec3(v1.x > v2, v1.y > v2, v1.z > v2);
@@ -2827,7 +2827,7 @@ constexpr bvec<t_n> operator>(const vec<T, t_n> & v1, const T & v2) {
 }
 
 template <typename T, int t_n>
-constexpr bvec<t_n> operator>(const T & v1, const vec<T, t_n> & v2) {
+Q_CX_ABLE bvec<t_n> operator>(const T & v1, const vec<T, t_n> & v2) {
     if constexpr (t_n == 1) return bvec1(v1 > v2.x);
     if constexpr (t_n == 2) return bvec2(v1 > v2.x, v1 > v2.y);
     if constexpr (t_n == 3) return bvec3(v1 > v2.x, v1 > v2.y, v1 > v2.z);
@@ -2837,7 +2837,7 @@ constexpr bvec<t_n> operator>(const T & v1, const vec<T, t_n> & v2) {
 //--- less than or equal to ---
 
 template <typename T, int t_n>
-constexpr bvec<t_n> operator<=(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
+Q_CX_ABLE bvec<t_n> operator<=(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
     if constexpr (t_n == 1) return bvec1(v1.x <= v2.x);
     if constexpr (t_n == 2) return bvec2(v1.x <= v2.x, v1.y <= v2.y);
     if constexpr (t_n == 3) return bvec3(v1.x <= v2.x, v1.y <= v2.y, v1.z <= v2.z);
@@ -2845,7 +2845,7 @@ constexpr bvec<t_n> operator<=(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
 }
 
 template <typename T, int t_n>
-constexpr bvec<t_n> operator<=(const vec<T, t_n> & v1, const T & v2) {
+Q_CX_ABLE bvec<t_n> operator<=(const vec<T, t_n> & v1, const T & v2) {
     if constexpr (t_n == 1) return bvec1(v1.x <= v2);
     if constexpr (t_n == 2) return bvec2(v1.x <= v2, v1.y <= v2);
     if constexpr (t_n == 3) return bvec3(v1.x <= v2, v1.y <= v2, v1.z <= v2);
@@ -2853,7 +2853,7 @@ constexpr bvec<t_n> operator<=(const vec<T, t_n> & v1, const T & v2) {
 }
 
 template <typename T, int t_n>
-constexpr bvec<t_n> operator<=(const T & v1, const vec<T, t_n> & v2) {
+Q_CX_ABLE bvec<t_n> operator<=(const T & v1, const vec<T, t_n> & v2) {
     if constexpr (t_n == 1) return bvec1(v1 <= v2.x);
     if constexpr (t_n == 2) return bvec2(v1 <= v2.x, v1 <= v2.y);
     if constexpr (t_n == 3) return bvec3(v1 <= v2.x, v1 <= v2.y, v1 <= v2.z);
@@ -2863,7 +2863,7 @@ constexpr bvec<t_n> operator<=(const T & v1, const vec<T, t_n> & v2) {
 //--- greater than or equal to ---
 
 template <typename T, int t_n>
-constexpr bvec<t_n> operator>=(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
+Q_CX_ABLE bvec<t_n> operator>=(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
     if constexpr (t_n == 1) return bvec1(v1.x >= v2.x);
     if constexpr (t_n == 2) return bvec2(v1.x >= v2.x, v1.y >= v2.y);
     if constexpr (t_n == 3) return bvec3(v1.x >= v2.x, v1.y >= v2.y, v1.z >= v2.z);
@@ -2871,7 +2871,7 @@ constexpr bvec<t_n> operator>=(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
 }
 
 template <typename T, int t_n>
-constexpr bvec<t_n> operator>=(const vec<T, t_n> & v1, const T & v2) {
+Q_CX_ABLE bvec<t_n> operator>=(const vec<T, t_n> & v1, const T & v2) {
     if constexpr (t_n == 1) return bvec1(v1.x >= v2);
     if constexpr (t_n == 2) return bvec2(v1.x >= v2, v1.y >= v2);
     if constexpr (t_n == 3) return bvec3(v1.x >= v2, v1.y >= v2, v1.z >= v2);
@@ -2879,7 +2879,7 @@ constexpr bvec<t_n> operator>=(const vec<T, t_n> & v1, const T & v2) {
 }
 
 template <typename T, int t_n>
-constexpr bvec<t_n> operator>=(const T & v1, const vec<T, t_n> & v2) {
+Q_CX_ABLE bvec<t_n> operator>=(const T & v1, const vec<T, t_n> & v2) {
     if constexpr (t_n == 1) return bvec1(v1 >= v2.x);
     if constexpr (t_n == 2) return bvec2(v1 >= v2.x, v1 >= v2.y);
     if constexpr (t_n == 3) return bvec3(v1 >= v2.x, v1 >= v2.y, v1 >= v2.z);
@@ -2894,7 +2894,7 @@ constexpr bvec<t_n> operator>=(const T & v1, const vec<T, t_n> & v2) {
 
 
 template <typename T, int t_n>
-constexpr bvec<t_n> operator&&(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
+Q_CX_ABLE bvec<t_n> operator&&(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
     if constexpr (t_n == 1) return bvec1(v1.x && v2.x);
     if constexpr (t_n == 2) return bvec2(v1.x && v2.x, v1.y && v2.y);
     if constexpr (t_n == 3) return bvec3(v1.x && v2.x, v1.y && v2.y, v1.z && v2.z);
@@ -2902,7 +2902,7 @@ constexpr bvec<t_n> operator&&(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
 }
 
 template <typename T, int t_n>
-constexpr bvec<t_n> operator||(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
+Q_CX_ABLE bvec<t_n> operator||(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
     if constexpr (t_n == 1) return bvec1(v1.x || v2.x);
     if constexpr (t_n == 2) return bvec2(v1.x || v2.x, v1.y || v2.y);
     if constexpr (t_n == 3) return bvec3(v1.x || v2.x, v1.y || v2.y, v1.z || v2.z);
@@ -2910,7 +2910,7 @@ constexpr bvec<t_n> operator||(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
 }
 
 template <typename T, int t_n>
-constexpr bvec<t_n> operator!(const vec<T, t_n> & v) {
+Q_CX_ABLE bvec<t_n> operator!(const vec<T, t_n> & v) {
     if constexpr (t_n == 1) return bvec1(!v.x);
     if constexpr (t_n == 2) return bvec2(!v.x, !v.y);
     if constexpr (t_n == 3) return bvec3(!v.x, !v.y, !v.z);
@@ -2925,7 +2925,7 @@ constexpr bvec<t_n> operator!(const vec<T, t_n> & v) {
 
 
 template <typename T, int t_n>
-constexpr T sum(const vec<T, t_n> & v) {
+Q_CX_ABLE T sum(const vec<T, t_n> & v) {
     if constexpr (t_n == 1) return v.x;
     if constexpr (t_n == 2) return v.x + v.y;
     if constexpr (t_n == 3) return v.x + v.y + v.z;
@@ -2933,7 +2933,7 @@ constexpr T sum(const vec<T, t_n> & v) {
 }
 
 template <typename T, int t_n>
-constexpr T product(const vec<T, t_n> & v) {
+Q_CX_ABLE T product(const vec<T, t_n> & v) {
     if constexpr (t_n == 1) return v.x;
     if constexpr (t_n == 2) return v.x * v.y;
     if constexpr (t_n == 3) return v.x * v.y * v.z;
@@ -2941,7 +2941,7 @@ constexpr T product(const vec<T, t_n> & v) {
 }
 
 template <typename T, int t_n>
-constexpr bool conjunction(const vec<T, t_n> & v) {
+Q_CX_ABLE bool conjunction(const vec<T, t_n> & v) {
     if constexpr (t_n == 1) return v.x;
     if constexpr (t_n == 2) return v.x && v.y;
     if constexpr (t_n == 3) return v.x && v.y && v.z;
@@ -2949,7 +2949,7 @@ constexpr bool conjunction(const vec<T, t_n> & v) {
 }
 
 template <typename T, int t_n>
-constexpr bool disjunction(const vec<T, t_n> & v) {
+Q_CX_ABLE bool disjunction(const vec<T, t_n> & v) {
     if constexpr (t_n == 1) return v.x;
     if constexpr (t_n == 2) return v.x || v.y;
     if constexpr (t_n == 3) return v.x || v.y || v.z;
@@ -3131,7 +3131,7 @@ inline T angle_n(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
 }
 
 template <typename T, int t_n>
-constexpr const T & min(const vec<T, t_n> & v) {
+Q_CX_ABLE const T & min(const vec<T, t_n> & v) {
     if constexpr (t_n == 1) return v.x;
     if constexpr (t_n == 2) return min(v.x, v.y);
     if constexpr (t_n == 3) return min(v.x, v.y, v.z);
@@ -3139,7 +3139,7 @@ constexpr const T & min(const vec<T, t_n> & v) {
 }
 
 template <typename T, int t_n>
-constexpr vec<T, t_n> min(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
+Q_CX_ABLE vec<T, t_n> min(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
     if constexpr (t_n == 1) return vec1<T>(min(v1.x, v2.x));
     if constexpr (t_n == 2) return vec2<T>(min(v1.x, v2.x), min(v1.y, v2.y));
     if constexpr (t_n == 3) return vec3<T>(min(v1.x, v2.x), min(v1.y, v2.y), min(v1.z, v2.z));
@@ -3147,12 +3147,12 @@ constexpr vec<T, t_n> min(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
 }
 
 template <typename T, int t_n, typename... Ts>
-constexpr vec<T, t_n> min(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<Ts, t_n> &... rest) {
+Q_CX_ABLE vec<T, t_n> min(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<Ts, t_n> &... rest) {
     return min(min(v1, v2), rest...);
 }
 
 template <typename T, int t_n>
-constexpr vec<T, t_n> min(const vec<T, t_n> & v1, const T & v2) {
+Q_CX_ABLE vec<T, t_n> min(const vec<T, t_n> & v1, const T & v2) {
     if constexpr (t_n == 1) return vec1<T>(min(v1.x, v2));
     if constexpr (t_n == 2) return vec2<T>(min(v1.x, v2), min(v1.y, v2));
     if constexpr (t_n == 3) return vec3<T>(min(v1.x, v2), min(v1.y, v2), min(v1.z, v2));
@@ -3160,12 +3160,12 @@ constexpr vec<T, t_n> min(const vec<T, t_n> & v1, const T & v2) {
 }
 
 template <typename T, int t_n>
-constexpr vec<T, t_n> min(const T & v1, const vec<T, t_n> & v2) {
+Q_CX_ABLE vec<T, t_n> min(const T & v1, const vec<T, t_n> & v2) {
     return min(v2, v1);
 }
 
 template <typename T, int t_n>
-constexpr const T & max(const vec<T, t_n> & v) {
+Q_CX_ABLE const T & max(const vec<T, t_n> & v) {
     if constexpr (t_n == 1) return v.x;
     if constexpr (t_n == 2) return max(v.x, v.y);
     if constexpr (t_n == 3) return max(v.x, v.y, v.z);
@@ -3173,7 +3173,7 @@ constexpr const T & max(const vec<T, t_n> & v) {
 }
 
 template <typename T, int t_n>
-constexpr vec<T, t_n> max(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
+Q_CX_ABLE vec<T, t_n> max(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
     if constexpr (t_n == 1) return vec1<T>(max(v1.x, v2.x));
     if constexpr (t_n == 2) return vec2<T>(max(v1.x, v2.x), max(v1.y, v2.y));
     if constexpr (t_n == 3) return vec3<T>(max(v1.x, v2.x), max(v1.y, v2.y), max(v1.z, v2.z));
@@ -3181,12 +3181,12 @@ constexpr vec<T, t_n> max(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
 }
 
 template <typename T, int t_n, typename... Ts>
-constexpr vec<T, t_n> max(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<Ts, t_n> &... rest) {
+Q_CX_ABLE vec<T, t_n> max(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<Ts, t_n> &... rest) {
     return max(max(v1, v2), rest...);
 }
 
 template <typename T, int t_n>
-constexpr vec<T, t_n> max(const vec<T, t_n> & v1, const T & v2) {
+Q_CX_ABLE vec<T, t_n> max(const vec<T, t_n> & v1, const T & v2) {
     if constexpr (t_n == 1) return vec1<T>(max(v1.x, v2));
     if constexpr (t_n == 2) return vec2<T>(max(v1.x, v2), max(v1.y, v2));
     if constexpr (t_n == 3) return vec3<T>(max(v1.x, v2), max(v1.y, v2), max(v1.z, v2));
@@ -3194,12 +3194,12 @@ constexpr vec<T, t_n> max(const vec<T, t_n> & v1, const T & v2) {
 }
 
 template <typename T, int t_n>
-constexpr vec<T, t_n> max(const T & v1, const vec<T, t_n> & v2) {
+Q_CX_ABLE vec<T, t_n> max(const T & v1, const vec<T, t_n> & v2) {
     return max(v2, v1);
 }
 
 template <typename T, int t_n>
-constexpr std::pair<const T &, const T &> minmax(const vec<T, t_n> & v) {
+Q_CX_ABLE std::pair<const T &, const T &> minmax(const vec<T, t_n> & v) {
     if constexpr (t_n == 1) return minmax(v.x);
     if constexpr (t_n == 2) return minmax(v.x, v.y);
     if constexpr (t_n == 3) return minmax(v.x, v.y, v.z);
@@ -3223,7 +3223,7 @@ inline void sort(vec<T, t_n> & v) {
 }
 
 template <typename T, int t_n>
-constexpr vec<T, t_n> clamp(const vec<T, t_n> & v, const T & min, const T & max) {
+Q_CX_ABLE vec<T, t_n> clamp(const vec<T, t_n> & v, const T & min, const T & max) {
     if constexpr (t_n == 1) return vec1<T>(clamp(v.x, min, max));
     if constexpr (t_n == 2) return vec2<T>(clamp(v.x, min, max), clamp(v.y, min, max));
     if constexpr (t_n == 3) return vec3<T>(clamp(v.x, min, max), clamp(v.y, min, max), clamp(v.z, min, max));
@@ -3231,7 +3231,7 @@ constexpr vec<T, t_n> clamp(const vec<T, t_n> & v, const T & min, const T & max)
 }
 
 template <typename T, int t_n>
-constexpr vec<T, t_n> clamp(const vec<T, t_n> & v, const vec<T, t_n> & min, const vec<T, t_n> & max) {
+Q_CX_ABLE vec<T, t_n> clamp(const vec<T, t_n> & v, const vec<T, t_n> & min, const vec<T, t_n> & max) {
     if constexpr (t_n == 1) return vec1<T>(clamp(v.x, min.x, max.x));
     if constexpr (t_n == 2) return vec2<T>(clamp(v.x, min.x, max.x), clamp(v.y, min.y, max.y));
     if constexpr (t_n == 3) return vec3<T>(clamp(v.x, min.x, max.x), clamp(v.y, min.y, max.y), clamp(v.z, min.z, max.z));
@@ -3239,7 +3239,7 @@ constexpr vec<T, t_n> clamp(const vec<T, t_n> & v, const vec<T, t_n> & min, cons
 }
 
 template <typename T, int t_n>
-constexpr vec<T, t_n> abs(const vec<T, t_n> & v) {
+Q_CX_ABLE vec<T, t_n> abs(const vec<T, t_n> & v) {
     if constexpr (t_n == 1) return vec1<T>(abs(v.x));
     if constexpr (t_n == 2) return vec2<T>(abs(v.x), abs(v.y));
     if constexpr (t_n == 3) return vec3<T>(abs(v.x), abs(v.y), abs(v.z));
@@ -3247,7 +3247,7 @@ constexpr vec<T, t_n> abs(const vec<T, t_n> & v) {
 }
 
 template <typename T, int t_n>
-constexpr vec<nat, t_n> floor(const vec<T, t_n> & v) {
+Q_CX_ABLE vec<nat, t_n> floor(const vec<T, t_n> & v) {
     if constexpr (t_n == 1) return vec1<nat>(floor(v.x));
     if constexpr (t_n == 2) return vec2<nat>(floor(v.x), floor(v.y));
     if constexpr (t_n == 3) return vec3<nat>(floor(v.x), floor(v.y), floor(v.z));
@@ -3255,7 +3255,7 @@ constexpr vec<nat, t_n> floor(const vec<T, t_n> & v) {
 }
 
 template <typename T, int t_n>
-constexpr vec<nat, t_n> ceil(const vec<T, t_n> & v) {
+Q_CX_ABLE vec<nat, t_n> ceil(const vec<T, t_n> & v) {
     if constexpr (t_n == 1) return vec1<nat>(ceil(v.x));
     if constexpr (t_n == 2) return vec2<nat>(ceil(v.x), ceil(v.y));
     if constexpr (t_n == 3) return vec3<nat>(ceil(v.x), ceil(v.y), ceil(v.z));
@@ -3263,38 +3263,38 @@ constexpr vec<nat, t_n> ceil(const vec<T, t_n> & v) {
 }
 
 template <typename T, int t_n, eif_floating_t<T>>
-constexpr vec<T, t_n> mix(const vec<T, t_n> & v1, const vec<T, t_n> & v2, T t) {
+Q_CX_ABLE vec<T, t_n> mix(const vec<T, t_n> & v1, const vec<T, t_n> & v2, T t) {
     return (T(1.0) - t) * v1 + t * v2;
 }
 
 
 template <typename T, eif_floating_t<T>>
-constexpr T mix(T v1, T v2, const vec2<T> & weights) {
+Q_CX_ABLE T mix(T v1, T v2, const vec2<T> & weights) {
     return weights.x * v1 + weights.y * v2;
 }
 
 template <typename T, int t_n, eif_floating_t<T>>
-constexpr vec<T, t_n> mix(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec2<T> & weights) {
+Q_CX_ABLE vec<T, t_n> mix(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec2<T> & weights) {
     return weights.x * v1 + weights.y * v2;
 }
 
 template <typename T, eif_floating_t<T>>
-constexpr T mix(T v1, T v2, T v3, const vec3<T> & weights) {
+Q_CX_ABLE T mix(T v1, T v2, T v3, const vec3<T> & weights) {
     return weights.x * v1 + weights.y * v2 + weights.z * v3;
 }
 
 template <typename T, int t_n, eif_floating_t<T>>
-constexpr vec<T, t_n> mix(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<T, t_n> & v3, const vec3<T> & weights) {
+Q_CX_ABLE vec<T, t_n> mix(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<T, t_n> & v3, const vec3<T> & weights) {
     return weights.x * v1 + weights.y * v2 + weights.z * v3;
 }
 
 template <typename T, eif_floating_t<T>>
-constexpr T mix(T v1, T v2, T v3, T v4, const vec4<T> & weights) {
+Q_CX_ABLE T mix(T v1, T v2, T v3, T v4, const vec4<T> & weights) {
     return weights.x * v1 + weights.y * v2 + weights.z * v3 + weights.w * v4;
 }
 
 template <typename T, int t_n, eif_floating_t<T>>
-constexpr vec<T, t_n> mix(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<T, t_n> & v3, const vec<T, t_n> & v4, const vec4<T> & weights) {
+Q_CX_ABLE vec<T, t_n> mix(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<T, t_n> & v3, const vec<T, t_n> & v4, const vec4<T> & weights) {
     return weights.x * v1 + weights.y * v2 + weights.z * v3 + weights.w * v4;
 }
 
@@ -3307,17 +3307,17 @@ inline vec<To, t_n> transnorm(const vec<From, t_n> & v) {
 }
 
 template <typename T, int t_n>
-constexpr span<T, t_n> toSpan(const bound<T, t_n> & b) {
+Q_CX_ABLE span<T, t_n> toSpan(const bound<T, t_n> & b) {
     return span<T, t_n>(b.min, b.min + b.max);
 }
 
 template <typename T, int t_n>
-constexpr bound<T, t_n> toBound(const span<T, t_n> & s) {
+Q_CX_ABLE bound<T, t_n> toBound(const span<T, t_n> & s) {
     return bound<T, t_n>(s.min, s.max - s.min);
 }
 
 template <typename T, int t_n>
-constexpr span<T, t_n> intersect(const span<T, t_n> & s1, const span<T, t_n> & s2) {
+Q_CX_ABLE span<T, t_n> intersect(const span<T, t_n> & s1, const span<T, t_n> & s2) {
     if constexpr (t_n == 1) return span1<T>(
         vec1<T>(max(s1.min.x, s2.min.x)),
         vec1<T>(min(s1.max.x, s2.max.x))
@@ -3338,7 +3338,7 @@ constexpr span<T, t_n> intersect(const span<T, t_n> & s1, const span<T, t_n> & s
 
 
 
-#endif
+//#endif
 
 
 
