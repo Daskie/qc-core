@@ -12,6 +12,10 @@ namespace qcu {
 
 
 
+namespace types {
+
+using uint = unsigned int;
+
 using  nat =  intptr_t;
 using unat = uintptr_t;
 
@@ -31,41 +35,20 @@ using s64 =  int64_t;
 using u64 = uint64_t;
 using f64 =   double;
 
-
-
-namespace size_types {
-
-using qcu::s08; using qcu::u08;
-using qcu::s16; using qcu::u16;
-using qcu::s32; using qcu::u32; using qcu::f32;
-using qcu::s64; using qcu::u64; using qcu::f64;
-
-}
-
-
-
-//namespace detail { enum class enabler {}; }
-
-// would be std::enable_if_t<t_b, detail::enabler>, used as
-// template <typename T, eif_t<T, bool>...>
-// but IntelliSense doesn't like variadic SFINAE
 template <bool t_b> using eif_t = std::enable_if_t<t_b, int>;
-
-template <typename T> using eif_floating_t = eif_t<std::is_floating_point_v<T>>;
-
-template <typename T> using eif_integral_t = eif_t<std::is_integral_v<T>>;
-
-template <typename T> using eif_signed_t = eif_t<std::is_signed_v<T>>;
-
-template <typename T> using eif_unsigned_t = eif_t<std::is_unsigned_v<T>>;
-
-template <typename T> using eif_sintegral_t = eif_t<std::is_signed_v<T> && std::is_integral_v<T>>;
-
-template <typename T> using eif_uintegral_t = eif_t<std::is_unsigned_v<T> && std::is_integral_v<T>>;
+// alternative (safer) option that doesn't play nice with IntelliSense and
+// doesn't work with other variadic templates
+// used as: template <typename T, eif_t<T, bool>...>
+///namespace detail { enum class enabler {}; }
+///template <bool t_b> using eif_t = std::enable_if_t<t_b, detail::enabler>;
 
 template <typename T> using eif_arithmetic_t = eif_t<std::is_arithmetic_v<T>>;
-
-
+template <typename T> using eif_floating_t   = eif_t<std::is_floating_point_v<T>>;
+template <typename T> using eif_integral_t   = eif_t<std::is_integral_v<T>>;
+template <typename T> using eif_signed_t     = eif_t<std::is_signed_v<T>>;
+template <typename T> using eif_unsigned_t   = eif_t<std::is_unsigned_v<T>>;
+template <typename T> using eif_sintegral_t  = eif_t<std::is_signed_v<T> && std::is_integral_v<T>>;
+template <typename T> using eif_uintegral_t  = eif_t<std::is_unsigned_v<T> && std::is_integral_v<T>>;
 
 template <typename T, unat t_n = 0> using array_t = std::conditional_t<t_n == 0, T[], T[t_n]>;
 
@@ -83,13 +66,9 @@ template <typename T1, typename T2> using match_sign_t = std::conditional_t<std:
 
 template <typename T1, typename T2> constexpr bool equivocal_v = std::is_same_v<std::decay_t<T1>, std::decay_t<T2>>;
 
-
-
-namespace types {
-
-using namespace size_types;
-
 }
+
+using namespace types;
 
 
 
