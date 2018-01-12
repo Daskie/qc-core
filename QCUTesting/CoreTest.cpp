@@ -151,6 +151,8 @@ void compileFunctionsIT() {
 
     qcu::ceil2(v);
 
+    qcu::mipmaps(v);
+
     qcu::highBit(v);
 
     qcu::lowBit(v);
@@ -284,6 +286,8 @@ constexpr void compileFunctionsConstexprIT() {
     //qcu::floor2(v);
 
     //qcu::ceil2(v);
+
+    //qcu::mipmaps(v);
 
     //qcu::highBit(v);
 

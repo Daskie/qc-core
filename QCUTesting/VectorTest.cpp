@@ -972,7 +972,11 @@ void compileFunctionsIT() {
     qcu::span2<T> s2; s2;
     qcu::span3<T> s3; s3;
     qcu::span4<T> s4; s4;
-
+    
+    qcu::mipmaps(v1);
+    qcu::mipmaps(v2);
+    qcu::mipmaps(v3);
+    qcu::mipmaps(v4);
 }
 
 void compileFunctionsBT() {
@@ -1400,6 +1404,11 @@ constexpr void compileFunctionsConstexprIT() {
     constexpr qcu::span2<T> s2(v2, v2);
     constexpr qcu::span3<T> s3(v3, v3);
     constexpr qcu::span4<T> s4(v4, v4);
+    
+    //qcu::mipmaps(v1);
+    //qcu::mipmaps(v2);
+    //qcu::mipmaps(v3);
+    //qcu::mipmaps(v4);
 }
 
 constexpr void compileBoolFunctionsConstexpr() {

@@ -394,15 +394,6 @@ inline std::string timeString(double seconds) {
     return ss.str();
 }
 
-inline nat mipmaps(nat size) {
-    return log2Floor(size) + 1;
-}
-
-template <nat t_n>
-inline nat mipmaps(const zvec<t_n> & size) {
-    return mipmaps(max(size));
-}
-
 
 
 namespace print {

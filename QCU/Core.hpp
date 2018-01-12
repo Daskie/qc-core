@@ -193,6 +193,9 @@ template <typename T, eif_integral_t<T> = 0>
 Q_CX_ABLE T ceil2(T v);
 
 template <typename T, eif_integral_t<T> = 0>
+Q_CX_ABLE T mipmaps(T size);
+
+template <typename T, eif_integral_t<T> = 0>
 Q_CX_ABLE T highBit(T v);
 
 template <typename T, eif_integral_t<T> = 0>
@@ -421,6 +424,11 @@ Q_CX_ABLE T floor2(T v) {
 template <typename T, eif_integral_t<T>>
 Q_CX_ABLE T ceil2(T v) {
     return T(1) << log2Ceil(v);
+}
+
+template <typename T, eif_integral_t<T>>
+Q_CX_ABLE T mipmaps(T size) {
+    return log2Floor(size) + 1;
 }
 
 template <typename T, eif_integral_t<T>>

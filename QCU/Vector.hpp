@@ -1282,6 +1282,15 @@ Q_CX_ABLE span<T, t_n> intersect(const span<T, t_n> & s1, const span<T, t_n> & s
 
 
 
+//==============================================================================
+// mipmaps
+//------------------------------------------------------------------------------
+
+template <typename T, int t_n, eif_integral_t<T> = 0>
+Q_CX_ABLE T mipmaps(const vec<T, t_n> & size);
+
+
+
 //==============================================================================================================================================================
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -3334,6 +3343,11 @@ Q_CX_ABLE span<T, t_n> intersect(const span<T, t_n> & s1, const span<T, t_n> & s
         vec4<T>(max(s1.min.x, s2.min.x), max(s1.min.y, s2.min.y), max(s1.min.z, s2.min.z), max(s1.min.w, s2.min.w)),
         vec4<T>(min(s1.max.x, s2.max.x), min(s1.max.y, s2.max.y), min(s1.max.z, s2.max.z), min(s1.max.w, s2.max.w))
     );
+}
+
+template <typename T, int t_n, eif_integral_t<T>>
+Q_CX_ABLE T mipmaps(const vec<T, t_n> & size) {
+    return mipmaps(max(size));
 }
 
 
