@@ -75,6 +75,18 @@ inline void copy(const T * src, T * dest, unat n, unat offset, unat stride, unat
     }
 }
 
+template <typename T>
+inline std::unique_ptr<T[]> duplicate(const T * src, unat n) {
+    T * arr(reinterpret_cast<T *>(std::malloc(n * sizeof(T))));
+    std::memcpy(arr, src, n * sizeof(T));
+    return std::unique_ptr<T[]>(arr);
+}
+
+template <typename T>
+inline std::unique_ptr<T[]> duplicate(const std::unique_ptr<T[]> & src, unat n) {
+    return duplicate(src.get(), n);
+}
+
 inline bool fileExists(const std::string & path) {
     struct stat buffer;
     return stat(path.c_str(), &buffer) == 0;

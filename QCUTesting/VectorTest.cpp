@@ -1454,8 +1454,11 @@ constexpr bool compileFunctionsConstexpr() {
 
 template <typename T, int t_n>
 void testPropertiesTN() {
-    static_assert(std::is_standard_layout_v<qcu::vec<T, t_n>>, "");
-    static_assert(sizeof(qcu::vec<T, t_n>) == t_n * sizeof(T), "");
+    static_assert(std::is_standard_layout_v<qcu::vec<T, t_n>>);
+    static_assert(sizeof(qcu::vec<T, t_n>) == t_n * sizeof(T));
+    static_assert(sizeof(qcu::vec<T, t_n>[4]) == 4 * t_n * sizeof(T));
+    static_assert(alignof(qcu::vec<T, t_n>) == alignof(T));
+    static_assert(alignof(qcu::vec<T, t_n>[4]) == alignof(T));
 }
 
 template <typename T>

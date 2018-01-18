@@ -153,6 +153,9 @@ template <typename T>
 void testPropertiesT() {
     static_assert(std::is_standard_layout_v<qcu::quat<T>>, "");
     static_assert(sizeof(qcu::quat<T>) == 4 * sizeof(T), "");
+    static_assert(sizeof(qcu::quat<T>[4]) == 4 * 4 * sizeof(T));
+    static_assert(alignof(qcu::quat<T>) == alignof(T));
+    static_assert(alignof(qcu::quat<T>[4]) == alignof(T));
 }
 
 void testProperties() {
