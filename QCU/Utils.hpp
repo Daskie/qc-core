@@ -76,6 +76,14 @@ inline void copy(const T * src, T * dest, unat n, unat offset, unat stride, unat
 }
 
 template <typename T>
+T pairwiseSum(unat n, const T * vals) {
+    if (n == 0) return T(0);
+    if (n == 1) return vals[0];
+    if (n == 2) return vals[0] + vals[1];
+    return sumMany(n / 2, vals) + sumMany((n + 1) / 2, vals + n / 2);
+}
+
+template <typename T>
 inline std::unique_ptr<T[]> duplicate(const T * src, unat n) {
     T * arr(reinterpret_cast<T *>(std::malloc(n * sizeof(T))));
     std::memcpy(arr, src, n * sizeof(T));

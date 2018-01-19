@@ -102,6 +102,7 @@ void compileFunctionsT() {
     qcu::clamp(v, v, v);
 
     qcu::zero(v);
+    qcu::zero(v, v);
 
     qcu::equal(v, v);
     qcu::equal(v, v, v);
@@ -122,6 +123,9 @@ void compileFunctionsT() {
 template <typename T>
 void compileFunctionsFT() {
     T v(1.0);
+
+    qcu::equalE(v, v);
+    qcu::equalE(v, v, v);
 
     qcu::fract(v);
     qcu::fract_i(v);
@@ -242,6 +246,7 @@ constexpr void compileFunctionsConstexprT() {
     //qcu::abs(v);
 
     //qcu::zero(v);
+    //qcu::zero(v, v);
 
     //qcu::equal(v, v);
     //qcu::equal(v, v, v);
@@ -262,6 +267,9 @@ constexpr void compileFunctionsConstexprT() {
 template <typename T>
 constexpr void compileFunctionsConstexprFT() {
     constexpr T v(1.0);
+
+    //qcu::equalE(v, v);
+    //qcu::equalE(v, v, v);
 
     //qcu::fract(v);
     //qcu::fract_i(v);

@@ -1202,6 +1202,27 @@ Q_CX_ABLE vec<T, t_n> abs(const vec<T, t_n> & v);
 
 
 //==============================================================================
+// zero
+//------------------------------------------------------------------------------
+
+template <typename T, int t_n, eif_arithmetic_t<T> = 0>
+Q_CX_ABLE bool zero(const vec<T, t_n> & v, T e = std::numeric_limits<T>::min());
+
+
+
+//==============================================================================
+// equal
+//------------------------------------------------------------------------------
+
+template <typename T, int t_n>
+Q_CX_ABLE bool equal(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+
+template <typename T, int t_n, eif_floating_t<T> = 0>
+Q_CX_ABLE bool equalE(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<T, t_n> & e = vec<T, t_n>(std::numeric_limits<T>::min()));
+
+
+
+//==============================================================================
 // floor
 //------------------------------------------------------------------------------
 
@@ -3253,6 +3274,30 @@ Q_CX_ABLE vec<T, t_n> abs(const vec<T, t_n> & v) {
     if constexpr (t_n == 2) return vec2<T>(abs(v.x), abs(v.y));
     if constexpr (t_n == 3) return vec3<T>(abs(v.x), abs(v.y), abs(v.z));
     if constexpr (t_n == 4) return vec4<T>(abs(v.x), abs(v.y), abs(v.z), abs(v.w));
+}
+
+template <typename T, int t_n, eif_arithmetic_t<T>>
+Q_CX_ABLE bool zero(const vec<T, t_n> & v, T e) {
+    if constexpr (t_n == 1) return zero(v.x, e);
+    if constexpr (t_n == 2) return zero(v.x, e) && zero(v.y, e);
+    if constexpr (t_n == 3) return zero(v.x, e) && zero(v.y, e) && zero(v.z, e);
+    if constexpr (t_n == 4) return zero(v.x, e) && zero(v.y, e) && zero(v.z, e) && zero(v.w, e);
+}
+
+template <typename T, int t_n>
+Q_CX_ABLE bool equal(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
+    if constexpr (t_n == 1) return equal(v1.x, v2.x);
+    if constexpr (t_n == 2) return equal(v1.x, v2.x) && equal(v1.y, v2.y);
+    if constexpr (t_n == 3) return equal(v1.x, v2.x) && equal(v1.y, v2.y) && equal(v1.z, v2.z);
+    if constexpr (t_n == 4) return equal(v1.x, v2.x) && equal(v1.y, v2.y) && equal(v1.z, v2.z) && equal(v1.w, v2.w);
+}
+
+template <typename T, int t_n, eif_floating_t<T>>
+Q_CX_ABLE bool equalE(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<T, t_n> & e) {
+    if constexpr (t_n == 1) return equalE(v1.x, v2.x, e.x);
+    if constexpr (t_n == 2) return equalE(v1.x, v2.x, e.x) && equalE(v1.y, v2.y, e.y);
+    if constexpr (t_n == 3) return equalE(v1.x, v2.x, e.x) && equalE(v1.y, v2.y, e.y) && equalE(v1.z, v2.z, e.z);
+    if constexpr (t_n == 4) return equalE(v1.x, v2.x, e.x) && equalE(v1.y, v2.y, e.y) && equalE(v1.z, v2.z, e.z) && equalE(v1.w, v2.w, e.w);
 }
 
 template <typename T, int t_n>

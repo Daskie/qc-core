@@ -155,6 +155,9 @@ Q_CX_ABLE bool equal(const T & v1, const T & v2);
 template <typename T, typename... Ts>
 Q_CX_ABLE bool equal(const T & v1, const T & v2, const Ts &... rest);
 
+template <typename T, eif_floating_t<T> = 0>
+Q_CX_ABLE bool equalE(T v1, T v2, T e = std::numeric_limits<T>::min());
+
 template <typename T, eif_arithmetic_t<T> = 0>
 Q_CX_ABLE T sign(T v);
 
@@ -345,6 +348,11 @@ Q_CX_ABLE bool equal(const T & v1, const T & v2) {
 template <typename T, typename... Ts>
 Q_CX_ABLE bool equal(const T & v1, const T & v2, const Ts &... rest) {
     return equal(v1, v2) && equal(v2, rest...);
+}
+
+template <typename T, eif_floating_t<T>>
+Q_CX_ABLE bool equalE(T v1, T v2, T e) {
+    return zero(v1 - v2, e);
 }
 
 template <typename T, eif_arithmetic_t<T>>

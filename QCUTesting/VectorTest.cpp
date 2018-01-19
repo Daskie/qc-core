@@ -857,6 +857,16 @@ void compileFunctionsT() {
     qcu::abs(v3);
     qcu::abs(v4);
 
+    qcu::zero(v1);
+    qcu::zero(v2);
+    qcu::zero(v3);
+    qcu::zero(v4);
+
+    qcu::equal(v1, v1);
+    qcu::equal(v2, v2);
+    qcu::equal(v3, v3);
+    qcu::equal(v4, v4);
+
     qcu::floor(v1);
     qcu::floor(v2);
     qcu::floor(v3);
@@ -894,6 +904,15 @@ void compileFunctionsFT() {
     qcu::span2<T> s2;
     qcu::span3<T> s3;
     qcu::span4<T> s4;
+
+    qcu::equalE(v1, v1);
+    qcu::equalE(v2, v2);
+    qcu::equalE(v3, v3);
+    qcu::equalE(v4, v4);
+    qcu::equalE(v1, v1, v1);
+    qcu::equalE(v2, v2, v2);
+    qcu::equalE(v3, v3, v3);
+    qcu::equalE(v4, v4, v4);
 
     qcu::pow(v1, v);
     qcu::pow(v2, v);
@@ -1333,6 +1352,16 @@ constexpr void compileFunctionsConstexprT() {
     //qcu::abs(v3);
     //qcu::abs(v4);
 
+    //qcu::zero(v1);
+    //qcu::zero(v2);
+    //qcu::zero(v3);
+    //qcu::zero(v4);
+
+    //qcu::equal(v1, v1);
+    //qcu::equal(v2, v2);
+    //qcu::equal(v3, v3);
+    //qcu::equal(v4, v4);
+
     //qcu::floor(v1);
     //qcu::floor(v2);
     //qcu::floor(v3);
@@ -1370,6 +1399,15 @@ constexpr void compileFunctionsConstexprFT() {
     constexpr qcu::span2<T> s2(v2, v2);
     constexpr qcu::span3<T> s3(v3, v3);
     constexpr qcu::span4<T> s4(v4, v4);
+
+    //qcu::equalE(v1, v1);
+    //qcu::equalE(v2, v2);
+    //qcu::equalE(v3, v3);
+    //qcu::equalE(v4, v4);
+    //qcu::equalE(v1, v1, v1);
+    //qcu::equalE(v2, v2, v2);
+    //qcu::equalE(v3, v3, v3);
+    //qcu::equalE(v4, v4. v4);
 
     //qcu::mix(v1, v1, v);
     //qcu::mix(v2, v2, v);
