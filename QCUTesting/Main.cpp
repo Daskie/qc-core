@@ -14,6 +14,7 @@ int main(void) {
     testUtils();
     testTime();
     testLog();
+    testDirectMap();
 
     std::cin.get();
     return 0;
