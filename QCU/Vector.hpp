@@ -143,8 +143,8 @@ template <int t_n> using   lspan = span<  signed        long, t_n>;
 template <int t_n> using  ulspan = span<unsigned        long, t_n>;
 template <int t_n> using  llspan = span<  signed long   long, t_n>;
 template <int t_n> using ullspan = span<unsigned long   long, t_n>;
-template <int t_n> using   zspan = span<                 nat, t_n>;
-template <int t_n> using  uzspan = span<                unat, t_n>;
+template <int t_n> using   nspan = span<                 nat, t_n>;
+template <int t_n> using  unspan = span<                unat, t_n>;
 
 using   fspan1 = span1<               float>;
 using   fspan2 = span2<               float>;
@@ -198,14 +198,14 @@ using ullspan1 = span1<unsigned long   long>;
 using ullspan2 = span2<unsigned long   long>;
 using ullspan3 = span3<unsigned long   long>;
 using ullspan4 = span4<unsigned long   long>;
-using   zspan1 = span1<                 nat>;
-using   zspan2 = span2<                 nat>;
-using   zspan3 = span3<                 nat>;
-using   zspan4 = span4<                 nat>;
-using  uzspan1 = span1<                unat>;
-using  uzspan2 = span2<                unat>;
-using  uzspan3 = span3<                unat>;
-using  uzspan4 = span4<                unat>;
+using   nspan1 = span1<                 nat>;
+using   nspan2 = span2<                 nat>;
+using   nspan3 = span3<                 nat>;
+using   nspan4 = span4<                 nat>;
+using  unspan1 = span1<                unat>;
+using  unspan2 = span2<                unat>;
+using  unspan3 = span3<                unat>;
+using  unspan4 = span4<                unat>;
 
 
 
@@ -235,8 +235,8 @@ template <int t_n> using   lbound =   lspan<t_n>;
 template <int t_n> using  ulbound =  ulspan<t_n>;
 template <int t_n> using  llbound =  llspan<t_n>;
 template <int t_n> using ullbound = ullspan<t_n>;
-template <int t_n> using   zbound =   zspan<t_n>;
-template <int t_n> using  uzbound =  uzspan<t_n>;
+template <int t_n> using   nbound =   nspan<t_n>;
+template <int t_n> using  unbound =  unspan<t_n>;
 
 using   fbound1 =   fspan1;
 using   fbound2 =   fspan2;
@@ -290,14 +290,14 @@ using ullbound1 = ullspan1;
 using ullbound2 = ullspan2;
 using ullbound3 = ullspan3;
 using ullbound4 = ullspan4;
-using   zbound1 =   zspan1;
-using   zbound2 =   zspan2;
-using   zbound3 =   zspan3;
-using   zbound4 =   zspan4;
-using  uzbound1 =  uzspan1;
-using  uzbound2 =  uzspan2;
-using  uzbound3 =  uzspan3;
-using  uzbound4 =  uzspan4;
+using   nbound1 =   nspan1;
+using   nbound2 =   nspan2;
+using   nbound3 =   nspan3;
+using   nbound4 =   nspan4;
+using  unbound1 =  unspan1;
+using  unbound2 =  unspan2;
+using  unbound3 =  unspan3;
+using  unbound4 =  unspan4;
 
 
 
@@ -369,8 +369,8 @@ namespace   lspans { using qcu::  lspan; using qcu::  lspan1; using qcu::  lspan
 namespace  ulspans { using qcu:: ulspan; using qcu:: ulspan1; using qcu:: ulspan2; using qcu:: ulspan3; using qcu:: ulspan4; }
 namespace  llspans { using qcu:: llspan; using qcu:: llspan1; using qcu:: llspan2; using qcu:: llspan3; using qcu:: llspan4; }
 namespace ullspans { using qcu::ullspan; using qcu::ullspan1; using qcu::ullspan2; using qcu::ullspan3; using qcu::ullspan4; }
-namespace   zspans { using qcu::  zspan; using qcu::  zspan1; using qcu::  zspan2; using qcu::  zspan3; using qcu::  zspan4; }
-namespace  uzspans { using qcu:: uzspan; using qcu:: uzspan1; using qcu:: uzspan2; using qcu:: uzspan3; using qcu:: uzspan4; }
+namespace   nspans { using qcu::  nspan; using qcu::  nspan1; using qcu::  nspan2; using qcu::  nspan3; using qcu::  nspan4; }
+namespace  unspans { using qcu:: unspan; using qcu:: unspan1; using qcu:: unspan2; using qcu:: unspan3; using qcu:: unspan4; }
 
 namespace spans {
 
@@ -388,8 +388,8 @@ using namespace   lspans;
 using namespace  ulspans;
 using namespace  llspans;
 using namespace ullspans;
-using namespace   zspans;
-using namespace  uzspans;
+using namespace   nspans;
+using namespace  unspans;
 
 }
 
@@ -415,8 +415,8 @@ namespace   lbounds { using qcu::  lbound; using qcu::  lbound1; using qcu::  lb
 namespace  ulbounds { using qcu:: ulbound; using qcu:: ulbound1; using qcu:: ulbound2; using qcu:: ulbound3; using qcu:: ulbound4; }
 namespace  llbounds { using qcu:: llbound; using qcu:: llbound1; using qcu:: llbound2; using qcu:: llbound3; using qcu:: llbound4; }
 namespace ullbounds { using qcu::ullbound; using qcu::ullbound1; using qcu::ullbound2; using qcu::ullbound3; using qcu::ullbound4; }
-namespace   zbounds { using qcu::  zbound; using qcu::  zbound1; using qcu::  zbound2; using qcu::  zbound3; using qcu::  zbound4; }
-namespace  uzbounds { using qcu:: uzbound; using qcu:: uzbound1; using qcu:: uzbound2; using qcu:: uzbound3; using qcu:: uzbound4; }
+namespace   nbounds { using qcu::  nbound; using qcu::  nbound1; using qcu::  nbound2; using qcu::  nbound3; using qcu::  nbound4; }
+namespace  unbounds { using qcu:: unbound; using qcu:: unbound1; using qcu:: unbound2; using qcu:: unbound3; using qcu:: unbound4; }
 
 namespace bounds {
 
@@ -434,8 +434,8 @@ using namespace   lbounds;
 using namespace  ulbounds;
 using namespace  llbounds;
 using namespace ullbounds;
-using namespace   zbounds;
-using namespace  uzbounds;
+using namespace   nbounds;
+using namespace  unbounds;
 
 }
 
