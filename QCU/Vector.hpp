@@ -46,8 +46,8 @@ template <int t_n> using   lvec = vec<  signed        long, t_n>;
 template <int t_n> using  ulvec = vec<unsigned        long, t_n>;
 template <int t_n> using  llvec = vec<  signed long   long, t_n>;
 template <int t_n> using ullvec = vec<unsigned long   long, t_n>;
-template <int t_n> using   zvec = vec<                 nat, t_n>;
-template <int t_n> using  uzvec = vec<                unat, t_n>;
+template <int t_n> using   nvec = vec<                 nat, t_n>;
+template <int t_n> using  unvec = vec<                unat, t_n>;
 template <int t_n> using   bvec = vec<                bool, t_n>;
 
 using   fvec1 = vec<               float, 1>;
@@ -102,14 +102,14 @@ using ullvec1 = vec<unsigned long   long, 1>;
 using ullvec2 = vec<unsigned long   long, 2>;
 using ullvec3 = vec<unsigned long   long, 3>;
 using ullvec4 = vec<unsigned long   long, 4>;
-using   zvec1 = vec<                 nat, 1>;
-using   zvec2 = vec<                 nat, 2>;
-using   zvec3 = vec<                 nat, 3>;
-using   zvec4 = vec<                 nat, 4>;
-using  uzvec1 = vec<                unat, 1>;
-using  uzvec2 = vec<                unat, 2>;
-using  uzvec3 = vec<                unat, 3>;
-using  uzvec4 = vec<                unat, 4>;
+using   nvec1 = vec<                 nat, 1>;
+using   nvec2 = vec<                 nat, 2>;
+using   nvec3 = vec<                 nat, 3>;
+using   nvec4 = vec<                 nat, 4>;
+using  unvec1 = vec<                unat, 1>;
+using  unvec2 = vec<                unat, 2>;
+using  unvec3 = vec<                unat, 3>;
+using  unvec4 = vec<                unat, 4>;
 using   bvec1 = vec<                bool, 1>;
 using   bvec2 = vec<                bool, 2>;
 using   bvec3 = vec<                bool, 3>;
@@ -321,8 +321,8 @@ namespace   lvecs { using qcu::  lvec; using qcu::  lvec1; using qcu::  lvec2; u
 namespace  ulvecs { using qcu:: ulvec; using qcu:: ulvec1; using qcu:: ulvec2; using qcu:: ulvec3; using qcu:: ulvec4; }
 namespace  llvecs { using qcu:: llvec; using qcu:: llvec1; using qcu:: llvec2; using qcu:: llvec3; using qcu:: llvec4; }
 namespace ullvecs { using qcu::ullvec; using qcu::ullvec1; using qcu::ullvec2; using qcu::ullvec3; using qcu::ullvec4; }
-namespace   zvecs { using qcu::  zvec; using qcu::  zvec1; using qcu::  zvec2; using qcu::  zvec3; using qcu::  zvec4; }
-namespace  uzvecs { using qcu:: uzvec; using qcu:: uzvec1; using qcu:: uzvec2; using qcu:: uzvec3; using qcu:: uzvec4; }
+namespace   nvecs { using qcu::  nvec; using qcu::  nvec1; using qcu::  nvec2; using qcu::  nvec3; using qcu::  nvec4; }
+namespace  unvecs { using qcu:: unvec; using qcu:: unvec1; using qcu:: unvec2; using qcu:: unvec3; using qcu:: unvec4; }
 namespace   bvecs { using qcu::  bvec; using qcu::  bvec1; using qcu::  bvec2; using qcu::  bvec3; using qcu::  bvec4; }
 
 namespace vecs {
@@ -341,8 +341,8 @@ using namespace   lvecs;
 using namespace  ulvecs;
 using namespace  llvecs;
 using namespace ullvecs;
-using namespace   zvecs;
-using namespace  uzvecs;
+using namespace   nvecs;
+using namespace  unvecs;
 using namespace   bvecs;
 
 }

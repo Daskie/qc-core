@@ -80,7 +80,7 @@ T pairwiseSum(unat n, const T * vals) {
     if (n == 0) return T(0);
     if (n == 1) return vals[0];
     if (n == 2) return vals[0] + vals[1];
-    return sumMany(n / 2, vals) + sumMany((n + 1) / 2, vals + n / 2);
+    return pairwiseSum(n / 2, vals) + pairwiseSum((n + 1) / 2, vals + n / 2);
 }
 
 template <typename T>

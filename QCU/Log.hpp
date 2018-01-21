@@ -28,17 +28,17 @@ inline void exception_break() {}
 
 
 #define Q_ERROR(msg) do { \
-    qcu::error_break(); \
     qcu::log() << "ERROR" << std::endl; \
     qcu::log() << "\t" << msg << std::endl; \
     qcu::log() << "\t" << __func__ << " (" << __FILE__ << "(" << __LINE__ << "))" << std::endl; \
+    qcu::error_break(); \
 } while (false)
 
 #define Q_WARNING(msg) do { \
-    qcu::warning_break(); \
     qcu::log() << "WARNING" << std::endl; \
     qcu::log() << "\t" << msg << std::endl; \
     qcu::log() << "\t" << __func__ << " (" << __FILE__ << "(" << __LINE__ << "))" << std::endl; \
+    qcu::warning_break(); \
 } while (false)
 
 #define Q_LOG(msg) do { \
@@ -46,9 +46,9 @@ inline void exception_break() {}
 } while (false)
 
 #define Q_EXCEPTION(msg, exception) do { \
-    qcu::exception_break(); \
     qcu::log() << "EXCEPTION" << std::endl; \
     qcu::log() << "\t" << msg << std::endl; \
     qcu::log() << "\t" << __func__ << " (" << __FILE__ << "(" << __LINE__ << "))" << std::endl; \
+    qcu::exception_break(); \
     throw exception; \
 } while (false)
