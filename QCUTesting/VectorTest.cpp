@@ -1603,16 +1603,16 @@ void compileMembers() {
 
 template <typename T>
 constexpr void compileConstantsT() {
-    constexpr qcu::vec1<T> ax1(qcu::axis1X<T>);
-    constexpr qcu::vec2<T> ax2(qcu::axis2X<T>);
-    constexpr qcu::vec3<T> ax3(qcu::axis3X<T>);
-    constexpr qcu::vec4<T> ax4(qcu::axis4X<T>);
-    constexpr qcu::vec2<T> ay2(qcu::axis2Y<T>);
-    constexpr qcu::vec3<T> ay3(qcu::axis3Y<T>);
-    constexpr qcu::vec4<T> ay4(qcu::axis4Y<T>);
-    constexpr qcu::vec3<T> az3(qcu::axis3Z<T>);
-    constexpr qcu::vec4<T> az4(qcu::axis4Z<T>);
-    constexpr qcu::vec4<T> aw4(qcu::axis4W<T>);
+    constexpr qcu::vec1<T> ax1(qcu::xAxis1<T>);
+    constexpr qcu::vec2<T> ax2(qcu::xAxis2<T>);
+    constexpr qcu::vec3<T> ax3(qcu::xAxis3<T>);
+    constexpr qcu::vec4<T> ax4(qcu::xAxis4<T>);
+    constexpr qcu::vec2<T> ay2(qcu::yAxis2<T>);
+    constexpr qcu::vec3<T> ay3(qcu::yAxis3<T>);
+    constexpr qcu::vec4<T> ay4(qcu::yAxis4<T>);
+    constexpr qcu::vec3<T> az3(qcu::zAxis3<T>);
+    constexpr qcu::vec4<T> az4(qcu::zAxis4<T>);
+    constexpr qcu::vec4<T> aw4(qcu::wAxis4<T>);
 }
 
 template <typename T>
