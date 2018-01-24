@@ -234,10 +234,10 @@ template <typename T, eif_floating_t<T> = 0, typename... Args>
 Q_CX_ABLE T average(T v, Args... args);
 
 template <typename T, eif_floating_t<T> = 0>
-T radians(T degrees);
+Q_CONSTEX T radians(T degrees);
 
 template <typename T, eif_floating_t<T> = 0>
-T degrees(T radians);
+Q_CONSTEX T degrees(T radians);
 
 // converts between normalized types
 // works with floats and integers, signed and unsigned
@@ -525,12 +525,12 @@ Q_CX_ABLE T average(T v, Args... args) {
 }
 
 template <typename T, eif_floating_t<T>>
-inline T radians(T degrees) {
+Q_CONSTEX T radians(T degrees) {
     return degrees * pi<T> / T(180.0);
 }
 
 template <typename T, eif_floating_t<T>>
-inline T degrees(T radians) {
+Q_CONSTEX T degrees(T radians) {
     return radians * T(180.0) / pi<T>;
 }
 

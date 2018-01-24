@@ -162,5 +162,95 @@ inline vec3<T> pointOnSphereFibonacci(nat i, nat n) {
 
 
 
+template <typename T>
+struct Dampener {
+
+    static_assert(std::is_floating_point_v<T>);
+
+    const T angularFreq, dampingRatio, dt;
+
+    Dampener(T angularFreq, T dampingRatio, T dt) :
+        angularFreq(angularFreq),
+        dampingRatio(dampingRatio),
+        dt(dt)
+    {}
+
+    virtual ~Dampener() = default;
+
+};
+
+template <typename T>
+struct OverDampener : public Dampener<T> {
+
+    const T za, zb, z0, z1, z2, expTerm1, expTerm2;
+
+    OverDampener(T angularFreq, T dampingRatio, T dt) :
+        Dampener(angularFreq, max(dampingRatio, T(1.001)), dt),
+        za(-this->angularFreq * this->dampingRatio),
+        zb(this->angularFreq * std::sqrt(this->dampingRatio * this->dampingRatio - T(1.0))),
+        z0(T(1.0) / (T(-2.0) * zb)),
+        z1(za - zb),
+        z2(za + zb),
+        expTerm1(std::exp(z1 * this->dt)),
+        expTerm2(std::exp(z2 * this->dt))
+    {}
+
+    template <typename U>
+    void dampen(U & pos, U & vel, const U & targetPos) const {
+        U dp(pos - targetPos);
+        U c1((vel - dp * z2) * z0);
+        U c2(dp - c1);
+        pos = targetPos + c1 * expTerm1 + c2 * expTerm2;
+        vel = c1 * z1 * expTerm1 + c2 * z2 * expTerm2;
+    }
+
+};
+
+template <typename T>
+struct CriticalDampener : public Dampener<T> {
+
+    const T expTerm;
+
+    CriticalDampener(T angularFreq, T dt) :
+        Dampener(angularFreq, T(1.0), dt),
+        expTerm(std::exp(-this->angularFreq * this->dt))
+    {}
+
+    template <typename U>
+    void dampen(U & pos, U & vel, const U & targetPos) const {
+        U dp(pos - targetPos);
+        U c1(vel + angularFreq * dp);
+        U c2((c1 * dt + dp) * expTerm);
+        pos = targetPos + c2;
+        vel = c1 * expTerm - c2 * angularFreq;
+    }
+
+};
+
+template <typename T>
+struct UnderDampener : public Dampener<T> {
+
+    const T omegaZeta, alpha, expTerm, cosTerm, sinTerm;
+
+    UnderDampener(T angularFreq, T dampingRatio, T dt) :
+        Dampener(angularFreq, min(dampingRatio, T(0.999)), dt),
+        omegaZeta(this->angularFreq * this->dampingRatio),
+        alpha(this->angularFreq * std::sqrt(T(1.0) - this->dampingRatio * this->dampingRatio)),
+        expTerm(std::exp(-omegaZeta * dt)),
+        cosTerm(std::cos(alpha * this->dt)),
+        sinTerm(std::sin(alpha * this->dt))
+    {}
+
+    template <typename U>
+    void dampen(U & pos, U & vel, const U & targetPos) const {
+        U dp(pos - targetPos);
+        U c((vel + omegaZeta * dp) / alpha);
+        pos = targetPos + expTerm * (dp * cosTerm + c * sinTerm);
+        vel = -expTerm * ((dp * omegaZeta - c * alpha) * cosTerm + (dp * alpha + c * omegaZeta) * sinTerm);
+    }
+
+};
+
+
 
 }

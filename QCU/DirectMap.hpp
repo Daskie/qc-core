@@ -40,13 +40,13 @@ class DirectMap {
     }
 
     DirectMap(std::initializer_list<std::pair<K, V>> pairs) :
-        m_size(0),
+        m_size(1),
         m_vals(nullptr),
         m_defVal()
     {
         for (auto & pair : pairs) {
-            if (static_cast<I>(pair.first) > m_size) {
-                m_size = static_cast<I>(pair.first);
+            if (static_cast<I>(pair.first) >= m_size) {
+                m_size = static_cast<I>(pair.first) + 1;
             }
         }
 
@@ -58,13 +58,13 @@ class DirectMap {
     }
 
     DirectMap(std::initializer_list<std::pair<K, V>> pairs, const V & defVal) :
-        m_size(0),
+        m_size(1),
         m_vals(nullptr),
         m_defVal(defVal)
     {
         for (auto & pair : pairs) {
-            if (static_cast<I>(pair.first) > m_size) {
-                m_size = static_cast<I>(pair.first);
+            if (static_cast<I>(pair.first) >= m_size) {
+                m_size = static_cast<I>(pair.first) + 1;
             }
         }
 
@@ -98,7 +98,9 @@ class DirectMap {
     }
 
     ~DirectMap() {
-        delete[] m_vals;
+        if (m_vals) {
+            delete[] m_vals;
+        }
     }
 
     DirectMap<K, V> & operator=(const DirectMap<K, V> & m) {

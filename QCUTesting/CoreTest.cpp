@@ -277,6 +277,10 @@ constexpr void compileFunctionsConstexprFT() {
     //qcu::mix(v, v, v);
 
     //qcu::average(v, v, v, v, v);
+
+    qcu::radians(v);
+
+    qcu::degrees(v);
 }
 
 template <typename T>

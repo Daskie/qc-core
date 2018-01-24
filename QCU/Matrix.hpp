@@ -408,11 +408,11 @@ template <typename T> inline mat4<T> perspProjAsym(T fovLeft, T fovRight, T fovB
 //forward and up must not be parallel
 template <typename T> inline mat4<T> view(const vec3<T> & camLoc, const vec3<T> & camForward, const vec3<T> & up);
 
-template <typename T> inline mat4<T> view(const vec3<T> & camLoc, const vec3<T> & camX, const vec3<T> & camY, const vec3<T> & camZ);
-template <typename T> inline mat4<T> view_n(const vec3<T> & camLoc, const vec3<T> & camX, const vec3<T> & camY, const vec3<T> & camZ);
+template <typename T> inline mat4<T> view(const vec3<T> & camLoc, const vec3<T> & camU, const vec3<T> & camV, const vec3<T> & camW);
+template <typename T> inline mat4<T> view_n(const vec3<T> & camLoc, const vec3<T> & camU, const vec3<T> & camV, const vec3<T> & camW);
 //basis vectors are orthonormal (optimination)
-template <typename T> inline mat4<T> view_o(const vec3<T> & camLoc, const vec3<T> & camX, const vec3<T> & camY, const vec3<T> & camZ);
-template <typename T> inline mat4<T> view_on(const vec3<T> & camLoc, const vec3<T> & camX, const vec3<T> & camY, const vec3<T> & camZ);
+template <typename T> inline mat4<T> view_o(const vec3<T> & camLoc, const vec3<T> & camU, const vec3<T> & camV, const vec3<T> & camW);
+template <typename T> inline mat4<T> view_on(const vec3<T> & camLoc, const vec3<T> & camU, const vec3<T> & camV, const vec3<T> & camW);
 
 
 
@@ -2053,10 +2053,10 @@ inline mat4<T> perspProj(T fov, T aspectRatio, T near, T far) {
     T near_right(T(1.0) / std::tan(fov / T(2.0)));
 
     return mat4<T>(
-        near_right,                   T(0.0),                             T(0.0),  T(0.0),
-            T(0.0), near_right / aspectRatio,                             T(0.0),  T(0.0),
+        near_right,                   T(0.0),                             T(0.0), T( 0.0),
+            T(0.0), near_right * aspectRatio,                             T(0.0), T( 0.0),
             T(0.0),                   T(0.0),        (far + near) / (near - far), T(-1.0),
-            T(0.0),                   T(0.0), T(2.0) * far * near / (near - far),  T(0.0)
+            T(0.0),                   T(0.0), T(2.0) * far * near / (near - far), T( 0.0)
     );
 }
 
@@ -2068,40 +2068,46 @@ inline mat4<T> perspProjAsym(T fovLeft, T fovRight, T fovBottom, T fovTop, T nea
     T top(near * std::tan(fovTop));
 
     return mat4<T>(
-         T(2.0) * near / (right - left),                          T(0.0),                             T(0.0),  T(0.0),
-                                 T(0.0),  T(2.0) * near / (top - bottom),                             T(0.0),  T(0.0),
+         T(2.0) * near / (right - left),                          T(0.0),                             T(0.0), T( 0.0),
+                                 T(0.0),  T(2.0) * near / (top - bottom),                             T(0.0), T( 0.0),
         (right + left) / (right - left), (top + bottom) / (top - bottom),        (far + near) / (near - far), T(-1.0),
-                                 T(0.0),                          T(0.0), T(2.0) * far * near / (near - far),  T(0.0)
+                                 T(0.0),                          T(0.0), T(2.0) * far * near / (near - far), T( 0.0)
     );
 }
 
 template <typename T>
-inline mat4<T> view(const vec3<T> & camLoc, const vec3<T> & camForward, const vec3<T> & up) {
-    vec3<T> z(norm(-camForward));
-    vec3<T> x(norm(cross(up, z)));
-    vec3<T> y(norm(cross(z, x)));
+inline mat4<T> view(const vec3<T> & camLoc, const vec3<T> & lookAt, const vec3<T> & up) {
+    vec3<T> w(norm(camLoc - lookAt));
+    vec3<T> u(norm(cross(up, w)));
+    vec3<T> v(cross(w, u));
 
-    return mat4<T>(mapTo_o(x, y, z)) * translate(-camLoc);
+    return view_on(camLoc, u, v, w);
 }
 
 template <typename T>
-inline mat4<T> view(const vec3<T> & camLoc, const vec3<T> & camX, const vec3<T> & camY, const vec3<T> & camZ) {
-    return view_n(camLoc, norm(camX), norm(camY), norm(camZ));
+inline mat4<T> view(const vec3<T> & camLoc, const vec3<T> & camU, const vec3<T> & camV, const vec3<T> & camW) {
+    return view_n(camLoc, norm(camU), norm(camV), norm(camW));
 }
 
 template <typename T>
-inline mat4<T> view_n(const vec3<T> & camLoc, const vec3<T> & camX, const vec3<T> & camY, const vec3<T> & camZ) {
-    return mat4<T>(mapTo(camX, camY, camZ)) * translate(-camLoc);
+inline mat4<T> view_n(const vec3<T> & camLoc, const vec3<T> & camU, const vec3<T> & camV, const vec3<T> & camW) {
+    return mat4<T>(mapTo(camU, camV, camW)) * translate(-camLoc);
 }
 
 template <typename T>
-inline mat4<T> view_o(const vec3<T> & camLoc, const vec3<T> & camX, const vec3<T> & camY, const vec3<T> & camZ) {
-    return view_on(camLoc, norm(camX), norm(camY), norm(camZ));
+inline mat4<T> view_o(const vec3<T> & camLoc, const vec3<T> & camU, const vec3<T> & camV, const vec3<T> & camW) {
+    return view_on(camLoc, norm(camU), norm(camV), norm(camW));
 }
 
 template <typename T>
-inline mat4<T> view_on(const vec3<T> & camLoc, const vec3<T> & camX, const vec3<T> & camY, const vec3<T> & camZ) {
-    return mat4<T>(mapTo_o(camX, camY, camZ)) * translate(-camLoc);
+inline mat4<T> view_on(const vec3<T> & camLoc, const vec3<T> & camU, const vec3<T> & camV, const vec3<T> & camW) {
+    vec3<T> trans(-camLoc);
+    return mat4<T>(
+                  camU.x,           camV.x,           camW.x, T(0.0),
+                  camU.y,           camV.y,           camW.y, T(0.0),
+                  camU.z,           camV.z,           camW.z, T(0.0),
+        dot(camU, trans), dot(camV, trans), dot(camW, trans), T(1.0)
+    );
 }
 
 
