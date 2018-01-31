@@ -47,14 +47,14 @@ void compileConstantsT() {
     qcu::e<T>;
     qcu::phi<T>;
     qcu::infinity<T>;
+    qcu::sqrt<2, T>;
+    qcu::sqrt<1000, T>;
 }
 
 void compileConstants() {
     compileConstantsT<float>();
     compileConstantsT<double>();
     compileConstantsT<long double>();
-    qcu::sqrt<2>;
-    qcu::sqrt<1000>;
 }
 
 template <typename T1, typename T2>

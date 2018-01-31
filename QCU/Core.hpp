@@ -79,23 +79,25 @@ using namespace types;
 
 namespace detail {
 
-constexpr f64 sqrtConstexprHelper(f64 v, f64 curr, f64 prev) {
+template <typename T>
+constexpr T sqrtConstexprHelper(T v, T curr, T prev) {
     if (curr == prev) {
         return curr;
     }
 
-    return sqrtConstexprHelper(v, 0.5 * (curr + v / curr), curr);
+    return sqrtConstexprHelper(v, T(0.5) * (curr + v / curr), curr);
 }
 
-constexpr f64 sqrtConstexpr(f64 v) {
-    if (v == 0.0 || v == std::numeric_limits<f64>::infinity()) {
+template <typename T>
+constexpr T sqrtConstexpr(T v) {
+    if (v == T(0.0) || v == std::numeric_limits<T>::infinity()) {
         return v;
     }
-    if (v < 0.0) {
-        return std::numeric_limits<f64>::quiet_NaN();
+    if (v < T(0.0)) {
+        return std::numeric_limits<T>::quiet_NaN();
     }
 
-    return sqrtConstexprHelper(v, v, 0.0);
+    return sqrtConstexprHelper(v, v, T(0.0));
 }
 
 }
@@ -114,7 +116,7 @@ template <typename T, eif_floating_t<T> = 0> constexpr T  pi = T(3.1415926535897
 template <typename T, eif_floating_t<T> = 0> constexpr T   e = T(2.71828182845904523536028747135266250L);
 template <typename T, eif_floating_t<T> = 0> constexpr T phi = T(1.61803398874989484820458683436563812L);
 
-template <u32 t_v> constexpr f64 sqrt = detail::sqrtConstexpr(f64(t_v));
+template <u32 t_v, typename T, eif_floating_t<T> = 0> constexpr T sqrt = detail::sqrtConstexpr(T(t_v));
 template <typename T, eif_floating_t<T> = 0> constexpr T infinity = std::numeric_limits<T>::infinity();
 template <typename T, eif_floating_t<T> = 0> constexpr T nan = std::numeric_limits<T>::quiet_NaN();
 
@@ -242,7 +244,7 @@ Q_CONSTEX T degrees(T radians);
 // converts between normalized types
 // works with floats and integers, signed and unsigned
 template <typename To, typename From, eif_t<std::is_arithmetic_v<To> && std::is_arithmetic_v<From>> = 0>
-To transnorm(From v);
+Q_CONSTEX To transnorm(From v);
 
 
 
@@ -535,7 +537,7 @@ Q_CONSTEX T degrees(T radians) {
 }
 
 template <typename To, typename From, eif_t<std::is_arithmetic_v<To> && std::is_arithmetic_v<From>>>
-inline To transnorm(From v) {
+Q_CONSTEX To transnorm(From v) {
     if constexpr (std::is_same_v<From, To>) {
         return v;
     }

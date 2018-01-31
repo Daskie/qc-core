@@ -1080,7 +1080,7 @@ inline bool orthogonal(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 //------------------------------------------------------------------------------
 
 template <typename T, int t_n>
-inline vec<T, t_n> ortho(const vec<T, t_n> & v);
+Q_CX_ABLE vec<T, t_n> ortho(const vec<T, t_n> & v);
 
 
 
@@ -1220,6 +1220,9 @@ Q_CX_ABLE bool equal(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 template <typename T, int t_n, eif_floating_t<T> = 0>
 Q_CX_ABLE bool equalE(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<T, t_n> & e = vec<T, t_n>(std::numeric_limits<T>::min()));
 
+template <typename T, int t_n>
+Q_CX_ABLE bool equal(const vec<T, t_n> & v);
+
 
 
 //==============================================================================
@@ -1272,7 +1275,7 @@ Q_CX_ABLE vec<T, t_n> mix(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const 
 //------------------------------------------------------------------------------
 
 template <typename To, typename From, int t_n, eif_t<std::is_arithmetic_v<To> && std::is_arithmetic_v<From>> = 0>
-inline vec<To, t_n> transnorm(const vec<From, t_n> & v);
+Q_CONSTEX vec<To, t_n> transnorm(const vec<From, t_n> & v);
 
 
 
@@ -3055,11 +3058,11 @@ inline T magnitude2(const vec<T, t_n> & v) {
 
 template <typename T, int t_n, eif_floating_t<T>>
 inline vec<T, t_n> norm(const vec<T, t_n> & v) {
-    T m(magnitude(v));
-    if (zero(m)) {
+    T m2(magnitude2(v));
+    if (zero(m2)) {
         return vec<T, t_n>();
     }
-    return v * (T(1.0) / m);
+    return v * (T(1.0) / std::sqrt(m2));
 }
 
 template <typename T, int t_n>
@@ -3092,7 +3095,7 @@ inline bool orthogonal(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
 }
 
 template <typename T>
-inline vec2<T> ortho(const vec2<T> & v) {
+Q_CX_ABLE vec2<T> ortho(const vec2<T> & v) {
     return vec2<T>(-v.y, v.x);
 }
 
@@ -3301,6 +3304,14 @@ Q_CX_ABLE bool equalE(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<
 }
 
 template <typename T, int t_n>
+Q_CX_ABLE bool equal(const vec<T, t_n> & v) {
+    if constexpr (t_n == 1) return true;
+    if constexpr (t_n == 2) return v.x == v.y;
+    if constexpr (t_n == 3) return v.x == v.y && v.x == v.z;
+    if constexpr (t_n == 4) return v.x == v.y && v.x == v.z && v.x == v.w;
+}
+
+template <typename T, int t_n>
 Q_CX_ABLE vec<nat, t_n> floor(const vec<T, t_n> & v) {
     if constexpr (t_n == 1) return vec1<nat>(floor(v.x));
     if constexpr (t_n == 2) return vec2<nat>(floor(v.x), floor(v.y));
@@ -3353,7 +3364,7 @@ Q_CX_ABLE vec<T, t_n> mix(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const 
 }
 
 template <typename To, typename From, int t_n, eif_t<std::is_arithmetic_v<To> && std::is_arithmetic_v<From>>>
-inline vec<To, t_n> transnorm(const vec<From, t_n> & v) {
+Q_CONSTEX vec<To, t_n> transnorm(const vec<From, t_n> & v) {
     if constexpr (t_n == 1) return vec1<To>(transnorm<To>(v.x));
     if constexpr (t_n == 2) return vec2<To>(transnorm<To>(v.x), transnorm<To>(v.y));
     if constexpr (t_n == 3) return vec3<To>(transnorm<To>(v.x), transnorm<To>(v.y), transnorm<To>(v.z));

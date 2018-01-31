@@ -13,7 +13,7 @@ namespace qcu {
 namespace color {
 
 template <typename T, typename From> constexpr vec3<T> custom(const vec3<From> & color) { return transnorm<T>(color); }
-template <typename T, typename From> constexpr vec3<T> custom(From r, From g, From b) { return custom(vec3<From>(r, g, b)); }
+template <typename T, typename From> constexpr vec3<T> custom(From r, From g, From b) { return custom<T>(vec3<From>(r, g, b)); }
 
 template <typename T> constexpr vec3<T>     black = custom<T>(0.00, 0.00, 0.00);
 template <typename T> constexpr vec3<T>  darkGray = custom<T>(0.25, 0.25, 0.25);

@@ -12,8 +12,8 @@ namespace qcu {
 
 
 
-// seconds since epoch
-double now();
+// nanoseconds since epoch
+s64 now();
 
 
 
@@ -36,8 +36,8 @@ class Clock {
 
     // the clock starts now
     void restart();
-    // the clock starts at the given time in seconds since epoch
-    void restart(double t);
+    // the clock starts at the given time in nanoseconds since epoch
+    void restart(s64 t);
 
     // the fractional number of cycles since the clock started
     double age() const;
@@ -68,8 +68,8 @@ class Clock {
 
 
 
-double now() {
-    return std::chrono::duration_cast<std::chrono::duration<double>>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
+s64 now() {
+    return std::chrono::nanoseconds(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
 }
 
 
@@ -84,8 +84,8 @@ void Clock::restart() {
     m_start = std::chrono::high_resolution_clock::now();
 }
 
-void Clock::restart(double t) {
-    m_start = std::chrono::high_resolution_clock::time_point(std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::duration<double>(1.0)));
+void Clock::restart(s64 t) {
+    m_start = std::chrono::high_resolution_clock::time_point(std::chrono::nanoseconds(t));
 }
 
 double Clock::age() const {

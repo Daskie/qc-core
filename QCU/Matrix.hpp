@@ -351,7 +351,7 @@ template <typename T, int t_m, int t_n = t_m> constexpr mat<T, t_m, t_n> nullMat
 
 
 template <typename T, int t_n> inline mat<T, t_n + 1> translate(const vec<T, t_n> & delta);
-template <typename T, int t_m, int t_n> inline mat<T, t_m> & translate(mat<T, t_m> & mat, const vec<T, t_n> & delta);
+template <typename T, int t_m, int t_n, eif_t<t_m == t_n + 1> = 0> inline mat<T, t_m> & translate(mat<T, t_m> & mat, const vec<T, t_n> & delta);
 
 template <typename T, int t_n> inline mat<T, t_n> scale(const vec<T, t_n> & scale);
 template <typename T, int t_m, int t_n> inline mat<T, t_m> & scale(mat<T, t_m> & mat, const vec<T, t_n> & scale);
@@ -1710,7 +1710,7 @@ inline mat<T, t_n + 1> translate(const vec<T, t_n> & delta) {
     }
 }
 
-template <typename T, int t_m, int t_n>
+template <typename T, int t_m, int t_n, eif_t<t_m == t_n + 1>>
 inline mat<T, t_m> & translate(mat<T, t_m> & mat, const vec<T, t_n> & delta) {
     if constexpr (t_n == 1 && t_m == 2) {
         mat.x1 += delta.x * mat.y1;
@@ -1897,7 +1897,7 @@ inline mat3<T> rotate_n(const vec3<T> & axis, T s, T c) {
     T zcm(axis.z * cm);
     T xycm(xcm * axis.y);
     T yzcm(ycm * axis.z);
-    T zxcm(xcm * axis.x);
+    T zxcm(zcm * axis.x);
 
     return mat3<T>(
          xcm * axis.x +  c, xycm          + zs, zxcm          - ys,

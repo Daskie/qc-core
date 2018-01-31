@@ -867,6 +867,11 @@ void compileFunctionsT() {
     qcu::equal(v3, v3);
     qcu::equal(v4, v4);
 
+    qcu::equal(v1);
+    qcu::equal(v2);
+    qcu::equal(v3);
+    qcu::equal(v4);
+
     qcu::floor(v1);
     qcu::floor(v2);
     qcu::floor(v3);
@@ -1361,6 +1366,11 @@ constexpr void compileFunctionsConstexprT() {
     //qcu::equal(v2, v2);
     //qcu::equal(v3, v3);
     //qcu::equal(v4, v4);
+
+    //qcu::equal(v1);
+    //qcu::equal(v2);
+    //qcu::equal(v3);
+    //qcu::equal(v4);
 
     //qcu::floor(v1);
     //qcu::floor(v2);

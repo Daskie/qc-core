@@ -155,7 +155,7 @@ inline vec3<T> pointOnSphereFibonacci(nat i, nat n) {
     T z((1 - 1 / T(n)) * (1 - 2 * T(i) /  T(n - 1)));
     return cylindricToCartesian(qcu::vec3<T>(
         std::sqrt(1 - z * z),
-        phi<T>() * T(i),
+        phi<T> * T(i),
         z
     ));
 }
@@ -226,6 +226,16 @@ struct CriticalDampener : public Dampener<T> {
     }
 
 };
+
+template <typename T, typename U, eif_floating_t<T> = 0>
+void dampen(U & pos, U & vel, const U & targetPos, T angularFreq, T dt) {
+    T expTerm(std::exp(-angularFreq * dt));
+    U dp(pos - targetPos);
+    U c1(vel + angularFreq * dp);
+    U c2((c1 * dt + dp) * expTerm);
+    pos = targetPos + c2;
+    vel = c1 * expTerm - c2 * angularFreq;
+}
 
 template <typename T>
 struct UnderDampener : public Dampener<T> {
