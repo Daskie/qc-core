@@ -976,9 +976,9 @@ template <typename T, int t_n> Q_CX_ABLE T sum(const vec<T, t_n> & v);
 
 template <typename T, int t_n> Q_CX_ABLE T product(const vec<T, t_n> & v);
 
-template <typename T, int t_n> Q_CX_ABLE bool disjunction(const vec<T, t_n> & v);
+template <typename T, int t_n> Q_CX_ABLE bool disjunct(const vec<T, t_n> & v);
 
-template <typename T, int t_n> Q_CX_ABLE bool conjunction(const vec<T, t_n> & v);
+template <typename T, int t_n> Q_CX_ABLE bool conjunct(const vec<T, t_n> & v);
 
 
 
@@ -2974,7 +2974,7 @@ Q_CX_ABLE T product(const vec<T, t_n> & v) {
 }
 
 template <typename T, int t_n>
-Q_CX_ABLE bool conjunction(const vec<T, t_n> & v) {
+Q_CX_ABLE bool conjunct(const vec<T, t_n> & v) {
     if constexpr (t_n == 1) return v.x;
     if constexpr (t_n == 2) return v.x && v.y;
     if constexpr (t_n == 3) return v.x && v.y && v.z;
@@ -2982,7 +2982,7 @@ Q_CX_ABLE bool conjunction(const vec<T, t_n> & v) {
 }
 
 template <typename T, int t_n>
-Q_CX_ABLE bool disjunction(const vec<T, t_n> & v) {
+Q_CX_ABLE bool disjunct(const vec<T, t_n> & v) {
     if constexpr (t_n == 1) return v.x;
     if constexpr (t_n == 2) return v.x || v.y;
     if constexpr (t_n == 3) return v.x || v.y || v.z;

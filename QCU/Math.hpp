@@ -145,17 +145,17 @@ inline fvec3 baryFromAngleC(float angle, float c) {
 template <typename T, eif_floating_t<T> = 0>
 inline vec2<T> pointOnDiscFibonacci(nat i, nat n) {
     return polarToCartesian(qcu::vec2<T>(
-        std::sqrt(T(i) / T(n)),
-        phi<T> * T(i)
+        std::sqrt(T(i) / T(n - 1)),
+        T(2.0) * pi<T> * (T(2.0) - phi<T>) * T(i)
     ));
 }
 
 template <typename T, eif_floating_t<T> = 0>
 inline vec3<T> pointOnSphereFibonacci(nat i, nat n) {
-    T z((1 - 1 / T(n)) * (1 - 2 * T(i) /  T(n - 1)));
+    T z(T(1.0) - T(2 * i) / T(n - 1));
     return cylindricToCartesian(qcu::vec3<T>(
-        std::sqrt(1 - z * z),
-        phi<T> * T(i),
+        std::sqrt(T(1.0) - z * z),
+        T(2.0) * pi<T> * (T(2.0) - phi<T>) * T(i),
         z
     ));
 }

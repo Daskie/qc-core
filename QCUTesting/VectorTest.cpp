@@ -1024,15 +1024,15 @@ void compileFunctionsBT() {
     !b3;
     !b4;
     
-    qcu::conjunction(b1);
-    qcu::conjunction(b2);
-    qcu::conjunction(b3);
-    qcu::conjunction(b4);
+    qcu::conjunct(b1);
+    qcu::conjunct(b2);
+    qcu::conjunct(b3);
+    qcu::conjunct(b4);
 
-    qcu::disjunction(b1);
-    qcu::disjunction(b2);
-    qcu::disjunction(b3);
-    qcu::disjunction(b4);
+    qcu::disjunct(b1);
+    qcu::disjunct(b2);
+    qcu::disjunct(b3);
+    qcu::disjunct(b4);
 }
 
 void compileFunctions() {
@@ -1480,15 +1480,15 @@ constexpr void compileBoolFunctionsConstexpr() {
     //!b3;
     //!b4;
 
-    //qcu::conjunction(b1);
-    //qcu::conjunction(b2);
-    //qcu::conjunction(b3);
-    //qcu::conjunction(b4);
+    //qcu::conjunct(b1);
+    //qcu::conjunct(b2);
+    //qcu::conjunct(b3);
+    //qcu::conjunct(b4);
 
-    //qcu::disjunction(b1);
-    //qcu::disjunction(b2);
-    //qcu::disjunction(b3);
-    //qcu::disjunction(b4);
+    //qcu::disjunct(b1);
+    //qcu::disjunct(b2);
+    //qcu::disjunct(b3);
+    //qcu::disjunct(b4);
 }
 
 constexpr bool compileFunctionsConstexpr() {
