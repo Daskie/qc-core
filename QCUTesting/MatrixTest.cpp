@@ -306,6 +306,9 @@ void compileFunctionsT() {
     qcu::mat3<T> m3;
     qcu::mat4<T> m4;
 
+    qcu::isIdentity(m2);
+    qcu::isIdentity(m3);
+    qcu::isIdentity(m4);
     qcu::transpose(m2);
     qcu::transpose(m3);
     qcu::transpose(m4);

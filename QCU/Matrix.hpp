@@ -329,6 +329,8 @@ template <typename T, int t_m, int t_n> inline std::ostream & operator<<(std::os
 
 //--- uncategorized ---
 
+template <typename T, int t_n> inline bool isIdentity(const mat<T, t_n, t_n> & m);
+
 template <typename T, int t_m, int t_n> inline mat<T, t_n, t_m> transpose(const mat<T, t_m, t_n> & m);
 
 template <typename T, int t_m, int t_n> inline mat<T, t_m, t_n> cofactor(const mat<T, t_m, t_n> & m);
@@ -1527,6 +1529,40 @@ inline std::ostream & operator<<(std::ostream & os, const mat<T, t_m, t_n> & m) 
 // Other
 
 
+
+//--- isIdentity ---
+
+template <typename T, int t_n>
+inline bool isIdentity(const mat<T, t_n, t_n> & m) {
+    if constexpr (t_n == 1) {
+        return
+            m.x1 == T(1.0);
+    }
+
+    if constexpr (t_n == 2) {
+        return
+            m.x1 == T(1.0) && m.y2 == T(1.0) &&
+            m.x2 == T(0.0) &&
+            m.y1 == T(0.0);
+    }
+
+    if constexpr (t_n == 3) {
+        return
+            m.x1 == T(1.0) && m.y2 == T(1.0) && m.z3 == T(1.0) &&
+            m.x2 == T(0.0) && m.x3 == T(0.0) &&
+            m.y1 == T(0.0) && m.y3 == T(0.0) &&
+            m.z1 == T(0.0) && m.z2 == T(0.0);
+    }
+
+    if constexpr (t_n == 4) {
+        return
+            m.x1 == T(1.0) && m.y2 == T(1.0) && m.z3 == T(1.0) && m.w4 == T(1.0) &&
+            m.x2 == T(0.0) && m.x3 == T(0.0) && m.x4 == T(0.0) &&
+            m.y1 == T(0.0) && m.y3 == T(0.0) && m.y4 == T(0.0) &&
+            m.z1 == T(0.0) && m.z2 == T(0.0) && m.z4 == T(0.0) &&
+            m.w1 == T(0.0) && m.w2 == T(0.0) && m.w3 == T(0.0);
+    }
+}
 
 //--- transpose ---
 
