@@ -852,6 +852,11 @@ void compileFunctionsT() {
     qcu::clamp(v3, v3, v3);
     qcu::clamp(v4, v4, v4);
 
+    qcu::clamp(v1, s1);
+    qcu::clamp(v2, s2);
+    qcu::clamp(v3, s3);
+    qcu::clamp(v4, s4);
+
     qcu::abs(v1);
     qcu::abs(v2);
     qcu::abs(v3);
@@ -1351,6 +1356,11 @@ constexpr void compileFunctionsConstexprT() {
     //qcu::clamp(v2, v2, v2);
     //qcu::clamp(v3, v3, v3);
     //qcu::clamp(v4, v4, v4);
+
+    //qcu::clamp(v1, s1);
+    //qcu::clamp(v2, s2);
+    //qcu::clamp(v3, s3);
+    //qcu::clamp(v4, s4);
 
     //qcu::abs(v1);
     //qcu::abs(v2);

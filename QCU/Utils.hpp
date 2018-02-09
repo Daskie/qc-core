@@ -163,9 +163,14 @@ inline T rand() {
     return dist(mt);
 }
 
-template <typename T, eif_floating_t<T> = 0>
+template <typename T, eif_arithmetic_t<T> = 0>
 inline T rand(T min, T max) {
-    return rand<T>() * (max - min) + min;
+    if constexpr (std::is_floating_point_v<T>) {
+        return rand<T>() * (max - min) + min;
+    }
+    if constexpr (std::is_integral_v<T>) {
+        return T(rand<double>() * double(max - min)) + min;
+    }
 }
 
 template <typename T, eif_floating_t<T> = 0>
@@ -175,9 +180,46 @@ inline T randCheap() {
     return std::rand() * inv_max;
 }
 
-template <typename T, eif_floating_t<T> = 0>
+template <typename T, eif_arithmetic_t<T> = 0>
 inline T randCheap(T min, T max) {
-    return randCheap<T>() * (max - min) + min;
+    if constexpr (std::is_floating_point_v<T>) {
+        return randCheap<T>() * (max - min) + min;
+    }
+    if constexpr (std::is_integral_v<T>) {
+        return std::rand() % (max - min + 1) + min;
+    }
+}
+
+template <typename T, int t_n, eif_floating_t<T> = 0>
+inline vec<T, t_n> randVec() {
+    if constexpr (t_n == 1) {
+        return vec1<T>(rand<T>());
+    }
+    if constexpr (t_n == 2) {
+        return vec2<T>(rand<T>(), rand<T>());
+    }
+    if constexpr (t_n == 3) {
+        return vec3<T>(rand<T>(), rand<T>(), rand<T>());
+    }
+    if constexpr (t_n == 4) {
+        return vec4<T>(rand<T>(), rand<T>(), rand<T>(), rand<T>());
+    }
+}
+
+template <typename T, int t_n, eif_arithmetic_t<T> = 0>
+inline vec<T, t_n> randVec(T min, T max) {
+    if constexpr (t_n == 1) {
+        return vec1<T>(rand(min, max));
+    }
+    if constexpr (t_n == 2) {
+        return vec2<T>(rand(min, max), rand(min, max));
+    }
+    if constexpr (t_n == 3) {
+        return vec3<T>(rand(min, max), rand(min, max), rand(min, max));
+    }
+    if constexpr (t_n == 4) {
+        return vec4<T>(rand(min, max), rand(min, max), rand(min, max), rand(min, max));
+    }
 }
 
 constexpr unsigned char toByte(float x) {

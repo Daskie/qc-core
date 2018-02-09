@@ -1190,6 +1190,9 @@ Q_CX_ABLE vec<T, t_n> clamp(const vec<T, t_n> & v, const T & min, const T & max)
 template <typename T, int t_n>
 Q_CX_ABLE vec<T, t_n> clamp(const vec<T, t_n> & v, const vec<T, t_n> & min, const vec<T, t_n> & max);
 
+template <typename T, int t_n>
+Q_CX_ABLE vec<T, t_n> clamp(const vec<T, t_n> & v, const span<T, t_n> & span);
+
 
 
 //==============================================================================
@@ -1836,32 +1839,32 @@ inline vec2<T> & vec<T, 3>::tp() {
 
 template <typename T>
 inline const vec2<T> & vec<T, 3>::xy() const {
-    return *reinterpret_cast<vec2<T> *>(&x);
+    return *reinterpret_cast<const vec2<T> *>(&x);
 }
 
 template <typename T>
 inline const vec2<T> & vec<T, 3>::rg() const {
-    return *reinterpret_cast<vec2<T> *>(&r);
+    return *reinterpret_cast<const vec2<T> *>(&r);
 }
 
 template <typename T>
 inline const vec2<T> & vec<T, 3>::st() const {
-    return *reinterpret_cast<vec2<T> *>(&s);
+    return *reinterpret_cast<const vec2<T> *>(&s);
 }
 
 template <typename T>
 inline const vec2<T> & vec<T, 3>::yz() const {
-    return *reinterpret_cast<vec2<T> *>(&y);
+    return *reinterpret_cast<const vec2<T> *>(&y);
 }
 
 template <typename T>
 inline const vec2<T> & vec<T, 3>::gb() const {
-    return *reinterpret_cast<vec2<T> *>(&g);
+    return *reinterpret_cast<const vec2<T> *>(&g);
 }
 
 template <typename T>
 inline const vec2<T> & vec<T, 3>::tp() const {
-    return *reinterpret_cast<vec2<T> *>(&t);
+    return *reinterpret_cast<const vec2<T> *>(&t);
 }
 
 
@@ -2249,77 +2252,77 @@ inline vec3<T> & vec<T, 4>::tpq() {
 
 template <typename T>
 inline const vec2<T> & vec<T, 4>::xy() const {
-    return *reinterpret_cast<vec2<T> *>(&x);
+    return *reinterpret_cast<const vec2<T> *>(&x);
 }
 
 template <typename T>
 inline const vec2<T> & vec<T, 4>::rg() const {
-    return *reinterpret_cast<vec2<T> *>(&r);
+    return *reinterpret_cast<const vec2<T> *>(&r);
 }
 
 template <typename T>
 inline const vec2<T> & vec<T, 4>::st() const {
-    return *reinterpret_cast<vec2<T> *>(&s);
+    return *reinterpret_cast<const vec2<T> *>(&s);
 }
 
 template <typename T>
 inline const vec2<T> & vec<T, 4>::yz() const {
-    return *reinterpret_cast<vec2<T> *>(&y);
+    return *reinterpret_cast<const vec2<T> *>(&y);
 }
 
 template <typename T>
 inline const vec2<T> & vec<T, 4>::gb() const {
-    return *reinterpret_cast<vec2<T> *>(&g);
+    return *reinterpret_cast<const vec2<T> *>(&g);
 }
 
 template <typename T>
 inline const vec2<T> & vec<T, 4>::tp() const {
-    return *reinterpret_cast<vec2<T> *>(&t);
+    return *reinterpret_cast<const vec2<T> *>(&t);
 }
 
 template <typename T>
 inline const vec2<T> & vec<T, 4>::zw() const {
-    return *reinterpret_cast<vec2<T> *>(&z);
+    return *reinterpret_cast<const vec2<T> *>(&z);
 }
 
 template <typename T>
 inline const vec2<T> & vec<T, 4>::ba() const {
-    return *reinterpret_cast<vec2<T> *>(&b);
+    return *reinterpret_cast<const vec2<T> *>(&b);
 }
 
 template <typename T>
 inline const vec2<T> & vec<T, 4>::pq() const {
-    return *reinterpret_cast<vec2<T> *>(&p);
+    return *reinterpret_cast<const vec2<T> *>(&p);
 }
 
 template <typename T>
 inline const vec3<T> & vec<T, 4>::xyz() const {
-    return *reinterpret_cast<vec3<T> *>(&x);
+    return *reinterpret_cast<const vec3<T> *>(&x);
 }
 
 template <typename T>
 inline const vec3<T> & vec<T, 4>::yzw() const {
-    return *reinterpret_cast<vec3<T> *>(&y);
+    return *reinterpret_cast<const vec3<T> *>(&y);
 }
 
 template <typename T>
 inline const vec3<T> & vec<T, 4>::rgb() const {
-    return *reinterpret_cast<vec3<T> *>(&r);
+    return *reinterpret_cast<const vec3<T> *>(&r);
 }
 
 template <typename T>
 inline const vec3<T> & vec<T, 4>::gba() const {
-    return *reinterpret_cast<vec3<T> *>(&g);
+    return *reinterpret_cast<const vec3<T> *>(&g);
 }
 
 template <typename T>
 inline const vec3<T> & vec<T, 4>::stp() const {
-    return *reinterpret_cast<vec3<T> *>(&s);
+    return *reinterpret_cast<const vec3<T> *>(&s);
 }
 
 template <typename T>
 inline const vec3<T> & vec<T, 4>::tpq() const {
-    return *reinterpret_cast<vec3<T> *>(&t);
+    return *reinterpret_cast<const vec3<T> *>(&t);
 }
 
 
@@ -3269,6 +3272,11 @@ Q_CX_ABLE vec<T, t_n> clamp(const vec<T, t_n> & v, const vec<T, t_n> & min, cons
     if constexpr (t_n == 2) return vec2<T>(clamp(v.x, min.x, max.x), clamp(v.y, min.y, max.y));
     if constexpr (t_n == 3) return vec3<T>(clamp(v.x, min.x, max.x), clamp(v.y, min.y, max.y), clamp(v.z, min.z, max.z));
     if constexpr (t_n == 4) return vec4<T>(clamp(v.x, min.x, max.x), clamp(v.y, min.y, max.y), clamp(v.z, min.z, max.z), clamp(v.w, min.w, max.w));
+}
+
+template <typename T, int t_n>
+Q_CX_ABLE vec<T, t_n> clamp(const vec<T, t_n> & v, const span<T, t_n> & span) {
+    return clamp(v, span.min, span.max);
 }
 
 template <typename T, int t_n>

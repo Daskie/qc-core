@@ -21,7 +21,9 @@ class Depot {
 
     static qhm::Map<const T *, std::unique_ptr<T>> s_store;
 
-    Depot();
+    private:
+
+    Depot() = default;
 
     public:
 
