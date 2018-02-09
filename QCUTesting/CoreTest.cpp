@@ -1,6 +1,6 @@
 #include "QCUTest.hpp"
 
-#include "QCU/Core.hpp"
+#include "QCU/CoreFunc.hpp"
 
 
 

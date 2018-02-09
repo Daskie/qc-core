@@ -97,7 +97,8 @@ nat Clock::cycles() const {
 }
 
 double Clock::time() const {
-    return fract(age());
+    double a(age());
+    return a - nat(a);
 }
 
 double Clock::period() const {

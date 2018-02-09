@@ -4,7 +4,7 @@
 
 #include <cmath>
 
-#include "Matrix.hpp"
+#include "MatrixFunc.hpp"
 
 
 

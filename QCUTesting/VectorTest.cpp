@@ -1,6 +1,8 @@
 #include "QCUTest.hpp"
 
-#include "QCU/Vector.hpp"
+#include <sstream>
+
+#include "QCU/VectorFunc.hpp"
 
 
 
@@ -45,9 +47,6 @@ void compileClassesT() {
 
     v1.at<0>();
 
-    // other
-    v1.toString();
-
     //--------------------------------------------------------------------------
     // Vec2
 
@@ -77,9 +76,6 @@ void compileClassesT() {
 
     v2.at<0>();
     v2.at<1>();
-
-    // other
-    v2.toString();
 
     //--------------------------------------------------------------------------
     // Vec3
@@ -122,9 +118,6 @@ void compileClassesT() {
 
     v3.xy(); v3.rg(); v3.st();
     v3.yz(); v3.gb(); v3.tp();
-
-    // other
-    v3.toString();
 
     //--------------------------------------------------------------------------
     // Vec4
@@ -192,9 +185,6 @@ void compileClassesT() {
     v4.xyz(); v4.rgb(); v4.stp();
     v4.yzw(); v4.gba(); v4.tpq();
 
-    // other
-    v4.toString();
-
     //--------------------------------------------------------------------------
     // Span1
 
@@ -208,9 +198,6 @@ void compileClassesT() {
     // asignment operators
     s1 = s1;
     s1 = std::move(s1);
-
-    // other
-    s1.toString();
 
     //--------------------------------------------------------------------------
     // Span2
@@ -226,9 +213,6 @@ void compileClassesT() {
     s2 = s2;
     s2 = std::move(s2);
 
-    // other
-    s2.toString();
-
     //--------------------------------------------------------------------------
     // Span3
 
@@ -243,9 +227,6 @@ void compileClassesT() {
     s3 = s3;
     s3 = std::move(s3);
 
-    // other
-    s3.toString();
-
     //--------------------------------------------------------------------------
     // Span4
 
@@ -259,9 +240,6 @@ void compileClassesT() {
     // asignment operators
     s4 = s4;
     s4 = std::move(s4);
-
-    // other
-    s4.toString();
 }
 
 void compileClasses() {

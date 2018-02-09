@@ -1,6 +1,8 @@
 #include "QCUTest.hpp"
 
-#include "QCU/Matrix.hpp"
+#include <sstream>
+
+#include "QCU/MatrixFunc.hpp"
 
 
 
@@ -80,7 +82,6 @@ void compileClassesT() {
     m2 != m2;
 
     // other
-    m2.toString();
     os << m2;
 
     //--------------------------------------------------------------------------
@@ -144,7 +145,6 @@ void compileClassesT() {
     m3 != m3;
 
     // other
-    m3.toString();
     os << m3;
 
     //--------------------------------------------------------------------------
@@ -209,7 +209,6 @@ void compileClassesT() {
     m4 != m4;
 
     // other
-    m4.toString();
     os << m4;
 }
 

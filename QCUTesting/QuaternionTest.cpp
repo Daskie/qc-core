@@ -1,6 +1,8 @@
 #include "QCUTest.hpp"
 
-#include "QCU/Quaternion.hpp"
+#include <sstream>
+
+#include "QCU/QuaternionFunc.hpp"
 
 
 
@@ -55,7 +57,6 @@ void compileClassesT() {
     q != q;
 
     // other
-    q.toString();
     os << q;
 }
 
