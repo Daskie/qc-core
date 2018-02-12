@@ -53,7 +53,3 @@ template <typename T> qhm::Map<const T *, std::unique_ptr<T>> Depot<T>::s_store;
 
 
 }
-
-
-
-}
