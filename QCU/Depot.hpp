@@ -41,15 +41,18 @@ class Depot {
         if (it == s_store.end()) {
             return nullptr;
         }
-        std::unique_ptr<T> e(std::move(*it));
+        std::unique_ptr<T> e(std::move(it->second));
         s_store.erase(it);
         return e;
     }
 
 };
 
-template <typename T>
-qhm::Map<const T *, std::unique_ptr<T>> Depot<T>::s_store;
+template <typename T> qhm::Map<const T *, std::unique_ptr<T>> Depot<T>::s_store;
+
+
+
+}
 
 
 

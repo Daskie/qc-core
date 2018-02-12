@@ -154,13 +154,19 @@ inline unsigned char trailingZeroes(u32 x) {
     return count;
 }
 
-template <typename T, eif_floating_t<T> = 0>
+template <typename T, eif_arithmetic_t<T> = 0>
 inline T rand() {
     static std::mt19937 mt(static_cast<std::mt19937::result_type>(std::chrono::system_clock::now().time_since_epoch().count()));
     //static std::mt19937 mt(0);
-    static std::uniform_real_distribution<T> dist(T(0.0), T(1.0));
 
-    return dist(mt);
+    if constexpr (std::is_floating_point_v<T>) {
+        static std::uniform_real_distribution<T> dist(T(0.0), T(1.0));
+        return dist(mt);
+    }
+    if constexpr (std::is_integral_v<T>) {
+        static std::uniform_real_distribution<double> dist(0.0, 1.0);
+        return T(std::round(dist(mt) * double(RAND_MAX)));
+    }
 }
 
 template <typename T, eif_arithmetic_t<T> = 0>
@@ -169,15 +175,19 @@ inline T rand(T min, T max) {
         return rand<T>() * (max - min) + min;
     }
     if constexpr (std::is_integral_v<T>) {
-        return T(rand<double>() * double(max - min)) + min;
+        return rand<T>() % (max - min + 1) + min;
     }
 }
 
-template <typename T, eif_floating_t<T> = 0>
+template <typename T, eif_arithmetic_t<T> = 0>
 inline T randCheap() {
-    constexpr T inv_max(T(1.0) / RAND_MAX);
-
-    return std::rand() * inv_max;
+    if constexpr (std::is_floating_point_v<T>) {
+        constexpr T inv_max(T(1.0) / T(RAND_MAX));
+        return std::rand() * inv_max;
+    }
+    if constexpr (std::is_integral_v<T>) {
+        return T(std::rand());
+    }
 }
 
 template <typename T, eif_arithmetic_t<T> = 0>
@@ -186,7 +196,7 @@ inline T randCheap(T min, T max) {
         return randCheap<T>() * (max - min) + min;
     }
     if constexpr (std::is_integral_v<T>) {
-        return std::rand() % (max - min + 1) + min;
+        return randCheap() % (max - min + 1) + min;
     }
 }
 

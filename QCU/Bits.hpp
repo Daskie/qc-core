@@ -2,7 +2,7 @@
 
 
 
-#include "Core.hpp"
+#include "CoreFunc.hpp"
 
 
 
@@ -15,10 +15,10 @@ namespace bits {
 
 
 template <typename T, eif_uintegral_t<T> = 0>
-T rotateL(T v, int n);
+constexpr T rotateL(T v, int n);
 
 template <typename T, eif_uintegral_t<T> = 0>
-T rotateR(T v, int n);
+constexpr T rotateR(T v, int n);
 
 template <typename SrcT, typename DstT, eif_t<std::is_integral_v<SrcT> && std::is_integral_v<DstT> && std::is_unsigned_v<SrcT> && std::is_unsigned_v<DstT> && (sizeof(DstT) > sizeof(SrcT))> = 0>
 DstT spread(SrcT v);
@@ -100,23 +100,13 @@ inline T interleave(T v) {
 }
 
 template <typename T, eif_uintegral_t<T>>
-inline T rotateL(T v, int n) {
-    if constexpr (std::is_unsigned_v<T>) {
-        return (v << n) | (v >> (sizeof(T) * 8 - n));
-    }
-    if constexpr (std::is_signed_v<T>) {
-        return rotateL(std::make_unsigned_t<T>(v), n);
-    }
+constexpr T rotateL(T v, int n) {
+    return (v << n) | (v >> (sizeof(T) * 8 - n));
 }
 
 template <typename T, eif_uintegral_t<T>>
-inline T rotateR(T v, int n) {
-    if constexpr (std::is_unsigned_v<T>) {
-        return (v >> n) | (v << (sizeof(T) * 8 - n));
-    }
-    if constexpr (std::is_signed_v<T>) {
-        return rotateR(std::make_unsigned_t<T>(v), n);
-    }
+constexpr T rotateR(T v, int n) {
+    return (v >> n) | (v << (sizeof(T) * 8 - n));
 }
 
 template <typename T, eif_uintegral_t<T>>

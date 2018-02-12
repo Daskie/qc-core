@@ -69,7 +69,9 @@ template <int t_p> using precision_ft = typename precision<t_p>::ftype;
 
 template <typename T1, typename T2> using match_sign_t = std::conditional_t<std::is_signed_v<T2>, std::make_signed_t<T1>, std::make_unsigned_t<T1>>;
 
-template <typename T1, typename T2> constexpr bool equivocal_v = std::is_same_v<std::decay_t<T1>, std::decay_t<T2>>;
+template <typename T> using remove_cvref_t = std::remove_cv_t<std::remove_reference_t<T>>;
+
+template <typename T1, typename T2> constexpr bool equivocal_v = std::is_same_v<remove_cvref_t<T1>, remove_cvref_t<T2>>;
 
 }
 

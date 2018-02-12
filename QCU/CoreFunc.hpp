@@ -19,7 +19,7 @@ template <typename T, eif_arithmetic_t<T> = 0>
 Q_CX_ABLE T abs(T v);
 
 template <typename T, eif_arithmetic_t<T> = 0>
-Q_CX_ABLE bool zero(T v, T e = std::numeric_limits<T>::min());
+Q_CX_ABLE bool zero(T v, T e = std::numeric_limits<T>::epsilon());
 
 template <typename T>
 Q_CX_ABLE bool equal(const T & v1, const T & v2);
@@ -28,7 +28,7 @@ template <typename T, typename... Ts>
 Q_CX_ABLE bool equal(const T & v1, const T & v2, const Ts &... rest);
 
 template <typename T, eif_floating_t<T> = 0>
-Q_CX_ABLE bool equalE(T v1, T v2, T e = std::numeric_limits<T>::min());
+Q_CX_ABLE bool equalE(T v1, T v2, T e = std::numeric_limits<T>::epsilon());
 
 template <typename T, eif_arithmetic_t<T> = 0>
 Q_CX_ABLE T sign(T v);
@@ -56,10 +56,10 @@ template <typename T, eif_integral_t<T> = 0>
 Q_CONSTEX bool isPow2(T v);
 
 template <typename T, eif_integral_t<T> = 0>
-Q_CX_ABLE T log2Floor(T v);
+Q_CONSTEX T log2Floor(T v);
 
 template <typename T, eif_integral_t<T> = 0>
-Q_CX_ABLE T log2Ceil(T v);
+Q_CONSTEX T log2Ceil(T v);
 
 template <typename T, eif_integral_t<T> = 0>
 Q_CX_ABLE T floor2(T v);
@@ -106,10 +106,10 @@ template <typename T, eif_floating_t<T> = 0, typename... Args>
 Q_CX_ABLE T average(T v, Args... args);
 
 template <typename T, eif_floating_t<T> = 0>
-Q_CONSTEX T radians(T degrees);
+Q_CX_ABLE T radians(T degrees);
 
 template <typename T, eif_floating_t<T> = 0>
-Q_CONSTEX T degrees(T radians);
+Q_CX_ABLE T degrees(T radians);
 
 // converts between normalized types
 // works with floats and integers, signed and unsigned
@@ -214,7 +214,7 @@ Q_CONSTEX bool isPow2(T v) {
 }
 
 template <typename T, eif_integral_t<T>>
-Q_CX_ABLE T log2Floor(T v) {
+Q_CONSTEX T log2Floor(T v) {
     static_assert(sizeof(T) <= 8, "log2 function needs updated for larger integer types");
 
     T log(0);
@@ -236,7 +236,7 @@ Q_CX_ABLE T log2Floor(T v) {
 }
 
 template <typename T, eif_integral_t<T>>
-Q_CX_ABLE T log2Ceil(T v) {
+Q_CONSTEX T log2Ceil(T v) {
     return log2Floor(2 * v - 1);
 }
 
@@ -341,12 +341,12 @@ Q_CX_ABLE T average(T v, Args... args) {
 }
 
 template <typename T, eif_floating_t<T>>
-Q_CONSTEX T radians(T degrees) {
+Q_CX_ABLE T radians(T degrees) {
     return degrees * pi<T> / T(180.0);
 }
 
 template <typename T, eif_floating_t<T>>
-Q_CONSTEX T degrees(T radians) {
+Q_CX_ABLE T degrees(T radians) {
     return radians * T(180.0) / pi<T>;
 }
 

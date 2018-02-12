@@ -9,6 +9,7 @@
 
 
 #include <iostream>
+#include <string>
 
 #include "Core.hpp"
 
