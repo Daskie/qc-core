@@ -56,10 +56,10 @@ template <typename T, eif_integral_t<T> = 0>
 Q_CONSTEX bool isPow2(T v);
 
 template <typename T, eif_integral_t<T> = 0>
-Q_CONSTEX T log2Floor(T v);
+Q_CONSTEX int log2Floor(T v);
 
 template <typename T, eif_integral_t<T> = 0>
-Q_CONSTEX T log2Ceil(T v);
+Q_CONSTEX int log2Ceil(T v);
 
 template <typename T, eif_integral_t<T> = 0>
 Q_CX_ABLE T floor2(T v);
@@ -214,10 +214,10 @@ Q_CONSTEX bool isPow2(T v) {
 }
 
 template <typename T, eif_integral_t<T>>
-Q_CONSTEX T log2Floor(T v) {
-    static_assert(sizeof(T) <= 8, "log2 function needs updated for larger integer types");
+Q_CONSTEX int log2Floor(T v) {
+    static_assert(sizeof(T) <= 8, "log2Floor function needs updated for larger integer types");
 
-    T log(0);
+    int log(0);
 
     if constexpr (sizeof(T) >= 8) {
         if (v & 0xFFFFFFFF00000000ULL) { v >>= 32; log += 32; }
@@ -236,7 +236,7 @@ Q_CONSTEX T log2Floor(T v) {
 }
 
 template <typename T, eif_integral_t<T>>
-Q_CONSTEX T log2Ceil(T v) {
+Q_CONSTEX int log2Ceil(T v) {
     return log2Floor(2 * v - 1);
 }
 

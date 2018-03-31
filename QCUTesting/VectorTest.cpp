@@ -865,6 +865,11 @@ void compileFunctionsT() {
     qcu::ceil(v3);
     qcu::ceil(v4);
 
+    qcu::composite(v1, v1);
+    qcu::composite(v2, v2);
+    qcu::composite(v3, v3);
+    qcu::composite(v4, v4);
+
     qcu::intersect(s1, s1);
     qcu::intersect(s2, s2);
     qcu::intersect(s3, s3);
@@ -1369,6 +1374,11 @@ constexpr void compileFunctionsConstexprT() {
     //qcu::ceil(v2);
     //qcu::ceil(v3);
     //qcu::ceil(v4);
+
+    //qcu::composite(v1, v1);
+    //qcu::composite(v2, v2);
+    //qcu::composite(v3, v3);
+    //qcu::composite(v4, v4);
 
     //qcu::toSpan(s1);
     //qcu::toSpan(s2);

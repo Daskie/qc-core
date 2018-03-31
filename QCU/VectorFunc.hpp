@@ -277,6 +277,15 @@ Q_CX_ABLE T mipmaps(const vec<T, t_n> & size);
 
 
 
+//==============================================================================
+// composite
+//------------------------------------------------------------------------------
+
+template <typename T, int t_n>
+Q_CX_ABLE vec<T, t_n> composite(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+
+
+
 //==============================================================================================================================================================
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -615,6 +624,34 @@ Q_CX_ABLE span<T, t_n> intersect(const span<T, t_n> & s1, const span<T, t_n> & s
 template <typename T, int t_n, eif_integral_t<T>>
 Q_CX_ABLE T mipmaps(const vec<T, t_n> & size) {
     return mipmaps(max(size));
+}
+
+template <typename T, int t_n>
+Q_CX_ABLE vec<T, t_n> composite(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {    
+    vec<T, t_n> v;
+
+    if constexpr (t_n >= 1) {
+        if      (v1.x > T(0) && v2.x > T(0)) v.x = qcu::max(v1.x, v2.x);
+        else if (v1.x < T(0) && v2.x < T(0)) v.x = qcu::min(v1.x, v2.x);
+        else                                 v.x = v1.x + v2.x;
+    }
+    if constexpr (t_n >= 2) {
+        if      (v1.y > T(0) && v2.y > T(0)) v.y = qcu::max(v1.y, v2.y);
+        else if (v1.y < T(0) && v2.y < T(0)) v.y = qcu::min(v1.y, v2.y);
+        else                                 v.y = v1.y + v2.y;
+    }
+    if constexpr (t_n >= 3) {
+        if      (v1.z > T(0) && v2.z > T(0)) v.z = qcu::max(v1.z, v2.z);
+        else if (v1.z < T(0) && v2.z < T(0)) v.z = qcu::min(v1.z, v2.z);
+        else                                 v.z = v1.z + v2.z;
+    }
+    if constexpr (t_n >= 4) {
+        if      (v1.w > T(0) && v2.w > T(0)) v.w = qcu::max(v1.w, v2.w);
+        else if (v1.w < T(0) && v2.w < T(0)) v.w = qcu::min(v1.w, v2.w);
+        else                                 v.w = v1.w + v2.w;
+    }
+
+    return v;
 }
 
 

@@ -228,13 +228,19 @@ struct CriticalDampener : public Dampener<T> {
 };
 
 template <typename T, typename U, eif_floating_t<T> = 0>
-void dampen(U & pos, U & vel, const U & targetPos, T angularFreq, T dt) {
+void dampen(U & r_pos, const U & targetPos, U & r_vel, T angularFreq, T dt) {
+    U dist(r_pos - targetPos);
+    dampen(dist, r_vel, angularFreq, dt);
+    r_pos = targetPos - dist;
+}
+
+template <typename T, typename U, eif_floating_t<T> = 0>
+void dampen(U & r_dist, U & r_vel, T angularFreq, T dt) {
     T expTerm(std::exp(-angularFreq * dt));
-    U dp(pos - targetPos);
-    U c1(vel + angularFreq * dp);
-    U c2((c1 * dt + dp) * expTerm);
-    pos = targetPos + c2;
-    vel = c1 * expTerm - c2 * angularFreq;
+    U c1(r_vel + angularFreq * r_dist);
+    U c2((c1 * dt + r_dist) * expTerm);
+    r_dist = -c2;
+    r_vel = c1 * expTerm - c2 * angularFreq;
 }
 
 template <typename T>
