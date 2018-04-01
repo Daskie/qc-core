@@ -1,6 +1,6 @@
-#include "QCUTest.hpp"
+#include "QCoreTest.hpp"
 
-#include "QCU/CoreFunc.hpp"
+#include "QCore/CoreFunc.hpp"
 
 
 
@@ -9,46 +9,46 @@ namespace {
 
 
 void compileTyping() {
-    qcu::nat nat_;   nat_;
-    qcu::unat unat_; unat_;
+    qc::nat nat_;   nat_;
+    qc::unat unat_; unat_;
 
-    qcu::operator""_n(0);
-    qcu::operator""_un(0);
+    qc::operator""_n(0);
+    qc::operator""_un(0);
 
-    qcu::s08 s08_; s08_;
-    qcu::u08 u08_; u08_;
-    qcu::s16 s16_; s16_;
-    qcu::u16 u16_; u16_;
-    qcu::s32 s32_; s32_;
-    qcu::u32 u32_; u32_;
-    qcu::f32 f32_; f32_;
-    qcu::s64 s64_; s64_;
-    qcu::u64 u64_; u64_;
-    qcu::f64 f64_; f64_;
+    qc::s08 s08_; s08_;
+    qc::u08 u08_; u08_;
+    qc::s16 s16_; s16_;
+    qc::u16 u16_; u16_;
+    qc::s32 s32_; s32_;
+    qc::u32 u32_; u32_;
+    qc::f32 f32_; f32_;
+    qc::s64 s64_; s64_;
+    qc::u64 u64_; u64_;
+    qc::f64 f64_; f64_;
 
-    qcu::array_t<int> a0{ 1, 2, 3 }; a0;
-    qcu::array_t<int, 1> a1; a1;
+    qc::array_t<int> a0{ 1, 2, 3 }; a0;
+    qc::array_t<int, 1> a1; a1;
 
-    qcu::precision<1>::stype p08s_; p08s_;
-    qcu::precision<2>::stype p16s_; p16s_;
-    qcu::precision<4>::stype p32s_; p32s_;
-    qcu::precision<8>::stype p64s_; p64s_;
-    qcu::precision<1>::utype p08u_; p08u_;
-    qcu::precision<2>::utype p16u_; p16u_;
-    qcu::precision<4>::utype p32u_; p32u_;
-    qcu::precision<8>::utype p64u_; p64u_;
-    qcu::precision<4>::ftype p32f_; p32f_;
-    qcu::precision<8>::ftype p64f_; p64f_;
+    qc::precision<1>::stype p08s_; p08s_;
+    qc::precision<2>::stype p16s_; p16s_;
+    qc::precision<4>::stype p32s_; p32s_;
+    qc::precision<8>::stype p64s_; p64s_;
+    qc::precision<1>::utype p08u_; p08u_;
+    qc::precision<2>::utype p16u_; p16u_;
+    qc::precision<4>::utype p32u_; p32u_;
+    qc::precision<8>::utype p64u_; p64u_;
+    qc::precision<4>::ftype p32f_; p32f_;
+    qc::precision<8>::ftype p64f_; p64f_;
 }
 
 template <typename T>
 void compileConstantsT() {
-    qcu::pi<T>;
-    qcu::e<T>;
-    qcu::phi<T>;
-    qcu::infinity<T>;
-    qcu::sqrt<2, T>;
-    qcu::sqrt<1000, T>;
+    qc::pi<T>;
+    qc::e<T>;
+    qc::phi<T>;
+    qc::infinity<T>;
+    qc::sqrt<2, T>;
+    qc::sqrt<1000, T>;
 }
 
 void compileConstants() {
@@ -61,7 +61,7 @@ template <typename T1, typename T2>
 void compileFunctionsTT() {
     T1 v(1);
 
-    qcu::transnorm<T2>(v);
+    qc::transnorm<T2>(v);
 }
 
 template <typename T>
@@ -82,91 +82,91 @@ void compileFunctionsT() {
 
     T v(1);
 
-    qcu::min(v, v);
-    qcu::min(v, v, v);
+    qc::min(v, v);
+    qc::min(v, v, v);
 
-    qcu::max(v, v);
-    qcu::max(v, v, v);
+    qc::max(v, v);
+    qc::max(v, v, v);
 
-    qcu::minmax(v);
-    qcu::minmax(v, v);
-    qcu::minmax(v, v, v);
-    qcu::minmax(v, v, v, v);
-    qcu::minmax(v, v, v, v, v);
-    qcu::minmax(v, v, v, v, v, v);
-    qcu::minmax(v, v, v, v, v, v, v);
-    qcu::minmax(v, v, v, v, v, v, v, v);
+    qc::minmax(v);
+    qc::minmax(v, v);
+    qc::minmax(v, v, v);
+    qc::minmax(v, v, v, v);
+    qc::minmax(v, v, v, v, v);
+    qc::minmax(v, v, v, v, v, v);
+    qc::minmax(v, v, v, v, v, v, v);
+    qc::minmax(v, v, v, v, v, v, v, v);
 
-    qcu::abs(v);
+    qc::abs(v);
 
-    qcu::clamp(v, v, v);
+    qc::clamp(v, v, v);
 
-    qcu::zero(v);
-    qcu::zero(v, v);
+    qc::zero(v);
+    qc::zero(v, v);
 
-    qcu::equal(v, v);
-    qcu::equal(v, v, v);
+    qc::equal(v, v);
+    qc::equal(v, v, v);
 
-    qcu::sign(v);
+    qc::sign(v);
 
-    qcu::floor(v);
+    qc::floor(v);
 
-    qcu::ceil(v);
+    qc::ceil(v);
 
-    qcu::mod(v, v);
-    qcu::mod_q(v, v);
+    qc::mod(v, v);
+    qc::mod_q(v, v);
 
-    qcu::sum(v, v, v, v, v);
-    qcu::product(v, v, v, v, v);
+    qc::sum(v, v, v, v, v);
+    qc::product(v, v, v, v, v);
 }
 
 template <typename T>
 void compileFunctionsFT() {
     T v(1.0);
 
-    qcu::equalE(v, v);
-    qcu::equalE(v, v, v);
+    qc::equalE(v, v);
+    qc::equalE(v, v, v);
 
-    qcu::fract(v);
-    qcu::fract_i(v);
+    qc::fract(v);
+    qc::fract_i(v);
 
-    qcu::mix(v, v, v);
+    qc::mix(v, v, v);
 
-    qcu::average(v, v, v, v, v);
+    qc::average(v, v, v, v, v);
 
-    qcu::radians(v);
+    qc::radians(v);
 
-    qcu::degrees(v);
+    qc::degrees(v);
 }
 
 template <typename T>
 void compileFunctionsIT() {
     T v(1);
 
-    qcu::pow2<T>(int(v));
+    qc::pow2<T>(int(v));
 
-    qcu::isPow2(v);
+    qc::isPow2(v);
 
-    qcu::log2Floor(v);
+    qc::log2Floor(v);
 
-    qcu::log2Ceil(v);
+    qc::log2Ceil(v);
 
-    qcu::floor2(v);
+    qc::floor2(v);
 
-    qcu::ceil2(v);
+    qc::ceil2(v);
 
-    qcu::mipmaps(v);
+    qc::mipmaps(v);
 
-    qcu::highBit(v);
+    qc::highBit(v);
 
-    qcu::lowBit(v);
+    qc::lowBit(v);
 }
 
 void compileFunctionsBT() {
     bool v(true);
 
-    qcu::equal(v, v);
-    qcu::equal(v, v, v);
+    qc::equal(v, v);
+    qc::equal(v, v, v);
 }
 
 void compileFunctions() {
@@ -226,91 +226,91 @@ constexpr void compileFunctionsConstexprT() {
 
     constexpr T v(1);
 
-    qcu::min(v, v);
-    qcu::min(v, v, v);
+    qc::min(v, v);
+    qc::min(v, v, v);
 
-    qcu::max(v, v);
-    qcu::max(v, v, v);
+    qc::max(v, v);
+    qc::max(v, v, v);
 
-    qcu::minmax(v);
-    qcu::minmax(v, v);
-    qcu::minmax(v, v, v);
-    qcu::minmax(v, v, v, v);
-    qcu::minmax(v, v, v, v, v);
-    qcu::minmax(v, v, v, v, v, v);
-    qcu::minmax(v, v, v, v, v, v, v);
-    qcu::minmax(v, v, v, v, v, v, v, v);
+    qc::minmax(v);
+    qc::minmax(v, v);
+    qc::minmax(v, v, v);
+    qc::minmax(v, v, v, v);
+    qc::minmax(v, v, v, v, v);
+    qc::minmax(v, v, v, v, v, v);
+    qc::minmax(v, v, v, v, v, v, v);
+    qc::minmax(v, v, v, v, v, v, v, v);
 
-    //qcu::clamp(v, v, v);
+    //qc::clamp(v, v, v);
 
-    //qcu::abs(v);
+    //qc::abs(v);
 
-    //qcu::zero(v);
-    //qcu::zero(v, v);
+    //qc::zero(v);
+    //qc::zero(v, v);
 
-    //qcu::equal(v, v);
-    //qcu::equal(v, v, v);
+    //qc::equal(v, v);
+    //qc::equal(v, v, v);
 
-    //qcu::sign(v);
+    //qc::sign(v);
 
-    //qcu::floor(v);
+    //qc::floor(v);
 
-    //qcu::ceil(v);
+    //qc::ceil(v);
 
-    //qcu::mod(v, v);
-    //qcu::mod_q(v, v);
+    //qc::mod(v, v);
+    //qc::mod_q(v, v);
     
-    qcu::sum(v, v, v, v, v);
-    qcu::product(v, v, v, v, v);
+    qc::sum(v, v, v, v, v);
+    qc::product(v, v, v, v, v);
 }
 
 template <typename T>
 constexpr void compileFunctionsConstexprFT() {
     constexpr T v(1.0);
 
-    //qcu::equalE(v, v);
-    //qcu::equalE(v, v, v);
+    //qc::equalE(v, v);
+    //qc::equalE(v, v, v);
 
-    //qcu::fract(v);
-    //qcu::fract_i(v);
+    //qc::fract(v);
+    //qc::fract_i(v);
 
-    //qcu::mix(v, v, v);
+    //qc::mix(v, v, v);
 
-    //qcu::average(v, v, v, v, v);
+    //qc::average(v, v, v, v, v);
 
-    //qcu::radians(v);
+    //qc::radians(v);
 
-    //qcu::degrees(v);
+    //qc::degrees(v);
 }
 
 template <typename T>
 constexpr void compileFunctionsConstexprIT() {
     constexpr T v(1);
 
-    qcu::pow2<T>(v);
+    qc::pow2<T>(v);
 
-    qcu::isPow2(v);
+    qc::isPow2(v);
 
-    //qcu::log2Floor(v);
+    //qc::log2Floor(v);
 
-    //qcu::log2Ceil(v);
+    //qc::log2Ceil(v);
 
-    //qcu::floor2(v);
+    //qc::floor2(v);
 
-    //qcu::ceil2(v);
+    //qc::ceil2(v);
 
-    //qcu::mipmaps(v);
+    //qc::mipmaps(v);
 
-    //qcu::highBit(v);
+    //qc::highBit(v);
 
-    //qcu::lowBit(v);
+    //qc::lowBit(v);
 }
 
 constexpr void compileFunctionsConstexprBT() {
     constexpr bool v(true);
 
-    //qcu::equal(v, v);
-    //qcu::equal(v, v, v);    
+    //qc::equal(v, v);
+    //qc::equal(v, v, v);    
 }
 
 constexpr bool compileFunctionsConstexpr() {

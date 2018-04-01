@@ -1,8 +1,8 @@
-#include "QCUTest.hpp"
+#include "QCoreTest.hpp"
 
 #include <iostream>
 
-#include "QCU/Math.hpp"
+#include "QCore/Math.hpp"
 
 
 

@@ -1,8 +1,8 @@
-#include "QCUTest.hpp"
+#include "QCoreTest.hpp"
 
 #include <sstream>
 
-#include "QCU/QuaternionFunc.hpp"
+#include "QCore/QuaternionFunc.hpp"
 
 
 
@@ -13,22 +13,22 @@ namespace {
 template <typename T>
 void compileClassesT() {
     T v(1.0);
-    qcu::vec3<T> v3(1.0);
-    qcu::vec4<T> v4(1.0);
-    qcu::mat3<T> m3(v3, v3, v3);
-    qcu::quat<T> q(v4);
+    qc::vec3<T> v3(1.0);
+    qc::vec4<T> v4(1.0);
+    qc::mat3<T> m3(v3, v3, v3);
+    qc::quat<T> q(v4);
     std::stringstream os;
 
     //--------------------------------------------------------------------------
     // Quat
 
     // constructors
-    qcu::quat<T> q_1;
-    qcu::quat<T> q_2(q);
-    qcu::quat<T> q_3(std::move(q));
-    qcu::quat<T> q_4(v3, v);
-    qcu::quat<T> q_6(v3);
-    qcu::quat<T> q_7(v4);
+    qc::quat<T> q_1;
+    qc::quat<T> q_2(q);
+    qc::quat<T> q_3(std::move(q));
+    qc::quat<T> q_4(v3, v);
+    qc::quat<T> q_6(v3);
+    qc::quat<T> q_7(v4);
 
     // assignment
     q = q;
@@ -69,21 +69,21 @@ void compileClasses() {
 template <typename T>
 constexpr void compileClassesConstexprT() {
     constexpr T v(1.0);
-    constexpr qcu::vec3<T> v3(1.0);
-    constexpr qcu::vec4<T> v4(1.0);
-    constexpr qcu::mat3<T> m3(v3, v3, v3);
-    constexpr qcu::quat<T> q(v4);
+    constexpr qc::vec3<T> v3(1.0);
+    constexpr qc::vec4<T> v4(1.0);
+    constexpr qc::mat3<T> m3(v3, v3, v3);
+    constexpr qc::quat<T> q(v4);
 
     //--------------------------------------------------------------------------
     // Quat
 
     // constructors
-    qcu::quat<T> q_1;
-    qcu::quat<T> q_2(q);
-    qcu::quat<T> q_3(std::move(q));
-    qcu::quat<T> q_4(v3, v);
-    qcu::quat<T> q_6(v3);
-    qcu::quat<T> q_7(v4);
+    qc::quat<T> q_1;
+    qc::quat<T> q_2(q);
+    qc::quat<T> q_3(std::move(q));
+    qc::quat<T> q_4(v3, v);
+    qc::quat<T> q_6(v3);
+    qc::quat<T> q_7(v4);
 }
 
 constexpr bool compileClassesConstexpr() {
@@ -97,32 +97,32 @@ constexpr bool compileClassesConstexpr() {
 template <typename T>
 void compileFunctionsT() {
     T v(1.0);
-    qcu::vec3<T> v3(1.0);
-    qcu::vec4<T> v4(1.0);
-    qcu::mat3<T> m3(v3, v3, v3);
-    qcu::quat<T> q(v4);
+    qc::vec3<T> v3(1.0);
+    qc::vec4<T> v4(1.0);
+    qc::mat3<T> m3(v3, v3, v3);
+    qc::quat<T> q(v4);
 
-    qcu::dot(q, q);
-    qcu::magnitude(q);
-    qcu::magnitude2(q);
-    qcu::norm(q);
-    qcu::inverse(q);
-    qcu::quatAngle(q);
-    qcu::quatAxis(q);
-    qcu::quatAxis_n(q);
-    qcu::mix(q, q, v);
+    qc::dot(q, q);
+    qc::magnitude(q);
+    qc::magnitude2(q);
+    qc::norm(q);
+    qc::inverse(q);
+    qc::quatAngle(q);
+    qc::quatAxis(q);
+    qc::quatAxis_n(q);
+    qc::mix(q, q, v);
 
-    qcu::rotateQ(v3, v);
-    qcu::rotateQ_n(v3, v);
-    qcu::alignQ(v3, v3);
-    qcu::alignQ_n(v3, v3);
-    qcu::alignQ(v3, v3, v3, v3);
-    qcu::alignQ_n(v3, v3, v3, v3);
-    qcu::eulerQ(v3, v3, v, v, v);
-    qcu::eulerQ_n(v3, v3, v, v, v);
-    qcu::toMat(q);
-    qcu::nlerp(q, q, v);
-    qcu::slerp(q, q, v);
+    qc::rotateQ(v3, v);
+    qc::rotateQ_n(v3, v);
+    qc::alignQ(v3, v3);
+    qc::alignQ_n(v3, v3);
+    qc::alignQ(v3, v3, v3, v3);
+    qc::alignQ_n(v3, v3, v3, v3);
+    qc::eulerQ(v3, v3, v, v, v);
+    qc::eulerQ_n(v3, v3, v, v, v);
+    qc::toMat(q);
+    qc::nlerp(q, q, v);
+    qc::slerp(q, q, v);
 }
 
 void compileFunctions() {
@@ -134,12 +134,12 @@ void compileFunctions() {
 template <typename T>
 constexpr void compileFunctionsConstexprT() {
     constexpr T v(1.0);
-    constexpr qcu::vec3<T> v3(1.0);
-    constexpr qcu::vec4<T> v4(1.0);
-    constexpr qcu::mat3<T> m3(v3, v3, v3);
-    constexpr qcu::quat<T> q(v4);
+    constexpr qc::vec3<T> v3(1.0);
+    constexpr qc::vec4<T> v4(1.0);
+    constexpr qc::mat3<T> m3(v3, v3, v3);
+    constexpr qc::quat<T> q(v4);
 
-    //qcu::toMat(q);
+    //qc::toMat(q);
 }
 
 constexpr bool compileFunctionsConstexpr() {
@@ -152,11 +152,11 @@ constexpr bool compileFunctionsConstexpr() {
 
 template <typename T>
 void testPropertiesT() {
-    static_assert(std::is_standard_layout_v<qcu::quat<T>>, "");
-    static_assert(sizeof(qcu::quat<T>) == 4 * sizeof(T), "");
-    static_assert(sizeof(qcu::quat<T>[4]) == 4 * 4 * sizeof(T));
-    static_assert(alignof(qcu::quat<T>) == alignof(T));
-    static_assert(alignof(qcu::quat<T>[4]) == alignof(T));
+    static_assert(std::is_standard_layout_v<qc::quat<T>>, "");
+    static_assert(sizeof(qc::quat<T>) == 4 * sizeof(T), "");
+    static_assert(sizeof(qc::quat<T>[4]) == 4 * 4 * sizeof(T));
+    static_assert(alignof(qc::quat<T>) == alignof(T));
+    static_assert(alignof(qc::quat<T>[4]) == alignof(T));
 }
 
 void testProperties() {
@@ -167,7 +167,7 @@ void testProperties() {
 
 template <typename T1, typename T2>
 void compileCastsTT() {
-    static_cast<qcu::quat<T2>>(qcu::quat<T1>());
+    static_cast<qc::quat<T2>>(qc::quat<T1>());
 }
 
 template <typename T>

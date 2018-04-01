@@ -9,7 +9,7 @@
 
 
 
-namespace qcu {
+namespace qc {
 
 
 //==============================================================================
@@ -631,23 +631,23 @@ Q_CX_ABLE vec<T, t_n> composite(const vec<T, t_n> & v1, const vec<T, t_n> & v2) 
     vec<T, t_n> v;
 
     if constexpr (t_n >= 1) {
-        if      (v1.x > T(0) && v2.x > T(0)) v.x = qcu::max(v1.x, v2.x);
-        else if (v1.x < T(0) && v2.x < T(0)) v.x = qcu::min(v1.x, v2.x);
+        if      (v1.x > T(0) && v2.x > T(0)) v.x = qc::max(v1.x, v2.x);
+        else if (v1.x < T(0) && v2.x < T(0)) v.x = qc::min(v1.x, v2.x);
         else                                 v.x = v1.x + v2.x;
     }
     if constexpr (t_n >= 2) {
-        if      (v1.y > T(0) && v2.y > T(0)) v.y = qcu::max(v1.y, v2.y);
-        else if (v1.y < T(0) && v2.y < T(0)) v.y = qcu::min(v1.y, v2.y);
+        if      (v1.y > T(0) && v2.y > T(0)) v.y = qc::max(v1.y, v2.y);
+        else if (v1.y < T(0) && v2.y < T(0)) v.y = qc::min(v1.y, v2.y);
         else                                 v.y = v1.y + v2.y;
     }
     if constexpr (t_n >= 3) {
-        if      (v1.z > T(0) && v2.z > T(0)) v.z = qcu::max(v1.z, v2.z);
-        else if (v1.z < T(0) && v2.z < T(0)) v.z = qcu::min(v1.z, v2.z);
+        if      (v1.z > T(0) && v2.z > T(0)) v.z = qc::max(v1.z, v2.z);
+        else if (v1.z < T(0) && v2.z < T(0)) v.z = qc::min(v1.z, v2.z);
         else                                 v.z = v1.z + v2.z;
     }
     if constexpr (t_n >= 4) {
-        if      (v1.w > T(0) && v2.w > T(0)) v.w = qcu::max(v1.w, v2.w);
-        else if (v1.w < T(0) && v2.w < T(0)) v.w = qcu::min(v1.w, v2.w);
+        if      (v1.w > T(0) && v2.w > T(0)) v.w = qc::max(v1.w, v2.w);
+        else if (v1.w < T(0) && v2.w < T(0)) v.w = qc::min(v1.w, v2.w);
         else                                 v.w = v1.w + v2.w;
     }
 

@@ -6,7 +6,7 @@
 
 
 
-namespace qcu {
+namespace qc {
 
 
 
@@ -128,7 +128,7 @@ Q_CONSTEX To transnorm(From v);
 
 template <typename T>
 Q_CX_ABLE T clamp(const T & v, const T & min, const T & max) {
-    return qcu::min(qcu::max(v, min), max);
+    return qc::min(qc::max(v, min), max);
 }
 
 template <typename T, eif_arithmetic_t<T>>

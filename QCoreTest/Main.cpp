@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "QCUTest.hpp"
+#include "QCoreTest.hpp"
 
 
 

@@ -6,7 +6,7 @@
 
 
 
-namespace qcu {
+namespace qc {
 
 
 
@@ -303,23 +303,23 @@ using  unbound4 =  unspan4;
 
 
 
-namespace   tvecs { using qcu::   vec; using qcu::   vec1; using qcu::   vec2; using qcu::   vec3; using qcu::   vec4; }
-namespace   fvecs { using qcu::  fvec; using qcu::  fvec1; using qcu::  fvec2; using qcu::  fvec3; using qcu::  fvec4; }
-namespace   dvecs { using qcu::  dvec; using qcu::  dvec1; using qcu::  dvec2; using qcu::  dvec3; using qcu::  dvec4; }
-namespace  ldvecs { using qcu:: ldvec; using qcu:: ldvec1; using qcu:: ldvec2; using qcu:: ldvec3; using qcu:: ldvec4; }
-namespace   cvecs { using qcu::  cvec; using qcu::  cvec1; using qcu::  cvec2; using qcu::  cvec3; using qcu::  cvec4; }
-namespace  ucvecs { using qcu:: ucvec; using qcu:: ucvec1; using qcu:: ucvec2; using qcu:: ucvec3; using qcu:: ucvec4; }
-namespace   svecs { using qcu::  svec; using qcu::  svec1; using qcu::  svec2; using qcu::  svec3; using qcu::  svec4; }
-namespace  usvecs { using qcu:: usvec; using qcu:: usvec1; using qcu:: usvec2; using qcu:: usvec3; using qcu:: usvec4; }
-namespace   ivecs { using qcu::  ivec; using qcu::  ivec1; using qcu::  ivec2; using qcu::  ivec3; using qcu::  ivec4; }
-namespace  uivecs { using qcu:: uivec; using qcu:: uivec1; using qcu:: uivec2; using qcu:: uivec3; using qcu:: uivec4; }
-namespace   lvecs { using qcu::  lvec; using qcu::  lvec1; using qcu::  lvec2; using qcu::  lvec3; using qcu::  lvec4; }
-namespace  ulvecs { using qcu:: ulvec; using qcu:: ulvec1; using qcu:: ulvec2; using qcu:: ulvec3; using qcu:: ulvec4; }
-namespace  llvecs { using qcu:: llvec; using qcu:: llvec1; using qcu:: llvec2; using qcu:: llvec3; using qcu:: llvec4; }
-namespace ullvecs { using qcu::ullvec; using qcu::ullvec1; using qcu::ullvec2; using qcu::ullvec3; using qcu::ullvec4; }
-namespace   nvecs { using qcu::  nvec; using qcu::  nvec1; using qcu::  nvec2; using qcu::  nvec3; using qcu::  nvec4; }
-namespace  unvecs { using qcu:: unvec; using qcu:: unvec1; using qcu:: unvec2; using qcu:: unvec3; using qcu:: unvec4; }
-namespace   bvecs { using qcu::  bvec; using qcu::  bvec1; using qcu::  bvec2; using qcu::  bvec3; using qcu::  bvec4; }
+namespace   tvecs { using qc::   vec; using qc::   vec1; using qc::   vec2; using qc::   vec3; using qc::   vec4; }
+namespace   fvecs { using qc::  fvec; using qc::  fvec1; using qc::  fvec2; using qc::  fvec3; using qc::  fvec4; }
+namespace   dvecs { using qc::  dvec; using qc::  dvec1; using qc::  dvec2; using qc::  dvec3; using qc::  dvec4; }
+namespace  ldvecs { using qc:: ldvec; using qc:: ldvec1; using qc:: ldvec2; using qc:: ldvec3; using qc:: ldvec4; }
+namespace   cvecs { using qc::  cvec; using qc::  cvec1; using qc::  cvec2; using qc::  cvec3; using qc::  cvec4; }
+namespace  ucvecs { using qc:: ucvec; using qc:: ucvec1; using qc:: ucvec2; using qc:: ucvec3; using qc:: ucvec4; }
+namespace   svecs { using qc::  svec; using qc::  svec1; using qc::  svec2; using qc::  svec3; using qc::  svec4; }
+namespace  usvecs { using qc:: usvec; using qc:: usvec1; using qc:: usvec2; using qc:: usvec3; using qc:: usvec4; }
+namespace   ivecs { using qc::  ivec; using qc::  ivec1; using qc::  ivec2; using qc::  ivec3; using qc::  ivec4; }
+namespace  uivecs { using qc:: uivec; using qc:: uivec1; using qc:: uivec2; using qc:: uivec3; using qc:: uivec4; }
+namespace   lvecs { using qc::  lvec; using qc::  lvec1; using qc::  lvec2; using qc::  lvec3; using qc::  lvec4; }
+namespace  ulvecs { using qc:: ulvec; using qc:: ulvec1; using qc:: ulvec2; using qc:: ulvec3; using qc:: ulvec4; }
+namespace  llvecs { using qc:: llvec; using qc:: llvec1; using qc:: llvec2; using qc:: llvec3; using qc:: llvec4; }
+namespace ullvecs { using qc::ullvec; using qc::ullvec1; using qc::ullvec2; using qc::ullvec3; using qc::ullvec4; }
+namespace   nvecs { using qc::  nvec; using qc::  nvec1; using qc::  nvec2; using qc::  nvec3; using qc::  nvec4; }
+namespace  unvecs { using qc:: unvec; using qc:: unvec1; using qc:: unvec2; using qc:: unvec3; using qc:: unvec4; }
+namespace   bvecs { using qc::  bvec; using qc::  bvec1; using qc::  bvec2; using qc::  bvec3; using qc::  bvec4; }
 
 namespace vecs {
 
@@ -351,22 +351,22 @@ using namespace   bvecs;
 
 
 
-namespace   tspans { using qcu::   span; using qcu::   span1; using qcu::   span2; using qcu::   span3; using qcu::   span4; }
-namespace   fspans { using qcu::  fspan; using qcu::  fspan1; using qcu::  fspan2; using qcu::  fspan3; using qcu::  fspan4; }
-namespace   dspans { using qcu::  dspan; using qcu::  dspan1; using qcu::  dspan2; using qcu::  dspan3; using qcu::  dspan4; }
-namespace  ldspans { using qcu:: ldspan; using qcu:: ldspan1; using qcu:: ldspan2; using qcu:: ldspan3; using qcu:: ldspan4; }
-namespace   cspans { using qcu::  cspan; using qcu::  cspan1; using qcu::  cspan2; using qcu::  cspan3; using qcu::  cspan4; }
-namespace  ucspans { using qcu:: ucspan; using qcu:: ucspan1; using qcu:: ucspan2; using qcu:: ucspan3; using qcu:: ucspan4; }
-namespace   sspans { using qcu::  sspan; using qcu::  sspan1; using qcu::  sspan2; using qcu::  sspan3; using qcu::  sspan4; }
-namespace  usspans { using qcu:: usspan; using qcu:: usspan1; using qcu:: usspan2; using qcu:: usspan3; using qcu:: usspan4; }
-namespace   ispans { using qcu::  ispan; using qcu::  ispan1; using qcu::  ispan2; using qcu::  ispan3; using qcu::  ispan4; }
-namespace  uispans { using qcu:: uispan; using qcu:: uispan1; using qcu:: uispan2; using qcu:: uispan3; using qcu:: uispan4; }
-namespace   lspans { using qcu::  lspan; using qcu::  lspan1; using qcu::  lspan2; using qcu::  lspan3; using qcu::  lspan4; }
-namespace  ulspans { using qcu:: ulspan; using qcu:: ulspan1; using qcu:: ulspan2; using qcu:: ulspan3; using qcu:: ulspan4; }
-namespace  llspans { using qcu:: llspan; using qcu:: llspan1; using qcu:: llspan2; using qcu:: llspan3; using qcu:: llspan4; }
-namespace ullspans { using qcu::ullspan; using qcu::ullspan1; using qcu::ullspan2; using qcu::ullspan3; using qcu::ullspan4; }
-namespace   nspans { using qcu::  nspan; using qcu::  nspan1; using qcu::  nspan2; using qcu::  nspan3; using qcu::  nspan4; }
-namespace  unspans { using qcu:: unspan; using qcu:: unspan1; using qcu:: unspan2; using qcu:: unspan3; using qcu:: unspan4; }
+namespace   tspans { using qc::   span; using qc::   span1; using qc::   span2; using qc::   span3; using qc::   span4; }
+namespace   fspans { using qc::  fspan; using qc::  fspan1; using qc::  fspan2; using qc::  fspan3; using qc::  fspan4; }
+namespace   dspans { using qc::  dspan; using qc::  dspan1; using qc::  dspan2; using qc::  dspan3; using qc::  dspan4; }
+namespace  ldspans { using qc:: ldspan; using qc:: ldspan1; using qc:: ldspan2; using qc:: ldspan3; using qc:: ldspan4; }
+namespace   cspans { using qc::  cspan; using qc::  cspan1; using qc::  cspan2; using qc::  cspan3; using qc::  cspan4; }
+namespace  ucspans { using qc:: ucspan; using qc:: ucspan1; using qc:: ucspan2; using qc:: ucspan3; using qc:: ucspan4; }
+namespace   sspans { using qc::  sspan; using qc::  sspan1; using qc::  sspan2; using qc::  sspan3; using qc::  sspan4; }
+namespace  usspans { using qc:: usspan; using qc:: usspan1; using qc:: usspan2; using qc:: usspan3; using qc:: usspan4; }
+namespace   ispans { using qc::  ispan; using qc::  ispan1; using qc::  ispan2; using qc::  ispan3; using qc::  ispan4; }
+namespace  uispans { using qc:: uispan; using qc:: uispan1; using qc:: uispan2; using qc:: uispan3; using qc:: uispan4; }
+namespace   lspans { using qc::  lspan; using qc::  lspan1; using qc::  lspan2; using qc::  lspan3; using qc::  lspan4; }
+namespace  ulspans { using qc:: ulspan; using qc:: ulspan1; using qc:: ulspan2; using qc:: ulspan3; using qc:: ulspan4; }
+namespace  llspans { using qc:: llspan; using qc:: llspan1; using qc:: llspan2; using qc:: llspan3; using qc:: llspan4; }
+namespace ullspans { using qc::ullspan; using qc::ullspan1; using qc::ullspan2; using qc::ullspan3; using qc::ullspan4; }
+namespace   nspans { using qc::  nspan; using qc::  nspan1; using qc::  nspan2; using qc::  nspan3; using qc::  nspan4; }
+namespace  unspans { using qc:: unspan; using qc:: unspan1; using qc:: unspan2; using qc:: unspan3; using qc:: unspan4; }
 
 namespace spans {
 
@@ -397,22 +397,22 @@ using namespace  unspans;
 
 
 
-namespace   tbounds { using qcu::   bound; using qcu::   bound1; using qcu::   bound2; using qcu::   bound3; using qcu::   bound4; }
-namespace   fbounds { using qcu::  fbound; using qcu::  fbound1; using qcu::  fbound2; using qcu::  fbound3; using qcu::  fbound4; }
-namespace   dbounds { using qcu::  dbound; using qcu::  dbound1; using qcu::  dbound2; using qcu::  dbound3; using qcu::  dbound4; }
-namespace  ldbounds { using qcu:: ldbound; using qcu:: ldbound1; using qcu:: ldbound2; using qcu:: ldbound3; using qcu:: ldbound4; }
-namespace   cbounds { using qcu::  cbound; using qcu::  cbound1; using qcu::  cbound2; using qcu::  cbound3; using qcu::  cbound4; }
-namespace  ucbounds { using qcu:: ucbound; using qcu:: ucbound1; using qcu:: ucbound2; using qcu:: ucbound3; using qcu:: ucbound4; }
-namespace   sbounds { using qcu::  sbound; using qcu::  sbound1; using qcu::  sbound2; using qcu::  sbound3; using qcu::  sbound4; }
-namespace  usbounds { using qcu:: usbound; using qcu:: usbound1; using qcu:: usbound2; using qcu:: usbound3; using qcu:: usbound4; }
-namespace   ibounds { using qcu::  ibound; using qcu::  ibound1; using qcu::  ibound2; using qcu::  ibound3; using qcu::  ibound4; }
-namespace  uibounds { using qcu:: uibound; using qcu:: uibound1; using qcu:: uibound2; using qcu:: uibound3; using qcu:: uibound4; }
-namespace   lbounds { using qcu::  lbound; using qcu::  lbound1; using qcu::  lbound2; using qcu::  lbound3; using qcu::  lbound4; }
-namespace  ulbounds { using qcu:: ulbound; using qcu:: ulbound1; using qcu:: ulbound2; using qcu:: ulbound3; using qcu:: ulbound4; }
-namespace  llbounds { using qcu:: llbound; using qcu:: llbound1; using qcu:: llbound2; using qcu:: llbound3; using qcu:: llbound4; }
-namespace ullbounds { using qcu::ullbound; using qcu::ullbound1; using qcu::ullbound2; using qcu::ullbound3; using qcu::ullbound4; }
-namespace   nbounds { using qcu::  nbound; using qcu::  nbound1; using qcu::  nbound2; using qcu::  nbound3; using qcu::  nbound4; }
-namespace  unbounds { using qcu:: unbound; using qcu:: unbound1; using qcu:: unbound2; using qcu:: unbound3; using qcu:: unbound4; }
+namespace   tbounds { using qc::   bound; using qc::   bound1; using qc::   bound2; using qc::   bound3; using qc::   bound4; }
+namespace   fbounds { using qc::  fbound; using qc::  fbound1; using qc::  fbound2; using qc::  fbound3; using qc::  fbound4; }
+namespace   dbounds { using qc::  dbound; using qc::  dbound1; using qc::  dbound2; using qc::  dbound3; using qc::  dbound4; }
+namespace  ldbounds { using qc:: ldbound; using qc:: ldbound1; using qc:: ldbound2; using qc:: ldbound3; using qc:: ldbound4; }
+namespace   cbounds { using qc::  cbound; using qc::  cbound1; using qc::  cbound2; using qc::  cbound3; using qc::  cbound4; }
+namespace  ucbounds { using qc:: ucbound; using qc:: ucbound1; using qc:: ucbound2; using qc:: ucbound3; using qc:: ucbound4; }
+namespace   sbounds { using qc::  sbound; using qc::  sbound1; using qc::  sbound2; using qc::  sbound3; using qc::  sbound4; }
+namespace  usbounds { using qc:: usbound; using qc:: usbound1; using qc:: usbound2; using qc:: usbound3; using qc:: usbound4; }
+namespace   ibounds { using qc::  ibound; using qc::  ibound1; using qc::  ibound2; using qc::  ibound3; using qc::  ibound4; }
+namespace  uibounds { using qc:: uibound; using qc:: uibound1; using qc:: uibound2; using qc:: uibound3; using qc:: uibound4; }
+namespace   lbounds { using qc::  lbound; using qc::  lbound1; using qc::  lbound2; using qc::  lbound3; using qc::  lbound4; }
+namespace  ulbounds { using qc:: ulbound; using qc:: ulbound1; using qc:: ulbound2; using qc:: ulbound3; using qc:: ulbound4; }
+namespace  llbounds { using qc:: llbound; using qc:: llbound1; using qc:: llbound2; using qc:: llbound3; using qc:: llbound4; }
+namespace ullbounds { using qc::ullbound; using qc::ullbound1; using qc::ullbound2; using qc::ullbound3; using qc::ullbound4; }
+namespace   nbounds { using qc::  nbound; using qc::  nbound1; using qc::  nbound2; using qc::  nbound3; using qc::  nbound4; }
+namespace  unbounds { using qc:: unbound; using qc:: unbound1; using qc:: unbound2; using qc:: unbound3; using qc:: unbound4; }
 
 namespace bounds {
 

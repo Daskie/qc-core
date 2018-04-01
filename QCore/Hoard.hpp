@@ -6,7 +6,7 @@
 
 
 
-namespace qcu {
+namespace qc {
 
 
 

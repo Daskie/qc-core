@@ -13,7 +13,7 @@
 
 
 
-namespace qcu {
+namespace qc {
 
 
 

@@ -17,7 +17,7 @@
 
 
 
-namespace qcu {
+namespace qc {
 
 // So what's the deal with all this fancy rvalue shit? Perfect forwarding.
 //	(T &) &		=>	T&
@@ -324,7 +324,7 @@ class TriWeb {
         TriGrid<T> & tg2 = tris_.at(i2);
 
         nat a1, b1, c1, a2, b2, c2;
-        nat * toInc1, * toDec1, * toInc2 *toDec2;
+        nat * toInc1, * toDec1, * toInc2, * toDec2;
         switch (s1) {
             case AB : a1 = size; b1 = 0; c1 = 0; toInc1 = &b1; toDec1 = &a1; break;
             case BC : a1 = 0; b1 = size; c1 = 0; toInc1 = &c1; toDec1 = &b1; break;
