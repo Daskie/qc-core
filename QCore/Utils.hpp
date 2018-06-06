@@ -12,6 +12,7 @@
 #include <string>
 #include <sstream>
 #include <iomanip>
+#include <cctype>
 
 #include "Math.hpp"
 
@@ -196,7 +197,7 @@ inline T randCheap(T min, T max) {
         return randCheap<T>() * (max - min) + min;
     }
     if constexpr (std::is_integral_v<T>) {
-        return randCheap() % (max - min + 1) + min;
+        return randCheap<T>() % (max - min + 1) + min;
     }
 }
 
@@ -277,7 +278,7 @@ class TriGrid {
     }
 
     void i2abc(nat i, nat * a, nat * b, nat * c) const {
-        nat n = nat((sqrt(1 + 8 * i) - 1) / 2);
+        nat n = nat((std::sqrt(1 + 8 * i) - 1) / 2);
         *a = size_ - n;
         *b = n - (i - n * (n + 1) / 2);
         *c = size_ - *a - *b;
@@ -433,18 +434,42 @@ inline vec3<T> hsl2rgb(const vec3<T> & hsl) {
     return rgb;
 }
 
-inline bool readTextFile(const std::string & filepath, std::string & str_dst) {
-    std::ifstream ifs(filepath);
+inline std::pair<bool, std::string> readTextFile(const std::string & filepath) {
+    std::ifstream ifs{filepath};
     if (!ifs.good()) {
+        return {};
+    }
+    std::string str{
+        std::istreambuf_iterator<char>{ifs},
+        std::istreambuf_iterator<char>{}
+    };
+    if (!ifs.good()) {
+        return {};
+    }
+    return {true, std::move(str)};
+}
+
+inline bool writeTextFile(const std::string & filepath, const std::string & str) {
+    std::ofstream ofs{filepath};
+    if (!ofs.good()) {
         return false;
     }
+    ofs << str;
+    return ofs.good();
+}
 
-    std::stringstream ss;
-    ss << ifs.rdbuf();
-    ifs.close();
-    str_dst = ss.str();
-
-    return true;
+inline std::vector<std::string> tokenize(const std::string & str) {
+    std::vector<std::string> words;
+    size_t startI(0);
+    while (true) {
+        while (startI < str.size() && std::isspace(str.at(startI))) ++startI;
+        if (startI >= str.size()) break;
+        size_t endI(startI + 1);
+        while (endI < str.size() && !std::isspace(str.at(endI))) ++endI;
+        words.emplace_back(str.substr(startI, endI - startI));
+        startI = endI;
+    }
+    return std::move(words);
 }
 
 inline std::string timeString(double seconds) {

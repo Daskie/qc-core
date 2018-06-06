@@ -19,7 +19,7 @@ class Depot {
 
     private:
 
-    static qhm::Map<const T *, std::unique_ptr<T>> s_store;
+    static qc::Map<const T *, std::unique_ptr<T>> s_store;
 
     private:
 
@@ -48,7 +48,7 @@ class Depot {
 
 };
 
-template <typename T> qhm::Map<const T *, std::unique_ptr<T>> Depot<T>::s_store;
+template <typename T> qc::Map<const T *, std::unique_ptr<T>> Depot<T>::s_store;
 
 
 
