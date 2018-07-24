@@ -61,9 +61,8 @@ void compileClassesT() {
 }
 
 void compileClasses() {
-    compileClassesT<float>();
+    compileClassesT< float>();
     compileClassesT<double>();
-    compileClassesT<long double>();
 }
 
 template <typename T>
@@ -87,9 +86,8 @@ constexpr void compileClassesConstexprT() {
 }
 
 constexpr bool compileClassesConstexpr() {
-    compileClassesConstexprT<float>();
+    compileClassesConstexprT< float>();
     compileClassesConstexprT<double>();
-    compileClassesConstexprT<long double>();
 
     return true;
 }
@@ -126,9 +124,8 @@ void compileFunctionsT() {
 }
 
 void compileFunctions() {
-    compileFunctionsT<float>();
+    compileFunctionsT< float>();
     compileFunctionsT<double>();
-    compileFunctionsT<long double>();
 }
 
 template <typename T>
@@ -143,9 +140,8 @@ constexpr void compileFunctionsConstexprT() {
 }
 
 constexpr bool compileFunctionsConstexpr() {
-    compileFunctionsConstexprT<      float>();
-    compileFunctionsConstexprT<     double>();
-    compileFunctionsConstexprT<long double>();
+    compileFunctionsConstexprT< float>();
+    compileFunctionsConstexprT<double>();
 
     return true;
 }
@@ -160,9 +156,8 @@ void testPropertiesT() {
 }
 
 void testProperties() {
-    testPropertiesT<float>();
+    testPropertiesT< float>();
     testPropertiesT<double>();
-    testPropertiesT<long double>();
 }
 
 template <typename T1, typename T2>
@@ -172,15 +167,13 @@ void compileCastsTT() {
 
 template <typename T>
 void compileCastsT() {
-    compileCastsTT<T, float>();
+    compileCastsTT<T,  float>();
     compileCastsTT<T, double>();
-    compileCastsTT<T, long double>();
 }
 
 void compileCasts() {
-    compileCastsT<float>();
+    compileCastsT< float>();
     compileCastsT<double>();
-    compileCastsT<long double>();
 }
 
 

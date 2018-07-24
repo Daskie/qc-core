@@ -36,7 +36,6 @@ template <typename T> using mat4 = mat<T, 4>;
 
 template <int t_m, int t_n> using  fmat = mat<      float, t_m, t_n>;
 template <int t_m, int t_n> using  dmat = mat<     double, t_m, t_n>;
-template <int t_m, int t_n> using ldmat = mat<long double, t_m, t_n>;
 
 using  fmat2 = mat<      float, 2>;
 using  fmat3 = mat<      float, 3>;
@@ -44,9 +43,6 @@ using  fmat4 = mat<      float, 4>;
 using  dmat2 = mat<     double, 2>;
 using  dmat3 = mat<     double, 3>;
 using  dmat4 = mat<     double, 4>;
-using ldmat2 = mat<long double, 2>;
-using ldmat3 = mat<long double, 3>;
-using ldmat4 = mat<long double, 4>;
 
 
 
@@ -63,14 +59,12 @@ using ldmat4 = mat<long double, 4>;
 namespace  tmats { using qc::  mat; using qc::  mat2; using qc::  mat3; using qc::  mat4; }
 namespace  fmats { using qc:: fmat; using qc:: fmat2; using qc:: fmat3; using qc:: fmat4; }
 namespace  dmats { using qc:: dmat; using qc:: dmat2; using qc:: dmat3; using qc:: dmat4; }
-namespace ldmats { using qc::ldmat; using qc::ldmat2; using qc::ldmat3; using qc::ldmat4; }
 
 namespace mats {
 
 using namespace  tmats;
 using namespace  fmats;
 using namespace  dmats;
-using namespace ldmats;
 
 }
 

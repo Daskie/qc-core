@@ -54,7 +54,6 @@ void compileConstantsT() {
 void compileConstants() {
     compileConstantsT<float>();
     compileConstantsT<double>();
-    compileConstantsT<long double>();
 }
 
 template <typename T1, typename T2>
@@ -66,19 +65,16 @@ void compileFunctionsTT() {
 
 template <typename T>
 void compileFunctionsT() {
-    compileFunctionsTT<T, float>();
-    compileFunctionsTT<T, double>();
-    compileFunctionsTT<T, long double>();
-    compileFunctionsTT<T, signed char>();
-    compileFunctionsTT<T, unsigned char>();
-    compileFunctionsTT<T, signed short>();
-    compileFunctionsTT<T, unsigned short>();
-    compileFunctionsTT<T, signed int>();
-    compileFunctionsTT<T, unsigned short>();
-    compileFunctionsTT<T, signed long>();
-    compileFunctionsTT<T, unsigned long>();
-    compileFunctionsTT<T, signed long long>();
-    compileFunctionsTT<T, unsigned long long>();
+    compileFunctionsTT<T, qc::f32>();
+    compileFunctionsTT<T, qc::f64>();
+    compileFunctionsTT<T, qc::s08>();
+    compileFunctionsTT<T, qc::u08>();
+    compileFunctionsTT<T, qc::s16>();
+    compileFunctionsTT<T, qc::u16>();
+    compileFunctionsTT<T, qc::s32>();
+    compileFunctionsTT<T, qc::u32>();
+    compileFunctionsTT<T, qc::s64>();
+    compileFunctionsTT<T, qc::u64>();
 
     T v(1);
 
@@ -170,34 +166,28 @@ void compileFunctionsBT() {
 }
 
 void compileFunctions() {
-    compileFunctionsT<float>();
-    compileFunctionsT<double>();
-    compileFunctionsT<long double>();
-    compileFunctionsT<signed char>();
-    compileFunctionsT<unsigned char>();
-    compileFunctionsT<signed short>();
-    compileFunctionsT<unsigned short>();
-    compileFunctionsT<signed int>();
-    compileFunctionsT<unsigned short>();
-    compileFunctionsT<signed long>();
-    compileFunctionsT<unsigned long>();
-    compileFunctionsT<signed long long>();
-    compileFunctionsT<unsigned long long>();
+    compileFunctionsT<qc::f32>();
+    compileFunctionsT<qc::f64>();
+    compileFunctionsT<qc::s08>();
+    compileFunctionsT<qc::u08>();
+    compileFunctionsT<qc::s16>();
+    compileFunctionsT<qc::u16>();
+    compileFunctionsT<qc::s32>();
+    compileFunctionsT<qc::u32>();
+    compileFunctionsT<qc::s64>();
+    compileFunctionsT<qc::u64>();
 
-    compileFunctionsFT<float>();
-    compileFunctionsFT<double>();
-    compileFunctionsFT<long double>();
-    
-    compileFunctionsIT<signed char>();
-    compileFunctionsIT<unsigned char>();
-    compileFunctionsIT<signed short>();
-    compileFunctionsIT<unsigned short>();
-    compileFunctionsIT<signed int>();
-    compileFunctionsIT<unsigned short>();
-    compileFunctionsIT<signed long>();
-    compileFunctionsIT<unsigned long>();
-    compileFunctionsIT<signed long long>();
-    compileFunctionsIT<unsigned long long>();
+    compileFunctionsFT<qc::f32>();
+    compileFunctionsFT<qc::f64>();
+
+    compileFunctionsIT<qc::s08>();
+    compileFunctionsIT<qc::u08>();
+    compileFunctionsIT<qc::s16>();
+    compileFunctionsIT<qc::u16>();
+    compileFunctionsIT<qc::s32>();
+    compileFunctionsIT<qc::u32>();
+    compileFunctionsIT<qc::s64>();
+    compileFunctionsIT<qc::u64>();
 
     compileFunctionsBT();
 }
@@ -210,19 +200,16 @@ constexpr void compileFunctionsConstexprTT() {
 
 template <typename T>
 constexpr void compileFunctionsConstexprT() {
-    compileFunctionsConstexprTT<T, float>();
-    compileFunctionsConstexprTT<T, double>();
-    compileFunctionsConstexprTT<T, long double>();
-    compileFunctionsConstexprTT<T, signed char>();
-    compileFunctionsConstexprTT<T, unsigned char>();
-    compileFunctionsConstexprTT<T, signed short>();
-    compileFunctionsConstexprTT<T, unsigned short>();
-    compileFunctionsConstexprTT<T, signed int>();
-    compileFunctionsConstexprTT<T, unsigned short>();
-    compileFunctionsConstexprTT<T, signed long>();
-    compileFunctionsConstexprTT<T, unsigned long>();
-    compileFunctionsConstexprTT<T, signed long long>();
-    compileFunctionsConstexprTT<T, unsigned long long>();
+    compileFunctionsConstexprTT<T, qc::f32>();
+    compileFunctionsConstexprTT<T, qc::f64>();
+    compileFunctionsConstexprTT<T, qc::s08>();
+    compileFunctionsConstexprTT<T, qc::u08>();
+    compileFunctionsConstexprTT<T, qc::s16>();
+    compileFunctionsConstexprTT<T, qc::u16>();
+    compileFunctionsConstexprTT<T, qc::s32>();
+    compileFunctionsConstexprTT<T, qc::u32>();
+    compileFunctionsConstexprTT<T, qc::s64>();
+    compileFunctionsConstexprTT<T, qc::u64>();
 
     constexpr T v(1);
 
@@ -314,34 +301,28 @@ constexpr void compileFunctionsConstexprBT() {
 }
 
 constexpr bool compileFunctionsConstexpr() {
-    compileFunctionsConstexprT<float>();
-    compileFunctionsConstexprT<double>();
-    compileFunctionsConstexprT<long double>();
-    compileFunctionsConstexprT<signed char>();
-    compileFunctionsConstexprT<unsigned char>();
-    compileFunctionsConstexprT<signed short>();
-    compileFunctionsConstexprT<unsigned short>();
-    compileFunctionsConstexprT<signed int>();
-    compileFunctionsConstexprT<unsigned short>();
-    compileFunctionsConstexprT<signed long>();
-    compileFunctionsConstexprT<unsigned long>();
-    compileFunctionsConstexprT<signed long long>();
-    compileFunctionsConstexprT<unsigned long long>();
+    compileFunctionsConstexprT<qc::f32>();
+    compileFunctionsConstexprT<qc::f64>();
+    compileFunctionsConstexprT<qc::s08>();
+    compileFunctionsConstexprT<qc::u08>();
+    compileFunctionsConstexprT<qc::s16>();
+    compileFunctionsConstexprT<qc::u16>();
+    compileFunctionsConstexprT<qc::s32>();
+    compileFunctionsConstexprT<qc::u32>();
+    compileFunctionsConstexprT<qc::s64>();
+    compileFunctionsConstexprT<qc::u64>();
 
-    compileFunctionsConstexprFT<float>();
-    compileFunctionsConstexprFT<double>();
-    compileFunctionsConstexprFT<long double>();
-    
-    compileFunctionsConstexprIT<signed char>();
-    compileFunctionsConstexprIT<unsigned char>();
-    compileFunctionsConstexprIT<signed short>();
-    compileFunctionsConstexprIT<unsigned short>();
-    compileFunctionsConstexprIT<signed int>();
-    compileFunctionsConstexprIT<unsigned short>();
-    compileFunctionsConstexprIT<signed long>();
-    compileFunctionsConstexprIT<unsigned long>();
-    compileFunctionsConstexprIT<signed long long>();
-    compileFunctionsConstexprIT<unsigned long long>();
+    compileFunctionsConstexprFT<qc::f32>();
+    compileFunctionsConstexprFT<qc::f64>();
+
+    compileFunctionsConstexprIT<qc::s08>();
+    compileFunctionsConstexprIT<qc::u08>();
+    compileFunctionsConstexprIT<qc::s16>();
+    compileFunctionsConstexprIT<qc::u16>();
+    compileFunctionsConstexprIT<qc::s32>();
+    compileFunctionsConstexprIT<qc::u32>();
+    compileFunctionsConstexprIT<qc::s64>();
+    compileFunctionsConstexprIT<qc::u64>();
     
     compileFunctionsConstexprBT();
 

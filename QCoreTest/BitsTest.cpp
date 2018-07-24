@@ -23,11 +23,10 @@ void compileFunctionsUT() {
 }
 
 void compileFunctions() {
-    compileFunctionsUT<unsigned char>();
-    compileFunctionsUT<unsigned short>();
-    compileFunctionsUT<unsigned int>();
-    compileFunctionsUT<unsigned long>();
-    compileFunctionsUT<unsigned long long>();
+    compileFunctionsUT<qc::u08>();
+    compileFunctionsUT<qc::u16>();
+    compileFunctionsUT<qc::u32>();
+    compileFunctionsUT<qc::u64>();
 
     qc::bits::spread<qc::u08, qc::u16>(-1);
     qc::bits::spread<qc::u08, qc::u32>(-1);
