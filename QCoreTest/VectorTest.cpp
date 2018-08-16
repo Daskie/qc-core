@@ -920,10 +920,10 @@ void compileFunctionsFT() {
     qc::magnitude(v3);
     qc::magnitude(v4);
 
-    qc::norm(v1);
-    qc::norm(v2);
-    qc::norm(v3);
-    qc::norm(v4);
+    qc::normalize(v1);
+    qc::normalize(v2);
+    qc::normalize(v3);
+    qc::normalize(v4);
 
     qc::orthogonalize(v1, v1);
     qc::orthogonalize(v2, v2);

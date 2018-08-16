@@ -2,7 +2,7 @@
 
 
 
-#include "Core.hpp"
+#include "CoreFunc.hpp"
 
 
 

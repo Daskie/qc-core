@@ -103,7 +103,7 @@ void compileFunctionsT() {
     qc::dot(q, q);
     qc::magnitude(q);
     qc::magnitude2(q);
-    qc::norm(q);
+    qc::normalize(q);
     qc::inverse(q);
     qc::quatAngle(q);
     qc::quatAxis(q);

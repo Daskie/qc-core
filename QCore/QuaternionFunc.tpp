@@ -35,7 +35,7 @@ inline T magnitude2(const quat<T> & q) {
 }
 
 template <typename T>
-inline quat<T> norm(const quat<T> & q) {
+inline quat<T> normalize(const quat<T> & q) {
     T m2(magnitude2(q));
     if (zero(m2)) {
         return quat<T>();
@@ -56,7 +56,7 @@ inline T quatAngle(const quat<T> & q) {
 
 template <typename T>
 inline vec3<T> quatAxis(const quat<T> & q) {
-    return quatAxis_n(norm(q));
+    return quatAxis_n(normalize(q));
 }
 
 template <typename T>
@@ -87,7 +87,7 @@ inline quat<T> mix(const quat<T> & q1, const quat<T> & q2, T t) {
 
 template <typename T>
 inline quat<T> rotateQ(const vec3<T> & axis, T angle) {
-    return rotateQ_n(norm(axis), angle);
+    return rotateQ_n(normalize(axis), angle);
 }
 template <typename T>
 inline quat<T> rotateQ_n(const vec3<T> & axis, T angle) {
@@ -99,7 +99,7 @@ inline quat<T> rotateQ_n(const vec3<T> & axis, T angle) {
 
 template <typename T>
 inline quat<T> alignQ(const vec3<T> & v1, const vec3<T> & v2) {
-    return alignQ_n(norm(v1), norm(v2));
+    return alignQ_n(normalize(v1), normalize(v2));
 }
 template <typename T>
 inline quat<T> alignQ_n(const vec3<T> & v1, const vec3<T> & v2) {
@@ -108,7 +108,7 @@ inline quat<T> alignQ_n(const vec3<T> & v1, const vec3<T> & v2) {
 
 template <typename T>
 inline quat<T> alignQ(const vec3<T> & forward1, const vec3<T> & up1, const vec3<T> & forward2, const vec3<T> & up2) {
-    return alignQ_n(norm(forward1), norm(up1), norm(forward2), norm(up2));
+    return alignQ_n(normalize(forward1), normalize(up1), normalize(forward2), normalize(up2));
 }
 template <typename T>
 inline quat<T> alignQ_n(const vec3<T> & forward1, const vec3<T> & up1, const vec3<T> & forward2, const vec3<T> & up2) {
@@ -118,7 +118,7 @@ inline quat<T> alignQ_n(const vec3<T> & forward1, const vec3<T> & up1, const vec
 
 template <typename T>
 inline quat<T> eulerQ(const vec3<T> & forward, const vec3<T> & up, T theta, T phi, T psi) {
-    return eulerQ_n(norm(forward), norm(up), theta, phi, psi);
+    return eulerQ_n(normalize(forward), normalize(up), theta, phi, psi);
 }
 template <typename T>
 inline quat<T> eulerQ_n(const vec3<T> & forward, const vec3<T> & up, T theta, T phi, T psi) {
@@ -148,7 +148,7 @@ Q_CX_ABLE mat3<T> toMat(const quat<T> & q) {
 
 template <typename T>
 inline quat<T> nlerp(const quat<T> & q1, const quat<T> & q2, T t) {
-    return norm(quat<T>(mix(q1, q2, t)));
+    return normalize(quat<T>(mix(q1, q2, t)));
 }
 
 template <typename T>

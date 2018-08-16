@@ -60,7 +60,7 @@ inline T magnitude2(const vec<T, t_n> & v);
 //------------------------------------------------------------------------------
 
 template <typename T, int t_n, eif_floating_t<T> = 0>
-inline vec<T, t_n> norm(const vec<T, t_n> & v);
+inline vec<T, t_n> normalize(const vec<T, t_n> & v);
 
 
 

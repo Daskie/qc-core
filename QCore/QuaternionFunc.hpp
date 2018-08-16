@@ -23,7 +23,7 @@ template <typename T> T magnitude(const quat<T> & q);
 
 template <typename T> T magnitude2(const quat<T> & q);
 
-template <typename T> quat<T> norm(const quat<T> & q);
+template <typename T> quat<T> normalize(const quat<T> & q);
 
 template <typename T> quat<T> inverse(const quat<T> & q);
 

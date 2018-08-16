@@ -80,10 +80,6 @@ inline mat<T, t_n, t_m> transpose(const mat<T, t_m, t_n> & m) {
 
 template <typename T, int t_n>
 inline mat<T, t_n> cofactor(const mat<T, t_n> & m) {
-    if constexpr (t_n == 1) {
-        return mat1<T>(T(1));
-    }
-
     if constexpr (t_n == 2) {
         return mat2<T>(
             +m.y2, -m.x2,
@@ -272,12 +268,6 @@ inline mat<T, t_m> & translate(mat<T, t_m> & mat, const vec<T, t_n> & delta) {
 
 template <typename T, int t_n>
 inline mat<T, t_n> scale(const vec<T, t_n> & scale) {
-    if constexpr (t_n == 1) {
-        return mat1<T>(
-            scale.x
-        );
-    }
-
     if constexpr (t_n == 2) {
         return mat2<T>(
             scale.x,  T(0.0),
@@ -408,7 +398,7 @@ inline mat3<T> rotate(const vec3<T> & axis, T sinTheta, T cosTheta) {
         return mat3<T>();
     }
 
-    return rotate_n(norm(axis), sinTheta, cosTheta);
+    return rotate_n(normalize(axis), sinTheta, cosTheta);
 }
 
 template <typename T>
@@ -443,7 +433,7 @@ inline mat3<T> rotate_n(const vec3<T> & axis, T angle) {
 
 template <typename T>
 inline mat3<T> euler(const vec3<T> & forward, const vec3<T> & up, T theta, T phi, T psi) {
-    return euler_n(norm(forward), norm(up), theta, phi, psi);
+    return euler_n(normalize(forward), normalize(up), theta, phi, psi);
 }
 
 template <typename T>
@@ -453,7 +443,7 @@ inline mat3<T> euler_n(const vec3<T> & forward, const vec3<T> & up, T theta, T p
 
 template <typename T, int t_n>
 inline mat<T, t_n> align(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
-    return align_n(norm(v1), norm(v2));
+    return align_n(normalize(v1), normalize(v2));
 }
 
 template <typename T>
@@ -482,7 +472,7 @@ inline mat3<T> align_n(const vec3<T> & v1, const vec3<T> & v2) {
 
 template <typename T>
 inline mat3<T> align(const vec3<T> & forward1, const vec3<T> & up1, const vec3<T> & forward2, const vec3<T> & up2) {
-    return align_n(norm(forward1), norm(up1), norm(forward2), norm(up2));
+    return align_n(normalize(forward1), normalize(up1), normalize(forward2), normalize(up2));
 }
 
 template <typename T>
@@ -602,8 +592,8 @@ inline mat4<T> perspProjAsym(T fovLeft, T fovRight, T fovBottom, T fovTop, T nea
 
 template <typename T>
 inline mat4<T> view(const vec3<T> & camLoc, const vec3<T> & lookAt, const vec3<T> & up) {
-    vec3<T> w(norm(camLoc - lookAt));
-    vec3<T> u(norm(cross(up, w)));
+    vec3<T> w(normalize(camLoc - lookAt));
+    vec3<T> u(normalize(cross(up, w)));
     vec3<T> v(cross(w, u));
 
     return view_on(camLoc, u, v, w);
@@ -611,7 +601,7 @@ inline mat4<T> view(const vec3<T> & camLoc, const vec3<T> & lookAt, const vec3<T
 
 template <typename T>
 inline mat4<T> view(const vec3<T> & camLoc, const vec3<T> & camU, const vec3<T> & camV, const vec3<T> & camW) {
-    return view_n(camLoc, norm(camU), norm(camV), norm(camW));
+    return view_n(camLoc, normalize(camU), normalize(camV), normalize(camW));
 }
 
 template <typename T>
@@ -621,7 +611,7 @@ inline mat4<T> view_n(const vec3<T> & camLoc, const vec3<T> & camU, const vec3<T
 
 template <typename T>
 inline mat4<T> view_o(const vec3<T> & camLoc, const vec3<T> & camU, const vec3<T> & camV, const vec3<T> & camW) {
-    return view_on(camLoc, norm(camU), norm(camV), norm(camW));
+    return view_on(camLoc, normalize(camU), normalize(camV), normalize(camW));
 }
 
 template <typename T>

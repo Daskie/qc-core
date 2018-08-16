@@ -56,7 +56,7 @@ inline T magnitude2(const vec<T, t_n> & v) {
 }
 
 template <typename T, int t_n, eif_floating_t<T>>
-inline vec<T, t_n> norm(const vec<T, t_n> & v) {
+inline vec<T, t_n> normalize(const vec<T, t_n> & v) {
     T m2(magnitude2(v));
     if (zero(m2)) {
         return vec<T, t_n>();
@@ -124,7 +124,7 @@ inline void orthogonalize(const vec<T, t_n> & v1, vec<T, t_n> & v2) {
         v2 = vec1<T>();
     }
     if constexpr (t_n > 1) {
-        v2 = norm(v2 - dot(v1, v2) * v1);
+        v2 = normalize(v2 - dot(v1, v2) * v1);
     }
 }
 
@@ -132,8 +132,8 @@ inline void orthogonalize(const vec<T, t_n> & v1, vec<T, t_n> & v2) {
 template <typename T, eif_floating_t<T>>
 inline void orthogonalize(const vec3<T> & v1, vec3<T> & v2, vec3<T> & v3) {
     orthogonalize_n(v1, v2, v3);
-    v2 = norm(v2);
-    v3 = norm(v3);
+    v2 = normalize(v2);
+    v3 = normalize(v3);
 }
 
 // in order of priority
@@ -145,7 +145,7 @@ inline void orthogonalize_n(const vec3<T> & v1, vec3<T> & v2, vec3<T> & v3) {
 
 template <typename T, int t_n, eif_floating_t<T>>
 inline vec<T, t_n> reflect(const vec<T, t_n> & v, const vec<T, t_n> & n) {
-    return reflect_n(v, norm(n));
+    return reflect_n(v, normalize(n));
 }
 
 template <typename T, int t_n, eif_floating_t<T>>
@@ -155,7 +155,7 @@ inline vec<T, t_n> reflect_n(const vec<T, t_n> & v, const vec<T, t_n> & n) {
 
 template <typename T, int t_n, eif_floating_t<T>>
 inline T angle(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
-    return angle_n(norm(v1), norm(v2));
+    return angle_n(normalize(v1), normalize(v2));
 }
 template <typename T, int t_n, eif_floating_t<T>>
 inline T angle_n(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
