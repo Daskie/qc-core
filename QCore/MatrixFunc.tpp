@@ -9,25 +9,13 @@ namespace qc {
 
 //--- operator<< ---
 
-namespace detail {
-
-template <int t_j, typename T, int t_m, int t_n>
-inline std::ostream & printCol(std::ostream & os, const mat<T, t_m, t_n> & m) {
-    if constexpr (t_m == 1) return os << m.at<0, t_j>();
-    if constexpr (t_m == 2) return os << m.at<0, t_j>() << " " << m.at<1, t_j>();
-    if constexpr (t_m == 3) return os << m.at<0, t_j>() << " " << m.at<1, t_j>() << " " << m.at<2, t_j>();
-    if constexpr (t_m == 4) return os << m.at<0, t_j>() << " " << m.at<1, t_j>() << " " << m.at<2, t_j>() << " " << m.at<3, t_j>();
-}
-
-}
-
-template <typename T, int t_m, int t_n>
-inline std::ostream & operator<<(std::ostream & os, const mat<T, t_m, t_n> & m) {
+template <typename T, int t_n>
+inline std::ostream & operator<<(std::ostream & os, const mat<T, t_n> & m) {
     os << "[";
-    if constexpr (t_n >= 1) { os << " "; detail::printCol<0>(os, m); os << " "; }
-    if constexpr (t_n >= 2) { os << "| "; detail::printCol<1>(os, m); os << " "; }
-    if constexpr (t_n >= 3) { os << "| "; detail::printCol<2>(os, m); os << " "; }
-    if constexpr (t_n >= 4) { os << "| "; detail::printCol<3>(os, m); os << " "; }
+    if constexpr (t_n >= 1) { os << m.c1; }
+    if constexpr (t_n >= 2) { os << m.c2; }
+    if constexpr (t_n >= 3) { os << m.c3; }
+    if constexpr (t_n >= 4) { os << m.c4; }
     os << "]";
     return os;
 }
@@ -35,102 +23,101 @@ inline std::ostream & operator<<(std::ostream & os, const mat<T, t_m, t_n> & m) 
 //--- isIdentity ---
 
 template <typename T, int t_n>
-inline bool isIdentity(const mat<T, t_n, t_n> & m) {
+inline bool isIdentity(const mat<T, t_n> & m) {
     if constexpr (t_n == 1) {
         return
-            m.x1 == T(1.0);
+            m.c1.x == T(1.0);
     }
 
     if constexpr (t_n == 2) {
         return
-            m.x1 == T(1.0) && m.y2 == T(1.0) &&
-            m.x2 == T(0.0) &&
-            m.y1 == T(0.0);
+            m.c1.x == T(1.0) && m.c2.y == T(1.0) &&
+            m.c2.x == T(0.0) &&
+            m.c1.y == T(0.0);
     }
 
     if constexpr (t_n == 3) {
         return
-            m.x1 == T(1.0) && m.y2 == T(1.0) && m.z3 == T(1.0) &&
-            m.x2 == T(0.0) && m.x3 == T(0.0) &&
-            m.y1 == T(0.0) && m.y3 == T(0.0) &&
-            m.z1 == T(0.0) && m.z2 == T(0.0);
+            m.c1.x == T(1.0) && m.c2.y == T(1.0) && m.c3.z == T(1.0) &&
+            m.c3.x == T(0.0) && m.c3.y == T(0.0) &&
+            m.c1.y == T(0.0) && m.c1.z == T(0.0) &&
+            m.c2.x == T(0.0) && m.c2.z == T(0.0);
     }
 
     if constexpr (t_n == 4) {
         return
-            m.x1 == T(1.0) && m.y2 == T(1.0) && m.z3 == T(1.0) && m.w4 == T(1.0) &&
-            m.x2 == T(0.0) && m.x3 == T(0.0) && m.x4 == T(0.0) &&
-            m.y1 == T(0.0) && m.y3 == T(0.0) && m.y4 == T(0.0) &&
-            m.z1 == T(0.0) && m.z2 == T(0.0) && m.z4 == T(0.0) &&
-            m.w1 == T(0.0) && m.w2 == T(0.0) && m.w3 == T(0.0);
+            m.c1.x == T(1.0) && m.c2.y == T(1.0) && m.c3.z == T(1.0) && m.c4.w == T(1.0) &&
+            m.c4.x == T(0.0) && m.c4.y == T(0.0) && m.c4.z == T(0.0) &&
+            m.c1.y == T(0.0) && m.c1.z == T(0.0) && m.c1.w == T(0.0) &&
+            m.c2.x == T(0.0) && m.c2.z == T(0.0) && m.c2.w == T(0.0) &&
+            m.c3.x == T(0.0) && m.c3.y == T(0.0) && m.c3.w == T(0.0);
     }
 }
 
 //--- transpose ---
 
-template <typename T, int t_m, int t_n>
-inline mat<T, t_n, t_m> transpose(const mat<T, t_m, t_n> & m) {
-    if constexpr (t_m == 1) return mat<T, t_n, t_m>(m.row<0>());
-    if constexpr (t_m == 2) return mat<T, t_n, t_m>(m.row<0>(), m.row<1>());
-    if constexpr (t_m == 3) return mat<T, t_n, t_m>(m.row<0>(), m.row<1>(), m.row<2>());
-    if constexpr (t_m == 4) return mat<T, t_n, t_m>(m.row<0>(), m.row<1>(), m.row<2>(), m.row<3>());
+template <typename T, int t_n>
+inline mat<T, t_n> transpose(const mat<T, t_n> & m) {
+    if constexpr (t_n == 1) return mat1<T>(m.row<0>());
+    if constexpr (t_n == 2) return mat2<T>(m.row<0>(), m.row<1>());
+    if constexpr (t_n == 3) return mat3<T>(m.row<0>(), m.row<1>(), m.row<2>());
+    if constexpr (t_n == 4) return mat4<T>(m.row<0>(), m.row<1>(), m.row<2>(), m.row<3>());
 }
 
 //--- cofactor ---
 
 template <typename T, int t_n>
 inline mat<T, t_n> cofactor(const mat<T, t_n> & m) {
-    if constexpr (t_n == 2) {
-        return mat2<T>(
-            +m.y2, -m.x2,
-            -m.y1, +m.x1
-        );
-    }
+    if constexpr (t_n == 1) return mat1<T>(
+        +m.c1.x
+    );
+    if constexpr (t_n == 2) return mat2<T>(
+        +m.c2.y, -m.c2.x,
+        -m.c1.y, +m.c1.x
+    );
 
-    if constexpr (t_n == 3) {
-        return mat3<T>(
-            +(m.y2 * m.z3 - m.y3 * m.z2), -(m.x2 * m.z3 - m.x3 * m.z2), +(m.x2 * m.y3 - m.x3 * m.y2),
-            -(m.y1 * m.z3 - m.y3 * m.z1), +(m.x1 * m.z3 - m.x3 * m.z1), -(m.x1 * m.y3 - m.x3 * m.y1),
-            +(m.y1 * m.z2 - m.y2 * m.z1), -(m.x1 * m.z2 - m.x2 * m.z1), +(m.x1 * m.y2 - m.x2 * m.y1)
-        );
-    }
+    if constexpr (t_n == 3) return mat3<T>(
+        +(m.c2.y * m.c3.z - m.c3.y * m.c2.z), -(m.c2.x * m.c3.z - m.c3.x * m.c2.z), +(m.c2.x * m.c3.y - m.c3.x * m.c2.y),
+        -(m.c1.y * m.c3.z - m.c3.y * m.c1.z), +(m.c1.x * m.c3.z - m.c3.x * m.c1.z), -(m.c1.x * m.c3.y - m.c3.x * m.c1.y),
+        +(m.c1.y * m.c2.z - m.c2.y * m.c1.z), -(m.c1.x * m.c2.z - m.c2.x * m.c1.z), +(m.c1.x * m.c2.y - m.c2.x * m.c1.y)
+    );
 
     if constexpr (t_n == 4) {
-        T yz12(m.y1 * m.z2 - m.y2 * m.z1);
-        T yz13(m.y1 * m.z3 - m.y3 * m.z1);
-        T yz14(m.y1 * m.z4 - m.y4 * m.z1);
-        T yw12(m.y1 * m.w2 - m.y2 * m.w1);
-        T yw13(m.y1 * m.w3 - m.y3 * m.w1);
-        T yw14(m.y1 * m.w4 - m.y4 * m.w1);
-        T yz23(m.y2 * m.z3 - m.y3 * m.z2);
-        T yz24(m.y2 * m.z4 - m.y4 * m.z2);
-        T yw23(m.y2 * m.w3 - m.y3 * m.w2);
-        T yw24(m.y2 * m.w4 - m.y4 * m.w2);
-        T zw12(m.z1 * m.w2 - m.z2 * m.w1);
-        T zw13(m.z1 * m.w3 - m.z3 * m.w1);
-        T zw14(m.z1 * m.w4 - m.z4 * m.w1);
-        T yz34(m.y3 * m.z4 - m.y4 * m.z3);
-        T yw34(m.y3 * m.w4 - m.y4 * m.w3);
-        T zw23(m.z2 * m.w3 - m.z3 * m.w2);
-        T zw24(m.z2 * m.w4 - m.z4 * m.w2);
-        T zw34(m.z3 * m.w4 - m.z4 * m.w3);
+        T yz12(m.c1.y * m.c2.z - m.c2.y * m.c1.z);
+        T yz13(m.c1.y * m.c3.z - m.c3.y * m.c1.z);
+        T yz14(m.c1.y * m.c4.z - m.c4.y * m.c1.z);
+        T yw12(m.c1.y * m.c2.w - m.c2.y * m.c1.w);
+        T yw13(m.c1.y * m.c3.w - m.c3.y * m.c1.w);
+        T yw14(m.c1.y * m.c4.w - m.c4.y * m.c1.w);
+        T yz23(m.c2.y * m.c3.z - m.c3.y * m.c2.z);
+        T yz24(m.c2.y * m.c4.z - m.c4.y * m.c2.z);
+        T yw23(m.c2.y * m.c3.w - m.c3.y * m.c2.w);
+        T yw24(m.c2.y * m.c4.w - m.c4.y * m.c2.w);
+        T zw12(m.c1.z * m.c2.w - m.c2.z * m.c1.w);
+        T zw13(m.c1.z * m.c3.w - m.c3.z * m.c1.w);
+        T zw14(m.c1.z * m.c4.w - m.c4.z * m.c1.w);
+        T yz34(m.c3.y * m.c4.z - m.c4.y * m.c3.z);
+        T yw34(m.c3.y * m.c4.w - m.c4.y * m.c3.w);
+        T zw23(m.c2.z * m.c3.w - m.c3.z * m.c2.w);
+        T zw24(m.c2.z * m.c4.w - m.c4.z * m.c2.w);
+        T zw34(m.c3.z * m.c4.w - m.c4.z * m.c3.w);
 
-        T xyz123(m.x1 * yz23 - m.x2 * yz13 + m.x3 * yz12);
-        T xyz124(m.x1 * yz24 - m.x2 * yz14 + m.x4 * yz12);
-        T xyz134(m.x1 * yz34 - m.x3 * yz14 + m.x4 * yz13);
-        T xyw123(m.x1 * yw23 - m.x2 * yw13 + m.x3 * yw12);
-        T xyw124(m.x1 * yw24 - m.x2 * yw14 + m.x4 * yw12);
-        T xyw134(m.x1 * yw34 - m.x3 * yw14 + m.x4 * yw13);
-        T xzw123(m.x1 * zw23 - m.x2 * zw13 + m.x3 * zw12);
-        T xzw124(m.x1 * zw24 - m.x2 * zw14 + m.x4 * zw12);
-        T xzw134(m.x1 * zw34 - m.x3 * zw14 + m.x4 * zw13);
-        T xyz234(m.x2 * yz34 - m.x3 * yz24 + m.x4 * yz23);
-        T xyw234(m.x2 * yw34 - m.x3 * yw24 + m.x4 * yw23);
-        T xzw234(m.x2 * zw34 - m.x3 * zw24 + m.x4 * zw23);
-        T yzw123(m.y1 * zw23 - m.y2 * zw13 + m.y3 * zw12);
-        T yzw124(m.y1 * zw24 - m.y2 * zw14 + m.y4 * zw12);
-        T yzw134(m.y1 * zw34 - m.y3 * zw14 + m.y4 * zw13);
-        T yzw234(m.y2 * zw34 - m.y3 * zw24 + m.y4 * zw23);
+        T xyz123(m.c1.x * yz23 - m.c2.x * yz13 + m.c3.x * yz12);
+        T xyz124(m.c1.x * yz24 - m.c2.x * yz14 + m.c4.x * yz12);
+        T xyz134(m.c1.x * yz34 - m.c3.x * yz14 + m.c4.x * yz13);
+        T xyw123(m.c1.x * yw23 - m.c2.x * yw13 + m.c3.x * yw12);
+        T xyw124(m.c1.x * yw24 - m.c2.x * yw14 + m.c4.x * yw12);
+        T xyw134(m.c1.x * yw34 - m.c3.x * yw14 + m.c4.x * yw13);
+        T xzw123(m.c1.x * zw23 - m.c2.x * zw13 + m.c3.x * zw12);
+        T xzw124(m.c1.x * zw24 - m.c2.x * zw14 + m.c4.x * zw12);
+        T xzw134(m.c1.x * zw34 - m.c3.x * zw14 + m.c4.x * zw13);
+        T xyz234(m.c2.x * yz34 - m.c3.x * yz24 + m.c4.x * yz23);
+        T xyw234(m.c2.x * yw34 - m.c3.x * yw24 + m.c4.x * yw23);
+        T xzw234(m.c2.x * zw34 - m.c3.x * zw24 + m.c4.x * zw23);
+        T yzw123(m.c1.y * zw23 - m.c2.y * zw13 + m.c3.y * zw12);
+        T yzw124(m.c1.y * zw24 - m.c2.y * zw14 + m.c4.y * zw12);
+        T yzw134(m.c1.y * zw34 - m.c3.y * zw14 + m.c4.y * zw13);
+        T yzw234(m.c2.y * zw34 - m.c3.y * zw24 + m.c4.y * zw23);
 
         return mat4<T>(
             +yzw234, -xzw234, +xyw234, -xyz234,
@@ -152,36 +139,31 @@ inline mat<T, t_n> adjoint(const mat<T, t_n> & m) {
 
 template <typename T, int t_n>
 inline T determinant(const mat<T, t_n> & m) {
-    if constexpr (t_n == 1) {
-        return m.x1;
-    }
+    if constexpr (t_n == 1) return
+        m.c1.x;
 
-    if constexpr (t_n == 2) {
-        return
-            + m.x1 * m.y2
-            - m.x2 * m.y1;
-    }
+    if constexpr (t_n == 2) return
+        + m.c1.x * m.c2.y
+        - m.c2.x * m.c1.y;
 
-    if constexpr (t_n == 3) {
-        return
-            + m.x1 * (m.y2 * m.z3 - m.y3 * m.z2)
-            - m.x2 * (m.y1 * m.z3 - m.y3 * m.z1)
-            + m.x3 * (m.y1 * m.z2 - m.y2 * m.z1);
-    }
+    if constexpr (t_n == 3) return
+        + m.c1.x * (m.c2.y * m.c3.z - m.c3.y * m.c2.z)
+        - m.c2.x * (m.c1.y * m.c3.z - m.c3.y * m.c1.z)
+        + m.c3.x * (m.c1.y * m.c2.z - m.c2.y * m.c1.z);
 
     if constexpr (t_n == 4) {
-        T zw12 = m.z1 * m.w2 - m.z2 * m.w1;
-        T zw13 = m.z1 * m.w3 - m.z3 * m.w1;
-        T zw14 = m.z1 * m.w4 - m.z4 * m.w1;
-        T zw23 = m.z2 * m.w3 - m.z3 * m.w2;
-        T zw24 = m.z2 * m.w4 - m.z4 * m.w2;
-        T zw34 = m.z3 * m.w4 - m.z4 * m.w3;
+        T zw12 = m.c1.z * m.c2.w - m.c2.z * m.c1.w;
+        T zw13 = m.c1.z * m.c3.w - m.c3.z * m.c1.w;
+        T zw14 = m.c1.z * m.c4.w - m.c4.z * m.c1.w;
+        T zw23 = m.c2.z * m.c3.w - m.c3.z * m.c2.w;
+        T zw24 = m.c2.z * m.c4.w - m.c4.z * m.c2.w;
+        T zw34 = m.c3.z * m.c4.w - m.c4.z * m.c3.w;
 
         return
-            + m.x1 * (m.y2 * zw34 - m.y3 * zw24 + m.y4 * zw23)
-            - m.x2 * (m.y1 * zw34 - m.y3 * zw14 + m.y4 * zw13)
-            + m.x3 * (m.y1 * zw24 - m.y2 * zw14 + m.y4 * zw12)
-            - m.x4 * (m.y1 * zw23 - m.y2 * zw13 + m.y3 * zw12);
+            + m.c1.x * (m.c2.y * zw34 - m.c3.y * zw24 + m.c4.y * zw23)
+            - m.c2.x * (m.c1.y * zw34 - m.c3.y * zw14 + m.c4.y * zw13)
+            + m.c3.x * (m.c1.y * zw24 - m.c2.y * zw14 + m.c4.y * zw12)
+            - m.c4.x * (m.c1.y * zw23 - m.c2.y * zw13 + m.c3.y * zw12);
     }
 }
 
@@ -231,117 +213,133 @@ inline mat<T, t_n + 1> translate(const vec<T, t_n> & delta) {
     }
 }
 
-template <typename T, int t_m, int t_n, eif_t<t_m == t_n + 1>>
-inline mat<T, t_m> & translate(mat<T, t_m> & mat, const vec<T, t_n> & delta) {
-    if constexpr (t_n == 1 && t_m == 2) {
-        mat.x1 += delta.x * mat.y1;
-        mat.x2 += delta.x * mat.y2;
-        return mat;
+template <typename T, int t_mn, int t_vn, eif_t<t_mn == t_vn + 1>>
+inline mat<T, t_mn> & translate(mat<T, t_mn> & m, const vec<T, t_vn> & delta) {
+    if constexpr (t_vn == 1 && t_mn == 2) {
+        m.c1.x += delta.x * m.c1.y;
+        m.c2.x += delta.x * m.c2.y;
+
+        return m;
     }
 
-    if constexpr (t_n == 2 && t_m == 3) {
-        mat.x1 += delta.x * mat.z1;
-        mat.x2 += delta.x * mat.z2;
-        mat.x3 += delta.x * mat.z3;
-        mat.y1 += delta.y * mat.z1;
-        mat.y2 += delta.y * mat.z2;
-        mat.y3 += delta.y * mat.z3;
-        return mat;
+    if constexpr (t_vn == 2 && t_mn == 3) {
+        m.c1.x += delta.x * m.c1.z;
+        m.c2.x += delta.x * m.c2.z;
+        m.c3.x += delta.x * m.c3.z;
+        m.c1.y += delta.y * m.c1.z;
+        m.c2.y += delta.y * m.c2.z;
+        m.c3.y += delta.y * m.c3.z;
+
+        return m;
     }
 
-    if constexpr (t_n == 3 && t_m == 4) {
-        mat.x1 += delta.x * mat.w1;
-        mat.x2 += delta.x * mat.w2;
-        mat.x3 += delta.x * mat.w3;
-        mat.x4 += delta.x * mat.w4;
-        mat.y1 += delta.y * mat.w1;
-        mat.y2 += delta.y * mat.w2;
-        mat.y3 += delta.y * mat.w3;
-        mat.y4 += delta.y * mat.w4;
-        mat.z1 += delta.z * mat.w1;
-        mat.z2 += delta.z * mat.w2;
-        mat.z3 += delta.z * mat.w3;
-        mat.z4 += delta.z * mat.w4;
-        return mat;
+    if constexpr (t_vn == 3 && t_mn == 4) {
+        m.c1.x += delta.x * m.c1.w;
+        m.c2.x += delta.x * m.c2.w;
+        m.c3.x += delta.x * m.c3.w;
+        m.c4.x += delta.x * m.c4.w;
+        m.c1.y += delta.y * m.c1.w;
+        m.c2.y += delta.y * m.c2.w;
+        m.c3.y += delta.y * m.c3.w;
+        m.c4.y += delta.y * m.c4.w;
+        m.c1.z += delta.z * m.c1.w;
+        m.c2.z += delta.z * m.c2.w;
+        m.c3.z += delta.z * m.c3.w;
+        m.c4.z += delta.z * m.c4.w;
+
+        return m;
     }
 }
 
 template <typename T, int t_n>
 inline mat<T, t_n> scale(const vec<T, t_n> & scale) {
-    if constexpr (t_n == 2) {
-        return mat2<T>(
-            scale.x,  T(0.0),
-             T(0.0), scale.y
-        );
-    }
+    if constexpr (t_n == 1) return mat1<T>(
+        scale.x
+    );
 
-    if constexpr (t_n == 3) {
-        return mat3<T>(
-            scale.x,  T(0.0),  T(0.0),
-             T(0.0), scale.y,  T(0.0),
-             T(0.0),  T(0.0), scale.z
-        );
-    }    
+    if constexpr (t_n == 2) return mat2<T>(
+        scale.x,  T(0.0),
+         T(0.0), scale.y
+    );
+
+    if constexpr (t_n == 3) return mat3<T>(
+        scale.x,  T(0.0),  T(0.0),
+         T(0.0), scale.y,  T(0.0),
+         T(0.0),  T(0.0), scale.z
+    );
+
+    if constexpr (t_n == 4) return mat4<T>(
+        scale.x,  T(0.0),  T(0.0),  T(0.0),
+         T(0.0), scale.y,  T(0.0),  T(0.0),
+         T(0.0),  T(0.0), scale.z,  T(0.0),
+         T(0.0),  T(0.0),  T(0.0), scale.w
+    ); 
 }
 
-template <typename T, int t_m, int t_n>
-inline mat<T, t_m> & scale(mat<T, t_m> & mat, const vec<T, t_n> & scale) {
-    if constexpr (t_n == 1 && t_m == 1) {
-        mat.x1 *= scale.x;
-        return mat;
+template <typename T, int t_mn, int t_vn>
+inline mat<T, t_mn> & scale(mat<T, t_mn> & m, const vec<T, t_vn> & scale) {
+    if constexpr (t_vn == 1 && t_mn == 1) {
+        m.c1.x *= scale.x;
+
+        return m;
     }
 
-    if constexpr (t_n == 1 && t_m == 2) {        
-        mat.x1 *= scale.x;
-        mat.x2 *= scale.x;
-        return mat;
+    if constexpr (t_vn == 1 && t_mn == 2) {        
+        m.c1.x *= scale.x;
+        m.c2.x *= scale.x;
+
+        return m;
     }
 
-    if constexpr (t_n == 2 && t_m == 2) {
-        mat.x1 *= scale.x;
-        mat.x2 *= scale.x;
-        mat.y1 *= scale.y;
-        mat.y2 *= scale.y;
-        return mat;
+    if constexpr (t_vn == 2 && t_mn == 2) {
+        m.c1.x *= scale.x;
+        m.c2.x *= scale.x;
+        m.c1.y *= scale.y;
+        m.c2.y *= scale.y;
+
+        return m;
     }
 
-    if constexpr (t_n == 2 && t_m == 3) {
-        mat.x1 *= scale.x;
-        mat.x2 *= scale.x;
-        mat.x3 *= scale.x;
-        mat.y1 *= scale.y;
-        mat.y2 *= scale.y;
-        mat.y3 *= scale.y;
-        return mat;
+    if constexpr (t_vn == 2 && t_mn == 3) {
+        m.c1.x *= scale.x;
+        m.c2.x *= scale.x;
+        m.c3.x *= scale.x;
+        m.c1.y *= scale.y;
+        m.c2.y *= scale.y;
+        m.c3.y *= scale.y;
+
+        return m;
     }
 
-    if constexpr (t_n == 3 && t_m == 3) {
-        mat.x1 *= scale.x;
-        mat.x2 *= scale.x;
-        mat.x3 *= scale.x;
-        mat.y1 *= scale.y;
-        mat.y2 *= scale.y;
-        mat.y3 *= scale.y;
-        mat.z1 *= scale.z;
-        mat.z2 *= scale.z;
-        mat.z3 *= scale.z;
-        return mat;
+    if constexpr (t_vn == 3 && t_mn == 3) {
+        m.c1.x *= scale.x;
+        m.c2.x *= scale.x;
+        m.c3.x *= scale.x;
+        m.c1.y *= scale.y;
+        m.c2.y *= scale.y;
+        m.c3.y *= scale.y;
+        m.c1.z *= scale.z;
+        m.c2.z *= scale.z;
+        m.c3.z *= scale.z;
+
+        return m;
     }
 
-    if constexpr (t_n == 3 && t_m == 4) {
-        mat.x1 *= scale.x;
-        mat.x2 *= scale.x;
-        mat.x3 *= scale.x;
-        mat.x4 *= scale.x;
-        mat.y1 *= scale.y;
-        mat.y2 *= scale.y;
-        mat.y3 *= scale.y;
-        mat.y4 *= scale.y;
-        mat.z1 *= scale.z;
-        mat.z2 *= scale.z;
-        mat.z3 *= scale.z;
-        mat.z4 *= scale.z;
-        return mat;
+    if constexpr (t_vn == 3 && t_mn == 4) {
+        m.c1.x *= scale.x;
+        m.c2.x *= scale.x;
+        m.c3.x *= scale.x;
+        m.c4.x *= scale.x;
+        m.c1.y *= scale.y;
+        m.c2.y *= scale.y;
+        m.c3.y *= scale.y;
+        m.c4.y *= scale.y;
+        m.c1.z *= scale.z;
+        m.c2.z *= scale.z;
+        m.c3.z *= scale.z;
+        m.c4.z *= scale.z;
+
+        return m;
     }
 }
 

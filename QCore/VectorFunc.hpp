@@ -16,9 +16,9 @@ namespace qc {
 // Stream Output
 //------------------------------------------------------------------------------
 
-template <typename T, int t_n> inline std::ostream & operator<<(std::ostream & os, const vec<T, t_n> & v);
+template <typename T, int t_n> std::ostream & operator<<(std::ostream & os, const vec<T, t_n> & v);
 
-template <typename T, int t_n> inline std::ostream & operator<<(std::ostream & os, const span<T, t_n> & s);
+template <typename T, int t_n> std::ostream & operator<<(std::ostream & os, const span<T, t_n> & s);
 
 
 
@@ -27,10 +27,10 @@ template <typename T, int t_n> inline std::ostream & operator<<(std::ostream & o
 //------------------------------------------------------------------------------
 
 template <typename T, int t_n, eif_floating_t<T> = 0>
-inline vec<T, t_n> pow(const vec<T, t_n> & v, T p);
+vec<T, t_n> pow(const vec<T, t_n> & v, T p);
 
 template <typename T, int t_n, eif_floating_t<T> = 0>
-inline vec<T, t_n> pow(const vec<T, t_n> & v, const vec<T, t_n> & p);
+vec<T, t_n> pow(const vec<T, t_n> & v, const vec<T, t_n> & p);
 
 
 
@@ -39,7 +39,7 @@ inline vec<T, t_n> pow(const vec<T, t_n> & v, const vec<T, t_n> & p);
 //------------------------------------------------------------------------------
 
 template <typename T, int t_n, eif_t<std::is_floating_point_v<T>> = 0>
-inline vec<T, t_n> exp(const vec<T, t_n> & v);
+vec<T, t_n> exp(const vec<T, t_n> & v);
 
 
 
@@ -48,19 +48,28 @@ inline vec<T, t_n> exp(const vec<T, t_n> & v);
 //------------------------------------------------------------------------------
 
 template <typename T, int t_n, eif_floating_t<T> = 0>
-inline T magnitude(const vec<T, t_n> & v);
+T magnitude(const vec<T, t_n> & v);
 
 template <typename T, int t_n>
-inline T magnitude2(const vec<T, t_n> & v);
+T magnitude2(const vec<T, t_n> & v);
 
 
 
 //==============================================================================
-// norm
+// normalize
 //------------------------------------------------------------------------------
 
 template <typename T, int t_n, eif_floating_t<T> = 0>
-inline vec<T, t_n> normalize(const vec<T, t_n> & v);
+vec<T, t_n> normalize(const vec<T, t_n> & v);
+
+
+
+//==============================================================================
+// normalizeAssign
+//------------------------------------------------------------------------------
+
+template <typename T, int t_n, eif_floating_t<T> = 0>
+vec<T, t_n> & normalizeAssign(vec<T, t_n> & v);
 
 
 
@@ -69,7 +78,7 @@ inline vec<T, t_n> normalize(const vec<T, t_n> & v);
 //------------------------------------------------------------------------------
 
 template <typename T, int t_n>
-inline T dot(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+T dot(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 
 
 
@@ -78,10 +87,10 @@ inline T dot(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 //------------------------------------------------------------------------------
 
 template <typename T>
-inline T cross(const vec2<T> & v1, const vec2<T> & v2);
+T cross(const vec2<T> & v1, const vec2<T> & v2);
 
 template <typename T>
-inline vec3<T> cross(const vec3<T> & v1, const vec3<T> & v2);
+vec3<T> cross(const vec3<T> & v1, const vec3<T> & v2);
 
 
 
@@ -90,7 +99,7 @@ inline vec3<T> cross(const vec3<T> & v1, const vec3<T> & v2);
 //------------------------------------------------------------------------------
 
 template <typename T, int t_n>
-inline bool parallel(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+bool parallel(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 
 
 
@@ -99,7 +108,7 @@ inline bool parallel(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 //------------------------------------------------------------------------------
 
 template <typename T, int t_n>
-inline bool orthogonal(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+bool orthogonal(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 
 
 
@@ -117,12 +126,12 @@ Q_CX_ABLE vec<T, t_n> ortho(const vec<T, t_n> & v);
 //------------------------------------------------------------------------------
 
 template <typename T, int t_n, eif_floating_t<T> = 0>
-inline void orthogonalize(const vec<T, t_n> & v1, vec<T, t_n> & v2);
+void orthogonalize(const vec<T, t_n> & v1, vec<T, t_n> & v2);
 
 template <typename T, eif_floating_t<T> = 0>
-inline void orthogonalize(const vec3<T> & v1, vec3<T> & v2, vec3<T> & v3);
+void orthogonalize(const vec3<T> & v1, vec3<T> & v2, vec3<T> & v3);
 template <typename T, eif_floating_t<T> = 0>
-inline void orthogonalize_n(const vec3<T> & v1, vec3<T> & v2, vec3<T> & v3);
+void orthogonalize_n(const vec3<T> & v1, vec3<T> & v2, vec3<T> & v3);
 
 
 
@@ -131,9 +140,9 @@ inline void orthogonalize_n(const vec3<T> & v1, vec3<T> & v2, vec3<T> & v3);
 //------------------------------------------------------------------------------
 
 template <typename T, int t_n, eif_floating_t<T> = 0>
-inline vec<T, t_n> reflect(const vec<T, t_n> & v, const vec<T, t_n> & n);
+vec<T, t_n> reflect(const vec<T, t_n> & v, const vec<T, t_n> & n);
 template <typename T, int t_n, eif_floating_t<T> = 0>
-inline vec<T, t_n> reflect_n(const vec<T, t_n> & v, const vec<T, t_n> & n);
+vec<T, t_n> reflect_n(const vec<T, t_n> & v, const vec<T, t_n> & n);
 
 
 
@@ -142,9 +151,9 @@ inline vec<T, t_n> reflect_n(const vec<T, t_n> & v, const vec<T, t_n> & n);
 //------------------------------------------------------------------------------
 
 template <typename T, int t_n, eif_floating_t<T> = 0>
-inline T angle(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+T angle(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 template <typename T, int t_n, eif_floating_t<T> = 0>
-inline T angle_n(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+T angle_n(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 
 
 
@@ -153,7 +162,7 @@ inline T angle_n(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 //------------------------------------------------------------------------------
 
 template <typename T, int t_n>
-inline void sort(const vec<T, t_n> & v);
+void sort(const vec<T, t_n> & v);
 
 
 

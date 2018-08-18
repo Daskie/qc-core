@@ -925,6 +925,11 @@ void compileFunctionsFT() {
     qc::normalize(v3);
     qc::normalize(v4);
 
+    qc::normalizeAssign(v1);
+    qc::normalizeAssign(v2);
+    qc::normalizeAssign(v3);
+    qc::normalizeAssign(v4);
+
     qc::orthogonalize(v1, v1);
     qc::orthogonalize(v2, v2);
     qc::orthogonalize(v3, v3);
@@ -1569,7 +1574,7 @@ void compileMembers() {
     v = v3.x; v = v3.y; v = v3.z;
     v = v3.r; v = v3.g; v = v3.b;
     v = v3.s; v = v3.t; v = v3.p;
-    v = v3.rad; v = v3.theta; v = v3.phi;
+    v = v3.radius; v = v3.theta; v = v3.phi;
     v = v3.alpha; v = v3.beta; v = v3.gamma;
 
     v = v4.x; v = v4.y; v = v4.z; v = v4.w;

@@ -12,8 +12,8 @@ namespace qc {
 
 template <typename T> struct quat;
 
-using  fquat = quat<      float>;
-using  dquat = quat<     double>;
+using fquat = quat< float>;
+using dquat = quat<double>;
 
 
 
@@ -44,8 +44,8 @@ struct quat {
 
     //--- assignment ---
 
-    inline quat & operator=(const quat & q);
-    inline quat & operator=(quat && q);
+    quat & operator=(const quat & q);
+    quat & operator=(quat && q);
 
 };
 

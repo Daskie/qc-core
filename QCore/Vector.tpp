@@ -118,7 +118,7 @@ inline T & vec<T, 1>::at() {
 
 template <typename T>
 template <int t_i>
-constexpr T vec<T, 1>::at() const {
+constexpr const T & vec<T, 1>::at() const {
     static_assert(t_i == 0, "index out of bounds");
     if constexpr (t_i == 0) return x;
 }
@@ -262,7 +262,7 @@ inline T & vec<T, 2>::at() {
 
 template <typename T>
 template <int t_i>
-constexpr T vec<T, 2>::at() const {
+constexpr const T & vec<T, 2>::at() const {
     static_assert(t_i >= 0 && t_i <= 1, "index out of bounds");
     if constexpr (t_i == 0) return x;
     if constexpr (t_i == 1) return y;
@@ -447,7 +447,7 @@ inline T & vec<T, 3>::at() {
 
 template <typename T>
 template <int t_i>
-constexpr T vec<T, 3>::at() const {
+constexpr const T & vec<T, 3>::at() const {
     static_assert(t_i >= 0 && t_i <= 2, "index out of bounds");
     if constexpr (t_i == 0) return x;
     if constexpr (t_i == 1) return y;
@@ -800,7 +800,7 @@ inline T & vec<T, 4>::at() {
 
 template <typename T>
 template <int t_i>
-constexpr T vec<T, 4>::at() const {
+constexpr const T & vec<T, 4>::at() const {
     static_assert(t_i >= 0 && t_i <= 3, "index out of bounds");
     if constexpr (t_i == 0) return x;
     if constexpr (t_i == 1) return y;
@@ -1313,7 +1313,9 @@ Q_CX_ABLE vec<T, t_n> operator/(const vec<T, t_n> & v1, const vec<T, t_n> & v2) 
 
 template <typename T, int t_n>
 Q_CX_ABLE vec<T, t_n> operator/(const vec<T, t_n> & v1, const T & v2) {
-    if constexpr (t_n > 1 && std::is_floating_point_v<T>) return v1 * (T(1.0) / v2);
+    if constexpr (t_n > 1 && std::is_floating_point_v<T>) {
+        return v1 * (T(1.0) / v2);
+    }
     if constexpr (t_n == 1) return vec1<T>(v1.x / v2);
     if constexpr (t_n == 2) return vec2<T>(v1.x / v2, v1.y / v2);
     if constexpr (t_n == 3) return vec3<T>(v1.x / v2, v1.y / v2, v1.z / v2);

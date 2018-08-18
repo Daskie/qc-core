@@ -5,10 +5,10 @@ namespace qc {
 template <typename T, int t_n>
 inline std::ostream & operator<<(std::ostream & os, const vec<T, t_n> & v) {
     os << "[";
-    if constexpr (t_n >= 1) os << " " << v.x << " ";
-    if constexpr (t_n >= 2) os << v.y << " ";
-    if constexpr (t_n >= 3) os << v.z << " ";
-    if constexpr (t_n >= 4) os << v.w << " ";
+    if constexpr (t_n >= 1) os << v.x << " ";
+    if constexpr (t_n >= 2) os << " " << v.y;
+    if constexpr (t_n >= 3) os << " " << v.z;
+    if constexpr (t_n >= 4) os << " " << v.w;
     os << "]";
     return os;
 }
@@ -61,7 +61,16 @@ inline vec<T, t_n> normalize(const vec<T, t_n> & v) {
     if (zero(m2)) {
         return vec<T, t_n>();
     }
-    return v * (T(1.0) / std::sqrt(m2));
+    return v / std::sqrt(m2);
+}
+
+template <typename T, int t_n, eif_floating_t<T>>
+inline vec<T, t_n> & normalizeAssign(vec<T, t_n> & v) {
+    T m2(magnitude2(v));
+    if (zero(m2)) {
+        return v;
+    }
+    return v /= std::sqrt(m2);
 }
 
 template <typename T, int t_n>

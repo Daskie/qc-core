@@ -387,12 +387,12 @@ struct vec<T, 1> {
     // Static Members
 
     using Type = T;
-    static constexpr int N = 1;
+    static constexpr int N{1};
 
     //--------------------------------------------------------------------------
     // Instance Variables
 
-    union { T x, r, s; };
+    union { T x, r, s, _0; };
 
     //--------------------------------------------------------------------------
     // Construction
@@ -411,20 +411,20 @@ struct vec<T, 1> {
     //--------------------------------------------------------------------------
     // Assignment
 
-    inline vec1<T> & operator=(const vec1<T> & v);
-    inline vec1<T> & operator=(vec1<T> && v);
+    vec1<T> & operator=(const vec1<T> & v);
+    vec1<T> & operator=(vec1<T> && v);
 
-    inline vec1<T> & operator=(const T & v);
-    template <int t_n> inline vec1<T> & operator=(const vec<T, t_n> & v);
+    vec1<T> & operator=(const T & v);
+    template <int t_n> vec1<T> & operator=(const vec<T, t_n> & v);
 
     //--------------------------------------------------------------------------
     // Access
 
-    inline T & operator[](int i);
-    inline const T & operator[](int i) const;
+    T & operator[](int i);
+    const T & operator[](int i) const;
 
-    template <int t_i> inline T & at();
-    template <int t_i> constexpr T at() const;
+    template <int t_i> T & at();
+    template <int t_i> constexpr const T & at() const;
 
 };
 
@@ -443,7 +443,7 @@ struct vec<T, 2> {
     // Static Members
 
     using Type = T;
-    static constexpr int N = 2;    
+    static constexpr int N{2};
 
     //--------------------------------------------------------------------------
     // Instance Variables
@@ -452,9 +452,10 @@ struct vec<T, 2> {
         struct { T x, y; };
         struct { T r, g; };
         struct { T s, t; };
-        struct { T rad, theta; };
+        struct { T radius, theta; };
+        struct { T _0, _1; };
     };
-    //union { T x, r, s,   rad; };
+    //union { T x, r, s, radius; };
     //union { T y, g, t, theta; };
 
     //--------------------------------------------------------------------------
@@ -480,20 +481,20 @@ struct vec<T, 2> {
     //--------------------------------------------------------------------------
     // Assignment
 
-    inline vec2<T> & operator=(const vec2<T> & v);
-    inline vec2<T> & operator=(vec2<T> && v);
+    vec2<T> & operator=(const vec2<T> & v);
+    vec2<T> & operator=(vec2<T> && v);
     
-    inline vec2<T> & operator=(const T & v);
-    template <int t_n> inline vec2<T> & operator=(const vec<T, t_n> & v);
+    vec2<T> & operator=(const T & v);
+    template <int t_n> vec2<T> & operator=(const vec<T, t_n> & v);
 
     //--------------------------------------------------------------------------
     // Access
 
-    inline T & operator[](int i);
-    inline const T & operator[](int i) const;
+    T & operator[](int i);
+    const T & operator[](int i) const;
 
-    template <int t_i> inline T & at();
-    template <int t_i> constexpr T at() const;
+    template <int t_i> T & at();
+    template <int t_i> constexpr const T & at() const;
 
 
 };
@@ -513,7 +514,7 @@ struct vec<T, 3> {
     // Static Members
 
     using Type = T;
-    static constexpr int N = 3;
+    static constexpr int N{3};
 
     //--------------------------------------------------------------------------
     // Instance Variables
@@ -522,8 +523,10 @@ struct vec<T, 3> {
         struct { T x, y, z; };
         struct { T r, g, b; };
         struct { T s, t, p; };
-        struct { T rad, theta, phi; };
+        struct { T radius, theta, phi; };
         struct { T alpha, beta, gamma; };
+        struct { T hue, saturation, value; };
+        struct { T _0, _1, _2; };
     };
     //union { T x, r, s,   rad, alpha; };
     //union { T y, g, t, theta,  beta; };
@@ -560,26 +563,26 @@ struct vec<T, 3> {
     //--------------------------------------------------------------------------
     // Assignment
 
-    inline vec3<T> & operator=(const vec3<T> & v);
-    inline vec3<T> & operator=(vec3<T> && v);
+    vec3<T> & operator=(const vec3<T> & v);
+    vec3<T> & operator=(vec3<T> && v);
 
-    inline vec3<T> & operator=(const T & v);
-    template <int t_n> inline vec3<T> & operator=(const vec<T, t_n> & v);
+    vec3<T> & operator=(const T & v);
+    template <int t_n> vec3<T> & operator=(const vec<T, t_n> & v);
 
     //--------------------------------------------------------------------------
     // Access
 
-    inline T & operator[](int i);
-    inline const T & operator[](int i) const;
+    T & operator[](int i);
+    const T & operator[](int i) const;
 
-    template <int t_i> inline T & at();
-    template <int t_i> constexpr T at() const;
+    template <int t_i> T & at();
+    template <int t_i> constexpr const T & at() const;
 
-    inline vec2<T> & xy(); inline vec2<T> & rg(); inline vec2<T> & st();
-    inline vec2<T> & yz(); inline vec2<T> & gb(); inline vec2<T> & tp();
+    vec2<T> & xy(); vec2<T> & rg(); vec2<T> & st();
+    vec2<T> & yz(); vec2<T> & gb(); vec2<T> & tp();
 
-    inline const vec2<T> & xy() const; inline const vec2<T> & rg() const; inline const vec2<T> & st() const;
-    inline const vec2<T> & yz() const; inline const vec2<T> & gb() const; inline const vec2<T> & tp() const;
+    const vec2<T> & xy() const; const vec2<T> & rg() const; const vec2<T> & st() const;
+    const vec2<T> & yz() const; const vec2<T> & gb() const; const vec2<T> & tp() const;
 
 };
 
@@ -598,7 +601,7 @@ struct vec<T, 4> {
     // Static Members
 
     using Type = T;
-    static constexpr int N = 4;
+    static constexpr int N{4};
 
     //--------------------------------------------------------------------------
     // Instance Variables
@@ -607,6 +610,7 @@ struct vec<T, 4> {
         struct { T x, y, z, w; };
         struct { T r, g, b, a; };
         struct { T s, t, p, q; };
+        struct { T _0, _1, _2, _3; };
     };
     //union { T x, r, s; };
     //union { T y, g, t; };
@@ -665,32 +669,32 @@ struct vec<T, 4> {
     //--------------------------------------------------------------------------
     // Assignment
 
-    inline vec4<T> & operator=(const vec4<T> & v);
-    inline vec4<T> & operator=(vec4<T> && v);
+    vec4<T> & operator=(const vec4<T> & v);
+    vec4<T> & operator=(vec4<T> && v);
 
-    inline vec4<T> & operator=(const T & v);
-    template <int t_n> inline vec4<T> & operator=(const vec<T, t_n> & v);
+    vec4<T> & operator=(const T & v);
+    template <int t_n> vec4<T> & operator=(const vec<T, t_n> & v);
 
     //--------------------------------------------------------------------------
     // Access
     
-    inline T & operator[](int i);
-    inline const T & operator[](int i) const;
+    T & operator[](int i);
+    const T & operator[](int i) const;
 
-    template <int t_i> inline T & at();
-    template <int t_i> constexpr T at() const;
+    template <int t_i> T & at();
+    template <int t_i> constexpr const T & at() const;
 
-    inline vec2<T> &  xy(); inline vec2<T> &  rg(); inline vec2<T> &  st();
-    inline vec2<T> &  yz(); inline vec2<T> &  gb(); inline vec2<T> &  tp();
-    inline vec2<T> &  zw(); inline vec2<T> &  ba(); inline vec2<T> &  pq();
-    inline vec3<T> & xyz(); inline vec3<T> & rgb(); inline vec3<T> & stp();
-    inline vec3<T> & yzw(); inline vec3<T> & gba(); inline vec3<T> & tpq();
+    vec2<T> &  xy(); vec2<T> &  rg(); vec2<T> &  st();
+    vec2<T> &  yz(); vec2<T> &  gb(); vec2<T> &  tp();
+    vec2<T> &  zw(); vec2<T> &  ba(); vec2<T> &  pq();
+    vec3<T> & xyz(); vec3<T> & rgb(); vec3<T> & stp();
+    vec3<T> & yzw(); vec3<T> & gba(); vec3<T> & tpq();
 
-    inline const vec2<T> &  xy() const; inline const vec2<T> &  rg() const; inline const vec2<T> &  st() const;
-    inline const vec2<T> &  yz() const; inline const vec2<T> &  gb() const; inline const vec2<T> &  tp() const;
-    inline const vec2<T> &  zw() const; inline const vec2<T> &  ba() const; inline const vec2<T> &  pq() const;
-    inline const vec3<T> & xyz() const; inline const vec3<T> & rgb() const; inline const vec3<T> & stp() const;
-    inline const vec3<T> & yzw() const; inline const vec3<T> & gba() const; inline const vec3<T> & tpq() const;
+    const vec2<T> &  xy() const; const vec2<T> &  rg() const; const vec2<T> &  st() const;
+    const vec2<T> &  yz() const; const vec2<T> &  gb() const; const vec2<T> &  tp() const;
+    const vec2<T> &  zw() const; const vec2<T> &  ba() const; const vec2<T> &  pq() const;
+    const vec3<T> & xyz() const; const vec3<T> & rgb() const; const vec3<T> & stp() const;
+    const vec3<T> & yzw() const; const vec3<T> & gba() const; const vec3<T> & tpq() const;
 
 };
 
@@ -709,7 +713,7 @@ struct span {
     // Static Members
 
     using Type = T;
-    static constexpr int N = t_n;
+    static constexpr int N{t_n};
 
     //--------------------------------------------------------------------------
     // Instance Variables
@@ -736,10 +740,10 @@ struct span {
     //--------------------------------------------------------------------------
     // Assignment
 
-    inline span<T, t_n> & operator=(const span<T, t_n> & s);
-    inline span<T, t_n> & operator=(span<T, t_n> && s);
+    span<T, t_n> & operator=(const span<T, t_n> & s);
+    span<T, t_n> & operator=(span<T, t_n> && s);
 
-    template <int u_n> inline span<T, t_n> & operator=(const span<T, u_n> & s);
+    template <int u_n> span<T, t_n> & operator=(const span<T, u_n> & s);
 
 };
 
@@ -800,26 +804,26 @@ template <typename T, int t_n> constexpr span<T, t_n> nullspan = span<T, t_n>(in
 // Arithmetic Assignment
 //------------------------------------------------------------------------------
 
-template <typename T, int t_n> inline vec<T, t_n> & operator++(vec<T, t_n> & v);
-template <typename T, int t_n> inline vec<T, t_n>   operator++(vec<T, t_n> & v, int);
+template <typename T, int t_n> vec<T, t_n> & operator++(vec<T, t_n> & v);
+template <typename T, int t_n> vec<T, t_n>   operator++(vec<T, t_n> & v, int);
 
-template <typename T, int t_n> inline vec<T, t_n> & operator--(vec<T, t_n> & v);
-template <typename T, int t_n> inline vec<T, t_n>   operator--(vec<T, t_n> & v, int);
+template <typename T, int t_n> vec<T, t_n> & operator--(vec<T, t_n> & v);
+template <typename T, int t_n> vec<T, t_n>   operator--(vec<T, t_n> & v, int);
 
-template <typename T, int t_n> inline vec<T, t_n> & operator+=(vec<T, t_n> & v1, const vec<T, t_n> & v2);
-template <typename T, int t_n> inline vec<T, t_n> & operator+=(vec<T, t_n> & v1, const           T & v2);
+template <typename T, int t_n> vec<T, t_n> & operator+=(vec<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, int t_n> vec<T, t_n> & operator+=(vec<T, t_n> & v1, const           T & v2);
 
-template <typename T, int t_n> inline vec<T, t_n> & operator-=(vec<T, t_n> & v1, const vec<T, t_n> & v2);
-template <typename T, int t_n> inline vec<T, t_n> & operator-=(vec<T, t_n> & v1, const           T & v2);
+template <typename T, int t_n> vec<T, t_n> & operator-=(vec<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, int t_n> vec<T, t_n> & operator-=(vec<T, t_n> & v1, const           T & v2);
 
-template <typename T, int t_n> inline vec<T, t_n> & operator*=(vec<T, t_n> & v1, const vec<T, t_n> & v2);
-template <typename T, int t_n> inline vec<T, t_n> & operator*=(vec<T, t_n> & v1, const           T & v2);
+template <typename T, int t_n> vec<T, t_n> & operator*=(vec<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, int t_n> vec<T, t_n> & operator*=(vec<T, t_n> & v1, const           T & v2);
 
-template <typename T, int t_n> inline vec<T, t_n> & operator/=(vec<T, t_n> & v1, const vec<T, t_n> & v2);
-template <typename T, int t_n> inline vec<T, t_n> & operator/=(vec<T, t_n> & v1, const           T & v2);
+template <typename T, int t_n> vec<T, t_n> & operator/=(vec<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, int t_n> vec<T, t_n> & operator/=(vec<T, t_n> & v1, const           T & v2);
 
-template <typename T, int t_n> inline vec<T, t_n> & operator%=(vec<T, t_n> & v1, const vec<T, t_n> & v2);
-template <typename T, int t_n> inline vec<T, t_n> & operator%=(vec<T, t_n> & v1, const           T & v2);
+template <typename T, int t_n> vec<T, t_n> & operator%=(vec<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, int t_n> vec<T, t_n> & operator%=(vec<T, t_n> & v1, const           T & v2);
 
 
 

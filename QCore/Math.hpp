@@ -219,10 +219,10 @@ struct CriticalDampener : public Dampener<T> {
     template <typename U>
     void dampen(U & pos, U & vel, const U & targetPos) const {
         U dp(pos - targetPos);
-        U c1(vel + angularFreq * dp);
-        U c2((c1 * dt + dp) * expTerm);
+        U c1(vel + this->angularFreq * dp);
+        U c2((c1 * this->dt + dp) * expTerm);
         pos = targetPos + c2;
-        vel = c1 * expTerm - c2 * angularFreq;
+        vel = c1 * expTerm - c2 * this->angularFreq;
     }
 
 };
