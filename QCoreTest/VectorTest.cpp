@@ -1010,15 +1010,15 @@ void compileFunctionsBT() {
     !b3;
     !b4;
     
-    qc::conjunct(b1);
-    qc::conjunct(b2);
-    qc::conjunct(b3);
-    qc::conjunct(b4);
+    qc::all(b1);
+    qc::all(b2);
+    qc::all(b3);
+    qc::all(b4);
 
-    qc::disjunct(b1);
-    qc::disjunct(b2);
-    qc::disjunct(b3);
-    qc::disjunct(b4);
+    qc::any(b1);
+    qc::any(b2);
+    qc::any(b3);
+    qc::any(b4);
 }
 
 void compileFunctions() {
@@ -1467,15 +1467,15 @@ constexpr void compileBoolFunctionsConstexpr() {
     //!b3;
     //!b4;
 
-    //qc::conjunct(b1);
-    //qc::conjunct(b2);
-    //qc::conjunct(b3);
-    //qc::conjunct(b4);
+    //qc::all(b1);
+    //qc::all(b2);
+    //qc::all(b3);
+    //qc::all(b4);
 
-    //qc::disjunct(b1);
-    //qc::disjunct(b2);
-    //qc::disjunct(b3);
-    //qc::disjunct(b4);
+    //qc::any(b1);
+    //qc::any(b2);
+    //qc::any(b3);
+    //qc::any(b4);
 }
 
 constexpr bool compileFunctionsConstexpr() {

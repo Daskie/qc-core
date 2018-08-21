@@ -911,9 +911,9 @@ template <typename T, int t_n> Q_CX_ABLE T sum(const vec<T, t_n> & v);
 
 template <typename T, int t_n> Q_CX_ABLE T product(const vec<T, t_n> & v);
 
-template <typename T, int t_n> Q_CX_ABLE bool disjunct(const vec<T, t_n> & v);
+template <typename T, int t_n> Q_CX_ABLE bool any(const vec<T, t_n> & v);
 
-template <typename T, int t_n> Q_CX_ABLE bool conjunct(const vec<T, t_n> & v);
+template <typename T, int t_n> Q_CX_ABLE bool all(const vec<T, t_n> & v);
 
 
 
