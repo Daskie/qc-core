@@ -20,7 +20,6 @@ inline std::ostream & operator<<(std::ostream & os, const span<T, t_n> & s) {
 
 template <typename T, int t_n, eif_floating_t<T>>
 inline vec<T, t_n> pow(const vec<T, t_n> & v, T p) {
-    if constexpr (t_n == 1) return vec1<T>(std::pow(v.x, p));
     if constexpr (t_n == 2) return vec2<T>(std::pow(v.x, p), std::pow(v.y, p));
     if constexpr (t_n == 3) return vec3<T>(std::pow(v.x, p), std::pow(v.y, p), std::pow(v.z, p));
     if constexpr (t_n == 4) return vec4<T>(std::pow(v.x, p), std::pow(v.y, p), std::pow(v.z, p), std::pow(v.w, p));
@@ -28,7 +27,6 @@ inline vec<T, t_n> pow(const vec<T, t_n> & v, T p) {
 
 template <typename T, int t_n, eif_floating_t<T>>
 inline vec<T, t_n> pow(const vec<T, t_n> & v, const vec<T, t_n> & p) {
-    if constexpr (t_n == 1) return vec1<T>(std::pow(v.x, p.x));
     if constexpr (t_n == 2) return vec2<T>(std::pow(v.x, p.x), std::pow(v.y, p.y));
     if constexpr (t_n == 3) return vec3<T>(std::pow(v.x, p.x), std::pow(v.y, p.y), std::pow(v.z, p.z));
     if constexpr (t_n == 4) return vec4<T>(std::pow(v.x, p.x), std::pow(v.y, p.y), std::pow(v.z, p.z), std::pow(v.w, p.w));
@@ -36,7 +34,6 @@ inline vec<T, t_n> pow(const vec<T, t_n> & v, const vec<T, t_n> & p) {
 
 template <typename T, int t_n, eif_floating_t<T>>
 inline vec<T, t_n> exp(const vec<T, t_n> & v) {
-    if constexpr (t_n == 1) return vec1<T>(std::exp(v.x));
     if constexpr (t_n == 2) return vec2<T>(std::exp(v.x), std::exp(v.y));
     if constexpr (t_n == 3) return vec3<T>(std::exp(v.x), std::exp(v.y), std::exp(v.z));
     if constexpr (t_n == 4) return vec4<T>(std::exp(v.x), std::exp(v.y), std::exp(v.z), std::exp(v.w));
@@ -49,7 +46,6 @@ inline T magnitude(const vec<T, t_n> & v) {
 
 template <typename T, int t_n>
 inline T magnitude2(const vec<T, t_n> & v) {
-    if constexpr (t_n == 1) return v.x * v.x;
     if constexpr (t_n == 2) return v.x * v.x + v.y * v.y;
     if constexpr (t_n == 3) return v.x * v.x + v.y * v.y + v.z * v.z;
     if constexpr (t_n == 4) return v.x * v.x + v.y * v.y + v.z * v.z + v.w * v.w;
@@ -75,7 +71,6 @@ inline vec<T, t_n> & normalizeAssign(vec<T, t_n> & v) {
 
 template <typename T, int t_n>
 inline T dot(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
-    if constexpr (t_n == 1) return v1.x * v2.x;
     if constexpr (t_n == 2) return v1.x * v2.x + v1.y * v2.y;
     if constexpr (t_n == 3) return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
     if constexpr (t_n == 4) return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z + v1.w * v2.w;
@@ -129,12 +124,7 @@ inline vec3<T> ortho(const vec3<T> & v) {
 
 template <typename T, int t_n, eif_floating_t<T>>
 inline void orthogonalize(const vec<T, t_n> & v1, vec<T, t_n> & v2) {
-    if constexpr (t_n == 1) {
-        v2 = vec1<T>();
-    }
-    if constexpr (t_n > 1) {
-        v2 = normalize(v2 - dot(v1, v2) * v1);
-    }
+    v2 = normalize(v2 - dot(v1, v2) * v1);
 }
 
 // in order of priority
@@ -189,7 +179,6 @@ inline void sort(vec<T, t_n> & v) {
 
 template <typename T, int t_n>
 Q_CX_ABLE vec<T, t_n> clamp(const vec<T, t_n> & v, const T & min, const T & max) {
-    if constexpr (t_n == 1) return vec1<T>(clamp(v.x, min, max));
     if constexpr (t_n == 2) return vec2<T>(clamp(v.x, min, max), clamp(v.y, min, max));
     if constexpr (t_n == 3) return vec3<T>(clamp(v.x, min, max), clamp(v.y, min, max), clamp(v.z, min, max));
     if constexpr (t_n == 4) return vec4<T>(clamp(v.x, min, max), clamp(v.y, min, max), clamp(v.z, min, max), clamp(v.w, min, max));
@@ -197,7 +186,6 @@ Q_CX_ABLE vec<T, t_n> clamp(const vec<T, t_n> & v, const T & min, const T & max)
 
 template <typename T, int t_n>
 Q_CX_ABLE vec<T, t_n> clamp(const vec<T, t_n> & v, const vec<T, t_n> & min, const vec<T, t_n> & max) {
-    if constexpr (t_n == 1) return vec1<T>(clamp(v.x, min.x, max.x));
     if constexpr (t_n == 2) return vec2<T>(clamp(v.x, min.x, max.x), clamp(v.y, min.y, max.y));
     if constexpr (t_n == 3) return vec3<T>(clamp(v.x, min.x, max.x), clamp(v.y, min.y, max.y), clamp(v.z, min.z, max.z));
     if constexpr (t_n == 4) return vec4<T>(clamp(v.x, min.x, max.x), clamp(v.y, min.y, max.y), clamp(v.z, min.z, max.z), clamp(v.w, min.w, max.w));
@@ -208,9 +196,13 @@ Q_CX_ABLE vec<T, t_n> clamp(const vec<T, t_n> & v, const span<T, t_n> & span) {
     return clamp(v, span.min, span.max);
 }
 
+template <typename T>
+Q_CX_ABLE T clamp(const T & v, const span1<T> & span) {
+    return clamp(v, span.min, span.max);
+}
+
 template <typename T, int t_n>
 Q_CX_ABLE vec<T, t_n> abs(const vec<T, t_n> & v) {
-    if constexpr (t_n == 1) return vec1<T>(abs(v.x));
     if constexpr (t_n == 2) return vec2<T>(abs(v.x), abs(v.y));
     if constexpr (t_n == 3) return vec3<T>(abs(v.x), abs(v.y), abs(v.z));
     if constexpr (t_n == 4) return vec4<T>(abs(v.x), abs(v.y), abs(v.z), abs(v.w));
@@ -218,7 +210,6 @@ Q_CX_ABLE vec<T, t_n> abs(const vec<T, t_n> & v) {
 
 template <typename T, int t_n, eif_arithmetic_t<T>>
 Q_CX_ABLE bool zero(const vec<T, t_n> & v, T e) {
-    if constexpr (t_n == 1) return zero(v.x, e);
     if constexpr (t_n == 2) return zero(v.x, e) && zero(v.y, e);
     if constexpr (t_n == 3) return zero(v.x, e) && zero(v.y, e) && zero(v.z, e);
     if constexpr (t_n == 4) return zero(v.x, e) && zero(v.y, e) && zero(v.z, e) && zero(v.w, e);
@@ -226,7 +217,6 @@ Q_CX_ABLE bool zero(const vec<T, t_n> & v, T e) {
 
 template <typename T, int t_n>
 Q_CX_ABLE bool equal(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
-    if constexpr (t_n == 1) return equal(v1.x, v2.x);
     if constexpr (t_n == 2) return equal(v1.x, v2.x) && equal(v1.y, v2.y);
     if constexpr (t_n == 3) return equal(v1.x, v2.x) && equal(v1.y, v2.y) && equal(v1.z, v2.z);
     if constexpr (t_n == 4) return equal(v1.x, v2.x) && equal(v1.y, v2.y) && equal(v1.z, v2.z) && equal(v1.w, v2.w);
@@ -234,7 +224,6 @@ Q_CX_ABLE bool equal(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
 
 template <typename T, int t_n, eif_floating_t<T>>
 Q_CX_ABLE bool equalE(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<T, t_n> & e) {
-    if constexpr (t_n == 1) return equalE(v1.x, v2.x, e.x);
     if constexpr (t_n == 2) return equalE(v1.x, v2.x, e.x) && equalE(v1.y, v2.y, e.y);
     if constexpr (t_n == 3) return equalE(v1.x, v2.x, e.x) && equalE(v1.y, v2.y, e.y) && equalE(v1.z, v2.z, e.z);
     if constexpr (t_n == 4) return equalE(v1.x, v2.x, e.x) && equalE(v1.y, v2.y, e.y) && equalE(v1.z, v2.z, e.z) && equalE(v1.w, v2.w, e.w);
@@ -242,7 +231,6 @@ Q_CX_ABLE bool equalE(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<
 
 template <typename T, int t_n>
 Q_CX_ABLE bool equal(const vec<T, t_n> & v) {
-    if constexpr (t_n == 1) return true;
     if constexpr (t_n == 2) return v.x == v.y;
     if constexpr (t_n == 3) return v.x == v.y && v.x == v.z;
     if constexpr (t_n == 4) return v.x == v.y && v.x == v.z && v.x == v.w;
@@ -250,7 +238,6 @@ Q_CX_ABLE bool equal(const vec<T, t_n> & v) {
 
 template <typename T, int t_n>
 Q_CX_ABLE vec<nat, t_n> floor(const vec<T, t_n> & v) {
-    if constexpr (t_n == 1) return vec1<nat>(floor(v.x));
     if constexpr (t_n == 2) return vec2<nat>(floor(v.x), floor(v.y));
     if constexpr (t_n == 3) return vec3<nat>(floor(v.x), floor(v.y), floor(v.z));
     if constexpr (t_n == 4) return vec4<nat>(floor(v.x), floor(v.y), floor(v.z), floor(v.w));
@@ -258,7 +245,6 @@ Q_CX_ABLE vec<nat, t_n> floor(const vec<T, t_n> & v) {
 
 template <typename T, int t_n>
 Q_CX_ABLE vec<nat, t_n> ceil(const vec<T, t_n> & v) {
-    if constexpr (t_n == 1) return vec1<nat>(ceil(v.x));
     if constexpr (t_n == 2) return vec2<nat>(ceil(v.x), ceil(v.y));
     if constexpr (t_n == 3) return vec3<nat>(ceil(v.x), ceil(v.y), ceil(v.z));
     if constexpr (t_n == 4) return vec4<nat>(ceil(v.x), ceil(v.y), ceil(v.z), ceil(v.w));
@@ -302,7 +288,6 @@ Q_CX_ABLE vec<T, t_n> mix(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const 
 
 template <typename To, typename From, int t_n, eif_t<std::is_arithmetic_v<To> && std::is_arithmetic_v<From>>>
 Q_CONSTEX vec<To, t_n> transnorm(const vec<From, t_n> & v) {
-    if constexpr (t_n == 1) return vec1<To>(transnorm<To>(v.x));
     if constexpr (t_n == 2) return vec2<To>(transnorm<To>(v.x), transnorm<To>(v.y));
     if constexpr (t_n == 3) return vec3<To>(transnorm<To>(v.x), transnorm<To>(v.y), transnorm<To>(v.z));
     if constexpr (t_n == 4) return vec4<To>(transnorm<To>(v.x), transnorm<To>(v.y), transnorm<To>(v.z), transnorm<To>(v.w));
@@ -321,8 +306,8 @@ Q_CX_ABLE bound<T, t_n> toBound(const span<T, t_n> & s) {
 template <typename T, int t_n>
 Q_CX_ABLE span<T, t_n> intersect(const span<T, t_n> & s1, const span<T, t_n> & s2) {
     if constexpr (t_n == 1) return span1<T>(
-        vec1<T>(max(s1.min.x, s2.min.x)),
-        vec1<T>(min(s1.max.x, s2.max.x))
+        max(s1.min, s2.min),
+        min(s1.max, s2.max)
     );
     if constexpr (t_n == 2) return span2<T>(
         vec2<T>(max(s1.min.x, s2.min.x), max(s1.min.y, s2.min.y)),

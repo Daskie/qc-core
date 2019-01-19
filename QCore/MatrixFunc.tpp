@@ -24,11 +24,6 @@ inline std::ostream & operator<<(std::ostream & os, const mat<T, t_n> & m) {
 
 template <typename T, int t_n>
 inline bool isIdentity(const mat<T, t_n> & m) {
-    if constexpr (t_n == 1) {
-        return
-            m.c1.x == T(1.0);
-    }
-
     if constexpr (t_n == 2) {
         return
             m.c1.x == T(1.0) && m.c2.y == T(1.0) &&
@@ -135,9 +130,6 @@ inline mat<T, t_n> adjoint(const mat<T, t_n> & m) {
 
 template <typename T, int t_n>
 inline T determinant(const mat<T, t_n> & m) {
-    if constexpr (t_n == 1) return
-        m.c1.x;
-
     if constexpr (t_n == 2) return
         + m.c1.x * m.c2.y
         - m.c2.x * m.c1.y;
@@ -184,13 +176,6 @@ inline mat<T, t_n> inverse(const mat<T, t_n> & m) {
 
 template <typename T, int t_n>
 inline mat<T, t_n + 1> translate(const vec<T, t_n> & delta) {
-    if constexpr (t_n == 1) {
-        return mat2<T>(
-             T(1.0), T(0.0),
-            delta.x, T(1.0)
-        );
-    }
-
     if constexpr (t_n == 2) {
         return mat3<T>(
              T(1.0),  T(0.0), T(0.0),
@@ -211,13 +196,6 @@ inline mat<T, t_n + 1> translate(const vec<T, t_n> & delta) {
 
 template <typename T, int t_mn, int t_vn, eif_t<t_mn == t_vn + 1>>
 inline mat<T, t_mn> & translate(mat<T, t_mn> & m, const vec<T, t_vn> & delta) {
-    if constexpr (t_vn == 1 && t_mn == 2) {
-        m.c1.x += delta.x * m.c1.y;
-        m.c2.x += delta.x * m.c2.y;
-
-        return m;
-    }
-
     if constexpr (t_vn == 2 && t_mn == 3) {
         m.c1.x += delta.x * m.c1.z;
         m.c2.x += delta.x * m.c2.z;
@@ -270,13 +248,6 @@ inline mat<T, t_n> scale(const vec<T, t_n> & scale) {
 
 template <typename T, int t_mn, int t_vn>
 inline mat<T, t_mn> & scale(mat<T, t_mn> & m, const vec<T, t_vn> & scale) {
-    if constexpr (t_vn == 1 && t_mn == 2) {        
-        m.c1.x *= scale.x;
-        m.c2.x *= scale.x;
-
-        return m;
-    }
-
     if constexpr (t_vn == 2 && t_mn == 2) {
         m.c1.x *= scale.x;
         m.c2.x *= scale.x;

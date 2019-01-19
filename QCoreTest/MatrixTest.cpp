@@ -13,7 +13,6 @@ namespace {
 template <typename T>
 void compileClassesT() {
     T v(1.0);
-    qc::vec1<T> v1;
     qc::vec2<T> v2;
     qc::vec3<T> v3;
     qc::vec4<T> v4;
@@ -221,7 +220,6 @@ void compileClasses() {
 template <typename T>
 constexpr void compileClassesConstexprT() {
     constexpr T v(T(1.0));
-    constexpr qc::vec1<T> v1(T(1.0));
     constexpr qc::vec2<T> v2(T(1.0));
     constexpr qc::vec3<T> v3(T(1.0));
     constexpr qc::vec4<T> v4(T(1.0));
@@ -256,13 +254,13 @@ constexpr void compileClassesConstexprT() {
     constexpr qc::mat3<T> m3_2(m3);
     constexpr qc::mat3<T> m3_3(std::move(m3));
     constexpr qc::mat3<T> m3_4(v, v, v, v, v, v, v, v, v);
-    //constexpr qc::mat3<T> m3_6(m2);
-    //constexpr qc::mat3<T> m3_7(m4);
+    constexpr qc::mat3<T> m3_6(m2);
+    constexpr qc::mat3<T> m3_7(m4);
     constexpr qc::mat3<T> m3_8(v3, v3, v3);
 
     // access
 
-    //m3.col<0>(); m3.col<1>(); m3.col<2>();
+    m3.col<0>(); m3.col<1>(); m3.col<2>();
     m3.row<0>(); m3.row<1>(); m3.row<2>();
 
     //--------------------------------------------------------------------------
@@ -274,13 +272,13 @@ constexpr void compileClassesConstexprT() {
     constexpr qc::mat4<T> m4_2(m4);
     constexpr qc::mat4<T> m4_3(std::move(m4));
     constexpr qc::mat4<T> m4_4(v, v, v, v, v, v, v, v, v, v, v, v, v, v, v, v);
-    //constexpr qc::mat4<T> m4_6(m2);
-    //constexpr qc::mat4<T> m4_7(m3);
+    constexpr qc::mat4<T> m4_6(m2);
+    constexpr qc::mat4<T> m4_7(m3);
     constexpr qc::mat4<T> m4_8(v4, v4, v4, v4);
 
     // access
 
-    //m4.col<0>(); m4.col<1>(); m4.col<2>(); m4.col<3>();
+    m4.col<0>(); m4.col<1>(); m4.col<2>(); m4.col<3>();
     m4.row<0>(); m4.row<1>(); m4.row<2>(); m4.row<3>();
 
 }
@@ -295,7 +293,6 @@ constexpr bool compileClassesConstexpr() {
 template <typename T>
 void compileFunctionsT() {
     T v(1.0);
-    qc::vec1<T> v1;
     qc::vec2<T> v2;
     qc::vec3<T> v3;
     qc::vec4<T> v4;
@@ -328,16 +325,13 @@ void compileFunctionsT() {
     qc::nullMat<T, 3>();
     qc::nullMat<T, 4>();
 
-    qc::translate(v1);
     qc::translate(v2);
     qc::translate(v3);
-    qc::translate(m2, v1);
     qc::translate(m3, v2);
     qc::translate(m4, v3);
     qc::scale(v2);
     qc::scale(v3);
     qc::scale(v4);
-    qc::scale(m2, v1);
     qc::scale(m2, v2);
     qc::scale(m3, v2);
     qc::scale(m3, v3);
@@ -387,7 +381,6 @@ void compileFunctions() {
 template <typename T>
 constexpr void compileFunctionsConstexprT() {
     constexpr T v(T(1.0));
-    constexpr qc::vec1<T> v1(T(1.0));
     constexpr qc::vec2<T> v2(T(1.0));
     constexpr qc::vec3<T> v3(T(1.0));
     constexpr qc::vec4<T> v4(T(1.0));

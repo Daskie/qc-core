@@ -31,6 +31,24 @@ constexpr mat<T, 2>::mat(mat2<T> && m) :
 {}
 
 template <typename T>
+constexpr mat<T, 2>::mat(
+    const vec2<T> & c1,
+    const vec2<T> & c2
+) :
+    c1(c1),
+    c2(c2)
+{}
+
+template <typename T>
+constexpr mat<T, 2>::mat(
+    T x1, T y1,
+    T x2, T y2
+) :
+    c1(x1, y1),
+    c2(x2, y2)
+{}
+
+template <typename T>
 template <typename U>
 constexpr mat<T, 2>::mat(const mat2<U> & m) :
     c1(m.c1),
@@ -49,24 +67,6 @@ template <typename U>
 constexpr mat<T, 2>::mat(const mat4<U> & m) :
     c1(m.c1),
     c2(m.c2)
-{}
-
-template <typename T>
-constexpr mat<T, 2>::mat(
-    T x1, T y1,
-    T x2, T y2
-) :
-    c1(x1, y1),
-    c2(x2, y2)
-{}
-
-template <typename T>
-constexpr mat<T, 2>::mat(
-    const vec2<T> & c1,
-    const vec2<T> & c2
-) :
-    c1(c1),
-    c2(c2)
 {}
 
 
@@ -170,6 +170,28 @@ constexpr mat<T, 3>::mat(mat3<T> && m) :
 {}
 
 template <typename T>
+constexpr mat<T, 3>::mat(
+    const vec3<T> & c1,
+    const vec3<T> & c2,
+    const vec3<T> & c3
+) :
+    c1(c1),
+    c2(c2),
+    c3(c3)
+{}
+
+template <typename T>
+constexpr mat<T, 3>::mat(
+    T x1, T y1, T z1,
+    T x2, T y2, T z2,
+    T x3, T y3, T z3
+) :
+    c1(x1, y1, z1),
+    c2(x2, y2, z2),
+    c3(x3, y3, z3)
+{}
+
+template <typename T>
 template <typename U>
 constexpr mat<T, 3>::mat(const mat2<U> & m) :
     c1(m.c1),
@@ -191,28 +213,6 @@ constexpr mat<T, 3>::mat(const mat4<U> & m) :
     c1(m.c1),
     c2(m.c2),
     c3(m.c3)
-{}
-
-template <typename T>
-constexpr mat<T, 3>::mat(
-    T x1, T y1, T z1,
-    T x2, T y2, T z2,
-    T x3, T y3, T z3
-) :
-    c1(x1, y1, z1),
-    c2(x2, y2, z2),
-    c3(x3, y3, z3)
-{}
-
-template <typename T>
-constexpr mat<T, 3>::mat(
-    const vec3<T> & c1,
-    const vec3<T> & c2,
-    const vec3<T> & c3
-) :
-    c1(c1),
-    c2(c2),
-    c3(c3)
 {}
 
 
@@ -323,6 +323,32 @@ constexpr mat<T, 4>::mat(mat4<T> && m) :
 {}
 
 template <typename T>
+constexpr mat<T, 4>::mat(
+    const vec4<T> & c1,
+    const vec4<T> & c2,
+    const vec4<T> & c3,
+    const vec4<T> & c4
+) :
+    c1(c1),
+    c2(c2),
+    c3(c3),
+    c4(c4)
+{}
+
+template <typename T>
+constexpr mat<T, 4>::mat(
+    T x1, T y1, T z1, T w1,
+    T x2, T y2, T z2, T w2,
+    T x3, T y3, T z3, T w3,
+    T x4, T y4, T z4, T w4
+) :
+    c1(x1, y1, z1, w1),
+    c2(x2, y2, z2, w2),
+    c3(x3, y3, z3, w3),
+    c4(x4, y4, z4, w4)
+{}
+
+template <typename T>
 template <typename U>
 constexpr mat<T, 4>::mat(const mat2<U> & m) :
     c1(m.c1),
@@ -347,32 +373,6 @@ constexpr mat<T, 4>::mat(const mat4<U> & m) :
     c2(m.c2),
     c3(m.c3),
     c4(m.c4)
-{}
-
-template <typename T>
-constexpr mat<T, 4>::mat(
-    T x1, T y1, T z1, T w1,
-    T x2, T y2, T z2, T w2,
-    T x3, T y3, T z3, T w3,
-    T x4, T y4, T z4, T w4
-) :
-    c1(x1, y1, z1, w1),
-    c2(x2, y2, z2, w2),
-    c3(x3, y3, z3, w3),
-    c4(x4, y4, z4, w4)
-{}
-
-template <typename T>
-constexpr mat<T, 4>::mat(
-    const vec4<T> & c1,
-    const vec4<T> & c2,
-    const vec4<T> & c3,
-    const vec4<T> & c4
-) :
-    c1(c1),
-    c2(c2),
-    c3(c3),
-    c4(c4)
 {}
 
 

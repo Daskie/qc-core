@@ -208,9 +208,6 @@ inline T randCheap(T min, T max) {
 
 template <typename T, int t_n, eif_floating_t<T> = 0>
 inline vec<T, t_n> randVec() {
-    if constexpr (t_n == 1) {
-        return vec1<T>(rand<T>());
-    }
     if constexpr (t_n == 2) {
         return vec2<T>(rand<T>(), rand<T>());
     }
@@ -224,9 +221,6 @@ inline vec<T, t_n> randVec() {
 
 template <typename T, int t_n, eif_arithmetic_t<T> = 0>
 inline vec<T, t_n> randVec(T min, T max) {
-    if constexpr (t_n == 1) {
-        return vec1<T>(rand(min, max));
-    }
     if constexpr (t_n == 2) {
         return vec2<T>(rand(min, max), rand(min, max));
     }

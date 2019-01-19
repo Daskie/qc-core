@@ -33,25 +33,27 @@ struct quat {
 
     static_assert(std::is_floating_point_v<T>, "quat<T> must have floating point T");
 
+    using type = T;
+
     vec3<T> a;
     T w;
 
     //--- constructors ---
 
-    constexpr quat();
-    constexpr quat(const quat & q);
-    constexpr quat(quat && q);
+    constexpr quat() noexcept;
+    constexpr quat(const quat & q) noexcept;
+    constexpr quat(quat && q) noexcept;
 
-    template <typename U> constexpr explicit quat(const quat<U> & q);
+    template <typename U> constexpr explicit quat(const quat<U> & q) noexcept;
 
-    constexpr quat(const vec3<T> & a, T w);
-    constexpr explicit quat(const vec3<T> & v);
-    constexpr explicit quat(const vec4<T> & v);
+    constexpr quat(const vec3<T> & a, T w) noexcept;
+    constexpr explicit quat(const vec3<T> & v) noexcept;
+    constexpr explicit quat(const vec4<T> & v) noexcept;
 
     //--- assignment ---
 
-    quat & operator=(const quat & q);
-    quat & operator=(quat && q);
+    quat & operator=(const quat & q) noexcept;
+    quat & operator=(quat && q) noexcept;
 
 };
 

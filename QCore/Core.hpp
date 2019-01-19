@@ -4,7 +4,7 @@
 
 #include <cstdint>
 #include <limits>
-#include <tuple>
+#include <utility>
 
 
 
@@ -21,22 +21,22 @@ namespace types {
 
     using llong = long long;
 
-    using  uchar = unsigned      char;
-    using ushort = unsigned     short;
-    using   uint = unsigned       int;
-    using  ulong = unsigned      long;
+    using  uchar = unsigned char;
+    using ushort = unsigned short;
+    using   uint = unsigned int;
+    using  ulong = unsigned long;
     using ullong = unsigned long long;
 
-    using s08 =   int8_t;
-    using u08 =  uint8_t;
-    using s16 =  int16_t;
-    using u16 = uint16_t;
-    using s32 =  int32_t;
-    using u32 = uint32_t;
-    using f32 =    float;
-    using s64 =  int64_t;
-    using u64 = uint64_t;
-    using f64 =   double;
+    using s08 = std::int8_t;
+    using s16 = std::int16_t;
+    using s32 = std::int32_t;
+    using s64 = std::int64_t;
+    using u08 = std::uint8_t;
+    using u16 = std::uint16_t;
+    using u32 = std::uint32_t;
+    using u64 = std::uint64_t;
+    using f32 = float;
+    using f64 = double;
 
     using  nat =  intptr_t;
     using unat = uintptr_t;

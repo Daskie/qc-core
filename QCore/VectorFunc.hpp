@@ -178,6 +178,8 @@ Q_CX_ABLE vec<T, t_n> clamp(const vec<T, t_n> & v, const vec<T, t_n> & min, cons
 
 template <typename T, int t_n>
 Q_CX_ABLE vec<T, t_n> clamp(const vec<T, t_n> & v, const span<T, t_n> & span);
+template <typename T>
+Q_CX_ABLE T clamp(const T & v, const span1<T> & span);
 
 
 

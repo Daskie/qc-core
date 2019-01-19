@@ -28,7 +28,6 @@ namespace types {
 
     using qc::vec;
 
-    template <typename T> using vec1 = vec<T, 1>;
     template <typename T> using vec2 = vec<T, 2>;
     template <typename T> using vec3 = vec<T, 3>;
     template <typename T> using vec4 = vec<T, 4>;
@@ -47,55 +46,42 @@ namespace types {
     template <int t_n> using unvec = vec<unat, t_n>;
     template <int t_n> using  bvec = vec<bool, t_n>;
 
-    using  fvec1 = vec< f32, 1>;
     using  fvec2 = vec< f32, 2>;
     using  fvec3 = vec< f32, 3>;
     using  fvec4 = vec< f32, 4>;
-    using  dvec1 = vec< f64, 1>;
     using  dvec2 = vec< f64, 2>;
     using  dvec3 = vec< f64, 3>;
     using  dvec4 = vec< f64, 4>;
-    using  cvec1 = vec< s08, 1>;
     using  cvec2 = vec< s08, 2>;
     using  cvec3 = vec< s08, 3>;
     using  cvec4 = vec< s08, 4>;
-    using ucvec1 = vec< u08, 1>;
     using ucvec2 = vec< u08, 2>;
     using ucvec3 = vec< u08, 3>;
     using ucvec4 = vec< u08, 4>;
-    using  svec1 = vec< s16, 1>;
     using  svec2 = vec< s16, 2>;
     using  svec3 = vec< s16, 3>;
     using  svec4 = vec< s16, 4>;
-    using usvec1 = vec< u16, 1>;
     using usvec2 = vec< u16, 2>;
     using usvec3 = vec< u16, 3>;
     using usvec4 = vec< u16, 4>;
-    using  ivec1 = vec< s32, 1>;
     using  ivec2 = vec< s32, 2>;
     using  ivec3 = vec< s32, 3>;
     using  ivec4 = vec< s32, 4>;
-    using uivec1 = vec< u32, 1>;
     using uivec2 = vec< u32, 2>;
     using uivec3 = vec< u32, 3>;
     using uivec4 = vec< u32, 4>;
-    using  lvec1 = vec< s64, 1>;
     using  lvec2 = vec< s64, 2>;
     using  lvec3 = vec< s64, 3>;
     using  lvec4 = vec< s64, 4>;
-    using ulvec1 = vec< u64, 1>;
     using ulvec2 = vec< u64, 2>;
     using ulvec3 = vec< u64, 3>;
     using ulvec4 = vec< u64, 4>;
-    using  nvec1 = vec< nat, 1>;
     using  nvec2 = vec< nat, 2>;
     using  nvec3 = vec< nat, 3>;
     using  nvec4 = vec< nat, 4>;
-    using unvec1 = vec<unat, 1>;
     using unvec2 = vec<unat, 2>;
     using unvec3 = vec<unat, 3>;
     using unvec4 = vec<unat, 4>;
-    using  bvec1 = vec<bool, 1>;
     using  bvec2 = vec<bool, 2>;
     using  bvec3 = vec<bool, 3>;
     using  bvec4 = vec<bool, 4>;
@@ -271,62 +257,6 @@ namespace types {
 
 
 //======================================================================================================================
-// VEC1 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//======================================================================================================================
-
-
-
-template <typename T>
-struct vec<T, 1> {
-
-    //--------------------------------------------------------------------------
-    // Static Members
-
-    using Type = T;
-    static constexpr int N{1};
-
-    //--------------------------------------------------------------------------
-    // Instance Variables
-
-    union { T x, r, s, i, _0; };
-
-    //--------------------------------------------------------------------------
-    // Construction
-
-    constexpr vec() noexcept;
-    constexpr vec(const vec1<T> & v) noexcept;
-    constexpr vec(vec1<T> && v) noexcept;
-
-    template <typename U> constexpr explicit vec(const vec1<U> & v) noexcept;
-    template <typename U> constexpr explicit vec(const vec2<U> & v) noexcept;
-    template <typename U> constexpr explicit vec(const vec3<U> & v) noexcept;
-    template <typename U> constexpr explicit vec(const vec4<U> & v) noexcept;
-
-    constexpr explicit vec(const T & v) noexcept;
-
-    //--------------------------------------------------------------------------
-    // Assignment
-
-    vec1<T> & operator=(const vec1<T> & v) noexcept;
-    vec1<T> & operator=(vec1<T> && v) noexcept;
-
-    vec1<T> & operator=(const T & v) noexcept;
-    template <int t_n> vec1<T> & operator=(const vec<T, t_n> & v) noexcept;
-
-    //--------------------------------------------------------------------------
-    // Access
-
-    template <int t_i> T & at() noexcept;
-    template <int t_i> constexpr const T & at() const noexcept;
-
-    T & operator[](int i);
-    const T & operator[](int i) const;
-
-};
-
-
-
-//======================================================================================================================
 // VEC2 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //======================================================================================================================
 
@@ -338,8 +268,8 @@ struct vec<T, 2> {
     //--------------------------------------------------------------------------
     // Static Members
 
-    using Type = T;
-    static constexpr int N{2};
+    using type = T;
+    static constexpr int dimension{2};
 
     //--------------------------------------------------------------------------
     // Instance Variables
@@ -361,19 +291,15 @@ struct vec<T, 2> {
     constexpr vec() noexcept;
     constexpr vec(const vec2<T> & v) noexcept;
     constexpr vec(vec2<T> && v) noexcept;
+    
+    constexpr explicit vec(const T & v) noexcept;
+    template <typename U> constexpr explicit vec(const U & v) noexcept;
 
-    template <typename U> constexpr explicit vec(const vec1<U> & v) noexcept;
     template <typename U> constexpr explicit vec(const vec2<U> & v) noexcept;
     template <typename U> constexpr explicit vec(const vec3<U> & v) noexcept;
     template <typename U> constexpr explicit vec(const vec4<U> & v) noexcept;
 
-    constexpr explicit vec(const T & v) noexcept;
-
-    // only select constructors are constexpr because IntelliSense is sensitive
-    constexpr vec(const       T & v1, const      T  & v2) noexcept;
-    Q_CX_ABLE vec(const vec1<T> & v1, const      T  & v2) noexcept;
-    Q_CX_ABLE vec(const       T & v1, const vec1<T> & v2) noexcept;
-    Q_CX_ABLE vec(const vec1<T> & v1, const vec1<T> & v2) noexcept;
+    constexpr vec(const T & v1, const T & v2) noexcept;
 
     //--------------------------------------------------------------------------
     // Assignment
@@ -410,8 +336,8 @@ struct vec<T, 3> {
     //--------------------------------------------------------------------------
     // Static Members
 
-    using Type = T;
-    static constexpr int N{3};
+    using type = T;
+    static constexpr int dimension{3};
 
     //--------------------------------------------------------------------------
     // Instance Variables
@@ -436,27 +362,17 @@ struct vec<T, 3> {
     constexpr vec() noexcept;
     constexpr vec(const vec3<T> & v) noexcept;
     constexpr vec(vec3<T> && v) noexcept;
+    
+    constexpr explicit vec(const T & v) noexcept;
+    template <typename U> constexpr explicit vec(const U & v) noexcept;
 
-    template <typename U> constexpr explicit vec(const vec1<U> & v) noexcept;
     template <typename U> constexpr explicit vec(const vec2<U> & v) noexcept;
     template <typename U> constexpr explicit vec(const vec3<U> & v) noexcept;
     template <typename U> constexpr explicit vec(const vec4<U> & v) noexcept;
-
-    constexpr explicit vec(const T & v) noexcept;
     
-    // only select constructors are constexpr because IntelliSense is sensitive
-    constexpr vec(const      T  & v1, const      T  & v2, const      T  & v3) noexcept;
-    Q_CX_ABLE vec(const vec1<T> & v1, const      T  & v2, const      T  & v3) noexcept;
-    Q_CX_ABLE vec(const      T  & v1, const vec1<T> & v2, const      T  & v3) noexcept;
-    Q_CX_ABLE vec(const      T  & v1, const      T  & v2, const vec1<T> & v3) noexcept;
-    Q_CX_ABLE vec(const vec1<T> & v1, const vec1<T> & v2, const      T  & v3) noexcept;
-    Q_CX_ABLE vec(const vec1<T> & v1, const      T  & v2, const vec1<T> & v3) noexcept;
-    Q_CX_ABLE vec(const      T  & v1, const vec1<T> & v2, const vec1<T> & v3) noexcept;
-    Q_CX_ABLE vec(const vec1<T> & v1, const vec1<T> & v2, const vec1<T> & v3) noexcept;
-    Q_CONSTEX vec(const vec2<T> & v1, const      T  & v2) noexcept;
-    Q_CX_ABLE vec(const vec2<T> & v1, const vec1<T> & v2) noexcept;
-    Q_CX_ABLE vec(const      T  & v1, const vec2<T> & v2) noexcept;
-    Q_CX_ABLE vec(const vec1<T> & v1, const vec2<T> & v2) noexcept;
+    constexpr vec(const T & v1, const T & v2, const T & v3) noexcept;
+    Q_CONSTEX vec(const vec2<T> & v1, const T & v2) noexcept;
+    Q_CX_ABLE vec(const T & v1, const vec2<T> & v2) noexcept;
 
     //--------------------------------------------------------------------------
     // Assignment
@@ -506,8 +422,8 @@ struct vec<T, 4> {
     //--------------------------------------------------------------------------
     // Static Members
 
-    using Type = T;
-    static constexpr int N{4};
+    using type = T;
+    static constexpr int dimension{4};
 
     //--------------------------------------------------------------------------
     // Instance Variables
@@ -518,10 +434,6 @@ struct vec<T, 4> {
         struct { T s, t, p, q; };
         struct { T _0, _1, _2, _3; };
     };
-    //union { T x, r, s; };
-    //union { T y, g, t; };
-    //union { T z, b, p; };
-    //union { T w, a, q; };
     
     //--------------------------------------------------------------------------
     // Construction
@@ -530,47 +442,20 @@ struct vec<T, 4> {
     constexpr vec(const vec4<T> & v) noexcept;
     constexpr vec(vec4<T> && v) noexcept;
     
-    template <typename U> constexpr explicit vec(const vec1<U> & v) noexcept;
+    constexpr explicit vec(const T & v) noexcept;
+    template <typename U> constexpr explicit vec(const U & v) noexcept;
+
     template <typename U> constexpr explicit vec(const vec2<U> & v) noexcept;
     template <typename U> constexpr explicit vec(const vec3<U> & v) noexcept;
     template <typename U> constexpr explicit vec(const vec4<U> & v) noexcept;
-
-    constexpr explicit vec(const T & v) noexcept;
     
-    // only select constructors are constexpr because IntelliSense is sensitive
-    constexpr vec(const      T  & v1, const      T  & v2, const      T  & v3, const      T  & v4) noexcept;
-    Q_CX_ABLE vec(const vec1<T> & v1, const      T  & v2, const      T  & v3, const      T  & v4) noexcept;
-    Q_CX_ABLE vec(const      T  & v1, const vec1<T> & v2, const      T  & v3, const      T  & v4) noexcept;
-    Q_CX_ABLE vec(const      T  & v1, const      T  & v2, const vec1<T> & v3, const      T  & v4) noexcept;
-    Q_CX_ABLE vec(const      T  & v1, const      T  & v2, const      T  & v3, const vec1<T> & v4) noexcept;
-    Q_CX_ABLE vec(const vec1<T> & v1, const vec1<T> & v2, const      T  & v3, const      T  & v4) noexcept;
-    Q_CX_ABLE vec(const vec1<T> & v1, const      T  & v2, const vec1<T> & v3, const      T  & v4) noexcept;
-    Q_CX_ABLE vec(const vec1<T> & v1, const      T  & v2, const      T  & v3, const vec1<T> & v4) noexcept;
-    Q_CX_ABLE vec(const      T  & v1, const vec1<T> & v2, const vec1<T> & v3, const      T  & v4) noexcept;
-    Q_CX_ABLE vec(const      T  & v1, const vec1<T> & v2, const      T  & v3, const vec1<T> & v4) noexcept;
-    Q_CX_ABLE vec(const      T  & v1, const      T  & v2, const vec1<T> & v3, const vec1<T> & v4) noexcept;
-    Q_CX_ABLE vec(const vec1<T> & v1, const vec1<T> & v2, const vec1<T> & v3, const      T  & v4) noexcept;
-    Q_CX_ABLE vec(const vec1<T> & v1, const vec1<T> & v2, const      T  & v3, const vec1<T> & v4) noexcept;
-    Q_CX_ABLE vec(const vec1<T> & v1, const      T  & v2, const vec1<T> & v3, const vec1<T> & v4) noexcept;
-    Q_CX_ABLE vec(const      T  & v1, const vec1<T> & v2, const vec1<T> & v3, const vec1<T> & v4) noexcept;
-    Q_CX_ABLE vec(const vec1<T> & v1, const vec1<T> & v2, const vec1<T> & v3, const vec1<T> & v4) noexcept;
-    Q_CX_ABLE vec(const vec2<T> & v1, const      T  & v2, const      T  & v3) noexcept;
-    Q_CX_ABLE vec(const vec2<T> & v1, const vec1<T> & v2, const      T  & v3) noexcept;
-    Q_CX_ABLE vec(const vec2<T> & v1, const      T  & v2, const vec1<T> & v3) noexcept;
-    Q_CX_ABLE vec(const vec2<T> & v1, const vec1<T> & v2, const vec1<T> & v3) noexcept;
-    Q_CX_ABLE vec(const      T  & v1, const vec2<T> & v2, const      T  & v3) noexcept;
-    Q_CX_ABLE vec(const vec1<T> & v1, const vec2<T> & v2, const      T  & v3) noexcept;
-    Q_CX_ABLE vec(const      T  & v1, const vec2<T> & v2, const vec1<T> & v3) noexcept;
-    Q_CX_ABLE vec(const vec1<T> & v1, const vec2<T> & v2, const vec1<T> & v3) noexcept;
-    Q_CX_ABLE vec(const      T  & v1, const      T  & v2, const vec2<T> & v3) noexcept;
-    Q_CX_ABLE vec(const vec1<T> & v1, const      T  & v2, const vec2<T> & v3) noexcept;
-    Q_CX_ABLE vec(const      T  & v1, const vec1<T> & v2, const vec2<T> & v3) noexcept;
-    Q_CX_ABLE vec(const vec1<T> & v1, const vec1<T> & v2, const vec2<T> & v3) noexcept;
+    constexpr vec(const T & v1, const T & v2, const T & v3, const T & v4) noexcept;
+    Q_CONSTEX vec(const vec2<T> & v1, const T & v2, const T & v3) noexcept;
+    Q_CX_ABLE vec(const T & v1, const vec2<T> & v2, const T & v3) noexcept;
+    Q_CX_ABLE vec(const T & v1, const T & v2, const vec2<T> & v3) noexcept;
     Q_CONSTEX vec(const vec2<T> & v1, const vec2<T> & v2) noexcept;
-    Q_CONSTEX vec(const vec3<T> & v1, const      T  & v2) noexcept;
-    Q_CX_ABLE vec(const vec3<T> & v1, const vec1<T> & v2) noexcept;
-    Q_CX_ABLE vec(const      T  & v1, const vec3<T> & v2) noexcept;
-    Q_CX_ABLE vec(const vec1<T> & v1, const vec3<T> & v2) noexcept;
+    Q_CONSTEX vec(const vec3<T> & v1, const T & v2) noexcept;
+    Q_CX_ABLE vec(const T & v1, const vec3<T> & v2) noexcept;
 
     //--------------------------------------------------------------------------
     // Assignment
@@ -635,24 +520,33 @@ struct vec<T, 4> {
 
 
 
+namespace detail {
+    template <typename T, int t_n> struct span_value { using type = vec<T, t_n>; };
+    template <typename T> struct span_value<T, 1> { using type = T; };
+    template <typename T, int t_n> using span_value_t = typename span_value<T, t_n>::type;
+}
+
+
+
 template <typename T, int t_n>
 struct span {
+
+    static_assert(t_n >= 1 && t_n <= 4, "Invalid dimension");
 
     //--------------------------------------------------------------------------
     // Static Members
 
-    using Type = T;
-    static constexpr int N{t_n};
+    using V = detail::span_value_t<T, t_n>;
+    using type = T;
+    static constexpr int dimension{t_n};
 
     //--------------------------------------------------------------------------
     // Instance Variables
 
     union {
-        struct { vec<T, t_n> min, max; };
-        struct { vec<T, t_n> loc, size; };
+        struct { V min, max; };
+        struct { V loc, size; };
     };
-    //union { vec<T, t_n> min,  loc; };
-    //union { vec<T, t_n> max, size; };
 
     //--------------------------------------------------------------------------
     // Construction
@@ -661,9 +555,11 @@ struct span {
     constexpr span(const span<T, t_n> & s) noexcept;
     constexpr span(span<T, t_n> && s) noexcept;
 
-    template <typename U, int u_n> constexpr explicit span(const span<U, u_n> & s) noexcept;
+    template <typename U, int t_m> constexpr explicit span(const span<U, t_m> & s) noexcept;
 
-    constexpr span(const vec<T, t_n> & v1, const vec<T, t_n> & v2) noexcept;
+    constexpr span(const V & v1, const V & v2) noexcept;
+
+    template <typename Dummy = void, typename = std::enable_if_t<(t_n > 1), Dummy>>
     constexpr span(const T & v1, const T & v2) noexcept;
 
     //--------------------------------------------------------------------------
@@ -672,7 +568,7 @@ struct span {
     span<T, t_n> & operator=(const span<T, t_n> & s) noexcept;
     span<T, t_n> & operator=(span<T, t_n> && s) noexcept;
 
-    template <int u_n> span<T, t_n> & operator=(const span<T, u_n> & s) noexcept;
+    template <int t_m> span<T, t_n> & operator=(const span<T, t_m> & s) noexcept;
 
 };
 
@@ -685,7 +581,6 @@ struct span {
 
 
 template <typename T, int t_n, int t_d> constexpr vec<T, t_n> axis = vec<T, t_n>();
-template <typename T> constexpr vec<T, 1> axis<T, 1, 0> = vec1<T>(T(1));
 template <typename T> constexpr vec<T, 2> axis<T, 2, 0> = vec2<T>(T(1), T(0));
 template <typename T> constexpr vec<T, 2> axis<T, 2, 1> = vec2<T>(T(0), T(1));
 template <typename T> constexpr vec<T, 3> axis<T, 3, 0> = vec3<T>(T(1), T(0), T(0));
@@ -701,7 +596,6 @@ template <typename T, int t_n> constexpr vec<T, t_n> yAxis = axis<T, t_n, 1>;
 template <typename T, int t_n> constexpr vec<T, t_n> zAxis = axis<T, t_n, 2>;
 template <typename T, int t_n> constexpr vec<T, t_n> wAxis = axis<T, t_n, 3>;
 
-template <typename T> constexpr vec1<T> xAxis1 = xAxis<T, 1>;
 template <typename T> constexpr vec2<T> xAxis2 = xAxis<T, 2>;
 template <typename T> constexpr vec3<T> xAxis3 = xAxis<T, 3>;
 template <typename T> constexpr vec4<T> xAxis4 = xAxis<T, 4>;
@@ -712,11 +606,11 @@ template <typename T> constexpr vec3<T> zAxis3 = zAxis<T, 3>;
 template <typename T> constexpr vec4<T> zAxis4 = zAxis<T, 4>;
 template <typename T> constexpr vec4<T> wAxis4 = wAxis<T, 4>;
 
-template <typename T, int t_n> constexpr   vec<T, t_n>   nanvec =   vec<T, t_n>(nan<T>);
-template <typename T, int t_n> constexpr  span<T, t_n>  nanspan =  span<T, t_n>(nan<T>, nan<T>);
-template <typename T, int t_n> constexpr bound<T, t_n> nanbound = bound<T, t_n>(nan<T>, nan<T>);
+template <typename T, int t_n> constexpr vec<T, t_n> nanvec = vec<T, t_n>(nan<T>);
+template <typename T, int t_n> constexpr span<T, t_n> nanspan = span<T, t_n>(nan<T>, nan<T>);
+template <typename T, int t_n> constexpr bound<T, t_n> nanbound = nanspan<T, t_n>;
 
-template <typename T, int t_n> constexpr  vec<T, t_n>  infvec =  vec<T, t_n>(infinity<T>);
+template <typename T, int t_n> constexpr vec<T, t_n> infvec = vec<T, t_n>(infinity<T>);
 template <typename T, int t_n> constexpr span<T, t_n> infspan = span<T, t_n>(-infinity<T>, infinity<T>);
 
 template <typename T, int t_n> constexpr span<T, t_n> nullspan = span<T, t_n>(infinity<T>, -infinity<T>);

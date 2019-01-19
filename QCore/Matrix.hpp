@@ -57,8 +57,8 @@ struct mat<T, 2> {
 
     static_assert(std::is_floating_point_v<T>, "mat2<T> must have floating point T");
 
-    using Type = T;
-    static constexpr int N{2};
+    using type = T;
+    static constexpr int dimension{2};
 
     vec2<T> c1, c2;
 
@@ -68,18 +68,18 @@ struct mat<T, 2> {
     constexpr mat(const mat2<T> & m);
     constexpr mat(mat2<T> && m);
 
-    template <typename U> constexpr explicit mat(const mat2<U> & m);
-    template <typename U> constexpr explicit mat(const mat3<U> & m);
-    template <typename U> constexpr explicit mat(const mat4<U> & m);
-
-    constexpr mat(
-        T x1, T y1,
-        T x2, T y2
-    );
     constexpr mat(
         const vec2<T> & c1,
         const vec2<T> & c2
     );
+    constexpr mat(
+        T x1, T y1,
+        T x2, T y2
+    );
+
+    template <typename U> constexpr explicit mat(const mat2<U> & m);
+    template <typename U> constexpr explicit mat(const mat3<U> & m);
+    template <typename U> constexpr explicit mat(const mat4<U> & m);
 
     //--- assignment ---
 
@@ -113,8 +113,8 @@ struct mat<T, 3> {
 
     static_assert(std::is_floating_point_v<T>, "mat3<T> must have floating point T");
 
-    using Type = T;
-    static constexpr int N{3};
+    using type = T;
+    static constexpr int dimension{3};
 
     vec3<T> c1, c2, c3;
 
@@ -124,22 +124,20 @@ struct mat<T, 3> {
     constexpr mat(const mat3<T> & m);
     constexpr mat(mat3<T> && m);
 
-    template <typename U> constexpr explicit mat(const mat2<U> & m);
-    template <typename U> constexpr explicit mat(const mat3<U> & m);
-    template <typename U> constexpr explicit mat(const mat4<U> & m);
-
-    constexpr mat(
-        T x1, T y1, T z1,
-        T x2, T y2, T z2,
-        T x3, T y3, T z3
-    );
-    constexpr explicit mat(const mat2<T> & m);
-    constexpr explicit mat(const mat4<T> & m);
     constexpr mat(
         const vec3<T> & c1,
         const vec3<T> & c2,
         const vec3<T> & c3
     );
+    constexpr mat(
+        T x1, T y1, T z1,
+        T x2, T y2, T z2,
+        T x3, T y3, T z3
+    );
+
+    template <typename U> constexpr explicit mat(const mat2<U> & m);
+    template <typename U> constexpr explicit mat(const mat3<U> & m);
+    template <typename U> constexpr explicit mat(const mat4<U> & m);
 
     //--- assignment ---
 
@@ -173,8 +171,8 @@ struct mat<T, 4> {
 
     static_assert(std::is_floating_point_v<T>, "mat4<T> must have floating point T");
 
-    using Type = T;
-    static constexpr int N{4};
+    using type = T;
+    static constexpr int dimension{4};
 
     vec4<T> c1, c2, c3, c4;
 
@@ -184,24 +182,22 @@ struct mat<T, 4> {
     constexpr mat(const mat4<T> & m);
     constexpr mat(mat4<T> && m);
 
-    template <typename U> constexpr explicit mat(const mat2<U> & m);
-    template <typename U> constexpr explicit mat(const mat3<U> & m);
-    template <typename U> constexpr explicit mat(const mat4<U> & m);
-
-    constexpr mat(
-        T x1, T y1, T z1, T w1,
-        T x2, T y2, T z2, T w2,
-        T x3, T y3, T z3, T w3,
-        T x4, T y4, T z4, T w4
-    );
-    constexpr explicit mat(const mat2<T> & m);
-    constexpr explicit mat(const mat3<T> & m);
     constexpr mat(
         const vec4<T> & c1,
         const vec4<T> & c2,
         const vec4<T> & c3,
         const vec4<T> & c4
     );
+    constexpr mat(
+        T x1, T y1, T z1, T w1,
+        T x2, T y2, T z2, T w2,
+        T x3, T y3, T z3, T w3,
+        T x4, T y4, T z4, T w4
+    );
+
+    template <typename U> constexpr explicit mat(const mat2<U> & m);
+    template <typename U> constexpr explicit mat(const mat3<U> & m);
+    template <typename U> constexpr explicit mat(const mat4<U> & m);
 
     //--- assignment ---
 

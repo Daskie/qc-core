@@ -13,37 +13,37 @@ namespace qc {
 
 
 template <typename T>
-constexpr quat<T>::quat() :
+constexpr quat<T>::quat() noexcept :
     a(T(0.0)), w(T(1.0))
 {}
 
 template <typename T>
-constexpr quat<T>::quat(const quat<T> & q) :
+constexpr quat<T>::quat(const quat<T> & q) noexcept :
     a(q.a), w(q.w)
 {}
 
 template <typename T>
-constexpr quat<T>::quat(quat<T> && q) :
+constexpr quat<T>::quat(quat<T> && q) noexcept :
     a(q.a), w(q.w)
 {}
 
 template <typename T> template <typename U>
-constexpr quat<T>::quat(const quat<U> & q) :
+constexpr quat<T>::quat(const quat<U> & q) noexcept :
     a(q.a), w(T(q.w))
 {}
 
 template <typename T>
-constexpr quat<T>::quat(const vec3<T> & a, T w) :
+constexpr quat<T>::quat(const vec3<T> & a, T w) noexcept :
     a(a), w(w)
 {}
 
 template <typename T>
-constexpr quat<T>::quat(const vec3<T> & v) :
+constexpr quat<T>::quat(const vec3<T> & v) noexcept :
     a(v), w(T(0.0))
 {}
 
 template <typename T>
-constexpr quat<T>::quat(const vec4<T> & v) :
+constexpr quat<T>::quat(const vec4<T> & v) noexcept :
     a(v), w(v.w)
 {}
 
@@ -55,13 +55,13 @@ constexpr quat<T>::quat(const vec4<T> & v) :
 
 
 template <typename T>
-inline quat<T> & quat<T>::operator=(const quat<T> & q) {
+inline quat<T> & quat<T>::operator=(const quat<T> & q) noexcept {
     a = q.a; w = q.w;
     return *this;
 }
 
 template <typename T>
-inline quat<T> & quat<T>::operator=(quat<T> && q) {
+inline quat<T> & quat<T>::operator=(quat<T> && q) noexcept {
     a = q.a; w = q.w;
     return *this;
 }

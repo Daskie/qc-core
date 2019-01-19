@@ -67,9 +67,9 @@ void compileClasses() {
 
 template <typename T>
 constexpr void compileClassesConstexprT() {
-    constexpr T v(1.0);
-    constexpr qc::vec3<T> v3(1.0);
-    constexpr qc::vec4<T> v4(1.0);
+    /*constexpr T v(1.0);
+    constexpr qc::vec3<T> v3(1.0f);
+    constexpr qc::vec4<T> v4(1.0f);
     constexpr qc::mat3<T> m3(v3, v3, v3);
     constexpr qc::quat<T> q(v4);
 
@@ -82,7 +82,7 @@ constexpr void compileClassesConstexprT() {
     qc::quat<T> q_3(std::move(q));
     qc::quat<T> q_4(v3, v);
     qc::quat<T> q_6(v3);
-    qc::quat<T> q_7(v4);
+    qc::quat<T> q_7(v4);*/
 }
 
 constexpr bool compileClassesConstexpr() {
@@ -130,13 +130,13 @@ void compileFunctions() {
 
 template <typename T>
 constexpr void compileFunctionsConstexprT() {
-    constexpr T v(1.0);
+    /*constexpr T v(1.0);
     constexpr qc::vec3<T> v3(1.0);
     constexpr qc::vec4<T> v4(1.0);
     constexpr qc::mat3<T> m3(v3, v3, v3);
     constexpr qc::quat<T> q(v4);
 
-    //qc::toMat(q);
+    //qc::toMat(q);*/
 }
 
 constexpr bool compileFunctionsConstexpr() {
