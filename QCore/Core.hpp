@@ -19,26 +19,32 @@ namespace qc {
 
 namespace types {
 
-using uint = unsigned int;
+    using uint = unsigned int;
 
-using  nat =  intptr_t;
-using unat = uintptr_t;
+    using  nat =  intptr_t;
+    using unat = uintptr_t;
 
-constexpr nat operator""_n(unsigned long long int v) { return nat(v); }
-constexpr unat operator""_un(unsigned long long int v) { return unat(v); }
+    constexpr nat operator""_n(unsigned long long int v) { return nat(v); }
+    constexpr unat operator""_un(unsigned long long int v) { return unat(v); }
 
-constexpr int k_nat_p = sizeof(nat);
+    constexpr int k_nat_p = sizeof(nat);
 
-using s08 =   int8_t;
-using u08 =  uint8_t;
-using s16 =  int16_t;
-using u16 = uint16_t;
-using s32 =  int32_t;
-using u32 = uint32_t;
-using f32 =    float;
-using s64 =  int64_t;
-using u64 = uint64_t;
-using f64 =   double;
+    using s08 =   int8_t;
+    using u08 =  uint8_t;
+    using s16 =  int16_t;
+    using u16 = uint16_t;
+    using s32 =  int32_t;
+    using u32 = uint32_t;
+    using f32 =    float;
+    using s64 =  int64_t;
+    using u64 = uint64_t;
+    using f64 =   double;
+
+}
+
+using namespace types;
+
+
 
 template <bool t_b> using eif_t = std::enable_if_t<t_b, int>;
 // alternative (safer) option that doesn't play nice with IntelliSense and
@@ -55,27 +61,22 @@ template <typename T> using eif_unsigned_t   = eif_t<std::is_unsigned_v<T>>;
 template <typename T> using eif_sintegral_t  = eif_t<std::is_signed_v<T> && std::is_integral_v<T>>;
 template <typename T> using eif_uintegral_t  = eif_t<std::is_unsigned_v<T> && std::is_integral_v<T>>;
 
-template <typename T, unat t_n = 0> using array_t = std::conditional_t<t_n == 0, T[], T[t_n]>;
+namespace detail {
+    template <typename T, int t_n> struct array_t_struct { using type = T[t_n]; };
+    template <typename T> struct array_t_struct<T, 0> { using type = T[]; };
+}
+template <typename T, int t_n = 0> using array_t = typename detail::array_t_struct<T, t_n>::type;
 
-template <int t_p> struct precision;
-template <> struct precision<1> { using stype = s08; using utype = u08; using ftype = void; };
-template <> struct precision<2> { using stype = s16; using utype = u16; using ftype = void; };
-template <> struct precision<4> { using stype = s32; using utype = u32; using ftype =  f32; };
-template <> struct precision<8> { using stype = s64; using utype = u64; using ftype =  f64; };
-
-template <int t_p> using precision_st = typename precision<t_p>::stype;
-template <int t_p> using precision_ut = typename precision<t_p>::utype;
-template <int t_p> using precision_ft = typename precision<t_p>::ftype;
-
-template <typename T1, typename T2> using match_sign_t = std::conditional_t<std::is_signed_v<T2>, std::make_signed_t<T1>, std::make_unsigned_t<T1>>;
+template <int t_s> struct sized;
+template <> struct sized<1> { using stype = s08; using utype = u08; };
+template <> struct sized<2> { using stype = s16; using utype = u16; };
+template <> struct sized<4> { using stype = s32; using utype = u32; using ftype = f32; };
+template <> struct sized<8> { using stype = s64; using utype = u64; using ftype = f64; };
+template <int t_s> using sized_st = typename sized<t_s>::stype;
+template <int t_s> using sized_ut = typename sized<t_s>::utype;
+template <int t_s> using sized_ft = typename sized<t_s>::ftype;
 
 template <typename T> using remove_cvref_t = std::remove_cv_t<std::remove_reference_t<T>>;
-
-template <typename T1, typename T2> constexpr bool equivocal_v = std::is_same_v<remove_cvref_t<T1>, remove_cvref_t<T2>>;
-
-}
-
-using namespace types;
 
 
 

@@ -1566,20 +1566,27 @@ void compileMembers() {
     v = v1.x;
     v = v1.r;
     v = v1.s;
+    v = v1.i;
+    v = v1._0;
 
     v = v2.x; v = v2.y;
     v = v2.r; v = v2.g;
     v = v2.s; v = v2.t;
+    v = v2.i; v = v2.j;
+    v = v2._0; v = v2._1;
 
     v = v3.x; v = v3.y; v = v3.z;
     v = v3.r; v = v3.g; v = v3.b;
     v = v3.s; v = v3.t; v = v3.p;
-    v = v3.radius; v = v3.theta; v = v3.phi;
+    v = v3.i; v = v3.j; v = v3.k;
+    v = v3.rad; v = v3.theta; v = v3.phi;
     v = v3.alpha; v = v3.beta; v = v3.gamma;
+    v = v3._0; v = v3._1; v = v3._2;
 
     v = v4.x; v = v4.y; v = v4.z; v = v4.w;
     v = v4.r; v = v4.g; v = v4.b; v = v4.a;
     v = v4.s; v = v4.t; v = v4.p; v = v4.q;
+    v = v4._0; v = v4._1; v = v4._2; v = v4._3;
 
     v1 = s1.min; v1 = s1.max;
     v1 = s1.loc; v1 = s1.size;

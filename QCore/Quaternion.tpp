@@ -44,7 +44,7 @@ constexpr quat<T>::quat(const vec3<T> & v) :
 
 template <typename T>
 constexpr quat<T>::quat(const vec4<T> & v) :
-    a(v.x, v.y, v.z), w(v.w)
+    a(v), w(v.w)
 {}
 
 

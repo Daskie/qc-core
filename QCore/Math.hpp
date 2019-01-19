@@ -267,6 +267,39 @@ struct UnderDampener : public Dampener<T> {
 
 };
 
+// Calculates the area of a non self-intersecting polygon
+// Points should be the vertices of the polygon given in order without duplicates
+template <typename T, eif_floating_t<T> = 0>
+inline T areaOfPoly(size_t n, const vec2<T> * points) {    
+    T a{};
+    for (size_t i(0); i < n - 1; ++i) {
+        const vec2<T> & v1(points[i]), v2(points[i + 1]);
+        a += v1.x * v2.y - v2.x * v1.y;
+    }
+    const vec2<T> & v1(points[n - 1]), v2(points[0]);
+    a += v1.x * v2.y - v2.x * v1.y;
+    return T(0.5) * a;
+}
+
+// Calculates the centroid, or center of mass, of a non self-intersecting polygon
+// Points should be the vertices of the polygon given in order without duplicates
+template <typename T, eif_floating_t<T> = 0>
+inline vec2<T> centroidOfPoly(size_t n, const vec2<T> * points) {
+    T a{};
+    vec2<T> c;
+    for (size_t i(0); i < n - 1; ++i) {
+        const vec2<T> & v1(points[i]), v2(points[i + 1]);
+        T temp(v1.x * v2.y - v2.x * v1.y);
+        a += temp;
+        c += (v1 + v2) * temp;
+    }
+    const vec2<T> & v1(points[n - 1]), v2(points[0]);
+    T temp(v1.x * v2.y - v2.x * v1.y);
+    a += temp;
+    c += (v1 + v2) * temp;
+    return c / (T(3.0) * a);
+}
+
 
 
 }

@@ -155,18 +155,24 @@ inline unsigned char trailingZeroes(u32 x) {
     return count;
 }
 
+// Returns random float between 0 and 1, or random int between 0 and MAX
 template <typename T, eif_arithmetic_t<T> = 0>
 inline T rand() {
-    static std::mt19937 mt(static_cast<std::mt19937::result_type>(std::chrono::system_clock::now().time_since_epoch().count()));
-    //static std::mt19937 mt(0);
+    using Engine = std::conditional_t<sizeof(T) <= 4, std::mt19937, std::mt19937_64>;
+    using Result = typename Engine::result_type;
+
+    static Engine s_engine(Result(std::chrono::system_clock::now().time_since_epoch().count()));
 
     if constexpr (std::is_floating_point_v<T>) {
-        static std::uniform_real_distribution<T> dist(T(0.0), T(1.0));
-        return dist(mt);
+        return T(s_engine()) * (T(1.0) / T(std::numeric_limits<Result>::max()));
     }
     if constexpr (std::is_integral_v<T>) {
-        static std::uniform_real_distribution<double> dist(0.0, 1.0);
-        return T(std::round(dist(mt) * double(RAND_MAX)));
+        if constexpr (sizeof(T) < sizeof(Result) || sizeof(T) == sizeof(Result) && std::is_signed_v<T>) {
+            return T(s_engine() & Result(std::numeric_limits<T>::max()));
+        }
+        else {
+            return T(s_engine());
+        }
     }
 }
 
@@ -183,8 +189,7 @@ inline T rand(T min, T max) {
 template <typename T, eif_arithmetic_t<T> = 0>
 inline T randCheap() {
     if constexpr (std::is_floating_point_v<T>) {
-        constexpr T inv_max(T(1.0) / T(RAND_MAX));
-        return std::rand() * inv_max;
+        return std::rand() * (T(1.0) / T(RAND_MAX));
     }
     if constexpr (std::is_integral_v<T>) {
         return T(std::rand());

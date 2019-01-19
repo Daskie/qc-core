@@ -14,46 +14,46 @@ namespace qc {
 
 
 template <typename T>
-constexpr vec<T, 1>::vec() :
+constexpr vec<T, 1>::vec() noexcept :
     x(T(0))
 {}
 
 template <typename T>
-constexpr vec<T, 1>::vec(const vec1<T> & v) :
+constexpr vec<T, 1>::vec(const vec1<T> & v) noexcept :
     x(v.x)
 {}
 
 template <typename T>
-constexpr vec<T, 1>::vec(vec1<T> && v) :
+constexpr vec<T, 1>::vec(vec1<T> && v) noexcept :
     x(v.x)
 {}
 
 template <typename T>
 template <typename U>
-constexpr vec<T, 1>::vec(const vec1<U> & v) :
+constexpr vec<T, 1>::vec(const vec1<U> & v) noexcept :
     x(T(v.x))
 {}
 
 template <typename T>
 template <typename U>
-constexpr vec<T, 1>::vec(const vec2<U> & v) :
+constexpr vec<T, 1>::vec(const vec2<U> & v) noexcept :
     x(T(v.x))
 {}
 
 template <typename T>
 template <typename U>
-constexpr vec<T, 1>::vec(const vec3<U> & v) :
+constexpr vec<T, 1>::vec(const vec3<U> & v) noexcept :
     x(T(v.x))
 {}
 
 template <typename T>
 template <typename U>
-constexpr vec<T, 1>::vec(const vec4<U> & v) :
+constexpr vec<T, 1>::vec(const vec4<U> & v) noexcept :
     x(T(v.x))
 {}
 
 template <typename T>
-constexpr vec<T, 1>::vec(const T & v) :
+constexpr vec<T, 1>::vec(const T & v) noexcept :
     x(v)
 {}
 
@@ -65,26 +65,26 @@ constexpr vec<T, 1>::vec(const T & v) :
 
 
 template <typename T>
-inline vec1<T> & vec<T, 1>::operator=(const vec1<T> & v) {
+inline vec1<T> & vec<T, 1>::operator=(const vec1<T> & v) noexcept {
     x = v.x;
     return *this;
 }
 
 template <typename T>
-inline vec1<T> & vec<T, 1>::operator=(vec1<T> && v) {
+inline vec1<T> & vec<T, 1>::operator=(vec1<T> && v) noexcept {
     x = v.x;
     return *this;
 }
 
 template <typename T>
-inline vec1<T> & vec<T, 1>::operator=(const T & v) {
+inline vec1<T> & vec<T, 1>::operator=(const T & v) noexcept {
     x = v;
     return *this;
 }
 
 template <typename T>
 template <int t_n>
-inline vec1<T> & vec<T, 1>::operator=(const vec<T, t_n> & v) {
+inline vec1<T> & vec<T, 1>::operator=(const vec<T, t_n> & v) noexcept {
     if constexpr (t_n >= 1) x = v.x;
     if constexpr (t_n < 1) x = T(0);
     return *this;
@@ -98,6 +98,22 @@ inline vec1<T> & vec<T, 1>::operator=(const vec<T, t_n> & v) {
 
 
 template <typename T>
+template <int t_i>
+inline T & vec<T, 1>::at() noexcept {
+    static_assert(t_i == 0, "index out of bounds");
+    if constexpr (t_i == 0) return x;
+}
+
+template <typename T>
+template <int t_i>
+constexpr const T & vec<T, 1>::at() const noexcept {
+    static_assert(t_i == 0, "index out of bounds");
+    if constexpr (t_i == 0) return x;
+}
+
+
+
+template <typename T>
 inline T & vec<T, 1>::operator[](int i) {
     return *(&x + i);
 }
@@ -105,22 +121,6 @@ inline T & vec<T, 1>::operator[](int i) {
 template <typename T>
 inline const T & vec<T, 1>::operator[](int i) const {
     return *(&x + i);
-}
-
-
-
-template <typename T>
-template <int t_i>
-inline T & vec<T, 1>::at() {
-    static_assert(t_i == 0, "index out of bounds");
-    if constexpr (t_i == 0) return x;
-}
-
-template <typename T>
-template <int t_i>
-constexpr const T & vec<T, 1>::at() const {
-    static_assert(t_i == 0, "index out of bounds");
-    if constexpr (t_i == 0) return x;
 }
 
 
@@ -137,66 +137,66 @@ constexpr const T & vec<T, 1>::at() const {
 
 
 template <typename T>
-constexpr vec<T, 2>::vec() :
+constexpr vec<T, 2>::vec() noexcept :
     x(T(0)), y(T(0))
 {}
 
 template <typename T>
-constexpr vec<T, 2>::vec(const vec2<T> & v) :
+constexpr vec<T, 2>::vec(const vec2<T> & v) noexcept :
     x(v.x), y(v.y)
 {}
 
 template <typename T>
-constexpr vec<T, 2>::vec(vec2<T> && v) :
+constexpr vec<T, 2>::vec(vec2<T> && v) noexcept :
     x(v.x), y(v.y)
 {}
 
 template <typename T>
 template <typename U>
-constexpr vec<T, 2>::vec(const vec1<U> & v) :
+constexpr vec<T, 2>::vec(const vec1<U> & v) noexcept :
     x(T(v.x)), y(T(0))
 {}
 
 template <typename T>
 template <typename U>
-constexpr vec<T, 2>::vec(const vec2<U> & v) :
+constexpr vec<T, 2>::vec(const vec2<U> & v) noexcept :
     x(T(v.x)), y(T(v.y))
 {}
 
 template <typename T>
 template <typename U>
-constexpr vec<T, 2>::vec(const vec3<U> & v) :
+constexpr vec<T, 2>::vec(const vec3<U> & v) noexcept :
     x(T(v.x)), y(T(v.y))
 {}
 
 template <typename T>
 template <typename U>
-constexpr vec<T, 2>::vec(const vec4<U> & v) :
+constexpr vec<T, 2>::vec(const vec4<U> & v) noexcept :
     x(T(v.x)), y(T(v.y))
 {}
 
 template <typename T>
-constexpr vec<T, 2>::vec(const T & v) :
+constexpr vec<T, 2>::vec(const T & v) noexcept :
     x(v), y(v)
 {}
 
 template <typename T>
-constexpr vec<T, 2>::vec(const T & v1, const T & v2) :
+constexpr vec<T, 2>::vec(const T & v1, const T & v2) noexcept :
     x(v1), y(v2)
 {}
 
 template <typename T>
-Q_CX_ABLE vec<T, 2>::vec(const vec1<T> & v1, const T & v2) :
+Q_CX_ABLE vec<T, 2>::vec(const vec1<T> & v1, const T & v2) noexcept :
     x(v1.x), y(v2)
 {}
 
 template <typename T>
-Q_CX_ABLE vec<T, 2>::vec(const T & v1, const vec1<T> & v2) :
+Q_CX_ABLE vec<T, 2>::vec(const T & v1, const vec1<T> & v2) noexcept :
     x(v1), y(v2.x)
 {}
 
 template <typename T>
-Q_CX_ABLE vec<T, 2>::vec(const vec1<T> & v1, const vec1<T> & v2) :
+Q_CX_ABLE vec<T, 2>::vec(const vec1<T> & v1, const vec1<T> & v2) noexcept :
     x(v1.x), y(v2.x)
 {}
 
@@ -208,26 +208,26 @@ Q_CX_ABLE vec<T, 2>::vec(const vec1<T> & v1, const vec1<T> & v2) :
 
 
 template <typename T>
-inline vec2<T> & vec<T, 2>::operator=(const vec2<T> & v) {
+inline vec2<T> & vec<T, 2>::operator=(const vec2<T> & v) noexcept {
     x = v.x; y = v.y;
     return *this;
 }
 
 template <typename T>
-inline vec2<T> & vec<T, 2>::operator=(vec2<T> && v) {
+inline vec2<T> & vec<T, 2>::operator=(vec2<T> && v) noexcept {
     x = v.x; y = v.y;
     return *this;
 }
 
 template <typename T>
-inline vec2<T> & vec<T, 2>::operator=(const T & v) {
+inline vec2<T> & vec<T, 2>::operator=(const T & v) noexcept {
     x = v; y = v;
     return *this;
 }
 
 template <typename T>
 template <int t_n>
-inline vec2<T> & vec<T, 2>::operator=(const vec<T, t_n> & v) {
+inline vec2<T> & vec<T, 2>::operator=(const vec<T, t_n> & v) noexcept {
     if constexpr (t_n >= 1) x = v.x; if constexpr (t_n < 1) x = T(0);
     if constexpr (t_n >= 2) y = v.y; if constexpr (t_n < 2) y = T(0);
     return *this;
@@ -241,6 +241,24 @@ inline vec2<T> & vec<T, 2>::operator=(const vec<T, t_n> & v) {
 
 
 template <typename T>
+template <int t_i>
+inline T & vec<T, 2>::at() noexcept {
+    static_assert(t_i >= 0 && t_i <= 1, "index out of bounds");
+    if constexpr (t_i == 0) return x;
+    if constexpr (t_i == 1) return y;
+}
+
+template <typename T>
+template <int t_i>
+constexpr const T & vec<T, 2>::at() const noexcept {
+    static_assert(t_i >= 0 && t_i <= 1, "index out of bounds");
+    if constexpr (t_i == 0) return x;
+    if constexpr (t_i == 1) return y;
+}
+
+
+
+template <typename T>
 inline T & vec<T, 2>::operator[](int i) {
     return *(&x + i);
 }
@@ -248,24 +266,6 @@ inline T & vec<T, 2>::operator[](int i) {
 template <typename T>
 inline const T & vec<T, 2>::operator[](int i) const {
     return *(&x + i);
-}
-
-
-
-template <typename T>
-template <int t_i>
-inline T & vec<T, 2>::at() {
-    static_assert(t_i >= 0 && t_i <= 1, "index out of bounds");
-    if constexpr (t_i == 0) return x;
-    if constexpr (t_i == 1) return y;
-}
-
-template <typename T>
-template <int t_i>
-constexpr const T & vec<T, 2>::at() const {
-    static_assert(t_i >= 0 && t_i <= 1, "index out of bounds");
-    if constexpr (t_i == 0) return x;
-    if constexpr (t_i == 1) return y;
 }
 
 
@@ -282,106 +282,106 @@ constexpr const T & vec<T, 2>::at() const {
 
 
 template <typename T>
-constexpr vec<T, 3>::vec() :
+constexpr vec<T, 3>::vec() noexcept :
     x(T(0)), y(T(0)), z(T(0))
 {}
 
 template <typename T>
-constexpr vec<T, 3>::vec(const vec3<T> & v) :
+constexpr vec<T, 3>::vec(const vec3<T> & v) noexcept :
     x(v.x), y(v.y), z(v.z)
 {}
 
 template <typename T>
-constexpr vec<T, 3>::vec(vec3<T> && v) :
+constexpr vec<T, 3>::vec(vec3<T> && v) noexcept :
     x(v.x), y(v.y), z(v.z)
 {}
 
 template <typename T>
 template <typename U>
-constexpr vec<T, 3>::vec(const vec1<U> & v) :
+constexpr vec<T, 3>::vec(const vec1<U> & v) noexcept :
     x(T(v.x)), y(T(0)), z(T(0))
 {}
 
 template <typename T>
 template <typename U>
-constexpr vec<T, 3>::vec(const vec2<U> & v) :
+constexpr vec<T, 3>::vec(const vec2<U> & v) noexcept :
     x(T(v.x)), y(T(v.y)), z(T(0))
 {}
 
 template <typename T>
 template <typename U>
-constexpr vec<T, 3>::vec(const vec3<U> & v) :
+constexpr vec<T, 3>::vec(const vec3<U> & v) noexcept :
     x(T(v.x)), y(T(v.y)), z(T(v.z))
 {}
 
 template <typename T>
 template <typename U>
-constexpr vec<T, 3>::vec(const vec4<U> & v) :
+constexpr vec<T, 3>::vec(const vec4<U> & v) noexcept :
     x(T(v.x)), y(T(v.y)), z(T(v.z))
 {}
 
 template <typename T>
-constexpr vec<T, 3>::vec(const T & v) :
+constexpr vec<T, 3>::vec(const T & v) noexcept :
     x(v), y(v), z(v)
 {}
 
 template <typename T>
-constexpr vec<T, 3>::vec(const T & v1, const T & v2, const T & v3) :
+constexpr vec<T, 3>::vec(const T & v1, const T & v2, const T & v3) noexcept :
     x(v1), y(v2), z(v3)
 {}
 
 template <typename T>
-Q_CX_ABLE vec<T, 3>::vec(const vec1<T> & v1, const T & v2, const T & v3) :
+Q_CX_ABLE vec<T, 3>::vec(const vec1<T> & v1, const T & v2, const T & v3) noexcept :
     x(v1.x), y(v2), z(v3)
 {}
 
 template <typename T>
-Q_CX_ABLE vec<T, 3>::vec(const T & v1, const vec1<T> & v2, const T & v3) :
+Q_CX_ABLE vec<T, 3>::vec(const T & v1, const vec1<T> & v2, const T & v3) noexcept :
     x(v1), y(v2.x), z(v3)
 {}
 
 template <typename T>
-Q_CX_ABLE vec<T, 3>::vec(const T & v1, const T & v2, const vec1<T> & v3) :
+Q_CX_ABLE vec<T, 3>::vec(const T & v1, const T & v2, const vec1<T> & v3) noexcept :
     x(v1), y(v2), z(v3.x)
 {}
 
 template <typename T>
-Q_CX_ABLE vec<T, 3>::vec(const vec1<T> & v1, const vec1<T> & v2, const T & v3) :
+Q_CX_ABLE vec<T, 3>::vec(const vec1<T> & v1, const vec1<T> & v2, const T & v3) noexcept :
     x(v1.x), y(v2.x), z(v3)
 {}
 
 template <typename T>
-Q_CX_ABLE vec<T, 3>::vec(const vec1<T> & v1, const T & v2, const vec1<T> & v3) :
+Q_CX_ABLE vec<T, 3>::vec(const vec1<T> & v1, const T & v2, const vec1<T> & v3) noexcept :
     x(v1.x), y(v2), z(v3.x)
 {}
 
 template <typename T>
-Q_CX_ABLE vec<T, 3>::vec(const T & v1, const vec1<T> & v2, const vec1<T> & v3) :
+Q_CX_ABLE vec<T, 3>::vec(const T & v1, const vec1<T> & v2, const vec1<T> & v3) noexcept :
     x(v1), y(v2.x), z(v3.x)
 {}
 
 template <typename T>
-Q_CX_ABLE vec<T, 3>::vec(const vec1<T> & v1, const vec1<T> & v2, const vec1<T> & v3) :
+Q_CX_ABLE vec<T, 3>::vec(const vec1<T> & v1, const vec1<T> & v2, const vec1<T> & v3) noexcept :
     x(v1.x), y(v2.x), z(v3.x)
 {}
 
 template <typename T>
-Q_CONSTEX vec<T, 3>::vec(const vec2<T> & v1, const T & v2) :
+Q_CONSTEX vec<T, 3>::vec(const vec2<T> & v1, const T & v2) noexcept :
     x(v1.x), y(v1.y), z(v2)
 {}
 
 template <typename T>
-Q_CX_ABLE vec<T, 3>::vec(const vec2<T> & v1, const vec1<T> & v2) :
+Q_CX_ABLE vec<T, 3>::vec(const vec2<T> & v1, const vec1<T> & v2) noexcept :
     x(v1.x), y(v1.y), z(v2.x)
 {}
 
 template <typename T>
-Q_CX_ABLE vec<T, 3>::vec(const T & v1, const vec2<T> & v2) :
+Q_CX_ABLE vec<T, 3>::vec(const T & v1, const vec2<T> & v2) noexcept :
     x(v1), y(v2.x), z(v2.y)
 {}
 
 template <typename T>
-Q_CX_ABLE vec<T, 3>::vec(const vec1<T> & v1, const vec2<T> & v2) :
+Q_CX_ABLE vec<T, 3>::vec(const vec1<T> & v1, const vec2<T> & v2) noexcept :
     x(v1.x), y(v2.x), z(v2.y)
 {}
 
@@ -393,26 +393,26 @@ Q_CX_ABLE vec<T, 3>::vec(const vec1<T> & v1, const vec2<T> & v2) :
 
 
 template <typename T>
-inline vec3<T> & vec<T, 3>::operator=(const vec3<T> & v) {
+inline vec3<T> & vec<T, 3>::operator=(const vec3<T> & v) noexcept {
     x = v.x; y = v.y; z = v.z;
     return *this;
 }
 
 template <typename T>
-inline vec3<T> & vec<T, 3>::operator=(vec3<T> && v) {
+inline vec3<T> & vec<T, 3>::operator=(vec3<T> && v) noexcept {
     x = v.x; y = v.y; z = v.z;
     return *this;
 }
 
 template <typename T>
-inline vec3<T> & vec<T, 3>::operator=(const T & v) {
+inline vec3<T> & vec<T, 3>::operator=(const T & v) noexcept {
     x = v; y = v; z = v;
     return *this;
 }
 
 template <typename T>
 template <int t_n>
-inline vec3<T> & vec<T, 3>::operator=(const vec<T, t_n> & v) {
+inline vec3<T> & vec<T, 3>::operator=(const vec<T, t_n> & v) noexcept {
     if constexpr (t_n >= 1) x = v.x; if constexpr (t_n < 1) x = T(0);
     if constexpr (t_n >= 2) y = v.y; if constexpr (t_n < 2) y = T(0);
     if constexpr (t_n >= 3) z = v.z; if constexpr (t_n < 3) z = T(0);
@@ -427,6 +427,26 @@ inline vec3<T> & vec<T, 3>::operator=(const vec<T, t_n> & v) {
 
 
 template <typename T>
+template <int t_i>
+inline T & vec<T, 3>::at() noexcept {
+    static_assert(t_i >= 0 && t_i <= 2, "index out of bounds");
+    if constexpr (t_i == 0) return x;
+    if constexpr (t_i == 1) return y;
+    if constexpr (t_i == 2) return z;
+}
+
+template <typename T>
+template <int t_i>
+constexpr const T & vec<T, 3>::at() const noexcept {
+    static_assert(t_i >= 0 && t_i <= 2, "index out of bounds");
+    if constexpr (t_i == 0) return x;
+    if constexpr (t_i == 1) return y;
+    if constexpr (t_i == 2) return z;
+}
+
+
+
+template <typename T>
 inline T & vec<T, 3>::operator[](int i) {
     return *(&x + i);
 }
@@ -436,82 +456,16 @@ inline const T & vec<T, 3>::operator[](int i) const {
     return *(&x + i);
 }
 
+
+
 template <typename T>
-template <int t_i>
-inline T & vec<T, 3>::at() {
-    static_assert(t_i >= 0 && t_i <= 2, "index out of bounds");
-    if constexpr (t_i == 0) return x;
-    if constexpr (t_i == 1) return y;
-    if constexpr (t_i == 2) return z;
+inline vec2<T> & vec<T, 3>::xy() noexcept {
+    return reinterpret_cast<vec2<T> &>(x);
 }
 
 template <typename T>
-template <int t_i>
-constexpr const T & vec<T, 3>::at() const {
-    static_assert(t_i >= 0 && t_i <= 2, "index out of bounds");
-    if constexpr (t_i == 0) return x;
-    if constexpr (t_i == 1) return y;
-    if constexpr (t_i == 2) return z;
-}
-
-template <typename T>
-inline vec2<T> & vec<T, 3>::xy() {
-    return *reinterpret_cast<vec2<T> *>(&x);
-}
-
-template <typename T>
-inline vec2<T> & vec<T, 3>::rg() {
-    return *reinterpret_cast<vec2<T> *>(&r);
-}
-
-template <typename T>
-inline vec2<T> & vec<T, 3>::st() {
-    return *reinterpret_cast<vec2<T> *>(&s);
-}
-
-template <typename T>
-inline vec2<T> & vec<T, 3>::yz() {
-    return *reinterpret_cast<vec2<T> *>(&y);
-}
-
-template <typename T>
-inline vec2<T> & vec<T, 3>::gb() {
-    return *reinterpret_cast<vec2<T> *>(&g);
-}
-
-template <typename T>
-inline vec2<T> & vec<T, 3>::tp() {
-    return *reinterpret_cast<vec2<T> *>(&t);
-}
-
-template <typename T>
-inline const vec2<T> & vec<T, 3>::xy() const {
-    return *reinterpret_cast<const vec2<T> *>(&x);
-}
-
-template <typename T>
-inline const vec2<T> & vec<T, 3>::rg() const {
-    return *reinterpret_cast<const vec2<T> *>(&r);
-}
-
-template <typename T>
-inline const vec2<T> & vec<T, 3>::st() const {
-    return *reinterpret_cast<const vec2<T> *>(&s);
-}
-
-template <typename T>
-inline const vec2<T> & vec<T, 3>::yz() const {
-    return *reinterpret_cast<const vec2<T> *>(&y);
-}
-
-template <typename T>
-inline const vec2<T> & vec<T, 3>::gb() const {
-    return *reinterpret_cast<const vec2<T> *>(&g);
-}
-
-template <typename T>
-inline const vec2<T> & vec<T, 3>::tp() const {
-    return *reinterpret_cast<const vec2<T> *>(&t);
+inline vec2<T> & vec<T, 3>::yz() noexcept {
+    return reinterpret_cast<vec2<T> &>(y);
 }
 
 
@@ -528,211 +482,211 @@ inline const vec2<T> & vec<T, 3>::tp() const {
 
 
 template <typename T>
-constexpr vec<T, 4>::vec() :
+constexpr vec<T, 4>::vec() noexcept :
     x(T(0)), y(T(0)), z(T(0)), w(T(0))
 {}
 
 template <typename T>
-constexpr vec<T, 4>::vec(const vec4<T> & v) :
+constexpr vec<T, 4>::vec(const vec4<T> & v) noexcept :
     x(v.x), y(v.y), z(v.z), w(v.w)
 {}
 
 template <typename T>
-constexpr vec<T, 4>::vec(vec4<T> && v) :
+constexpr vec<T, 4>::vec(vec4<T> && v) noexcept :
     x(v.x), y(v.y), z(v.z), w(v.w)
 {}
 
 template <typename T>
 template <typename U>
-constexpr vec<T, 4>::vec(const vec1<U> & v) :
+constexpr vec<T, 4>::vec(const vec1<U> & v) noexcept :
     x(T(v.x)), y(T(0)), z(T(0)), w(T(0))
 {}
 
 template <typename T>
 template <typename U>
-constexpr vec<T, 4>::vec(const vec2<U> & v) :
+constexpr vec<T, 4>::vec(const vec2<U> & v) noexcept :
     x(T(v.x)), y(T(v.y)), z(T(0)), w(T(0))
 {}
 
 template <typename T>
 template <typename U>
-constexpr vec<T, 4>::vec(const vec3<U> & v) :
+constexpr vec<T, 4>::vec(const vec3<U> & v) noexcept :
     x(T(v.x)), y(T(v.y)), z(T(v.z)), w(T(0))
 {}
 
 template <typename T>
 template <typename U>
-constexpr vec<T, 4>::vec(const vec4<U> & v) :
+constexpr vec<T, 4>::vec(const vec4<U> & v) noexcept :
     x(T(v.x)), y(T(v.y)), z(T(v.z)), w(T(v.w))
 {}
 
 template <typename T>
-constexpr vec<T, 4>::vec(const T & v) :
+constexpr vec<T, 4>::vec(const T & v) noexcept :
     x(v), y(v), z(v), w(v)
 {}
 
 template <typename T>
-constexpr vec<T, 4>::vec(const T & v1, const T & v2, const T & v3, const T & v4) :
+constexpr vec<T, 4>::vec(const T & v1, const T & v2, const T & v3, const T & v4) noexcept :
     x(v1), y(v2), z(v3), w(v4)
 {}
 
 template <typename T>
-Q_CX_ABLE vec<T, 4>::vec(const vec1<T> & v1, const T & v2, const T & v3, const T & v4) :
+Q_CX_ABLE vec<T, 4>::vec(const vec1<T> & v1, const T & v2, const T & v3, const T & v4) noexcept :
     x(v1.x), y(v2), z(v3), w(v4)
 {}
 
 template <typename T>
-Q_CX_ABLE vec<T, 4>::vec(const T & v1, const vec1<T> & v2, const T & v3, const T & v4) :
+Q_CX_ABLE vec<T, 4>::vec(const T & v1, const vec1<T> & v2, const T & v3, const T & v4) noexcept :
     x(v1), y(v2.x), z(v3), w(v4)
 {}
 
 template <typename T>
-Q_CX_ABLE vec<T, 4>::vec(const T & v1, const T & v2, const vec1<T> & v3, const T & v4) :
+Q_CX_ABLE vec<T, 4>::vec(const T & v1, const T & v2, const vec1<T> & v3, const T & v4) noexcept :
     x(v1), y(v2), z(v3.x), w(v4)
 {}
 
 template <typename T>
-Q_CX_ABLE vec<T, 4>::vec(const T & v1, const T & v2, const T & v3, const vec1<T> & v4) :
+Q_CX_ABLE vec<T, 4>::vec(const T & v1, const T & v2, const T & v3, const vec1<T> & v4) noexcept :
     x(v1), y(v2), z(v3), w(v4.x)
 {}
 
 template <typename T>
-Q_CX_ABLE vec<T, 4>::vec(const vec1<T> & v1, const vec1<T> & v2, const T & v3, const T & v4) :
+Q_CX_ABLE vec<T, 4>::vec(const vec1<T> & v1, const vec1<T> & v2, const T & v3, const T & v4) noexcept :
     x(v1.x), y(v2.x), z(v3), w(v4)
 {}
 
 template <typename T>
-Q_CX_ABLE vec<T, 4>::vec(const vec1<T> & v1, const T & v2, const vec1<T> & v3, const T & v4) :
+Q_CX_ABLE vec<T, 4>::vec(const vec1<T> & v1, const T & v2, const vec1<T> & v3, const T & v4) noexcept :
     x(v1.x), y(v2), z(v3.x), w(v4)
 {}
 
 template <typename T>
-Q_CX_ABLE vec<T, 4>::vec(const vec1<T> & v1, const T & v2, const T & v3, const vec1<T> & v4) :
+Q_CX_ABLE vec<T, 4>::vec(const vec1<T> & v1, const T & v2, const T & v3, const vec1<T> & v4) noexcept :
     x(v1.x), y(v2), z(v3), w(v4.x)
 {}
 
 template <typename T>
-Q_CX_ABLE vec<T, 4>::vec(const T & v1, const vec1<T> & v2, const vec1<T> & v3, const T & v4) :
+Q_CX_ABLE vec<T, 4>::vec(const T & v1, const vec1<T> & v2, const vec1<T> & v3, const T & v4) noexcept :
     x(v1), y(v2.x), z(v3.x), w(v4)
 {}
 
 template <typename T>
-Q_CX_ABLE vec<T, 4>::vec(const T & v1, const vec1<T> & v2, const T & v3, const vec1<T> & v4) :
+Q_CX_ABLE vec<T, 4>::vec(const T & v1, const vec1<T> & v2, const T & v3, const vec1<T> & v4) noexcept :
     x(v1), y(v2.x), z(v3), w(v4.x)
 {}
 
 template <typename T>
-Q_CX_ABLE vec<T, 4>::vec(const T & v1, const T & v2, const vec1<T> & v3, const vec1<T> & v4) :
+Q_CX_ABLE vec<T, 4>::vec(const T & v1, const T & v2, const vec1<T> & v3, const vec1<T> & v4) noexcept :
     x(v1), y(v2), z(v3.x), w(v4.x)
 {}
 
 template <typename T>
-Q_CX_ABLE vec<T, 4>::vec(const vec1<T> & v1, const vec1<T> & v2, const vec1<T> & v3, const T & v4) :
+Q_CX_ABLE vec<T, 4>::vec(const vec1<T> & v1, const vec1<T> & v2, const vec1<T> & v3, const T & v4) noexcept :
     x(v1.x), y(v2.x), z(v3.x), w(v4)
 {}
 
 template <typename T>
-Q_CX_ABLE vec<T, 4>::vec(const vec1<T> & v1, const vec1<T> & v2, const T & v3, const vec1<T> & v4) :
+Q_CX_ABLE vec<T, 4>::vec(const vec1<T> & v1, const vec1<T> & v2, const T & v3, const vec1<T> & v4) noexcept :
     x(v1.x), y(v2.x), z(v3), w(v4.x)
 {}
 
 template <typename T>
-Q_CX_ABLE vec<T, 4>::vec(const vec1<T> & v1, const T & v2, const vec1<T> & v3, const vec1<T> & v4) :
+Q_CX_ABLE vec<T, 4>::vec(const vec1<T> & v1, const T & v2, const vec1<T> & v3, const vec1<T> & v4) noexcept :
     x(v1.x), y(v2), z(v3.x), w(v4.x)
 {}
 
 template <typename T>
-Q_CX_ABLE vec<T, 4>::vec(const T & v1, const vec1<T> & v2, const vec1<T> & v3, const vec1<T> & v4) :
+Q_CX_ABLE vec<T, 4>::vec(const T & v1, const vec1<T> & v2, const vec1<T> & v3, const vec1<T> & v4) noexcept :
     x(v1), y(v2.x), z(v3.x), w(v4.x)
 {}
 
 template <typename T>
-Q_CX_ABLE vec<T, 4>::vec(const vec1<T> & v1, const vec1<T> & v2, const vec1<T> & v3, const vec1<T> & v4) :
+Q_CX_ABLE vec<T, 4>::vec(const vec1<T> & v1, const vec1<T> & v2, const vec1<T> & v3, const vec1<T> & v4) noexcept :
     x(v1.x), y(v2.x), z(v3.x), w(v4.x)
 {}
 
 template <typename T>
-Q_CX_ABLE vec<T, 4>::vec(const vec2<T> & v1, const T & v2, const T & v3) :
+Q_CX_ABLE vec<T, 4>::vec(const vec2<T> & v1, const T & v2, const T & v3) noexcept :
     x(v1.x), y(v1.y), z(v2), w(v3)
 {}
 
 template <typename T>
-Q_CX_ABLE vec<T, 4>::vec(const vec2<T> & v1, const vec1<T> & v2, const T & v3) :
+Q_CX_ABLE vec<T, 4>::vec(const vec2<T> & v1, const vec1<T> & v2, const T & v3) noexcept :
     x(v1.x), y(v1.y), z(v2.x), w(v3)
 {}
 
 template <typename T>
-Q_CX_ABLE vec<T, 4>::vec(const vec2<T> & v1, const T & v2, const vec1<T> & v3) :
+Q_CX_ABLE vec<T, 4>::vec(const vec2<T> & v1, const T & v2, const vec1<T> & v3) noexcept :
     x(v1.x), y(v1.y), z(v2), w(v3.x)
 {}
 
 template <typename T>
-Q_CX_ABLE vec<T, 4>::vec(const vec2<T> & v1, const vec1<T> & v2, const vec1<T> & v3) :
+Q_CX_ABLE vec<T, 4>::vec(const vec2<T> & v1, const vec1<T> & v2, const vec1<T> & v3) noexcept :
     x(v1.x), y(v1.y), z(v2.x), w(v3.x)
 {}
 
 template <typename T>
-Q_CX_ABLE vec<T, 4>::vec(const T & v1, const vec2<T> & v2, const T & v3) :
+Q_CX_ABLE vec<T, 4>::vec(const T & v1, const vec2<T> & v2, const T & v3) noexcept :
     x(v1), y(v2.x), z(v2.y), w(v3)
 {}
 
 template <typename T>
-Q_CX_ABLE vec<T, 4>::vec(const vec1<T> & v1, const vec2<T> & v2, const T & v3) :
+Q_CX_ABLE vec<T, 4>::vec(const vec1<T> & v1, const vec2<T> & v2, const T & v3) noexcept :
     x(v1.x), y(v2.x), z(v2.y), w(v3)
 {}
 
 template <typename T>
-Q_CX_ABLE vec<T, 4>::vec(const T & v1, const vec2<T> & v2, const vec1<T> & v3) :
+Q_CX_ABLE vec<T, 4>::vec(const T & v1, const vec2<T> & v2, const vec1<T> & v3) noexcept :
     x(v1), y(v2.x), z(v2.y), w(v3.x)
 {}
 
 template <typename T>
-Q_CX_ABLE vec<T, 4>::vec(const vec1<T> & v1, const vec2<T> & v2, const vec1<T> & v3) :
+Q_CX_ABLE vec<T, 4>::vec(const vec1<T> & v1, const vec2<T> & v2, const vec1<T> & v3) noexcept :
     x(v1.x), y(v2.x), z(v2.y), w(v3.x)
 {}
 
 template <typename T>
-Q_CX_ABLE vec<T, 4>::vec(const T & v1, const T & v2, const vec2<T> & v3) :
+Q_CX_ABLE vec<T, 4>::vec(const T & v1, const T & v2, const vec2<T> & v3) noexcept :
     x(v1), y(v2), z(v3.x), w(v3.y)
 {}
 
 template <typename T>
-Q_CX_ABLE vec<T, 4>::vec(const vec1<T> & v1, const T & v2, const vec2<T> & v3) :
+Q_CX_ABLE vec<T, 4>::vec(const vec1<T> & v1, const T & v2, const vec2<T> & v3) noexcept :
     x(v1.x), y(v2), z(v3.x), w(v3.y)
 {}
 
 template <typename T>
-Q_CX_ABLE vec<T, 4>::vec(const T & v1, const vec1<T> & v2, const vec2<T> & v3) :
+Q_CX_ABLE vec<T, 4>::vec(const T & v1, const vec1<T> & v2, const vec2<T> & v3) noexcept :
     x(v1), y(v2.x), z(v3.x), w(v3.y)
 {}
 
 template <typename T>
-Q_CX_ABLE vec<T, 4>::vec(const vec1<T> & v1, const vec1<T> & v2, const vec2<T> & v3) :
+Q_CX_ABLE vec<T, 4>::vec(const vec1<T> & v1, const vec1<T> & v2, const vec2<T> & v3) noexcept :
     x(v1.x), y(v2.x), z(v3.x), w(v3.y)
 {}
 
 template <typename T>
-Q_CONSTEX vec<T, 4>::vec(const vec2<T> & v1, const vec2<T> & v2) :
+Q_CONSTEX vec<T, 4>::vec(const vec2<T> & v1, const vec2<T> & v2) noexcept :
     x(v1.x), y(v1.y), z(v2.x), w(v2.y)
 {}
 
 template <typename T>
-Q_CONSTEX vec<T, 4>::vec(const vec3<T> & v1, const T & v2) :
+Q_CONSTEX vec<T, 4>::vec(const vec3<T> & v1, const T & v2) noexcept :
     x(v1.x), y(v1.y), z(v1.z), w(v2)
 {}
 
 template <typename T>
-Q_CX_ABLE vec<T, 4>::vec(const vec3<T> & v1, const vec1<T> & v2) :
+Q_CX_ABLE vec<T, 4>::vec(const vec3<T> & v1, const vec1<T> & v2) noexcept :
     x(v1.x), y(v1.y), z(v1.z), w(v2.x)
 {}
 
 template <typename T>
-Q_CX_ABLE vec<T, 4>::vec(const T & v1, const vec3<T> & v2) :
+Q_CX_ABLE vec<T, 4>::vec(const T & v1, const vec3<T> & v2) noexcept :
     x(v1), y(v2.x), z(v2.y), w(v2.z)
 {}
 
 template <typename T>
-Q_CX_ABLE vec<T, 4>::vec(const vec1<T> & v1, const vec3<T> & v2) :
+Q_CX_ABLE vec<T, 4>::vec(const vec1<T> & v1, const vec3<T> & v2) noexcept :
     x(v1.x), y(v2.x), z(v2.y), w(v2.z)
 {}
 
@@ -744,26 +698,26 @@ Q_CX_ABLE vec<T, 4>::vec(const vec1<T> & v1, const vec3<T> & v2) :
 
 
 template <typename T>
-inline vec4<T> & vec<T, 4>::operator=(const vec4<T> & v) {
+inline vec4<T> & vec<T, 4>::operator=(const vec4<T> & v) noexcept {
     x = v.x; y = v.y; z = v.z; w = v.w;
     return *this;
 }
 
 template <typename T>
-inline vec4<T> & vec<T, 4>::operator=(vec4<T> && v) {
+inline vec4<T> & vec<T, 4>::operator=(vec4<T> && v) noexcept {
     x = v.x; y = v.y; z = v.z; w = v.w;
     return *this;
 }
 
 template <typename T>
-inline vec4<T> & vec<T, 4>::operator=(const T & v) {
+inline vec4<T> & vec<T, 4>::operator=(const T & v) noexcept {
     x = v; y = v; z = v; w = v;
     return *this;
 }
 
 template <typename T>
 template <int t_n>
-inline vec4<T> & vec<T, 4>::operator=(const vec<T, t_n> & v) {
+inline vec4<T> & vec<T, 4>::operator=(const vec<T, t_n> & v) noexcept {
     if constexpr (t_n >= 1) x = v.x; if constexpr (t_n < 1) x = T(0);
     if constexpr (t_n >= 2) y = v.y; if constexpr (t_n < 2) y = T(0);
     if constexpr (t_n >= 3) z = v.z; if constexpr (t_n < 3) z = T(0);
@@ -779,6 +733,28 @@ inline vec4<T> & vec<T, 4>::operator=(const vec<T, t_n> & v) {
 
 
 template <typename T>
+template <int t_i>
+inline T & vec<T, 4>::at() noexcept {
+    static_assert(t_i >= 0 && t_i <= 3, "index out of bounds");
+    if constexpr (t_i == 0) return x;
+    if constexpr (t_i == 1) return y;
+    if constexpr (t_i == 2) return z;
+    if constexpr (t_i == 3) return w;
+}
+
+template <typename T>
+template <int t_i>
+constexpr const T & vec<T, 4>::at() const noexcept {
+    static_assert(t_i >= 0 && t_i <= 3, "index out of bounds");
+    if constexpr (t_i == 0) return x;
+    if constexpr (t_i == 1) return y;
+    if constexpr (t_i == 2) return z;
+    if constexpr (t_i == 3) return w;
+}
+
+
+
+template <typename T>
 inline T & vec<T, 4>::operator[](int i) {
     return *(&x + i);
 }
@@ -788,174 +764,31 @@ inline const T & vec<T, 4>::operator[](int i) const {
     return *(&x + i);
 }
 
+
+
 template <typename T>
-template <int t_i>
-inline T & vec<T, 4>::at() {
-    static_assert(t_i >= 0 && t_i <= 3, "index out of bounds");
-    if constexpr (t_i == 0) return x;
-    if constexpr (t_i == 1) return y;
-    if constexpr (t_i == 2) return z;
-    if constexpr (t_i == 3) return w;
+inline vec2<T> & vec<T, 4>::xy() noexcept {
+    return reinterpret_cast<vec2<T> &>(x);
 }
 
 template <typename T>
-template <int t_i>
-constexpr const T & vec<T, 4>::at() const {
-    static_assert(t_i >= 0 && t_i <= 3, "index out of bounds");
-    if constexpr (t_i == 0) return x;
-    if constexpr (t_i == 1) return y;
-    if constexpr (t_i == 2) return z;
-    if constexpr (t_i == 3) return w;
+inline vec2<T> & vec<T, 4>::yz() noexcept {
+    return reinterpret_cast<vec2<T> &>(y);
 }
 
 template <typename T>
-inline vec2<T> & vec<T, 4>::xy() {
-    return *reinterpret_cast<vec2<T> *>(&x);
+inline vec2<T> & vec<T, 4>::zw() noexcept {
+    return reinterpret_cast<vec2<T> &>(z);
 }
 
 template <typename T>
-inline vec2<T> & vec<T, 4>::rg() {
-    return *reinterpret_cast<vec2<T> *>(&r);
+inline vec3<T> & vec<T, 4>::xyz() noexcept {
+    return reinterpret_cast<vec3<T> &>(x);
 }
 
 template <typename T>
-inline vec2<T> & vec<T, 4>::st() {
-    return *reinterpret_cast<vec2<T> *>(&s);
-}
-
-template <typename T>
-inline vec2<T> & vec<T, 4>::yz() {
-    return *reinterpret_cast<vec2<T> *>(&y);
-}
-
-template <typename T>
-inline vec2<T> & vec<T, 4>::gb() {
-    return *reinterpret_cast<vec2<T> *>(&g);
-}
-
-template <typename T>
-inline vec2<T> & vec<T, 4>::tp() {
-    return *reinterpret_cast<vec2<T> *>(&t);
-}
-
-template <typename T>
-inline vec2<T> & vec<T, 4>::zw() {
-    return *reinterpret_cast<vec2<T> *>(&z);
-}
-
-template <typename T>
-inline vec2<T> & vec<T, 4>::ba() {
-    return *reinterpret_cast<vec2<T> *>(&b);
-}
-
-template <typename T>
-inline vec2<T> & vec<T, 4>::pq() {
-    return *reinterpret_cast<vec2<T> *>(&p);
-}
-
-template <typename T>
-inline vec3<T> & vec<T, 4>::xyz() {
-    return *reinterpret_cast<vec3<T> *>(&x);
-}
-
-template <typename T>
-inline vec3<T> & vec<T, 4>::rgb() {
-    return *reinterpret_cast<vec3<T> *>(&r);
-}
-
-template <typename T>
-inline vec3<T> & vec<T, 4>::stp() {
-    return *reinterpret_cast<vec3<T> *>(&s);
-}
-
-template <typename T>
-inline vec3<T> & vec<T, 4>::yzw() {
-    return *reinterpret_cast<vec3<T> *>(&y);
-}
-
-template <typename T>
-inline vec3<T> & vec<T, 4>::gba() {
-    return *reinterpret_cast<vec3<T> *>(&g);
-}
-
-template <typename T>
-inline vec3<T> & vec<T, 4>::tpq() {
-    return *reinterpret_cast<vec3<T> *>(&t);
-}
-
-template <typename T>
-inline const vec2<T> & vec<T, 4>::xy() const {
-    return *reinterpret_cast<const vec2<T> *>(&x);
-}
-
-template <typename T>
-inline const vec2<T> & vec<T, 4>::rg() const {
-    return *reinterpret_cast<const vec2<T> *>(&r);
-}
-
-template <typename T>
-inline const vec2<T> & vec<T, 4>::st() const {
-    return *reinterpret_cast<const vec2<T> *>(&s);
-}
-
-template <typename T>
-inline const vec2<T> & vec<T, 4>::yz() const {
-    return *reinterpret_cast<const vec2<T> *>(&y);
-}
-
-template <typename T>
-inline const vec2<T> & vec<T, 4>::gb() const {
-    return *reinterpret_cast<const vec2<T> *>(&g);
-}
-
-template <typename T>
-inline const vec2<T> & vec<T, 4>::tp() const {
-    return *reinterpret_cast<const vec2<T> *>(&t);
-}
-
-template <typename T>
-inline const vec2<T> & vec<T, 4>::zw() const {
-    return *reinterpret_cast<const vec2<T> *>(&z);
-}
-
-template <typename T>
-inline const vec2<T> & vec<T, 4>::ba() const {
-    return *reinterpret_cast<const vec2<T> *>(&b);
-}
-
-template <typename T>
-inline const vec2<T> & vec<T, 4>::pq() const {
-    return *reinterpret_cast<const vec2<T> *>(&p);
-}
-
-template <typename T>
-inline const vec3<T> & vec<T, 4>::xyz() const {
-    return *reinterpret_cast<const vec3<T> *>(&x);
-}
-
-template <typename T>
-inline const vec3<T> & vec<T, 4>::yzw() const {
-    return *reinterpret_cast<const vec3<T> *>(&y);
-}
-
-template <typename T>
-inline const vec3<T> & vec<T, 4>::rgb() const {
-    return *reinterpret_cast<const vec3<T> *>(&r);
-}
-
-template <typename T>
-inline const vec3<T> & vec<T, 4>::gba() const {
-    return *reinterpret_cast<const vec3<T> *>(&g);
-}
-
-template <typename T>
-inline const vec3<T> & vec<T, 4>::stp() const {
-    return *reinterpret_cast<const vec3<T> *>(&s);
-}
-
-template <typename T>
-inline const vec3<T> & vec<T, 4>::tpq() const {
-    return *reinterpret_cast<const vec3<T> *>(&t);
+inline vec3<T> & vec<T, 4>::yzw() noexcept {
+    return reinterpret_cast<vec3<T> &>(y);
 }
 
 
@@ -972,38 +805,38 @@ inline const vec3<T> & vec<T, 4>::tpq() const {
 
 
 template <typename T, int t_n>
-constexpr span<T, t_n>::span() :
+constexpr span<T, t_n>::span() noexcept :
     min(),
     max()
 {}
 
 template <typename T, int t_n>
-constexpr span<T, t_n>::span(const span<T, t_n> & s) :
+constexpr span<T, t_n>::span(const span<T, t_n> & s) noexcept :
     min(s.min),
     max(s.max)
 {}
 
 template <typename T, int t_n>
-constexpr span<T, t_n>::span(span<T, t_n> && s) :
+constexpr span<T, t_n>::span(span<T, t_n> && s) noexcept :
     min(s.min),
     max(s.max)
 {}
 
 template <typename T, int t_n>
 template <typename U, int u_n>
-constexpr span<T, t_n>::span(const span<U, u_n> & s) :
+constexpr span<T, t_n>::span(const span<U, u_n> & s) noexcept :
     min(s.min),
     max(s.max)
 {}
 
 template <typename T, int t_n>
-constexpr span<T, t_n>::span(const vec<T, t_n> & v1, const vec<T, t_n> & v2) :
+constexpr span<T, t_n>::span(const vec<T, t_n> & v1, const vec<T, t_n> & v2) noexcept :
     min(v1),
     max(v2)
 {}
 
 template <typename T, int t_n>
-constexpr span<T, t_n>::span(const T & v1, const T & v2) :
+constexpr span<T, t_n>::span(const T & v1, const T & v2) noexcept :
     min(v1),
     max(v2)
 {}
@@ -1016,14 +849,14 @@ constexpr span<T, t_n>::span(const T & v1, const T & v2) :
 
 
 template <typename T, int t_n>
-inline span<T, t_n> & span<T, t_n>::operator=(const span<T, t_n> & s) {
+inline span<T, t_n> & span<T, t_n>::operator=(const span<T, t_n> & s) noexcept {
     min = s.min;
     max = s.max;
     return *this;
 }
 
 template <typename T, int t_n>
-inline span<T, t_n> & span<T, t_n>::operator=(span<T, t_n> && s) {
+inline span<T, t_n> & span<T, t_n>::operator=(span<T, t_n> && s) noexcept {
     min = s.min;
     max = s.max;
     return *this;
@@ -1031,7 +864,7 @@ inline span<T, t_n> & span<T, t_n>::operator=(span<T, t_n> && s) {
 
 template <typename T, int t_n>
 template <int u_n>
-inline span<T, t_n> & span<T, t_n>::operator=(const span<T, u_n> & s) {
+inline span<T, t_n> & span<T, t_n>::operator=(const span<T, u_n> & s) noexcept {
     min = s.min;
     max = s.max;
     return *this;

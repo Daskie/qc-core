@@ -47,7 +47,7 @@ inline DstT repeat(SrcT v) {
 template <typename T, eif_uintegral_t<T>>
 inline T interleave(T v) {
     if constexpr (sizeof(T) > 1) {
-        using H = match_sign_t<precision_ut<max(int(sizeof(T) / 2), int(1))>, T>;
+        using H = sized_ut<sizeof(T) / 2>;
 
         H h1 = H(v >> sizeof(H) * 8), h2 = H(v);
 

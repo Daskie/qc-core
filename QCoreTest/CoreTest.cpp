@@ -29,16 +29,16 @@ void compileTyping() {
     qc::array_t<int> a0{ 1, 2, 3 }; a0;
     qc::array_t<int, 1> a1; a1;
 
-    qc::precision<1>::stype p08s_; p08s_;
-    qc::precision<2>::stype p16s_; p16s_;
-    qc::precision<4>::stype p32s_; p32s_;
-    qc::precision<8>::stype p64s_; p64s_;
-    qc::precision<1>::utype p08u_; p08u_;
-    qc::precision<2>::utype p16u_; p16u_;
-    qc::precision<4>::utype p32u_; p32u_;
-    qc::precision<8>::utype p64u_; p64u_;
-    qc::precision<4>::ftype p32f_; p32f_;
-    qc::precision<8>::ftype p64f_; p64f_;
+    qc::sized_st<1> p08s_; p08s_;
+    qc::sized_st<2> p16s_; p16s_;
+    qc::sized_st<4> p32s_; p32s_;
+    qc::sized_st<8> p64s_; p64s_;
+    qc::sized_ut<1> p08u_; p08u_;
+    qc::sized_ut<2> p16u_; p16u_;
+    qc::sized_ut<4> p32u_; p32u_;
+    qc::sized_ut<8> p64u_; p64u_;
+    qc::sized_ft<4> p32f_; p32f_;
+    qc::sized_ft<8> p64f_; p64f_;
 }
 
 template <typename T>

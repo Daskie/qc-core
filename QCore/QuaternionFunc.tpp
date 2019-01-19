@@ -9,7 +9,7 @@ namespace qc {
 
 template <typename T>
 inline std::ostream & operator<<(std::ostream & os, const quat<T> & q) {
-    return os << "[ " << q.a.x << " " << q.a.y << " " << q.a.z << " | " << q.w << " ]";
+    return os << "[ " << q.a.i << " " << q.a.j << " " << q.a.k << " | " << q.w << " ]";
 }
 
 
@@ -127,22 +127,22 @@ inline quat<T> eulerQ_n(const vec3<T> & forward, const vec3<T> & up, T theta, T 
 
 template <typename T>
 Q_CX_ABLE mat3<T> toMat(const quat<T> & q) {
-    T wx(q.w   * q.a.x);
-    T wy(q.w   * q.a.y);
-    T wz(q.w   * q.a.z);
-    T xx(q.a.x * q.a.x);
-    T xy(q.a.x * q.a.y);
-    T xz(q.a.x * q.a.z);
-    T yy(q.a.y * q.a.y);
-    T yz(q.a.y * q.a.z);
-    T zz(q.a.z * q.a.z);
+    T wi(q.w   * q.a.i);
+    T wj(q.w   * q.a.j);
+    T wk(q.w   * q.a.k);
+    T ii(q.a.i * q.a.i);
+    T ij(q.a.i * q.a.j);
+    T ik(q.a.i * q.a.k);
+    T jj(q.a.j * q.a.j);
+    T jk(q.a.j * q.a.k);
+    T kk(q.a.k * q.a.k);
 
     constexpr T t_1(1.0), t_2(2.0);
 
     return mat3<T>(
-        t_1 - t_2 * (yy + zz), t_2       * (xy + wz), t_2       * (xz - wy),
-        t_2       * (xy - wz), t_1 - t_2 * (xx + zz), t_2       * (yz + wx),
-        t_2       * (xz + wy), t_2       * (yz - wx), t_1 - t_2 * (xx + yy)
+        t_1 - t_2 * (jj + kk), t_2       * (ij + wk), t_2       * (ik - wj),
+        t_2       * (ij - wk), t_1 - t_2 * (ii + kk), t_2       * (jk + wi),
+        t_2       * (ik + wj), t_2       * (jk - wi), t_1 - t_2 * (ii + jj)
     );
 }
 
