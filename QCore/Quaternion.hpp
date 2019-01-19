@@ -12,8 +12,14 @@ namespace qc {
 
 template <typename T> struct quat;
 
-using fquat = quat< float>;
-using dquat = quat<double>;
+namespace types {
+
+    using qc::quat;
+
+    using fquat = quat< float>;
+    using dquat = quat<double>;
+
+}
 
 
 

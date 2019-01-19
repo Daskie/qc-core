@@ -19,55 +19,32 @@ namespace qc {
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Type Declarations ---------------------------------------------------------------------------------------------------
-
-
-
-//------------------------------------------------------------------------------
-// Mat
+// Types ---------------------------------------------------------------------------------------------------------------
 
 
 
 template <typename T, int t_n> struct mat;
 
-template <typename T> using mat1 = mat<T, 1>;
-template <typename T> using mat2 = mat<T, 2>;
-template <typename T> using mat3 = mat<T, 3>;
-template <typename T> using mat4 = mat<T, 4>;
+namespace types {
 
-template <int t_n> using fmat = mat< float, t_n>;
-template <int t_n> using dmat = mat<double, t_n>;
+    using qc::mat;
 
-using fmat1 = mat< float, 1>;
-using fmat2 = mat< float, 2>;
-using fmat3 = mat< float, 3>;
-using fmat4 = mat< float, 4>;
-using dmat1 = mat<double, 1>;
-using dmat2 = mat<double, 2>;
-using dmat3 = mat<double, 3>;
-using dmat4 = mat<double, 4>;
+    template <typename T> using mat1 = mat<T, 1>;
+    template <typename T> using mat2 = mat<T, 2>;
+    template <typename T> using mat3 = mat<T, 3>;
+    template <typename T> using mat4 = mat<T, 4>;
 
+    template <int t_n> using fmat = mat< float, t_n>;
+    template <int t_n> using dmat = mat<double, t_n>;
 
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Type Namespaces -----------------------------------------------------------------------------------------------------
-
-
-
-//------------------------------------------------------------------------------
-// Mat
-
-
-
-namespace tmats { using qc:: mat; using qc:: mat1; using qc:: mat2; using qc:: mat3; using qc:: mat4; }
-namespace fmats { using qc::fmat; using qc::fmat1; using qc::fmat2; using qc::fmat3; using qc::fmat4; }
-namespace dmats { using qc::dmat; using qc::dmat1; using qc::dmat2; using qc::dmat3; using qc::dmat4; }
-
-namespace mats {
-
-using namespace tmats;
-using namespace fmats;
-using namespace dmats;
+    using fmat1 = mat< float, 1>;
+    using fmat2 = mat< float, 2>;
+    using fmat3 = mat< float, 3>;
+    using fmat4 = mat< float, 4>;
+    using dmat1 = mat<double, 1>;
+    using dmat2 = mat<double, 2>;
+    using dmat3 = mat<double, 3>;
+    using dmat4 = mat<double, 4>;
 
 }
 

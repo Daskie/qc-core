@@ -19,15 +19,13 @@ namespace qc {
 
 namespace types {
 
-    using uint = unsigned int;
+    using llong = long long;
 
-    using  nat =  intptr_t;
-    using unat = uintptr_t;
-
-    constexpr nat operator""_n(unsigned long long int v) { return nat(v); }
-    constexpr unat operator""_un(unsigned long long int v) { return unat(v); }
-
-    constexpr int k_nat_p = sizeof(nat);
+    using  uchar = unsigned      char;
+    using ushort = unsigned     short;
+    using   uint = unsigned       int;
+    using  ulong = unsigned      long;
+    using ullong = unsigned long long;
 
     using s08 =   int8_t;
     using u08 =  uint8_t;
@@ -39,6 +37,12 @@ namespace types {
     using s64 =  int64_t;
     using u64 = uint64_t;
     using f64 =   double;
+
+    using  nat =  intptr_t;
+    using unat = uintptr_t;
+
+    constexpr nat operator""_n(unsigned long long int v) { return nat(v); }
+    constexpr unat operator""_un(unsigned long long int v) { return unat(v); }
 
 }
 
