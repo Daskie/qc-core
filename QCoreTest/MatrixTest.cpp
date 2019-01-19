@@ -56,11 +56,11 @@ void compileClassesT() {
     // arithmetic assignment
 
     m1 += v;
-    m1 += m2;
+    m1 += m1;
     m1 -= v;
-    m1 -= m2;
+    m1 -= m1;
     m1 *= v;
-    m1 *= m2;
+    m1 *= m1;
     m1 /= T(1);
 
     // arithmetic operators
@@ -351,13 +351,13 @@ constexpr void compileClassesConstexprT() {
     constexpr qc::mat3<T> m3_3(std::move(m3));
     constexpr qc::mat3<T> m3_4(v, v, v, v, v, v, v, v, v);
     constexpr qc::mat3<T> m3_5(m1);
-    constexpr qc::mat3<T> m3_6(m2);
-    constexpr qc::mat3<T> m3_7(m4);
+    //constexpr qc::mat3<T> m3_6(m2);
+    //constexpr qc::mat3<T> m3_7(m4);
     constexpr qc::mat3<T> m3_8(v3, v3, v3);
 
     // access
 
-    m3.col<0>(); m3.col<1>(); m3.col<2>();
+    //m3.col<0>(); m3.col<1>(); m3.col<2>();
     m3.row<0>(); m3.row<1>(); m3.row<2>();
 
     //--------------------------------------------------------------------------
@@ -370,13 +370,13 @@ constexpr void compileClassesConstexprT() {
     constexpr qc::mat4<T> m4_3(std::move(m4));
     constexpr qc::mat4<T> m4_4(v, v, v, v, v, v, v, v, v, v, v, v, v, v, v, v);
     constexpr qc::mat4<T> m4_5(m1);
-    constexpr qc::mat4<T> m4_6(m2);
-    constexpr qc::mat4<T> m4_7(m3);
+    //constexpr qc::mat4<T> m4_6(m2);
+    //constexpr qc::mat4<T> m4_7(m3);
     constexpr qc::mat4<T> m4_8(v4, v4, v4, v4);
 
     // access
 
-    m4.col<0>(); m4.col<1>(); m4.col<2>(); m4.col<3>();
+    //m4.col<0>(); m4.col<1>(); m4.col<2>(); m4.col<3>();
     m4.row<0>(); m4.row<1>(); m4.row<2>(); m4.row<3>();
 
 }

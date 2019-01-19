@@ -420,7 +420,7 @@ template <int t_i>
 constexpr const vec3<T> & mat<T, 3>::col() const {
     if constexpr (t_i == 0) return c1;
     if constexpr (t_i == 1) return c2;
-    if constexpr (t_i == 3) return c3;
+    if constexpr (t_i == 2) return c3;
 }
 
 template <typename T>
@@ -561,6 +561,8 @@ inline mat4<T> & mat<T, 4>::operator=(const mat<U, t_n> & m) {
     if constexpr (t_n >= 2) c2 = m.c2; else c2 = vec4<T>(T(0.0), T(1.0), T(0.0), T(0.0));
     if constexpr (t_n >= 3) c3 = m.c3; else c3 = vec4<T>(T(0.0), T(0.0), T(1.0), T(0.0));
     if constexpr (t_n >= 4) c4 = m.c4; else c4 = vec4<T>(T(0.0), T(0.0), T(0.0), T(1.0));
+
+    return *this;
 }
 
 
@@ -590,8 +592,8 @@ template <int t_i>
 constexpr const vec4<T> & mat<T, 4>::col() const {
     if constexpr (t_i == 0) return c1;
     if constexpr (t_i == 1) return c2;
-    if constexpr (t_i == 3) return c3;
-    if constexpr (t_i == 4) return c4;
+    if constexpr (t_i == 2) return c3;
+    if constexpr (t_i == 3) return c4;
 }
 
 template <typename T>
