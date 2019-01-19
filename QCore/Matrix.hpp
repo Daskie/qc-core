@@ -29,7 +29,6 @@ namespace types {
 
     using qc::mat;
 
-    template <typename T> using mat1 = mat<T, 1>;
     template <typename T> using mat2 = mat<T, 2>;
     template <typename T> using mat3 = mat<T, 3>;
     template <typename T> using mat4 = mat<T, 4>;
@@ -37,71 +36,14 @@ namespace types {
     template <int t_n> using fmat = mat< float, t_n>;
     template <int t_n> using dmat = mat<double, t_n>;
 
-    using fmat1 = mat< float, 1>;
     using fmat2 = mat< float, 2>;
     using fmat3 = mat< float, 3>;
     using fmat4 = mat< float, 4>;
-    using dmat1 = mat<double, 1>;
     using dmat2 = mat<double, 2>;
     using dmat3 = mat<double, 3>;
     using dmat4 = mat<double, 4>;
 
 }
-
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MAT1 ----------------------------------------------------------------------------------------------------------------
-
-
-
-template <typename T>
-struct mat<T, 1> {
-
-    static_assert(std::is_floating_point_v<T>, "mat1<T> must have floating point T");
-
-    using Type = T;
-    static constexpr int N{1};
-
-    vec1<T> c1;
-
-    //--- constructors ---
-
-    constexpr mat();
-    constexpr mat(const mat1<T> & m);
-    constexpr mat(mat1<T> && m);
-
-    template <typename U> constexpr explicit mat(const mat1<U> & m);
-    template <typename U> constexpr explicit mat(const mat2<U> & m);
-    template <typename U> constexpr explicit mat(const mat3<U> & m);
-    template <typename U> constexpr explicit mat(const mat4<U> & m);
-
-    constexpr mat(
-        T x1
-    );
-    constexpr mat(
-        const vec1<T> & c1
-    );
-
-    //--- assignment ---
-
-    mat1<T> & operator=(const mat1<T> & m);
-    mat1<T> & operator=(mat1<T> && m);
-
-    template <typename U, int t_n> mat1<T> & operator=(const mat<U, t_n> & m);
-
-    //--- access ---
-    
-    vec1<T> & col(int i);
-    const vec1<T> & col(int i) const;
-
-    vec1<T> row(int i) const;
-
-    template <int t_i> constexpr vec1<T> row() const;
-
-    template <int t_i> constexpr const vec1<T> & col() const;
-
-};
 
 
 
@@ -126,7 +68,6 @@ struct mat<T, 2> {
     constexpr mat(const mat2<T> & m);
     constexpr mat(mat2<T> && m);
 
-    template <typename U> constexpr explicit mat(const mat1<U> & m);
     template <typename U> constexpr explicit mat(const mat2<U> & m);
     template <typename U> constexpr explicit mat(const mat3<U> & m);
     template <typename U> constexpr explicit mat(const mat4<U> & m);
@@ -183,7 +124,6 @@ struct mat<T, 3> {
     constexpr mat(const mat3<T> & m);
     constexpr mat(mat3<T> && m);
 
-    template <typename U> constexpr explicit mat(const mat1<U> & m);
     template <typename U> constexpr explicit mat(const mat2<U> & m);
     template <typename U> constexpr explicit mat(const mat3<U> & m);
     template <typename U> constexpr explicit mat(const mat4<U> & m);
@@ -244,7 +184,6 @@ struct mat<T, 4> {
     constexpr mat(const mat4<T> & m);
     constexpr mat(mat4<T> && m);
 
-    template <typename U> constexpr explicit mat(const mat1<U> & m);
     template <typename U> constexpr explicit mat(const mat2<U> & m);
     template <typename U> constexpr explicit mat(const mat3<U> & m);
     template <typename U> constexpr explicit mat(const mat4<U> & m);

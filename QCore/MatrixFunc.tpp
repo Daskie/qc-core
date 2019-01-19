@@ -58,7 +58,6 @@ inline bool isIdentity(const mat<T, t_n> & m) {
 
 template <typename T, int t_n>
 inline mat<T, t_n> transpose(const mat<T, t_n> & m) {
-    if constexpr (t_n == 1) return mat1<T>(m.row<0>());
     if constexpr (t_n == 2) return mat2<T>(m.row<0>(), m.row<1>());
     if constexpr (t_n == 3) return mat3<T>(m.row<0>(), m.row<1>(), m.row<2>());
     if constexpr (t_n == 4) return mat4<T>(m.row<0>(), m.row<1>(), m.row<2>(), m.row<3>());
@@ -68,9 +67,6 @@ inline mat<T, t_n> transpose(const mat<T, t_n> & m) {
 
 template <typename T, int t_n>
 inline mat<T, t_n> cofactor(const mat<T, t_n> & m) {
-    if constexpr (t_n == 1) return mat1<T>(
-        +m.c1.x
-    );
     if constexpr (t_n == 2) return mat2<T>(
         +m.c2.y, -m.c2.x,
         -m.c1.y, +m.c1.x
@@ -253,10 +249,6 @@ inline mat<T, t_mn> & translate(mat<T, t_mn> & m, const vec<T, t_vn> & delta) {
 
 template <typename T, int t_n>
 inline mat<T, t_n> scale(const vec<T, t_n> & scale) {
-    if constexpr (t_n == 1) return mat1<T>(
-        scale.x
-    );
-
     if constexpr (t_n == 2) return mat2<T>(
         scale.x,  T(0.0),
          T(0.0), scale.y
@@ -278,12 +270,6 @@ inline mat<T, t_n> scale(const vec<T, t_n> & scale) {
 
 template <typename T, int t_mn, int t_vn>
 inline mat<T, t_mn> & scale(mat<T, t_mn> & m, const vec<T, t_vn> & scale) {
-    if constexpr (t_vn == 1 && t_mn == 1) {
-        m.c1.x *= scale.x;
-
-        return m;
-    }
-
     if constexpr (t_vn == 1 && t_mn == 2) {        
         m.c1.x *= scale.x;
         m.c2.x *= scale.x;

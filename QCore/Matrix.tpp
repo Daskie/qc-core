@@ -3,134 +3,6 @@ namespace qc {
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MAT1 IMPLEMENTATION -------------------------------------------------------------------------------------------------
-
-
-
-//------------------------------------------------------------------------------
-// Constructors
-
-
-
-template <typename T>
-constexpr mat<T, 1>::mat() :
-    c1(T(1.0))
-{}
-
-template <typename T>
-constexpr mat<T, 1>::mat(const mat1<T> & m) :
-    c1(m.c1)
-{}
-
-template <typename T>
-constexpr mat<T, 1>::mat(mat1<T> && m) :
-    c1(std::move(m.c1))
-{}
-
-template <typename T>
-template <typename U>
-constexpr mat<T, 1>::mat(const mat1<U> & m) :
-    c1(m.c1)
-{}
-
-template <typename T>
-template <typename U>
-constexpr mat<T, 1>::mat(const mat2<U> & m) :
-    c1(m.c1)
-{}
-
-template <typename T>
-template <typename U>
-constexpr mat<T, 1>::mat(const mat3<U> & m) :
-    c1(m.c1)
-{}
-
-template <typename T>
-template <typename U>
-constexpr mat<T, 1>::mat(const mat4<U> & m) :
-    c1(m.c1)
-{}
-
-template <typename T>
-constexpr mat<T, 1>::mat(
-    T x1
-) :
-    c1(x1)
-{}
-
-template <typename T>
-constexpr mat<T, 1>::mat(
-    const vec1<T> & c1
-) :
-    c1(c1)
-{}
-
-
-
-//------------------------------------------------------------------------------
-// Assignment
-
-
-
-template <typename T>
-inline mat1<T> & mat<T, 1>::operator=(const mat1<T> & m) {
-    c1 = m.c1;
-
-    return *this;
-}
-
-template <typename T>
-inline mat1<T> & mat<T, 1>::operator=(mat1<T> && m) {
-    c1 = std::move(m.c1);
-
-    return *this;
-}
-
-template <typename T>
-template <typename U, int t_n>
-inline mat1<T> & mat<T, 1>::operator=(const mat<U, t_n> & m) {
-    if constexpr (t_n >= 1) c1 = m.c1; else c1 = vec1<T>(T(1.0));
-    
-    return *this;
-}
-
-
-
-//------------------------------------------------------------------------------
-// Access
-
-
-
-template <typename T>
-inline vec1<T> & mat<T, 1>::col(int i) {
-    return *(&c1 + i);
-}
-
-template <typename T>
-inline const vec1<T> & mat<T, 1>::col(int i) const {
-    return *(&c1 + i);
-}
-
-template <typename T>
-inline vec1<T> mat<T, 1>::row(int i) const {
-    return vec1<T>(c1[i]);
-}
-
-template <typename T>
-template <int t_i>
-constexpr const vec1<T> & mat<T, 1>::col() const {
-    if constexpr (t_i == 0) return c1;
-}
-
-template <typename T>
-template <int t_i>
-constexpr vec1<T> mat<T, 1>::row() const {
-    return vec1<T>(c1.at<t_i>());
-}
-
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // MAT2 IMPLEMENTATION -------------------------------------------------------------------------------------------------
 
 
@@ -156,13 +28,6 @@ template <typename T>
 constexpr mat<T, 2>::mat(mat2<T> && m) :
     c1(std::move(m.c1)),
     c2(std::move(m.c2))
-{}
-
-template <typename T>
-template <typename U>
-constexpr mat<T, 2>::mat(const mat1<U> & m) :
-    c1(m.c1),
-    c2(T(0.0), T(1.0))
 {}
 
 template <typename T>
@@ -302,14 +167,6 @@ constexpr mat<T, 3>::mat(mat3<T> && m) :
     c1(std::move(m.c1)),
     c2(std::move(m.c2)),
     c3(std::move(m.c3))
-{}
-
-template <typename T>
-template <typename U>
-constexpr mat<T, 3>::mat(const mat1<U> & m) :
-    c1(m.c1),
-    c2(T(0.0), T(1.0), T(0.0)),
-    c3(T(0.0), T(0.0), T(1.0))
 {}
 
 template <typename T>
@@ -463,15 +320,6 @@ constexpr mat<T, 4>::mat(mat4<T> && m) :
     c2(std::move(m.c2)),
     c3(std::move(m.c3)),
     c4(std::move(m.c4))
-{}
-
-template <typename T>
-template <typename U>
-constexpr mat<T, 4>::mat(const mat1<U> & m) :
-    c1(m.c1),
-    c2(T(0.0), T(1.0), T(0.0), T(0.0)),
-    c3(T(0.0), T(0.0), T(1.0), T(0.0)),
-    c4(T(0.0), T(0.0), T(0.0), T(1.0))
 {}
 
 template <typename T>
@@ -730,7 +578,6 @@ inline mat<T, t_n> operator+(const mat<T, t_n> & m) {
 
 template <typename T, int t_n>
 inline mat<T, t_n> operator-(const mat<T, t_n> & m) {
-    if constexpr (t_n == 1) return mat1<T>(-m.c1);
     if constexpr (t_n == 2) return mat2<T>(-m.c1, -m.c2);
     if constexpr (t_n == 3) return mat3<T>(-m.c1, -m.c2, -m.c3);
     if constexpr (t_n == 4) return mat4<T>(-m.c1, -m.c2, -m.c3, -m.c4);
@@ -740,7 +587,6 @@ inline mat<T, t_n> operator-(const mat<T, t_n> & m) {
 
 template <typename T, int t_n>
 inline mat<T, t_n> operator+(const mat<T, t_n> & m1, const mat<T, t_n> & m2) {
-    if constexpr (t_n == 1) return mat1<T>(m1.c1 + m2.c1);
     if constexpr (t_n == 2) return mat2<T>(m1.c1 + m2.c1, m1.c2 + m2.c2);
     if constexpr (t_n == 3) return mat3<T>(m1.c1 + m2.c1, m1.c2 + m2.c2, m1.c3 + m2.c3);
     if constexpr (t_n == 4) return mat4<T>(m1.c1 + m2.c1, m1.c2 + m2.c2, m1.c3 + m2.c3, m1.c4 + m2.c4);
@@ -748,7 +594,6 @@ inline mat<T, t_n> operator+(const mat<T, t_n> & m1, const mat<T, t_n> & m2) {
 
 template <typename T, int t_n>
 inline mat<T, t_n> operator+(const mat<T, t_n> & m, T v) {
-    if constexpr (t_n == 1) return mat1<T>(m.c1 + v);
     if constexpr (t_n == 2) return mat2<T>(m.c1 + v, m.c2 + v);
     if constexpr (t_n == 3) return mat3<T>(m.c1 + v, m.c2 + v, m.c3 + v);
     if constexpr (t_n == 4) return mat4<T>(m.c1 + v, m.c2 + v, m.c3 + v, m.c4 + v);
@@ -763,7 +608,6 @@ inline mat<T, t_n> operator+(T v, const mat<T, t_n> & m) {
 
 template <typename T, int t_n>
 inline mat<T, t_n> operator-(const mat<T, t_n> & m1, const mat<T, t_n> & m2) {
-    if constexpr (t_n == 1) return mat1<T>(m1.c1 - m2.c1);
     if constexpr (t_n == 2) return mat2<T>(m1.c1 - m2.c1, m1.c2 - m2.c2);
     if constexpr (t_n == 3) return mat3<T>(m1.c1 - m2.c1, m1.c2 - m2.c2, m1.c3 - m2.c3);
     if constexpr (t_n == 4) return mat4<T>(m1.c1 - m2.c1, m1.c2 - m2.c2, m1.c3 - m2.c3, m1.c4 - m2.c4);
@@ -771,7 +615,6 @@ inline mat<T, t_n> operator-(const mat<T, t_n> & m1, const mat<T, t_n> & m2) {
 
 template <typename T, int t_n>
 inline mat<T, t_n> operator-(const mat<T, t_n> & m, T v) {
-    if constexpr (t_n == 1) return mat1<T>(m.c1 - v);
     if constexpr (t_n == 2) return mat2<T>(m.c1 - v, m.c2 - v);
     if constexpr (t_n == 3) return mat3<T>(m.c1 - v, m.c2 - v, m.c3 - v);
     if constexpr (t_n == 4) return mat4<T>(m.c1 - v, m.c2 - v, m.c3 - v, m.c4 - v);
@@ -779,7 +622,6 @@ inline mat<T, t_n> operator-(const mat<T, t_n> & m, T v) {
 
 template <typename T, int t_n>
 inline mat<T, t_n> operator-(T v, const mat<T, t_n> & m) {
-    if constexpr (t_n == 1) return mat1<T>(v - m.c1);
     if constexpr (t_n == 2) return mat2<T>(v - m.c1, v - m.c2);
     if constexpr (t_n == 3) return mat3<T>(v - m.c1, v - m.c2, v - m.c3);
     if constexpr (t_n == 4) return mat4<T>(v - m.c1, v - m.c2, v - m.c3, v - m.c4);
@@ -789,9 +631,6 @@ inline mat<T, t_n> operator-(T v, const mat<T, t_n> & m) {
 
 template <typename T, int t_n>
 inline mat<T, t_n> operator*(const mat<T, t_n> & m1, const mat<T, t_n> & m2) {
-    if constexpr (t_n == 1) return mat1<T>(
-        m1.c1.x * m2.c1.x
-    );
     if constexpr (t_n == 2) return mat2<T>(
         m1.c1.x * m2.c1.x + m1.c2.x * m2.c1.y,
         m1.c1.y * m2.c1.x + m1.c2.y * m2.c1.y,
@@ -837,7 +676,6 @@ inline mat<T, t_n> operator*(const mat<T, t_n> & m1, const mat<T, t_n> & m2) {
 
 template <typename T, int t_n>
 inline mat<T, t_n> operator*(const mat<T, t_n> & m, T v) {
-    if constexpr (t_n == 1) return mat1<T>(m.c1 * v);
     if constexpr (t_n == 2) return mat2<T>(m.c1 * v, m.c2 * v);
     if constexpr (t_n == 3) return mat3<T>(m.c1 * v, m.c2 * v, m.c3 * v);
     if constexpr (t_n == 4) return mat4<T>(m.c1 * v, m.c2 * v, m.c3 * v, m.c4 * v);
@@ -850,9 +688,6 @@ inline mat<T, t_n> operator*(T v, const mat<T, t_n> & m) {
 
 template <typename T, int t_n>
 inline vec<T, t_n> operator*(const mat<T, t_n> & m, const vec<T, t_n> & v) {
-    if constexpr (t_n == 1) return vec1<T>(
-        m.c1.x * v.x
-    );
     if constexpr (t_n == 2) return vec2<T>(
         m.c1.x * v.x + m.c2.x * v.y,
         m.c1.y * v.x + m.c2.y * v.y
@@ -879,7 +714,6 @@ inline mat<T, t_n> operator/(const mat<T, t_n> & m, T v) {
 
 template <typename T, int t_n>
 inline mat<T, t_n> operator/(T v, const mat<T, t_n> & m) {
-    if constexpr (t_n == 1) return mat1<T>(v / m.c1);
     if constexpr (t_n == 2) return mat2<T>(v / m.c1, v / m.c2);
     if constexpr (t_n == 3) return mat3<T>(v / m.c1, v / m.c2, v / m.c3);
     if constexpr (t_n == 4) return mat4<T>(v / m.c1, v / m.c2, v / m.c3, v / m.c4);
@@ -896,7 +730,6 @@ inline mat<T, t_n> operator/(T v, const mat<T, t_n> & m) {
 
 template <typename T, int t_n>
 inline bool operator==(const mat<T, t_n> & m1, const mat<T, t_n> & m2) {
-    if constexpr (t_n == 1) return m1.c1 == m2.c1;
     if constexpr (t_n == 2) return m1.c1 == m2.c1 && m1.c2 == m2.c2;
     if constexpr (t_n == 3) return m1.c1 == m2.c1 && m1.c2 == m2.c2 && m1.c3 == m2.c3;
     if constexpr (t_n == 4) return m1.c1 == m2.c1 && m1.c2 == m2.c2 && m1.c3 == m2.c3 && m1.c4 == m2.c4;
@@ -918,7 +751,6 @@ inline bool operator!=(const mat<T, t_n> & m1, const mat<T, t_n> & m2) {
 
 template <typename T, int t_n>
 constexpr mat<T, t_n> fullMat(T v) {
-    if constexpr (t_n == 1) return mat1<T>(vec1<T>(v));
     if constexpr (t_n == 2) return mat2<T>(vec2<T>(v), vec2<T>(v));
     if constexpr (t_n == 3) return mat3<T>(vec3<T>(v), vec3<T>(v), vec3<T>(v));
     if constexpr (t_n == 4) return mat4<T>(vec4<T>(v), vec4<T>(v), vec4<T>(v), vec4<T>(v));
