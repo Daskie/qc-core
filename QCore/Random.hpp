@@ -60,7 +60,7 @@ class Random {
 
     public:
 
-    using Value = Engine::result_type;
+    using Value = typename Engine::result_type;
 
     Random(Value seed = Engine::default_seed) noexcept :
         m_seed(seed),
@@ -81,7 +81,7 @@ class Random {
 
     // Returns next random integer in [0, MAX_VALUE] or float in [0.0, 1.0)
     template <typename T>
-    T operator()() {
+    T next() {
         if constexpr (std::is_integral_v<T>) {
             static_assert(sizeof(T) <= sizeof(Value), "`T` is too large for the engine");
 
@@ -105,7 +105,7 @@ class Random {
 
     // Returns next random value in [0, `max`)
     template <typename T>
-    T operator()(T max) {
+    T next(T max) {
         if constexpr (std::is_integral_v<T>) {
             return operator()() % max;
         }
@@ -119,7 +119,7 @@ class Random {
 
     // Returns next random value in [`min`, `max`)
     template <typename T>
-    T operator()(T min, T max) {
+    T next(T min, T max) {
         return operator()(max - min) + min;
     }
 
