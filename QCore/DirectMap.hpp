@@ -39,7 +39,7 @@ class DirectMap {
         }
     }
 
-    DirectMap(std::initializer_list<std::pair<K, V>> pairs) :
+    DirectMap(std::initializer_list<pair<K, V>> pairs) :
         m_size(1),
         m_vals(nullptr),
         m_defVal()
@@ -57,7 +57,7 @@ class DirectMap {
         }
     }
 
-    DirectMap(std::initializer_list<std::pair<K, V>> pairs, const V & defVal) :
+    DirectMap(std::initializer_list<pair<K, V>> pairs, const V & defVal) :
         m_size(1),
         m_vals(nullptr),
         m_defVal(defVal)

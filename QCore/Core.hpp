@@ -44,6 +44,9 @@ namespace types {
     constexpr nat operator""_n(unsigned long long int v) { return nat(v); }
     constexpr unat operator""_un(unsigned long long int v) { return unat(v); }
 
+    using std::pair;
+    template <typename T> using duo = pair<T, T>;
+
 }
 
 using namespace types;
@@ -140,13 +143,13 @@ template <typename T, typename... Ts>
 Q_CONSTEX const T & max(const T & a, const T & b, const Ts &... rest);
 
 template <typename T>
-Q_CONSTEX std::pair<const T &, const T &> minmax(const T & a, const T & b);
+Q_CONSTEX duo<const T &> minmax(const T & a, const T & b);
 template <typename T>
-Q_CONSTEX std::pair<const T &, const T &> minmax(const T & a, const T & b, const T & c);
+Q_CONSTEX duo<const T &> minmax(const T & a, const T & b, const T & c);
 template <typename T>
-Q_CONSTEX std::pair<const T &, const T &> minmax(const T & a, const T & b, const T & c, const T & d);
+Q_CONSTEX duo<const T &> minmax(const T & a, const T & b, const T & c, const T & d);
 template <typename T, typename... Ts>
-Q_CONSTEX std::pair<const T &, const T &> minmax(const T & a, const T & b, const T & c, const T & d, const Ts &... rest);
+Q_CONSTEX duo<const T &> minmax(const T & a, const T & b, const T & c, const T & d, const Ts &... rest);
 
 
 

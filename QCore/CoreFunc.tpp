@@ -158,7 +158,7 @@ Q_CX_ABLE T fract(T v) {
 }
 
 template <typename T, eif_floating_t<T>>
-Q_CX_ABLE std::pair<T, nat> fract_i(T v) {
+Q_CX_ABLE pair<T, nat> fract_i(T v) {
     nat i = nat(v);
     return { v - i, i };
 }
@@ -174,7 +174,7 @@ Q_CX_ABLE T mod(T v, T d) {
 }
 
 template <typename T, eif_arithmetic_t<T>>
-Q_CX_ABLE std::pair<T, T> mod_q(T v, T d) {
+Q_CX_ABLE duo<T> mod_q(T v, T d) {
     if constexpr (std::is_floating_point_v<T>) {
         T q(v / d);
         return { fract(q) * d, q };

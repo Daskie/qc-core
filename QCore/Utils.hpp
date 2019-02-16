@@ -342,7 +342,7 @@ inline vec3<T> hsl2rgb(const vec3<T> & hsl) {
     return rgb;
 }
 
-inline std::pair<bool, std::string> readTextFile(const std::string & filepath) {
+inline pair<bool, std::string> readTextFile(const std::string & filepath) {
     std::ifstream ifs{filepath};
     if (!ifs.good()) {
         return {};

@@ -1153,7 +1153,7 @@ Q_CX_ABLE vec<T, t_n> max(const T & v1, const vec<T, t_n> & v2) {
 }
 
 template <typename T, int t_n>
-Q_CX_ABLE std::pair<const T &, const T &> minmax(const vec<T, t_n> & v) {
+Q_CX_ABLE duo<const T &> minmax(const vec<T, t_n> & v) {
     if constexpr (t_n == 2) return minmax(v.x, v.y);
     if constexpr (t_n == 3) return minmax(v.x, v.y, v.z);
     if constexpr (t_n == 4) return minmax(v.x, v.y, v.z, v.w);
