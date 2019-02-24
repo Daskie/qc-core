@@ -64,29 +64,29 @@ struct mat<T, 2> {
 
     //--- constructors ---
 
-    constexpr mat();
-    constexpr mat(const mat2<T> & m);
-    constexpr mat(mat2<T> && m);
+    constexpr mat() noexcept;
+    constexpr mat(const mat2<T> & m) noexcept = default;
+    constexpr mat(mat2<T> && m) noexcept = default;
 
     constexpr mat(
         const vec2<T> & c1,
         const vec2<T> & c2
-    );
+    ) noexcept;
     constexpr mat(
         T x1, T y1,
         T x2, T y2
-    );
+    ) noexcept;
 
-    template <typename U> constexpr explicit mat(const mat2<U> & m);
-    template <typename U> constexpr explicit mat(const mat3<U> & m);
-    template <typename U> constexpr explicit mat(const mat4<U> & m);
+    template <typename U> constexpr explicit mat(const mat2<U> & m) noexcept;
+    template <typename U> constexpr explicit mat(const mat3<U> & m) noexcept;
+    template <typename U> constexpr explicit mat(const mat4<U> & m) noexcept;
 
     //--- assignment ---
 
-    mat2<T> & operator=(const mat2<T> & m);
-    mat2<T> & operator=(mat2<T> && m);
+    mat2<T> & operator=(const mat2<T> & m) noexcept = default;
+    mat2<T> & operator=(mat2<T> && m) noexcept = default;
 
-    template <typename U, int t_n> mat2<T> & operator=(const mat<U, t_n> & m);
+    template <typename U, int t_n> mat2<T> & operator=(const mat<U, t_n> & m) noexcept;
 
     //--- access ---
     
@@ -95,9 +95,9 @@ struct mat<T, 2> {
 
     vec2<T> row(int i) const;
 
-    template <int t_i> constexpr vec2<T> row() const;
+    template <int t_i> constexpr vec2<T> row() const noexcept;
 
-    template <int t_i> constexpr const vec2<T> & col() const;
+    template <int t_i> constexpr const vec2<T> & col() const noexcept;
 
 };
 
@@ -120,31 +120,31 @@ struct mat<T, 3> {
 
     //--- constructors ---
 
-    constexpr mat();
-    constexpr mat(const mat3<T> & m);
-    constexpr mat(mat3<T> && m);
+    constexpr mat() noexcept;
+    constexpr mat(const mat3<T> & m) noexcept = default;
+    constexpr mat(mat3<T> && m) noexcept = default;
 
     constexpr mat(
         const vec3<T> & c1,
         const vec3<T> & c2,
         const vec3<T> & c3
-    );
+    ) noexcept;
     constexpr mat(
         T x1, T y1, T z1,
         T x2, T y2, T z2,
         T x3, T y3, T z3
-    );
+    ) noexcept;
 
-    template <typename U> constexpr explicit mat(const mat2<U> & m);
-    template <typename U> constexpr explicit mat(const mat3<U> & m);
-    template <typename U> constexpr explicit mat(const mat4<U> & m);
+    template <typename U> constexpr explicit mat(const mat2<U> & m) noexcept;
+    template <typename U> constexpr explicit mat(const mat3<U> & m) noexcept;
+    template <typename U> constexpr explicit mat(const mat4<U> & m) noexcept;
 
     //--- assignment ---
 
-    mat3<T> & operator=(const mat3<T> & m);
-    mat3<T> & operator=(mat3<T> && m);
+    mat3<T> & operator=(const mat3<T> & m) noexcept = default;
+    mat3<T> & operator=(mat3<T> && m) noexcept = default;
     
-    template <typename U, int t_n> mat3<T> & operator=(const mat<U, t_n> & m);
+    template <typename U, int t_n> mat3<T> & operator=(const mat<U, t_n> & m) noexcept;
 
     //--- access ---
 
@@ -153,9 +153,9 @@ struct mat<T, 3> {
 
     vec3<T> row(int i) const;
 
-    template <int t_i> constexpr vec3<T> row() const;
+    template <int t_i> constexpr vec3<T> row() const noexcept;
 
-    template <int t_i> constexpr const vec3<T> & col() const;
+    template <int t_i> constexpr const vec3<T> & col() const noexcept;
 
 };
 
@@ -178,33 +178,33 @@ struct mat<T, 4> {
 
     //--- constructors ---
 
-    constexpr mat();
-    constexpr mat(const mat4<T> & m);
-    constexpr mat(mat4<T> && m);
+    constexpr mat() noexcept;
+    constexpr mat(const mat4<T> & m) noexcept = default;
+    constexpr mat(mat4<T> && m) noexcept = default;
 
     constexpr mat(
         const vec4<T> & c1,
         const vec4<T> & c2,
         const vec4<T> & c3,
         const vec4<T> & c4
-    );
+    ) noexcept;
     constexpr mat(
         T x1, T y1, T z1, T w1,
         T x2, T y2, T z2, T w2,
         T x3, T y3, T z3, T w3,
         T x4, T y4, T z4, T w4
-    );
+    ) noexcept;
 
-    template <typename U> constexpr explicit mat(const mat2<U> & m);
-    template <typename U> constexpr explicit mat(const mat3<U> & m);
-    template <typename U> constexpr explicit mat(const mat4<U> & m);
+    template <typename U> constexpr explicit mat(const mat2<U> & m) noexcept;
+    template <typename U> constexpr explicit mat(const mat3<U> & m) noexcept;
+    template <typename U> constexpr explicit mat(const mat4<U> & m) noexcept;
 
     //--- assignment ---
 
-    mat4<T> & operator=(const mat4<T> & m);
-    mat4<T> & operator=(mat4<T> && m);
+    mat4<T> & operator=(const mat4<T> & m) noexcept = default;
+    mat4<T> & operator=(mat4<T> && m) noexcept = default;
     
-    template <typename U, int t_n> mat4<T> & operator=(const mat<U, t_n> & m);
+    template <typename U, int t_n> mat4<T> & operator=(const mat<U, t_n> & m) noexcept;
 
     //--- access ---
     
@@ -213,9 +213,9 @@ struct mat<T, 4> {
 
     vec4<T> row(int i) const;
 
-    template <int t_i> constexpr vec4<T> row() const;
+    template <int t_i> constexpr vec4<T> row() const noexcept;
 
-    template <int t_i> constexpr const vec4<T> & col() const;
+    template <int t_i> constexpr const vec4<T> & col() const noexcept;
 
 };
 

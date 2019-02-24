@@ -15,7 +15,7 @@ class DirectMap {
 
     static_assert(std::is_arithmetic_v<K> || std::is_enum_v<K>);
 
-    using I = sized_ut<sizeof(K)>;
+    using I = utype<sizeof(K)>;
 
     unat m_size;
     V * m_vals;

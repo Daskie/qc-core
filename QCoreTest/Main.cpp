@@ -8,8 +8,8 @@ int main(void) {
     testCore();
     testBits();
     testVector();
-    //testMatrix();
-    //testQuaternion();
+    testMatrix();
+    testQuaternion();
     testMath();
     testUtils();
     testTime();

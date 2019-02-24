@@ -148,8 +148,14 @@ constexpr bool compileFunctionsConstexpr() {
 
 template <typename T>
 void testPropertiesT() {
-    static_assert(std::is_standard_layout_v<qc::quat<T>>, "");
-    static_assert(sizeof(qc::quat<T>) == 4 * sizeof(T), "");
+    static_assert(std::             is_standard_layout_v<qc::quat<T>>);
+    static_assert(std::          is_trivially_copyable_v<qc::quat<T>>);
+    static_assert(std::is_trivially_copy_constructible_v<qc::quat<T>>);
+    static_assert(std::is_trivially_move_constructible_v<qc::quat<T>>);
+    static_assert(std::   is_trivially_copy_assignable_v<qc::quat<T>>);
+    static_assert(std::   is_trivially_move_assignable_v<qc::quat<T>>);
+    static_assert(std::      is_trivially_destructible_v<qc::quat<T>>);
+    static_assert(sizeof(qc::quat<T>) == 4 * sizeof(T));
     static_assert(sizeof(qc::quat<T>[4]) == 4 * 4 * sizeof(T));
     static_assert(alignof(qc::quat<T>) == alignof(T));
     static_assert(alignof(qc::quat<T>[4]) == alignof(T));

@@ -38,8 +38,17 @@ namespace types {
     using f32 = float;
     using f64 = double;
 
-    using  nat =  intptr_t;
-    using unat = uintptr_t;
+    using s08_fast = std::int_fast8_t;
+    using s16_fast = std::int_fast16_t;
+    using s32_fast = std::int_fast32_t;
+    using s64_fast = std::int_fast64_t;
+    using u08_fast = std::uint_fast8_t;
+    using u16_fast = std::uint_fast16_t;
+    using u32_fast = std::uint_fast32_t;
+    using u64_fast = std::uint_fast64_t;
+
+    using  nat = std:: intptr_t;
+    using unat = std::uintptr_t;
 
     constexpr nat operator""_n(unsigned long long int v) { return nat(v); }
     constexpr unat operator""_un(unsigned long long int v) { return unat(v); }
@@ -75,13 +84,15 @@ namespace detail {
 template <typename T, int t_n = 0> using array_t = typename detail::array_t_struct<T, t_n>::type;
 
 template <int t_s> struct sized;
-template <> struct sized<1> { using stype = s08; using utype = u08; };
-template <> struct sized<2> { using stype = s16; using utype = u16; };
-template <> struct sized<4> { using stype = s32; using utype = u32; using ftype = f32; };
-template <> struct sized<8> { using stype = s64; using utype = u64; using ftype = f64; };
-template <int t_s> using sized_st = typename sized<t_s>::stype;
-template <int t_s> using sized_ut = typename sized<t_s>::utype;
-template <int t_s> using sized_ft = typename sized<t_s>::ftype;
+template <> struct sized<1> { using stype = s08; using utype = u08;                    using stype_fast = s08_fast; using utype_fast = u08_fast; };
+template <> struct sized<2> { using stype = s16; using utype = u16;                    using stype_fast = s16_fast; using utype_fast = u16_fast; };
+template <> struct sized<4> { using stype = s32; using utype = u32; using ftype = f32; using stype_fast = s32_fast; using utype_fast = u32_fast; };
+template <> struct sized<8> { using stype = s64; using utype = u64; using ftype = f64; using stype_fast = s64_fast; using utype_fast = u64_fast; };
+template <int t_s> using stype = typename sized<t_s>::stype;
+template <int t_s> using utype = typename sized<t_s>::utype;
+template <int t_s> using ftype = typename sized<t_s>::ftype;
+template <int t_s> using stype_fast = typename sized<t_s>::stype_fast;
+template <int t_s> using utype_fast = typename sized<t_s>::utype_fast;
 
 template <typename T> using remove_cvref_t = std::remove_cv_t<std::remove_reference_t<T>>;
 

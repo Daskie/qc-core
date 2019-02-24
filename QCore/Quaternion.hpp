@@ -41,8 +41,8 @@ struct quat {
     //--- constructors ---
 
     constexpr quat() noexcept;
-    constexpr quat(const quat & q) noexcept;
-    constexpr quat(quat && q) noexcept;
+    constexpr quat(const quat & q) noexcept = default;
+    constexpr quat(quat && q) noexcept = default;
 
     template <typename U> constexpr explicit quat(const quat<U> & q) noexcept;
 
@@ -52,8 +52,8 @@ struct quat {
 
     //--- assignment ---
 
-    quat & operator=(const quat & q) noexcept;
-    quat & operator=(quat && q) noexcept;
+    quat & operator=(const quat & q) noexcept = default;
+    quat & operator=(quat && q) noexcept = default;
 
 };
 

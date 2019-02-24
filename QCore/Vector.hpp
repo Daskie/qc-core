@@ -282,15 +282,13 @@ struct vec<T, 2> {
         struct { T rad, theta; };
         struct { T _0, _1; };
     };
-    //union { T x, r, s, radius; };
-    //union { T y, g, t, theta; };
 
     //--------------------------------------------------------------------------
     // Construction
 
     constexpr vec() noexcept;
-    constexpr vec(const vec2<T> & v) noexcept;
-    constexpr vec(vec2<T> && v) noexcept;
+    constexpr vec(const vec2<T> & v) noexcept = default;
+    constexpr vec(vec2<T> && v) noexcept = default;
     
     constexpr explicit vec(const T & v) noexcept;
     template <typename U> constexpr explicit vec(const U & v) noexcept;
@@ -304,8 +302,8 @@ struct vec<T, 2> {
     //--------------------------------------------------------------------------
     // Assignment
 
-    vec2<T> & operator=(const vec2<T> & v) noexcept;
-    vec2<T> & operator=(vec2<T> && v) noexcept;
+    vec2<T> & operator=(const vec2<T> & v) noexcept = default;
+    vec2<T> & operator=(vec2<T> && v) noexcept = default;
     
     vec2<T> & operator=(const T & v) noexcept;
     template <int t_n> vec2<T> & operator=(const vec<T, t_n> & v) noexcept;
@@ -352,16 +350,13 @@ struct vec<T, 3> {
         struct { T hue, sat, val; };
         struct { T _0, _1, _2; };
     };
-    //union { T x, r, s,   rad, alpha; };
-    //union { T y, g, t, theta,  beta; };
-    //union { T z, b, p,   phi, gamma; };
 
     //--------------------------------------------------------------------------
     // Construction
 
     constexpr vec() noexcept;
-    constexpr vec(const vec3<T> & v) noexcept;
-    constexpr vec(vec3<T> && v) noexcept;
+    constexpr vec(const vec3<T> & v) noexcept = default;
+    constexpr vec(vec3<T> && v) noexcept = default;
     
     constexpr explicit vec(const T & v) noexcept;
     template <typename U> constexpr explicit vec(const U & v) noexcept;
@@ -377,8 +372,8 @@ struct vec<T, 3> {
     //--------------------------------------------------------------------------
     // Assignment
 
-    vec3<T> & operator=(const vec3<T> & v) noexcept;
-    vec3<T> & operator=(vec3<T> && v) noexcept;
+    vec3<T> & operator=(const vec3<T> & v) noexcept = default;
+    vec3<T> & operator=(vec3<T> && v) noexcept = default;
 
     vec3<T> & operator=(const T & v) noexcept;
     template <int t_n> vec3<T> & operator=(const vec<T, t_n> & v) noexcept;
@@ -439,8 +434,8 @@ struct vec<T, 4> {
     // Construction
 
     constexpr vec() noexcept;
-    constexpr vec(const vec4<T> & v) noexcept;
-    constexpr vec(vec4<T> && v) noexcept;
+    constexpr vec(const vec4<T> & v) noexcept = default;
+    constexpr vec(vec4<T> && v) noexcept = default;
     
     constexpr explicit vec(const T & v) noexcept;
     template <typename U> constexpr explicit vec(const U & v) noexcept;
@@ -460,8 +455,8 @@ struct vec<T, 4> {
     //--------------------------------------------------------------------------
     // Assignment
 
-    vec4<T> & operator=(const vec4<T> & v) noexcept;
-    vec4<T> & operator=(vec4<T> && v) noexcept;
+    vec4<T> & operator=(const vec4<T> & v) noexcept = default;
+    vec4<T> & operator=(vec4<T> && v) noexcept = default;
 
     vec4<T> & operator=(const T & v) noexcept;
     template <int t_n> vec4<T> & operator=(const vec<T, t_n> & v) noexcept;
@@ -552,8 +547,8 @@ struct span {
     // Construction
 
     constexpr span() noexcept;
-    constexpr span(const span<T, t_n> & s) noexcept;
-    constexpr span(span<T, t_n> && s) noexcept;
+    constexpr span(const span<T, t_n> & s) noexcept = default;
+    constexpr span(span<T, t_n> && s) noexcept = default;
 
     template <typename U, int t_m> constexpr explicit span(const span<U, t_m> & s) noexcept;
 
@@ -565,8 +560,8 @@ struct span {
     //--------------------------------------------------------------------------
     // Assignment
 
-    span<T, t_n> & operator=(const span<T, t_n> & s) noexcept;
-    span<T, t_n> & operator=(span<T, t_n> && s) noexcept;
+    span<T, t_n> & operator=(const span<T, t_n> & s) noexcept = default;
+    span<T, t_n> & operator=(span<T, t_n> && s) noexcept = default;
 
     template <int t_m> span<T, t_n> & operator=(const span<T, t_m> & s) noexcept;
 

@@ -62,10 +62,10 @@ template <typename T, eif_integral_t<T> = 0>
 Q_CONSTEX int log2Ceil(T v);
 
 template <typename T, eif_integral_t<T> = 0>
-Q_CX_ABLE T floor2(T v);
+Q_CONSTEX T floor2(T v);
 
 template <typename T, eif_integral_t<T> = 0>
-Q_CX_ABLE T ceil2(T v);
+Q_CONSTEX T ceil2(T v);
 
 template <typename T, eif_integral_t<T> = 0>
 Q_CX_ABLE T mipmaps(T size);
@@ -78,6 +78,9 @@ Q_CX_ABLE T lowBit(T v);
 
 template <typename T, eif_integral_t<T> = 0>
 Q_CX_ABLE T iBit(T v, int i);
+
+template <typename T, eif_integral_t<T> = 0>
+Q_CONSTEX T smear(T v);
 
 // ~3.3x faster than std::modf
 template <typename T, eif_floating_t<T> = 0>

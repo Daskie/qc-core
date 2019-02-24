@@ -19,16 +19,6 @@ constexpr vec<T, 2>::vec() noexcept :
 {}
 
 template <typename T>
-constexpr vec<T, 2>::vec(const vec2<T> & v) noexcept :
-    x(v.x), y(v.y)
-{}
-
-template <typename T>
-constexpr vec<T, 2>::vec(vec2<T> && v) noexcept :
-    x(v.x), y(v.y)
-{}
-
-template <typename T>
 constexpr vec<T, 2>::vec(const T & v) noexcept :
     x(v), y(v)
 {}
@@ -68,18 +58,6 @@ constexpr vec<T, 2>::vec(const T & v1, const T & v2) noexcept :
 // Assignment
 
 
-
-template <typename T>
-inline vec2<T> & vec<T, 2>::operator=(const vec2<T> & v) noexcept {
-    x = v.x; y = v.y;
-    return *this;
-}
-
-template <typename T>
-inline vec2<T> & vec<T, 2>::operator=(vec2<T> && v) noexcept {
-    x = v.x; y = v.y;
-    return *this;
-}
 
 template <typename T>
 inline vec2<T> & vec<T, 2>::operator=(const T & v) noexcept {
@@ -149,16 +127,6 @@ constexpr vec<T, 3>::vec() noexcept :
 {}
 
 template <typename T>
-constexpr vec<T, 3>::vec(const vec3<T> & v) noexcept :
-    x(v.x), y(v.y), z(v.z)
-{}
-
-template <typename T>
-constexpr vec<T, 3>::vec(vec3<T> && v) noexcept :
-    x(v.x), y(v.y), z(v.z)
-{}
-
-template <typename T>
 constexpr vec<T, 3>::vec(const T & v) noexcept :
     x(v), y(v), z(v)
 {}
@@ -208,18 +176,6 @@ Q_CX_ABLE vec<T, 3>::vec(const T & v1, const vec2<T> & v2) noexcept :
 // Assignment
 
 
-
-template <typename T>
-inline vec3<T> & vec<T, 3>::operator=(const vec3<T> & v) noexcept {
-    x = v.x; y = v.y; z = v.z;
-    return *this;
-}
-
-template <typename T>
-inline vec3<T> & vec<T, 3>::operator=(vec3<T> && v) noexcept {
-    x = v.x; y = v.y; z = v.z;
-    return *this;
-}
 
 template <typename T>
 inline vec3<T> & vec<T, 3>::operator=(const T & v) noexcept {
@@ -304,16 +260,6 @@ constexpr vec<T, 4>::vec() noexcept :
 {}
 
 template <typename T>
-constexpr vec<T, 4>::vec(const vec4<T> & v) noexcept :
-    x(v.x), y(v.y), z(v.z), w(v.w)
-{}
-
-template <typename T>
-constexpr vec<T, 4>::vec(vec4<T> && v) noexcept :
-    x(v.x), y(v.y), z(v.z), w(v.w)
-{}
-
-template <typename T>
 constexpr vec<T, 4>::vec(const T & v) noexcept :
     x(v), y(v), z(v), w(v)
 {}
@@ -383,18 +329,6 @@ Q_CX_ABLE vec<T, 4>::vec(const T & v1, const vec3<T> & v2) noexcept :
 // Assignment
 
 
-
-template <typename T>
-inline vec4<T> & vec<T, 4>::operator=(const vec4<T> & v) noexcept {
-    x = v.x; y = v.y; z = v.z; w = v.w;
-    return *this;
-}
-
-template <typename T>
-inline vec4<T> & vec<T, 4>::operator=(vec4<T> && v) noexcept {
-    x = v.x; y = v.y; z = v.z; w = v.w;
-    return *this;
-}
 
 template <typename T>
 inline vec4<T> & vec<T, 4>::operator=(const T & v) noexcept {
@@ -497,18 +431,6 @@ constexpr span<T, t_n>::span() noexcept :
     max()
 {}
 
-template <typename T, int t_n>
-constexpr span<T, t_n>::span(const span<T, t_n> & s) noexcept :
-    min(s.min),
-    max(s.max)
-{}
-
-template <typename T, int t_n>
-constexpr span<T, t_n>::span(span<T, t_n> && s) noexcept :
-    min(s.min),
-    max(s.max)
-{}
-
 namespace detail {
     template <typename T, int t_n, typename U, int t_m> constexpr span_value_t<T, t_n> get_span_val(const span_value_t<U, t_m> & v) {
         if constexpr (t_n == 1 && t_m > 1) return span_value_t<T, t_n>(v.x);
@@ -542,20 +464,6 @@ constexpr span<T, t_n>::span(const T & v1, const T & v2) noexcept :
 // Assignment
 
 
-
-template <typename T, int t_n>
-inline span<T, t_n> & span<T, t_n>::operator=(const span<T, t_n> & s) noexcept {
-    min = s.min;
-    max = s.max;
-    return *this;
-}
-
-template <typename T, int t_n>
-inline span<T, t_n> & span<T, t_n>::operator=(span<T, t_n> && s) noexcept {
-    min = s.min;
-    max = s.max;
-    return *this;
-}
 
 template <typename T, int t_n>
 template <int t_m>

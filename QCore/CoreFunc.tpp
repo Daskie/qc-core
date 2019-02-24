@@ -86,44 +86,37 @@ Q_CONSTEX T pow2(int v) {
 
 template <typename T, eif_integral_t<T>>
 Q_CONSTEX bool isPow2(T v) {
-    return (v & (v - 1)) == 0;
+    return !(v & (v - 1));
 }
 
 template <typename T, eif_integral_t<T>>
 Q_CONSTEX int log2Floor(T v) {
-    static_assert(sizeof(T) <= 8, "log2Floor function needs updated for larger integer types");
+    static_assert(sizeof(T) <= 8);
 
     int log(0);
-
-    if constexpr (sizeof(T) >= 8) {
-        if (v & 0xFFFFFFFF00000000ULL) { v >>= 32; log += 32; }
-    }
-    if constexpr (sizeof(T) >= 4) {
-        if (v & 0x00000000FFFF0000ULL) { v >>= 16; log += 16; }
-    }
-    if constexpr (sizeof(T) >= 2) {
-        if (v & 0x000000000000FF00ULL) { v >>=  8; log +=  8; }
-    }
-    if (    v & 0x00000000000000F0ULL) { v >>=  4; log +=  4; }
-    if (    v & 0x000000000000000CULL) { v >>=  2; log +=  2; }
-    if (    v & 0x0000000000000002ULL) {           log +=  1; }
-
+    if constexpr (sizeof(T) >= 8) if (v & 0xFFFFFFFF00000000ULL) { v >>= 32; log += 32; }
+    if constexpr (sizeof(T) >= 4) if (v & 0x00000000FFFF0000ULL) { v >>= 16; log += 16; }
+    if constexpr (sizeof(T) >= 2) if (v & 0x000000000000FF00ULL) { v >>=  8; log +=  8; }
+                                  if (v & 0x00000000000000F0ULL) { v >>=  4; log +=  4; }
+                                  if (v & 0x000000000000000CULL) { v >>=  2; log +=  2; }
+                                  if (v & 0x0000000000000002ULL) {           log +=  1; }
     return log;
 }
 
 template <typename T, eif_integral_t<T>>
 Q_CONSTEX int log2Ceil(T v) {
-    return log2Floor(2 * v - 1);
+    return (v & (v - 1)) ? log2Floor(v - 1) + 1 : log2Floor(v);
 }
 
 template <typename T, eif_integral_t<T>>
-Q_CX_ABLE T floor2(T v) {
-    return T(1) << log2Floor(v);
+Q_CONSTEX T floor2(T v) {
+    v = smear(v);
+    return v ^ (v >> 1);
 }
 
 template <typename T, eif_integral_t<T>>
-Q_CX_ABLE T ceil2(T v) {
-    return T(1) << log2Ceil(v);
+Q_CONSTEX T ceil2(T v) {
+    return smear(v - 1) + 1;
 }
 
 template <typename T, eif_integral_t<T>>
@@ -146,10 +139,18 @@ Q_CX_ABLE T lowBit(T v) {
 
 template <typename T, eif_integral_t<T>>
 Q_CX_ABLE T iBit(T v, int i) {
-    using UT = std::make_unsigned_t<T>;
-    constexpr UT mask(UT(1) << i);
+    return v & (T(1) << i);
+}
 
-    return T(v & mask);
+template <typename T, eif_integral_t<T>>
+Q_CONSTEX T smear(T v) {
+                                  v |= v >>  1;
+                                  v |= v >>  2;
+                                  v |= v >>  4;
+    if constexpr (sizeof(T) >= 2) v |= v >>  8;
+    if constexpr (sizeof(T) >= 4) v |= v >> 16;
+    if constexpr (sizeof(T) >= 8) v |= v >> 32;
+    return v;
 }
 
 template <typename T, eif_floating_t<T>>

@@ -13,28 +13,16 @@ namespace qc {
 
 
 template <typename T>
-constexpr mat<T, 2>::mat() :
+constexpr mat<T, 2>::mat() noexcept :
     c1(T(1.0), T(0.0)),
     c2(T(0.0), T(1.0))
-{}
-
-template <typename T>
-constexpr mat<T, 2>::mat(const mat2<T> & m) :
-    c1(m.c1),
-    c2(m.c2)
-{}
-
-template <typename T>
-constexpr mat<T, 2>::mat(mat2<T> && m) :
-    c1(std::move(m.c1)),
-    c2(std::move(m.c2))
 {}
 
 template <typename T>
 constexpr mat<T, 2>::mat(
     const vec2<T> & c1,
     const vec2<T> & c2
-) :
+) noexcept :
     c1(c1),
     c2(c2)
 {}
@@ -43,28 +31,28 @@ template <typename T>
 constexpr mat<T, 2>::mat(
     T x1, T y1,
     T x2, T y2
-) :
+) noexcept :
     c1(x1, y1),
     c2(x2, y2)
 {}
 
 template <typename T>
 template <typename U>
-constexpr mat<T, 2>::mat(const mat2<U> & m) :
+constexpr mat<T, 2>::mat(const mat2<U> & m) noexcept :
     c1(m.c1),
     c2(m.c2)
 {}
 
 template <typename T>
 template <typename U>
-constexpr mat<T, 2>::mat(const mat3<U> & m) :
+constexpr mat<T, 2>::mat(const mat3<U> & m) noexcept :
     c1(m.c1),
     c2(m.c2)
 {}
 
 template <typename T>
 template <typename U>
-constexpr mat<T, 2>::mat(const mat4<U> & m) :
+constexpr mat<T, 2>::mat(const mat4<U> & m) noexcept :
     c1(m.c1),
     c2(m.c2)
 {}
@@ -77,24 +65,8 @@ constexpr mat<T, 2>::mat(const mat4<U> & m) :
 
 
 template <typename T>
-inline mat2<T> & mat<T, 2>::operator=(const mat2<T> & m) {
-    c1 = m.c1;
-    c2 = m.c2;
-
-    return *this;
-}
-
-template <typename T>
-inline mat2<T> & mat<T, 2>::operator=(mat2<T> && m) {
-    c1 = std::move(m.c1);
-    c2 = std::move(m.c2);
-
-    return *this;
-}
-
-template <typename T>
 template <typename U, int t_n>
-inline mat2<T> & mat<T, 2>::operator=(const mat<U, t_n> & m) {
+inline mat2<T> & mat<T, 2>::operator=(const mat<U, t_n> & m) noexcept {
     if constexpr (t_n >= 1) c1 = m.c1; else c1 = vec2<T>(T(1.0), T(0.0));
     if constexpr (t_n >= 2) c2 = m.c2; else c2 = vec2<T>(T(0.0), T(1.0));
     
@@ -125,14 +97,14 @@ inline vec2<T> mat<T, 2>::row(int i) const {
 
 template <typename T>
 template <int t_i>
-constexpr const vec2<T> & mat<T, 2>::col() const {
+constexpr const vec2<T> & mat<T, 2>::col() const noexcept {
     if constexpr (t_i == 0) return c1;
     if constexpr (t_i == 1) return c2;
 }
 
 template <typename T>
 template <int t_i>
-constexpr vec2<T> mat<T, 2>::row() const {
+constexpr vec2<T> mat<T, 2>::row() const noexcept {
     return vec2<T>(c1.at<t_i>(), c2.at<t_i>());
 }
 
@@ -149,24 +121,10 @@ constexpr vec2<T> mat<T, 2>::row() const {
 
 
 template <typename T>
-constexpr mat<T, 3>::mat() :
+constexpr mat<T, 3>::mat() noexcept :
     c1(T(1.0), T(0.0), T(0.0)),
     c2(T(0.0), T(1.0), T(0.0)),
     c3(T(0.0), T(0.0), T(1.0))
-{}
-
-template <typename T>
-constexpr mat<T, 3>::mat(const mat3<T> & m) :
-    c1(m.c1),
-    c2(m.c2),
-    c3(m.c3)
-{}
-
-template <typename T>
-constexpr mat<T, 3>::mat(mat3<T> && m) :
-    c1(std::move(m.c1)),
-    c2(std::move(m.c2)),
-    c3(std::move(m.c3))
 {}
 
 template <typename T>
@@ -174,7 +132,7 @@ constexpr mat<T, 3>::mat(
     const vec3<T> & c1,
     const vec3<T> & c2,
     const vec3<T> & c3
-) :
+) noexcept :
     c1(c1),
     c2(c2),
     c3(c3)
@@ -185,7 +143,7 @@ constexpr mat<T, 3>::mat(
     T x1, T y1, T z1,
     T x2, T y2, T z2,
     T x3, T y3, T z3
-) :
+) noexcept :
     c1(x1, y1, z1),
     c2(x2, y2, z2),
     c3(x3, y3, z3)
@@ -193,7 +151,7 @@ constexpr mat<T, 3>::mat(
 
 template <typename T>
 template <typename U>
-constexpr mat<T, 3>::mat(const mat2<U> & m) :
+constexpr mat<T, 3>::mat(const mat2<U> & m) noexcept :
     c1(m.c1),
     c2(m.c2),
     c3(T(0.0), T(0.0), T(1.0))
@@ -201,7 +159,7 @@ constexpr mat<T, 3>::mat(const mat2<U> & m) :
 
 template <typename T>
 template <typename U>
-constexpr mat<T, 3>::mat(const mat3<U> & m) :
+constexpr mat<T, 3>::mat(const mat3<U> & m) noexcept :
     c1(m.c1),
     c2(m.c2),
     c3(m.c3)
@@ -209,7 +167,7 @@ constexpr mat<T, 3>::mat(const mat3<U> & m) :
 
 template <typename T>
 template <typename U>
-constexpr mat<T, 3>::mat(const mat4<U> & m) :
+constexpr mat<T, 3>::mat(const mat4<U> & m) noexcept :
     c1(m.c1),
     c2(m.c2),
     c3(m.c3)
@@ -223,26 +181,8 @@ constexpr mat<T, 3>::mat(const mat4<U> & m) :
 
 
 template <typename T>
-inline mat3<T> & mat<T, 3>::operator=(const mat3<T> & m) {
-    c1 = m.c1;
-    c2 = m.c2;
-    c3 = m.c3;
-
-    return *this;
-}
-
-template <typename T>
-inline mat3<T> & mat<T, 3>::operator=(mat3<T> && m) {
-    c1 = std::move(m.c1);
-    c2 = std::move(m.c2);
-    c3 = std::move(m.c3);
-
-    return *this;
-}
-
-template <typename T>
 template <typename U, int t_n>
-inline mat3<T> & mat<T, 3>::operator=(const mat<U, t_n> & m) {
+inline mat3<T> & mat<T, 3>::operator=(const mat<U, t_n> & m) noexcept {
     if constexpr (t_n >= 1) c1 = m.c1; else c1 = vec3<T>(T(1.0), T(0.0), T(0.0));
     if constexpr (t_n >= 2) c2 = m.c2; else c2 = vec3<T>(T(0.0), T(1.0), T(0.0));
     if constexpr (t_n >= 3) c3 = m.c3; else c3 = vec3<T>(T(0.0), T(0.0), T(1.0));
@@ -274,7 +214,7 @@ inline vec3<T> mat<T, 3>::row(int i) const {
 
 template <typename T>
 template <int t_i>
-constexpr const vec3<T> & mat<T, 3>::col() const {
+constexpr const vec3<T> & mat<T, 3>::col() const noexcept {
     if constexpr (t_i == 0) return c1;
     if constexpr (t_i == 1) return c2;
     if constexpr (t_i == 2) return c3;
@@ -282,7 +222,7 @@ constexpr const vec3<T> & mat<T, 3>::col() const {
 
 template <typename T>
 template <int t_i>
-constexpr vec3<T> mat<T, 3>::row() const {
+constexpr vec3<T> mat<T, 3>::row() const noexcept {
     return vec3<T>(c1.at<t_i>(), c2.at<t_i>(), c3.at<t_i>());
 }
 
@@ -299,27 +239,11 @@ constexpr vec3<T> mat<T, 3>::row() const {
 
 
 template <typename T>
-constexpr mat<T, 4>::mat() :
+constexpr mat<T, 4>::mat() noexcept :
     c1(T(1.0), T(0.0), T(0.0), T(0.0)),
     c2(T(0.0), T(1.0), T(0.0), T(0.0)),
     c3(T(0.0), T(0.0), T(1.0), T(0.0)),
     c4(T(0.0), T(0.0), T(0.0), T(1.0))
-{}
-
-template <typename T>
-constexpr mat<T, 4>::mat(const mat4<T> & m) :
-    c1(m.c1),
-    c2(m.c2),
-    c3(m.c3),
-    c4(m.c4)
-{}
-
-template <typename T>
-constexpr mat<T, 4>::mat(mat4<T> && m) :
-    c1(std::move(m.c1)),
-    c2(std::move(m.c2)),
-    c3(std::move(m.c3)),
-    c4(std::move(m.c4))
 {}
 
 template <typename T>
@@ -328,7 +252,7 @@ constexpr mat<T, 4>::mat(
     const vec4<T> & c2,
     const vec4<T> & c3,
     const vec4<T> & c4
-) :
+) noexcept :
     c1(c1),
     c2(c2),
     c3(c3),
@@ -341,7 +265,7 @@ constexpr mat<T, 4>::mat(
     T x2, T y2, T z2, T w2,
     T x3, T y3, T z3, T w3,
     T x4, T y4, T z4, T w4
-) :
+) noexcept :
     c1(x1, y1, z1, w1),
     c2(x2, y2, z2, w2),
     c3(x3, y3, z3, w3),
@@ -350,7 +274,7 @@ constexpr mat<T, 4>::mat(
 
 template <typename T>
 template <typename U>
-constexpr mat<T, 4>::mat(const mat2<U> & m) :
+constexpr mat<T, 4>::mat(const mat2<U> & m) noexcept :
     c1(m.c1),
     c2(m.c2),
     c3(T(0.0), T(0.0), T(1.0), T(0.0)),
@@ -359,7 +283,7 @@ constexpr mat<T, 4>::mat(const mat2<U> & m) :
 
 template <typename T>
 template <typename U>
-constexpr mat<T, 4>::mat(const mat3<U> & m) :
+constexpr mat<T, 4>::mat(const mat3<U> & m) noexcept :
     c1(m.c1),
     c2(m.c2),
     c3(m.c3),
@@ -368,7 +292,7 @@ constexpr mat<T, 4>::mat(const mat3<U> & m) :
 
 template <typename T>
 template <typename U>
-constexpr mat<T, 4>::mat(const mat4<U> & m) :
+constexpr mat<T, 4>::mat(const mat4<U> & m) noexcept :
     c1(m.c1),
     c2(m.c2),
     c3(m.c3),
@@ -383,28 +307,8 @@ constexpr mat<T, 4>::mat(const mat4<U> & m) :
 
 
 template <typename T>
-inline mat4<T> & mat<T, 4>::operator=(const mat4<T> & m) {
-    c1 = m.c1;
-    c2 = m.c2;
-    c3 = m.c3;
-    c4 = m.c4;
-
-    return *this;
-}
-
-template <typename T>
-inline mat4<T> & mat<T, 4>::operator=(mat4<T> && m) {
-    c1 = std::move(m.c1);
-    c2 = std::move(m.c2);
-    c3 = std::move(m.c3);
-    c4 = std::move(m.c4);
-
-    return *this;
-}
-
-template <typename T>
 template <typename U, int t_n>
-inline mat4<T> & mat<T, 4>::operator=(const mat<U, t_n> & m) {
+inline mat4<T> & mat<T, 4>::operator=(const mat<U, t_n> & m) noexcept {
     if constexpr (t_n >= 1) c1 = m.c1; else c1 = vec4<T>(T(1.0), T(0.0), T(0.0), T(0.0));
     if constexpr (t_n >= 2) c2 = m.c2; else c2 = vec4<T>(T(0.0), T(1.0), T(0.0), T(0.0));
     if constexpr (t_n >= 3) c3 = m.c3; else c3 = vec4<T>(T(0.0), T(0.0), T(1.0), T(0.0));
@@ -437,7 +341,7 @@ inline vec4<T> mat<T, 4>::row(int i) const {
 
 template <typename T>
 template <int t_i>
-constexpr const vec4<T> & mat<T, 4>::col() const {
+constexpr const vec4<T> & mat<T, 4>::col() const noexcept {
     if constexpr (t_i == 0) return c1;
     if constexpr (t_i == 1) return c2;
     if constexpr (t_i == 2) return c3;
@@ -446,7 +350,7 @@ constexpr const vec4<T> & mat<T, 4>::col() const {
 
 template <typename T>
 template <int t_i>
-constexpr vec4<T> mat<T, 4>::row() const {
+constexpr vec4<T> mat<T, 4>::row() const noexcept {
     return vec4<T>(c1.at<t_i>(), c2.at<t_i>(), c3.at<t_i>(), c4.at<t_i>());
 }
 
