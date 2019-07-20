@@ -362,10 +362,10 @@ void compileFunctionsT() {
     qc::mapTo_o(v3, v3, v3);
     qc::mapFrom(v2, v2);
     qc::mapFrom(v3, v3, v3);
-    qc::orthoProj(v, v, v, v);
-    qc::orthoProjAsym(v, v, v, v, v, v);
-    qc::perspProj(v, v, v, v);
-    qc::perspProjAsym(v, v, v, v, v, v);
+    qc::orthoProj<true>(v, v, v, v);
+    qc::orthoProj<false>(v, v, v, v);
+    qc::perspProj<true>(v, v, v, v);
+    qc::perspProj<false>(v, v, v, v);
     qc::view(v3, v3, v3);
     qc::view(v3, v3, v3, v3);
     qc::view_n(v3, v3, v3, v3);

@@ -55,6 +55,7 @@ namespace types {
 
     using std::pair;
     template <typename T> using duo = pair<T, T>;
+    using std::move;
 
 }
 
@@ -97,70 +98,36 @@ template <int t_s> using utype_fast = typename sized<t_s>::utype_fast;
 template <typename T> using remove_cvref_t = std::remove_cv_t<std::remove_reference_t<T>>;
 
 
+// Unique identification of floating point numbers
+//  precision | bits | digits
+// -----------+------+--------
+//       half |   16 |      5
+//     single |   32 |      9
+//     double |   64 |     17
+//   extended |   80 |     21
+//       quad |  128 |     36
 
-namespace detail {
-
-template <typename T>
-constexpr T sqrtConstexprHelper(T v, T curr, T prev) {
-    if (curr == prev) {
-        return curr;
-    }
-
-    return sqrtConstexprHelper(v, T(0.5) * (curr + v / curr), curr);
-}
-
-template <typename T>
-constexpr T sqrtConstexpr(T v) {
-    if (v == T(0.0) || v == std::numeric_limits<T>::infinity()) {
-        return v;
-    }
-    if (v < T(0.0)) {
-        return std::numeric_limits<T>::quiet_NaN();
-    }
-
-    return sqrtConstexprHelper(v, v, T(0.0));
-}
-
-}
-
-
-// unique identification of floating point numbers
-//           | bits | digits
-// ----------+------+--------
-//      half |   16 |      5
-//    single |   32 |      9
-//    double |   64 |     17
-//  extended |   80 |     21
-//      quad |  128 |     36
-
-template <typename T, eif_floating_t<T> = 0> constexpr T  pi = T(3.14159265358979323846264338327950288L);
-template <typename T, eif_floating_t<T> = 0> constexpr T   e = T(2.71828182845904523536028747135266250L);
-template <typename T, eif_floating_t<T> = 0> constexpr T phi = T(1.61803398874989484820458683436563812L);
-
-template <u32 t_v, typename T, eif_floating_t<T> = 0> constexpr T sqrt = detail::sqrtConstexpr(T(t_v));
+template <typename T, eif_floating_t<T> = 0> constexpr T    pi = T(3.14159265358979323846264338327950288L);
+template <typename T, eif_floating_t<T> = 0> constexpr T     e = T(2.71828182845904523536028747135266250L);
+template <typename T, eif_floating_t<T> = 0> constexpr T   phi = T(1.61803398874989484820458683436563812L);
+template <typename T, eif_floating_t<T> = 0> constexpr T sqrt2 = T(1.41421356237309504880168872420969808L);
+template <typename T, eif_floating_t<T> = 0> constexpr T sqrt3 = T(1.73205080756887729352744634150587237L);
+template <typename T, eif_floating_t<T> = 0> constexpr T sqrt5 = T(2.23606797749978969640917366873127624L);
 template <typename T, eif_floating_t<T> = 0> constexpr T infinity = std::numeric_limits<T>::infinity();
 template <typename T, eif_floating_t<T> = 0> constexpr T nan = std::numeric_limits<T>::quiet_NaN();
 
 
 
-template <typename T>
-Q_CONSTEX const T & min(const T & a, const T & b);
-template <typename T, typename... Ts>
-Q_CONSTEX const T & min(const T & a, const T & b, const Ts &... rest);
+template <typename T> Q_CONSTEX const T & min(const T & a, const T & b);
+template <typename T, typename... Ts> Q_CONSTEX const T & min(const T & a, const T & b, const Ts &... rest);
 
-template <typename T>
-Q_CONSTEX const T & max(const T & a, const T & b);
-template <typename T, typename... Ts>
-Q_CONSTEX const T & max(const T & a, const T & b, const Ts &... rest);
+template <typename T> Q_CONSTEX const T & max(const T & a, const T & b);
+template <typename T, typename... Ts> Q_CONSTEX const T & max(const T & a, const T & b, const Ts &... rest);
 
-template <typename T>
-Q_CONSTEX duo<const T &> minmax(const T & a, const T & b);
-template <typename T>
-Q_CONSTEX duo<const T &> minmax(const T & a, const T & b, const T & c);
-template <typename T>
-Q_CONSTEX duo<const T &> minmax(const T & a, const T & b, const T & c, const T & d);
-template <typename T, typename... Ts>
-Q_CONSTEX duo<const T &> minmax(const T & a, const T & b, const T & c, const T & d, const Ts &... rest);
+template <typename T> Q_CONSTEX duo<const T &> minmax(const T & a, const T & b);
+template <typename T> Q_CONSTEX duo<const T &> minmax(const T & a, const T & b, const T & c);
+template <typename T> Q_CONSTEX duo<const T &> minmax(const T & a, const T & b, const T & c, const T & d);
+template <typename T, typename... Ts> Q_CONSTEX duo<const T &> minmax(const T & a, const T & b, const T & c, const T & d, const Ts &... rest);
 
 
 

@@ -575,38 +575,57 @@ struct span {
 
 
 
-template <typename T, int t_n, int t_d> constexpr vec<T, t_n> axis = vec<T, t_n>();
-template <typename T> constexpr vec<T, 2> axis<T, 2, 0> = vec2<T>(T(1), T(0));
-template <typename T> constexpr vec<T, 2> axis<T, 2, 1> = vec2<T>(T(0), T(1));
-template <typename T> constexpr vec<T, 3> axis<T, 3, 0> = vec3<T>(T(1), T(0), T(0));
-template <typename T> constexpr vec<T, 3> axis<T, 3, 1> = vec3<T>(T(0), T(1), T(0));
-template <typename T> constexpr vec<T, 3> axis<T, 3, 2> = vec3<T>(T(0), T(0), T(1));
-template <typename T> constexpr vec<T, 4> axis<T, 4, 0> = vec4<T>(T(1), T(0), T(0), T(0));
-template <typename T> constexpr vec<T, 4> axis<T, 4, 1> = vec4<T>(T(0), T(1), T(0), T(0));
-template <typename T> constexpr vec<T, 4> axis<T, 4, 2> = vec4<T>(T(0), T(0), T(1), T(0));
-template <typename T> constexpr vec<T, 4> axis<T, 4, 3> = vec4<T>(T(0), T(0), T(0), T(1));
+template <typename T, int t_n> constexpr vec<T, t_n> px{};
+template <typename T, int t_n> constexpr vec<T, t_n> nx{};
+template <typename T, int t_n> constexpr vec<T, t_n> py{};
+template <typename T, int t_n> constexpr vec<T, t_n> ny{};
+template <typename T, int t_n> constexpr vec<T, t_n> pz{};
+template <typename T, int t_n> constexpr vec<T, t_n> nz{};
+template <typename T, int t_n> constexpr vec<T, t_n> pw{};
+template <typename T, int t_n> constexpr vec<T, t_n> nw{};
+template <typename T> constexpr vec2<T> px<T, 2> = vec2<T>(T( 1), T( 0));
+template <typename T> constexpr vec2<T> nx<T, 2> = vec2<T>(T(-1), T( 0));
+template <typename T> constexpr vec3<T> px<T, 3> = vec3<T>(T( 1), T( 0), T( 0));
+template <typename T> constexpr vec3<T> nx<T, 3> = vec3<T>(T(-1), T( 0), T( 0));
+template <typename T> constexpr vec4<T> px<T, 4> = vec4<T>(T( 1), T( 0), T( 0), T( 0));
+template <typename T> constexpr vec4<T> nx<T, 4> = vec4<T>(T(-1), T( 0), T( 0), T( 0));
+template <typename T> constexpr vec2<T> py<T, 2> = vec2<T>(T( 0), T( 1));
+template <typename T> constexpr vec2<T> ny<T, 2> = vec2<T>(T( 0), T(-1));
+template <typename T> constexpr vec3<T> py<T, 3> = vec3<T>(T( 0), T( 1), T( 0));
+template <typename T> constexpr vec3<T> ny<T, 3> = vec3<T>(T( 0), T(-1), T( 0));
+template <typename T> constexpr vec4<T> py<T, 4> = vec4<T>(T( 0), T( 1), T( 0), T( 0));
+template <typename T> constexpr vec4<T> ny<T, 4> = vec4<T>(T( 0), T(-1), T( 0), T( 0));
+template <typename T> constexpr vec3<T> pz<T, 3> = vec3<T>(T( 0), T( 0), T( 1));
+template <typename T> constexpr vec3<T> nz<T, 3> = vec3<T>(T( 0), T( 0), T(-1));
+template <typename T> constexpr vec4<T> pz<T, 4> = vec4<T>(T( 0), T( 0), T( 1), T( 0));
+template <typename T> constexpr vec4<T> nz<T, 4> = vec4<T>(T( 0), T( 0), T(-1), T( 0));
+template <typename T> constexpr vec4<T> pw<T, 4> = vec4<T>(T( 0), T( 0), T( 0), T( 1));
+template <typename T> constexpr vec4<T> nw<T, 4> = vec4<T>(T( 0), T( 0), T( 0), T(-1));
+template <typename T> constexpr vec2<T> px2 = px<T, 2>;
+template <typename T> constexpr vec2<T> nx2 = nx<T, 2>;
+template <typename T> constexpr vec3<T> px3 = px<T, 3>;
+template <typename T> constexpr vec3<T> nx3 = nx<T, 3>;
+template <typename T> constexpr vec4<T> px4 = px<T, 4>;
+template <typename T> constexpr vec4<T> nx4 = nx<T, 4>;
+template <typename T> constexpr vec2<T> py2 = py<T, 2>;
+template <typename T> constexpr vec2<T> ny2 = ny<T, 2>;
+template <typename T> constexpr vec3<T> py3 = py<T, 3>;
+template <typename T> constexpr vec3<T> ny3 = ny<T, 3>;
+template <typename T> constexpr vec4<T> py4 = py<T, 4>;
+template <typename T> constexpr vec4<T> ny4 = ny<T, 4>;
+template <typename T> constexpr vec3<T> pz3 = pz<T, 3>;
+template <typename T> constexpr vec3<T> nz3 = nz<T, 3>;
+template <typename T> constexpr vec4<T> pz4 = pz<T, 4>;
+template <typename T> constexpr vec4<T> nz4 = nz<T, 4>;
+template <typename T> constexpr vec4<T> pw4 = pw<T, 4>;
+template <typename T> constexpr vec4<T> nw4 = nw<T, 4>;
 
-template <typename T, int t_n> constexpr vec<T, t_n> xAxis = axis<T, t_n, 0>;
-template <typename T, int t_n> constexpr vec<T, t_n> yAxis = axis<T, t_n, 1>;
-template <typename T, int t_n> constexpr vec<T, t_n> zAxis = axis<T, t_n, 2>;
-template <typename T, int t_n> constexpr vec<T, t_n> wAxis = axis<T, t_n, 3>;
-
-template <typename T> constexpr vec2<T> xAxis2 = xAxis<T, 2>;
-template <typename T> constexpr vec3<T> xAxis3 = xAxis<T, 3>;
-template <typename T> constexpr vec4<T> xAxis4 = xAxis<T, 4>;
-template <typename T> constexpr vec2<T> yAxis2 = yAxis<T, 2>;
-template <typename T> constexpr vec3<T> yAxis3 = yAxis<T, 3>;
-template <typename T> constexpr vec4<T> yAxis4 = yAxis<T, 4>;
-template <typename T> constexpr vec3<T> zAxis3 = zAxis<T, 3>;
-template <typename T> constexpr vec4<T> zAxis4 = zAxis<T, 4>;
-template <typename T> constexpr vec4<T> wAxis4 = wAxis<T, 4>;
+template <typename T, int t_n> constexpr vec<T, t_n> infvec = vec<T, t_n>(infinity<T>);
+template <typename T, int t_n> constexpr span<T, t_n> infspan = span<T, t_n>(-infinity<T>, infinity<T>);
 
 template <typename T, int t_n> constexpr vec<T, t_n> nanvec = vec<T, t_n>(nan<T>);
 template <typename T, int t_n> constexpr span<T, t_n> nanspan = span<T, t_n>(nan<T>, nan<T>);
 template <typename T, int t_n> constexpr bound<T, t_n> nanbound = nanspan<T, t_n>;
-
-template <typename T, int t_n> constexpr vec<T, t_n> infvec = vec<T, t_n>(infinity<T>);
-template <typename T, int t_n> constexpr span<T, t_n> infspan = span<T, t_n>(-infinity<T>, infinity<T>);
 
 template <typename T, int t_n> constexpr span<T, t_n> nullspan = span<T, t_n>(infinity<T>, -infinity<T>);
 

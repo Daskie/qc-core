@@ -13,6 +13,7 @@
 #include <sstream>
 #include <iomanip>
 #include <cctype>
+#include <filesystem>
 
 #include "Math.hpp"
 
@@ -168,28 +169,22 @@ inline unsigned char trailingZeroes(u32 x) {
 //    return converter.from_bytes(str);
 //}
 
-inline pair<bool, std::string> readTextFile(const std::string & filepath) {
-    std::ifstream ifs{filepath};
-    if (!ifs.good()) {
-        return {};
-    }
-    std::string str{
-        std::istreambuf_iterator<char>{ifs},
-        std::istreambuf_iterator<char>{}
-    };
-    if (!ifs.good()) {
-        return {};
-    }
-    return {true, std::move(str)};
+// Will throw `std::system_error` on failure
+inline std::pair<std::unique_ptr<std::byte[]>, size_t> readFile(const std::filesystem::path & path) {
+    std::pair<std::unique_ptr<std::byte[]>, size_t> result;
+    result.second = std::filesystem::file_size(path);
+    result.first = std::make_unique<std::byte[]>(result.second);
+    std::ifstream ifs(path, std::ios::in | std::ios::binary);
+    ifs.exceptions(std::ios::badbit | std::ios::failbit);
+    ifs.read(reinterpret_cast<char *>(result.first.get()), result.second);
+    return std::move(result);
 }
 
-inline bool writeTextFile(const std::string & filepath, const std::string & str) {
-    std::ofstream ofs{filepath};
-    if (!ofs.good()) {
-        return false;
-    }
-    ofs << str;
-    return ofs.good();
+// Will throw `std::system_error` on failure
+inline void writeFile(const std::filesystem::path & path, const void * data, size_t size) {
+    std::ofstream ofs(path, std::ios::out | std::ios::binary);
+    ofs.exceptions(std::ios::badbit | std::ios::failbit);
+    ofs.write(reinterpret_cast<const char *>(data), size);
 }
 
 inline std::vector<std::string> tokenize(const std::string & str) {

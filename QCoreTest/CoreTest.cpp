@@ -46,9 +46,10 @@ void compileConstantsT() {
     qc::pi<T>;
     qc::e<T>;
     qc::phi<T>;
+    qc::sqrt2<T>;
+    qc::sqrt3<T>;
+    qc::sqrt5<T>;
     qc::infinity<T>;
-    qc::sqrt<2, T>;
-    qc::sqrt<1000, T>;
 }
 
 void compileConstants() {

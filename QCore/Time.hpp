@@ -32,7 +32,7 @@ class Clock {
     public:
 
     // constructs clock with 1.0 sec period and 1.0 sec frequency
-    Clock();
+    Clock(float frequency = 1.0f);
 
     // the clock starts now
     void restart();
@@ -74,10 +74,10 @@ s64 now() {
 
 
 
-Clock::Clock() :
+Clock::Clock(float frequency) :
     m_start(),
-    m_period(1.0),
-    m_frequency(1.0)
+    m_period(1.0f / frequency),
+    m_frequency(frequency)
 {}
 
 void Clock::restart() {

@@ -1318,15 +1318,24 @@ void compileMembers() {
 
 template <typename T>
 constexpr void compileConstantsT() {
-    constexpr qc::vec2<T> ax2(qc::xAxis2<T>);
-    constexpr qc::vec3<T> ax3(qc::xAxis3<T>);
-    constexpr qc::vec4<T> ax4(qc::xAxis4<T>);
-    constexpr qc::vec2<T> ay2(qc::yAxis2<T>);
-    constexpr qc::vec3<T> ay3(qc::yAxis3<T>);
-    constexpr qc::vec4<T> ay4(qc::yAxis4<T>);
-    constexpr qc::vec3<T> az3(qc::zAxis3<T>);
-    constexpr qc::vec4<T> az4(qc::zAxis4<T>);
-    constexpr qc::vec4<T> aw4(qc::wAxis4<T>);
+    constexpr qc::vec2<T> px2(qc::px2<T>);
+    constexpr qc::vec3<T> px3(qc::px3<T>);
+    constexpr qc::vec4<T> px4(qc::px4<T>);
+    constexpr qc::vec2<T> py2(qc::py2<T>);
+    constexpr qc::vec3<T> py3(qc::py3<T>);
+    constexpr qc::vec4<T> py4(qc::py4<T>);
+    constexpr qc::vec3<T> pz3(qc::pz3<T>);
+    constexpr qc::vec4<T> pz4(qc::pz4<T>);
+    constexpr qc::vec4<T> pw4(qc::pw4<T>);
+    constexpr qc::vec2<T> nx2(qc::nx2<T>);
+    constexpr qc::vec3<T> nx3(qc::nx3<T>);
+    constexpr qc::vec4<T> nx4(qc::nx4<T>);
+    constexpr qc::vec2<T> ny2(qc::ny2<T>);
+    constexpr qc::vec3<T> ny3(qc::ny3<T>);
+    constexpr qc::vec4<T> ny4(qc::ny4<T>);
+    constexpr qc::vec3<T> nz3(qc::nz3<T>);
+    constexpr qc::vec4<T> nz4(qc::nz4<T>);
+    constexpr qc::vec4<T> nw4(qc::nw4<T>);
 }
 
 template <typename T>

@@ -498,50 +498,26 @@ inline mat3<T> mapFrom(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z) 
     return mat3<T>(x, y, z);
 }
 
-template <typename T>
+template <bool t_depth0To1, typename T>
 inline mat4<T> orthoProj(T width, T height, T near, T far) {
+    T nearMinusFar(near - far);
     return mat4<T>(
-        T(2.0) / width,          T(0.0),                      T(0.0), T(0.0),
-                T(0.0), T(2.0) / height,                      T(0.0), T(0.0),
-                T(0.0),          T(0.0),       T(2.0) / (near - far), T(0.0),
-                T(0.0),          T(0.0), (far + near) / (near - far), T(1.0)
+        T(2.0) / width, T(0.0), T(0.0), T(0.0),
+        T(0.0), T(2.0) / height, T(0.0), T(0.0),
+        T(0.0), T(0.0), (t_depth0To1 ? T(1.0) : T(2.0)) / nearMinusFar, T(0.0),
+        T(0.0), T(0.0), (t_depth0To1 ? near : far + near) / nearMinusFar, T(1.0)
     );
 }
 
-template <typename T>
-inline mat4<T> orthoProjAsym(T left, T right, T bottom, T top, T near, T far) {
+template <bool t_depth0To1, typename T>
+inline mat4<T> perspProj(T vfov, T aspect, T near, T far) {
+    T invTop(T(1.0) / std::tan(vfov * T(0.5)));
+    T invNearMinusFar(T(1.0) / (near - far));
     return mat4<T>(
-                T(2.0) / (right - left),                          T(0.0),                      T(0.0), T(0.0),
-                                 T(0.0),         T(2.0) / (top - bottom),                      T(0.0), T(0.0),
-                                 T(0.0),                          T(0.0),       T(2.0) / (near - far), T(0.0),
-        (right + left) / (left - right), (top + bottom) / (bottom - top), (far + near) / (near - far), T(1.0)
-    );
-}
-
-template <typename T>
-inline mat4<T> perspProj(T fov, T aspectRatio, T near, T far) {
-    T near_right(T(1.0) / std::tan(fov / T(2.0)));
-
-    return mat4<T>(
-        near_right,                   T(0.0),                             T(0.0), T( 0.0),
-            T(0.0), near_right * aspectRatio,                             T(0.0), T( 0.0),
-            T(0.0),                   T(0.0),        (far + near) / (near - far), T(-1.0),
-            T(0.0),                   T(0.0), T(2.0) * far * near / (near - far), T( 0.0)
-    );
-}
-
-template <typename T>
-inline mat4<T> perspProjAsym(T fovLeft, T fovRight, T fovBottom, T fovTop, T near, T far) {
-    T left(near * -std::tan(fovLeft));
-    T right(near * std::tan(fovRight));
-    T bottom(near * -std::tan(fovBottom));
-    T top(near * std::tan(fovTop));
-
-    return mat4<T>(
-         T(2.0) * near / (right - left),                          T(0.0),                             T(0.0), T( 0.0),
-                                 T(0.0),  T(2.0) * near / (top - bottom),                             T(0.0), T( 0.0),
-        (right + left) / (right - left), (top + bottom) / (top - bottom),        (far + near) / (near - far), T(-1.0),
-                                 T(0.0),                          T(0.0), T(2.0) * far * near / (near - far), T( 0.0)
+        invTop / aspect, T(0.0), T(0.0), T(0.0),
+        T(0.0), invTop, T(0.0), T(0.0),
+        T(0.0), T(0.0), (t_depth0To1 ? far : far + near) * invNearMinusFar, T(-1.0),
+        T(0.0), T(0.0), (t_depth0To1 ? far : T(2.0) * far) * near * invNearMinusFar, T(0.0)
     );
 }
 
