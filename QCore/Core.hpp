@@ -63,20 +63,23 @@ using namespace types;
 
 
 
-template <bool t_b> using eif_t = std::enable_if_t<t_b, int>;
-// alternative (safer) option that doesn't play nice with IntelliSense and
-// doesn't work with other variadic templates
-// used as: template <typename T, eif_t<T, bool>...>
-///namespace detail { enum class enabler {}; }
-///template <bool t_b> using eif_t = std::enable_if_t<t_b, detail::enabler>;
+using std::enable_if_t;
+using std::is_same_v;
+using std::is_arithmetic_v;
+using std::is_integral_v;
+using std::is_floating_point_v;
+using std::is_signed_v;
+using std::is_unsigned_v;
 
-template <typename T> using eif_arithmetic_t = eif_t<std::is_arithmetic_v<T>>;
-template <typename T> using eif_floating_t   = eif_t<std::is_floating_point_v<T>>;
-template <typename T> using eif_integral_t   = eif_t<std::is_integral_v<T>>;
-template <typename T> using eif_signed_t     = eif_t<std::is_signed_v<T>>;
-template <typename T> using eif_unsigned_t   = eif_t<std::is_unsigned_v<T>>;
-template <typename T> using eif_sintegral_t  = eif_t<std::is_signed_v<T> && std::is_integral_v<T>>;
-template <typename T> using eif_uintegral_t  = eif_t<std::is_unsigned_v<T> && std::is_integral_v<T>>;
+template <bool t_b> using eif_t = enable_if_t<t_b>;
+
+template <typename T> using eif_arithmetic_t = eif_t<is_arithmetic_v<T>>;
+template <typename T> using eif_floating_t   = eif_t<is_floating_point_v<T>>;
+template <typename T> using eif_integral_t   = eif_t<is_integral_v<T>>;
+template <typename T> using eif_signed_t     = eif_t<is_signed_v<T>>;
+template <typename T> using eif_unsigned_t   = eif_t<is_unsigned_v<T>>;
+template <typename T> using eif_sintegral_t  = eif_t<is_signed_v<T> && is_integral_v<T>>;
+template <typename T> using eif_uintegral_t  = eif_t<is_unsigned_v<T> && is_integral_v<T>>;
 
 namespace detail {
     template <typename T, int t_n> struct array_t_struct { using type = T[t_n]; };
@@ -107,14 +110,14 @@ template <typename T> using remove_cvref_t = std::remove_cv_t<std::remove_refere
 //   extended |   80 |     21
 //       quad |  128 |     36
 
-template <typename T, eif_floating_t<T> = 0> constexpr T    pi = T(3.14159265358979323846264338327950288L);
-template <typename T, eif_floating_t<T> = 0> constexpr T     e = T(2.71828182845904523536028747135266250L);
-template <typename T, eif_floating_t<T> = 0> constexpr T   phi = T(1.61803398874989484820458683436563812L);
-template <typename T, eif_floating_t<T> = 0> constexpr T sqrt2 = T(1.41421356237309504880168872420969808L);
-template <typename T, eif_floating_t<T> = 0> constexpr T sqrt3 = T(1.73205080756887729352744634150587237L);
-template <typename T, eif_floating_t<T> = 0> constexpr T sqrt5 = T(2.23606797749978969640917366873127624L);
-template <typename T, eif_floating_t<T> = 0> constexpr T infinity = std::numeric_limits<T>::infinity();
-template <typename T, eif_floating_t<T> = 0> constexpr T nan = std::numeric_limits<T>::quiet_NaN();
+template <typename T, typename = eif_floating_t<T>> constexpr T    pi = T(3.14159265358979323846264338327950288L);
+template <typename T, typename = eif_floating_t<T>> constexpr T     e = T(2.71828182845904523536028747135266250L);
+template <typename T, typename = eif_floating_t<T>> constexpr T   phi = T(1.61803398874989484820458683436563812L);
+template <typename T, typename = eif_floating_t<T>> constexpr T sqrt2 = T(1.41421356237309504880168872420969808L);
+template <typename T, typename = eif_floating_t<T>> constexpr T sqrt3 = T(1.73205080756887729352744634150587237L);
+template <typename T, typename = eif_floating_t<T>> constexpr T sqrt5 = T(2.23606797749978969640917366873127624L);
+template <typename T, typename = eif_floating_t<T>> constexpr T infinity = std::numeric_limits<T>::infinity();
+template <typename T, typename = eif_floating_t<T>> constexpr T nan = std::numeric_limits<T>::quiet_NaN();
 
 
 

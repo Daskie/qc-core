@@ -75,7 +75,7 @@ vec3 lch2luv(vec3 lch) {
     return luv2rgb(vec3(lch.x, lch.y * cos(lch.z), lch.y * sin(lch.z)));
 }*/
 
-template <typename T, eif_floating_t<T> = 0>
+template <typename T, typename = eif_floating_t<T>>
 inline vec3<T> rgb2hsl(const vec3<T> & rgb) {
     vec3<T> hsl(0, 0, 0);
 
@@ -108,7 +108,7 @@ inline vec3<T> rgb2hsl(const vec3<T> & rgb) {
     return hsl;
 }
 
-template <typename T, eif_floating_t<T> = 0>
+template <typename T, typename = eif_floating_t<T>>
 inline vec3<T> hsl2rgb(const vec3<T> & hsl) {
     if (hsl.y == 0) {
         return vec3<T>(hsl.z, hsl.z, hsl.z);

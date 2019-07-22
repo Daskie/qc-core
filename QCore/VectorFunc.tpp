@@ -18,28 +18,28 @@ inline std::ostream & operator<<(std::ostream & os, const span<T, t_n> & s) {
     return os << "[" << s.min << s.max << "]";
 }
 
-template <typename T, int t_n, eif_floating_t<T>>
+template <typename T, int t_n, typename>
 inline vec<T, t_n> pow(const vec<T, t_n> & v, T p) {
     if constexpr (t_n == 2) return vec2<T>(std::pow(v.x, p), std::pow(v.y, p));
     if constexpr (t_n == 3) return vec3<T>(std::pow(v.x, p), std::pow(v.y, p), std::pow(v.z, p));
     if constexpr (t_n == 4) return vec4<T>(std::pow(v.x, p), std::pow(v.y, p), std::pow(v.z, p), std::pow(v.w, p));
 }
 
-template <typename T, int t_n, eif_floating_t<T>>
+template <typename T, int t_n, typename>
 inline vec<T, t_n> pow(const vec<T, t_n> & v, const vec<T, t_n> & p) {
     if constexpr (t_n == 2) return vec2<T>(std::pow(v.x, p.x), std::pow(v.y, p.y));
     if constexpr (t_n == 3) return vec3<T>(std::pow(v.x, p.x), std::pow(v.y, p.y), std::pow(v.z, p.z));
     if constexpr (t_n == 4) return vec4<T>(std::pow(v.x, p.x), std::pow(v.y, p.y), std::pow(v.z, p.z), std::pow(v.w, p.w));
 }
 
-template <typename T, int t_n, eif_floating_t<T>>
+template <typename T, int t_n, typename>
 inline vec<T, t_n> exp(const vec<T, t_n> & v) {
     if constexpr (t_n == 2) return vec2<T>(std::exp(v.x), std::exp(v.y));
     if constexpr (t_n == 3) return vec3<T>(std::exp(v.x), std::exp(v.y), std::exp(v.z));
     if constexpr (t_n == 4) return vec4<T>(std::exp(v.x), std::exp(v.y), std::exp(v.z), std::exp(v.w));
 }
 
-template <typename T, int t_n, eif_floating_t<T>>
+template <typename T, int t_n, typename>
 inline T magnitude(const vec<T, t_n> & v) {
     return T(std::sqrt(magnitude2(v)));
 }
@@ -51,7 +51,7 @@ inline T magnitude2(const vec<T, t_n> & v) {
     if constexpr (t_n == 4) return v.x * v.x + v.y * v.y + v.z * v.z + v.w * v.w;
 }
 
-template <typename T, int t_n, eif_floating_t<T>>
+template <typename T, int t_n, typename>
 inline vec<T, t_n> normalize(const vec<T, t_n> & v) {
     T m2(magnitude2(v));
     if (zero(m2)) {
@@ -60,7 +60,7 @@ inline vec<T, t_n> normalize(const vec<T, t_n> & v) {
     return v / std::sqrt(m2);
 }
 
-template <typename T, int t_n, eif_floating_t<T>>
+template <typename T, int t_n, typename>
 inline vec<T, t_n> & normalizeAssign(vec<T, t_n> & v) {
     T m2(magnitude2(v));
     if (zero(m2)) {
@@ -122,13 +122,13 @@ inline vec3<T> ortho(const vec3<T> & v) {
     }
 }
 
-template <typename T, int t_n, eif_floating_t<T>>
+template <typename T, int t_n, typename>
 inline void orthogonalize(const vec<T, t_n> & v1, vec<T, t_n> & v2) {
     v2 = normalize(v2 - dot(v1, v2) * v1);
 }
 
 // in order of priority
-template <typename T, eif_floating_t<T>>
+template <typename T, typename>
 inline void orthogonalize(const vec3<T> & v1, vec3<T> & v2, vec3<T> & v3) {
     orthogonalize_n(v1, v2, v3);
     v2 = normalize(v2);
@@ -136,27 +136,27 @@ inline void orthogonalize(const vec3<T> & v1, vec3<T> & v2, vec3<T> & v3) {
 }
 
 // in order of priority
-template <typename T, eif_floating_t<T>>
+template <typename T, typename>
 inline void orthogonalize_n(const vec3<T> & v1, vec3<T> & v2, vec3<T> & v3) {
     orthogonalize(v1, v2);
     v3 = cross(v2, v1);
 }
 
-template <typename T, int t_n, eif_floating_t<T>>
+template <typename T, int t_n, typename>
 inline vec<T, t_n> reflect(const vec<T, t_n> & v, const vec<T, t_n> & n) {
     return reflect_n(v, normalize(n));
 }
 
-template <typename T, int t_n, eif_floating_t<T>>
+template <typename T, int t_n, typename>
 inline vec<T, t_n> reflect_n(const vec<T, t_n> & v, const vec<T, t_n> & n) {
     return (T(2.0) * dot(v, n)) * n - v;
 }
 
-template <typename T, int t_n, eif_floating_t<T>>
+template <typename T, int t_n, typename>
 inline T angle(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
     return angle_n(normalize(v1), normalize(v2));
 }
-template <typename T, int t_n, eif_floating_t<T>>
+template <typename T, int t_n, typename>
 inline T angle_n(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
     return T(std::acos(dot(v1, v2)));
 }
@@ -208,7 +208,7 @@ Q_CX_ABLE vec<T, t_n> abs(const vec<T, t_n> & v) {
     if constexpr (t_n == 4) return vec4<T>(abs(v.x), abs(v.y), abs(v.z), abs(v.w));
 }
 
-template <typename T, int t_n, eif_arithmetic_t<T>>
+template <typename T, int t_n, typename>
 Q_CX_ABLE bool zero(const vec<T, t_n> & v, T e) {
     if constexpr (t_n == 2) return zero(v.x, e) && zero(v.y, e);
     if constexpr (t_n == 3) return zero(v.x, e) && zero(v.y, e) && zero(v.z, e);
@@ -222,7 +222,7 @@ Q_CX_ABLE bool equal(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
     if constexpr (t_n == 4) return equal(v1.x, v2.x) && equal(v1.y, v2.y) && equal(v1.z, v2.z) && equal(v1.w, v2.w);
 }
 
-template <typename T, int t_n, eif_floating_t<T>>
+template <typename T, int t_n, typename>
 Q_CX_ABLE bool equalE(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<T, t_n> & e) {
     if constexpr (t_n == 2) return equalE(v1.x, v2.x, e.x) && equalE(v1.y, v2.y, e.y);
     if constexpr (t_n == 3) return equalE(v1.x, v2.x, e.x) && equalE(v1.y, v2.y, e.y) && equalE(v1.z, v2.z, e.z);
@@ -250,43 +250,43 @@ Q_CX_ABLE vec<nat, t_n> ceil(const vec<T, t_n> & v) {
     if constexpr (t_n == 4) return vec4<nat>(ceil(v.x), ceil(v.y), ceil(v.z), ceil(v.w));
 }
 
-template <typename T, int t_n, eif_floating_t<T>>
+template <typename T, int t_n, typename>
 Q_CX_ABLE vec<T, t_n> mix(const vec<T, t_n> & v1, const vec<T, t_n> & v2, T t) {
     return (T(1.0) - t) * v1 + t * v2;
 }
 
 
-template <typename T, eif_floating_t<T>>
+template <typename T, typename>
 Q_CX_ABLE T mix(T v1, T v2, const vec2<T> & weights) {
     return weights.x * v1 + weights.y * v2;
 }
 
-template <typename T, int t_n, eif_floating_t<T>>
+template <typename T, int t_n, typename>
 Q_CX_ABLE vec<T, t_n> mix(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec2<T> & weights) {
     return weights.x * v1 + weights.y * v2;
 }
 
-template <typename T, eif_floating_t<T>>
+template <typename T, typename>
 Q_CX_ABLE T mix(T v1, T v2, T v3, const vec3<T> & weights) {
     return weights.x * v1 + weights.y * v2 + weights.z * v3;
 }
 
-template <typename T, int t_n, eif_floating_t<T>>
+template <typename T, int t_n, typename>
 Q_CX_ABLE vec<T, t_n> mix(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<T, t_n> & v3, const vec3<T> & weights) {
     return weights.x * v1 + weights.y * v2 + weights.z * v3;
 }
 
-template <typename T, eif_floating_t<T>>
+template <typename T, typename>
 Q_CX_ABLE T mix(T v1, T v2, T v3, T v4, const vec4<T> & weights) {
     return weights.x * v1 + weights.y * v2 + weights.z * v3 + weights.w * v4;
 }
 
-template <typename T, int t_n, eif_floating_t<T>>
+template <typename T, int t_n, typename>
 Q_CX_ABLE vec<T, t_n> mix(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<T, t_n> & v3, const vec<T, t_n> & v4, const vec4<T> & weights) {
     return weights.x * v1 + weights.y * v2 + weights.z * v3 + weights.w * v4;
 }
 
-template <typename To, typename From, int t_n, eif_t<std::is_arithmetic_v<To> && std::is_arithmetic_v<From>>>
+template <typename To, typename From, int t_n, typename>
 Q_CONSTEX vec<To, t_n> transnorm(const vec<From, t_n> & v) {
     if constexpr (t_n == 2) return vec2<To>(transnorm<To>(v.x), transnorm<To>(v.y));
     if constexpr (t_n == 3) return vec3<To>(transnorm<To>(v.x), transnorm<To>(v.y), transnorm<To>(v.z));
@@ -323,7 +323,7 @@ Q_CX_ABLE span<T, t_n> intersect(const span<T, t_n> & s1, const span<T, t_n> & s
     );
 }
 
-template <typename T, int t_n, eif_integral_t<T>>
+template <typename T, int t_n, typename>
 Q_CX_ABLE T mipmaps(const vec<T, t_n> & size) {
     return mipmaps(max(size));
 }

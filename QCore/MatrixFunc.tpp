@@ -194,7 +194,7 @@ inline mat<T, t_n + 1> translate(const vec<T, t_n> & delta) {
     }
 }
 
-template <typename T, int t_mn, int t_vn, eif_t<t_mn == t_vn + 1>>
+template <typename T, int t_mn, int t_vn, typename>
 inline mat<T, t_mn> & translate(mat<T, t_mn> & m, const vec<T, t_vn> & delta) {
     if constexpr (t_vn == 2 && t_mn == 3) {
         m.c1.x += delta.x * m.c1.z;

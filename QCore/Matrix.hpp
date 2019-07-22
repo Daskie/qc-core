@@ -55,7 +55,7 @@ namespace types {
 template <typename T>
 struct mat<T, 2> {
 
-    static_assert(std::is_floating_point_v<T>, "mat2<T> must have floating point T");
+    static_assert(is_floating_point_v<T>, "mat2<T> must have floating point T");
 
     using type = T;
     static constexpr int dimension{2};
@@ -111,7 +111,7 @@ struct mat<T, 2> {
 template <typename T>
 struct mat<T, 3> {
 
-    static_assert(std::is_floating_point_v<T>, "mat3<T> must have floating point T");
+    static_assert(is_floating_point_v<T>, "mat3<T> must have floating point T");
 
     using type = T;
     static constexpr int dimension{3};
@@ -169,7 +169,7 @@ struct mat<T, 3> {
 template <typename T>
 struct mat<T, 4> {
 
-    static_assert(std::is_floating_point_v<T>, "mat4<T> must have floating point T");
+    static_assert(is_floating_point_v<T>, "mat4<T> must have floating point T");
 
     using type = T;
     static constexpr int dimension{4};

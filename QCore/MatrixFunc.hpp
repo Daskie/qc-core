@@ -33,7 +33,7 @@ template <typename T, int t_n> mat<T, t_n> inverse(const mat<T, t_n> & m);
 
 
 template <typename T, int t_n> mat<T, t_n + 1> translate(const vec<T, t_n> & delta);
-template <typename T, int t_mn, int t_vn, eif_t<t_mn == t_vn + 1> = 0> mat<T, t_mn> & translate(mat<T, t_mn> & mat, const vec<T, t_vn> & delta);
+template <typename T, int t_mn, int t_vn, typename = eif_t<t_mn == t_vn + 1>> mat<T, t_mn> & translate(mat<T, t_mn> & mat, const vec<T, t_vn> & delta);
 
 template <typename T, int t_n> mat<T, t_n> scale(const vec<T, t_n> & scale);
 template <typename T, int t_mn, int t_vn> mat<T, t_mn> & scale(mat<T, t_mn> & mat, const vec<T, t_vn> & scale);

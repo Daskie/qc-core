@@ -6,7 +6,7 @@ namespace bits {
 
 
 
-template <typename SrcT, typename DstT, eif_t<std::is_integral_v<SrcT> && std::is_integral_v<DstT> && std::is_unsigned_v<SrcT> && std::is_unsigned_v<DstT> && (sizeof(DstT) > sizeof(SrcT))>>
+template <typename SrcT, typename DstT, typename>
 inline DstT spread(SrcT v) {
     constexpr int factor(sizeof(DstT) / sizeof(SrcT) - 1);
     
@@ -25,7 +25,7 @@ inline DstT spread(SrcT v) {
     return w;
 }
 
-template <typename SrcT, typename DstT, eif_t<std::is_integral_v<SrcT> && std::is_integral_v<DstT> && std::is_unsigned_v<SrcT> && std::is_unsigned_v<DstT> && (sizeof(DstT) >= sizeof(SrcT))>>
+template <typename SrcT, typename DstT, typename>
 inline DstT repeat(SrcT v) {
     constexpr int factor(sizeof(DstT) / sizeof(SrcT));
 
@@ -44,7 +44,7 @@ inline DstT repeat(SrcT v) {
     return w;
 }
 
-template <typename T, eif_uintegral_t<T>>
+template <typename T, typename>
 inline T interleave(T v) {
     if constexpr (sizeof(T) > 1) {
         using H = utype<sizeof(T) / 2>;
@@ -65,17 +65,17 @@ inline T interleave(T v) {
     }
 }
 
-template <typename T, eif_uintegral_t<T>>
+template <typename T, typename>
 constexpr T rotateL(T v, int n) {
     return (v << n) | (v >> (sizeof(T) * 8 - n));
 }
 
-template <typename T, eif_uintegral_t<T>>
+template <typename T, typename>
 constexpr T rotateR(T v, int n) {
     return (v >> n) | (v << (sizeof(T) * 8 - n));
 }
 
-template <typename T, eif_uintegral_t<T>>
+template <typename T, typename>
 inline T scramble(T v) {
     if constexpr (sizeof(T) == 1) {
         return v;

@@ -12,7 +12,7 @@ namespace qc {
 
 
 
-template <typename T, eif_floating_t<T> = 0>
+template <typename T, typename = eif_floating_t<T>>
 inline vec2<T> polarToCartesian(const vec2<T> & v) {
     return vec2<T>(
         v.rad * std::cos(v.theta),
@@ -20,7 +20,7 @@ inline vec2<T> polarToCartesian(const vec2<T> & v) {
     );
 }
 
-template <typename T, eif_floating_t<T> = 0>
+template <typename T, typename = eif_floating_t<T>>
 inline vec2<T> cartesianToPolar(const vec2<T> & v) {
     return vec2<T>(
         magnitude(v),
@@ -29,7 +29,7 @@ inline vec2<T> cartesianToPolar(const vec2<T> & v) {
 }
 
 //r is radius, theta is angle on xy plane, phi is angle from z axis
-template <typename T, eif_floating_t<T> = 0>
+template <typename T, typename = eif_floating_t<T>>
 inline vec3<T> sphericalToCartesian(const vec3<T> & v) {
     T sinTheta = std::sin(v.theta);
     T cosTheta = std::cos(v.theta);
@@ -43,7 +43,7 @@ inline vec3<T> sphericalToCartesian(const vec3<T> & v) {
     );
 }
 
-template <typename T, eif_floating_t<T> = 0>
+template <typename T, typename = eif_floating_t<T>>
 inline vec3<T> cartesianToSpherical(const vec3<T> & v) {
     T rad(magnitude(v));
     return vec3<T>(
@@ -53,7 +53,7 @@ inline vec3<T> cartesianToSpherical(const vec3<T> & v) {
     );
 }
 
-template <typename T, eif_floating_t<T> = 0>
+template <typename T, typename = eif_floating_t<T>>
 inline vec3<T> cylindricToCartesian(const vec3<T> & v) {
     return vec3<T>(
         v.rad * std::cos(v.theta),
@@ -62,7 +62,7 @@ inline vec3<T> cylindricToCartesian(const vec3<T> & v) {
     );
 }
 
-template <typename T, eif_floating_t<T> = 0>
+template <typename T, typename = eif_floating_t<T>>
 inline vec3<T> cartesianToCylindric(const vec3<T> & v) {
     return vec3<T>(
         magnitude(v),
@@ -142,7 +142,7 @@ inline fvec3 baryFromAngleC(float angle, float c) {
     return v;
 }
 
-template <typename T, eif_floating_t<T> = 0>
+template <typename T, typename = eif_floating_t<T>>
 inline vec2<T> pointOnDiscFibonacci(nat i, nat n) {
     return polarToCartesian(qc::vec2<T>(
         std::sqrt(T(i) / T(n - 1)),
@@ -150,7 +150,7 @@ inline vec2<T> pointOnDiscFibonacci(nat i, nat n) {
     ));
 }
 
-template <typename T, eif_floating_t<T> = 0>
+template <typename T, typename = eif_floating_t<T>>
 inline vec3<T> pointOnSphereFibonacci(nat i, nat n) {
     T z(T(1.0) - T(2 * i) / T(n - 1));
     return cylindricToCartesian(qc::vec3<T>(
@@ -165,7 +165,7 @@ inline vec3<T> pointOnSphereFibonacci(nat i, nat n) {
 template <typename T>
 struct Dampener {
 
-    static_assert(std::is_floating_point_v<T>);
+    static_assert(is_floating_point_v<T>);
 
     const T angularFreq, dampingRatio, dt;
 
@@ -227,14 +227,14 @@ struct CriticalDampener : public Dampener<T> {
 
 };
 
-template <typename T, typename U, eif_floating_t<T> = 0>
+template <typename T, typename U, typename = eif_floating_t<T>>
 void dampen(U & r_pos, const U & targetPos, U & r_vel, T angularFreq, T dt) {
     U dist(r_pos - targetPos);
     dampen(dist, r_vel, angularFreq, dt);
     r_pos = targetPos - dist;
 }
 
-template <typename T, typename U, eif_floating_t<T> = 0>
+template <typename T, typename U, typename = eif_floating_t<T>>
 void dampen(U & r_dist, U & r_vel, T angularFreq, T dt) {
     T expTerm(std::exp(-angularFreq * dt));
     U c1(r_vel + angularFreq * r_dist);
@@ -269,7 +269,7 @@ struct UnderDampener : public Dampener<T> {
 
 // Calculates the area of a non self-intersecting polygon
 // Points should be the vertices of the polygon given in order without duplicates
-template <typename T, eif_floating_t<T> = 0>
+template <typename T, typename = eif_floating_t<T>>
 inline T areaOfPoly(size_t n, const vec2<T> * points) {    
     T a{};
     for (size_t i(0); i < n - 1; ++i) {
@@ -283,7 +283,7 @@ inline T areaOfPoly(size_t n, const vec2<T> * points) {
 
 // Calculates the centroid, or center of mass, of a non self-intersecting polygon
 // Points should be the vertices of the polygon given in order without duplicates
-template <typename T, eif_floating_t<T> = 0>
+template <typename T, typename = eif_floating_t<T>>
 inline vec2<T> centroidOfPoly(size_t n, const vec2<T> * points) {
     T a{};
     vec2<T> c;

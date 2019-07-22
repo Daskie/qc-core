@@ -26,13 +26,13 @@ struct RandomEngineTransformer {
 template <typename T>
 struct RandomEngineTransformer<std::mt19937, T> {
     T operator()(std::uint_fast32_t result) const {
-        if constexpr (std::is_floating_point_v<T>) {
+        if constexpr (is_floating_point_v<T>) {
             return T(result) * T(0x1p-32L);
         }
-        else if constexpr (std::is_integral_v<T>) {
+        else if constexpr (is_integral_v<T>) {
             static_assert(sizeof(T) <= 4);
 
-            if constexpr (sizeof(T) < 4 || std::is_signed_v<T>) {
+            if constexpr (sizeof(T) < 4 || is_signed_v<T>) {
                 return T(result & std::numeric_limits<T>::max());
             }
             else {
@@ -53,13 +53,13 @@ struct RandomEngineTransformer<std::mt19937, T> {
 template <typename T>
 struct RandomEngineTransformer<std::mt19937_64, T> {
     T operator()(std::uint_fast64_t result) const {
-        if constexpr (std::is_floating_point_v<T>) {
+        if constexpr (is_floating_point_v<T>) {
             return T(result) * T(0x1p-64L);
         }
-        else if constexpr (std::is_integral_v<T>) {
+        else if constexpr (is_integral_v<T>) {
             static_assert(sizeof(T) <= 8);
 
-            if constexpr (sizeof(T) < 8 || std::is_signed_v<T>) {
+            if constexpr (sizeof(T) < 8 || is_signed_v<T>) {
                 return T(result & std::numeric_limits<T>::max());
             }
             else {
@@ -81,14 +81,14 @@ struct RandomEngineTransformer<std::mt19937_64, T> {
 template <typename T>
 struct RandomEngineTransformer<std::minstd_rand, T> {
     T operator()(std::uint_fast32_t result) const {
-        if constexpr (std::is_floating_point_v<T>) {
+        if constexpr (is_floating_point_v<T>) {
             return T(result) * T(0x1p-31L);
         }
-        else if constexpr (std::is_integral_v<T>) {
+        else if constexpr (is_integral_v<T>) {
             if constexpr (sizeof(T) < 4) {
                 return T(result & std::numeric_limits<T>::max());
             }
-            else if constexpr (sizeof(T) == 4 && std::is_signed_v<T>) {
+            else if constexpr (sizeof(T) == 4 && is_signed_v<T>) {
                 return T(result);
             }
             else {
@@ -147,10 +147,10 @@ class Random {
     // `T` must be arithmetic
     template <typename T>
     T next(T max) {
-        if constexpr (std::is_integral_v<T>) {
+        if constexpr (is_integral_v<T>) {
             return operator()() % max;
         }
-        else if constexpr (std::is_floating_point_v<T>) {
+        else if constexpr (is_floating_point_v<T>) {
             return operator()() * max;
         }
         else {

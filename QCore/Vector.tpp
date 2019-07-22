@@ -599,7 +599,7 @@ inline vec<T, t_n> & operator/=(vec<T, t_n> & v1, const vec<T, t_n> & v2) {
 
 template <typename T, int t_n>
 inline vec<T, t_n> & operator/=(vec<T, t_n> & v1, const T & v2) {
-    if constexpr (t_n > 1 && std::is_floating_point_v<T>) return v1 *= T(1.0) / v2;
+    if constexpr (t_n > 1 && is_floating_point_v<T>) return v1 *= T(1.0) / v2;
     if constexpr (t_n >= 1) v1.x /= v2;
     if constexpr (t_n >= 2) v1.y /= v2;
     if constexpr (t_n >= 3) v1.z /= v2;
@@ -647,8 +647,8 @@ Q_CX_ABLE vec<T, t_n> operator+(const vec<T, t_n> & v) {
 
 template <typename T, int t_n>
 Q_CX_ABLE vec<T, t_n> operator-(const vec<T, t_n> & v) {
-    if constexpr (std::is_unsigned_v<T>) return v;
-    if constexpr (!std::is_unsigned_v<T>) {
+    if constexpr (is_unsigned_v<T>) return v;
+    if constexpr (!is_unsigned_v<T>) {
         if constexpr (t_n == 2) return vec2<T>(-v.x, -v.y);
         if constexpr (t_n == 3) return vec3<T>(-v.x, -v.y, -v.z);
         if constexpr (t_n == 4) return vec4<T>(-v.x, -v.y, -v.z, -v.w);
@@ -735,7 +735,7 @@ Q_CX_ABLE vec<T, t_n> operator/(const vec<T, t_n> & v1, const vec<T, t_n> & v2) 
 
 template <typename T, int t_n>
 Q_CX_ABLE vec<T, t_n> operator/(const vec<T, t_n> & v1, const T & v2) {
-    if constexpr (std::is_floating_point_v<T>) {
+    if constexpr (is_floating_point_v<T>) {
         return v1 * (T(1.0) / v2);
     }
     if constexpr (t_n == 2) return vec2<T>(v1.x / v2, v1.y / v2);

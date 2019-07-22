@@ -554,7 +554,7 @@ struct span {
 
     constexpr span(const V & v1, const V & v2) noexcept;
 
-    template <typename Dummy = void, typename = std::enable_if_t<(t_n > 1), Dummy>>
+    template <typename Dummy = void, typename = enable_if_t<(t_n > 1), Dummy>>
     constexpr span(const T & v1, const T & v2) noexcept;
 
     //--------------------------------------------------------------------------

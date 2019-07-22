@@ -13,7 +13,7 @@ namespace qc {
 template <typename K, typename V>
 class DirectMap {
 
-    static_assert(std::is_arithmetic_v<K> || std::is_enum_v<K>);
+    static_assert(is_arithmetic_v<K> || is_enum_v<K>);
 
     using I = utype<sizeof(K)>;
 
