@@ -9,7 +9,7 @@
 
 
 #define Q_CONSTEX constexpr // workaround for IntelliSense bug
-#define Q_CX_ABLE
+#define Q_CX_ABLE inline
 
 
 

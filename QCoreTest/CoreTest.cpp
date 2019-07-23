@@ -121,8 +121,11 @@ template <typename T>
 void compileFunctionsFT() {
     T v(1.0);
 
-    qc::equalE(v, v);
-    qc::equalE(v, v, v);
+    qc::equal_e(v, v);
+    qc::equal_e(v, v, v);
+
+    qc::pow(v, 1);
+    qc::pow(v, 1u);
 
     qc::fract(v);
     qc::fract_i(v);
@@ -256,8 +259,8 @@ template <typename T>
 constexpr void compileFunctionsConstexprFT() {
     constexpr T v(1.0);
 
-    //qc::equalE(v, v);
-    //qc::equalE(v, v, v);
+    //qc::equal_e(v, v);
+    //qc::equal_e(v, v, v);
 
     //qc::fract(v);
     //qc::fract_i(v);

@@ -223,10 +223,10 @@ Q_CX_ABLE bool equal(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
 }
 
 template <typename T, int t_n, typename>
-Q_CX_ABLE bool equalE(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<T, t_n> & e) {
-    if constexpr (t_n == 2) return equalE(v1.x, v2.x, e.x) && equalE(v1.y, v2.y, e.y);
-    if constexpr (t_n == 3) return equalE(v1.x, v2.x, e.x) && equalE(v1.y, v2.y, e.y) && equalE(v1.z, v2.z, e.z);
-    if constexpr (t_n == 4) return equalE(v1.x, v2.x, e.x) && equalE(v1.y, v2.y, e.y) && equalE(v1.z, v2.z, e.z) && equalE(v1.w, v2.w, e.w);
+Q_CX_ABLE bool equal_e(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<T, t_n> & e) {
+    if constexpr (t_n == 2) return equal_e(v1.x, v2.x, e.x) && equal_e(v1.y, v2.y, e.y);
+    if constexpr (t_n == 3) return equal_e(v1.x, v2.x, e.x) && equal_e(v1.y, v2.y, e.y) && equal_e(v1.z, v2.z, e.z);
+    if constexpr (t_n == 4) return equal_e(v1.x, v2.x, e.x) && equal_e(v1.y, v2.y, e.y) && equal_e(v1.z, v2.z, e.z) && equal_e(v1.w, v2.w, e.w);
 }
 
 template <typename T, int t_n>

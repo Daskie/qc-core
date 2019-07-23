@@ -28,7 +28,7 @@ template <typename T, typename... Ts>
 Q_CX_ABLE bool equal(const T & v1, const T & v2, const Ts &... rest);
 
 template <typename T, typename = eif_floating_t<T>>
-Q_CX_ABLE bool equalE(T v1, T v2, T e = std::numeric_limits<T>::epsilon());
+Q_CX_ABLE bool equal_e(T v1, T v2, T e = std::numeric_limits<T>::epsilon());
 
 template <typename T, typename = eif_arithmetic_t<T>>
 Q_CX_ABLE T sign(T v);
@@ -48,6 +48,14 @@ Q_CX_ABLE nat ceil(T v);
 
 template <typename T, typename = eif_integral_t<T>>
 Q_CX_ABLE T ceil(T v);
+
+// ~2.15x faster than std::pow
+template <typename T, typename = eif_floating_t<T>>
+Q_CX_ABLE T pow(T v, int e);
+
+// ~2.15x faster than std::pow
+template <typename T, typename = eif_floating_t<T>>
+Q_CX_ABLE T pow(T v, uint e);
 
 template <typename T>
 Q_CONSTEX T pow2(int v);

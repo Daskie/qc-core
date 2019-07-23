@@ -209,7 +209,7 @@ template <typename T, int t_n>
 Q_CX_ABLE bool equal(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 
 template <typename T, int t_n, typename = eif_floating_t<T>>
-Q_CX_ABLE bool equalE(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<T, t_n> & e = vec<T, t_n>(std::numeric_limits<T>::min()));
+Q_CX_ABLE bool equal_e(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<T, t_n> & e = vec<T, t_n>(std::numeric_limits<T>::min()));
 
 template <typename T, int t_n>
 Q_CX_ABLE bool equal(const vec<T, t_n> & v);

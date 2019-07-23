@@ -43,7 +43,7 @@ Q_CX_ABLE bool equal(const T & v1, const T & v2, const Ts &... rest) {
 }
 
 template <typename T, typename>
-Q_CX_ABLE bool equalE(T v1, T v2, T e) {
+Q_CX_ABLE bool equal_e(T v1, T v2, T e) {
     return zero(v1 - v2, e);
 }
 
@@ -77,6 +77,29 @@ Q_CX_ABLE nat ceil(T v) {
 template <typename T, typename>
 Q_CX_ABLE T ceil(T v) {
     return v;
+}
+
+template <typename T, typename>
+Q_CX_ABLE T pow(T v, int e) {
+    if (e >= 0) {
+        return pow(v, uint(e));
+    }
+    else {
+        return pow(T(1.0) / v, uint(-e));
+    }
+}
+
+template <typename T, typename>
+Q_CX_ABLE T pow(T v, uint e) {
+    T r(T(1.0));
+
+    do {
+        if (e & 1) r *= v; // exponent is odd
+        e >>= 1;
+        v *= v;
+    } while (e);
+
+    return r;
 }
 
 template <typename T>

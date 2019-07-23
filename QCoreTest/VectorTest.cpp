@@ -688,12 +688,12 @@ void compileFunctionsFT() {
     qc::span3<T> s3;
     qc::span4<T> s4;
 
-    qc::equalE(v2, v2);
-    qc::equalE(v3, v3);
-    qc::equalE(v4, v4);
-    qc::equalE(v2, v2, v2);
-    qc::equalE(v3, v3, v3);
-    qc::equalE(v4, v4, v4);
+    qc::equal_e(v2, v2);
+    qc::equal_e(v3, v3);
+    qc::equal_e(v4, v4);
+    qc::equal_e(v2, v2, v2);
+    qc::equal_e(v3, v3, v3);
+    qc::equal_e(v4, v4, v4);
 
     qc::pow(v2, v);
     qc::pow(v3, v);
@@ -1110,12 +1110,12 @@ constexpr void compileFunctionsConstexprFT() {
     constexpr qc::span3<T> s3(v3, v3);
     constexpr qc::span4<T> s4(v4, v4);
 
-    //qc::equalE(v2, v2);
-    //qc::equalE(v3, v3);
-    //qc::equalE(v4, v4);
-    //qc::equalE(v2, v2, v2);
-    //qc::equalE(v3, v3, v3);
-    //qc::equalE(v4, v4. v4);
+    //qc::equal_e(v2, v2);
+    //qc::equal_e(v3, v3);
+    //qc::equal_e(v4, v4);
+    //qc::equal_e(v2, v2, v2);
+    //qc::equal_e(v3, v3, v3);
+    //qc::equal_e(v4, v4. v4);
 
     //qc::mix(v2, v2, v);
     //qc::mix(v3, v3, v);
