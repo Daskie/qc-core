@@ -2,11 +2,7 @@
 
 #include "QCore/CoreFunc.hpp"
 
-
-
 namespace {
-
-
 
 void compileTyping() {
     qc::nat nat_;   nat_;
@@ -336,11 +332,7 @@ constexpr bool compileFunctionsConstexpr() {
     return true;
 }
 
-
-
 }
-
-
 
 void testCore() {
     compileTyping();

@@ -2,12 +2,7 @@
 
 #include "QCore/Bits.hpp"
 
-
-
-
 namespace {
-
-
 
 template <typename T>
 void compileFunctionsUT() {
@@ -43,11 +38,7 @@ void compileFunctions() {
     qc::bits::repeat<qc::u32, qc::u64>(~qc::u32(0u));
 }
 
-
-
 }
-
-
 
 void testBits() {
     compileFunctions();

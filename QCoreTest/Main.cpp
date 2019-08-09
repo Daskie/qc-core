@@ -2,8 +2,6 @@
 
 #include "QCoreTest.hpp"
 
-
-
 int main(void) {
     testCore();
     testBits();

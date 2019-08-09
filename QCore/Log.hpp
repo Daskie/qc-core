@@ -1,15 +1,9 @@
 #pragma once
 
-
-
 #include <iostream>
 #include <string>
 
-
-
 namespace qc {
-
-
 
 inline void error_break() {}
 
@@ -17,11 +11,7 @@ inline void warning_break() {}
 
 inline void exception_break() {}
 
-
-
 }
-
-
 
 #define Q_ERROR(msg) do { \
     std::cout << "ERROR" << std::endl; \

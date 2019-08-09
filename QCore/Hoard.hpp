@@ -1,14 +1,8 @@
 #pragma once
 
-
-
 #include <vector>
 
-
-
 namespace qc {
-
-
 
 template <typename T>
 class Hoard {
@@ -112,7 +106,5 @@ class Hoard {
 template <typename T> std::vector<std::vector<T>> Hoard<T>::s_hoards;
 
 //template <typename T> using HP = Hoard<T>::HP;
-
-
 
 }

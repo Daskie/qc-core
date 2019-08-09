@@ -1,16 +1,10 @@
 namespace qc {
 
-
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // MAT2 IMPLEMENTATION -------------------------------------------------------------------------------------------------
 
-
-
 //------------------------------------------------------------------------------
 // Constructors
-
-
 
 template <typename T>
 constexpr mat<T, 2>::mat() noexcept :
@@ -57,12 +51,8 @@ constexpr mat<T, 2>::mat(const mat4<U> & m) noexcept :
     c2(m.c2)
 {}
 
-
-
 //------------------------------------------------------------------------------
 // Assignment
-
-
 
 template <typename T>
 template <typename U, int t_n>
@@ -73,12 +63,8 @@ inline mat2<T> & mat<T, 2>::operator=(const mat<U, t_n> & m) noexcept {
     return *this;
 }
 
-
-
 //------------------------------------------------------------------------------
 // Access
-
-
 
 template <typename T>
 inline vec2<T> & mat<T, 2>::col(int i) {
@@ -108,17 +94,11 @@ constexpr vec2<T> mat<T, 2>::row() const noexcept {
     return vec2<T>(c1.at<t_i>(), c2.at<t_i>());
 }
 
-
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // MAT3 IMPLEMENTATION -------------------------------------------------------------------------------------------------
 
-
-
 //------------------------------------------------------------------------------
 // Constructors
-
-
 
 template <typename T>
 constexpr mat<T, 3>::mat() noexcept :
@@ -173,12 +153,8 @@ constexpr mat<T, 3>::mat(const mat4<U> & m) noexcept :
     c3(m.c3)
 {}
 
-
-
 //------------------------------------------------------------------------------
 // Assignment
-
-
 
 template <typename T>
 template <typename U, int t_n>
@@ -190,12 +166,8 @@ inline mat3<T> & mat<T, 3>::operator=(const mat<U, t_n> & m) noexcept {
     return *this;
 }
 
-
-
 //------------------------------------------------------------------------------
 // Access
-
-
 
 template <typename T>
 inline vec3<T> & mat<T, 3>::col(int i) {
@@ -226,17 +198,11 @@ constexpr vec3<T> mat<T, 3>::row() const noexcept {
     return vec3<T>(c1.at<t_i>(), c2.at<t_i>(), c3.at<t_i>());
 }
 
-
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // MAT4 IMPLEMENTATION -------------------------------------------------------------------------------------------------
 
-
-
 //------------------------------------------------------------------------------
 // Constructors
-
-
 
 template <typename T>
 constexpr mat<T, 4>::mat() noexcept :
@@ -299,12 +265,8 @@ constexpr mat<T, 4>::mat(const mat4<U> & m) noexcept :
     c4(m.c4)
 {}
 
-
-
 //------------------------------------------------------------------------------
 // Assignment
-
-
 
 template <typename T>
 template <typename U, int t_n>
@@ -317,12 +279,8 @@ inline mat4<T> & mat<T, 4>::operator=(const mat<U, t_n> & m) noexcept {
     return *this;
 }
 
-
-
 //------------------------------------------------------------------------------
 // Access
-
-
 
 template <typename T>
 inline vec4<T> & mat<T, 4>::col(int i) {
@@ -354,17 +312,11 @@ constexpr vec4<T> mat<T, 4>::row() const noexcept {
     return vec4<T>(c1.at<t_i>(), c2.at<t_i>(), c3.at<t_i>(), c4.at<t_i>());
 }
 
-
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // MAT FUNCTIONS IMPLEMENTATION ----------------------------------------------------------------------------------------
 
-
-
 //------------------------------------------------------------------------------
 // Arithmetic Assignment
-
-
 
 //--- add assign ---
 
@@ -464,12 +416,8 @@ inline mat<T, t_n> & operator/=(mat<T, t_n> & m, T v) {
     return m *= T(1.0) / v;
 }
 
-
-
 //------------------------------------------------------------------------------
 // Arithmetic Operators
-
-
 
 //--- positive ---
 
@@ -623,12 +571,8 @@ inline mat<T, t_n> operator/(T v, const mat<T, t_n> & m) {
     if constexpr (t_n == 4) return mat4<T>(v / m.c1, v / m.c2, v / m.c3, v / m.c4);
 }
 
-
-
 //------------------------------------------------------------------------------
 // Comparison Operators
-
-
 
 //--- equal to ---
 
@@ -646,12 +590,8 @@ inline bool operator!=(const mat<T, t_n> & m1, const mat<T, t_n> & m2) {
     return !(m1 == m2);
 }
 
-
-
 //------------------------------------------------------------------------------
 // Constants
-
-
 
 template <typename T, int t_n>
 constexpr mat<T, t_n> fullMat(T v) {
@@ -664,7 +604,5 @@ template <typename T, int t_n>
 constexpr mat<T, t_n> nullMat() {
     return fullMat<T, t_n>(T(0.0));
 }
-
-
 
 }

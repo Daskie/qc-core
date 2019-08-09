@@ -1,17 +1,11 @@
 namespace qc {
 
-
-
 //======================================================================================================================
 // VEC2 IMPLEMENTATION /////////////////////////////////////////////////////////////////////////////////////////////////
 //======================================================================================================================
 
-
-
 //------------------------------------------------------------------------------
 // Constructors
-
-
 
 template <typename T>
 constexpr vec<T, 2>::vec() noexcept :
@@ -52,12 +46,8 @@ constexpr vec<T, 2>::vec(T v1, T v2) noexcept :
     x(v1), y(v2)
 {}
 
-
-
 //------------------------------------------------------------------------------
 // Assignment
-
-
 
 template <typename T>
 inline vec2<T> & vec<T, 2>::operator=(T v) noexcept {
@@ -73,12 +63,8 @@ inline vec2<T> & vec<T, 2>::operator=(const vec<T, t_n> & v) noexcept {
     return *this;
 }
 
-
-
 //------------------------------------------------------------------------------
 // Access
-
-
 
 template <typename T>
 template <int t_i>
@@ -96,8 +82,6 @@ constexpr T vec<T, 2>::at() const noexcept {
     if constexpr (t_i == 1) return y;
 }
 
-
-
 template <typename T>
 inline T & vec<T, 2>::operator[](int i) {
     return *(&x + i);
@@ -108,18 +92,12 @@ inline T vec<T, 2>::operator[](int i) const {
     return *(&x + i);
 }
 
-
-
 //======================================================================================================================
 // VEC3 IMPLEMENTATION /////////////////////////////////////////////////////////////////////////////////////////////////
 //======================================================================================================================
 
-
-
 //------------------------------------------------------------------------------
 // Constructors
-
-
 
 template <typename T>
 constexpr vec<T, 3>::vec() noexcept :
@@ -170,12 +148,8 @@ Q_CX_ABLE vec<T, 3>::vec(T v1, const vec2<T> & v2) noexcept :
     x(v1), y(v2.x), z(v2.y)
 {}
 
-
-
 //------------------------------------------------------------------------------
 // Assignment
-
-
 
 template <typename T>
 inline vec3<T> & vec<T, 3>::operator=(T v) noexcept {
@@ -192,12 +166,8 @@ inline vec3<T> & vec<T, 3>::operator=(const vec<T, t_n> & v) noexcept {
     return *this;
 }
 
-
-
 //------------------------------------------------------------------------------
 // Access
-
-
 
 template <typename T>
 template <int t_i>
@@ -216,8 +186,6 @@ constexpr T vec<T, 3>::at() const noexcept {
     if constexpr (t_i == 1) return y;
     if constexpr (t_i == 2) return z;
 }
-
-
 
 template <typename T>
 inline T & vec<T, 3>::operator[](int i) {
@@ -241,18 +209,12 @@ inline vec2<T> & vec<T, 3>::yz() noexcept {
     return reinterpret_cast<vec2<T> &>(y);
 }
 
-
-
 //======================================================================================================================
 // VEC4 IMPLEMENTATION /////////////////////////////////////////////////////////////////////////////////////////////////
 //======================================================================================================================
 
-
-
 //------------------------------------------------------------------------------
 // Constructors
-
-
 
 template <typename T>
 constexpr vec<T, 4>::vec() noexcept :
@@ -323,12 +285,8 @@ Q_CX_ABLE vec<T, 4>::vec(T v1, const vec3<T> & v2) noexcept :
     x(v1), y(v2.x), z(v2.y), w(v2.z)
 {}
 
-
-
 //------------------------------------------------------------------------------
 // Assignment
-
-
 
 template <typename T>
 inline vec4<T> & vec<T, 4>::operator=(T v) noexcept {
@@ -346,12 +304,8 @@ inline vec4<T> & vec<T, 4>::operator=(const vec<T, t_n> & v) noexcept {
     return *this;
 }
 
-
-
 //------------------------------------------------------------------------------
 // Access
-
-
 
 template <typename T>
 template <int t_i>
@@ -373,8 +327,6 @@ constexpr T vec<T, 4>::at() const noexcept {
     if constexpr (t_i == 3) return w;
 }
 
-
-
 template <typename T>
 inline T & vec<T, 4>::operator[](int i) {
     return *(&x + i);
@@ -384,8 +336,6 @@ template <typename T>
 inline T vec<T, 4>::operator[](int i) const {
     return *(&x + i);
 }
-
-
 
 template <typename T>
 inline vec2<T> & vec<T, 4>::xy() noexcept {
@@ -412,18 +362,12 @@ inline vec3<T> & vec<T, 4>::yzw() noexcept {
     return reinterpret_cast<vec3<T> &>(y);
 }
 
-
-
 //======================================================================================================================
 // SPAN IMPLEMENTATION /////////////////////////////////////////////////////////////////////////////////////////////////
 //======================================================================================================================
 
-
-
 //------------------------------------------------------------------------------
 // Constructors
-
-
 
 template <typename T, int t_n>
 constexpr span<T, t_n>::span() noexcept :
@@ -458,12 +402,8 @@ constexpr span<T, t_n>::span(T v1, T v2) noexcept :
     max(v2)
 {}
 
-
-
 //------------------------------------------------------------------------------
 // Assignment
-
-
 
 template <typename T, int t_n>
 template <int t_m>
@@ -473,18 +413,12 @@ inline span<T, t_n> & span<T, t_n>::operator=(const span<T, t_m> & s) noexcept {
     return *this;
 }
 
-
-
 //======================================================================================================================
 // FUNCTION IMPLEMENTATION /////////////////////////////////////////////////////////////////////////////////////////////
 //======================================================================================================================
 
-
-
 //------------------------------------------------------------------------------
 // Arithmetic Assignment
-
-
 
 //--- pre increment ---
 
@@ -627,12 +561,8 @@ inline vec<T, t_n> & operator%=(vec<T, t_n> & v1, T v2) {
     return v1;
 }
 
-
-
 //------------------------------------------------------------------------------
 // Arithmetic Operators
-
-
 
 //--- positive ---
 
@@ -773,12 +703,8 @@ Q_CX_ABLE vec<T, t_n> operator%(T v1, const vec<T, t_n> & v2) {
     if constexpr (t_n == 4) return vec4<T>(mod(v1, v2.x), mod(v1, v2.y), mod(v1, v2.z), mod(v1, v2.w));
 }
 
-
-
 //------------------------------------------------------------------------------
 // Comparison Operators
-
-
 
 //--- equal to ---
 
@@ -928,12 +854,8 @@ Q_CX_ABLE bvec<t_n> operator>=(T v1, const vec<T, t_n> & v2) {
     if constexpr (t_n == 4) return bvec4(v1 >= v2.x, v1 >= v2.y, v1 >= v2.z, v1 >= v2.w);
 }
 
-
-
 //------------------------------------------------------------------------------
 // Logic Operators
-
-
 
 template <typename T, int t_n>
 Q_CX_ABLE bvec<t_n> operator&&(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
@@ -956,12 +878,8 @@ Q_CX_ABLE bvec<t_n> operator!(const vec<T, t_n> & v) {
     if constexpr (t_n == 4) return bvec4(!v.x, !v.y, !v.z, !v.w);
 }
 
-
-
 //------------------------------------------------------------------------------
 // Condensation
-
-
 
 template <typename T, int t_n>
 Q_CX_ABLE T sum(const vec<T, t_n> & v) {
@@ -991,12 +909,8 @@ Q_CX_ABLE bool any(const vec<T, t_n> & v) {
     if constexpr (t_n == 4) return v.x || v.y || v.z || v.w;
 }
 
-
-
 //------------------------------------------------------------------------------
 // Other
-
-
 
 template <typename T, int t_n>
 Q_CX_ABLE T min(const vec<T, t_n> & v) {
@@ -1066,7 +980,5 @@ Q_CX_ABLE duo<T> minmax(const vec<T, t_n> & v) {
     if constexpr (t_n == 3) return minmax(v.x, v.y, v.z);
     if constexpr (t_n == 4) return minmax(v.x, v.y, v.z, v.w);
 }
-
-
 
 }

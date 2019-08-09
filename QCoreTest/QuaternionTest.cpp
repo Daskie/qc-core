@@ -4,11 +4,7 @@
 
 #include "QCore/QuaternionFunc.hpp"
 
-
-
 namespace {
-
-
 
 template <typename T>
 void compileClassesT() {
@@ -182,11 +178,7 @@ void compileCasts() {
     compileCastsT<double>();
 }
 
-
-
 }
-
-
 
 void testQuaternion() {
     compileClasses();

@@ -1,13 +1,9 @@
 #pragma once
 
-
-
 #include <iostream>
 
 #include "Vector.hpp"
 #include "CoreFunc.hpp"
-
-
 
 namespace qc {
 
@@ -20,8 +16,6 @@ template <typename T, int t_n> std::ostream & operator<<(std::ostream & os, cons
 
 template <typename T, int t_n> std::ostream & operator<<(std::ostream & os, const span<T, t_n> & s);
 
-
-
 //==============================================================================
 // pow
 //------------------------------------------------------------------------------
@@ -32,16 +26,12 @@ vec<T, t_n> pow(const vec<T, t_n> & v, T p);
 template <typename T, int t_n, typename = eif_floating_t<T>>
 vec<T, t_n> pow(const vec<T, t_n> & v, const vec<T, t_n> & p);
 
-
-
 //==============================================================================
 // exp
 //------------------------------------------------------------------------------
 
 template <typename T, int t_n, typename = eif_t<is_floating_point_v<T>>>
 vec<T, t_n> exp(const vec<T, t_n> & v);
-
-
 
 //==============================================================================
 // magnitude
@@ -53,16 +43,12 @@ T magnitude(const vec<T, t_n> & v);
 template <typename T, int t_n>
 T magnitude2(const vec<T, t_n> & v);
 
-
-
 //==============================================================================
 // normalize
 //------------------------------------------------------------------------------
 
 template <typename T, int t_n, typename = eif_floating_t<T>>
 vec<T, t_n> normalize(const vec<T, t_n> & v);
-
-
 
 //==============================================================================
 // normalizeAssign
@@ -71,16 +57,12 @@ vec<T, t_n> normalize(const vec<T, t_n> & v);
 template <typename T, int t_n, typename = eif_floating_t<T>>
 vec<T, t_n> & normalizeAssign(vec<T, t_n> & v);
 
-
-
 //==============================================================================
 // dot
 //------------------------------------------------------------------------------
 
 template <typename T, int t_n>
 T dot(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
-
-
 
 //==============================================================================
 // cross
@@ -92,16 +74,12 @@ T cross(const vec2<T> & v1, const vec2<T> & v2);
 template <typename T>
 vec3<T> cross(const vec3<T> & v1, const vec3<T> & v2);
 
-
-
 //==============================================================================
 // parallel
 //------------------------------------------------------------------------------
 
 template <typename T, int t_n>
 bool parallel(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
-
-
 
 //==============================================================================
 // orthogonal
@@ -110,16 +88,12 @@ bool parallel(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 template <typename T, int t_n>
 bool orthogonal(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 
-
-
 //==============================================================================
 // ortho
 //------------------------------------------------------------------------------
 
 template <typename T, int t_n>
 Q_CX_ABLE vec<T, t_n> ortho(const vec<T, t_n> & v);
-
-
 
 //==============================================================================
 // orthogonalize
@@ -133,8 +107,6 @@ void orthogonalize(const vec3<T> & v1, vec3<T> & v2, vec3<T> & v3);
 template <typename T, typename = eif_floating_t<T>>
 void orthogonalize_n(const vec3<T> & v1, vec3<T> & v2, vec3<T> & v3);
 
-
-
 //==============================================================================
 // reflect
 //------------------------------------------------------------------------------
@@ -143,8 +115,6 @@ template <typename T, int t_n, typename = eif_floating_t<T>>
 vec<T, t_n> reflect(const vec<T, t_n> & v, const vec<T, t_n> & n);
 template <typename T, int t_n, typename = eif_floating_t<T>>
 vec<T, t_n> reflect_n(const vec<T, t_n> & v, const vec<T, t_n> & n);
-
-
 
 //==============================================================================
 // angle
@@ -155,16 +125,12 @@ T angle(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 template <typename T, int t_n, typename = eif_floating_t<T>>
 T angle_n(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 
-
-
 //==============================================================================
 // sort
 //------------------------------------------------------------------------------
 
 template <typename T, int t_n>
 void sort(const vec<T, t_n> & v);
-
-
 
 //==============================================================================
 // clamp
@@ -181,8 +147,6 @@ Q_CX_ABLE vec<T, t_n> clamp(const vec<T, t_n> & v, const span<T, t_n> & span);
 template <typename T>
 Q_CX_ABLE T clamp(T v, const span1<T> & span);
 
-
-
 //==============================================================================
 // abs
 //------------------------------------------------------------------------------
@@ -190,16 +154,12 @@ Q_CX_ABLE T clamp(T v, const span1<T> & span);
 template <typename T, int t_n>
 Q_CX_ABLE vec<T, t_n> abs(const vec<T, t_n> & v);
 
-
-
 //==============================================================================
 // zero
 //------------------------------------------------------------------------------
 
 template <typename T, int t_n>
 Q_CX_ABLE bool zero(const vec<T, t_n> & v, T e = std::numeric_limits<T>::min());
-
-
 
 //==============================================================================
 // equal
@@ -214,8 +174,6 @@ Q_CX_ABLE bool equal_e(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec
 template <typename T, int t_n>
 Q_CX_ABLE bool equal(const vec<T, t_n> & v);
 
-
-
 //==============================================================================
 // floor
 //------------------------------------------------------------------------------
@@ -223,16 +181,12 @@ Q_CX_ABLE bool equal(const vec<T, t_n> & v);
 template <typename T, int t_n>
 Q_CX_ABLE vec<nat, t_n> floor(const vec<T, t_n> & v);
 
-
-
 //==============================================================================
 // ceil
 //------------------------------------------------------------------------------
 
 template <typename T, int t_n>
 Q_CX_ABLE vec<nat, t_n> ceil(const vec<T, t_n> & v);
-
-
 
 //==============================================================================
 // mix
@@ -256,8 +210,6 @@ Q_CX_ABLE T mix(T v1, T v2, T v3, T v4, const vec4<T> & weights);
 template <typename T, int t_n, typename = eif_floating_t<T>>
 Q_CX_ABLE vec<T, t_n> mix(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<T, t_n> & v3, const vec<T, t_n> & v4, const vec4<T> & weights);
 
-
-
 //==============================================================================
 // transnorm
 //------------------------------------------------------------------------------
@@ -268,16 +220,12 @@ Q_CX_ABLE vec<T, t_n> mix(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const 
 template <typename To, typename From, int t_n, typename = eif_t<is_arithmetic_v<To> && is_arithmetic_v<From>>>
 Q_CONSTEX vec<To, t_n> transnorm(const vec<From, t_n> & v);
 
-
-
 //==============================================================================
 // intersect
 //------------------------------------------------------------------------------
 
 template <typename T, int t_n>
 Q_CX_ABLE span<T, t_n> intersect(const span<T, t_n> & s1, const span<T, t_n> & s2);
-
-
 
 //==============================================================================
 // mipmaps
@@ -286,8 +234,6 @@ Q_CX_ABLE span<T, t_n> intersect(const span<T, t_n> & s1, const span<T, t_n> & s
 template <typename T, int t_n, typename = eif_integral_t<T>>
 Q_CX_ABLE T mipmaps(const vec<T, t_n> & size);
 
-
-
 //==============================================================================
 // composite
 //------------------------------------------------------------------------------
@@ -295,10 +241,6 @@ Q_CX_ABLE T mipmaps(const vec<T, t_n> & size);
 template <typename T, int t_n>
 Q_CX_ABLE vec<T, t_n> composite(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 
-
-
 }
-
-
 
 #include "VectorFunc.tpp"

@@ -1,15 +1,9 @@
 #pragma once
 
-
-
 #include "Matrix.hpp"
 #include "VectorFunc.hpp"
 
-
-
 namespace qc {
-
-
 
 template <typename T, int t_n> std::ostream & operator<<(std::ostream & os, const mat<T, t_n> & m);
 
@@ -25,12 +19,8 @@ template <typename T, int t_n> T determinant(const mat<T, t_n> & m);
 
 template <typename T, int t_n> mat<T, t_n> inverse(const mat<T, t_n> & m);
 
-
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // TRANSFORMATIONS -----------------------------------------------------------------------------------------------------
-
-
 
 template <typename T, int t_n> mat<T, t_n + 1> translate(const vec<T, t_n> & delta);
 template <typename T, int t_mn, int t_vn, typename = eif_t<t_mn == t_vn + 1>> mat<T, t_mn> & translate(mat<T, t_mn> & mat, const vec<T, t_vn> & delta);
@@ -96,10 +86,6 @@ template <typename T> mat4<T> view_n(const vec3<T> & camLoc, const vec3<T> & cam
 template <typename T> mat4<T> view_o(const vec3<T> & camLoc, const vec3<T> & camU, const vec3<T> & camV, const vec3<T> & camW);
 template <typename T> mat4<T> view_on(const vec3<T> & camLoc, const vec3<T> & camU, const vec3<T> & camV, const vec3<T> & camW);
 
-
-
 }
-
-
 
 #include "MatrixFunc.tpp"

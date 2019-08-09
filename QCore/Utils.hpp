@@ -1,7 +1,5 @@
 #pragma once
 
-
-
 #include <memory>
 #include <fstream>
 #include <random>
@@ -16,8 +14,6 @@
 #include <filesystem>
 
 #include "Math.hpp"
-
-
 
 namespace qc {
 
@@ -202,11 +198,7 @@ inline std::string timeString(double seconds) {
     return ss.str();
 }
 
-
-
 namespace print {
-
-
 
 namespace detail {
 
@@ -243,8 +235,6 @@ struct binary_s {
 
 }
 
-
-
 template <typename T>
 detail::binary_s<T> binary(const T & v, int blockSize = sizeof(T)) {
     return detail::binary_s<T>(v, blockSize);
@@ -278,10 +268,6 @@ struct line {
 
 };
 
-
-
 }
-
-
 
 }

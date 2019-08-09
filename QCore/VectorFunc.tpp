@@ -1,7 +1,5 @@
 namespace qc {
 
-
-
 template <typename T, int t_n>
 inline std::ostream & operator<<(std::ostream & os, const vec<T, t_n> & v) {
     os << "[";
@@ -355,7 +353,5 @@ Q_CX_ABLE vec<T, t_n> composite(const vec<T, t_n> & v1, const vec<T, t_n> & v2) 
 
     return v;
 }
-
-
 
 }

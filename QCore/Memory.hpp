@@ -1,14 +1,8 @@
 #pragma once
 
-
-
 #include <cstddef>
 
-
-
 namespace qc {
-
-
 
 template <typename T>
 class RecordAllocator {
@@ -80,7 +74,5 @@ template <typename T1, typename T2>
 bool operator!=(const RecordAllocator<T1> & a1, const RecordAllocator<T2> & a2) noexcept {
     return false;
 }
-
-
 
 }

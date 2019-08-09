@@ -1,10 +1,6 @@
 namespace qc {
 
-
-
 namespace bits {
-
-
 
 template <typename SrcT, typename DstT, typename>
 inline DstT spread(SrcT v) {
@@ -117,10 +113,6 @@ inline T scramble(T v) {
     }
 }
 
-
-
 }
-
-
 
 }

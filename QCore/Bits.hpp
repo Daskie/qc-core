@@ -1,18 +1,10 @@
 #pragma once
 
-
-
 #include "CoreFunc.hpp"
-
-
 
 namespace qc {
 
-
-
 namespace bits {
-
-
 
 template <typename T, typename = eif_uintegral_t<T>>
 constexpr T rotateL(T v, int n);
@@ -32,14 +24,8 @@ T interleave(T v);
 template <typename T, typename = eif_uintegral_t<T>>
 T scramble(T v);
 
-
-
 }
 
-
-
 }
-
-
 
 #include "Bits.tpp"

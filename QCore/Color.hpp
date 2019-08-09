@@ -1,14 +1,8 @@
 #pragma once
 
-
-
 #include "Vector.hpp"
 
-
-
 namespace qc {
-
-
 
 namespace color {
 
@@ -146,7 +140,5 @@ inline vec3<T> hsl2rgb(const vec3<T> & hsl) {
 
     return rgb;
 }
-
-
 
 }

@@ -4,19 +4,11 @@
 
 #include "QCore/Math.hpp"
 
-
-
 namespace {
 
 
 
-
-
-
-
 }
-
-
 
 void testMath() {
 

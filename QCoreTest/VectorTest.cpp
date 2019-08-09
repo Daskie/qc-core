@@ -4,11 +4,7 @@
 
 #include "QCore/VectorFunc.hpp"
 
-
-
 namespace {
-
-
 
 template <typename T>
 void compileClassesT() {
@@ -1387,11 +1383,7 @@ constexpr bool compileConstants() {
     return true;
 }
 
-
-
 }
-
-
 
 void testVector() {
     compileClasses();

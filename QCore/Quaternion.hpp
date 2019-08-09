@@ -1,14 +1,8 @@
 #pragma once
 
-
-
 #include "Matrix.hpp"
 
-
-
 namespace qc {
-
-
 
 template <typename T> struct quat;
 
@@ -21,12 +15,8 @@ namespace types {
 
 }
 
-
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // QUAT ----------------------------------------------------------------------------------------------------------------
-
-
 
 template <typename T>
 struct quat {
@@ -57,12 +47,8 @@ struct quat {
 
 };
 
-
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // QUAT FUNCTIONS ------------------------------------------------------------------------------------------------------
-
-
 
 //--- arithmetic assignment ---
 
@@ -98,10 +84,6 @@ template <typename T> bool operator==(const quat<T> & q1, const quat<T> & q2);
 
 template <typename T> bool operator!=(const quat<T> & q1, const quat<T> & q2);
 
-
-
 }
-
-
 
 #include "Quaternion.tpp"

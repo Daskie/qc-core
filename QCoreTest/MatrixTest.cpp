@@ -4,11 +4,7 @@
 
 #include "QCore/MatrixFunc.hpp"
 
-
-
 namespace {
-
-
 
 template <typename T>
 void compileClassesT() {
@@ -448,11 +444,7 @@ void compileCasts() {
     compileCastsT<double>();
 }
 
-
-
 }
-
-
 
 void testMatrix() {
     compileClasses();

@@ -1,18 +1,12 @@
 #pragma once
 
-
-
 #include <memory>
 
-#include "QHash/Map.hpp"
+#include <QHash/Map.hpp>
 
 #include "Core.hpp"
 
-
-
 namespace qc {
-
-
 
 template <typename T>
 class Depot {
@@ -49,7 +43,5 @@ class Depot {
 };
 
 template <typename T> qc::Map<const T *, std::unique_ptr<T>> Depot<T>::s_store;
-
-
 
 }

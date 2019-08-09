@@ -1,11 +1,7 @@
 namespace qc {
 
-
-
 //------------------------------------------------------------------------------
 // Other
-
-
 
 //--- operator<< ---
 
@@ -167,12 +163,8 @@ inline mat<T, t_n> inverse(const mat<T, t_n> & m) {
     return adjoint(m) / determinant(m);
 }
 
-
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // TRANSFORMATIONS IMPLEMENTATION --------------------------------------------------------------------------------------
-
-
 
 template <typename T, int t_n>
 inline mat<T, t_n + 1> translate(const vec<T, t_n> & delta) {
@@ -555,7 +547,5 @@ inline mat4<T> view_on(const vec3<T> & camLoc, const vec3<T> & camU, const vec3<
         dot(camU, trans), dot(camV, trans), dot(camW, trans), T(1.0)
     );
 }
-
-
 
 }

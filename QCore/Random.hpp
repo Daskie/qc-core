@@ -1,16 +1,10 @@
 #pragma once
 
-
-
 #include <random>
 
 #include "Core.hpp"
 
-
-
 namespace qc {
-
-
 
 // Transforms random engine `Engine` result into some type `T`
 template <typename Engine, typename T>
@@ -174,8 +168,6 @@ class Random {
 
 };
 
-
-
 //generates n random values between min and 1, the sum of which equals 1
 //if min * n > 1, min will be scaled down so that min * n == 1
 /*inline void randomDistribution(unat n, float * dest, float min) {
@@ -192,7 +184,5 @@ class Random {
         dest[i] = dest[i] / total * excess + min;
     }
 }*/
-
-
 
 }

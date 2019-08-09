@@ -1,16 +1,10 @@
 #pragma once
 
-
-
 #include <cmath>
 
 #include "MatrixFunc.hpp"
 
-
-
-namespace qc {
-
-
+namespace qc {    
 
 template <typename T, typename = eif_floating_t<T>>
 inline vec2<T> polarToCartesian(const vec2<T> & v) {
@@ -299,7 +293,5 @@ inline vec2<T> centroidOfPoly(size_t n, const vec2<T> * points) {
     c += (v1 + v2) * temp;
     return c / (T(3.0) * a);
 }
-
-
 
 }

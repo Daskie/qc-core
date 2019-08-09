@@ -1,15 +1,9 @@
 #pragma once
 
-
-
 #include "Quaternion.hpp"
 #include "MatrixFunc.hpp"
 
-
-
 namespace qc {
-
-
 
 //--- other ---
 
@@ -34,12 +28,8 @@ template <typename T> vec3<T> quatAxis_n(const quat<T> & q);
 
 template <typename T> quat<T> mix(const quat<T> & q1, const quat<T> & q2, T t);
 
-
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // TRANSFORMATIONS -----------------------------------------------------------------------------------------------------
-
-
 
 //template <typename T>
 //quat<T> pow(const quat<T> & q, T t);
@@ -65,10 +55,6 @@ template <typename T> quat<T> nlerp(const quat<T> & q1, const quat<T> & q2, T t)
 
 template <typename T> quat<T> slerp(const quat<T> & q1, const quat<T> & q2, T t);
 
-
-
 }
-
-
 
 #include "QuaternionFunc.tpp"

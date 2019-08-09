@@ -1,15 +1,10 @@
 namespace qc {
 
-
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // QUAT IMPLEMENTATION -------------------------------------------------------------------------------------------------
 
-
-
 //------------------------------------------------------------------------------
-// Constructors
-    
+// Constructors   
 
 
 template <typename T>
@@ -37,17 +32,11 @@ constexpr quat<T>::quat(const vec4<T> & v) noexcept :
     a(v), w(v.w)
 {}
 
-
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // QUAT FUNCTIONS IMPLEMENTATION ---------------------------------------------------------------------------------------
 
-
-
 //------------------------------------------------------------------------------
 // Arithmetic Assignment
-
-
 
 template <typename T>
 inline quat<T> & operator+=(quat<T> & q1, const quat<T> & q2) {
@@ -74,12 +63,8 @@ inline quat<T> & operator/=(quat<T> & q1, const quat<T> & q2) {
     return q1 = q1 / q2;
 }
 
-
-
 //------------------------------------------------------------------------------
 // Arithmetic Operators
-
-
 
 template <typename T>
 inline quat<T> operator+(const quat<T> & q) {
@@ -130,12 +115,8 @@ inline quat<T> operator/(const quat<T> & q1, const quat<T> & q2) {
     return quat<T>(q1.a * q2.w - q2.a * q1.w - cross(q1.a, q2.a), dot(q1, q2));
 }
 
-
-
 //------------------------------------------------------------------------------
 // Comparison Operators
-
-
 
 template <typename T>
 inline bool operator==(const quat<T> & q1, const quat<T> & q2) {
@@ -146,7 +127,5 @@ template <typename T>
 inline bool operator!=(const quat<T> & q1, const quat<T> & q2) {
     return q1.a != q2.a || q1.w != q2.w;
 }
-
-
 
 }

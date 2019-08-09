@@ -1,23 +1,15 @@
 namespace qc {
 
-
-
 //------------------------------------------------------------------------------
 // Other
-
-
 
 template <typename T>
 inline std::ostream & operator<<(std::ostream & os, const quat<T> & q) {
     return os << "[ " << q.a.i << " " << q.a.j << " " << q.a.k << " | " << q.w << " ]";
 }
 
-
-
 //------------------------------------------------------------------------------
 // Uncategorized
-
-
 
 template <typename T>
 inline T dot(const quat<T> & q1, const quat<T> & q2) {
@@ -74,12 +66,8 @@ inline quat<T> mix(const quat<T> & q1, const quat<T> & q2, T t) {
     return quat<T>(s * q1.a + t * q2.a, s * q1.w + t * q2.w);
 }
 
-
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // TRANSFORMATIONS IMPLEMENTATION --------------------------------------------------------------------------------------
-
-
 
 /*inline quat<T> pow(const quat<T> & q, T t) {
     return angleAxis(angle(q) * t, axis(q));
@@ -172,7 +160,5 @@ inline quat<T> slerp(const quat<T> & q1, const quat<T> & q2_, T t) {
 
     return (q1 * std::sin((T(1.0) - t) * halfTheta) + q2 * std::sin(t * halfTheta)) * (T(1.0) / sinHalfTheta);
 }
-
-
 
 }
