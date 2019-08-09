@@ -94,6 +94,8 @@ void compileFunctionsT() {
     qc::minmax(v, v, v, v, v, v, v);
     qc::minmax(v, v, v, v, v, v, v, v);
 
+    qc::median(v, v, v);
+
     qc::abs(v);
 
     qc::clamp(v, v, v);
@@ -223,14 +225,15 @@ constexpr void compileFunctionsConstexprT() {
     qc::max(v, v);
     qc::max(v, v, v);
 
-    qc::minmax(v);
-    qc::minmax(v, v);
-    qc::minmax(v, v, v);
-    qc::minmax(v, v, v, v);
-    qc::minmax(v, v, v, v, v);
-    qc::minmax(v, v, v, v, v, v);
-    qc::minmax(v, v, v, v, v, v, v);
-    qc::minmax(v, v, v, v, v, v, v, v);
+    //qc::minmax(v, v);
+    //qc::minmax(v, v, v);
+    //qc::minmax(v, v, v, v);
+    //qc::minmax(v, v, v, v, v);
+    //qc::minmax(v, v, v, v, v, v);
+    //qc::minmax(v, v, v, v, v, v, v);
+    //qc::minmax(v, v, v, v, v, v, v, v);
+
+    //qc::median(v, v, v);
 
     //qc::clamp(v, v, v);
 
@@ -343,5 +346,5 @@ void testCore() {
     compileTyping();
     compileConstants();
     compileFunctions();
-    static_assert(compileFunctionsConstexpr(), "");
+    static_assert(compileFunctionsConstexpr());
 }

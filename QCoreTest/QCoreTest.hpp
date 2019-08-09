@@ -1,7 +1,5 @@
 #pragma once
 
-
-
 void testCore();
 
 void testBits();
@@ -19,5 +17,3 @@ void testUtils();
 void testTime();
 
 void testLog();
-
-void testDirectMap();

@@ -21,28 +21,10 @@
 
 namespace qc {
 
-// So what's the deal with all this fancy rvalue shit? Perfect forwarding.
-//	(T &) &		=>	T&
-//	(T &) &&	=>	T&
-//	(T &&) &	=>	T&
-//	(T &&) &&	=>	T&&
-// so basically, along with std::forward, the return type is guaranteed to match
-// the input type. So min(myObj1, myObj2) would be min(T &, T &) and would
-// return T & or MyObj &. On the other hand, min(literal1, literal2) would be
-// min(T &&, T &&) and would return T && or int &&.
-// std::forward is the same as static_cast<T&&>(thing) and basically casts T to
-// T &&, T & to T &, and T && to T&&. std::move, on the other hand, will cast
-// anything/everything to T &&.
-//
-// the reason for using T && over const T & in the min/max functions is to allow
-// the direct use of values, for example: min(myInt, 4) or min(Obj(x), Obj(y))
-//
-// the auto business is so you can use one lvalue and one rvalue argument
-
 template <typename T>
 inline std::unique_ptr<T []> make_unique_init(unat size, const T & val) {
     std::unique_ptr<T []> arr = std::make_unique<T []>(size);
-    for (unat i(0); i < size; ++i) {
+    for (unat i(0u); i < size; ++i) {
         arr[i] = val;
     }
     return std::move(arr);
@@ -50,7 +32,7 @@ inline std::unique_ptr<T []> make_unique_init(unat size, const T & val) {
 
 template <typename T>
 inline void fill(T * arr, unat n, const T & val) {
-    for (unat i(0); i < n; ++i) {
+    for (unat i(0u); i < n; ++i) {
         arr[i] = val;
     }
 }
@@ -67,9 +49,9 @@ inline void copy(const T * src, T * dest, unat n, unat offset, unat stride, unat
         return;
     }
 
-    unat i(0), j, k(offset);
+    unat i(0u), j, k(offset);
     while (i < n) {
-        for (j = 0; j < grouping; ++j, ++i) {
+        for (j = 0u; j < grouping; ++j, ++i) {
             dest[k + j] = src[i];
         }
 
@@ -79,10 +61,10 @@ inline void copy(const T * src, T * dest, unat n, unat offset, unat stride, unat
 
 template <typename T>
 T pairwiseSum(unat n, const T * vals) {
-    if (n == 0) return T(0);
-    if (n == 1) return vals[0];
-    if (n == 2) return vals[0] + vals[1];
-    return pairwiseSum(n / 2, vals) + pairwiseSum((n + 1) / 2, vals + n / 2);
+    if (n == 0u) return T(0);
+    if (n == 1u) return vals[0];
+    if (n == 2u) return vals[0] + vals[1];
+    return pairwiseSum(n >> 1, vals) + pairwiseSum((n + 1u) >> 1, vals + (n >> 1));
 }
 
 template <typename T>
@@ -109,50 +91,50 @@ inline unat detFileSize(std::ifstream & ifs) {
     return size;
 }
 
-namespace {
-const unsigned char trail_table[256]{
-    //-0	-1	-2	-3	-4	-5	-6	-7	-8	-9	-A	-B	-C	-D	-E	-F
-    8,	0,	1,	0,	2,	0,	1,	0,	3,	0,	1,	0,	2,	0,	1,	0,	//0-
-    4,	0,	1,	0,	2,	0,	1,	0,	3,	0,	1,	0,	2,	0,	1,	0,	//1-
-    5,	0,	1,	0,	2,	0,	1,	0,	3,	0,	1,	0,	2,	0,	1,	0,	//2-
-    4,	0,	1,	0,	2,	0,	1,	0,	3,	0,	1,	0,	2,	0,	1,	0,	//3-
-    6,	0,	1,	0,	2,	0,	1,	0,	3,	0,	1,	0,	2,	0,	1,	0,	//4-
-    4,	0,	1,	0,	2,	0,	1,	0,	3,	0,	1,	0,	2,	0,	1,	0,	//5-
-    5,	0,	1,	0,	2,	0,	1,	0,	3,	0,	1,	0,	2,	0,	1,	0,	//6-
-    4,	0,	1,	0,	2,	0,	1,	0,	3,	0,	1,	0,	2,	0,	1,	0,	//7-
-    7,	0,	1,	0,	2,	0,	1,	0,	3,	0,	1,	0,	2,	0,	1,	0,	//8-
-    4,	0,	1,	0,	2,	0,	1,	0,	3,	0,	1,	0,	2,	0,	1,	0,	//9-
-    5,	0,	1,	0,	2,	0,	1,	0,	3,	0,	1,	0,	2,	0,	1,	0,	//A-
-    4,	0,	1,	0,	2,	0,	1,	0,	3,	0,	1,	0,	2,	0,	1,	0,	//B-
-    6,	0,	1,	0,	2,	0,	1,	0,	3,	0,	1,	0,	2,	0,	1,	0,	//C-
-    4,	0,	1,	0,	2,	0,	1,	0,	3,	0,	1,	0,	2,	0,	1,	0,	//D-
-    5,	0,	1,	0,	2,	0,	1,	0,	3,	0,	1,	0,	2,	0,	1,	0,	//E-
-    4,	0,	1,	0,	2,	0,	1,	0,	3,	0,	1,	0,	2,	0,	1,	0,	//F-
-};
+namespace detail {
+    constexpr uchar trail_table[256]{
+     // -0  -1  -2  -3  -4  -5  -6  -7  -8  -9  -A  -B  -C  -D  -E  -F
+        8u, 0u, 1u, 0u, 2u, 0u, 1u, 0u, 3u, 0u, 1u, 0u, 2u, 0u, 1u, 0u, // 0-
+        4u, 0u, 1u, 0u, 2u, 0u, 1u, 0u, 3u, 0u, 1u, 0u, 2u, 0u, 1u, 0u, // 1-
+        5u, 0u, 1u, 0u, 2u, 0u, 1u, 0u, 3u, 0u, 1u, 0u, 2u, 0u, 1u, 0u, // 2-
+        4u, 0u, 1u, 0u, 2u, 0u, 1u, 0u, 3u, 0u, 1u, 0u, 2u, 0u, 1u, 0u, // 3-
+        6u, 0u, 1u, 0u, 2u, 0u, 1u, 0u, 3u, 0u, 1u, 0u, 2u, 0u, 1u, 0u, // 4-
+        4u, 0u, 1u, 0u, 2u, 0u, 1u, 0u, 3u, 0u, 1u, 0u, 2u, 0u, 1u, 0u, // 5-
+        5u, 0u, 1u, 0u, 2u, 0u, 1u, 0u, 3u, 0u, 1u, 0u, 2u, 0u, 1u, 0u, // 6-
+        4u, 0u, 1u, 0u, 2u, 0u, 1u, 0u, 3u, 0u, 1u, 0u, 2u, 0u, 1u, 0u, // 7-
+        7u, 0u, 1u, 0u, 2u, 0u, 1u, 0u, 3u, 0u, 1u, 0u, 2u, 0u, 1u, 0u, // 8-
+        4u, 0u, 1u, 0u, 2u, 0u, 1u, 0u, 3u, 0u, 1u, 0u, 2u, 0u, 1u, 0u, // 9-
+        5u, 0u, 1u, 0u, 2u, 0u, 1u, 0u, 3u, 0u, 1u, 0u, 2u, 0u, 1u, 0u, // A-
+        4u, 0u, 1u, 0u, 2u, 0u, 1u, 0u, 3u, 0u, 1u, 0u, 2u, 0u, 1u, 0u, // B-
+        6u, 0u, 1u, 0u, 2u, 0u, 1u, 0u, 3u, 0u, 1u, 0u, 2u, 0u, 1u, 0u, // C-
+        4u, 0u, 1u, 0u, 2u, 0u, 1u, 0u, 3u, 0u, 1u, 0u, 2u, 0u, 1u, 0u, // D-
+        5u, 0u, 1u, 0u, 2u, 0u, 1u, 0u, 3u, 0u, 1u, 0u, 2u, 0u, 1u, 0u, // E-
+        4u, 0u, 1u, 0u, 2u, 0u, 1u, 0u, 3u, 0u, 1u, 0u, 2u, 0u, 1u, 0u, // F-
+    };
 }
 
-inline unsigned char trailingZeroes(u08 x) {
-    return trail_table[x];
+inline int trailingZeroes(u08 x) {
+    return detail::trail_table[x];
 }
 
-inline unsigned char trailingZeroes(u32 x) {
-    unsigned char count = 0;
-    count += trail_table[x & 0xFF];
-    if (count < 8) {
+inline int trailingZeroes(u32 x) {
+    int count(0);
+    count += detail::trail_table[x & 0xFF];
+    if (count < 8u) {
         return count;
     }
     x >>= 8;
-    count += trail_table[x & 0xFF];
+    count += detail::trail_table[x & 0xFF];
     if (count < 16) {
         return count;
     }
     x >>= 8;
-    count += trail_table[x & 0xFF];
+    count += detail::trail_table[x & 0xFF];
     if (count < 24) {
         return count;
     }
     x >>= 8;
-    count += trail_table[x & 0xFF];
+    count += detail::trail_table[x & 0xFF];
     return count;
 }
 
@@ -189,11 +171,11 @@ inline void writeFile(const std::filesystem::path & path, const void * data, siz
 
 inline std::vector<std::string> tokenize(const std::string & str) {
     std::vector<std::string> words;
-    size_t startI(0);
+    size_t startI(0u);
     while (true) {
         while (startI < str.size() && std::isspace(str.at(startI))) ++startI;
         if (startI >= str.size()) break;
-        size_t endI(startI + 1);
+        size_t endI(startI + 1u);
         while (endI < str.size() && !std::isspace(str.at(endI))) ++endI;
         words.emplace_back(str.substr(startI, endI - startI));
         startI = endI;

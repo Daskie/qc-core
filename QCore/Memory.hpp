@@ -26,10 +26,10 @@ class RecordAllocator {
     using is_always_equal = std::true_type;
 
     constexpr RecordAllocator() noexcept :
-        m_current(0),
-        m_total(0),
-        m_allocations(0),
-        m_deallocations(0)
+        m_current(),
+        m_total(),
+        m_allocations(),
+        m_deallocations()
     {}
 
     constexpr RecordAllocator(const RecordAllocator & other) noexcept = default;

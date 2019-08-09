@@ -121,38 +121,38 @@ inline float baryToAngleC(const fvec3 & v) {
 inline fvec3 baryFromAngleA(float angle, float a) {
     fvec3 v;
     v.alpha = a;
-    v.gamma = (angle - 1) * (a - 1);
-    v.beta = 1 - v.alpha - v.gamma;
+    v.gamma = (angle - 1.0f) * (a - 1.0f);
+    v.beta = 1.0f - v.alpha - v.gamma;
     return v;
 }
 
 inline fvec3 baryFromAngleB(float angle, float b) {
     fvec3 v;
     v.beta = b;
-    v.alpha = (angle - 1) * (b - 1);
-    v.gamma = 1 - v.beta - v.alpha;
+    v.alpha = (angle - 1.0f) * (b - 1.0f);
+    v.gamma = 1.0f - v.beta - v.alpha;
     return v;
 }
 
 inline fvec3 baryFromAngleC(float angle, float c) {
     fvec3 v;
     v.gamma = c;
-    v.beta = (angle - 1) * (c - 1);
-    v.alpha = 1 - v.gamma - v.beta;
+    v.beta = (angle - 1.0f) * (c - 1.0f);
+    v.alpha = 1.0f - v.gamma - v.beta;
     return v;
 }
 
 template <typename T, typename = eif_floating_t<T>>
-inline vec2<T> pointOnDiscFibonacci(nat i, nat n) {
+inline vec2<T> pointOnDiscFibonacci(unat i, unat n) {
     return polarToCartesian(qc::vec2<T>(
-        std::sqrt(T(i) / T(n - 1)),
+        std::sqrt(T(i) / T(n - 1u)),
         T(2.0) * pi<T> * (T(2.0) - phi<T>) * T(i)
     ));
 }
 
 template <typename T, typename = eif_floating_t<T>>
-inline vec3<T> pointOnSphereFibonacci(nat i, nat n) {
-    T z(T(1.0) - T(2 * i) / T(n - 1));
+inline vec3<T> pointOnSphereFibonacci(unat i, unat n) {
+    T z(T(1.0) - T(2 * i) / T(n - 1u));
     return cylindricToCartesian(qc::vec3<T>(
         std::sqrt(T(1.0) - z * z),
         T(2.0) * pi<T> * (T(2.0) - phi<T>) * T(i),
@@ -272,11 +272,11 @@ struct UnderDampener : public Dampener<T> {
 template <typename T, typename = eif_floating_t<T>>
 inline T areaOfPoly(size_t n, const vec2<T> * points) {    
     T a{};
-    for (size_t i(0); i < n - 1; ++i) {
-        const vec2<T> & v1(points[i]), v2(points[i + 1]);
+    for (size_t i(0u); i < n - 1u; ++i) {
+        const vec2<T> & v1(points[i]), v2(points[i + 1u]);
         a += v1.x * v2.y - v2.x * v1.y;
     }
-    const vec2<T> & v1(points[n - 1]), v2(points[0]);
+    const vec2<T> & v1(points[n - 1u]), v2(points[0]);
     a += v1.x * v2.y - v2.x * v1.y;
     return T(0.5) * a;
 }
@@ -287,13 +287,13 @@ template <typename T, typename = eif_floating_t<T>>
 inline vec2<T> centroidOfPoly(size_t n, const vec2<T> * points) {
     T a{};
     vec2<T> c;
-    for (size_t i(0); i < n - 1; ++i) {
-        const vec2<T> & v1(points[i]), v2(points[i + 1]);
+    for (size_t i(0u); i < n - 1u; ++i) {
+        const vec2<T> & v1(points[i]), v2(points[i + 1u]);
         T temp(v1.x * v2.y - v2.x * v1.y);
         a += temp;
         c += (v1 + v2) * temp;
     }
-    const vec2<T> & v1(points[n - 1]), v2(points[0]);
+    const vec2<T> & v1(points[n - 1u]), v2(points[0]);
     T temp(v1.x * v2.y - v2.x * v1.y);
     a += temp;
     c += (v1 + v2) * temp;

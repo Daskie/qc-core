@@ -106,18 +106,18 @@ template <typename T>
 inline vec3<T> ortho(const vec3<T> & v) {    
     if (abs(v.x) < abs(v.y)) {
         if (abs(v.x) <= abs(v.z)) {   // x or z is smallest
-            return vec3<T>(0, -v.z, v.y);       // rotate around x
+            return vec3<T>(T(0), -v.z, v.y);       // rotate around x
         }
         else {                                  // z is smallest
-            return vec3<T>(-v.y, v.x, 0);       // rotate around z
+            return vec3<T>(-v.y, v.x, T(0));       // rotate around z
         }
     }
     else {
         if (abs(v.y) < abs(v.z)) {    // y or x is smallest
-            return vec3<T>(v.z, 0, -v.x);       // rotate around y
+            return vec3<T>(v.z, T(0), -v.x);       // rotate around y
         }
         else {                                  // z or y is smallest
-            return vec3<T>(-v.y, v.x, 0);       // rotate around z
+            return vec3<T>(-v.y, v.x, T(0));       // rotate around z
         }
     }
 }
@@ -178,7 +178,7 @@ inline void sort(vec<T, t_n> & v) {
 }
 
 template <typename T, int t_n>
-Q_CX_ABLE vec<T, t_n> clamp(const vec<T, t_n> & v, const T & min, const T & max) {
+Q_CX_ABLE vec<T, t_n> clamp(const vec<T, t_n> & v, T min, T max) {
     if constexpr (t_n == 2) return vec2<T>(clamp(v.x, min, max), clamp(v.y, min, max));
     if constexpr (t_n == 3) return vec3<T>(clamp(v.x, min, max), clamp(v.y, min, max), clamp(v.z, min, max));
     if constexpr (t_n == 4) return vec4<T>(clamp(v.x, min, max), clamp(v.y, min, max), clamp(v.z, min, max), clamp(v.w, min, max));
@@ -197,7 +197,7 @@ Q_CX_ABLE vec<T, t_n> clamp(const vec<T, t_n> & v, const span<T, t_n> & span) {
 }
 
 template <typename T>
-Q_CX_ABLE T clamp(const T & v, const span1<T> & span) {
+Q_CX_ABLE T clamp(T v, const span1<T> & span) {
     return clamp(v, span.min, span.max);
 }
 
@@ -208,7 +208,7 @@ Q_CX_ABLE vec<T, t_n> abs(const vec<T, t_n> & v) {
     if constexpr (t_n == 4) return vec4<T>(abs(v.x), abs(v.y), abs(v.z), abs(v.w));
 }
 
-template <typename T, int t_n, typename>
+template <typename T, int t_n>
 Q_CX_ABLE bool zero(const vec<T, t_n> & v, T e) {
     if constexpr (t_n == 2) return zero(v.x, e) && zero(v.y, e);
     if constexpr (t_n == 3) return zero(v.x, e) && zero(v.y, e) && zero(v.z, e);

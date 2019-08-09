@@ -13,8 +13,8 @@ namespace qc {
 template <typename T>
 class Hoard {
 
-    using shnat = precision_st<k_nat_p / 2>;
-    using uhnat = precision_ut<k_nat_p / 2>;
+    using shnat = precision_st<k_nat_p / 2u>;
+    using uhnat = precision_ut<k_nat_p / 2u>;
 
     static constexpr uhnat k_defCapacity = uhnat(256);
 
@@ -36,8 +36,8 @@ class Hoard {
         public:
 
         HP() :
-            m_index(uhnat(-1)),
-            m_hoard(uhnat(-1))
+            m_index(~uhnat(0u)),
+            m_hoard(~uhnat(0u))
         {}
 
         private:
@@ -100,7 +100,7 @@ class Hoard {
     HP add(Args &&... args) {
         auto & vec(s_hoards[m_index]);
         vec.emplace_back(std::forward<Args>(args)...);
-        return HP(uhnat(vec.size()) - 1, m_index);
+        return HP(uhnat(vec.size()) - 1u, m_index);
     }
 
     HP operator[](uhnat x) { return HP(x, m_index); }

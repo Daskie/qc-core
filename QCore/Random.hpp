@@ -25,14 +25,14 @@ struct RandomEngineTransformer {
 //   - integral up to 4 bytes
 template <typename T>
 struct RandomEngineTransformer<std::mt19937, T> {
-    T operator()(std::uint_fast32_t result) const {
+    T operator()(u32f result) const {
         if constexpr (is_floating_point_v<T>) {
             return T(result) * T(0x1p-32L);
         }
         else if constexpr (is_integral_v<T>) {
-            static_assert(sizeof(T) <= 4);
+            static_assert(sizeof(T) <= 4u);
 
-            if constexpr (sizeof(T) < 4 || is_signed_v<T>) {
+            if constexpr (sizeof(T) < 4u || is_signed_v<T>) {
                 return T(result & std::numeric_limits<T>::max());
             }
             else {
@@ -52,14 +52,14 @@ struct RandomEngineTransformer<std::mt19937, T> {
 //   - integral up to 8 bytes
 template <typename T>
 struct RandomEngineTransformer<std::mt19937_64, T> {
-    T operator()(std::uint_fast64_t result) const {
+    T operator()(u64f result) const {
         if constexpr (is_floating_point_v<T>) {
             return T(result) * T(0x1p-64L);
         }
         else if constexpr (is_integral_v<T>) {
-            static_assert(sizeof(T) <= 8);
+            static_assert(sizeof(T) <= 8u);
 
-            if constexpr (sizeof(T) < 8 || is_signed_v<T>) {
+            if constexpr (sizeof(T) < 8u || is_signed_v<T>) {
                 return T(result & std::numeric_limits<T>::max());
             }
             else {
@@ -80,15 +80,15 @@ struct RandomEngineTransformer<std::mt19937_64, T> {
 //   - signed up to 4 bytes
 template <typename T>
 struct RandomEngineTransformer<std::minstd_rand, T> {
-    T operator()(std::uint_fast32_t result) const {
+    T operator()(u32f result) const {
         if constexpr (is_floating_point_v<T>) {
             return T(result) * T(0x1p-31L);
         }
         else if constexpr (is_integral_v<T>) {
-            if constexpr (sizeof(T) < 4) {
+            if constexpr (sizeof(T) < 4u) {
                 return T(result & std::numeric_limits<T>::max());
             }
-            else if constexpr (sizeof(T) == 4 && is_signed_v<T>) {
+            else if constexpr (sizeof(T) == 4u && is_signed_v<T>) {
                 return T(result);
             }
             else {
@@ -112,7 +112,7 @@ struct RandomEngineTransformer<std::minstd_rand, T> {
 //   - an assignment operator
 //   - an operator() that returns a `result_type` whose bits are fully saturated
 //   - a static method `max` that returns the maximum `result_type` that may be generated
-template <typename Engine = std::conditional_t<sizeof(nat) <= 4, std::mt19937, std::mt19937_64>>
+template <typename Engine = std::conditional_t<sizeof(nat) <= 4u, std::mt19937, std::mt19937_64>>
 class Random {
 
     public:

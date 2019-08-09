@@ -171,7 +171,7 @@ void sort(const vec<T, t_n> & v);
 //------------------------------------------------------------------------------
 
 template <typename T, int t_n>
-Q_CX_ABLE vec<T, t_n> clamp(const vec<T, t_n> & v, const T & min, const T & max);
+Q_CX_ABLE vec<T, t_n> clamp(const vec<T, t_n> & v, T min, T max);
 
 template <typename T, int t_n>
 Q_CX_ABLE vec<T, t_n> clamp(const vec<T, t_n> & v, const vec<T, t_n> & min, const vec<T, t_n> & max);
@@ -179,7 +179,7 @@ Q_CX_ABLE vec<T, t_n> clamp(const vec<T, t_n> & v, const vec<T, t_n> & min, cons
 template <typename T, int t_n>
 Q_CX_ABLE vec<T, t_n> clamp(const vec<T, t_n> & v, const span<T, t_n> & span);
 template <typename T>
-Q_CX_ABLE T clamp(const T & v, const span1<T> & span);
+Q_CX_ABLE T clamp(T v, const span1<T> & span);
 
 
 
@@ -196,7 +196,7 @@ Q_CX_ABLE vec<T, t_n> abs(const vec<T, t_n> & v);
 // zero
 //------------------------------------------------------------------------------
 
-template <typename T, int t_n, typename = eif_arithmetic_t<T>>
+template <typename T, int t_n>
 Q_CX_ABLE bool zero(const vec<T, t_n> & v, T e = std::numeric_limits<T>::min());
 
 

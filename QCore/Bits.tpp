@@ -8,37 +8,37 @@ namespace bits {
 
 template <typename SrcT, typename DstT, typename>
 inline DstT spread(SrcT v) {
-    constexpr int factor(sizeof(DstT) / sizeof(SrcT) - 1);
+    constexpr uint factor(sizeof(DstT) / sizeof(SrcT) - 1u);
     
     DstT w(v);
 
-    if constexpr (sizeof(SrcT) >= 4) {
-        w = ((w << (16 * factor)) | w) & DstT(0x0000FFFF0000FFFFULL);
+    if constexpr (sizeof(SrcT) >= 4u) {
+        w = ((w << (factor << 4)) | w) & DstT(0x0000FFFF0000FFFF);
     }
-    if constexpr (sizeof(SrcT) >= 2) {
-        w = ((w << ( 8 * factor)) | w) & DstT(0x00FF00FF00FF00FFULL);
+    if constexpr (sizeof(SrcT) >= 2u) {
+        w = ((w << (factor << 3)) | w) & DstT(0x00FF00FF00FF00FF);
     }
-        w = ((w << ( 4 * factor)) | w) & DstT(0x0F0F0F0F0F0F0F0FULL);
-        w = ((w << ( 2 * factor)) | w) & DstT(0x3333333333333333ULL);
-        w = ((w << ( 1 * factor)) | w) & DstT(0x5555555555555555ULL);
+        w = ((w << (factor << 2)) | w) & DstT(0x0F0F0F0F0F0F0F0F);
+        w = ((w << (factor << 1)) | w) & DstT(0x3333333333333333);
+        w = ((w << (factor << 0)) | w) & DstT(0x5555555555555555);
 
     return w;
 }
 
 template <typename SrcT, typename DstT, typename>
 inline DstT repeat(SrcT v) {
-    constexpr int factor(sizeof(DstT) / sizeof(SrcT));
+    constexpr uint factor(sizeof(DstT) / sizeof(SrcT));
 
     DstT w(v);
 
-    if constexpr (factor >= 2) {
-        w |= w << (sizeof(SrcT) * 1 * 8);
+    if constexpr (factor >= 2u) {
+        w |= w << sizeof(SrcT) * 1u * 8u;
     }
-    if constexpr (factor >= 4) {
-        w |= w << (sizeof(SrcT) * 2 * 8);
+    if constexpr (factor >= 4u) {
+        w |= w << sizeof(SrcT) * 2u * 8u;
     }
-    if constexpr (factor >= 8) {
-        w |= w << (sizeof(SrcT) * 4 * 8);
+    if constexpr (factor >= 8u) {
+        w |= w << sizeof(SrcT) * 4u * 8u;
     }
 
     return w;
@@ -46,14 +46,14 @@ inline DstT repeat(SrcT v) {
 
 template <typename T, typename>
 inline T interleave(T v) {
-    if constexpr (sizeof(T) > 1) {
-        using H = utype<sizeof(T) / 2>;
+    if constexpr (sizeof(T) > 1u) {
+        using H = utype<sizeof(T) / 2u>;
 
-        H h1 = H(v >> sizeof(H) * 8), h2 = H(v);
+        H h1 = H(v >> sizeof(H) * 8u), h2 = H(v);
 
         return (spread<H, T>(h1) << 1) | spread<H, T>(h2);
     }
-    if constexpr (sizeof(T) == 1) {
+    if constexpr (sizeof(T) == 1u) {
         T h1(v >> 4), h2(v);
 
         h1 = ((h1 << 2) | h1) & T(0x33);
@@ -67,22 +67,22 @@ inline T interleave(T v) {
 
 template <typename T, typename>
 constexpr T rotateL(T v, int n) {
-    return (v << n) | (v >> (sizeof(T) * 8 - n));
+    return (v << n) | (v >> (sizeof(T) * 8u - n));
 }
 
 template <typename T, typename>
 constexpr T rotateR(T v, int n) {
-    return (v >> n) | (v << (sizeof(T) * 8 - n));
+    return (v >> n) | (v << (sizeof(T) * 8u - n));
 }
 
 template <typename T, typename>
 inline T scramble(T v) {
-    if constexpr (sizeof(T) == 1) {
+    if constexpr (sizeof(T) == 1u) {
         return v;
     }
 
-    if constexpr (sizeof(T) == 2) {
-        u64 w(0);
+    if constexpr (sizeof(T) == 2u) {
+        u64 w(0u);
 
         w |= spread<u08, u64>(u08(v)) << 0; v >>= 8;
         w |= spread<u08, u64>(u08(v)) << 4; v >>= 8;
@@ -90,8 +90,8 @@ inline T scramble(T v) {
         return u16(w >> 45) | u16(w >> 30) | u16(w >> 15) | u16(w);
     }
 
-    if constexpr (sizeof(T) == 4) {
-        u64 w(0);
+    if constexpr (sizeof(T) == 4u) {
+        u64 w(0u);
 
         w |= spread<u08, u64>(u08(v)) << 0; v >>= 8;
         w |= spread<u08, u64>(u08(v)) << 2; v >>= 8;
@@ -101,8 +101,8 @@ inline T scramble(T v) {
         return u32(w >> 31) | u32(w);
     }
 
-    if constexpr (sizeof(T) == 8) {
-        u64 w(0);
+    if constexpr (sizeof(T) == 8u) {
+        u64 w(0u);
 
         w |= spread<u08, u64>(u08(v)) << 0; v >>= 8;
         w |= spread<u08, u64>(u08(v)) << 1; v >>= 8;

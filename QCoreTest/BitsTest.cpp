@@ -28,19 +28,19 @@ void compileFunctions() {
     compileFunctionsUT<qc::u32>();
     compileFunctionsUT<qc::u64>();
 
-    qc::bits::spread<qc::u08, qc::u16>(-1);
-    qc::bits::spread<qc::u08, qc::u32>(-1);
-    qc::bits::spread<qc::u08, qc::u64>(-1);
-    qc::bits::spread<qc::u16, qc::u32>(-1);
-    qc::bits::spread<qc::u16, qc::u64>(-1);
-    qc::bits::spread<qc::u32, qc::u64>(-1);
+    qc::bits::spread<qc::u08, qc::u16>(~qc::u08(0u));
+    qc::bits::spread<qc::u08, qc::u32>(~qc::u08(0u));
+    qc::bits::spread<qc::u08, qc::u64>(~qc::u08(0u));
+    qc::bits::spread<qc::u16, qc::u32>(~qc::u16(0u));
+    qc::bits::spread<qc::u16, qc::u64>(~qc::u16(0u));
+    qc::bits::spread<qc::u32, qc::u64>(~qc::u32(0u));
 
-    qc::bits::repeat<qc::u08, qc::u16>(-1);
-    qc::bits::repeat<qc::u08, qc::u32>(-1);
-    qc::bits::repeat<qc::u08, qc::u64>(-1);
-    qc::bits::repeat<qc::u16, qc::u32>(-1);
-    qc::bits::repeat<qc::u16, qc::u64>(-1);
-    qc::bits::repeat<qc::u32, qc::u64>(-1);
+    qc::bits::repeat<qc::u08, qc::u16>(~qc::u08(0u));
+    qc::bits::repeat<qc::u08, qc::u32>(~qc::u08(0u));
+    qc::bits::repeat<qc::u08, qc::u64>(~qc::u08(0u));
+    qc::bits::repeat<qc::u16, qc::u32>(~qc::u16(0u));
+    qc::bits::repeat<qc::u16, qc::u64>(~qc::u16(0u));
+    qc::bits::repeat<qc::u32, qc::u64>(~qc::u32(0u));
 }
 
 

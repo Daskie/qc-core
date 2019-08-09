@@ -12,7 +12,7 @@ namespace {
 
 template <typename T>
 void compileClassesT() {
-    T v;
+    T v{};
     qc::vec2<T> v2;
     qc::vec3<T> v3;
     qc::vec4<T> v4;
@@ -187,7 +187,7 @@ void compileClasses() {
 
 template <typename T>
 constexpr void compileClassesConstexprT() {
-    constexpr T v(T(0));
+    constexpr T v{};
     constexpr qc::vec2<T> v2;
     constexpr qc::vec3<T> v3;
     constexpr qc::vec4<T> v4;
@@ -336,7 +336,7 @@ void compileFunctionsT() {
     compileFunctionsTT<T, qc::u32>();
     compileFunctionsTT<T, qc::u64>();
 
-    T v;
+    T v{};
     qc::vec2<T> v2;
     qc::vec3<T> v3;
     qc::vec4<T> v4;
@@ -679,7 +679,7 @@ void compileFunctionsT() {
 
 template <typename T>
 void compileFunctionsFT() {
-    T v(T(1));
+    T v{1};
     qc::vec2<T> v2;
     qc::vec3<T> v3;
     qc::vec4<T> v4;
@@ -755,7 +755,7 @@ void compileFunctionsFT() {
 
 template <typename T>
 void compileFunctionsIT() {
-    T v; v;
+    T v{}; v;
     qc::vec2<T> v2; v2;
     qc::vec3<T> v3; v3;
     qc::vec4<T> v4; v4;
@@ -849,7 +849,7 @@ constexpr void compileFunctionsConstexprT() {
     compileFunctionsConstexprTT<T, qc::u32>();
     compileFunctionsConstexprTT<T, qc::u64>();
 
-    constexpr T v(T(1.0));
+    constexpr T v{1.0};
     constexpr qc::vec2<T> v2(T(1.0));
     constexpr qc::vec3<T> v3(T(1.0));
     constexpr qc::vec4<T> v4(T(1.0));
@@ -1101,7 +1101,7 @@ constexpr void compileFunctionsConstexprT() {
 
 template <typename T>
 constexpr void compileFunctionsConstexprFT() {
-    constexpr T v(T(1.0));
+    constexpr T v{1.0};
     constexpr qc::vec2<T> v2(T(1.0));
     constexpr qc::vec3<T> v3(T(1.0));
     constexpr qc::vec4<T> v4(T(1.0));
@@ -1137,7 +1137,7 @@ constexpr void compileFunctionsConstexprFT() {
 
 template <typename T>
 constexpr void compileFunctionsConstexprIT() {
-    constexpr T v(T(1.0));
+    constexpr T v{1.0};
     constexpr qc::vec2<T> v2(T(1.0));
     constexpr qc::vec3<T> v3(T(1.0));
     constexpr qc::vec4<T> v4(T(1.0));
@@ -1278,7 +1278,7 @@ constexpr bool compileCasts() {
 }
 
 void compileMembers() {
-    int v;
+    int v{};
     qc::vec2<int> v2;
     qc::vec3<int> v3;
     qc::vec4<int> v4;

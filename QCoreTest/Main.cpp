@@ -14,7 +14,6 @@ int main(void) {
     testUtils();
     testTime();
     testLog();
-    testDirectMap();
 
     std::cout << "All tests complete" << std::endl;
     std::cin.get();

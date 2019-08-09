@@ -33,7 +33,7 @@ class Depot {
     }
 
     static bool has(const T * v) {
-        return s_store.count(v) > 0;
+        return s_store.contains(v);
     }
 
     static std::unique_ptr<T> remove(T * v) {
