@@ -99,6 +99,10 @@ void compileFunctionsT() {
     qc::max(v, v);
     qc::max(v, v, v);
 
+    qc::minify(v, v);
+    
+    qc::maxify(v, v);
+
     qc::minmax(v);
     qc::minmax(v, v);
     qc::minmax(v, v, v);

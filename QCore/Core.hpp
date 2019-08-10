@@ -114,6 +114,10 @@ template <typename T, typename... Ts, typename = eif_arithmetic_t<T>> Q_CONSTEX 
 template <typename T,                 typename = eif_arithmetic_t<T>> Q_CONSTEX T max(T a, T b);
 template <typename T, typename... Ts, typename = eif_arithmetic_t<T>> Q_CONSTEX T max(T a, T b, Ts... rest);
 
+template <typename T, typename = eif_arithmetic_t<T>> T & minify(T & min, T v);
+
+template <typename T, typename = eif_arithmetic_t<T>> T & maxify(T & max, T v);
+
 }
 
 #include "Core.tpp"

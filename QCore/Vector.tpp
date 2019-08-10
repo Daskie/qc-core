@@ -973,10 +973,39 @@ Q_CX_ABLE vec<T, t_n> max(T v1, const vec<T, t_n> & v2) {
 }
 
 template <typename T, int t_n>
-Q_CX_ABLE duo<T> minmax(const vec<T, t_n> & v) {
-    if constexpr (t_n == 2) return minmax(v.x, v.y);
-    if constexpr (t_n == 3) return minmax(v.x, v.y, v.z);
-    if constexpr (t_n == 4) return minmax(v.x, v.y, v.z, v.w);
+inline vec<T, t_n> & minify(vec<T, t_n> & min, const vec<T, t_n> & v) {
+    if constexpr (t_n >= 1) minify(min.x, v.x);
+    if constexpr (t_n >= 2) minify(min.y, v.y);
+    if constexpr (t_n >= 3) minify(min.z, v.z);
+    if constexpr (t_n >= 4) minify(min.w, v.w);
+    return min;
+}
+
+template <typename T, int t_n>
+inline vec<T, t_n> & minify(vec<T, t_n> & min, T v) {
+    if constexpr (t_n >= 1) minify(min.x, v);
+    if constexpr (t_n >= 2) minify(min.y, v);
+    if constexpr (t_n >= 3) minify(min.z, v);
+    if constexpr (t_n >= 4) minify(min.w, v);
+    return min;
+}
+
+template <typename T, int t_n>
+inline vec<T, t_n> & maxify(vec<T, t_n> & max, const vec<T, t_n> & v) {
+    if constexpr (t_n >= 1) maxify(max.x, v.x);
+    if constexpr (t_n >= 2) maxify(max.y, v.y);
+    if constexpr (t_n >= 3) maxify(max.z, v.z);
+    if constexpr (t_n >= 4) maxify(max.w, v.w);
+    return max;
+}
+
+template <typename T, int t_n>
+inline vec<T, t_n> & maxify(vec<T, t_n> & max, T v) {
+    if constexpr (t_n >= 1) maxify(max.x, v);
+    if constexpr (t_n >= 2) maxify(max.y, v);
+    if constexpr (t_n >= 3) maxify(max.z, v);
+    if constexpr (t_n >= 4) maxify(max.w, v);
+    return max;
 }
 
 }

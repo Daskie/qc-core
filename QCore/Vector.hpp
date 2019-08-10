@@ -745,11 +745,24 @@ template <typename T, int t_n>
 Q_CX_ABLE vec<T, t_n> max(T v1, const vec<T, t_n> & v2);
 
 //==============================================================================
-// minmax
+// minify
 //------------------------------------------------------------------------------
 
 template <typename T, int t_n>
-Q_CX_ABLE duo<T> minmax(const vec<T, t_n> & v);
+vec<T, t_n> & minify(vec<T, t_n> & min, const vec<T, t_n> & v);
+
+template <typename T, int t_n>
+vec<T, t_n> & minify(vec<T, t_n> & min, T v);
+
+//==============================================================================
+// maxify
+//------------------------------------------------------------------------------
+
+template <typename T, int t_n>
+vec<T, t_n> & maxify(vec<T, t_n> & max, const vec<T, t_n> & v);
+
+template <typename T, int t_n>
+vec<T, t_n> & maxify(vec<T, t_n> & max, T v);
 
 //==============================================================================
 // toSpan

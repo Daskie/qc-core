@@ -1,6 +1,18 @@
 namespace qc {
 
 template <typename T, int t_n>
+Q_CX_ABLE duo<T> minmax(const vec<T, t_n> & v) {
+    if constexpr (t_n == 2) return minmax(v.x, v.y);
+    if constexpr (t_n == 3) return minmax(v.x, v.y, v.z);
+    if constexpr (t_n == 4) return minmax(v.x, v.y, v.z, v.w);
+}
+
+template <typename T>
+Q_CX_ABLE T median(const vec3<T> & v) {
+    return median(v.x, v.y, v.z);
+}
+
+template <typename T, int t_n>
 inline std::ostream & operator<<(std::ostream & os, const vec<T, t_n> & v) {
     os << "[";
     if constexpr (t_n >= 1) os << v.x << " ";
