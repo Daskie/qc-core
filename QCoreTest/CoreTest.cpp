@@ -122,6 +122,8 @@ void compileFunctionsT() {
 
     qc::sign(v);
 
+    qc::round(v);
+
     qc::floor(v);
 
     qc::ceil(v);
@@ -260,6 +262,8 @@ constexpr void compileFunctionsConstexprT() {
     //qc::equal(v, v, v);
 
     //qc::sign(v);
+
+    //qc::round(v);
 
     //qc::floor(v);
 

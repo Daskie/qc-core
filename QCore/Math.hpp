@@ -8,18 +8,18 @@ namespace qc {
 
 template <typename T, typename = eif_floating_t<T>>
 inline vec2<T> polarToCartesian(const vec2<T> & v) {
-    return vec2<T>(
+    return {
         v.rad * std::cos(v.theta),
         v.rad * std::sin(v.theta)
-    );
+    };
 }
 
 template <typename T, typename = eif_floating_t<T>>
 inline vec2<T> cartesianToPolar(const vec2<T> & v) {
-    return vec2<T>(
+    return {
         magnitude(v),
         std::atan2(v.y, v.x)
-    );
+    };
 }
 
 //r is radius, theta is angle on xy plane, phi is angle from z axis
@@ -30,39 +30,39 @@ inline vec3<T> sphericalToCartesian(const vec3<T> & v) {
     T sinPhi = std::sin(v.phi);
     T cosPhi = std::cos(v.phi);
 
-    return vec3<T>(
+    return {
         v.rad * sinPhi * cosTheta,
         v.rad * sinPhi * sinTheta,
         v.rad * cosPhi
-    );
+    };
 }
 
 template <typename T, typename = eif_floating_t<T>>
 inline vec3<T> cartesianToSpherical(const vec3<T> & v) {
     T rad(magnitude(v));
-    return vec3<T>(
+    return {
         rad,
         std::atan2(v.y, v.x),
         std::acos(v.z / rad)
-    );
+    };
 }
 
 template <typename T, typename = eif_floating_t<T>>
 inline vec3<T> cylindricToCartesian(const vec3<T> & v) {
-    return vec3<T>(
+    return {
         v.rad * std::cos(v.theta),
         v.rad * std::sin(v.theta),
         v.z
-    );
+    };
 }
 
 template <typename T, typename = eif_floating_t<T>>
 inline vec3<T> cartesianToCylindric(const vec3<T> & v) {
-    return vec3<T>(
+    return {
         magnitude(v),
         std::atan2(v.y, v.x),
         v.z
-    );
+    };
 }
 
 //a is distance from vertex A in range [0, 1] (can be outside range and outside triangle), AX, AY, and AZ define cartesian location of A

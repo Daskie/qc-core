@@ -435,9 +435,9 @@ inline vec<T, t_n> & operator++(vec<T, t_n> & v) {
 
 template <typename T, int t_n>
 inline vec<T, t_n> operator++(vec<T, t_n> & v, int) {
-    if constexpr (t_n == 2) return vec2<T>(v.x++, v.y++);
-    if constexpr (t_n == 3) return vec3<T>(v.x++, v.y++, v.z++);
-    if constexpr (t_n == 4) return vec4<T>(v.x++, v.y++, v.z++, v.w++);
+    if constexpr (t_n == 2) return {v.x++, v.y++};
+    if constexpr (t_n == 3) return {v.x++, v.y++, v.z++};
+    if constexpr (t_n == 4) return {v.x++, v.y++, v.z++, v.w++};
 }
 
 //--- pre decrement ---
@@ -455,9 +455,9 @@ inline vec<T, t_n> & operator--(vec<T, t_n> & v) {
 
 template <typename T, int t_n>
 inline vec<T, t_n> operator--(vec<T, t_n> & v, int) {
-    if constexpr (t_n == 2) return vec2<T>(v.x--, v.y--);
-    if constexpr (t_n == 3) return vec3<T>(v.x--, v.y--, v.z--);
-    if constexpr (t_n == 4) return vec4<T>(v.x--, v.y--, v.z--, v.w--);
+    if constexpr (t_n == 2) return {v.x--, v.y--};
+    if constexpr (t_n == 3) return {v.x--, v.y--, v.z--};
+    if constexpr (t_n == 4) return {v.x--, v.y--, v.z--, v.w--};
 }
 
 //--- add assign ---
@@ -568,9 +568,7 @@ inline vec<T, t_n> & operator%=(vec<T, t_n> & v1, T v2) {
 
 template <typename T, int t_n>
 Q_CX_ABLE vec<T, t_n> operator+(const vec<T, t_n> & v) {
-    if constexpr (t_n == 2) return vec2<T>(+v.x, +v.y);
-    if constexpr (t_n == 3) return vec3<T>(+v.x, +v.y, +v.z);
-    if constexpr (t_n == 4) return vec4<T>(+v.x, +v.y, +v.z, +v.w);
+    return v;
 }
 
 //--- negative ---
@@ -579,9 +577,9 @@ template <typename T, int t_n>
 Q_CX_ABLE vec<T, t_n> operator-(const vec<T, t_n> & v) {
     if constexpr (is_unsigned_v<T>) return v;
     if constexpr (!is_unsigned_v<T>) {
-        if constexpr (t_n == 2) return vec2<T>(-v.x, -v.y);
-        if constexpr (t_n == 3) return vec3<T>(-v.x, -v.y, -v.z);
-        if constexpr (t_n == 4) return vec4<T>(-v.x, -v.y, -v.z, -v.w);
+        if constexpr (t_n == 2) return {-v.x, -v.y};
+        if constexpr (t_n == 3) return {-v.x, -v.y, -v.z};
+        if constexpr (t_n == 4) return {-v.x, -v.y, -v.z, -v.w};
     }
 }
 
@@ -589,78 +587,78 @@ Q_CX_ABLE vec<T, t_n> operator-(const vec<T, t_n> & v) {
 
 template <typename T, int t_n>
 Q_CX_ABLE vec<T, t_n> operator+(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
-    if constexpr (t_n == 2) return vec2<T>(v1.x + v2.x, v1.y + v2.y);
-    if constexpr (t_n == 3) return vec3<T>(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z);
-    if constexpr (t_n == 4) return vec4<T>(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z, v1.w + v2.w);
+    if constexpr (t_n == 2) return {T(v1.x + v2.x), T(v1.y + v2.y)};
+    if constexpr (t_n == 3) return {T(v1.x + v2.x), T(v1.y + v2.y), T(v1.z + v2.z)};
+    if constexpr (t_n == 4) return {T(v1.x + v2.x), T(v1.y + v2.y), T(v1.z + v2.z), T(v1.w + v2.w)};
 }
 
 template <typename T, int t_n>
 Q_CX_ABLE vec<T, t_n> operator+(const vec<T, t_n> & v1, T v2) {
-    if constexpr (t_n == 2) return vec2<T>(v1.x + v2, v1.y + v2);
-    if constexpr (t_n == 3) return vec3<T>(v1.x + v2, v1.y + v2, v1.z + v2);
-    if constexpr (t_n == 4) return vec4<T>(v1.x + v2, v1.y + v2, v1.z + v2, v1.w + v2);
+    if constexpr (t_n == 2) return {T(v1.x + v2), T(v1.y + v2)};
+    if constexpr (t_n == 3) return {T(v1.x + v2), T(v1.y + v2), T(v1.z + v2)};
+    if constexpr (t_n == 4) return {T(v1.x + v2), T(v1.y + v2), T(v1.z + v2), T(v1.w + v2)};
 }
 
 template <typename T, int t_n>
 Q_CX_ABLE vec<T, t_n> operator+(T v1, const vec<T, t_n> & v2) {
-    if constexpr (t_n == 2) return vec2<T>(v1 + v2.x, v1 + v2.y);
-    if constexpr (t_n == 3) return vec3<T>(v1 + v2.x, v1 + v2.y, v1 + v2.z);
-    if constexpr (t_n == 4) return vec4<T>(v1 + v2.x, v1 + v2.y, v1 + v2.z, v1 + v2.w);
+    if constexpr (t_n == 2) return {T(v1 + v2.x), T(v1 + v2.y)};
+    if constexpr (t_n == 3) return {T(v1 + v2.x), T(v1 + v2.y), T(v1 + v2.z)};
+    if constexpr (t_n == 4) return {T(v1 + v2.x), T(v1 + v2.y), T(v1 + v2.z), T(v1 + v2.w)};
 }
 
 //--- subtract ---
 
 template <typename T, int t_n>
 Q_CX_ABLE vec<T, t_n> operator-(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
-    if constexpr (t_n == 2) return vec2<T>(v1.x - v2.x, v1.y - v2.y);
-    if constexpr (t_n == 3) return vec3<T>(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z);
-    if constexpr (t_n == 4) return vec4<T>(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z, v1.w - v2.w);
+    if constexpr (t_n == 2) return {T(v1.x - v2.x), T(v1.y - v2.y)};
+    if constexpr (t_n == 3) return {T(v1.x - v2.x), T(v1.y - v2.y), T(v1.z - v2.z)};
+    if constexpr (t_n == 4) return {T(v1.x - v2.x), T(v1.y - v2.y), T(v1.z - v2.z), T(v1.w - v2.w)};
 }
 
 template <typename T, int t_n>
 Q_CX_ABLE vec<T, t_n> operator-(const vec<T, t_n> & v1, T v2) {
-    if constexpr (t_n == 2) return vec2<T>(v1.x - v2, v1.y - v2);
-    if constexpr (t_n == 3) return vec3<T>(v1.x - v2, v1.y - v2, v1.z - v2);
-    if constexpr (t_n == 4) return vec4<T>(v1.x - v2, v1.y - v2, v1.z - v2, v1.w - v2);
+    if constexpr (t_n == 2) return {T(v1.x - v2), T(v1.y - v2)};
+    if constexpr (t_n == 3) return {T(v1.x - v2), T(v1.y - v2), T(v1.z - v2)};
+    if constexpr (t_n == 4) return {T(v1.x - v2), T(v1.y - v2), T(v1.z - v2), T(v1.w - v2)};
 }
 
 template <typename T, int t_n>
 Q_CX_ABLE vec<T, t_n> operator-(T v1, const vec<T, t_n> & v2) {
-    if constexpr (t_n == 2) return vec2<T>(v1 - v2.x, v1 - v2.y);
-    if constexpr (t_n == 3) return vec3<T>(v1 - v2.x, v1 - v2.y, v1 - v2.z);
-    if constexpr (t_n == 4) return vec4<T>(v1 - v2.x, v1 - v2.y, v1 - v2.z, v1 - v2.w);
+    if constexpr (t_n == 2) return {T(v1 - v2.x), T(v1 - v2.y)};
+    if constexpr (t_n == 3) return {T(v1 - v2.x), T(v1 - v2.y), T(v1 - v2.z)};
+    if constexpr (t_n == 4) return {T(v1 - v2.x), T(v1 - v2.y), T(v1 - v2.z), T(v1 - v2.w)};
 }
 
 //--- multiply ---
 
 template <typename T, int t_n>
 Q_CX_ABLE vec<T, t_n> operator*(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
-    if constexpr (t_n == 2) return vec2<T>(v1.x * v2.x, v1.y * v2.y);
-    if constexpr (t_n == 3) return vec3<T>(v1.x * v2.x, v1.y * v2.y, v1.z * v2.z);
-    if constexpr (t_n == 4) return vec4<T>(v1.x * v2.x, v1.y * v2.y, v1.z * v2.z, v1.w * v2.w);
+    if constexpr (t_n == 2) return {T(v1.x * v2.x), T(v1.y * v2.y)};
+    if constexpr (t_n == 3) return {T(v1.x * v2.x), T(v1.y * v2.y), T(v1.z * v2.z)};
+    if constexpr (t_n == 4) return {T(v1.x * v2.x), T(v1.y * v2.y), T(v1.z * v2.z), T(v1.w * v2.w)};
 }
 
 template <typename T, int t_n>
 Q_CX_ABLE vec<T, t_n> operator*(const vec<T, t_n> & v1, T v2) {
-    if constexpr (t_n == 2) return vec2<T>(v1.x * v2, v1.y * v2);
-    if constexpr (t_n == 3) return vec3<T>(v1.x * v2, v1.y * v2, v1.z * v2);
-    if constexpr (t_n == 4) return vec4<T>(v1.x * v2, v1.y * v2, v1.z * v2, v1.w * v2);
+    if constexpr (t_n == 2) return {T(v1.x * v2), T(v1.y * v2)};
+    if constexpr (t_n == 3) return {T(v1.x * v2), T(v1.y * v2), T(v1.z * v2)};
+    if constexpr (t_n == 4) return {T(v1.x * v2), T(v1.y * v2), T(v1.z * v2), T(v1.w * v2)};
 }
 
 template <typename T, int t_n>
 Q_CX_ABLE vec<T, t_n> operator*(T v1, const vec<T, t_n> & v2) {
-    if constexpr (t_n == 2) return vec2<T>(v1 * v2.x, v1 * v2.y);
-    if constexpr (t_n == 3) return vec3<T>(v1 * v2.x, v1 * v2.y, v1 * v2.z);
-    if constexpr (t_n == 4) return vec4<T>(v1 * v2.x, v1 * v2.y, v1 * v2.z, v1 * v2.w);
+    if constexpr (t_n == 2) return {T(v1 * v2.x), T(v1 * v2.y)};
+    if constexpr (t_n == 3) return {T(v1 * v2.x), T(v1 * v2.y), T(v1 * v2.z)};
+    if constexpr (t_n == 4) return {T(v1 * v2.x), T(v1 * v2.y), T(v1 * v2.z), T(v1 * v2.w)};
 }
 
 //--- divide ---
 
 template <typename T, int t_n>
 Q_CX_ABLE vec<T, t_n> operator/(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
-    if constexpr (t_n == 2) return vec2<T>(v1.x / v2.x, v1.y / v2.y);
-    if constexpr (t_n == 3) return vec3<T>(v1.x / v2.x, v1.y / v2.y, v1.z / v2.z);
-    if constexpr (t_n == 4) return vec4<T>(v1.x / v2.x, v1.y / v2.y, v1.z / v2.z, v1.w / v2.w);
+    if constexpr (t_n == 2) return {T(v1.x / v2.x), T(v1.y / v2.y)};
+    if constexpr (t_n == 3) return {T(v1.x / v2.x), T(v1.y / v2.y), T(v1.z / v2.z)};
+    if constexpr (t_n == 4) return {T(v1.x / v2.x), T(v1.y / v2.y), T(v1.z / v2.z), T(v1.w / v2.w)};
 }
 
 template <typename T, int t_n>
@@ -668,39 +666,39 @@ Q_CX_ABLE vec<T, t_n> operator/(const vec<T, t_n> & v1, T v2) {
     if constexpr (is_floating_point_v<T>) {
         return v1 * (T(1.0) / v2);
     }
-    if constexpr (t_n == 2) return vec2<T>(v1.x / v2, v1.y / v2);
-    if constexpr (t_n == 3) return vec3<T>(v1.x / v2, v1.y / v2, v1.z / v2);
-    if constexpr (t_n == 4) return vec4<T>(v1.x / v2, v1.y / v2, v1.z / v2, v1.w / v2);
+    if constexpr (t_n == 2) return {T(v1.x / v2), T(v1.y / v2)};
+    if constexpr (t_n == 3) return {T(v1.x / v2), T(v1.y / v2), T(v1.z / v2)};
+    if constexpr (t_n == 4) return {T(v1.x / v2), T(v1.y / v2), T(v1.z / v2), T(v1.w / v2)};
 }
 
 template <typename T, int t_n>
 Q_CX_ABLE vec<T, t_n> operator/(T v1, const vec<T, t_n> & v2) {
-    if constexpr (t_n == 2) return vec2<T>(v1 / v2.x, v1 / v2.y);
-    if constexpr (t_n == 3) return vec3<T>(v1 / v2.x, v1 / v2.y, v1 / v2.z);
-    if constexpr (t_n == 4) return vec4<T>(v1 / v2.x, v1 / v2.y, v1 / v2.z, v1 / v2.w);
+    if constexpr (t_n == 2) return {T(v1 / v2.x), T(v1 / v2.y)};
+    if constexpr (t_n == 3) return {T(v1 / v2.x), T(v1 / v2.y), T(v1 / v2.z)};
+    if constexpr (t_n == 4) return {T(v1 / v2.x), T(v1 / v2.y), T(v1 / v2.z), T(v1 / v2.w)};
 }
 
 //--- modulus ---
 
 template <typename T, int t_n>
 Q_CX_ABLE vec<T, t_n> operator%(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
-    if constexpr (t_n == 2) return vec2<T>(mod(v1.x, v2.x), mod(v1.y, v2.y));
-    if constexpr (t_n == 3) return vec3<T>(mod(v1.x, v2.x), mod(v1.y, v2.y), mod(v1.z, v2.z));
-    if constexpr (t_n == 4) return vec4<T>(mod(v1.x, v2.x), mod(v1.y, v2.y), mod(v1.z, v2.z), mod(v1.w, v2.w));
+    if constexpr (t_n == 2) return {mod(v1.x, v2.x), mod(v1.y, v2.y)};
+    if constexpr (t_n == 3) return {mod(v1.x, v2.x), mod(v1.y, v2.y), mod(v1.z, v2.z)};
+    if constexpr (t_n == 4) return {mod(v1.x, v2.x), mod(v1.y, v2.y), mod(v1.z, v2.z), mod(v1.w, v2.w)};
 }
 
 template <typename T, int t_n>
 Q_CX_ABLE vec<T, t_n> operator%(const vec<T, t_n> & v1, T v2) {
-    if constexpr (t_n == 2) return vec2<T>(mod(v1.x, v2), mod(v1.y, v2));
-    if constexpr (t_n == 3) return vec3<T>(mod(v1.x, v2), mod(v1.y, v2), mod(v1.z, v2));
-    if constexpr (t_n == 4) return vec4<T>(mod(v1.x, v2), mod(v1.y, v2), mod(v1.z, v2), mod(v1.w, v2));
+    if constexpr (t_n == 2) return {mod(v1.x, v2), mod(v1.y, v2)};
+    if constexpr (t_n == 3) return {mod(v1.x, v2), mod(v1.y, v2), mod(v1.z, v2)};
+    if constexpr (t_n == 4) return {mod(v1.x, v2), mod(v1.y, v2), mod(v1.z, v2), mod(v1.w, v2)};
 }
 
 template <typename T, int t_n>
 Q_CX_ABLE vec<T, t_n> operator%(T v1, const vec<T, t_n> & v2) {
-    if constexpr (t_n == 2) return vec2<T>(mod(v1, v2.x), mod(v1, v2.y));
-    if constexpr (t_n == 3) return vec3<T>(mod(v1, v2.x), mod(v1, v2.y), mod(v1, v2.z));
-    if constexpr (t_n == 4) return vec4<T>(mod(v1, v2.x), mod(v1, v2.y), mod(v1, v2.z), mod(v1, v2.w));
+    if constexpr (t_n == 2) return {mod(v1, v2.x), mod(v1, v2.y)};
+    if constexpr (t_n == 3) return {mod(v1, v2.x), mod(v1, v2.y), mod(v1, v2.z)};
+    if constexpr (t_n == 4) return {mod(v1, v2.x), mod(v1, v2.y), mod(v1, v2.z), mod(v1, v2.w)};
 }
 
 //------------------------------------------------------------------------------
@@ -717,16 +715,16 @@ Q_CX_ABLE bool operator==(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
 
 template <typename T, int t_n>
 Q_CX_ABLE bvec<t_n> operator==(const vec<T, t_n> & v1, T v2) {
-    if constexpr (t_n == 2) return bvec2(v1.x == v2, v1.y == v2);
-    if constexpr (t_n == 3) return bvec3(v1.x == v2, v1.y == v2, v1.z == v2);
-    if constexpr (t_n == 4) return bvec4(v1.x == v2, v1.y == v2, v1.z == v2, v1.w == v2);
+    if constexpr (t_n == 2) return {v1.x == v2, v1.y == v2};
+    if constexpr (t_n == 3) return {v1.x == v2, v1.y == v2, v1.z == v2};
+    if constexpr (t_n == 4) return {v1.x == v2, v1.y == v2, v1.z == v2, v1.w == v2};
 }
 
 template <typename T, int t_n>
 Q_CX_ABLE bvec<t_n> operator==(T v1, const vec<T, t_n> & v2) {
-    if constexpr (t_n == 2) return bvec2(v1 == v2.x, v1 == v2.y);
-    if constexpr (t_n == 3) return bvec3(v1 == v2.x, v1 == v2.y, v1 == v2.z);
-    if constexpr (t_n == 4) return bvec4(v1 == v2.x, v1 == v2.y, v1 == v2.z, v1 == v2.w);
+    if constexpr (t_n == 2) return {v1 == v2.x, v1 == v2.y};
+    if constexpr (t_n == 3) return {v1 == v2.x, v1 == v2.y, v1 == v2.z};
+    if constexpr (t_n == 4) return {v1 == v2.x, v1 == v2.y, v1 == v2.z, v1 == v2.w};
 }
 
 template <typename T, int t_n>
@@ -745,16 +743,16 @@ Q_CX_ABLE bool operator!=(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
 
 template <typename T, int t_n>
 Q_CX_ABLE bvec<t_n> operator!=(const vec<T, t_n> & v1, T v2) {
-    if constexpr (t_n == 2) return bvec2(v1.x != v2, v1.y != v2);
-    if constexpr (t_n == 3) return bvec3(v1.x != v2, v1.y != v2, v1.z != v2);
-    if constexpr (t_n == 4) return bvec4(v1.x != v2, v1.y != v2, v1.z != v2, v1.w != v2);
+    if constexpr (t_n == 2) return {v1.x != v2, v1.y != v2};
+    if constexpr (t_n == 3) return {v1.x != v2, v1.y != v2, v1.z != v2};
+    if constexpr (t_n == 4) return {v1.x != v2, v1.y != v2, v1.z != v2, v1.w != v2};
 }
 
 template <typename T, int t_n>
 Q_CX_ABLE bvec<t_n> operator!=(T v1, const vec<T, t_n> & v2) {
-    if constexpr (t_n == 2) return bvec2(v1 != v2.x, v1 != v2.y);
-    if constexpr (t_n == 3) return bvec3(v1 != v2.x, v1 != v2.y, v1 != v2.z);
-    if constexpr (t_n == 4) return bvec4(v1 != v2.x, v1 != v2.y, v1 != v2.z, v1 != v2.w);
+    if constexpr (t_n == 2) return {v1 != v2.x, v1 != v2.y};
+    if constexpr (t_n == 3) return {v1 != v2.x, v1 != v2.y, v1 != v2.z};
+    if constexpr (t_n == 4) return {v1 != v2.x, v1 != v2.y, v1 != v2.z, v1 != v2.w};
 }
 
 template <typename T, int t_n>
@@ -766,92 +764,92 @@ Q_CX_ABLE bool operator!=(const span<T, t_n> & s1, const span<T, t_n> & s2) {
 
 template <typename T, int t_n>
 Q_CX_ABLE bvec<t_n> operator<(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
-    if constexpr (t_n == 2) return bvec2(v1.x < v2.x, v1.y < v2.y);
-    if constexpr (t_n == 3) return bvec3(v1.x < v2.x, v1.y < v2.y, v1.z < v2.z);
-    if constexpr (t_n == 4) return bvec4(v1.x < v2.x, v1.y < v2.y, v1.z < v2.z, v1.w < v2.w);
+    if constexpr (t_n == 2) return {v1.x < v2.x, v1.y < v2.y};
+    if constexpr (t_n == 3) return {v1.x < v2.x, v1.y < v2.y, v1.z < v2.z};
+    if constexpr (t_n == 4) return {v1.x < v2.x, v1.y < v2.y, v1.z < v2.z, v1.w < v2.w};
 }
 
 template <typename T, int t_n>
 Q_CX_ABLE bvec<t_n> operator<(const vec<T, t_n> & v1, T v2) {
-    if constexpr (t_n == 2) return bvec2(v1.x < v2, v1.y < v2);
-    if constexpr (t_n == 3) return bvec3(v1.x < v2, v1.y < v2, v1.z < v2);
-    if constexpr (t_n == 4) return bvec4(v1.x < v2, v1.y < v2, v1.z < v2, v1.w < v2);
+    if constexpr (t_n == 2) return {v1.x < v2, v1.y < v2};
+    if constexpr (t_n == 3) return {v1.x < v2, v1.y < v2, v1.z < v2};
+    if constexpr (t_n == 4) return {v1.x < v2, v1.y < v2, v1.z < v2, v1.w < v2};
 }
 
 template <typename T, int t_n>
 Q_CX_ABLE bvec<t_n> operator<(T v1, const vec<T, t_n> & v2) {
-    if constexpr (t_n == 2) return bvec2(v1 < v2.x, v1 < v2.y);
-    if constexpr (t_n == 3) return bvec3(v1 < v2.x, v1 < v2.y, v1 < v2.z);
-    if constexpr (t_n == 4) return bvec4(v1 < v2.x, v1 < v2.y, v1 < v2.z, v1 < v2.w);
+    if constexpr (t_n == 2) return {v1 < v2.x, v1 < v2.y};
+    if constexpr (t_n == 3) return {v1 < v2.x, v1 < v2.y, v1 < v2.z};
+    if constexpr (t_n == 4) return {v1 < v2.x, v1 < v2.y, v1 < v2.z, v1 < v2.w};
 }
 
 //--- greater than ---
 
 template <typename T, int t_n>
 Q_CX_ABLE bvec<t_n> operator>(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
-    if constexpr (t_n == 2) return bvec2(v1.x > v2.x, v1.y > v2.y);
-    if constexpr (t_n == 3) return bvec3(v1.x > v2.x, v1.y > v2.y, v1.z > v2.z);
-    if constexpr (t_n == 4) return bvec4(v1.x > v2.x, v1.y > v2.y, v1.z > v2.z, v1.w > v2.w);
+    if constexpr (t_n == 2) return {v1.x > v2.x, v1.y > v2.y};
+    if constexpr (t_n == 3) return {v1.x > v2.x, v1.y > v2.y, v1.z > v2.z};
+    if constexpr (t_n == 4) return {v1.x > v2.x, v1.y > v2.y, v1.z > v2.z, v1.w > v2.w};
 }
 
 template <typename T, int t_n>
 Q_CX_ABLE bvec<t_n> operator>(const vec<T, t_n> & v1, T v2) {
-    if constexpr (t_n == 2) return bvec2(v1.x > v2, v1.y > v2);
-    if constexpr (t_n == 3) return bvec3(v1.x > v2, v1.y > v2, v1.z > v2);
-    if constexpr (t_n == 4) return bvec4(v1.x > v2, v1.y > v2, v1.z > v2, v1.w > v2);
+    if constexpr (t_n == 2) return {v1.x > v2, v1.y > v2};
+    if constexpr (t_n == 3) return {v1.x > v2, v1.y > v2, v1.z > v2};
+    if constexpr (t_n == 4) return {v1.x > v2, v1.y > v2, v1.z > v2, v1.w > v2};
 }
 
 template <typename T, int t_n>
 Q_CX_ABLE bvec<t_n> operator>(T v1, const vec<T, t_n> & v2) {
-    if constexpr (t_n == 2) return bvec2(v1 > v2.x, v1 > v2.y);
-    if constexpr (t_n == 3) return bvec3(v1 > v2.x, v1 > v2.y, v1 > v2.z);
-    if constexpr (t_n == 4) return bvec4(v1 > v2.x, v1 > v2.y, v1 > v2.z, v1 > v2.w);
+    if constexpr (t_n == 2) return {v1 > v2.x, v1 > v2.y};
+    if constexpr (t_n == 3) return {v1 > v2.x, v1 > v2.y, v1 > v2.z};
+    if constexpr (t_n == 4) return {v1 > v2.x, v1 > v2.y, v1 > v2.z, v1 > v2.w};
 }
 
 //--- less than or equal to ---
 
 template <typename T, int t_n>
 Q_CX_ABLE bvec<t_n> operator<=(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
-    if constexpr (t_n == 2) return bvec2(v1.x <= v2.x, v1.y <= v2.y);
-    if constexpr (t_n == 3) return bvec3(v1.x <= v2.x, v1.y <= v2.y, v1.z <= v2.z);
-    if constexpr (t_n == 4) return bvec4(v1.x <= v2.x, v1.y <= v2.y, v1.z <= v2.z, v1.w <= v2.w);
+    if constexpr (t_n == 2) return {v1.x <= v2.x, v1.y <= v2.y};
+    if constexpr (t_n == 3) return {v1.x <= v2.x, v1.y <= v2.y, v1.z <= v2.z};
+    if constexpr (t_n == 4) return {v1.x <= v2.x, v1.y <= v2.y, v1.z <= v2.z, v1.w <= v2.w};
 }
 
 template <typename T, int t_n>
 Q_CX_ABLE bvec<t_n> operator<=(const vec<T, t_n> & v1, T v2) {
-    if constexpr (t_n == 2) return bvec2(v1.x <= v2, v1.y <= v2);
-    if constexpr (t_n == 3) return bvec3(v1.x <= v2, v1.y <= v2, v1.z <= v2);
-    if constexpr (t_n == 4) return bvec4(v1.x <= v2, v1.y <= v2, v1.z <= v2, v1.w <= v2);
+    if constexpr (t_n == 2) return {v1.x <= v2, v1.y <= v2};
+    if constexpr (t_n == 3) return {v1.x <= v2, v1.y <= v2, v1.z <= v2};
+    if constexpr (t_n == 4) return {v1.x <= v2, v1.y <= v2, v1.z <= v2, v1.w <= v2};
 }
 
 template <typename T, int t_n>
 Q_CX_ABLE bvec<t_n> operator<=(T v1, const vec<T, t_n> & v2) {
-    if constexpr (t_n == 2) return bvec2(v1 <= v2.x, v1 <= v2.y);
-    if constexpr (t_n == 3) return bvec3(v1 <= v2.x, v1 <= v2.y, v1 <= v2.z);
-    if constexpr (t_n == 4) return bvec4(v1 <= v2.x, v1 <= v2.y, v1 <= v2.z, v1 <= v2.w);
+    if constexpr (t_n == 2) return {v1 <= v2.x, v1 <= v2.y};
+    if constexpr (t_n == 3) return {v1 <= v2.x, v1 <= v2.y, v1 <= v2.z};
+    if constexpr (t_n == 4) return {v1 <= v2.x, v1 <= v2.y, v1 <= v2.z, v1 <= v2.w};
 }
 
 //--- greater than or equal to ---
 
 template <typename T, int t_n>
 Q_CX_ABLE bvec<t_n> operator>=(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
-    if constexpr (t_n == 2) return bvec2(v1.x >= v2.x, v1.y >= v2.y);
-    if constexpr (t_n == 3) return bvec3(v1.x >= v2.x, v1.y >= v2.y, v1.z >= v2.z);
-    if constexpr (t_n == 4) return bvec4(v1.x >= v2.x, v1.y >= v2.y, v1.z >= v2.z, v1.w >= v2.w);
+    if constexpr (t_n == 2) return {v1.x >= v2.x, v1.y >= v2.y};
+    if constexpr (t_n == 3) return {v1.x >= v2.x, v1.y >= v2.y, v1.z >= v2.z};
+    if constexpr (t_n == 4) return {v1.x >= v2.x, v1.y >= v2.y, v1.z >= v2.z, v1.w >= v2.w};
 }
 
 template <typename T, int t_n>
 Q_CX_ABLE bvec<t_n> operator>=(const vec<T, t_n> & v1, T v2) {
-    if constexpr (t_n == 2) return bvec2(v1.x >= v2, v1.y >= v2);
-    if constexpr (t_n == 3) return bvec3(v1.x >= v2, v1.y >= v2, v1.z >= v2);
-    if constexpr (t_n == 4) return bvec4(v1.x >= v2, v1.y >= v2, v1.z >= v2, v1.w >= v2);
+    if constexpr (t_n == 2) return {v1.x >= v2, v1.y >= v2};
+    if constexpr (t_n == 3) return {v1.x >= v2, v1.y >= v2, v1.z >= v2};
+    if constexpr (t_n == 4) return {v1.x >= v2, v1.y >= v2, v1.z >= v2, v1.w >= v2};
 }
 
 template <typename T, int t_n>
 Q_CX_ABLE bvec<t_n> operator>=(T v1, const vec<T, t_n> & v2) {
-    if constexpr (t_n == 2) return bvec2(v1 >= v2.x, v1 >= v2.y);
-    if constexpr (t_n == 3) return bvec3(v1 >= v2.x, v1 >= v2.y, v1 >= v2.z);
-    if constexpr (t_n == 4) return bvec4(v1 >= v2.x, v1 >= v2.y, v1 >= v2.z, v1 >= v2.w);
+    if constexpr (t_n == 2) return {v1 >= v2.x, v1 >= v2.y};
+    if constexpr (t_n == 3) return {v1 >= v2.x, v1 >= v2.y, v1 >= v2.z};
+    if constexpr (t_n == 4) return {v1 >= v2.x, v1 >= v2.y, v1 >= v2.z, v1 >= v2.w};
 }
 
 //------------------------------------------------------------------------------
@@ -859,23 +857,23 @@ Q_CX_ABLE bvec<t_n> operator>=(T v1, const vec<T, t_n> & v2) {
 
 template <typename T, int t_n>
 Q_CX_ABLE bvec<t_n> operator&&(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
-    if constexpr (t_n == 2) return bvec2(v1.x && v2.x, v1.y && v2.y);
-    if constexpr (t_n == 3) return bvec3(v1.x && v2.x, v1.y && v2.y, v1.z && v2.z);
-    if constexpr (t_n == 4) return bvec4(v1.x && v2.x, v1.y && v2.y, v1.z && v2.z, v1.w && v2.w);
+    if constexpr (t_n == 2) return {v1.x && v2.x, v1.y && v2.y};
+    if constexpr (t_n == 3) return {v1.x && v2.x, v1.y && v2.y, v1.z && v2.z};
+    if constexpr (t_n == 4) return {v1.x && v2.x, v1.y && v2.y, v1.z && v2.z, v1.w && v2.w};
 }
 
 template <typename T, int t_n>
 Q_CX_ABLE bvec<t_n> operator||(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
-    if constexpr (t_n == 2) return bvec2(v1.x || v2.x, v1.y || v2.y);
-    if constexpr (t_n == 3) return bvec3(v1.x || v2.x, v1.y || v2.y, v1.z || v2.z);
-    if constexpr (t_n == 4) return bvec4(v1.x || v2.x, v1.y || v2.y, v1.z || v2.z, v1.w || v2.w);
+    if constexpr (t_n == 2) return {v1.x || v2.x, v1.y || v2.y};
+    if constexpr (t_n == 3) return {v1.x || v2.x, v1.y || v2.y, v1.z || v2.z};
+    if constexpr (t_n == 4) return {v1.x || v2.x, v1.y || v2.y, v1.z || v2.z, v1.w || v2.w};
 }
 
 template <typename T, int t_n>
 Q_CX_ABLE bvec<t_n> operator!(const vec<T, t_n> & v) {
-    if constexpr (t_n == 2) return bvec2(!v.x, !v.y);
-    if constexpr (t_n == 3) return bvec3(!v.x, !v.y, !v.z);
-    if constexpr (t_n == 4) return bvec4(!v.x, !v.y, !v.z, !v.w);
+    if constexpr (t_n == 2) return {!v.x, !v.y};
+    if constexpr (t_n == 3) return {!v.x, !v.y, !v.z};
+    if constexpr (t_n == 4) return {!v.x, !v.y, !v.z, !v.w};
 }
 
 //------------------------------------------------------------------------------
@@ -921,9 +919,9 @@ Q_CX_ABLE T min(const vec<T, t_n> & v) {
 
 template <typename T, int t_n>
 Q_CX_ABLE vec<T, t_n> min(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
-    if constexpr (t_n == 2) return vec2<T>(min(v1.x, v2.x), min(v1.y, v2.y));
-    if constexpr (t_n == 3) return vec3<T>(min(v1.x, v2.x), min(v1.y, v2.y), min(v1.z, v2.z));
-    if constexpr (t_n == 4) return vec4<T>(min(v1.x, v2.x), min(v1.y, v2.y), min(v1.z, v2.z), min(v1.w, v2.w));
+    if constexpr (t_n == 2) return {min(v1.x, v2.x), min(v1.y, v2.y)};
+    if constexpr (t_n == 3) return {min(v1.x, v2.x), min(v1.y, v2.y), min(v1.z, v2.z)};
+    if constexpr (t_n == 4) return {min(v1.x, v2.x), min(v1.y, v2.y), min(v1.z, v2.z), min(v1.w, v2.w)};
 }
 
 template <typename T, int t_n, typename... Ts>
@@ -933,9 +931,9 @@ Q_CX_ABLE vec<T, t_n> min(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const 
 
 template <typename T, int t_n>
 Q_CX_ABLE vec<T, t_n> min(const vec<T, t_n> & v1, T v2) {
-    if constexpr (t_n == 2) return vec2<T>(min(v1.x, v2), min(v1.y, v2));
-    if constexpr (t_n == 3) return vec3<T>(min(v1.x, v2), min(v1.y, v2), min(v1.z, v2));
-    if constexpr (t_n == 4) return vec4<T>(min(v1.x, v2), min(v1.y, v2), min(v1.z, v2), min(v1.w, v2));
+    if constexpr (t_n == 2) return {min(v1.x, v2), min(v1.y, v2)};
+    if constexpr (t_n == 3) return {min(v1.x, v2), min(v1.y, v2), min(v1.z, v2)};
+    if constexpr (t_n == 4) return {min(v1.x, v2), min(v1.y, v2), min(v1.z, v2), min(v1.w, v2)};
 }
 
 template <typename T, int t_n>
@@ -952,9 +950,9 @@ Q_CX_ABLE T max(const vec<T, t_n> & v) {
 
 template <typename T, int t_n>
 Q_CX_ABLE vec<T, t_n> max(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
-    if constexpr (t_n == 2) return vec2<T>(max(v1.x, v2.x), max(v1.y, v2.y));
-    if constexpr (t_n == 3) return vec3<T>(max(v1.x, v2.x), max(v1.y, v2.y), max(v1.z, v2.z));
-    if constexpr (t_n == 4) return vec4<T>(max(v1.x, v2.x), max(v1.y, v2.y), max(v1.z, v2.z), max(v1.w, v2.w));
+    if constexpr (t_n == 2) return {max(v1.x, v2.x), max(v1.y, v2.y)};
+    if constexpr (t_n == 3) return {max(v1.x, v2.x), max(v1.y, v2.y), max(v1.z, v2.z)};
+    if constexpr (t_n == 4) return {max(v1.x, v2.x), max(v1.y, v2.y), max(v1.z, v2.z), max(v1.w, v2.w)};
 }
 
 template <typename T, int t_n, typename... Ts>
@@ -964,9 +962,9 @@ Q_CX_ABLE vec<T, t_n> max(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const 
 
 template <typename T, int t_n>
 Q_CX_ABLE vec<T, t_n> max(const vec<T, t_n> & v1, T v2) {
-    if constexpr (t_n == 2) return vec2<T>(max(v1.x, v2), max(v1.y, v2));
-    if constexpr (t_n == 3) return vec3<T>(max(v1.x, v2), max(v1.y, v2), max(v1.z, v2));
-    if constexpr (t_n == 4) return vec4<T>(max(v1.x, v2), max(v1.y, v2), max(v1.z, v2), max(v1.w, v2));
+    if constexpr (t_n == 2) return {max(v1.x, v2), max(v1.y, v2)};
+    if constexpr (t_n == 3) return {max(v1.x, v2), max(v1.y, v2), max(v1.z, v2)};
+    if constexpr (t_n == 4) return {max(v1.x, v2), max(v1.y, v2), max(v1.z, v2), max(v1.w, v2)};
 }
 
 template <typename T, int t_n>

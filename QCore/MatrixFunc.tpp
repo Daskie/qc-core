@@ -49,25 +49,25 @@ inline bool isIdentity(const mat<T, t_n> & m) {
 
 template <typename T, int t_n>
 inline mat<T, t_n> transpose(const mat<T, t_n> & m) {
-    if constexpr (t_n == 2) return mat2<T>(m.row<0>(), m.row<1>());
-    if constexpr (t_n == 3) return mat3<T>(m.row<0>(), m.row<1>(), m.row<2>());
-    if constexpr (t_n == 4) return mat4<T>(m.row<0>(), m.row<1>(), m.row<2>(), m.row<3>());
+    if constexpr (t_n == 2) return {m.row<0>(), m.row<1>()};
+    if constexpr (t_n == 3) return {m.row<0>(), m.row<1>(), m.row<2>()};
+    if constexpr (t_n == 4) return {m.row<0>(), m.row<1>(), m.row<2>(), m.row<3>()};
 }
 
 //--- cofactor ---
 
 template <typename T, int t_n>
 inline mat<T, t_n> cofactor(const mat<T, t_n> & m) {
-    if constexpr (t_n == 2) return mat2<T>(
+    if constexpr (t_n == 2) return {
         +m.c2.y, -m.c2.x,
         -m.c1.y, +m.c1.x
-    );
+    };
 
-    if constexpr (t_n == 3) return mat3<T>(
+    if constexpr (t_n == 3) return {
         +(m.c2.y * m.c3.z - m.c3.y * m.c2.z), -(m.c2.x * m.c3.z - m.c3.x * m.c2.z), +(m.c2.x * m.c3.y - m.c3.x * m.c2.y),
         -(m.c1.y * m.c3.z - m.c3.y * m.c1.z), +(m.c1.x * m.c3.z - m.c3.x * m.c1.z), -(m.c1.x * m.c3.y - m.c3.x * m.c1.y),
         +(m.c1.y * m.c2.z - m.c2.y * m.c1.z), -(m.c1.x * m.c2.z - m.c2.x * m.c1.z), +(m.c1.x * m.c2.y - m.c2.x * m.c1.y)
-    );
+    };
 
     if constexpr (t_n == 4) {
         T yz12(m.c1.y * m.c2.z - m.c2.y * m.c1.z);
@@ -106,12 +106,12 @@ inline mat<T, t_n> cofactor(const mat<T, t_n> & m) {
         T yzw134(m.c1.y * zw34 - m.c3.y * zw14 + m.c4.y * zw13);
         T yzw234(m.c2.y * zw34 - m.c3.y * zw24 + m.c4.y * zw23);
 
-        return mat4<T>(
-            +yzw234, -xzw234, +xyw234, -xyz234,
-            -yzw134, +xzw134, -xyw134, +xyz134,
-            +yzw124, -xzw124, +xyw124, -xyz124,
-            -yzw123, +xzw123, -xyw123, +xyz123
-        );
+        return {
+             yzw234, -xzw234,  xyw234, -xyz234,
+            -yzw134,  xzw134, -xyw134,  xyz134,
+             yzw124, -xzw124,  xyw124, -xyz124,
+            -yzw123,  xzw123, -xyw123,  xyz123
+        };
     }
 }
 
@@ -129,12 +129,10 @@ inline T determinant(const mat<T, t_n> & m) {
     if constexpr (t_n == 2) return
         + m.c1.x * m.c2.y
         - m.c2.x * m.c1.y;
-
     if constexpr (t_n == 3) return
         + m.c1.x * (m.c2.y * m.c3.z - m.c3.y * m.c2.z)
         - m.c2.x * (m.c1.y * m.c3.z - m.c3.y * m.c1.z)
         + m.c3.x * (m.c1.y * m.c2.z - m.c2.y * m.c1.z);
-
     if constexpr (t_n == 4) {
         T zw12 = m.c1.z * m.c2.w - m.c2.z * m.c1.w;
         T zw13 = m.c1.z * m.c3.w - m.c3.z * m.c1.w;
@@ -142,7 +140,6 @@ inline T determinant(const mat<T, t_n> & m) {
         T zw23 = m.c2.z * m.c3.w - m.c3.z * m.c2.w;
         T zw24 = m.c2.z * m.c4.w - m.c4.z * m.c2.w;
         T zw34 = m.c3.z * m.c4.w - m.c4.z * m.c3.w;
-
         return
             + m.c1.x * (m.c2.y * zw34 - m.c3.y * zw24 + m.c4.y * zw23)
             - m.c2.x * (m.c1.y * zw34 - m.c3.y * zw14 + m.c4.y * zw13)
@@ -169,20 +166,19 @@ inline mat<T, t_n> inverse(const mat<T, t_n> & m) {
 template <typename T, int t_n>
 inline mat<T, t_n + 1> translate(const vec<T, t_n> & delta) {
     if constexpr (t_n == 2) {
-        return mat3<T>(
+        return {
              T(1.0),  T(0.0), T(0.0),
              T(0.0),  T(1.0), T(0.0),
             delta.x, delta.y, T(1.0)
-        );
+        };
     }
-
     if constexpr (t_n == 3) {
-        return mat4<T>(
+        return {
              T(1.0),  T(0.0),  T(0.0), T(0.0),
              T(0.0),  T(1.0),  T(0.0), T(0.0),
              T(0.0),  T(0.0),  T(1.0), T(0.0),
             delta.x, delta.y, delta.z, T(1.0)
-        );
+        };
     }
 }
 
@@ -198,7 +194,6 @@ inline mat<T, t_mn> & translate(mat<T, t_mn> & m, const vec<T, t_vn> & delta) {
 
         return m;
     }
-
     if constexpr (t_vn == 3 && t_mn == 4) {
         m.c1.x += delta.x * m.c1.w;
         m.c2.x += delta.x * m.c2.w;
@@ -219,23 +214,21 @@ inline mat<T, t_mn> & translate(mat<T, t_mn> & m, const vec<T, t_vn> & delta) {
 
 template <typename T, int t_n>
 inline mat<T, t_n> scale(const vec<T, t_n> & scale) {
-    if constexpr (t_n == 2) return mat2<T>(
+    if constexpr (t_n == 2) return {
         scale.x,  T(0.0),
          T(0.0), scale.y
-    );
-
-    if constexpr (t_n == 3) return mat3<T>(
+    };
+    if constexpr (t_n == 3) return {
         scale.x,  T(0.0),  T(0.0),
          T(0.0), scale.y,  T(0.0),
          T(0.0),  T(0.0), scale.z
-    );
-
-    if constexpr (t_n == 4) return mat4<T>(
+    };
+    if constexpr (t_n == 4) return {
         scale.x,  T(0.0),  T(0.0),  T(0.0),
          T(0.0), scale.y,  T(0.0),  T(0.0),
          T(0.0),  T(0.0), scale.z,  T(0.0),
          T(0.0),  T(0.0),  T(0.0), scale.w
-    ); 
+    };
 }
 
 template <typename T, int t_mn, int t_vn>
@@ -248,7 +241,6 @@ inline mat<T, t_mn> & scale(mat<T, t_mn> & m, const vec<T, t_vn> & scale) {
 
         return m;
     }
-
     if constexpr (t_vn == 2 && t_mn == 3) {
         m.c1.x *= scale.x;
         m.c2.x *= scale.x;
@@ -259,7 +251,6 @@ inline mat<T, t_mn> & scale(mat<T, t_mn> & m, const vec<T, t_vn> & scale) {
 
         return m;
     }
-
     if constexpr (t_vn == 3 && t_mn == 3) {
         m.c1.x *= scale.x;
         m.c2.x *= scale.x;
@@ -273,7 +264,6 @@ inline mat<T, t_mn> & scale(mat<T, t_mn> & m, const vec<T, t_vn> & scale) {
 
         return m;
     }
-
     if constexpr (t_vn == 3 && t_mn == 4) {
         m.c1.x *= scale.x;
         m.c2.x *= scale.x;
@@ -297,10 +287,10 @@ inline mat2<T> rotate(T angle) {
     T s(std::sin(angle));
     T c(std::cos(angle));
 
-    return mat2<T>(
+    return {
          c, s,
         -s, c
-    );
+    };
 }
 
 template <typename T>
@@ -308,11 +298,11 @@ inline mat3<T> rotateX(T angle) {
     T s(std::sin(angle));
     T c(std::cos(angle));
 
-    return mat3<T>(
+    return {
         T(1.0), T(0.0), T(0.0),
         T(0.0),      c,      s,
         T(0.0),     -s,      c
-    );
+    };
 }
 
 template <typename T>
@@ -320,11 +310,11 @@ inline mat3<T> rotateY(T angle) {
     T s(std::sin(angle));
     T c(std::cos(angle));
 
-    return mat3<T>(
+    return {
              c, T(0.0),     -s,
         T(0.0), T(1.0), T(0.0),
              s, T(0.0),      c
-    );
+    };
 }
 
 template <typename T>
@@ -332,17 +322,17 @@ inline mat3<T> rotateZ(T angle) {
     T s(std::sin(angle));
     T c(std::cos(angle));
 
-    return mat3<T>(
+    return {
              c,      s, T(0.0),
             -s,      c, T(0.0),
         T(0.0), T(0.0), T(1.0)
-    );
+    };
 }
 
 template <typename T>
 inline mat3<T> rotate(const vec3<T> & axis, T sinTheta, T cosTheta) {
     if (zero(magnitude2(axis))) { //can't rotate around 0 length fvector
-        return mat3<T>();
+        return {};
     }
 
     return rotate_n(normalize(axis), sinTheta, cosTheta);
@@ -361,11 +351,11 @@ inline mat3<T> rotate_n(const vec3<T> & axis, T s, T c) {
     T yzcm(ycm * axis.z);
     T zxcm(zcm * axis.x);
 
-    return mat3<T>(
-         xcm * axis.x +  c, xycm          + zs, zxcm          - ys,
-        xycm          - zs,  ycm * axis.y +  c, yzcm          + xs,
-        zxcm          + ys, yzcm          - xs,  zcm * axis.z +  c
-    );
+    return {
+        xcm * axis.x + c, xycm + zs, zxcm - ys,
+        xycm - zs, ycm * axis.y + c, yzcm + xs,
+        zxcm + ys, yzcm - xs, zcm * axis.z + c
+    };
 }
 
 template <typename T>
@@ -405,7 +395,7 @@ template <typename T>
 inline mat3<T> align_n(const vec3<T> & v1, const vec3<T> & v2) {
     T d(dot(v1, v2));
     if (equal(d, T(1.0))) { // already aligned, and would break rotation
-        return mat3<T>();
+        return {};
     }
     if (equal(d, T(-1.0))) { // opposite direction, pick arbitrary axis to rotate around
         return rotate_n(ortho(v1), pi<T>);
@@ -482,35 +472,35 @@ inline mat3<T> mapTo_o(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z) 
 
 template <typename T>
 inline mat2<T> mapFrom(const vec2<T> & x, const vec2<T> & y) {
-    return mat2<T>(x, y);
+    return {x, y};
 }
 
 template <typename T>
 inline mat3<T> mapFrom(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z) {
-    return mat3<T>(x, y, z);
+    return {x, y, z};
 }
 
 template <bool t_depth0To1, typename T>
 inline mat4<T> orthoProj(T width, T height, T near, T far) {
     T nearMinusFar(near - far);
-    return mat4<T>(
+    return {
         T(2.0) / width, T(0.0), T(0.0), T(0.0),
         T(0.0), T(2.0) / height, T(0.0), T(0.0),
         T(0.0), T(0.0), (t_depth0To1 ? T(1.0) : T(2.0)) / nearMinusFar, T(0.0),
         T(0.0), T(0.0), (t_depth0To1 ? near : far + near) / nearMinusFar, T(1.0)
-    );
+    };
 }
 
 template <bool t_depth0To1, typename T>
 inline mat4<T> perspProj(T vfov, T aspect, T near, T far) {
     T invTop(T(1.0) / std::tan(vfov * T(0.5)));
     T invNearMinusFar(T(1.0) / (near - far));
-    return mat4<T>(
+    return {
         invTop / aspect, T(0.0), T(0.0), T(0.0),
         T(0.0), invTop, T(0.0), T(0.0),
         T(0.0), T(0.0), (t_depth0To1 ? far : far + near) * invNearMinusFar, T(-1.0),
         T(0.0), T(0.0), (t_depth0To1 ? far : T(2.0) * far) * near * invNearMinusFar, T(0.0)
-    );
+    };
 }
 
 template <typename T>
@@ -540,12 +530,12 @@ inline mat4<T> view_o(const vec3<T> & camLoc, const vec3<T> & camU, const vec3<T
 template <typename T>
 inline mat4<T> view_on(const vec3<T> & camLoc, const vec3<T> & camU, const vec3<T> & camV, const vec3<T> & camW) {
     vec3<T> trans(-camLoc);
-    return mat4<T>(
+    return {
                   camU.x,           camV.x,           camW.x, T(0.0),
                   camU.y,           camV.y,           camW.y, T(0.0),
                   camU.z,           camV.z,           camW.z, T(0.0),
         dot(camU, trans), dot(camV, trans), dot(camW, trans), T(1.0)
-    );
+    };
 }
 
 }

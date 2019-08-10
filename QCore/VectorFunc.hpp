@@ -175,18 +175,37 @@ template <typename T, int t_n>
 Q_CX_ABLE bool equal(const vec<T, t_n> & v);
 
 //==============================================================================
+// round
+//------------------------------------------------------------------------------
+
+template <int t_n>
+Q_CX_ABLE vec<s64, t_n> round(const dvec<t_n> & v);
+
+template <int t_n>
+Q_CX_ABLE vec<s32, t_n> round(const fvec<t_n> & v);
+
+template <typename T, int t_n, typename = eif_integral_t<T>>
+Q_CX_ABLE vec<T, t_n> round(const vec<T, t_n> & v);
+
+//==============================================================================
 // floor
 //------------------------------------------------------------------------------
 
-template <typename T, int t_n>
+template <typename T, int t_n, typename = eif_floating_t<T>>
 Q_CX_ABLE vec<nat, t_n> floor(const vec<T, t_n> & v);
+
+template <typename T, int t_n, typename = eif_integral_t<T>>
+Q_CX_ABLE vec<T, t_n> floor(const vec<T, t_n> & v);
 
 //==============================================================================
 // ceil
 //------------------------------------------------------------------------------
 
-template <typename T, int t_n>
+template <typename T, int t_n, typename = eif_floating_t<T>>
 Q_CX_ABLE vec<nat, t_n> ceil(const vec<T, t_n> & v);
+
+template <typename T, int t_n, typename = eif_integral_t<T>>
+Q_CX_ABLE vec<T, t_n> ceil(const vec<T, t_n> & v);
 
 //==============================================================================
 // mix

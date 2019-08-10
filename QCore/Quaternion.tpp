@@ -68,40 +68,40 @@ inline quat<T> & operator/=(quat<T> & q1, const quat<T> & q2) {
 
 template <typename T>
 inline quat<T> operator+(const quat<T> & q) {
-    return quat<T>(+q.a, +q.w);
+    return {+q.a, +q.w};
 }
 
 template <typename T>
 inline quat<T> operator-(const quat<T> & q) {
-    return quat<T>(-q.a, -q.w);
+    return {-q.a, -q.w};
 }
 
 template <typename T>
 inline quat<T> operator+(const quat<T> & q1, const quat<T> & q2) {
-    return quat<T>(q1.a + q2.a, q1.w + q2.w);
+    return {q1.a + q2.a, q1.w + q2.w};
 }
 
 template <typename T>
 inline quat<T> operator-(const quat<T> & q1, const quat<T> & q2) {
-    return quat<T>(q1.a - q2.a, q1.w - q2.w);
+    return {q1.a - q2.a, q1.w - q2.w};
 }
 
 template <typename T>
 inline quat<T> operator*(const quat<T> & q1, const quat<T> & q2) {
-    return quat<T>(
+    return {
         q1.w * q2.a + q2.w * q1.a + cross(q1.a, q2.a),
         q1.w * q2.w - dot(q1.a, q2.a)
-    );
+    };
 }
 
 template <typename T>
 inline quat<T> operator*(const quat<T> & q, T v) {
-    return quat<T>(q.a * v, q.w * v);
+    return {q.a * v, q.w * v};
 }
 
 template <typename T>
 inline quat<T> operator*(T v, const quat<T> & q) {
-    return quat<T>(v * q.a, v * q.w);
+    return {v * q.a, v * q.w};
 }
 
 template <typename T>
@@ -112,7 +112,7 @@ inline vec3<T> operator*(const quat<T> & q, const vec3<T> & v) {
 
 template <typename T>
 inline quat<T> operator/(const quat<T> & q1, const quat<T> & q2) {
-    return quat<T>(q1.a * q2.w - q2.a * q1.w - cross(q1.a, q2.a), dot(q1, q2));
+    return {q1.a * q2.w - q2.a * q1.w - cross(q1.a, q2.a), dot(q1, q2)};
 }
 
 //------------------------------------------------------------------------------

@@ -70,11 +70,6 @@ Q_CX_ABLE bool equal_e(T v1, T v2, T e) {
 }
 
 template <typename T, typename>
-Q_CX_ABLE T sign(T v) {
-    return T(int(T(0.0) < v) - int(v < T(0.0)));
-}
-
-template <typename T, typename>
 Q_CX_ABLE int sign(T v) {
     if constexpr (is_signed_v<T>) {
         return int(0 < v) - int(v < 0);
@@ -84,9 +79,24 @@ Q_CX_ABLE int sign(T v) {
     }
 }
 
+Q_CX_ABLE s64 round(double v) {
+    static_assert((s64(-1) >> 1) == s64(-1)); // Right bit shift on signed integer must be arithmetic
+    return reinterpret_cast<s64 &>(v += 6755399441055744.0) << 13 >> 13;
+}
+
+Q_CX_ABLE s32 round(float v) {
+    static_assert((s32(-1) >> 1) == s32(-1)); // Right bit shift on signed integer must be arithmetic
+    return reinterpret_cast<s32 &>(v += 12582912.0f) << 10 >> 10;
+}
+
+template <typename T, typename>
+Q_CX_ABLE T round(T v) {
+    return v;
+}
+
 template <typename T, typename>
 Q_CX_ABLE nat floor(T v) {
-    nat i = nat(v);
+    nat i{nat(v)};
     return i - (v < i);
 }
 
@@ -97,7 +107,7 @@ Q_CX_ABLE T floor(T v) {
 
 template <typename T, typename>
 Q_CX_ABLE nat ceil(T v) {
-    nat i = nat(v);
+    nat i{nat(v)};
     return i + (v > i);
 }
 
@@ -170,7 +180,7 @@ Q_CONSTEX T ceil2(T v) {
 }
 
 template <typename T, typename>
-Q_CX_ABLE T mipmaps(T size) {
+Q_CX_ABLE int mipmaps(T size) {
     return log2Floor(size) + T(1);
 }
 

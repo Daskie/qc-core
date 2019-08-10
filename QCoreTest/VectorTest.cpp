@@ -645,6 +645,10 @@ void compileFunctionsT() {
     qc::equal(v3);
     qc::equal(v4);
 
+    qc::round(v2);
+    qc::round(v3);
+    qc::round(v4);
+
     qc::floor(v2);
     qc::floor(v3);
     qc::floor(v4);
@@ -1071,6 +1075,10 @@ constexpr void compileFunctionsConstexprT() {
     //qc::equal(v2);
     //qc::equal(v3);
     //qc::equal(v4);
+
+    //qc::round(v2);
+    //qc::round(v3);
+    //qc::round(v4);
 
     //qc::floor(v2);
     //qc::floor(v3);

@@ -105,7 +105,7 @@ inline vec3<T> rgb2hsl(const vec3<T> & rgb) {
 template <typename T, typename = eif_floating_t<T>>
 inline vec3<T> hsl2rgb(const vec3<T> & hsl) {
     if (hsl.y == 0) {
-        return vec3<T>(hsl.z, hsl.z, hsl.z);
+        return {hsl.z, hsl.z, hsl.z};
     }
 
     vec3<T> rgb(0, 0, 0);
