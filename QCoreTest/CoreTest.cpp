@@ -22,19 +22,37 @@ void compileTyping() {
     qc::u64 u64_; u64_;
     qc::f64 f64_; f64_;
 
+    qc::s08_fast s08_fast_; s08_fast_;
+    qc::u08_fast u08_fast_; u08_fast_;
+    qc::s16_fast s16_fast_; s16_fast_;
+    qc::u16_fast u16_fast_; u16_fast_;
+    qc::s32_fast s32_fast_; s32_fast_;
+    qc::u32_fast u32_fast_; u32_fast_;
+    qc::s64_fast s64_fast_; s64_fast_;
+    qc::u64_fast u64_fast_; u64_fast_;
+
     qc::array_t<int> a0{ 1, 2, 3 }; a0;
     qc::array_t<int, 1> a1; a1;
 
-    qc::stype<1> p08s_; p08s_;
-    qc::stype<2> p16s_; p16s_;
-    qc::stype<4> p32s_; p32s_;
-    qc::stype<8> p64s_; p64s_;
-    qc::utype<1> p08u_; p08u_;
-    qc::utype<2> p16u_; p16u_;
-    qc::utype<4> p32u_; p32u_;
-    qc::utype<8> p64u_; p64u_;
-    qc::ftype<4> p32f_; p32f_;
-    qc::ftype<8> p64f_; p64f_;
+    qc::stype<1> stype_08_; stype_08_;
+    qc::stype<2> stype_16_; stype_16_;
+    qc::stype<4> stype_32_; stype_32_;
+    qc::stype<8> stype_64_; stype_64_;
+    qc::utype<1> utype_08_; utype_08_;
+    qc::utype<2> utype_16_; utype_16_;
+    qc::utype<4> utype_32_; utype_32_;
+    qc::utype<8> utype_64_; utype_64_;
+    qc::ftype<4> ftype_32_; ftype_32_;
+    qc::ftype<8> ftype_64_; ftype_64_;
+
+    qc::stype_fast<1> stype_fast_08_; stype_fast_08_;
+    qc::stype_fast<2> stype_fast_16_; stype_fast_16_;
+    qc::stype_fast<4> stype_fast_32_; stype_fast_32_;
+    qc::stype_fast<8> stype_fast_64_; stype_fast_64_;
+    qc::utype_fast<1> utype_fast_08_; utype_fast_08_;
+    qc::utype_fast<2> utype_fast_16_; utype_fast_16_;
+    qc::utype_fast<4> utype_fast_32_; utype_fast_32_;
+    qc::utype_fast<8> utype_fast_64_; utype_fast_64_;
 }
 
 template <typename T>
