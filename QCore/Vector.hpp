@@ -587,13 +587,13 @@ template <typename T> constexpr vec4<T> pw4 = pw<T, 4>;
 template <typename T> constexpr vec4<T> nw4 = nw<T, 4>;
 
 template <typename T, int t_n> constexpr vec<T, t_n> infvec = vec<T, t_n>(infinity<T>);
-template <typename T, int t_n> constexpr span<T, t_n> infspan = span<T, t_n>(-infinity<T>, infinity<T>);
+template <typename T, int t_n> constexpr vec<T, t_n> nanvec = vec<T, t_n>(     nan<T>);
 
-template <typename T, int t_n> constexpr vec<T, t_n> nanvec = vec<T, t_n>(nan<T>);
-template <typename T, int t_n> constexpr span<T, t_n> nanspan = span<T, t_n>(nan<T>, nan<T>);
+template <typename T, int t_n, typename = eif_signed_t<T>> constexpr span<T, t_n>  infspan = span<T, t_n>(-infinity<T>, infinity<T>);
+template <typename T, int t_n>                             constexpr span<T, t_n>  nanspan = span<T, t_n>(     nan<T>,       nan<T>);
+template <typename T, int t_n, typename = eif_signed_t<T>> constexpr span<T, t_n> nullspan = span<T, t_n>(infinity<T>, -infinity<T>);
+
 template <typename T, int t_n> constexpr bound<T, t_n> nanbound = nanspan<T, t_n>;
-
-template <typename T, int t_n> constexpr span<T, t_n> nullspan = span<T, t_n>(infinity<T>, -infinity<T>);
 
 //======================================================================================================================
 // Functions ///////////////////////////////////////////////////////////////////////////////////////////////////////////

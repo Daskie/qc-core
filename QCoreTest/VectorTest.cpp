@@ -1366,6 +1366,10 @@ constexpr void compileConstantsT() {
     constexpr qc::vec3<T> nz3(qc::nz3<T>);
     constexpr qc::vec4<T> nz4(qc::nz4<T>);
     constexpr qc::vec4<T> nw4(qc::nw4<T>);
+
+    constexpr qc::vec2<T> iv2(qc::infvec<T, 2>);
+    constexpr qc::vec3<T> iv3(qc::infvec<T, 3>);
+    constexpr qc::vec4<T> iv4(qc::infvec<T, 4>);
 }
 
 template <typename T>
@@ -1383,11 +1387,10 @@ constexpr void compileConstantsFT() {
     constexpr qc::bound2<T> nb2(qc::nanbound<T, 2>);
     constexpr qc::bound3<T> nb3(qc::nanbound<T, 3>);
     constexpr qc::bound4<T> nb4(qc::nanbound<T, 4>);
+}
 
-    constexpr qc::vec2<T> iv2(qc::infvec<T, 2>);
-    constexpr qc::vec3<T> iv3(qc::infvec<T, 3>);
-    constexpr qc::vec4<T> iv4(qc::infvec<T, 4>);
-
+template <typename T>
+constexpr void compileConstantsST() {
     constexpr qc::span1<T> is1(qc::infspan<T, 1>);
     constexpr qc::span2<T> is2(qc::infspan<T, 2>);
     constexpr qc::span3<T> is3(qc::infspan<T, 3>);
@@ -1413,6 +1416,13 @@ constexpr bool compileConstants() {
 
     compileConstantsFT<qc::f32>();
     compileConstantsFT<qc::f64>();
+
+    compileConstantsST<qc::f32>();
+    compileConstantsST<qc::f64>();
+    compileConstantsST<qc::s08>();
+    compileConstantsST<qc::s16>();
+    compileConstantsST<qc::s32>();
+    compileConstantsST<qc::s64>();
 
     return true;
 }

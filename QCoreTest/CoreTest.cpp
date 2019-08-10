@@ -57,18 +57,33 @@ void compileTyping() {
 
 template <typename T>
 void compileConstantsT() {
+    qc::infinity<T>;
+}
+
+template <typename T>
+void compileConstantsFT() {
     qc::pi<T>;
     qc::e<T>;
     qc::phi<T>;
     qc::sqrt2<T>;
     qc::sqrt3<T>;
     qc::sqrt5<T>;
-    qc::infinity<T>;
 }
 
 void compileConstants() {
     compileConstantsT<float>();
     compileConstantsT<double>();
+    compileConstantsT<qc::s08>();
+    compileConstantsT<qc::u08>();
+    compileConstantsT<qc::s16>();
+    compileConstantsT<qc::u16>();
+    compileConstantsT<qc::s32>();
+    compileConstantsT<qc::u32>();
+    compileConstantsT<qc::s64>();
+    compileConstantsT<qc::u64>();
+
+    compileConstantsFT<float>();
+    compileConstantsFT<double>();
 }
 
 template <typename T1, typename T2>
