@@ -18,17 +18,16 @@ template <typename T, typename = eif_arithmetic_t<T>> Q_CX_ABLE T abs(T v);
 template <typename T, typename = eif_arithmetic_t<T>> Q_CX_ABLE bool zero(T v, T e = std::numeric_limits<T>::epsilon());
 
 template <typename T> Q_CX_ABLE bool equal(const T & v1, const T & v2);
-
 template <typename T, typename... Ts> Q_CX_ABLE bool equal(const T & v1, const T & v2, const Ts &... rest);
 
 template <typename T, typename = eif_floating_t<T>> Q_CX_ABLE bool equal_e(T v1, T v2, T e = std::numeric_limits<T>::epsilon());
 
-template <typename T, typename = eif_arithmetic_t<T>> Q_CX_ABLE T sign(T v);
+template <typename T, typename = eif_floating_t<T>> Q_CX_ABLE T sign(T v);
+template <typename T, typename = eif_integral_t<T>> Q_CX_ABLE int sign(T v);
 
 // ~2x faster than std::floor
 // doesn't work with some edge cases
 template <typename T, typename = eif_floating_t<T>> Q_CX_ABLE nat floor(T v);
-
 template <typename T, typename = eif_integral_t<T>> Q_CX_ABLE T floor(T v);
 
 // ~2x faster than std::ceil
@@ -38,9 +37,7 @@ template <typename T, typename = eif_floating_t<T>> Q_CX_ABLE nat ceil(T v);
 template <typename T, typename = eif_integral_t<T>> Q_CX_ABLE T ceil(T v);
 
 // ~2.15x faster than std::pow
-template <typename T, typename = eif_floating_t<T>> Q_CX_ABLE T pow(T v, int e);
-
-// ~2.15x faster than std::pow
+template <typename T, typename = eif_floating_t<T>> Q_CX_ABLE T pow(T v, int e);// ~2.15x faster than std::pow
 template <typename T, typename = eif_floating_t<T>> Q_CX_ABLE T pow(T v, uint e);
 
 template <typename T, typename = eif_integral_t<T>> Q_CONSTEX T pow2(int v);

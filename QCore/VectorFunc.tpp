@@ -321,6 +321,11 @@ Q_CX_ABLE span<T, t_n> intersect(const span<T, t_n> & s1, const span<T, t_n> & s
     );
 }
 
+template <typename T, int t_n>
+Q_CX_ABLE span<T, t_n> join(const span<T, t_n> & s1, const span<T, t_n> & s2) {
+    return { min(s1.min, s2.min), max(s1.max, s2.max) };
+}
+
 template <typename T, int t_n, typename>
 Q_CX_ABLE T mipmaps(const vec<T, t_n> & size) {
     return mipmaps(max(size));

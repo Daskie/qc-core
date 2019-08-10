@@ -662,6 +662,11 @@ void compileFunctionsT() {
     qc::intersect(s3, s3);
     qc::intersect(s4, s4);
 
+    qc::join(s1, s1);
+    qc::join(s2, s2);
+    qc::join(s3, s3);
+    qc::join(s4, s4);
+
     qc::toSpan(s1);
     qc::toSpan(s2);
     qc::toSpan(s3);
@@ -1093,6 +1098,11 @@ constexpr void compileFunctionsConstexprT() {
     //qc::intersect(s2, s2);
     //qc::intersect(s3, s3);
     //qc::intersect(s4, s4);
+
+    //qc::join(s1, s1);
+    //qc::join(s2, s2);
+    //qc::join(s3, s3);
+    //qc::join(s4, s4);
 }
 
 template <typename T>

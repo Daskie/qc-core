@@ -71,11 +71,16 @@ Q_CX_ABLE bool equal_e(T v1, T v2, T e) {
 
 template <typename T, typename>
 Q_CX_ABLE T sign(T v) {
+    return T(int(T(0.0) < v) - int(v < T(0.0)));
+}
+
+template <typename T, typename>
+Q_CX_ABLE int sign(T v) {
     if constexpr (is_signed_v<T>) {
-        return static_cast<T>(0 < v) - static_cast<T>(v < 0);
+        return int(0 < v) - int(v < 0);
     }
     if constexpr (is_unsigned_v<T>) {
-        return static_cast<T>(v > 0u);
+        return int(v > 0u);
     }
 }
 
