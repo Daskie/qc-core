@@ -1303,13 +1303,13 @@ void compileMembers() {
     v = v4._0; v = v4._1; v = v4._2; v = v4._3;
 
     v = s1.min; v = s1.max;
-    v = s1.loc; v = s1.size;
+    v = s1.pos; v = s1.size;
     v2 = s2.min; v2 = s2.max;
-    v2 = s2.loc; v2 = s2.size;
+    v2 = s2.pos; v2 = s2.size;
     v3 = s3.min; v3 = s3.max;
-    v3 = s3.loc; v3 = s3.size;
+    v3 = s3.pos; v3 = s3.size;
     v4 = s4.min; v4 = s4.max;
-    v4 = s4.loc; v4 = s4.size;
+    v4 = s4.pos; v4 = s4.size;
 }
 
 template <typename T>

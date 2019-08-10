@@ -510,7 +510,7 @@ struct span {
 
     union {
         struct { V min, max; };
-        struct { V loc, size; };
+        struct { V pos, size; };
     };
 
     //--------------------------------------------------------------------------
