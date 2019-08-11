@@ -203,7 +203,7 @@ inline vec2<T> & vec<T, 3>::xy() noexcept {
 }
 
 template <typename T>
-Q_CONSTEX const vec2<T> & vec<T, 3>::xy() const noexcept {
+Q_CX_ABLE const vec2<T> & vec<T, 3>::xy() const noexcept {
     return reinterpret_cast<const vec2<T> &>(x);
 }
 
@@ -213,7 +213,7 @@ inline vec2<T> & vec<T, 3>::yz() noexcept {
 }
 
 template <typename T>
-Q_CONSTEX const vec2<T> & vec<T, 3>::yz() const noexcept {
+Q_CX_ABLE const vec2<T> & vec<T, 3>::yz() const noexcept {
     return reinterpret_cast<const vec2<T> &>(y);
 }
 
@@ -351,7 +351,7 @@ inline vec2<T> & vec<T, 4>::xy() noexcept {
 }
 
 template <typename T>
-Q_CONSTEX const vec2<T> & vec<T, 4>::xy() const noexcept {
+Q_CX_ABLE const vec2<T> & vec<T, 4>::xy() const noexcept {
     return reinterpret_cast<const vec2<T> &>(x);
 }
 
@@ -361,7 +361,7 @@ inline vec2<T> & vec<T, 4>::yz() noexcept {
 }
 
 template <typename T>
-Q_CONSTEX const vec2<T> & vec<T, 4>::yz() const noexcept {
+Q_CX_ABLE const vec2<T> & vec<T, 4>::yz() const noexcept {
     return reinterpret_cast<const vec2<T> &>(y);
 }
 
@@ -371,7 +371,7 @@ inline vec2<T> & vec<T, 4>::zw() noexcept {
 }
 
 template <typename T>
-Q_CONSTEX const vec2<T> & vec<T, 4>::zw() const noexcept {
+Q_CX_ABLE const vec2<T> & vec<T, 4>::zw() const noexcept {
     return reinterpret_cast<const vec2<T> &>(z);
 }
 
@@ -381,7 +381,7 @@ inline vec3<T> & vec<T, 4>::xyz() noexcept {
 }
 
 template <typename T>
-Q_CONSTEX const vec3<T> & vec<T, 4>::xyz() const noexcept {
+Q_CX_ABLE const vec3<T> & vec<T, 4>::xyz() const noexcept {
     return reinterpret_cast<const vec3<T> &>(x);
 }
 
@@ -391,7 +391,7 @@ inline vec3<T> & vec<T, 4>::yzw() noexcept {
 }
 
 template <typename T>
-Q_CONSTEX const vec3<T> & vec<T, 4>::yzw() const noexcept {
+Q_CX_ABLE const vec3<T> & vec<T, 4>::yzw() const noexcept {
     return reinterpret_cast<const vec3<T> &>(y);
 }
 
@@ -435,6 +435,83 @@ constexpr span<T, t_n>::span(T v1, T v2) noexcept :
     max(v2)
 {}
 
+template <typename T, int t_n>
+template <typename>
+Q_CONSTEX span<T, t_n>::span(const span1<T> & v1, const span1<T> & v2) noexcept :
+    min(v1.min, v2.min),
+    max(v1.max, v2.max)
+{}
+
+template <typename T, int t_n>
+template <typename>
+Q_CONSTEX span<T, t_n>::span(const span1<T> & v1, const span1<T> & v2, const span1<T> & v3) noexcept :
+    min(v1.min, v2.min, v3.min),
+    max(v1.max, v2.max, v3.max)
+{}
+
+template <typename T, int t_n>
+template <typename>
+Q_CX_ABLE span<T, t_n>::span(const span2<T> & v1, const span1<T> & v2) noexcept :
+    min(v1.min, v2.min),
+    max(v1.max, v2.max)
+{}
+
+template <typename T, int t_n>
+template <typename>
+Q_CX_ABLE span<T, t_n>::span(const span1<T> & v1, const span2<T> & v2) noexcept :
+    min(v1.min, v2.min),
+    max(v1.max, v2.max)
+{}
+
+template <typename T, int t_n>
+template <typename>
+Q_CONSTEX span<T, t_n>::span(const span1<T> & v1, const span1<T> & v2, const span1<T> & v3, const span1<T> & v4) noexcept :
+    min(v1.min, v2.min, v3.min, v4.min),
+    max(v1.max, v2.max, v3.max, v4.max)
+{}
+
+template <typename T, int t_n>
+template <typename>
+Q_CX_ABLE span<T, t_n>::span(const span2<T> & v1, const span1<T> & v2, const span1<T> & v3) noexcept :
+    min(v1.min, v2.min, v3.min),
+    max(v1.max, v2.max, v3.max)
+{}
+
+template <typename T, int t_n>
+template <typename>
+Q_CX_ABLE span<T, t_n>::span(const span1<T> & v1, const span2<T> & v2, const span1<T> & v3) noexcept :
+    min(v1.min, v2.min, v3.min),
+    max(v1.max, v2.max, v3.max)
+{}
+
+template <typename T, int t_n>
+template <typename>
+Q_CX_ABLE span<T, t_n>::span(const span1<T> & v1, const span1<T> & v2, const span2<T> & v3) noexcept :
+    min(v1.min, v2.min, v3.min),
+    max(v1.max, v2.max, v3.max)
+{}
+
+template <typename T, int t_n>
+template <typename>
+Q_CX_ABLE span<T, t_n>::span(const span2<T> & v1, const span2<T> & v2) noexcept :
+    min(v1.min, v2.min),
+    max(v1.max, v2.max)
+{}
+
+template <typename T, int t_n>
+template <typename>
+Q_CX_ABLE span<T, t_n>::span(const span3<T> & v1, const span1<T> & v2) noexcept :
+    min(v1.min, v2.min),
+    max(v1.max, v2.max)
+{}
+
+template <typename T, int t_n>
+template <typename>
+Q_CX_ABLE span<T, t_n>::span(const span1<T> & v1, const span3<T> & v2) noexcept :
+    min(v1.min, v2.min),
+    max(v1.max, v2.max)
+{}
+
 //------------------------------------------------------------------------------
 // Assignment
 
@@ -448,6 +525,60 @@ inline span<T, t_n> & span<T, t_n>::operator=(const span<T, t_m> & v) noexcept {
 
 //------------------------------------------------------------------------------
 // Other
+
+template <typename T, int t_n>
+template <typename>
+Q_CONSTEX span1<T> span<T, t_n>::x() const noexcept {
+    return {min.x, max.x};
+}
+
+template <typename T, int t_n>
+template <typename>
+Q_CONSTEX span1<T> span<T, t_n>::y() const noexcept {
+    return {min.y, max.y};
+}
+
+template <typename T, int t_n>
+template <typename>
+Q_CONSTEX span1<T> span<T, t_n>::z() const noexcept {
+    return {min.z, max.z};
+}
+
+template <typename T, int t_n>
+template <typename>
+Q_CONSTEX span1<T> span<T, t_n>::w() const noexcept {
+    return {min.w, max.w};
+}
+
+template <typename T, int t_n>
+template <typename>
+Q_CX_ABLE span2<T> span<T, t_n>::xy() const noexcept {
+    return {min.xy(), max.xy()};
+}
+
+template <typename T, int t_n>
+template <typename>
+Q_CX_ABLE span2<T> span<T, t_n>::yz() const noexcept {
+    return {min.yz(), max.yz()};
+}
+
+template <typename T, int t_n>
+template <typename>
+Q_CX_ABLE span2<T> span<T, t_n>::zw() const noexcept {
+    return {min.zw(), max.zw()};
+}
+
+template <typename T, int t_n>
+template <typename>
+Q_CX_ABLE span3<T> span<T, t_n>::xyz() const noexcept {
+    return {min.xyz(), max.xyz()};
+}
+
+template <typename T, int t_n>
+template <typename>
+Q_CX_ABLE span3<T> span<T, t_n>::yzw() const noexcept {
+    return {min.yzw(), max.yzw()};
+}
 
 template <typename T, int t_n>
 Q_CX_ABLE auto span<T, t_n>::size() const noexcept -> V {

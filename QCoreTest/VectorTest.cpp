@@ -137,12 +137,16 @@ void compileClassesT() {
     qc::span<T, 2> s2_3(std::move(s2));
     qc::span<T, 2> s2_4(v2, v2);
     qc::span<T, 2> s2_5(v, v);
+    qc::span<T, 2> s2_6(s1, s1);
 
     // asignment operators
     s2 = s2;
     s2 = std::move(s2);
 
     // other
+    s2.x();
+    s2.y();
+
     s2.size();
 
     //--------------------------------------------------------------------------
@@ -154,12 +158,21 @@ void compileClassesT() {
     qc::span<T, 3> s3_3(std::move(s3));
     qc::span<T, 3> s3_4(v3, v3);
     qc::span<T, 3> s3_5(v, v);
+    qc::span<T, 3> s3_6(s1, s1, s1);
+    qc::span<T, 3> s3_7(s2, s1);
+    qc::span<T, 3> s3_8(s1, s2);
 
     // asignment operators
     s3 = s3;
     s3 = std::move(s3);
 
     // other
+    s3.x();
+    s3.y();
+    s3.z();
+    s3.xy();
+    s3.yz();
+
     s3.size();
 
     //--------------------------------------------------------------------------
@@ -171,12 +184,28 @@ void compileClassesT() {
     qc::span<T, 4> s4_3(std::move(s4));
     qc::span<T, 4> s4_4(v4, v4);
     qc::span<T, 4> s4_5(v, v);
+    qc::span<T, 4> s4_6(s1, s1, s1, s1);
+    qc::span<T, 4> s4_7(s2, s1, s1);
+    qc::span<T, 4> s4_8(s1, s2, s1);
+    qc::span<T, 4> s4_9(s1, s1, s2);
+    qc::span<T, 4> s4_10(s2, s2);
+    qc::span<T, 4> s4_11(s3, s1);
+    qc::span<T, 4> s4_12(s1, s3);
 
     // asignment operators
     s4 = s4;
     s4 = std::move(s4);
 
     // other
+    s4.x();
+    s4.y();
+    s4.z();
+    s4.w();
+    s4.xy();
+    s4.yz();
+    s4.xyz();
+    s4.yzw();
+
     s4.size();
 }
 
@@ -239,6 +268,9 @@ constexpr void compileClassesConstexprT() {
     v3.at<1>();
     v3.at<2>();
 
+    //v3.xy(); v3.rg(); v3.st();
+    //v3.yz(); v3.gb(); v3.tp();
+
     //--------------------------------------------------------------------------
     // Vec4
 
@@ -263,6 +295,12 @@ constexpr void compileClassesConstexprT() {
     v4.at<2>();
     v4.at<3>();
 
+    //v4.xy(); v4.rg(); v4.st();
+    //v4.yz(); v4.gb(); v4.tp();
+    //v4.zw(); v4.ba(); v4.pq();
+    //v4.xyz(); v4.rgb(); v4.stp();
+    //v4.yzw(); v4.gba(); v4.tpq();
+
     //--------------------------------------------------------------------------
     // Span1
 
@@ -284,8 +322,12 @@ constexpr void compileClassesConstexprT() {
     constexpr qc::span<T, 2> s2_3(std::move(s2));
     constexpr qc::span<T, 2> s2_4(v2, v2);
     constexpr qc::span<T, 2> s2_5(v, v);
+    constexpr qc::span<T, 2> s2_6(s1, s1);
 
     // other
+    s2.x();
+    s2.y();
+
     //s2.size();
 
     //--------------------------------------------------------------------------
@@ -297,8 +339,17 @@ constexpr void compileClassesConstexprT() {
     constexpr qc::span<T, 3> s3_3(std::move(s3));
     constexpr qc::span<T, 3> s3_4(v3, v3);
     constexpr qc::span<T, 3> s3_5(v, v);
+    constexpr qc::span<T, 3> s3_6(s1, s1, s1);
+    //constexpr qc::span<T, 3> s3_7(s2, s1);
+    //constexpr qc::span<T, 3> s3_8(s1, s2);
 
     // other
+    s3.x();
+    s3.y();
+    s3.z();
+    //s3.xy();
+    //s3.yz();
+
     //s3.size();
 
     //--------------------------------------------------------------------------
@@ -310,8 +361,25 @@ constexpr void compileClassesConstexprT() {
     constexpr qc::span<T, 4> s4_3(std::move(s4));
     constexpr qc::span<T, 4> s4_4(v4, v4);
     constexpr qc::span<T, 4> s4_5(v, v);
+    constexpr qc::span<T, 4> s4_6(s1, s1, s1, s1);
+    //constexpr qc::span<T, 4> s4_7(s2, s1, s1);
+    //constexpr qc::span<T, 4> s4_8(s1, s2, s1);
+    //constexpr qc::span<T, 4> s4_9(s1, s1, s2);
+    //constexpr qc::span<T, 4> s4_10(s2, s2);
+    //constexpr qc::span<T, 4> s4_11(s3, s1);
+    //constexpr qc::span<T, 4> s4_12(s1, s3);
 
     // other
+    s4.x();
+    s4.y();
+    s4.z();
+    s4.w();
+    //s4.xy();
+    //s4.yz();
+    //s4.xyz();
+    //s4.yzw();
+
+
     //s4.size();
 }
 

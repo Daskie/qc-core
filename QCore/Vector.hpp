@@ -288,16 +288,16 @@ template <typename T> struct vec<T, 3> {
     vec2<T> & xy() noexcept;
     vec2<T> & rg() noexcept { return xy(); }
     vec2<T> & st() noexcept { return xy(); }
-    Q_CONSTEX const vec2<T> & xy() const noexcept;
-    Q_CONSTEX const vec2<T> & rg() const noexcept { return rg(); }
-    Q_CONSTEX const vec2<T> & st() const noexcept { return st(); }
+    Q_CX_ABLE const vec2<T> & xy() const noexcept;
+    Q_CX_ABLE const vec2<T> & rg() const noexcept { return rg(); }
+    Q_CX_ABLE const vec2<T> & st() const noexcept { return st(); }
 
     vec2<T> & yz() noexcept;
     vec2<T> & gb() noexcept { return yz(); }
     vec2<T> & tp() noexcept { return yz(); }
-    Q_CONSTEX const vec2<T> & yz() const noexcept;
-    Q_CONSTEX const vec2<T> & gb() const noexcept { return gb(); }
-    Q_CONSTEX const vec2<T> & tp() const noexcept { return tp(); }
+    Q_CX_ABLE const vec2<T> & yz() const noexcept;
+    Q_CX_ABLE const vec2<T> & gb() const noexcept { return gb(); }
+    Q_CX_ABLE const vec2<T> & tp() const noexcept { return tp(); }
 
 };
 
@@ -369,37 +369,37 @@ template <typename T> struct vec<T, 4> {
     vec2<T> & xy() noexcept;
     vec2<T> & rg() noexcept { return xy(); }
     vec2<T> & st() noexcept { return xy(); }
-    Q_CONSTEX const vec2<T> & xy() const noexcept;
-    Q_CONSTEX const vec2<T> & rg() const noexcept { return rg(); }
-    Q_CONSTEX const vec2<T> & st() const noexcept { return st(); }
+    Q_CX_ABLE const vec2<T> & xy() const noexcept;
+    Q_CX_ABLE const vec2<T> & rg() const noexcept { return rg(); }
+    Q_CX_ABLE const vec2<T> & st() const noexcept { return st(); }
 
     vec2<T> & yz() noexcept;
     vec2<T> & gb() noexcept { return yz(); }
     vec2<T> & tp() noexcept { return yz(); }
-    Q_CONSTEX const vec2<T> & yz() const noexcept;
-    Q_CONSTEX const vec2<T> & gb() const noexcept { return gb(); }
-    Q_CONSTEX const vec2<T> & tp() const noexcept { return tp(); }
+    Q_CX_ABLE const vec2<T> & yz() const noexcept;
+    Q_CX_ABLE const vec2<T> & gb() const noexcept { return gb(); }
+    Q_CX_ABLE const vec2<T> & tp() const noexcept { return tp(); }
 
     vec2<T> & zw() noexcept;
     vec2<T> & ba() noexcept { return zw(); }
     vec2<T> & pq() noexcept { return zw(); }
-    Q_CONSTEX const vec2<T> & zw() const noexcept;
-    Q_CONSTEX const vec2<T> & ba() const noexcept { return ba(); }
-    Q_CONSTEX const vec2<T> & pq() const noexcept { return pq(); }
+    Q_CX_ABLE const vec2<T> & zw() const noexcept;
+    Q_CX_ABLE const vec2<T> & ba() const noexcept { return ba(); }
+    Q_CX_ABLE const vec2<T> & pq() const noexcept { return pq(); }
 
     vec3<T> & xyz() noexcept;
     vec3<T> & rgb() noexcept { return xyz(); }
     vec3<T> & stp() noexcept { return xyz(); }
-    Q_CONSTEX const vec3<T> & xyz() const noexcept;
-    Q_CONSTEX const vec3<T> & rgb() const noexcept { return rgb(); }
-    Q_CONSTEX const vec3<T> & stp() const noexcept { return stp(); }
+    Q_CX_ABLE const vec3<T> & xyz() const noexcept;
+    Q_CX_ABLE const vec3<T> & rgb() const noexcept { return rgb(); }
+    Q_CX_ABLE const vec3<T> & stp() const noexcept { return stp(); }
 
     vec3<T> & yzw() noexcept;
     vec3<T> & gba() noexcept { return yzw(); }
     vec3<T> & tpq() noexcept { return yzw(); }
-    Q_CONSTEX const vec3<T> & yzw() const noexcept;
-    Q_CONSTEX const vec3<T> & gba() const noexcept { return gba(); }
-    Q_CONSTEX const vec3<T> & tpq() const noexcept { return tpq(); }
+    Q_CX_ABLE const vec3<T> & yzw() const noexcept;
+    Q_CX_ABLE const vec3<T> & gba() const noexcept { return gba(); }
+    Q_CX_ABLE const vec3<T> & tpq() const noexcept { return tpq(); }
 
 };
 
@@ -435,12 +435,20 @@ template <typename T, int t_n> struct span {
     constexpr span() noexcept;
     constexpr span(const span<T, t_n> & v) noexcept = default;
     constexpr span(span<T, t_n> && v) noexcept = default;
-
     template <typename U, int t_m> constexpr explicit span(const span<U, t_m> & v) noexcept;
-
     constexpr span(const V & v1, const V & v2) noexcept;
-
     template <typename = enable_if_t<(t_n > 1)>> constexpr span(T v1, T v2) noexcept;
+    template <typename = enable_if_t<t_n == 2>> Q_CONSTEX span(const span1<T> & v1, const span1<T> & v2) noexcept;
+    template <typename = enable_if_t<t_n == 3>> Q_CONSTEX span(const span1<T> & v1, const span1<T> & v2, const span1<T> & v3) noexcept;
+    template <typename = enable_if_t<t_n == 3>> Q_CX_ABLE span(const span2<T> & v1, const span1<T> & v2) noexcept;
+    template <typename = enable_if_t<t_n == 3>> Q_CX_ABLE span(const span1<T> & v1, const span2<T> & v2) noexcept;
+    template <typename = enable_if_t<t_n == 4>> Q_CONSTEX span(const span1<T> & v1, const span1<T> & v2, const span1<T> & v3, const span1<T> & v4) noexcept;
+    template <typename = enable_if_t<t_n == 4>> Q_CX_ABLE span(const span2<T> & v1, const span1<T> & v2, const span1<T> & v3) noexcept;
+    template <typename = enable_if_t<t_n == 4>> Q_CX_ABLE span(const span1<T> & v1, const span2<T> & v2, const span1<T> & v3) noexcept;
+    template <typename = enable_if_t<t_n == 4>> Q_CX_ABLE span(const span1<T> & v1, const span1<T> & v2, const span2<T> & v3) noexcept;
+    template <typename = enable_if_t<t_n == 4>> Q_CX_ABLE span(const span2<T> & v1, const span2<T> & v2) noexcept;
+    template <typename = enable_if_t<t_n == 4>> Q_CX_ABLE span(const span3<T> & v1, const span1<T> & v2) noexcept;
+    template <typename = enable_if_t<t_n == 4>> Q_CX_ABLE span(const span1<T> & v1, const span3<T> & v2) noexcept;
 
     //--------------------------------------------------------------------------
     // Assignment
@@ -452,6 +460,18 @@ template <typename T, int t_n> struct span {
 
     //--------------------------------------------------------------------------
     // Other
+
+    template <typename = enable_if_t<(t_n >= 2)>> Q_CONSTEX span1<T> x() const noexcept;
+    template <typename = enable_if_t<(t_n >= 2)>> Q_CONSTEX span1<T> y() const noexcept;
+    template <typename = enable_if_t<(t_n >= 3)>> Q_CONSTEX span1<T> z() const noexcept;
+    template <typename = enable_if_t<(t_n >= 4)>> Q_CONSTEX span1<T> w() const noexcept;
+
+    template <typename = enable_if_t<(t_n >= 3)>> Q_CX_ABLE span2<T> xy() const noexcept;
+    template <typename = enable_if_t<(t_n >= 3)>> Q_CX_ABLE span2<T> yz() const noexcept;
+    template <typename = enable_if_t<(t_n >= 4)>> Q_CX_ABLE span2<T> zw() const noexcept;
+
+    template <typename = enable_if_t<(t_n >= 4)>> Q_CX_ABLE span3<T> xyz() const noexcept;
+    template <typename = enable_if_t<(t_n >= 4)>> Q_CX_ABLE span3<T> yzw() const noexcept;
 
     Q_CX_ABLE V size() const noexcept;
 
