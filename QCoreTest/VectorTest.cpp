@@ -119,11 +119,14 @@ void compileClassesT() {
     qc::span<T, 1> s1_1;
     qc::span<T, 1> s1_2(s1);
     qc::span<T, 1> s1_3(std::move(s1));
-    qc::span<T, 1> s1_7(v, v);
+    qc::span<T, 1> s1_4(v, v);
 
     // asignment operators
     s1 = s1;
     s1 = std::move(s1);
+
+    // other
+    s1.size();
 
     //--------------------------------------------------------------------------
     // Span2
@@ -132,12 +135,15 @@ void compileClassesT() {
     qc::span<T, 2> s2_1;
     qc::span<T, 2> s2_2(s2);
     qc::span<T, 2> s2_3(std::move(s2));
-    qc::span<T, 2> s2_7(v2, v2);
-    qc::span<T, 2> s2_8(v, v);
+    qc::span<T, 2> s2_4(v2, v2);
+    qc::span<T, 2> s2_5(v, v);
 
     // asignment operators
     s2 = s2;
     s2 = std::move(s2);
+
+    // other
+    s2.size();
 
     //--------------------------------------------------------------------------
     // Span3
@@ -146,12 +152,15 @@ void compileClassesT() {
     qc::span<T, 3> s3_1;
     qc::span<T, 3> s3_2(s3);
     qc::span<T, 3> s3_3(std::move(s3));
-    qc::span<T, 3> s3_7(v3, v3);
-    qc::span<T, 3> s3_8(v, v);
+    qc::span<T, 3> s3_4(v3, v3);
+    qc::span<T, 3> s3_5(v, v);
 
     // asignment operators
     s3 = s3;
     s3 = std::move(s3);
+
+    // other
+    s3.size();
 
     //--------------------------------------------------------------------------
     // Span4
@@ -160,12 +169,15 @@ void compileClassesT() {
     qc::span<T, 4> s4_1;
     qc::span<T, 4> s4_2(s4);
     qc::span<T, 4> s4_3(std::move(s4));
-    qc::span<T, 4> s4_7(v4, v4);
-    qc::span<T, 4> s4_8(v, v);
+    qc::span<T, 4> s4_4(v4, v4);
+    qc::span<T, 4> s4_5(v, v);
 
     // asignment operators
     s4 = s4;
     s4 = std::move(s4);
+
+    // other
+    s4.size();
 }
 
 void compileClasses() {
@@ -258,7 +270,10 @@ constexpr void compileClassesConstexprT() {
     constexpr qc::span<T, 1> s1_1;
     constexpr qc::span<T, 1> s1_2(s1);
     constexpr qc::span<T, 1> s1_3(std::move(s1));
-    constexpr qc::span<T, 1> s1_7(v, v);
+    constexpr qc::span<T, 1> s1_4(v, v);
+
+    // other
+    //s1.size();
 
     //--------------------------------------------------------------------------
     // Span2
@@ -267,7 +282,11 @@ constexpr void compileClassesConstexprT() {
     constexpr qc::span<T, 2> s2_1;
     constexpr qc::span<T, 2> s2_2(s2);
     constexpr qc::span<T, 2> s2_3(std::move(s2));
-    constexpr qc::span<T, 2> s2_7(v2, v2);
+    constexpr qc::span<T, 2> s2_4(v2, v2);
+    constexpr qc::span<T, 2> s2_5(v, v);
+
+    // other
+    //s2.size();
 
     //--------------------------------------------------------------------------
     // Span3
@@ -276,7 +295,11 @@ constexpr void compileClassesConstexprT() {
     constexpr qc::span<T, 3> s3_1;
     constexpr qc::span<T, 3> s3_2(s3);
     constexpr qc::span<T, 3> s3_3(std::move(s3));
-    constexpr qc::span<T, 3> s3_7(v3, v3);
+    constexpr qc::span<T, 3> s3_4(v3, v3);
+    constexpr qc::span<T, 3> s3_5(v, v);
+
+    // other
+    //s3.size();
 
     //--------------------------------------------------------------------------
     // Span4
@@ -285,7 +308,11 @@ constexpr void compileClassesConstexprT() {
     constexpr qc::span<T, 4> s4_1;
     constexpr qc::span<T, 4> s4_2(s4);
     constexpr qc::span<T, 4> s4_3(std::move(s4));
-    constexpr qc::span<T, 4> s4_7(v4, v4);
+    constexpr qc::span<T, 4> s4_4(v4, v4);
+    constexpr qc::span<T, 4> s4_5(v, v);
+
+    // other
+    //s4.size();
 }
 
 constexpr bool compileClassesConstexpr() {
@@ -702,16 +729,6 @@ void compileFunctionsT() {
     qc::join(s2, s2);
     qc::join(s3, s3);
     qc::join(s4, s4);
-
-    qc::toSpan(s1);
-    qc::toSpan(s2);
-    qc::toSpan(s3);
-    qc::toSpan(s4);
-    
-    qc::toBound(s1);
-    qc::toBound(s2);
-    qc::toBound(s3);
-    qc::toBound(s4);
 }
 
 template <typename T>
@@ -1140,16 +1157,6 @@ constexpr void compileFunctionsConstexprT() {
     //qc::composite(v3, v3);
     //qc::composite(v4, v4);
 
-    //qc::toSpan(s1);
-    //qc::toSpan(s2);
-    //qc::toSpan(s3);
-    //qc::toSpan(s4);
-    
-    //qc::toBound(s1);
-    //qc::toBound(s2);
-    //qc::toBound(s3);
-    //qc::toBound(s4);
-
     //qc::intersect(s1, s1);
     //qc::intersect(s2, s2);
     //qc::intersect(s3, s3);
@@ -1249,17 +1256,29 @@ constexpr bool compileFunctionsConstexpr() {
 
 template <typename T, int t_n>
 void testPropertiesTN() {
-    static_assert(std::             is_standard_layout_v<qc::vec<T, t_n>>);
-    static_assert(std::          is_trivially_copyable_v<qc::vec<T, t_n>>);
+    static_assert(std::is_standard_layout_v<qc::vec<T, t_n>>);
+    static_assert(std::is_trivially_copyable_v<qc::vec<T, t_n>>);
     static_assert(std::is_trivially_copy_constructible_v<qc::vec<T, t_n>>);
     static_assert(std::is_trivially_move_constructible_v<qc::vec<T, t_n>>);
-    static_assert(std::   is_trivially_copy_assignable_v<qc::vec<T, t_n>>);
-    static_assert(std::   is_trivially_move_assignable_v<qc::vec<T, t_n>>);
-    static_assert(std::      is_trivially_destructible_v<qc::vec<T, t_n>>);
+    static_assert(std::is_trivially_copy_assignable_v<qc::vec<T, t_n>>);
+    static_assert(std::is_trivially_move_assignable_v<qc::vec<T, t_n>>);
+    static_assert(std::is_trivially_destructible_v<qc::vec<T, t_n>>);
     static_assert(sizeof(qc::vec<T, t_n>) == t_n * sizeof(T));
     static_assert(sizeof(qc::vec<T, t_n>[4]) == 4 * t_n * sizeof(T));
     static_assert(alignof(qc::vec<T, t_n>) == alignof(T));
     static_assert(alignof(qc::vec<T, t_n>[4]) == alignof(T));
+
+    static_assert(std::is_standard_layout_v<qc::span<T, t_n>>);
+    static_assert(std::is_trivially_copyable_v<qc::span<T, t_n>>);
+    static_assert(std::is_trivially_copy_constructible_v<qc::span<T, t_n>>);
+    static_assert(std::is_trivially_move_constructible_v<qc::span<T, t_n>>);
+    static_assert(std::is_trivially_copy_assignable_v<qc::span<T, t_n>>);
+    static_assert(std::is_trivially_move_assignable_v<qc::span<T, t_n>>);
+    static_assert(std::is_trivially_destructible_v<qc::span<T, t_n>>);
+    static_assert(sizeof(qc::span<T, t_n>) == 2 * t_n * sizeof(T));
+    static_assert(sizeof(qc::span<T, t_n>[4]) == 4 * 2 * t_n * sizeof(T));
+    static_assert(alignof(qc::span<T, t_n>) == alignof(T));
+    static_assert(alignof(qc::span<T, t_n>[4]) == alignof(T));
 }
 
 template <typename T>
@@ -1369,13 +1388,9 @@ void compileMembers() {
     v = v4._0; v = v4._1; v = v4._2; v = v4._3;
 
     v = s1.min; v = s1.max;
-    v = s1.pos; v = s1.size;
     v2 = s2.min; v2 = s2.max;
-    v2 = s2.pos; v2 = s2.size;
     v3 = s3.min; v3 = s3.max;
-    v3 = s3.pos; v3 = s3.size;
     v4 = s4.min; v4 = s4.max;
-    v4 = s4.pos; v4 = s4.size;
 }
 
 template <typename T>
@@ -1414,11 +1429,6 @@ constexpr void compileConstantsFT() {
     constexpr qc::span2<T> ns2(qc::nanspan<T, 2>);
     constexpr qc::span3<T> ns3(qc::nanspan<T, 3>);
     constexpr qc::span4<T> ns4(qc::nanspan<T, 4>);
-
-    constexpr qc::bound1<T> nb1(qc::nanbound<T, 1>);
-    constexpr qc::bound2<T> nb2(qc::nanbound<T, 2>);
-    constexpr qc::bound3<T> nb3(qc::nanbound<T, 3>);
-    constexpr qc::bound4<T> nb4(qc::nanbound<T, 4>);
 }
 
 template <typename T>

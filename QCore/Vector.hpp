@@ -157,91 +157,11 @@ namespace types {
 
 }
 
-//==============================================================================
-// Bound Types
-//------------------------------------------------------------------------------
-
-template <typename T, int t_n> using bound = span<T, t_n>;
-
-namespace types {
-
-    using qc::bound;
-
-    template <typename T> using bound1 = span1<T>;
-    template <typename T> using bound2 = span2<T>;
-    template <typename T> using bound3 = span3<T>;
-    template <typename T> using bound4 = span4<T>;
-
-    template <int t_n> using  fbound = fspan<t_n>;
-    template <int t_n> using  dbound = dspan<t_n>;
-    template <int t_n> using  cbound = cspan<t_n>;
-    template <int t_n> using ucbound = ucspan<t_n>;
-    template <int t_n> using  sbound = sspan<t_n>;
-    template <int t_n> using usbound = usspan<t_n>;
-    template <int t_n> using  ibound = ispan<t_n>;
-    template <int t_n> using uibound = uispan<t_n>;
-    template <int t_n> using  lbound = lspan<t_n>;
-    template <int t_n> using ulbound = ulspan<t_n>;
-    template <int t_n> using  nbound = nspan<t_n>;
-    template <int t_n> using unbound = unspan<t_n>;
-
-    using  fbound1 = fspan1;
-    using  fbound2 = fspan2;
-    using  fbound3 = fspan3;
-    using  fbound4 = fspan4;
-    using  dbound1 = dspan1;
-    using  dbound2 = dspan2;
-    using  dbound3 = dspan3;
-    using  dbound4 = dspan4;
-    using  cbound1 = cspan1;
-    using  cbound2 = cspan2;
-    using  cbound3 = cspan3;
-    using  cbound4 = cspan4;
-    using ucbound1 = ucspan1;
-    using ucbound2 = ucspan2;
-    using ucbound3 = ucspan3;
-    using ucbound4 = ucspan4;
-    using  sbound1 = sspan1;
-    using  sbound2 = sspan2;
-    using  sbound3 = sspan3;
-    using  sbound4 = sspan4;
-    using usbound1 = usspan1;
-    using usbound2 = usspan2;
-    using usbound3 = usspan3;
-    using usbound4 = usspan4;
-    using  ibound1 = ispan1;
-    using  ibound2 = ispan2;
-    using  ibound3 = ispan3;
-    using  ibound4 = ispan4;
-    using uibound1 = uispan1;
-    using uibound2 = uispan2;
-    using uibound3 = uispan3;
-    using uibound4 = uispan4;
-    using  lbound1 = lspan1;
-    using  lbound2 = lspan2;
-    using  lbound3 = lspan3;
-    using  lbound4 = lspan4;
-    using ulbound1 = ulspan1;
-    using ulbound2 = ulspan2;
-    using ulbound3 = ulspan3;
-    using ulbound4 = ulspan4;
-    using  nbound1 = nspan1;
-    using  nbound2 = nspan2;
-    using  nbound3 = nspan3;
-    using  nbound4 = nspan4;
-    using unbound1 = unspan1;
-    using unbound2 = unspan2;
-    using unbound3 = unspan3;
-    using unbound4 = unspan4;
-
-}
-
 //======================================================================================================================
 // VEC2 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //======================================================================================================================
 
-template <typename T>
-struct vec<T, 2> {
+template <typename T> struct vec<T, 2> {
 
     static_assert(is_arithmetic_v<T>, "`qc::vec2<T>` must have arithmetic `T`");
 
@@ -304,8 +224,7 @@ struct vec<T, 2> {
 // VEC3 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //======================================================================================================================
 
-template <typename T>
-struct vec<T, 3> {
+template <typename T> struct vec<T, 3> {
 
     static_assert(is_arithmetic_v<T>, "`qc::vec3<T>` must have arithmetic `T`");
 
@@ -369,16 +288,16 @@ struct vec<T, 3> {
     vec2<T> & xy() noexcept;
     vec2<T> & rg() noexcept { return xy(); }
     vec2<T> & st() noexcept { return xy(); }
-    const vec2<T> & xy() const noexcept { return xy(); }
-    const vec2<T> & rg() const noexcept { return rg(); }
-    const vec2<T> & st() const noexcept { return st(); }
+    Q_CONSTEX const vec2<T> & xy() const noexcept;
+    Q_CONSTEX const vec2<T> & rg() const noexcept { return rg(); }
+    Q_CONSTEX const vec2<T> & st() const noexcept { return st(); }
 
     vec2<T> & yz() noexcept;
     vec2<T> & gb() noexcept { return yz(); }
     vec2<T> & tp() noexcept { return yz(); }
-    const vec2<T> & yz() const noexcept { return yz(); }
-    const vec2<T> & gb() const noexcept { return gb(); }
-    const vec2<T> & tp() const noexcept { return tp(); }
+    Q_CONSTEX const vec2<T> & yz() const noexcept;
+    Q_CONSTEX const vec2<T> & gb() const noexcept { return gb(); }
+    Q_CONSTEX const vec2<T> & tp() const noexcept { return tp(); }
 
 };
 
@@ -386,8 +305,7 @@ struct vec<T, 3> {
 // VEC4 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //======================================================================================================================
 
-template <typename T>
-struct vec<T, 4> {
+template <typename T> struct vec<T, 4> {
 
     static_assert(is_arithmetic_v<T>, "`qc::vec4<T>` must have arithmetic `T`");
 
@@ -449,39 +367,39 @@ struct vec<T, 4> {
     T operator[](int i) const;
 
     vec2<T> & xy() noexcept;
-    vec2<T> & rg() { return xy(); }
-    vec2<T> & st() { return xy(); }
-    const vec2<T> & xy() const { return xy(); }
-    const vec2<T> & rg() const { return rg(); }
-    const vec2<T> & st() const { return st(); }
+    vec2<T> & rg() noexcept { return xy(); }
+    vec2<T> & st() noexcept { return xy(); }
+    Q_CONSTEX const vec2<T> & xy() const noexcept;
+    Q_CONSTEX const vec2<T> & rg() const noexcept { return rg(); }
+    Q_CONSTEX const vec2<T> & st() const noexcept { return st(); }
 
     vec2<T> & yz() noexcept;
-    vec2<T> & gb() { return yz(); }
-    vec2<T> & tp() { return yz(); }
-    const vec2<T> & yz() const { return yz(); }
-    const vec2<T> & gb() const { return gb(); }
-    const vec2<T> & tp() const { return tp(); }
+    vec2<T> & gb() noexcept { return yz(); }
+    vec2<T> & tp() noexcept { return yz(); }
+    Q_CONSTEX const vec2<T> & yz() const noexcept;
+    Q_CONSTEX const vec2<T> & gb() const noexcept { return gb(); }
+    Q_CONSTEX const vec2<T> & tp() const noexcept { return tp(); }
 
     vec2<T> & zw() noexcept;
-    vec2<T> & ba() { return zw(); }
-    vec2<T> & pq() { return zw(); }
-    const vec2<T> & zw() const { return zw(); }
-    const vec2<T> & ba() const { return ba(); }
-    const vec2<T> & pq() const { return pq(); }
+    vec2<T> & ba() noexcept { return zw(); }
+    vec2<T> & pq() noexcept { return zw(); }
+    Q_CONSTEX const vec2<T> & zw() const noexcept;
+    Q_CONSTEX const vec2<T> & ba() const noexcept { return ba(); }
+    Q_CONSTEX const vec2<T> & pq() const noexcept { return pq(); }
 
     vec3<T> & xyz() noexcept;
-    vec3<T> & rgb() { return xyz(); }
-    vec3<T> & stp() { return xyz(); }
-    const vec3<T> & xyz() const { return xyz(); }
-    const vec3<T> & rgb() const { return rgb(); }
-    const vec3<T> & stp() const { return stp(); }
+    vec3<T> & rgb() noexcept { return xyz(); }
+    vec3<T> & stp() noexcept { return xyz(); }
+    Q_CONSTEX const vec3<T> & xyz() const noexcept;
+    Q_CONSTEX const vec3<T> & rgb() const noexcept { return rgb(); }
+    Q_CONSTEX const vec3<T> & stp() const noexcept { return stp(); }
 
     vec3<T> & yzw() noexcept;
-    vec3<T> & gba() { return yzw(); }
-    vec3<T> & tpq() { return yzw(); }
-    const vec3<T> & yzw() const { return yzw(); }
-    const vec3<T> & gba() const { return gba(); }
-    const vec3<T> & tpq() const { return tpq(); }
+    vec3<T> & gba() noexcept { return yzw(); }
+    vec3<T> & tpq() noexcept { return yzw(); }
+    Q_CONSTEX const vec3<T> & yzw() const noexcept;
+    Q_CONSTEX const vec3<T> & gba() const noexcept { return gba(); }
+    Q_CONSTEX const vec3<T> & tpq() const noexcept { return tpq(); }
 
 };
 
@@ -493,8 +411,7 @@ namespace detail {
     template <typename T, int t_n> using span_value_t = std::conditional_t<t_n == 1, T, vec<T, t_n>>;
 }
 
-template <typename T, int t_n>
-struct span {
+template <typename T, int t_n> struct span {
 
     static_assert(is_arithmetic_v<T>, "`qc::span<T, t_n>` must have arithmetic `T`");
     static_assert(t_n >= 1 && t_n <= 4, "`qc::span<T, t_n>` must have `t_n` in range [1, 4]");
@@ -510,10 +427,7 @@ struct span {
     //--------------------------------------------------------------------------
     // Instance Variables
 
-    union {
-        struct { V min, max; };
-        struct { V pos, size; };
-    };
+    V min, max;
 
     //--------------------------------------------------------------------------
     // Construction
@@ -526,8 +440,7 @@ struct span {
 
     constexpr span(const V & v1, const V & v2) noexcept;
 
-    template <typename Dummy = void, typename = enable_if_t<(t_n > 1), Dummy>>
-    constexpr span(T v1, T v2) noexcept;
+    template <typename = enable_if_t<(t_n > 1)>> constexpr span(T v1, T v2) noexcept;
 
     //--------------------------------------------------------------------------
     // Assignment
@@ -536,6 +449,11 @@ struct span {
     span<T, t_n> & operator=(span<T, t_n> && v) noexcept = default;
 
     template <int t_m> span<T, t_n> & operator=(const span<T, t_m> & v) noexcept;
+
+    //--------------------------------------------------------------------------
+    // Other
+
+    Q_CX_ABLE V size() const noexcept;
 
 };
 
@@ -594,8 +512,6 @@ template <typename T, int t_n> constexpr vec<T, t_n> nanvec = vec<T, t_n>(     n
 template <typename T, int t_n, typename = eif_signed_t<T>> constexpr span<T, t_n>  infspan = span<T, t_n>(-infinity<T>, infinity<T>);
 template <typename T, int t_n>                             constexpr span<T, t_n>  nanspan = span<T, t_n>(     nan<T>,       nan<T>);
 template <typename T, int t_n, typename = eif_signed_t<T>> constexpr span<T, t_n> nullspan = span<T, t_n>(infinity<T>, -infinity<T>);
-
-template <typename T, int t_n> constexpr bound<T, t_n> nanbound = nanspan<T, t_n>;
 
 //======================================================================================================================
 // Functions ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -714,73 +630,45 @@ template <typename T, int t_n> Q_CX_ABLE bool all(const vec<T, t_n> & v);
 // min
 //------------------------------------------------------------------------------
 
-template <typename T, int t_n>
-Q_CX_ABLE T min(const vec<T, t_n> & v);
+template <typename T, int t_n> Q_CX_ABLE T min(const vec<T, t_n> & v);
 
-template <typename T, int t_n>
-Q_CX_ABLE vec<T, t_n> min(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> min(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 
-template <typename T, int t_n, typename... Ts>
-Q_CX_ABLE vec<T, t_n> min(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<Ts, t_n> &... rest);
+template <typename T, int t_n, typename... Ts> Q_CX_ABLE vec<T, t_n> min(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<Ts, t_n> &... rest);
 
-template <typename T, int t_n>
-Q_CX_ABLE vec<T, t_n> min(const vec<T, t_n> & v1, T v2);
+template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> min(const vec<T, t_n> & v1, T v2);
 
-template <typename T, int t_n>
-Q_CX_ABLE vec<T, t_n> min(T v1, const vec<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> min(T v1, const vec<T, t_n> & v2);
 
 //==============================================================================
 // max
 //------------------------------------------------------------------------------
 
-template <typename T, int t_n>
-Q_CX_ABLE T max(const vec<T, t_n> & v);
+template <typename T, int t_n> Q_CX_ABLE T max(const vec<T, t_n> & v);
 
-template <typename T, int t_n>
-Q_CX_ABLE vec<T, t_n> max(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> max(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 
-template <typename T, int t_n, typename... Ts>
-Q_CX_ABLE vec<T, t_n> max(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<Ts, t_n> &... rest);
+template <typename T, int t_n, typename... Ts> Q_CX_ABLE vec<T, t_n> max(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<Ts, t_n> &... rest);
 
-template <typename T, int t_n>
-Q_CX_ABLE vec<T, t_n> max(const vec<T, t_n> & v1, T v2);
+template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> max(const vec<T, t_n> & v1, T v2);
 
-template <typename T, int t_n>
-Q_CX_ABLE vec<T, t_n> max(T v1, const vec<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> max(T v1, const vec<T, t_n> & v2);
 
 //==============================================================================
 // minify
 //------------------------------------------------------------------------------
 
-template <typename T, int t_n>
-vec<T, t_n> & minify(vec<T, t_n> & min, const vec<T, t_n> & v);
+template <typename T, int t_n> vec<T, t_n> & minify(vec<T, t_n> & min, const vec<T, t_n> & v);
 
-template <typename T, int t_n>
-vec<T, t_n> & minify(vec<T, t_n> & min, T v);
+template <typename T, int t_n> vec<T, t_n> & minify(vec<T, t_n> & min, T v);
 
 //==============================================================================
 // maxify
 //------------------------------------------------------------------------------
 
-template <typename T, int t_n>
-vec<T, t_n> & maxify(vec<T, t_n> & max, const vec<T, t_n> & v);
+template <typename T, int t_n> vec<T, t_n> & maxify(vec<T, t_n> & max, const vec<T, t_n> & v);
 
-template <typename T, int t_n>
-vec<T, t_n> & maxify(vec<T, t_n> & max, T v);
-
-//==============================================================================
-// toSpan
-//------------------------------------------------------------------------------
-
-template <typename T, int t_n>
-Q_CX_ABLE span<T, t_n> toSpan(const bound<T, t_n> & v);
-
-//==============================================================================
-// toBound
-//------------------------------------------------------------------------------
-
-template <typename T, int t_n>
-Q_CX_ABLE bound<T, t_n> toBound(const span<T, t_n> & v);
+template <typename T, int t_n> vec<T, t_n> & maxify(vec<T, t_n> & max, T v);
 
 }
 

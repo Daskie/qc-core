@@ -197,16 +197,24 @@ inline T vec<T, 3>::operator[](int i) const {
     return *(&x + i);
 }
 
-
-
 template <typename T>
 inline vec2<T> & vec<T, 3>::xy() noexcept {
     return reinterpret_cast<vec2<T> &>(x);
 }
 
 template <typename T>
+Q_CONSTEX const vec2<T> & vec<T, 3>::xy() const noexcept {
+    return reinterpret_cast<const vec2<T> &>(x);
+}
+
+template <typename T>
 inline vec2<T> & vec<T, 3>::yz() noexcept {
     return reinterpret_cast<vec2<T> &>(y);
+}
+
+template <typename T>
+Q_CONSTEX const vec2<T> & vec<T, 3>::yz() const noexcept {
+    return reinterpret_cast<const vec2<T> &>(y);
 }
 
 //======================================================================================================================
@@ -343,8 +351,18 @@ inline vec2<T> & vec<T, 4>::xy() noexcept {
 }
 
 template <typename T>
+Q_CONSTEX const vec2<T> & vec<T, 4>::xy() const noexcept {
+    return reinterpret_cast<const vec2<T> &>(x);
+}
+
+template <typename T>
 inline vec2<T> & vec<T, 4>::yz() noexcept {
     return reinterpret_cast<vec2<T> &>(y);
+}
+
+template <typename T>
+Q_CONSTEX const vec2<T> & vec<T, 4>::yz() const noexcept {
+    return reinterpret_cast<const vec2<T> &>(y);
 }
 
 template <typename T>
@@ -353,13 +371,28 @@ inline vec2<T> & vec<T, 4>::zw() noexcept {
 }
 
 template <typename T>
+Q_CONSTEX const vec2<T> & vec<T, 4>::zw() const noexcept {
+    return reinterpret_cast<const vec2<T> &>(z);
+}
+
+template <typename T>
 inline vec3<T> & vec<T, 4>::xyz() noexcept {
     return reinterpret_cast<vec3<T> &>(x);
 }
 
 template <typename T>
+Q_CONSTEX const vec3<T> & vec<T, 4>::xyz() const noexcept {
+    return reinterpret_cast<const vec3<T> &>(x);
+}
+
+template <typename T>
 inline vec3<T> & vec<T, 4>::yzw() noexcept {
     return reinterpret_cast<vec3<T> &>(y);
+}
+
+template <typename T>
+Q_CONSTEX const vec3<T> & vec<T, 4>::yzw() const noexcept {
+    return reinterpret_cast<const vec3<T> &>(y);
 }
 
 //======================================================================================================================
@@ -396,7 +429,7 @@ constexpr span<T, t_n>::span(const V & v1, const V & v2) noexcept :
 {}
 
 template <typename T, int t_n>
-template <typename Dummy, typename>
+template <typename>
 constexpr span<T, t_n>::span(T v1, T v2) noexcept :
     min(v1),
     max(v2)
@@ -411,6 +444,14 @@ inline span<T, t_n> & span<T, t_n>::operator=(const span<T, t_m> & v) noexcept {
     min = v.min;
     max = v.max;
     return *this;
+}
+
+//------------------------------------------------------------------------------
+// Other
+
+template <typename T, int t_n>
+Q_CX_ABLE auto span<T, t_n>::size() const noexcept -> V {
+    return max - min;
 }
 
 //======================================================================================================================
@@ -1022,18 +1063,6 @@ inline vec<T, t_n> & maxify(vec<T, t_n> & max, T v) {
     if constexpr (t_n >= 3) maxify(max.z, v);
     if constexpr (t_n >= 4) maxify(max.w, v);
     return max;
-}
-
-template <typename T, int t_n>
-Q_CX_ABLE span<T, t_n> toSpan(const bound<T, t_n> & v) {
-    if constexpr (t_n == 1) return {v.min, T(v.min + v.max)};
-    else return {v.min, v.min + v.max};
-}
-
-template <typename T, int t_n>
-Q_CX_ABLE bound<T, t_n> toBound(const span<T, t_n> & v) {
-    if constexpr (t_n == 1) return {v.min, T(v.max - v.min)};
-    else return {v.min, v.max - v.min};
 }
 
 }
