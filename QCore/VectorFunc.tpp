@@ -337,18 +337,6 @@ Q_CONSTEX vec<To, t_n> transnorm(const vec<From, t_n> & v) {
 }
 
 template <typename T, int t_n>
-Q_CX_ABLE span<T, t_n> toSpan(const bound<T, t_n> & b) {
-    if constexpr (t_n == 1) return {b.min, T(b.min + b.max)};
-    else return {b.min, b.min + b.max};
-}
-
-template <typename T, int t_n>
-Q_CX_ABLE bound<T, t_n> toBound(const span<T, t_n> & s) {
-    if constexpr (t_n == 1) return {s.min, T(s.max - s.min)};
-    else return {s.min, s.max - s.min};
-}
-
-template <typename T, int t_n>
 Q_CX_ABLE span<T, t_n> intersect(const span<T, t_n> & s1, const span<T, t_n> & s2) {
     if constexpr (t_n == 1) return {
         max(s1.min, s2.min),

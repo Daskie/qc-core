@@ -58,8 +58,8 @@ inline vec2<T> & vec<T, 2>::operator=(T v) noexcept {
 template <typename T>
 template <int t_n>
 inline vec2<T> & vec<T, 2>::operator=(const vec<T, t_n> & v) noexcept {
-    if constexpr (t_n >= 1) x = v.x; if constexpr (t_n < 1) x = T(0);
-    if constexpr (t_n >= 2) y = v.y; if constexpr (t_n < 2) y = T(0);
+    if constexpr (t_n >= 1) x = v.x; else x = T(0);
+    if constexpr (t_n >= 2) y = v.y; else y = T(0);
     return *this;
 }
 
@@ -160,9 +160,9 @@ inline vec3<T> & vec<T, 3>::operator=(T v) noexcept {
 template <typename T>
 template <int t_n>
 inline vec3<T> & vec<T, 3>::operator=(const vec<T, t_n> & v) noexcept {
-    if constexpr (t_n >= 1) x = v.x; if constexpr (t_n < 1) x = T(0);
-    if constexpr (t_n >= 2) y = v.y; if constexpr (t_n < 2) y = T(0);
-    if constexpr (t_n >= 3) z = v.z; if constexpr (t_n < 3) z = T(0);
+    if constexpr (t_n >= 1) x = v.x; else x = T(0);
+    if constexpr (t_n >= 2) y = v.y; else y = T(0);
+    if constexpr (t_n >= 3) z = v.z; else z = T(0);
     return *this;
 }
 
@@ -297,10 +297,10 @@ inline vec4<T> & vec<T, 4>::operator=(T v) noexcept {
 template <typename T>
 template <int t_n>
 inline vec4<T> & vec<T, 4>::operator=(const vec<T, t_n> & v) noexcept {
-    if constexpr (t_n >= 1) x = v.x; if constexpr (t_n < 1) x = T(0);
-    if constexpr (t_n >= 2) y = v.y; if constexpr (t_n < 2) y = T(0);
-    if constexpr (t_n >= 3) z = v.z; if constexpr (t_n < 3) z = T(0);
-    if constexpr (t_n >= 4) w = v.w; if constexpr (t_n < 4) w = T(0);
+    if constexpr (t_n >= 1) x = v.x; else x = T(0);
+    if constexpr (t_n >= 2) y = v.y; else y = T(0);
+    if constexpr (t_n >= 3) z = v.z; else z = T(0);
+    if constexpr (t_n >= 4) w = v.w; else w = T(0);
     return *this;
 }
 
@@ -384,9 +384,9 @@ namespace detail {
 
 template <typename T, int t_n>
 template <typename U, int t_m>
-constexpr span<T, t_n>::span(const span<U, t_m> & s) noexcept :
-    min(detail::get_span_val<T, t_n, U, t_m>(s.min)),
-    max(detail::get_span_val<T, t_n, U, t_m>(s.max))
+constexpr span<T, t_n>::span(const span<U, t_m> & v) noexcept :
+    min(detail::get_span_val<T, t_n, U, t_m>(v.min)),
+    max(detail::get_span_val<T, t_n, U, t_m>(v.max))
 {}
 
 template <typename T, int t_n>
@@ -407,9 +407,9 @@ constexpr span<T, t_n>::span(T v1, T v2) noexcept :
 
 template <typename T, int t_n>
 template <int t_m>
-inline span<T, t_n> & span<T, t_n>::operator=(const span<T, t_m> & s) noexcept {
-    min = s.min;
-    max = s.max;
+inline span<T, t_n> & span<T, t_n>::operator=(const span<T, t_m> & v) noexcept {
+    min = v.min;
+    max = v.max;
     return *this;
 }
 
@@ -435,9 +435,9 @@ inline vec<T, t_n> & operator++(vec<T, t_n> & v) {
 
 template <typename T, int t_n>
 inline vec<T, t_n> operator++(vec<T, t_n> & v, int) {
-    if constexpr (t_n == 2) return {v.x++, v.y++};
-    if constexpr (t_n == 3) return {v.x++, v.y++, v.z++};
-    if constexpr (t_n == 4) return {v.x++, v.y++, v.z++, v.w++};
+    vec<T, t_n> temp(v);
+    ++v;
+    return temp;
 }
 
 //--- pre decrement ---
@@ -455,9 +455,9 @@ inline vec<T, t_n> & operator--(vec<T, t_n> & v) {
 
 template <typename T, int t_n>
 inline vec<T, t_n> operator--(vec<T, t_n> & v, int) {
-    if constexpr (t_n == 2) return {v.x--, v.y--};
-    if constexpr (t_n == 3) return {v.x--, v.y--, v.z--};
-    if constexpr (t_n == 4) return {v.x--, v.y--, v.z--, v.w--};
+    vec<T, t_n> temp(v);
+    --v;
+    return temp;
 }
 
 //--- add assign ---
@@ -606,6 +606,18 @@ Q_CX_ABLE vec<T, t_n> operator+(T v1, const vec<T, t_n> & v2) {
     if constexpr (t_n == 4) return {T(v1 + v2.x), T(v1 + v2.y), T(v1 + v2.z), T(v1 + v2.w)};
 }
 
+template <typename T, int t_n>
+Q_CX_ABLE span<T, t_n> operator+(const span<T, t_n> & v1, const detail::span_value_t<T, t_n> & v2) {
+    if constexpr (t_n == 1) return {T(v1.min + v2), T(v1.max + v2)};
+    else return {v1.min + v2, v1.max + v2};
+}
+
+template <typename T, int t_n>
+Q_CX_ABLE span<T, t_n> operator+(const detail::span_value_t<T, t_n> & v1, const span<T, t_n> & v2) {
+    if constexpr (t_n == 1) return {T(v1 + v2.min), T(v1 + v2.max)};
+    else return {v1 + v2.min, v1 + v2.max};
+}
+
 //--- subtract ---
 
 template <typename T, int t_n>
@@ -627,6 +639,18 @@ Q_CX_ABLE vec<T, t_n> operator-(T v1, const vec<T, t_n> & v2) {
     if constexpr (t_n == 2) return {T(v1 - v2.x), T(v1 - v2.y)};
     if constexpr (t_n == 3) return {T(v1 - v2.x), T(v1 - v2.y), T(v1 - v2.z)};
     if constexpr (t_n == 4) return {T(v1 - v2.x), T(v1 - v2.y), T(v1 - v2.z), T(v1 - v2.w)};
+}
+
+template <typename T, int t_n>
+Q_CX_ABLE span<T, t_n> operator-(const span<T, t_n> & v1, const detail::span_value_t<T, t_n> & v2) {
+    if constexpr (t_n == 1) return {T(v1.min - v2), T(v1.max - v2)};
+    else return {v1.min - v2, v1.max - v2};
+}
+
+template <typename T, int t_n>
+Q_CX_ABLE span<T, t_n> operator-(const detail::span_value_t<T, t_n> & v1, const span<T, t_n> & v2) {
+    if constexpr (t_n == 1) return {T(v1 - v2.min), T(v1 - v2.max)};
+    else return {v1 - v2.min, v1 - v2.max};
 }
 
 //--- multiply ---
@@ -722,42 +746,34 @@ Q_CX_ABLE bvec<t_n> operator==(const vec<T, t_n> & v1, T v2) {
 
 template <typename T, int t_n>
 Q_CX_ABLE bvec<t_n> operator==(T v1, const vec<T, t_n> & v2) {
-    if constexpr (t_n == 2) return {v1 == v2.x, v1 == v2.y};
-    if constexpr (t_n == 3) return {v1 == v2.x, v1 == v2.y, v1 == v2.z};
-    if constexpr (t_n == 4) return {v1 == v2.x, v1 == v2.y, v1 == v2.z, v1 == v2.w};
+    return v2 == v1;
 }
 
 template <typename T, int t_n>
-Q_CX_ABLE bool operator==(const span<T, t_n> & s1, const span<T, t_n> & s2) {
-    return s1.min == s2.min && s1.max == s2.max;
+Q_CX_ABLE bool operator==(const span<T, t_n> & v1, const span<T, t_n> & v2) {
+    return v1.min == v2.min && v1.max == v2.max;
 }
 
 //--- not equal to ---
 
 template <typename T, int t_n>
 Q_CX_ABLE bool operator!=(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
-    if constexpr (t_n == 2) return v1.x != v2.x || v1.y != v2.y;
-    if constexpr (t_n == 3) return v1.x != v2.x || v1.y != v2.y || v1.z != v2.z;
-    if constexpr (t_n == 4) return v1.x != v2.x || v1.y != v2.y || v1.z != v2.z || v1.w != v2.w;
+    return !(v1 == v2);
 }
 
 template <typename T, int t_n>
 Q_CX_ABLE bvec<t_n> operator!=(const vec<T, t_n> & v1, T v2) {
-    if constexpr (t_n == 2) return {v1.x != v2, v1.y != v2};
-    if constexpr (t_n == 3) return {v1.x != v2, v1.y != v2, v1.z != v2};
-    if constexpr (t_n == 4) return {v1.x != v2, v1.y != v2, v1.z != v2, v1.w != v2};
+    return !(v1 == v2);
 }
 
 template <typename T, int t_n>
 Q_CX_ABLE bvec<t_n> operator!=(T v1, const vec<T, t_n> & v2) {
-    if constexpr (t_n == 2) return {v1 != v2.x, v1 != v2.y};
-    if constexpr (t_n == 3) return {v1 != v2.x, v1 != v2.y, v1 != v2.z};
-    if constexpr (t_n == 4) return {v1 != v2.x, v1 != v2.y, v1 != v2.z, v1 != v2.w};
+    return !(v1 == v2);
 }
 
 template <typename T, int t_n>
-Q_CX_ABLE bool operator!=(const span<T, t_n> & s1, const span<T, t_n> & s2) {
-    return s1.min != s2.min || s1.max != s2.max;
+Q_CX_ABLE bool operator!=(const span<T, t_n> & v1, const span<T, t_n> & v2) {
+    return !(v1 == v2);
 }
 
 //--- less than ---
@@ -1006,6 +1022,18 @@ inline vec<T, t_n> & maxify(vec<T, t_n> & max, T v) {
     if constexpr (t_n >= 3) maxify(max.z, v);
     if constexpr (t_n >= 4) maxify(max.w, v);
     return max;
+}
+
+template <typename T, int t_n>
+Q_CX_ABLE span<T, t_n> toSpan(const bound<T, t_n> & v) {
+    if constexpr (t_n == 1) return {v.min, T(v.min + v.max)};
+    else return {v.min, v.min + v.max};
+}
+
+template <typename T, int t_n>
+Q_CX_ABLE bound<T, t_n> toBound(const span<T, t_n> & v) {
+    if constexpr (t_n == 1) return {v.min, T(v.max - v.min)};
+    else return {v.min, v.max - v.min};
 }
 
 }

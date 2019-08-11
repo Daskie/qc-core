@@ -249,6 +249,7 @@ struct vec<T, 2> {
     // Static Members
 
     using type = T;
+
     static constexpr int dimension{2};
 
     //--------------------------------------------------------------------------
@@ -312,6 +313,7 @@ struct vec<T, 3> {
     // Static Members
 
     using type = T;
+
     static constexpr int dimension{3};
 
     //--------------------------------------------------------------------------
@@ -393,6 +395,7 @@ struct vec<T, 4> {
     // Static Members
 
     using type = T;
+
     static constexpr int dimension{4};
 
     //--------------------------------------------------------------------------
@@ -487,9 +490,7 @@ struct vec<T, 4> {
 //======================================================================================================================
 
 namespace detail {
-    template <typename T, int t_n> struct span_value { using type = vec<T, t_n>; };
-    template <typename T> struct span_value<T, 1> { using type = T; };
-    template <typename T, int t_n> using span_value_t = typename span_value<T, t_n>::type;
+    template <typename T, int t_n> using span_value_t = std::conditional_t<t_n == 1, T, vec<T, t_n>>;
 }
 
 template <typename T, int t_n>
@@ -501,8 +502,9 @@ struct span {
     //--------------------------------------------------------------------------
     // Static Members
 
-    using V = detail::span_value_t<T, t_n>;
     using type = T;
+    using V = detail::span_value_t<T, t_n>;
+
     static constexpr int dimension{t_n};
 
     //--------------------------------------------------------------------------
@@ -517,10 +519,10 @@ struct span {
     // Construction
 
     constexpr span() noexcept;
-    constexpr span(const span<T, t_n> & s) noexcept = default;
-    constexpr span(span<T, t_n> && s) noexcept = default;
+    constexpr span(const span<T, t_n> & v) noexcept = default;
+    constexpr span(span<T, t_n> && v) noexcept = default;
 
-    template <typename U, int t_m> constexpr explicit span(const span<U, t_m> & s) noexcept;
+    template <typename U, int t_m> constexpr explicit span(const span<U, t_m> & v) noexcept;
 
     constexpr span(const V & v1, const V & v2) noexcept;
 
@@ -530,10 +532,10 @@ struct span {
     //--------------------------------------------------------------------------
     // Assignment
 
-    span<T, t_n> & operator=(const span<T, t_n> & s) noexcept = default;
-    span<T, t_n> & operator=(span<T, t_n> && s) noexcept = default;
+    span<T, t_n> & operator=(const span<T, t_n> & v) noexcept = default;
+    span<T, t_n> & operator=(span<T, t_n> && v) noexcept = default;
 
-    template <int t_m> span<T, t_n> & operator=(const span<T, t_m> & s) noexcept;
+    template <int t_m> span<T, t_n> & operator=(const span<T, t_m> & v) noexcept;
 
 };
 
@@ -632,13 +634,17 @@ template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> operator+(const vec<T, t_n>
 
 template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> operator-(const vec<T, t_n> & v);
 
-template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> operator+(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
-template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> operator+(const vec<T, t_n> & v1, T v2);
-template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> operator+(T v1, const vec<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE  vec<T, t_n> operator+(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE  vec<T, t_n> operator+(const vec<T, t_n> & v1, T v2);
+template <typename T, int t_n> Q_CX_ABLE  vec<T, t_n> operator+(T v1, const vec<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE span<T, t_n> operator+(const span<T, t_n> & v1, const detail::span_value_t<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE span<T, t_n> operator+(const detail::span_value_t<T, t_n> & v1, const span<T, t_n> & v2);
 
-template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> operator-(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
-template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> operator-(const vec<T, t_n> & v1, T v2);
-template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> operator-(T v1, const vec<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE  vec<T, t_n> operator-(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE  vec<T, t_n> operator-(const vec<T, t_n> & v1, T v2);
+template <typename T, int t_n> Q_CX_ABLE  vec<T, t_n> operator-(T v1, const vec<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE span<T, t_n> operator-(const span<T, t_n> & v1, const detail::span_value_t<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE span<T, t_n> operator-(const detail::span_value_t<T, t_n> & v1, const span<T, t_n> & v2);
 
 template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> operator*(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> operator*(const vec<T, t_n> & v1, T v2);
@@ -659,10 +665,12 @@ template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> operator%(T v1, const vec<T
 template <typename T, int t_n> Q_CX_ABLE      bool operator==(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 template <typename T, int t_n> Q_CX_ABLE bvec<t_n> operator==(const vec<T, t_n> & v1, T v2);
 template <typename T, int t_n> Q_CX_ABLE bvec<t_n> operator==(T v1, const vec<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE      bool operator==(const span<T, t_n> & v1, const span<T, t_n> & v2);
 
 template <typename T, int t_n> Q_CX_ABLE      bool operator!=(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 template <typename T, int t_n> Q_CX_ABLE bvec<t_n> operator!=(const vec<T, t_n> & v1, T v2);
 template <typename T, int t_n> Q_CX_ABLE bvec<t_n> operator!=(T v1, const vec<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE      bool operator!=(const span<T, t_n> & v1, const span<T, t_n> & v2);
 
 template <typename T, int t_n> Q_CX_ABLE bvec<t_n> operator<(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 template <typename T, int t_n> Q_CX_ABLE bvec<t_n> operator<(const vec<T, t_n> & v1, T v2);
@@ -679,10 +687,6 @@ template <typename T, int t_n> Q_CX_ABLE bvec<t_n> operator<=(T v1, const vec<T,
 template <typename T, int t_n> Q_CX_ABLE bvec<t_n> operator>=(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 template <typename T, int t_n> Q_CX_ABLE bvec<t_n> operator>=(const vec<T, t_n> & v1, T v2);
 template <typename T, int t_n> Q_CX_ABLE bvec<t_n> operator>=(T v1, const vec<T, t_n> & v2);
-
-template <typename T, int t_n> Q_CX_ABLE bool operator==(const span<T, t_n> & s1, const span<T, t_n> & s2);
-
-template <typename T, int t_n> Q_CX_ABLE bool operator!=(const span<T, t_n> & s1, const span<T, t_n> & s2);
 
 //==============================================================================
 // Logic
@@ -769,14 +773,14 @@ vec<T, t_n> & maxify(vec<T, t_n> & max, T v);
 //------------------------------------------------------------------------------
 
 template <typename T, int t_n>
-Q_CX_ABLE span<T, t_n> toSpan(const bound<T, t_n> & b);
+Q_CX_ABLE span<T, t_n> toSpan(const bound<T, t_n> & v);
 
 //==============================================================================
 // toBound
 //------------------------------------------------------------------------------
 
 template <typename T, int t_n>
-Q_CX_ABLE bound<T, t_n> toBound(const span<T, t_n> & s);
+Q_CX_ABLE bound<T, t_n> toBound(const span<T, t_n> & v);
 
 }
 
