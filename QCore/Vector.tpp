@@ -773,9 +773,7 @@ Q_CX_ABLE vec<T, t_n> operator+(const vec<T, t_n> & v1, T v2) {
 
 template <typename T, int t_n>
 Q_CX_ABLE vec<T, t_n> operator+(T v1, const vec<T, t_n> & v2) {
-    if constexpr (t_n == 2) return {T(v1 + v2.x), T(v1 + v2.y)};
-    if constexpr (t_n == 3) return {T(v1 + v2.x), T(v1 + v2.y), T(v1 + v2.z)};
-    if constexpr (t_n == 4) return {T(v1 + v2.x), T(v1 + v2.y), T(v1 + v2.z), T(v1 + v2.w)};
+    return v2 + v1;
 }
 
 template <typename T, int t_n>
@@ -786,8 +784,7 @@ Q_CX_ABLE span<T, t_n> operator+(const span<T, t_n> & v1, const detail::span_val
 
 template <typename T, int t_n>
 Q_CX_ABLE span<T, t_n> operator+(const detail::span_value_t<T, t_n> & v1, const span<T, t_n> & v2) {
-    if constexpr (t_n == 1) return {T(v1 + v2.min), T(v1 + v2.max)};
-    else return {v1 + v2.min, v1 + v2.max};
+    return v2 + v1;
 }
 
 //--- subtract ---
@@ -848,6 +845,17 @@ Q_CX_ABLE vec<T, t_n> operator*(T v1, const vec<T, t_n> & v2) {
     if constexpr (t_n == 4) return {T(v1 * v2.x), T(v1 * v2.y), T(v1 * v2.z), T(v1 * v2.w)};
 }
 
+template <typename T, int t_n>
+Q_CX_ABLE span<T, t_n> operator*(const span<T, t_n> & v1, const detail::span_value_t<T, t_n> & v2) {
+    if constexpr (t_n == 1) return {T(v1.min * v2), T(v1.max * v2)};
+    else return {v1.min * v2, v1.max * v2};
+}
+
+template <typename T, int t_n>
+Q_CX_ABLE span<T, t_n> operator*(const detail::span_value_t<T, t_n> & v1, const span<T, t_n> & v2) {
+    return v2 * v1;
+}
+
 //--- divide ---
 
 template <typename T, int t_n>
@@ -872,6 +880,21 @@ Q_CX_ABLE vec<T, t_n> operator/(T v1, const vec<T, t_n> & v2) {
     if constexpr (t_n == 2) return {T(v1 / v2.x), T(v1 / v2.y)};
     if constexpr (t_n == 3) return {T(v1 / v2.x), T(v1 / v2.y), T(v1 / v2.z)};
     if constexpr (t_n == 4) return {T(v1 / v2.x), T(v1 / v2.y), T(v1 / v2.z), T(v1 / v2.w)};
+}
+
+template <typename T, int t_n>
+Q_CX_ABLE span<T, t_n> operator/(const span<T, t_n> & v1, const detail::span_value_t<T, t_n> & v2) {
+    if constexpr (is_floating_point_v<T>) {
+        return v1 * (T(1.0) / v2);
+    }
+    if constexpr (t_n == 1) return {T(v1.min / v2), T(v1.max / v2)};
+    else return {v1.min / v2, v1.max / v2};
+}
+
+template <typename T, int t_n>
+Q_CX_ABLE span<T, t_n> operator/(const detail::span_value_t<T, t_n> & v1, const span<T, t_n> & v2) {
+    if constexpr (t_n == 1) return {T(v1 / v2.min), T(v1 / v2.max)};
+    else return {v1 / v2.min, v1 / v2.max};
 }
 
 //--- modulus ---

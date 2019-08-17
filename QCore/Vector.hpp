@@ -585,10 +585,14 @@ template <typename T, int t_n> Q_CX_ABLE span<T, t_n> operator-(const detail::sp
 template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> operator*(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> operator*(const vec<T, t_n> & v1, T v2);
 template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> operator*(T v1, const vec<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE span<T, t_n> operator*(const span<T, t_n> & v1, const detail::span_value_t<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE span<T, t_n> operator*(const detail::span_value_t<T, t_n> & v1, const span<T, t_n> & v2);
 
 template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> operator/(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> operator/(const vec<T, t_n> & v1, T v2);
 template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> operator/(T v1, const vec<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE span<T, t_n> operator/(const span<T, t_n> & v1, const detail::span_value_t<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE span<T, t_n> operator/(const detail::span_value_t<T, t_n> & v1, const span<T, t_n> & v2);
 
 template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> operator%(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> operator%(const vec<T, t_n> & v1, T v2);
