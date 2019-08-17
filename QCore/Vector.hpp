@@ -654,8 +654,6 @@ template <typename T, int t_n> Q_CX_ABLE T min(const vec<T, t_n> & v);
 
 template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> min(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 
-template <typename T, int t_n, typename... Ts> Q_CX_ABLE vec<T, t_n> min(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<Ts, t_n> &... rest);
-
 template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> min(const vec<T, t_n> & v1, T v2);
 
 template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> min(T v1, const vec<T, t_n> & v2);
@@ -667,8 +665,6 @@ template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> min(T v1, const vec<T, t_n>
 template <typename T, int t_n> Q_CX_ABLE T max(const vec<T, t_n> & v);
 
 template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> max(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
-
-template <typename T, int t_n, typename... Ts> Q_CX_ABLE vec<T, t_n> max(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<Ts, t_n> &... rest);
 
 template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> max(const vec<T, t_n> & v1, T v2);
 

@@ -107,25 +107,37 @@ void compileFunctionsT() {
     compileFunctionsTT<T, qc::u64>();
 
     T v(1);
+    T * vp(nullptr);
 
     qc::min(v, v);
+    qc::min(vp, vp);
     qc::min(v, v, v);
+    qc::min(v, v, v, v);
+    qc::min(v, v, v, v, v);
 
     qc::max(v, v);
+    qc::max(vp, vp);
     qc::max(v, v, v);
+    qc::max(v, v, v, v);
+    qc::max(v, v, v, v, v);
 
     qc::minify(v, v);
+    qc::minify(vp, vp);
+    qc::minify(v, v, v);
+    qc::minify(v, v, v, v);
+    qc::minify(v, v, v, v, v);
     
     qc::maxify(v, v);
+    qc::maxify(vp, vp);
+    qc::maxify(v, v, v);
+    qc::maxify(v, v, v, v);
+    qc::maxify(v, v, v, v, v);
 
     qc::minmax(v);
     qc::minmax(v, v);
     qc::minmax(v, v, v);
     qc::minmax(v, v, v, v);
     qc::minmax(v, v, v, v, v);
-    qc::minmax(v, v, v, v, v, v);
-    qc::minmax(v, v, v, v, v, v, v);
-    qc::minmax(v, v, v, v, v, v, v, v);
 
     qc::median(v, v, v);
 
@@ -253,20 +265,24 @@ constexpr void compileFunctionsConstexprT() {
     compileFunctionsConstexprTT<T, qc::u64>();
 
     constexpr T v(1);
+    constexpr T * vp(nullptr);
 
     qc::min(v, v);
+    qc::min(vp, vp);
     qc::min(v, v, v);
+    qc::min(v, v, v, v);
+    qc::min(v, v, v, v, v);
 
     qc::max(v, v);
+    qc::max(vp, vp);
     qc::max(v, v, v);
+    qc::max(v, v, v, v);
+    qc::max(v, v, v, v, v);
 
     //qc::minmax(v, v);
     //qc::minmax(v, v, v);
     //qc::minmax(v, v, v, v);
     //qc::minmax(v, v, v, v, v);
-    //qc::minmax(v, v, v, v, v, v);
-    //qc::minmax(v, v, v, v, v, v, v);
-    //qc::minmax(v, v, v, v, v, v, v, v);
 
     //qc::median(v, v, v);
 

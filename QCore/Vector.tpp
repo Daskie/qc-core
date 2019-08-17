@@ -1112,11 +1112,6 @@ Q_CX_ABLE vec<T, t_n> min(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
     if constexpr (t_n == 4) return {min(v1.x, v2.x), min(v1.y, v2.y), min(v1.z, v2.z), min(v1.w, v2.w)};
 }
 
-template <typename T, int t_n, typename... Ts>
-Q_CX_ABLE vec<T, t_n> min(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<Ts, t_n> &... rest) {
-    return min(min(v1, v2), rest...);
-}
-
 template <typename T, int t_n>
 Q_CX_ABLE vec<T, t_n> min(const vec<T, t_n> & v1, T v2) {
     if constexpr (t_n == 2) return {min(v1.x, v2), min(v1.y, v2)};
@@ -1141,11 +1136,6 @@ Q_CX_ABLE vec<T, t_n> max(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
     if constexpr (t_n == 2) return {max(v1.x, v2.x), max(v1.y, v2.y)};
     if constexpr (t_n == 3) return {max(v1.x, v2.x), max(v1.y, v2.y), max(v1.z, v2.z)};
     if constexpr (t_n == 4) return {max(v1.x, v2.x), max(v1.y, v2.y), max(v1.z, v2.z), max(v1.w, v2.w)};
-}
-
-template <typename T, int t_n, typename... Ts>
-Q_CX_ABLE vec<T, t_n> max(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<Ts, t_n> &... rest) {
-    return max(max(v1, v2), rest...);
 }
 
 template <typename T, int t_n>

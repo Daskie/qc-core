@@ -689,6 +689,14 @@ void compileFunctionsT() {
     qc::min(v3, v3);
     qc::min(v4, v4);
 
+    qc::min(v2, v2, v2);
+    qc::min(v3, v3, v3);
+    qc::min(v4, v4, v4);
+
+    qc::min(v2, v2, v2, v2);
+    qc::min(v3, v3, v3, v3);
+    qc::min(v4, v4, v4, v4);
+
     qc::min(v2, v2, v2, v2, v2);
     qc::min(v3, v3, v3, v3, v3);
     qc::min(v4, v4, v4, v4, v4);
@@ -707,6 +715,14 @@ void compileFunctionsT() {
     qc::max(v2, v2);
     qc::max(v3, v3);
     qc::max(v4, v4);
+
+    qc::max(v2, v2, v2);
+    qc::max(v3, v3, v3);
+    qc::max(v4, v4, v4);
+
+    qc::max(v2, v2, v2, v2);
+    qc::max(v3, v3, v3, v3);
+    qc::max(v4, v4, v4, v4);
 
     qc::max(v2, v2, v2, v2, v2);
     qc::max(v3, v3, v3, v3, v3);
@@ -1146,6 +1162,14 @@ constexpr void compileFunctionsConstexprT() {
     //qc::min(v3, v3);
     //qc::min(v4, v4);
 
+    //qc::min(v2, v2, v2);
+    //qc::min(v3, v3, v3);
+    //qc::min(v4, v4, v4);
+
+    //qc::min(v2, v2, v2, v2);
+    //qc::min(v3, v3, v3, v3);
+    //qc::min(v4, v4, v4, v4);
+
     //qc::min(v2, v2, v2, v2, v2);
     //qc::min(v3, v3, v3, v3, v3);
     //qc::min(v4, v4, v4, v4, v4);
@@ -1164,6 +1188,14 @@ constexpr void compileFunctionsConstexprT() {
     //qc::max(v2, v2);
     //qc::max(v3, v3);
     //qc::max(v4, v4);
+
+    //qc::max(v2, v2, v2);
+    //qc::max(v3, v3, v3);
+    //qc::max(v4, v4, v4);
+
+    //qc::max(v2, v2, v2, v2);
+    //qc::max(v3, v3, v3, v3);
+    //qc::max(v4, v4, v4, v4);
 
     //qc::max(v2, v2, v2, v2, v2);
     //qc::max(v3, v3, v3, v3, v3);

@@ -6,7 +6,7 @@ namespace qc {
 
 template <typename T,                 typename = eif_arithmetic_t<T>> Q_CX_ABLE duo<T> minmax(T a);
 template <typename T,                 typename = eif_arithmetic_t<T>> Q_CX_ABLE duo<T> minmax(T a, T b);
-template <typename T, typename... Ts, typename = eif_arithmetic_t<T>> Q_CX_ABLE duo<T> minmax(T a, T b, Ts... rest);
+template <typename T, typename... Ts, typename = eif_arithmetic_t<T>> Q_CX_ABLE duo<T> minmax(T v1, T v2, Ts... vs);
 
 template <typename T, typename = eif_arithmetic_t<T>> Q_CX_ABLE T median(T a, T b, T c);
 
@@ -18,7 +18,7 @@ template <typename T, typename = eif_arithmetic_t<T>> Q_CX_ABLE T abs(T v);
 template <typename T, typename = eif_arithmetic_t<T>> Q_CX_ABLE bool zero(T v, T e = std::numeric_limits<T>::epsilon());
 
 template <typename T> Q_CX_ABLE bool equal(const T & v1, const T & v2);
-template <typename T, typename... Ts> Q_CX_ABLE bool equal(const T & v1, const T & v2, const Ts &... rest);
+template <typename T, typename... Ts> Q_CX_ABLE bool equal(const T & v1, const T & v2, const Ts &... vs);
 
 template <typename T, typename = eif_floating_t<T>> Q_CX_ABLE bool equal_e(T v1, T v2, T e = std::numeric_limits<T>::epsilon());
 

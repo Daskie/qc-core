@@ -108,15 +108,17 @@ template <typename T, typename =   eif_floating_t<T>> constexpr T    sqrt5 = T(2
 template <typename T, typename = eif_arithmetic_t<T>> constexpr T infinity = std::is_floating_point_v<T> ? std::numeric_limits<T>::infinity() : std::numeric_limits<T>::max();
 template <typename T, typename =   eif_floating_t<T>> constexpr T      nan = std::numeric_limits<T>::quiet_NaN();
 
-template <typename T,                 typename = eif_arithmetic_t<T>> Q_CONSTEX T min(T a, T b);
-template <typename T, typename... Ts, typename = eif_arithmetic_t<T>> Q_CONSTEX T min(T a, T b, Ts... rest);
+template <typename T, typename = eif_t<std::is_arithmetic_v<T> || std::is_pointer_v<T>>> Q_CONSTEX T min(T v1, T v2);
+template <typename T1, typename T2, typename T3, typename... Ts> Q_CONSTEX decltype(auto) min(T1 && v1, T2 && v2, T3 && v3, Ts &&... vs);
 
-template <typename T,                 typename = eif_arithmetic_t<T>> Q_CONSTEX T max(T a, T b);
-template <typename T, typename... Ts, typename = eif_arithmetic_t<T>> Q_CONSTEX T max(T a, T b, Ts... rest);
+template <typename T, typename = eif_t<std::is_arithmetic_v<T> || std::is_pointer_v<T>>> Q_CONSTEX T max(T v1, T v2);
+template <typename T1, typename T2, typename T3, typename... Ts> Q_CONSTEX decltype(auto) max(T1 && v1, T2 && v2, T3 && v3, Ts &&... vs);
 
-template <typename T, typename = eif_arithmetic_t<T>> T & minify(T & min, T v);
+template <typename T, typename = eif_t<std::is_arithmetic_v<T> || std::is_pointer_v<T>>> T & minify(T & min, T v);
+template <typename T, typename T1, typename T2, typename... Ts> T & minify(T & min, T1 && v1, T2 && v2, Ts &&... vs);
 
-template <typename T, typename = eif_arithmetic_t<T>> T & maxify(T & max, T v);
+template <typename T, typename = eif_t<std::is_arithmetic_v<T> || std::is_pointer_v<T>>> T & maxify(T & max, T v);
+template <typename T, typename T1, typename T2, typename... Ts> T & maxify(T & max, T1 && v1, T2 && v2, Ts &&... vs);
 
 }
 

@@ -7,13 +7,13 @@ Q_CX_ABLE duo<T> minmax(T a) {
 
 template <typename T, typename>
 Q_CX_ABLE duo<T> minmax(T a, T b) {
-    return (a < b) ? duo<T>{ a, b } : duo<T>{b, a};
+    return (a < b) ? duo<T>{a, b} : duo<T>{b, a};
 }
 
 template <typename T, typename... Ts, typename>
-Q_CX_ABLE duo<T> minmax(T a, T b, Ts... rest) {
-    auto [m1, M1](minmax(a, b));
-    auto [m2, M2](minmax(rest...));
+Q_CX_ABLE duo<T> minmax(T v1, T v2, Ts... vs) {
+    auto [m1, M1](minmax(v1, v2));
+    auto [m2, M2](minmax(vs...));
     return {min(m1, m2), max(M1, M2)};
 }
 
@@ -60,8 +60,8 @@ Q_CX_ABLE bool equal(const T & v1, const T & v2) {
 }
 
 template <typename T, typename... Ts>
-Q_CX_ABLE bool equal(const T & v1, const T & v2, const Ts &... rest) {
-    return equal(v1, v2) && equal(v2, rest...);
+Q_CX_ABLE bool equal(const T & v1, const T & v2, const Ts &... vs) {
+    return equal(v1, v2) && equal(v2, vs...);
 }
 
 template <typename T, typename>
