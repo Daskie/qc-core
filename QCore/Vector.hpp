@@ -170,7 +170,7 @@ template <typename T> struct vec<T, 2> {
 
     using type = T;
 
-    static constexpr int dimension{2};
+    static constexpr int n{2};
 
     //--------------------------------------------------------------------------
     // Instance Variables
@@ -210,6 +210,11 @@ template <typename T> struct vec<T, 2> {
     template <int t_n> vec2<T> & operator=(const vec<T, t_n> & v) noexcept;
 
     //--------------------------------------------------------------------------
+    // Conversion
+
+    template <typename U, typename = eif_arithmetic_t<U>> constexpr explicit operator U() const noexcept { return U(x); }
+
+    //--------------------------------------------------------------------------
     // Access
 
     template <int t_i> T & at() noexcept;
@@ -233,7 +238,7 @@ template <typename T> struct vec<T, 3> {
 
     using type = T;
 
-    static constexpr int dimension{3};
+    static constexpr int n{3};
 
     //--------------------------------------------------------------------------
     // Instance Variables
@@ -277,6 +282,11 @@ template <typename T> struct vec<T, 3> {
     template <int t_n> vec3<T> & operator=(const vec<T, t_n> & v) noexcept;
 
     //--------------------------------------------------------------------------
+    // Conversion
+
+    template <typename U, typename = eif_arithmetic_t<U>> constexpr explicit operator U() const noexcept { return U(x); }
+
+    //--------------------------------------------------------------------------
     // Access
 
     template <int t_i> T & at() noexcept;
@@ -314,7 +324,7 @@ template <typename T> struct vec<T, 4> {
 
     using type = T;
 
-    static constexpr int dimension{4};
+    static constexpr int n{4};
 
     //--------------------------------------------------------------------------
     // Instance Variables
@@ -356,6 +366,11 @@ template <typename T> struct vec<T, 4> {
 
     vec4<T> & operator=(T v) noexcept;
     template <int t_n> vec4<T> & operator=(const vec<T, t_n> & v) noexcept;
+
+    //--------------------------------------------------------------------------
+    // Conversion
+
+    template <typename U, typename = eif_arithmetic_t<U>> constexpr explicit operator U() const noexcept { return U(x); }
 
     //--------------------------------------------------------------------------
     // Access
@@ -407,10 +422,6 @@ template <typename T> struct vec<T, 4> {
 // SPAN ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //======================================================================================================================
 
-namespace detail {
-    template <typename T, int t_n> using span_value_t = std::conditional_t<t_n == 1, T, vec<T, t_n>>;
-}
-
 template <typename T, int t_n> struct span {
 
     static_assert(is_arithmetic_v<T>, "`qc::span<T, t_n>` must have arithmetic `T`");
@@ -420,9 +431,9 @@ template <typename T, int t_n> struct span {
     // Static Members
 
     using type = T;
-    using V = detail::span_value_t<T, t_n>;
+    using V = std::conditional_t<t_n == 1, T, vec<T, t_n>>;
 
-    static constexpr int dimension{t_n};
+    static constexpr int n{t_n};
 
     //--------------------------------------------------------------------------
     // Instance Variables
@@ -437,18 +448,18 @@ template <typename T, int t_n> struct span {
     constexpr span(span<T, t_n> && v) noexcept = default;
     template <typename U, int t_m> constexpr explicit span(const span<U, t_m> & v) noexcept;
     constexpr span(const V & v1, const V & v2) noexcept;
-    template <typename = enable_if_t<(t_n > 1)>> constexpr span(T v1, T v2) noexcept;
-    template <typename = enable_if_t<t_n == 2>> Q_CONSTEX span(const span1<T> & v1, const span1<T> & v2) noexcept;
-    template <typename = enable_if_t<t_n == 3>> Q_CONSTEX span(const span1<T> & v1, const span1<T> & v2, const span1<T> & v3) noexcept;
-    template <typename = enable_if_t<t_n == 3>> Q_CX_ABLE span(const span2<T> & v1, const span1<T> & v2) noexcept;
-    template <typename = enable_if_t<t_n == 3>> Q_CX_ABLE span(const span1<T> & v1, const span2<T> & v2) noexcept;
-    template <typename = enable_if_t<t_n == 4>> Q_CONSTEX span(const span1<T> & v1, const span1<T> & v2, const span1<T> & v3, const span1<T> & v4) noexcept;
-    template <typename = enable_if_t<t_n == 4>> Q_CX_ABLE span(const span2<T> & v1, const span1<T> & v2, const span1<T> & v3) noexcept;
-    template <typename = enable_if_t<t_n == 4>> Q_CX_ABLE span(const span1<T> & v1, const span2<T> & v2, const span1<T> & v3) noexcept;
-    template <typename = enable_if_t<t_n == 4>> Q_CX_ABLE span(const span1<T> & v1, const span1<T> & v2, const span2<T> & v3) noexcept;
-    template <typename = enable_if_t<t_n == 4>> Q_CX_ABLE span(const span2<T> & v1, const span2<T> & v2) noexcept;
-    template <typename = enable_if_t<t_n == 4>> Q_CX_ABLE span(const span3<T> & v1, const span1<T> & v2) noexcept;
-    template <typename = enable_if_t<t_n == 4>> Q_CX_ABLE span(const span1<T> & v1, const span3<T> & v2) noexcept;
+    template <typename = eif_t<(t_n > 1)>> constexpr span(T v1, T v2) noexcept;
+    template <typename = eif_t<t_n == 2>> Q_CONSTEX span(const span1<T> & v1, const span1<T> & v2) noexcept;
+    template <typename = eif_t<t_n == 3>> Q_CONSTEX span(const span1<T> & v1, const span1<T> & v2, const span1<T> & v3) noexcept;
+    template <typename = eif_t<t_n == 3>> Q_CX_ABLE span(const span2<T> & v1, const span1<T> & v2) noexcept;
+    template <typename = eif_t<t_n == 3>> Q_CX_ABLE span(const span1<T> & v1, const span2<T> & v2) noexcept;
+    template <typename = eif_t<t_n == 4>> Q_CONSTEX span(const span1<T> & v1, const span1<T> & v2, const span1<T> & v3, const span1<T> & v4) noexcept;
+    template <typename = eif_t<t_n == 4>> Q_CX_ABLE span(const span2<T> & v1, const span1<T> & v2, const span1<T> & v3) noexcept;
+    template <typename = eif_t<t_n == 4>> Q_CX_ABLE span(const span1<T> & v1, const span2<T> & v2, const span1<T> & v3) noexcept;
+    template <typename = eif_t<t_n == 4>> Q_CX_ABLE span(const span1<T> & v1, const span1<T> & v2, const span2<T> & v3) noexcept;
+    template <typename = eif_t<t_n == 4>> Q_CX_ABLE span(const span2<T> & v1, const span2<T> & v2) noexcept;
+    template <typename = eif_t<t_n == 4>> Q_CX_ABLE span(const span3<T> & v1, const span1<T> & v2) noexcept;
+    template <typename = eif_t<t_n == 4>> Q_CX_ABLE span(const span1<T> & v1, const span3<T> & v2) noexcept;
 
     //--------------------------------------------------------------------------
     // Assignment
@@ -461,17 +472,17 @@ template <typename T, int t_n> struct span {
     //--------------------------------------------------------------------------
     // Other
 
-    template <typename = enable_if_t<(t_n >= 2)>> Q_CONSTEX span1<T> x() const noexcept;
-    template <typename = enable_if_t<(t_n >= 2)>> Q_CONSTEX span1<T> y() const noexcept;
-    template <typename = enable_if_t<(t_n >= 3)>> Q_CONSTEX span1<T> z() const noexcept;
-    template <typename = enable_if_t<(t_n >= 4)>> Q_CONSTEX span1<T> w() const noexcept;
+    template <typename = eif_t<(t_n >= 2)>> Q_CONSTEX span1<T> x() const noexcept;
+    template <typename = eif_t<(t_n >= 2)>> Q_CONSTEX span1<T> y() const noexcept;
+    template <typename = eif_t<(t_n >= 3)>> Q_CONSTEX span1<T> z() const noexcept;
+    template <typename = eif_t<(t_n >= 4)>> Q_CONSTEX span1<T> w() const noexcept;
 
-    template <typename = enable_if_t<(t_n >= 3)>> Q_CX_ABLE span2<T> xy() const noexcept;
-    template <typename = enable_if_t<(t_n >= 3)>> Q_CX_ABLE span2<T> yz() const noexcept;
-    template <typename = enable_if_t<(t_n >= 4)>> Q_CX_ABLE span2<T> zw() const noexcept;
+    template <typename = eif_t<(t_n >= 3)>> Q_CX_ABLE span2<T> xy() const noexcept;
+    template <typename = eif_t<(t_n >= 3)>> Q_CX_ABLE span2<T> yz() const noexcept;
+    template <typename = eif_t<(t_n >= 4)>> Q_CX_ABLE span2<T> zw() const noexcept;
 
-    template <typename = enable_if_t<(t_n >= 4)>> Q_CX_ABLE span3<T> xyz() const noexcept;
-    template <typename = enable_if_t<(t_n >= 4)>> Q_CX_ABLE span3<T> yzw() const noexcept;
+    template <typename = eif_t<(t_n >= 4)>> Q_CX_ABLE span3<T> xyz() const noexcept;
+    template <typename = eif_t<(t_n >= 4)>> Q_CX_ABLE span3<T> yzw() const noexcept;
 
     Q_CX_ABLE V size() const noexcept;
 
@@ -573,26 +584,34 @@ template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> operator-(const vec<T, t_n>
 template <typename T, int t_n> Q_CX_ABLE  vec<T, t_n> operator+(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 template <typename T, int t_n> Q_CX_ABLE  vec<T, t_n> operator+(const vec<T, t_n> & v1, T v2);
 template <typename T, int t_n> Q_CX_ABLE  vec<T, t_n> operator+(T v1, const vec<T, t_n> & v2);
-template <typename T, int t_n> Q_CX_ABLE span<T, t_n> operator+(const span<T, t_n> & v1, const detail::span_value_t<T, t_n> & v2);
-template <typename T, int t_n> Q_CX_ABLE span<T, t_n> operator+(const detail::span_value_t<T, t_n> & v1, const span<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE span<T, t_n> operator+(const span<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE span<T, t_n> operator+(const vec<T, t_n> & v1, const span<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE span<T, t_n> operator+(const span<T, t_n> & v1, T v2);
+template <typename T, int t_n> Q_CX_ABLE span<T, t_n> operator+(T v1, const span<T, t_n> & v2);
 
 template <typename T, int t_n> Q_CX_ABLE  vec<T, t_n> operator-(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 template <typename T, int t_n> Q_CX_ABLE  vec<T, t_n> operator-(const vec<T, t_n> & v1, T v2);
 template <typename T, int t_n> Q_CX_ABLE  vec<T, t_n> operator-(T v1, const vec<T, t_n> & v2);
-template <typename T, int t_n> Q_CX_ABLE span<T, t_n> operator-(const span<T, t_n> & v1, const detail::span_value_t<T, t_n> & v2);
-template <typename T, int t_n> Q_CX_ABLE span<T, t_n> operator-(const detail::span_value_t<T, t_n> & v1, const span<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE span<T, t_n> operator-(const span<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE span<T, t_n> operator-(const vec<T, t_n> & v1, const span<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE span<T, t_n> operator-(const span<T, t_n> & v1, T v2);
+template <typename T, int t_n> Q_CX_ABLE span<T, t_n> operator-(T v1, const span<T, t_n> & v2);
 
 template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> operator*(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> operator*(const vec<T, t_n> & v1, T v2);
 template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> operator*(T v1, const vec<T, t_n> & v2);
-template <typename T, int t_n> Q_CX_ABLE span<T, t_n> operator*(const span<T, t_n> & v1, const detail::span_value_t<T, t_n> & v2);
-template <typename T, int t_n> Q_CX_ABLE span<T, t_n> operator*(const detail::span_value_t<T, t_n> & v1, const span<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE span<T, t_n> operator*(const span<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE span<T, t_n> operator*(const vec<T, t_n> & v1, const span<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE span<T, t_n> operator*(const span<T, t_n> & v1, T v2);
+template <typename T, int t_n> Q_CX_ABLE span<T, t_n> operator*(T v1, const span<T, t_n> & v2);
 
 template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> operator/(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> operator/(const vec<T, t_n> & v1, T v2);
 template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> operator/(T v1, const vec<T, t_n> & v2);
-template <typename T, int t_n> Q_CX_ABLE span<T, t_n> operator/(const span<T, t_n> & v1, const detail::span_value_t<T, t_n> & v2);
-template <typename T, int t_n> Q_CX_ABLE span<T, t_n> operator/(const detail::span_value_t<T, t_n> & v1, const span<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE span<T, t_n> operator/(const span<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE span<T, t_n> operator/(const vec<T, t_n> & v1, const span<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE span<T, t_n> operator/(const span<T, t_n> & v1, T v2);
+template <typename T, int t_n> Q_CX_ABLE span<T, t_n> operator/(T v1, const span<T, t_n> & v2);
 
 template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> operator%(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> operator%(const vec<T, t_n> & v1, T v2);

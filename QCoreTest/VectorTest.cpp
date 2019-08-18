@@ -511,10 +511,16 @@ void compileFunctionsT() {
     s2 + v2;
     s3 + v3;
     s4 + v4;
+    s2 + v;
+    s3 + v;
+    s4 + v;
     v + s1;
     v2 + s2;
     v3 + s3;
     v4 + s4;
+    v + s2;
+    v + s3;
+    v + s4;
 
     v2 - v2;
     v3 - v3;
@@ -529,10 +535,16 @@ void compileFunctionsT() {
     s2 - v2;
     s3 - v3;
     s4 - v4;
+    s2 - v;
+    s3 - v;
+    s4 - v;
     v - s1;
     v2 - s2;
     v3 - s3;
     v4 - s4;
+    v - s2;
+    v - s3;
+    v - s4;
 
     v2 * v2;
     v3 * v3;
@@ -547,10 +559,16 @@ void compileFunctionsT() {
     s2 * v2;
     s3 * v3;
     s4 * v4;
+    s2 * v;
+    s3 * v;
+    s4 * v;
     v * s1;
     v2 * s2;
     v3 * s3;
     v4 * s4;
+    v * s2;
+    v * s3;
+    v * s4;
 
     v2 / qc::vec2<T>(T(1));
     v3 / qc::vec3<T>(T(1));
@@ -565,10 +583,16 @@ void compileFunctionsT() {
     s2 / v2;
     s3 / v3;
     s4 / v4;
+    s2 / v;
+    s3 / v;
+    s4 / v;
     v / s1;
     v2 / s2;
     v3 / s3;
     v4 / s4;
+    v / s2;
+    v / s3;
+    v / s4;
 
     v2 % qc::vec2<T>(T(1));
     v3 % qc::vec3<T>(T(1));
@@ -1035,10 +1059,16 @@ constexpr void compileFunctionsConstexprT() {
     //s2 + v2;
     //s3 + v3;
     //s4 + v4;
+    //s2 + v;
+    //s3 + v;
+    //s4 + v;
     //v + s1;
     //v2 + s2;
     //v3 + s3;
     //v4 + s4;
+    //v + s2;
+    //v + s3;
+    //v + s4;
 
     //v2 - v2;
     //v3 - v3;
@@ -1053,10 +1083,16 @@ constexpr void compileFunctionsConstexprT() {
     //s2 - v2;
     //s3 - v3;
     //s4 - v4;
+    //s2 - v;
+    //s3 - v;
+    //s4 - v;
     //v - s1;
     //v2 - s2;
     //v3 - s3;
     //v4 - s4;
+    //v - s2;
+    //v - s3;
+    //v - s4;
 
     //v2 * v2;
     //v3 * v3;
@@ -1071,10 +1107,16 @@ constexpr void compileFunctionsConstexprT() {
     //s2 * v2;
     //s3 * v3;
     //s4 * v4;
+    //s2 * v;
+    //s3 * v;
+    //s4 * v;
     //v * s1;
     //v2 * s2;
     //v3 * s3;
     //v4 * s4;
+    //v * s2;
+    //v * s3;
+    //v * s4;
 
     //v2 / qc::vec2<T>(1);
     //v3 / qc::vec3<T>(1);
@@ -1089,10 +1131,16 @@ constexpr void compileFunctionsConstexprT() {
     //s2 / v2;
     //s3 / v3;
     //s4 / v4;
+    //s2 / v;
+    //s3 / v;
+    //s4 / v;
     //v / s1;
     //v2 / s2;
     //v3 / s3;
     //v4 / s4;
+    //v / s2;
+    //v / s3;
+    //v / s4;
 
     //v2 % qc::vec2<T>(1);
     //v3 % qc::vec3<T>(1);

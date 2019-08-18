@@ -53,7 +53,6 @@ namespace types {
 
 using namespace types;
 
-using std::enable_if_t;
 using std::is_same_v;
 using std::is_arithmetic_v;
 using std::is_integral_v;
@@ -61,7 +60,7 @@ using std::is_floating_point_v;
 using std::is_signed_v;
 using std::is_unsigned_v;
 
-template <bool t_b> using eif_t = enable_if_t<t_b>;
+template <bool t_b> using eif_t = std::enable_if_t<t_b>;
 
 template <typename T> using eif_arithmetic_t = eif_t<is_arithmetic_v<T>>;
 template <typename T> using eif_floating_t   = eif_t<is_floating_point_v<T>>;
