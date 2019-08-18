@@ -229,35 +229,31 @@ Q_CX_ABLE bool zero(const vec<T, t_n> & v, T e) {
 }
 
 template <typename T, int t_n>
-Q_CX_ABLE bool equal(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
-    if constexpr (t_n == 2) return equal(v1.x, v2.x) && equal(v1.y, v2.y);
-    if constexpr (t_n == 3) return equal(v1.x, v2.x) && equal(v1.y, v2.y) && equal(v1.z, v2.z);
-    if constexpr (t_n == 4) return equal(v1.x, v2.x) && equal(v1.y, v2.y) && equal(v1.z, v2.z) && equal(v1.w, v2.w);
-}
-
-template <typename T, int t_n, typename>
-Q_CX_ABLE bool equal_e(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<T, t_n> & e) {
-    if constexpr (t_n == 2) return equal_e(v1.x, v2.x, e.x) && equal_e(v1.y, v2.y, e.y);
-    if constexpr (t_n == 3) return equal_e(v1.x, v2.x, e.x) && equal_e(v1.y, v2.y, e.y) && equal_e(v1.z, v2.z, e.z);
-    if constexpr (t_n == 4) return equal_e(v1.x, v2.x, e.x) && equal_e(v1.y, v2.y, e.y) && equal_e(v1.z, v2.z, e.z) && equal_e(v1.w, v2.w, e.w);
-}
-
-template <typename T, int t_n>
 Q_CX_ABLE bool equal(const vec<T, t_n> & v) {
     if constexpr (t_n == 2) return v.x == v.y;
     if constexpr (t_n == 3) return v.x == v.y && v.x == v.z;
     if constexpr (t_n == 4) return v.x == v.y && v.x == v.z && v.x == v.w;
 }
 
+template <typename T, int t_n, typename>
+Q_CX_ABLE bool equal_e(const vec<T, t_n> & v1, const vec<T, t_n> & v2, T e) {
+    return zero(v1 - v2, e);
+}
+
+template <typename T, int t_n, typename>
+Q_CX_ABLE bool equal_e(const vec<T, t_n> & v, T e) {
+    return zero(v - v.x, e);
+}
+
 template <int t_n>
-Q_CX_ABLE vec<s64, t_n> round(const dvec<t_n> & v) {
+Q_CX_ABLE lvec<t_n> round(const dvec<t_n> & v) {
     if constexpr (t_n == 2) return {round(v.x), round(v.y)};
     if constexpr (t_n == 3) return {round(v.x), round(v.y), round(v.z)};
     if constexpr (t_n == 4) return {round(v.x), round(v.y), round(v.z), round(v.w)};
 }
 
 template <int t_n>
-Q_CX_ABLE vec<s32, t_n> round(const fvec<t_n> & v) {
+Q_CX_ABLE ivec<t_n> round(const fvec<t_n> & v) {
     if constexpr (t_n == 2) return {round(v.x), round(v.y)};
     if constexpr (t_n == 3) return {round(v.x), round(v.y), round(v.z)};
     if constexpr (t_n == 4) return {round(v.x), round(v.y), round(v.z), round(v.w)};
@@ -265,6 +261,21 @@ Q_CX_ABLE vec<s32, t_n> round(const fvec<t_n> & v) {
 
 template <typename T, int t_n, typename>
 Q_CX_ABLE vec<T, t_n> round(const vec<T, t_n> & v) {
+    return v;
+}
+
+template <int t_n>
+Q_CX_ABLE lspan<t_n> round(const dspan<t_n> & v) {
+    return {round(v.min), round(v.max)};
+}
+
+template <int t_n>
+Q_CX_ABLE ispan<t_n> round(const fspan<t_n> & v) {
+    return {round(v.min), round(v.max)};
+}
+
+template <typename T, int t_n, typename>
+Q_CX_ABLE span<T, t_n> round(const span<T, t_n> & v) {
     return v;
 }
 
@@ -301,14 +312,23 @@ Q_CX_ABLE vec<T, t_n> mix(const vec<T, t_n> & v1, const vec<T, t_n> & v2, T t) {
     return (T(1.0) - t) * v1 + t * v2;
 }
 
-
-template <typename T, typename>
-Q_CX_ABLE T mix(T v1, T v2, const vec2<T> & weights) {
+template <typename T, int t_n, typename>
+Q_CX_ABLE vec<T, t_n> mix(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec2<T> & weights) {
     return weights.x * v1 + weights.y * v2;
 }
 
 template <typename T, int t_n, typename>
-Q_CX_ABLE vec<T, t_n> mix(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec2<T> & weights) {
+Q_CX_ABLE vec<T, t_n> mix(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<T, t_n> & v3, const vec3<T> & weights) {
+    return weights.x * v1 + weights.y * v2 + weights.z * v3;
+}
+
+template <typename T, int t_n, typename>
+Q_CX_ABLE vec<T, t_n> mix(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<T, t_n> & v3, const vec<T, t_n> & v4, const vec4<T> & weights) {
+    return weights.x * v1 + weights.y * v2 + weights.z * v3 + weights.w * v4;
+}
+
+template <typename T, typename>
+Q_CX_ABLE T mix(T v1, T v2, const vec2<T> & weights) {
     return weights.x * v1 + weights.y * v2;
 }
 
@@ -317,18 +337,8 @@ Q_CX_ABLE T mix(T v1, T v2, T v3, const vec3<T> & weights) {
     return weights.x * v1 + weights.y * v2 + weights.z * v3;
 }
 
-template <typename T, int t_n, typename>
-Q_CX_ABLE vec<T, t_n> mix(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<T, t_n> & v3, const vec3<T> & weights) {
-    return weights.x * v1 + weights.y * v2 + weights.z * v3;
-}
-
 template <typename T, typename>
 Q_CX_ABLE T mix(T v1, T v2, T v3, T v4, const vec4<T> & weights) {
-    return weights.x * v1 + weights.y * v2 + weights.z * v3 + weights.w * v4;
-}
-
-template <typename T, int t_n, typename>
-Q_CX_ABLE vec<T, t_n> mix(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<T, t_n> & v3, const vec<T, t_n> & v4, const vec4<T> & weights) {
     return weights.x * v1 + weights.y * v2 + weights.z * v3 + weights.w * v4;
 }
 

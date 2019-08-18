@@ -820,9 +820,9 @@ void compileFunctionsT() {
     qc::zero(v3);
     qc::zero(v4);
 
-    qc::equal(v2, v2);
-    qc::equal(v3, v3);
-    qc::equal(v4, v4);
+    qc::equal(v2, v2, v2, v2, v2);
+    qc::equal(v3, v3, v3, v3, v3);
+    qc::equal(v4, v4, v4, v4, v4);
 
     qc::equal(v2);
     qc::equal(v3);
@@ -831,6 +831,10 @@ void compileFunctionsT() {
     qc::round(v2);
     qc::round(v3);
     qc::round(v4);
+    qc::round(s1);
+    qc::round(s2);
+    qc::round(s3);
+    qc::round(s4);
 
     qc::floor(v2);
     qc::floor(v3);
@@ -866,12 +870,12 @@ void compileFunctionsFT() {
     qc::span3<T> s3;
     qc::span4<T> s4;
 
-    qc::equal_e(v2, v2);
-    qc::equal_e(v3, v3);
-    qc::equal_e(v4, v4);
-    qc::equal_e(v2, v2, v2);
-    qc::equal_e(v3, v3, v3);
-    qc::equal_e(v4, v4, v4);
+    qc::equal_e(v2, v);
+    qc::equal_e(v3, v);
+    qc::equal_e(v4, v);
+    qc::equal_e(v2, v2, v);
+    qc::equal_e(v3, v3, v);
+    qc::equal_e(v4, v4, v);
 
     qc::pow(v2, v);
     qc::pow(v3, v);
@@ -1313,9 +1317,9 @@ constexpr void compileFunctionsConstexprT() {
     //qc::zero(v3);
     //qc::zero(v4);
 
-    //qc::equal(v2, v2);
-    //qc::equal(v3, v3);
-    //qc::equal(v4, v4);
+    //qc::equal(v2, v2, v2, v2, v2);
+    //qc::equal(v3, v3, v3, v3, v3);
+    //qc::equal(v4, v4, v4, v4, v4);
 
     //qc::equal(v2);
     //qc::equal(v3);
@@ -1324,6 +1328,10 @@ constexpr void compileFunctionsConstexprT() {
     //qc::round(v2);
     //qc::round(v3);
     //qc::round(v4);
+    //qc::round(s1);
+    //qc::round(s2);
+    //qc::round(s3);
+    //qc::round(s4);
 
     //qc::floor(v2);
     //qc::floor(v3);
@@ -1359,12 +1367,19 @@ constexpr void compileFunctionsConstexprFT() {
     constexpr qc::span3<T> s3(v3, v3);
     constexpr qc::span4<T> s4(v4, v4);
 
+    //qc::equal_e(v2);
+    //qc::equal_e(v3);
+    //qc::equal_e(v4);
+    //qc::equal_e(v2, v);
+    //qc::equal_e(v3, v);
+    //qc::equal_e(v4, v);
+
     //qc::equal_e(v2, v2);
     //qc::equal_e(v3, v3);
     //qc::equal_e(v4, v4);
-    //qc::equal_e(v2, v2, v2);
-    //qc::equal_e(v3, v3, v3);
-    //qc::equal_e(v4, v4. v4);
+    //qc::equal_e(v2, v2, v);
+    //qc::equal_e(v3, v3, v);
+    //qc::equal_e(v4, v4, v);
 
     //qc::mix(v2, v2, v);
     //qc::mix(v3, v3, v);

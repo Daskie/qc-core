@@ -150,6 +150,8 @@ void compileFunctionsT() {
 
     qc::equal(v, v);
     qc::equal(v, v, v);
+    qc::equal(v, v, v, v);
+    qc::equal(v, v, v, v, v);
 
     qc::sign(v);
 
@@ -216,6 +218,8 @@ void compileFunctionsBT() {
 
     qc::equal(v, v);
     qc::equal(v, v, v);
+    qc::equal(v, v, v, v);
+    qc::equal(v, v, v, v, v);
 }
 
 void compileFunctions() {
@@ -294,7 +298,9 @@ constexpr void compileFunctionsConstexprT() {
     //qc::zero(v, v);
 
     //qc::equal(v, v);
-    //qc::equal(v, v, v);
+    //qc::equal(v, v, v
+    //qc::equal(v, v, v, v);
+    //qc::equal(v, v, v, v, v);
 
     //qc::sign(v);
 
@@ -357,7 +363,9 @@ constexpr void compileFunctionsConstexprBT() {
     constexpr bool v(true);
 
     //qc::equal(v, v);
-    //qc::equal(v, v, v);    
+    //qc::equal(v, v, v);
+    //qc::equal(v, v, v, v);
+    //qc::equal(v, v, v, v, v);
 }
 
 constexpr bool compileFunctionsConstexpr() {

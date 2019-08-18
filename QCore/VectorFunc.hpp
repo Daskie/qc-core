@@ -24,7 +24,6 @@ template <typename T> Q_CX_ABLE T median(const vec3<T> & v);
 //------------------------------------------------------------------------------
 
 template <typename T, int t_n> std::ostream & operator<<(std::ostream & os, const vec<T, t_n> & v);
-
 template <typename T, int t_n> std::ostream & operator<<(std::ostream & os, const span<T, t_n> & s);
 
 //==============================================================================
@@ -32,7 +31,6 @@ template <typename T, int t_n> std::ostream & operator<<(std::ostream & os, cons
 //------------------------------------------------------------------------------
 
 template <typename T, int t_n, typename = eif_floating_t<T>> vec<T, t_n> pow(const vec<T, t_n> & v, T p);
-
 template <typename T, int t_n, typename = eif_floating_t<T>> vec<T, t_n> pow(const vec<T, t_n> & v, const vec<T, t_n> & p);
 
 //==============================================================================
@@ -72,7 +70,6 @@ template <typename T, int t_n> T dot(const vec<T, t_n> & v1, const vec<T, t_n> &
 //------------------------------------------------------------------------------
 
 template <typename T> T cross(const vec2<T> & v1, const vec2<T> & v2);
-
 template <typename T> vec3<T> cross(const vec3<T> & v1, const vec3<T> & v2);
 
 //==============================================================================
@@ -98,7 +95,6 @@ template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> ortho(const vec<T, t_n> & v
 //------------------------------------------------------------------------------
 
 template <typename T, int t_n, typename = eif_floating_t<T>> void orthogonalize(const vec<T, t_n> & v1, vec<T, t_n> & v2);
-
 template <typename T, typename = eif_floating_t<T>> void orthogonalize(const vec3<T> & v1, vec3<T> & v2, vec3<T> & v3);
 template <typename T, typename = eif_floating_t<T>> void orthogonalize_n(const vec3<T> & v1, vec3<T> & v2, vec3<T> & v3);
 
@@ -127,9 +123,7 @@ template <typename T, int t_n> void sort(const vec<T, t_n> & v);
 //------------------------------------------------------------------------------
 
 template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> clamp(const vec<T, t_n> & v, T min, T max);
-
 template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> clamp(const vec<T, t_n> & v, const vec<T, t_n> & min, const vec<T, t_n> & max);
-
 template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> clamp(const vec<T, t_n> & v, const span<T, t_n> & span);
 template <typename T> Q_CX_ABLE T clamp(T v, const span1<T> & span);
 
@@ -143,34 +137,33 @@ template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> abs(const vec<T, t_n> & v);
 // zero
 //------------------------------------------------------------------------------
 
-template <typename T, int t_n> Q_CX_ABLE bool zero(const vec<T, t_n> & v, T e = std::numeric_limits<T>::min());
+template <typename T, int t_n> Q_CX_ABLE bool zero(const vec<T, t_n> & v, T e = std::numeric_limits<T>::epsilon());
 
 //==============================================================================
 // equal
 //------------------------------------------------------------------------------
 
-template <typename T, int t_n> Q_CX_ABLE bool equal(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
-
-template <typename T, int t_n, typename = eif_floating_t<T>> Q_CX_ABLE bool equal_e(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<T, t_n> & e = vec<T, t_n>(std::numeric_limits<T>::min()));
-
 template <typename T, int t_n> Q_CX_ABLE bool equal(const vec<T, t_n> & v);
+
+template <typename T, int t_n, typename = eif_floating_t<T>> Q_CX_ABLE bool equal_e(const vec<T, t_n> & v1, const vec<T, t_n> & v2, T e = std::numeric_limits<T>::epsilon());
+template <typename T, int t_n, typename = eif_floating_t<T>> Q_CX_ABLE bool equal_e(const vec<T, t_n> & v, T e = std::numeric_limits<T>::epsilon());
 
 //==============================================================================
 // round
 //------------------------------------------------------------------------------
 
-template <int t_n> Q_CX_ABLE vec<s64, t_n> round(const dvec<t_n> & v);
-
-template <int t_n> Q_CX_ABLE vec<s32, t_n> round(const fvec<t_n> & v);
-
+template <int t_n> Q_CX_ABLE lvec<t_n> round(const dvec<t_n> & v);
+template <int t_n> Q_CX_ABLE ivec<t_n> round(const fvec<t_n> & v);
 template <typename T, int t_n, typename = eif_integral_t<T>> Q_CX_ABLE vec<T, t_n> round(const vec<T, t_n> & v);
+template <int t_n> Q_CX_ABLE lspan<t_n> round(const dspan<t_n> & v);
+template <int t_n> Q_CX_ABLE ispan<t_n> round(const fspan<t_n> & v);
+template <typename T, int t_n, typename = eif_integral_t<T>> Q_CX_ABLE span<T, t_n> round(const span<T, t_n> & v);
 
 //==============================================================================
 // floor
 //------------------------------------------------------------------------------
 
 template <typename T, int t_n, typename = eif_floating_t<T>> Q_CX_ABLE vec<nat, t_n> floor(const vec<T, t_n> & v);
-
 template <typename T, int t_n, typename = eif_integral_t<T>> Q_CX_ABLE vec<T, t_n> floor(const vec<T, t_n> & v);
 
 //==============================================================================
@@ -178,7 +171,6 @@ template <typename T, int t_n, typename = eif_integral_t<T>> Q_CX_ABLE vec<T, t_
 //------------------------------------------------------------------------------
 
 template <typename T, int t_n, typename = eif_floating_t<T>> Q_CX_ABLE vec<nat, t_n> ceil(const vec<T, t_n> & v);
-
 template <typename T, int t_n, typename = eif_integral_t<T>> Q_CX_ABLE vec<T, t_n> ceil(const vec<T, t_n> & v);
 
 //==============================================================================
@@ -186,15 +178,12 @@ template <typename T, int t_n, typename = eif_integral_t<T>> Q_CX_ABLE vec<T, t_
 //------------------------------------------------------------------------------
 
 template <typename T, int t_n, typename = eif_floating_t<T>> Q_CX_ABLE vec<T, t_n> mix(const vec<T, t_n> & v1, const vec<T, t_n> & v2, T t);
-
-template <typename T, typename = eif_floating_t<T>> Q_CX_ABLE T mix(T v1, T v2, const vec2<T> & weights);
 template <typename T, int t_n, typename = eif_floating_t<T>> Q_CX_ABLE vec<T, t_n> mix(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec2<T> & weights);
-
-template <typename T, typename = eif_floating_t<T>> Q_CX_ABLE T mix(T v1, T v2, T v3, const vec3<T> & weights);
 template <typename T, int t_n, typename = eif_floating_t<T>> Q_CX_ABLE vec<T, t_n> mix(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<T, t_n> & v3, const vec3<T> & weights);
-
-template <typename T, typename = eif_floating_t<T>> Q_CX_ABLE T mix(T v1, T v2, T v3, T v4, const vec4<T> & weights);
 template <typename T, int t_n, typename = eif_floating_t<T>> Q_CX_ABLE vec<T, t_n> mix(const vec<T, t_n> & v1, const vec<T, t_n> & v2, const vec<T, t_n> & v3, const vec<T, t_n> & v4, const vec4<T> & weights);
+template <typename T, typename = eif_floating_t<T>> Q_CX_ABLE T mix(T v1, T v2, const vec2<T> & weights);
+template <typename T, typename = eif_floating_t<T>> Q_CX_ABLE T mix(T v1, T v2, T v3, const vec3<T> & weights);
+template <typename T, typename = eif_floating_t<T>> Q_CX_ABLE T mix(T v1, T v2, T v3, T v4, const vec4<T> & weights);
 
 //==============================================================================
 // transnorm
@@ -215,22 +204,19 @@ template <typename T, int t_n> Q_CX_ABLE span<T, t_n> intersect(const span<T, t_
 // join
 //------------------------------------------------------------------------------
 
-template <typename T, int t_n>
-Q_CX_ABLE span<T, t_n> join(const span<T, t_n> & s1, const span<T, t_n> & s2);
+template <typename T, int t_n> Q_CX_ABLE span<T, t_n> join(const span<T, t_n> & s1, const span<T, t_n> & s2);
 
 //==============================================================================
 // mipmaps
 //------------------------------------------------------------------------------
 
-template <typename T, int t_n, typename = eif_integral_t<T>>
-Q_CX_ABLE T mipmaps(const vec<T, t_n> & size);
+template <typename T, int t_n, typename = eif_integral_t<T>> Q_CX_ABLE T mipmaps(const vec<T, t_n> & size);
 
 //==============================================================================
 // composite
 //------------------------------------------------------------------------------
 
-template <typename T, int t_n>
-Q_CX_ABLE vec<T, t_n> composite(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+template <typename T, int t_n> Q_CX_ABLE vec<T, t_n> composite(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
 
 }
 

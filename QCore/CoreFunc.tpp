@@ -51,17 +51,12 @@ Q_CX_ABLE bool zero(T v, T e) {
 
 template <typename T>
 Q_CX_ABLE bool equal(const T & v1, const T & v2) {
-    if constexpr (is_floating_point_v<T>) {
-        return zero(v1 - v2);
-    }
-    if constexpr (!is_floating_point_v<T>) {
-        return v1 == v2;
-    }
+    return v1 == v2;
 }
 
 template <typename T, typename... Ts>
-Q_CX_ABLE bool equal(const T & v1, const T & v2, const Ts &... vs) {
-    return equal(v1, v2) && equal(v2, vs...);
+Q_CX_ABLE bool equal(const T & v1, const T & v2, const T & v3, const Ts &... vs) {
+    return equal(v1, v2) && equal(v2, v3, vs...);
 }
 
 template <typename T, typename>
