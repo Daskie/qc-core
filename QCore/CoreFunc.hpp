@@ -79,6 +79,10 @@ template <typename T, typename = eif_arithmetic_t<T>> Q_CX_ABLE duo<T> mod_q(T v
 
 template <typename T, typename = eif_floating_t<T>> Q_CX_ABLE T mix(T v1, T v2, T t);
 
+template <typename T, typename = eif_floating_t<T>> Q_CX_ABLE T unmix(T v1, T v2, T v);
+
+template <typename T, typename = eif_floating_t<T>> Q_CX_ABLE T smoothstep(T v1, T v2, T t);
+
 template <typename T, typename... Args> Q_CONSTEX T sum(const T & v, const Args &... args);
 
 template <typename T, typename... Args> Q_CONSTEX T product(const T & v, const Args &... args);

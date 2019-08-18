@@ -247,6 +247,16 @@ Q_CX_ABLE T mix(T v1, T v2, T t) {
     return (T(1.0) - t) * v1 + t * v2;
 }
 
+template <typename T, typename>
+Q_CX_ABLE T unmix(T v1, T v2, T v) {
+    return (v - v1) / (v2 - v1);
+}
+
+template <typename T, typename>
+Q_CX_ABLE T smoothstep(T v1, T v2, T t) {
+    return mix(v1, v2, t * t * (T(3.0) - T(2.0) * t));
+}
+
 template <typename T, typename... Args>
 Q_CONSTEX T sum(const T & v, const Args &... args) {
     if constexpr (sizeof...(Args) == 0) {

@@ -933,6 +933,10 @@ void compileFunctionsFT() {
     qc::mix(v2, v2, v2, v2, v4);
     qc::mix(v3, v3, v3, v3, v4);
     qc::mix(v4, v4, v4, v4, v4);
+
+    qc::smoothstep(v2, v2, v);
+    qc::smoothstep(v3, v3, v);
+    qc::smoothstep(v4, v4, v);
 }
 
 template <typename T>
@@ -1397,6 +1401,10 @@ constexpr void compileFunctionsConstexprFT() {
     //qc::mix(v2, v2, v2, v2, v4);
     //qc::mix(v3, v3, v3, v3, v4);
     //qc::mix(v4, v4, v4, v4, v4);
+
+    //qc::smoothstep(v2, v2, v);
+    //qc::smoothstep(v3, v3, v);
+    //qc::smoothstep(v4, v4, v);
 }
 
 template <typename T>

@@ -186,6 +186,12 @@ template <typename T, typename = eif_floating_t<T>> Q_CX_ABLE T mix(T v1, T v2, 
 template <typename T, typename = eif_floating_t<T>> Q_CX_ABLE T mix(T v1, T v2, T v3, T v4, const vec4<T> & weights);
 
 //==============================================================================
+// smoothstep
+//------------------------------------------------------------------------------
+
+template <typename T, int t_n, typename = eif_floating_t<T>> Q_CX_ABLE vec<T, t_n> smoothstep(const vec<T, t_n> & v1, const vec<T, t_n> & v2, T t);
+
+//==============================================================================
 // transnorm
 //------------------------------------------------------------------------------
 // converts between normalized types

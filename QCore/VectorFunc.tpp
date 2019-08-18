@@ -342,6 +342,11 @@ Q_CX_ABLE T mix(T v1, T v2, T v3, T v4, const vec4<T> & weights) {
     return weights.x * v1 + weights.y * v2 + weights.z * v3 + weights.w * v4;
 }
 
+template <typename T, int t_n, typename>
+Q_CX_ABLE vec<T, t_n> smoothstep(const vec<T, t_n> & v1, const vec<T, t_n> & v2, T t) {
+    return mix(v1, v2, t * t * (T(3.0) - T(2.0) * t));
+}
+
 template <typename To, typename From, int t_n, typename>
 Q_CONSTEX vec<To, t_n> transnorm(const vec<From, t_n> & v) {
     if constexpr (t_n == 2) return {transnorm<To>(v.x), transnorm<To>(v.y)};

@@ -183,6 +183,8 @@ void compileFunctionsFT() {
 
     qc::mix(v, v, v);
 
+    qc::unmix(v, v, v);
+
     qc::average(v, v, v, v, v);
 
     qc::radians(v);
