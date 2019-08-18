@@ -93,7 +93,7 @@ class Hoard {
     template <typename... Args>
     HP add(Args &&... args) {
         auto & vec(s_hoards[m_index]);
-        vec.emplace_back(std::forward<Args>(args)...);
+        vec.emplace_back(forward<Args>(args)...);
         return HP(uhnat(vec.size()) - 1u, m_index);
     }
 

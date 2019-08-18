@@ -12,10 +12,10 @@ constexpr T rotateL(T v, int n);
 template <typename T, typename = eif_uintegral_t<T>>
 constexpr T rotateR(T v, int n);
 
-template <typename SrcT, typename DstT, typename = eif_t<is_integral_v<SrcT> && is_integral_v<DstT> && is_unsigned_v<SrcT> && is_unsigned_v<DstT> && (sizeof(DstT) > sizeof(SrcT))>>
+template <typename SrcT, typename DstT, typename = eif_t<is_integral_v<SrcT, DstT> && is_unsigned_v<SrcT, DstT> && (sizeof(DstT) > sizeof(SrcT))>>
 DstT spread(SrcT v);
 
-template <typename SrcT, typename DstT, typename = eif_t<is_integral_v<SrcT> && is_integral_v<DstT> && is_unsigned_v<SrcT> && is_unsigned_v<DstT> && (sizeof(DstT) >= sizeof(SrcT))>>
+template <typename SrcT, typename DstT, typename = eif_t<is_integral_v<SrcT, DstT> && is_unsigned_v<SrcT, DstT> && (sizeof(DstT) >= sizeof(SrcT))>>
 DstT repeat(SrcT v);
 
 template <typename T, typename = eif_uintegral_t<T>>

@@ -23,7 +23,7 @@ inline std::unique_ptr<T []> make_unique_init(unat size, const T & val) {
     for (unat i(0u); i < size; ++i) {
         arr[i] = val;
     }
-    return std::move(arr);
+    return move(arr);
 }
 
 template <typename T>
@@ -148,14 +148,14 @@ inline int trailingZeroes(u32 x) {
 //}
 
 // Will throw `std::system_error` on failure
-inline std::pair<std::unique_ptr<std::byte[]>, size_t> readFile(const std::filesystem::path & path) {
-    std::pair<std::unique_ptr<std::byte[]>, size_t> result;
+inline pair<std::unique_ptr<std::byte[]>, size_t> readFile(const std::filesystem::path & path) {
+    pair<std::unique_ptr<std::byte[]>, size_t> result;
     result.second = std::filesystem::file_size(path);
     result.first = std::make_unique<std::byte[]>(result.second);
     std::ifstream ifs(path, std::ios::in | std::ios::binary);
     ifs.exceptions(std::ios::badbit | std::ios::failbit);
     ifs.read(reinterpret_cast<char *>(result.first.get()), result.second);
-    return std::move(result);
+    return move(result);
 }
 
 // Will throw `std::system_error` on failure
@@ -176,7 +176,7 @@ inline std::vector<std::string> tokenize(const std::string & str) {
         words.emplace_back(str.substr(startI, endI - startI));
         startI = endI;
     }
-    return std::move(words);
+    return move(words);
 }
 
 inline std::string timeString(double seconds) {

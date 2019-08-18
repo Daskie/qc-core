@@ -35,7 +35,7 @@ class Depot {
         if (it == s_store.end()) {
             return nullptr;
         }
-        std::unique_ptr<T> e(std::move(it->second));
+        std::unique_ptr<T> e(move(it->second));
         s_store.erase(it);
         return e;
     }

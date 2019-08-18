@@ -107,28 +107,31 @@ inline bool orthogonal(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
     return zero(dot(v1, v2));
 }
 
-template <typename T>
-Q_CX_ABLE vec2<T> ortho(const vec2<T> & v) {
-    return {-v.y, v.x};
-}
-
-template <typename T>
-inline vec3<T> ortho(const vec3<T> & v) {    
-    if (abs(v.x) < abs(v.y)) {
-        if (abs(v.x) <= abs(v.z)) { // x or z is smallest
-            return {T(0), -v.z, v.y}; // rotate around x
+template <typename T, int t_n>
+Q_CX_ABLE vec<T, t_n> ortho(const vec<T, t_n> & v) {
+    if constexpr (t_n == 2) {
+        return {-v.y, v.x};
+    }
+    else if constexpr (t_n  == 3) {
+        if (abs(v.x) < abs(v.y)) {
+            if (abs(v.x) <= abs(v.z)) { // x or z is smallest
+                return {T(0), -v.z, v.y}; // rotate around x
+            }
+            else { // z is smallest
+                return {-v.y, v.x, T(0)}; // rotate around z
+            }
         }
-        else { // z is smallest
-            return {-v.y, v.x, T(0)}; // rotate around z
+        else {
+            if (abs(v.y) < abs(v.z)) { // y or x is smallest
+                return {v.z, T(0), -v.x}; // rotate around y
+            }
+            else { // z or y is smallest
+                return {-v.y, v.x, T(0)}; // rotate around z
+            }
         }
     }
     else {
-        if (abs(v.y) < abs(v.z)) { // y or x is smallest
-            return {v.z, T(0), -v.x}; // rotate around y
-        }
-        else { // z or y is smallest
-            return {-v.y, v.x, T(0)}; // rotate around z
-        }
+        static_assert(false);
     }
 }
 

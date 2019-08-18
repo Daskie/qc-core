@@ -91,7 +91,7 @@ template <typename T, typename = eif_floating_t<T>> Q_CX_ABLE T degrees(T radian
 
 // converts between normalized types
 // works with floats and integers, signed and unsigned
-template <typename To, typename From, typename = eif_t<is_arithmetic_v<To> && is_arithmetic_v<From>>> Q_CONSTEX To transnorm(From v);
+template <typename To, typename From, typename = eif_arithmetic_t<To, From>> Q_CONSTEX To transnorm(From v);
 
 }
 
