@@ -574,8 +574,14 @@ Q_CX_ABLE span3<T> span<T, t_n>::yzw() const noexcept {
 }
 
 template <typename T, int t_n>
-Q_CX_ABLE auto span<T, t_n>::size() const noexcept -> V {
+Q_CX_ABLE auto span<T, t_n>::size() const -> V {
     return max - min;
+}
+
+template <typename T, int t_n>
+Q_CX_ABLE bool span<T, t_n>::valid() const {
+    if constexpr (t_n == 1) return min <= max;
+    else return all(min <= max);
 }
 
 //======================================================================================================================

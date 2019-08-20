@@ -484,7 +484,9 @@ template <typename T, int t_n> struct span {
     template <typename = eif_t<(t_n >= 4)>> Q_CX_ABLE span3<T> xyz() const noexcept;
     template <typename = eif_t<(t_n >= 4)>> Q_CX_ABLE span3<T> yzw() const noexcept;
 
-    Q_CX_ABLE V size() const noexcept;
+    Q_CX_ABLE V size() const;
+
+    Q_CX_ABLE bool valid() const;
 
 };
 

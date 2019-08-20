@@ -128,6 +128,8 @@ void compileClassesT() {
     // other
     s1.size();
 
+    s1.valid();
+
     //--------------------------------------------------------------------------
     // Span2
 
@@ -148,6 +150,8 @@ void compileClassesT() {
     s2.y();
 
     s2.size();
+
+    s2.valid();
 
     //--------------------------------------------------------------------------
     // Span3
@@ -174,6 +178,8 @@ void compileClassesT() {
     s3.yz();
 
     s3.size();
+
+    s3.valid();
 
     //--------------------------------------------------------------------------
     // Span4
@@ -207,6 +213,8 @@ void compileClassesT() {
     s4.yzw();
 
     s4.size();
+
+    s4.valid();
 }
 
 void compileClasses() {
@@ -313,6 +321,8 @@ constexpr void compileClassesConstexprT() {
     // other
     //s1.size();
 
+    //s1.valid();
+
     //--------------------------------------------------------------------------
     // Span2
 
@@ -329,6 +339,8 @@ constexpr void compileClassesConstexprT() {
     s2.y();
 
     //s2.size();
+
+    //s2.valid();
 
     //--------------------------------------------------------------------------
     // Span3
@@ -351,6 +363,8 @@ constexpr void compileClassesConstexprT() {
     //s3.yz();
 
     //s3.size();
+
+    //s3.valid();
 
     //--------------------------------------------------------------------------
     // Span4
@@ -379,8 +393,9 @@ constexpr void compileClassesConstexprT() {
     //s4.xyz();
     //s4.yzw();
 
-
     //s4.size();
+
+    //s4.valid();
 }
 
 constexpr bool compileClassesConstexpr() {
