@@ -204,13 +204,19 @@ template <typename To, typename From, int t_n, typename = eif_arithmetic_t<To, F
 // intersect
 //------------------------------------------------------------------------------
 
-template <typename T, int t_n> Q_CX_ABLE span<T, t_n> intersect(const span<T, t_n> & s1, const span<T, t_n> & s2);
+template <typename T, int t_n> Q_CX_ABLE span<T, t_n> intersect(const span<T, t_n> & v1, const span<T, t_n> & v2);
 
 //==============================================================================
 // join
 //------------------------------------------------------------------------------
 
-template <typename T, int t_n> Q_CX_ABLE span<T, t_n> join(const span<T, t_n> & s1, const span<T, t_n> & s2);
+template <typename T, int t_n> Q_CX_ABLE span<T, t_n> join(const span<T, t_n> & v1, const span<T, t_n> & v2);
+
+//==============================================================================
+// join
+//------------------------------------------------------------------------------
+
+template <typename T, int t_n> span<T, t_n> & joinify(span<T, t_n> & v1, const span<T, t_n> & v2);
 
 //==============================================================================
 // mipmaps

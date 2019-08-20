@@ -872,6 +872,11 @@ void compileFunctionsT() {
     qc::join(s2, s2);
     qc::join(s3, s3);
     qc::join(s4, s4);
+
+    qc::joinify(s1, s1);
+    qc::joinify(s2, s2);
+    qc::joinify(s3, s3);
+    qc::joinify(s4, s4);
 }
 
 template <typename T>

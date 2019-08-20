@@ -355,28 +355,35 @@ Q_CONSTEX vec<To, t_n> transnorm(const vec<From, t_n> & v) {
 }
 
 template <typename T, int t_n>
-Q_CX_ABLE span<T, t_n> intersect(const span<T, t_n> & s1, const span<T, t_n> & s2) {
+Q_CX_ABLE span<T, t_n> intersect(const span<T, t_n> & v1, const span<T, t_n> & v2) {
     if constexpr (t_n == 1) return {
-        max(s1.min, s2.min),
-        min(s1.max, s2.max)
+        max(v1.min, v2.min),
+        min(v1.max, v2.max)
     };
     if constexpr (t_n == 2) return {
-        vec2<T>(max(s1.min.x, s2.min.x), max(s1.min.y, s2.min.y)),
-        vec2<T>(min(s1.max.x, s2.max.x), min(s1.max.y, s2.max.y))
+        vec2<T>(max(v1.min.x, v2.min.x), max(v1.min.y, v2.min.y)),
+        vec2<T>(min(v1.max.x, v2.max.x), min(v1.max.y, v2.max.y))
     };
     if constexpr (t_n == 3) return {
-        vec3<T>(max(s1.min.x, s2.min.x), max(s1.min.y, s2.min.y), max(s1.min.z, s2.min.z)),
-        vec3<T>(min(s1.max.x, s2.max.x), min(s1.max.y, s2.max.y), min(s1.max.z, s2.max.z))
+        vec3<T>(max(v1.min.x, v2.min.x), max(v1.min.y, v2.min.y), max(v1.min.z, v2.min.z)),
+        vec3<T>(min(v1.max.x, v2.max.x), min(v1.max.y, v2.max.y), min(v1.max.z, v2.max.z))
     };
     if constexpr (t_n == 4) return {
-        vec4<T>(max(s1.min.x, s2.min.x), max(s1.min.y, s2.min.y), max(s1.min.z, s2.min.z), max(s1.min.w, s2.min.w)),
-        vec4<T>(min(s1.max.x, s2.max.x), min(s1.max.y, s2.max.y), min(s1.max.z, s2.max.z), min(s1.max.w, s2.max.w))
+        vec4<T>(max(v1.min.x, v2.min.x), max(v1.min.y, v2.min.y), max(v1.min.z, v2.min.z), max(v1.min.w, v2.min.w)),
+        vec4<T>(min(v1.max.x, v2.max.x), min(v1.max.y, v2.max.y), min(v1.max.z, v2.max.z), min(v1.max.w, v2.max.w))
     };
 }
 
 template <typename T, int t_n>
-Q_CX_ABLE span<T, t_n> join(const span<T, t_n> & s1, const span<T, t_n> & s2) {
-    return { min(s1.min, s2.min), max(s1.max, s2.max) };
+Q_CX_ABLE span<T, t_n> join(const span<T, t_n> & v1, const span<T, t_n> & v2) {
+    return { min(v1.min, v2.min), max(v1.max, v2.max) };
+}
+
+template <typename T, int t_n>
+inline span<T, t_n> & joinify(span<T, t_n> & v1, const span<T, t_n> & v2) {
+    minify(v1.min, v2.min);
+    maxify(v1.max, v2.max);
+    return v1;
 }
 
 template <typename T, int t_n, typename>
