@@ -411,12 +411,12 @@ constexpr span<T, t_n>::span() noexcept :
 template <typename T, int t_n>
 template <typename U, int t_m>
 constexpr span<T, t_n>::span(const span<U, t_m> & v) noexcept :
-    min(V(v.min)),
-    max(V(v.max))
+    min(Value(v.min)),
+    max(Value(v.max))
 {}
 
 template <typename T, int t_n>
-constexpr span<T, t_n>::span(const V & v1, const V & v2) noexcept :
+constexpr span<T, t_n>::span(const Value & v1, const Value & v2) noexcept :
     min(v1),
     max(v2)
 {}
@@ -574,7 +574,7 @@ Q_CX_ABLE span3<T> span<T, t_n>::yzw() const noexcept {
 }
 
 template <typename T, int t_n>
-Q_CX_ABLE auto span<T, t_n>::size() const -> V {
+Q_CX_ABLE auto span<T, t_n>::size() const -> Value {
     return max - min;
 }
 

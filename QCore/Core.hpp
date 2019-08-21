@@ -46,10 +46,11 @@ namespace types {
     constexpr  nat  operator""_n(unsigned long long int v) { return  nat(v); }
     constexpr unat operator""_un(unsigned long long int v) { return unat(v); }
 
-    using std::pair;
-    template <typename T> using duo = pair<T, T>;
     using std::move;
     using std::forward;
+
+    using std::pair;
+    template <typename T> using duo = pair<T, T>;
 
 }
 

@@ -168,7 +168,7 @@ template <typename T> struct vec<T, 2> {
     //--------------------------------------------------------------------------
     // Static Members
 
-    using type = T;
+    using Type = T;
 
     static constexpr int n{2};
 
@@ -236,7 +236,7 @@ template <typename T> struct vec<T, 3> {
     //--------------------------------------------------------------------------
     // Static Members
 
-    using type = T;
+    using Type = T;
 
     static constexpr int n{3};
 
@@ -322,7 +322,7 @@ template <typename T> struct vec<T, 4> {
     //--------------------------------------------------------------------------
     // Static Members
 
-    using type = T;
+    using Type = T;
 
     static constexpr int n{4};
 
@@ -430,15 +430,15 @@ template <typename T, int t_n> struct span {
     //--------------------------------------------------------------------------
     // Static Members
 
-    using type = T;
-    using V = std::conditional_t<t_n == 1, T, vec<T, t_n>>;
+    using Type = T;
+    using Value = std::conditional_t<t_n == 1, T, vec<T, t_n>>;
 
     static constexpr int n{t_n};
 
     //--------------------------------------------------------------------------
     // Instance Variables
 
-    V min, max;
+    Value min, max;
 
     //--------------------------------------------------------------------------
     // Construction
@@ -447,7 +447,7 @@ template <typename T, int t_n> struct span {
     constexpr span(const span<T, t_n> & v) noexcept = default;
     constexpr span(span<T, t_n> && v) noexcept = default;
     template <typename U, int t_m> constexpr explicit span(const span<U, t_m> & v) noexcept;
-    constexpr span(const V & v1, const V & v2) noexcept;
+    constexpr span(const Value & v1, const Value & v2) noexcept;
     template <typename = eif_t<(t_n > 1)>> constexpr span(T v1, T v2) noexcept;
     template <typename = eif_t<t_n == 2>> Q_CONSTEX span(const span1<T> & v1, const span1<T> & v2) noexcept;
     template <typename = eif_t<t_n == 3>> Q_CONSTEX span(const span1<T> & v1, const span1<T> & v2, const span1<T> & v3) noexcept;
@@ -484,7 +484,7 @@ template <typename T, int t_n> struct span {
     template <typename = eif_t<(t_n >= 4)>> Q_CX_ABLE span3<T> xyz() const noexcept;
     template <typename = eif_t<(t_n >= 4)>> Q_CX_ABLE span3<T> yzw() const noexcept;
 
-    Q_CX_ABLE V size() const;
+    Q_CX_ABLE Value size() const;
 
     Q_CX_ABLE bool valid() const;
 
