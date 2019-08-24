@@ -2,58 +2,15 @@
 
 #include <memory>
 #include <fstream>
-#include <random>
-#include <chrono>
-#include <limits>
-#include <locale>
 #include <codecvt>
 #include <string>
 #include <sstream>
 #include <iomanip>
-#include <cctype>
 #include <filesystem>
 
-#include "Math.hpp"
+#include "Core.hpp"
 
 namespace qc {
-
-template <typename T>
-inline std::unique_ptr<T []> make_unique_init(unat size, const T & val) {
-    std::unique_ptr<T []> arr = std::make_unique<T []>(size);
-    for (unat i(0u); i < size; ++i) {
-        arr[i] = val;
-    }
-    return move(arr);
-}
-
-template <typename T>
-inline void fill(T * arr, unat n, const T & val) {
-    for (unat i(0u); i < n; ++i) {
-        arr[i] = val;
-    }
-}
-
-template <typename T>
-inline void copy(const T * src, T * dest, unat n) {
-    std::memcpy(dest, src, n * sizeof(T));
-}
-
-template <typename T>
-inline void copy(const T * src, T * dest, unat n, unat offset, unat stride, unat grouping) {
-    if (stride <= grouping) {
-        std::memcpy(dest + offset, src, n * sizeof(T));
-        return;
-    }
-
-    unat i(0u), j, k(offset);
-    while (i < n) {
-        for (j = 0u; j < grouping; ++j, ++i) {
-            dest[k + j] = src[i];
-        }
-
-        k += stride;
-    }
-}
 
 template <typename T>
 T pairwiseSum(unat n, const T * vals) {
@@ -61,30 +18,6 @@ T pairwiseSum(unat n, const T * vals) {
     if (n == 1u) return vals[0];
     if (n == 2u) return vals[0] + vals[1];
     return pairwiseSum(n >> 1, vals) + pairwiseSum((n + 1u) >> 1, vals + (n >> 1));
-}
-
-template <typename T>
-inline std::unique_ptr<T[]> duplicate(const T * src, unat n) {
-    T * arr(reinterpret_cast<T *>(std::malloc(n * sizeof(T))));
-    std::memcpy(arr, src, n * sizeof(T));
-    return std::unique_ptr<T[]>(arr);
-}
-
-template <typename T>
-inline std::unique_ptr<T[]> duplicate(const std::unique_ptr<T[]> & src, unat n) {
-    return duplicate(src.get(), n);
-}
-
-inline bool fileExists(const std::string & path) {
-    struct stat buffer;
-    return stat(path.c_str(), &buffer) == 0;
-}
-
-inline unat detFileSize(std::ifstream & ifs) {
-    ifs.seekg(0, std::ios::end);
-    unat size(ifs.tellg());
-    ifs.seekg(0);
-    return size;
 }
 
 namespace detail {
@@ -109,43 +42,18 @@ namespace detail {
     };
 }
 
-inline int trailingZeroes(u08 x) {
-    return detail::trail_table[x];
-}
-
-inline int trailingZeroes(u32 x) {
-    int count(0);
-    count += detail::trail_table[x & 0xFF];
-    if (count < 8u) {
-        return count;
+template <typename T, typename = eif_uintegral_t<T>>
+inline int trailingZeroes(T v) {
+    int count(detail::trail_table[v & 0xFF]);
+    for (int i(1); i < sizeof(T); ++i) {
+        if (count < 8 * i) {
+            return count;
+        }
+        v >>= 8;
+        count += detail::trail_table[v & 0xFF];
     }
-    x >>= 8;
-    count += detail::trail_table[x & 0xFF];
-    if (count < 16) {
-        return count;
-    }
-    x >>= 8;
-    count += detail::trail_table[x & 0xFF];
-    if (count < 24) {
-        return count;
-    }
-    x >>= 8;
-    count += detail::trail_table[x & 0xFF];
     return count;
 }
-
-
-//inline std::string convert(const std::wstring & wstr) {
-//    static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-//
-//    return converter.to_bytes(wstr);
-//}
-
-//inline std::wstring convert(const std::string & str) {
-//    static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-//
-//    return converter.from_bytes(str);
-//}
 
 // Will throw `std::system_error` on failure
 inline pair<std::unique_ptr<std::byte[]>, size_t> readFile(const std::filesystem::path & path) {
@@ -163,20 +71,6 @@ inline void writeFile(const std::filesystem::path & path, const void * data, siz
     std::ofstream ofs(path, std::ios::out | std::ios::binary);
     ofs.exceptions(std::ios::badbit | std::ios::failbit);
     ofs.write(reinterpret_cast<const char *>(data), size);
-}
-
-inline std::vector<std::string> tokenize(const std::string & str) {
-    std::vector<std::string> words;
-    size_t startI(0u);
-    while (true) {
-        while (startI < str.size() && std::isspace(str.at(startI))) ++startI;
-        if (startI >= str.size()) break;
-        size_t endI(startI + 1u);
-        while (endI < str.size() && !std::isspace(str.at(endI))) ++endI;
-        words.emplace_back(str.substr(startI, endI - startI));
-        startI = endI;
-    }
-    return move(words);
 }
 
 inline std::string timeString(double seconds) {
