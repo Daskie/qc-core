@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "QCore/Math.hpp"
+#include <QCore/Math.hpp>
 
 namespace {
 

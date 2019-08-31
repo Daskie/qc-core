@@ -1,6 +1,6 @@
 #include "QCoreTest.hpp"
 
-#include "QCore/Bits.hpp"
+#include <QCore/Bits.hpp>
 
 namespace {
 

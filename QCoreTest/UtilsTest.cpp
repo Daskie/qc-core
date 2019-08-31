@@ -1,6 +1,6 @@
 #include "QCoreTest.hpp"
 
-#include "QCore/Utils.hpp"
+#include <QCore/Utils.hpp>
 
 namespace {
 

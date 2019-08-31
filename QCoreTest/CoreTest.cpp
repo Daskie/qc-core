@@ -1,6 +1,6 @@
 #include "QCoreTest.hpp"
 
-#include "QCore/CoreFunc.hpp"
+#include <QCore/CoreFunc.hpp>
 
 namespace {
 

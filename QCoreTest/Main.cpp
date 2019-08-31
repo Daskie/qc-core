@@ -2,12 +2,13 @@
 
 #include "QCoreTest.hpp"
 
-int main(void) {
+int main() {
     testCore();
     testBits();
     testVector();
     testMatrix();
     testQuaternion();
+    testJson();
     testMath();
     testUtils();
     testTime();

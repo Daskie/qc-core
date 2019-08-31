@@ -2,7 +2,7 @@
 
 #include <sstream>
 
-#include "QCore/MatrixFunc.hpp"
+#include <QCore/MatrixFunc.hpp>
 
 namespace {
 

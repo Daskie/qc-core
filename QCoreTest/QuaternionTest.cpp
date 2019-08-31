@@ -2,7 +2,7 @@
 
 #include <sstream>
 
-#include "QCore/QuaternionFunc.hpp"
+#include <QCore/QuaternionFunc.hpp>
 
 namespace {
 

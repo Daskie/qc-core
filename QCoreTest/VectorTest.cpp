@@ -2,7 +2,7 @@
 
 #include <sstream>
 
-#include "QCore/VectorFunc.hpp"
+#include <QCore/VectorFunc.hpp>
 
 namespace {
 

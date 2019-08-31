@@ -1,6 +1,6 @@
 #include "QCoreTest.hpp"
 
-#include "QCore/Time.hpp"
+#include <QCore/Time.hpp>
 
 namespace {
 

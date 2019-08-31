@@ -1,6 +1,6 @@
 #include "QCoreTest.hpp"
 
-#include "QCore/Log.hpp"
+#include <QCore/Log.hpp>
 
 namespace {
 
