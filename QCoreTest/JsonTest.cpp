@@ -4,7 +4,8 @@
 
 template <typename T, int t_n>
 void testVecTN() {
-    qjson::Writer().val(qc::vec<T, t_n>());
+    std::string json(qjson::Writer().key("v").val(qc::vec<T, t_n>()).finish());
+    qjson::read(json).at("v")->as<qc::vec<T, t_n>>();
 }
 
 template <typename T>
@@ -16,7 +17,8 @@ void testVecT() {
 
 template <typename T, int t_n>
 void testSpanTN() {
-    qjson::Writer().val(qc::span<T, t_n>());
+    std::string json(qjson::Writer().key("v").val(qc::span<T, t_n>()).finish());
+    qjson::read(json).at("v")->as<qc::span<T, t_n>>();
 }
 
 template <typename T>
@@ -29,7 +31,8 @@ void testSpanT() {
 
 template <typename T, int t_n>
 void testMatTN() {
-    qjson::Writer().val(qc::mat<T, t_n>());
+    std::string json(qjson::Writer().key("v").val(qc::mat<T, t_n>()).finish());
+    qjson::read(json).at("v")->as<qc::mat<T, t_n>>();
 }
 
 template <typename T>
@@ -41,7 +44,8 @@ void testMatT() {
 
 template <typename T>
 void testQuatT() {
-    qjson::Writer().val(qc::quat<T>());
+    std::string json(qjson::Writer().key("v").val(qc::quat<T>()).finish());
+    qjson::read(json).at("v")->as<qc::quat<T>>();
 }
 
 void testJson() {
