@@ -199,9 +199,9 @@ Q_CX_ABLE T iBit(T v, int i) {
 
 template <typename T, typename>
 Q_CONSTEX T smear(T v) {
-                                  v |= v >>  1;
-                                  v |= v >>  2;
-                                  v |= v >>  4;
+                                   v |= v >>  1;
+                                   v |= v >>  2;
+                                   v |= v >>  4;
     if constexpr (sizeof(T) >= 2u) v |= v >>  8;
     if constexpr (sizeof(T) >= 4u) v |= v >> 16;
     if constexpr (sizeof(T) >= 8u) v |= v >> 32;

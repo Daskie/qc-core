@@ -19,7 +19,7 @@ struct RandomEngineTransformer {
 //   - integral up to 4 bytes
 template <typename T>
 struct RandomEngineTransformer<std::mt19937, T> {
-    T operator()(u32f result) const {
+    T operator()(u32 result) const {
         if constexpr (is_floating_point_v<T>) {
             return T(result) * T(0x1p-32L);
         }
@@ -46,7 +46,7 @@ struct RandomEngineTransformer<std::mt19937, T> {
 //   - integral up to 8 bytes
 template <typename T>
 struct RandomEngineTransformer<std::mt19937_64, T> {
-    T operator()(u64f result) const {
+    T operator()(u64 result) const {
         if constexpr (is_floating_point_v<T>) {
             return T(result) * T(0x1p-64L);
         }
@@ -74,7 +74,7 @@ struct RandomEngineTransformer<std::mt19937_64, T> {
 //   - signed up to 4 bytes
 template <typename T>
 struct RandomEngineTransformer<std::minstd_rand, T> {
-    T operator()(u32f result) const {
+    T operator()(u32 result) const {
         if constexpr (is_floating_point_v<T>) {
             return T(result) * T(0x1p-31L);
         }
