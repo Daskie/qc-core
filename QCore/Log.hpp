@@ -5,11 +5,11 @@
 
 namespace qc {
 
-inline void error_break() {}
+    inline void error_break() {}
 
-inline void warning_break() {}
+    inline void warning_break() {}
 
-inline void exception_break() {}
+    inline void exception_break() {}
 
 }
 

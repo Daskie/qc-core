@@ -10,8 +10,6 @@ void testMatrix();
 
 void testQuaternion();
 
-void testJson();
-
 void testMath();
 
 void testUtils();

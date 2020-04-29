@@ -8,7 +8,6 @@ int main() {
     testVector();
     testMatrix();
     testQuaternion();
-    testJson();
     testMath();
     testUtils();
     testTime();
