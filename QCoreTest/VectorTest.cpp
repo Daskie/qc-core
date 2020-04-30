@@ -423,7 +423,7 @@ void compileFunctionsTT() {
     qc::span2<T1> s2; s2;
     qc::span3<T1> s3; s3;
     qc::span4<T1> s4; s4;
-    
+
     qc::transnorm<T2>(v2);
     qc::transnorm<T2>(v3);
     qc::transnorm<T2>(v4);
@@ -762,7 +762,7 @@ void compileFunctionsT() {
     qc::min(v, v2);
     qc::min(v, v3);
     qc::min(v, v4);
-    
+
     qc::max(v2);
     qc::max(v3);
     qc::max(v4);
@@ -940,7 +940,7 @@ void compileFunctionsFT() {
     qc::mix(v2, v2, v);
     qc::mix(v3, v3, v);
     qc::mix(v4, v4, v);
-    
+
     qc::mix(v, v, v2);
     qc::mix(v2, v2, v2);
     qc::mix(v3, v3, v2);
@@ -969,7 +969,19 @@ void compileFunctionsIT() {
     qc::span2<T> s2; s2;
     qc::span3<T> s3; s3;
     qc::span4<T> s4; s4;
-    
+}
+
+template <typename T>
+void compileFunctionsUIT() {
+    T v{}; v;
+    qc::vec2<T> v2; v2;
+    qc::vec3<T> v3; v3;
+    qc::vec4<T> v4; v4;
+    qc::span1<T> s1; s1;
+    qc::span2<T> s2; s2;
+    qc::span3<T> s3; s3;
+    qc::span4<T> s4; s4;
+
     qc::mipmaps(v2);
     qc::mipmaps(v3);
     qc::mipmaps(v4);
@@ -991,7 +1003,7 @@ void compileFunctionsBT() {
     !b2;
     !b3;
     !b4;
-    
+
     qc::all(b2);
     qc::all(b3);
     qc::all(b4);
@@ -1012,7 +1024,7 @@ void compileFunctions() {
     compileFunctionsT<qc::u16>();
     compileFunctionsT<qc::u32>();
     compileFunctionsT<qc::u64>();
-    
+
     compileFunctionsFT<qc::f32>();
     compileFunctionsFT<qc::f64>();
 
@@ -1288,7 +1300,7 @@ constexpr void compileFunctionsConstexprT() {
     //qc::min(v, v2);
     //qc::min(v, v3);
     //qc::min(v, v4);
-    
+
     //qc::max(v2);
     //qc::max(v3);
     //qc::max(v4);
@@ -1437,7 +1449,7 @@ constexpr void compileFunctionsConstexprIT() {
     constexpr qc::span2<T> s2(v2, v2);
     constexpr qc::span3<T> s3(v3, v3);
     constexpr qc::span4<T> s4(v4, v4);
-    
+
     //qc::mipmaps(v2);
     //qc::mipmaps(v3);
     //qc::mipmaps(v4);
@@ -1545,7 +1557,7 @@ constexpr void compileCastsTT() {
     compileVecCastsTTN<T1, T2, 2>();
     compileVecCastsTTN<T1, T2, 3>();
     compileVecCastsTTN<T1, T2, 4>();
-    
+
     compileSpanCastsTTN<T1, T2, 1>();
     compileSpanCastsTTN<T1, T2, 2>();
     compileSpanCastsTTN<T1, T2, 3>();

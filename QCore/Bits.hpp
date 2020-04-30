@@ -6,10 +6,6 @@ namespace qc {
 
     namespace bits {
 
-        template <typename T, typename = eif_uintegral_t<T>> constexpr T rotateL(T v, int n);
-
-        template <typename T, typename = eif_uintegral_t<T>> constexpr T rotateR(T v, int n);
-
         template <typename SrcT, typename DstT, typename = eif_t<is_integral_v<SrcT, DstT> && is_unsigned_v<SrcT, DstT> && (sizeof(DstT) > sizeof(SrcT))>> DstT spread(SrcT v);
 
         template <typename SrcT, typename DstT, typename = eif_t<is_integral_v<SrcT, DstT> && is_unsigned_v<SrcT, DstT> && (sizeof(DstT) >= sizeof(SrcT))>> DstT repeat(SrcT v);
@@ -85,16 +81,6 @@ namespace qc {
 
                 return (h1 << 1) | h2;
             }
-        }
-
-        template <typename T, typename>
-        constexpr T rotateL(T v, int n) {
-            return (v << n) | (v >> (sizeof(T) * 8u - n));
-        }
-
-        template <typename T, typename>
-        constexpr T rotateR(T v, int n) {
-            return (v >> n) | (v << (sizeof(T) * 8u - n));
         }
 
         template <typename T, typename>

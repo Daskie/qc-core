@@ -8,10 +8,6 @@ template <typename T>
 void compileFunctionsUT() {
     T v(1);
 
-    qc::bits::rotateL(v, 0);
-
-    qc::bits::rotateR(v, 0);
-
     qc::bits::interleave(v);
 
     qc::bits::scramble(v);

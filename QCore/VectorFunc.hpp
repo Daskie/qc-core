@@ -222,7 +222,7 @@ namespace qc {
     // mipmaps
     //------------------------------------------------------------------------------
 
-    template <typename T, int t_n, typename = eif_integral_t<T>> Q_CX_ABLE T mipmaps(const vec<T, t_n> & size);
+    template <typename T, int t_n, typename = eif_unsigned_t<T>> Q_CX_ABLE T mipmaps(const vec<T, t_n> & size);
 
     //==============================================================================
     // composite

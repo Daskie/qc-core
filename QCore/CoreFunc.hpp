@@ -1,5 +1,14 @@
 #pragma once
 
+// TODO: remove this define nonsense once Microsoft gets their shit together
+#ifdef __cpp_lib_bitops
+#include <bit>
+#else
+#define __cpp_lib_bitops
+#include <bit>
+#undef __cpp_lib_bitops
+#endif
+
 #include "Core.hpp"
 
 namespace qc {
@@ -45,27 +54,22 @@ namespace qc {
     template <typename T, typename = eif_floating_t<T>> Q_CX_ABLE T pow(T v, int e);
     template <typename T, typename = eif_floating_t<T>> Q_CX_ABLE T pow(T v, uint e);
 
-    template <typename T, typename = eif_integral_t<T>> Q_CONSTEX T pow2(int v);
+    // Depreciated in favor of `std::ispow2`
+    //template <typename T, typename = eif_integral_t<T>> Q_CONSTEX bool isPow2(T v);
 
-    template <typename T, typename = eif_integral_t<T>> Q_CONSTEX bool isPow2(T v);
+    template <typename T, typename = eif_unsigned_t<T>> Q_CONSTEX int log2Floor(T v);
 
-    template <typename T, typename = eif_integral_t<T>> Q_CONSTEX int log2Floor(T v);
+    template <typename T, typename = eif_unsigned_t<T>> Q_CONSTEX int log2Ceil(T v);
 
-    template <typename T, typename = eif_integral_t<T>> Q_CONSTEX int log2Ceil(T v);
+    // Depreciated in favor of `std::floor2`
+    //template <typename T, typename = eif_integral_t<T>> Q_CONSTEX T floor2(T v);
 
-    template <typename T, typename = eif_integral_t<T>> Q_CONSTEX T floor2(T v);
+    // Depreciated in favor of `std::ceil2`
+    //template <typename T, typename = eif_integral_t<T>> Q_CONSTEX T ceil2(T v);
 
-    template <typename T, typename = eif_integral_t<T>> Q_CONSTEX T ceil2(T v);
+    template <typename T, typename = eif_unsigned_t<T>> Q_CX_ABLE int mipmaps(T size);
 
-    template <typename T, typename = eif_integral_t<T>> Q_CX_ABLE int mipmaps(T size);
-
-    template <typename T, typename = eif_integral_t<T>> Q_CX_ABLE T highBit(T v);
-
-    template <typename T, typename = eif_integral_t<T>> Q_CX_ABLE T lowBit(T v);
-
-    template <typename T, typename = eif_integral_t<T>> Q_CX_ABLE T iBit(T v, int i);
-
-    template <typename T, typename = eif_integral_t<T>> Q_CONSTEX T smear(T v);
+    //template <typename T, typename = eif_integral_t<T>> Q_CONSTEX T smear(T v);
 
     // ~3.3x faster than std::modf
     template <typename T, typename = eif_floating_t<T>> Q_CX_ABLE T fract(T v);
@@ -237,79 +241,61 @@ namespace qc {
         return r;
     }
 
-    template <typename T, typename>
-    Q_CONSTEX T pow2(int v) {
-        return T(1) << v;
-    }
-
-    template <typename T, typename>
-    Q_CONSTEX bool isPow2(T v) {
-        return !(v & (v - T(1)));
-    }
+    // Depreciated in favor of `std::ispow2`
+    //template <typename T, typename>
+    //Q_CONSTEX bool isPow2(T v) {
+    //    return !(v & (v - T(1)));
+    //}
 
     template <typename T, typename>
     Q_CONSTEX int log2Floor(T v) {
-        static_assert(sizeof(T) <= 8u);
+        //static_assert(sizeof(T) <= 8u);
+        //
+        //int log(0);
+        //if constexpr (sizeof(T) >= 8u) if (v & 0xFFFFFFFF00000000) { v >>= 32; log += 32; }
+        //if constexpr (sizeof(T) >= 4u) if (v & 0x00000000FFFF0000) { v >>= 16; log += 16; }
+        //if constexpr (sizeof(T) >= 2u) if (v & 0x000000000000FF00) { v >>=  8; log +=  8; }
+        //                               if (v & 0x00000000000000F0) { v >>=  4; log +=  4; }
+        //                               if (v & 0x000000000000000C) { v >>=  2; log +=  2; }
+        //                               if (v & 0x0000000000000002) {           log +=  1; }
+        //return log;
 
-        int log(0);
-        if constexpr (sizeof(T) >= 8u) if (v & 0xFFFFFFFF00000000) { v >>= 32; log += 32; }
-        if constexpr (sizeof(T) >= 4u) if (v & 0x00000000FFFF0000) { v >>= 16; log += 16; }
-        if constexpr (sizeof(T) >= 2u) if (v & 0x000000000000FF00) { v >>=  8; log +=  8; }
-                                       if (v & 0x00000000000000F0) { v >>=  4; log +=  4; }
-                                       if (v & 0x000000000000000C) { v >>=  2; log +=  2; }
-                                       if (v & 0x0000000000000002) {           log +=  1; }
-        return log;
+        return v == T(0) ? 0 : std::numeric_limits<T>::digits - 1 - std::countl_zero(v);
     }
 
     template <typename T, typename>
     Q_CONSTEX int log2Ceil(T v) {
-        return (v & (v - T(1))) ? log2Floor(v - T(1)) + T(1) : log2Floor(v);
+        return v == T(0) ? 0 : std::numeric_limits<T>::digits - std::countl_zero(std::make_unsigned_t<decltype(v - 1u)>(v - 1u));
     }
 
-    template <typename T, typename>
-    Q_CONSTEX T floor2(T v) {
-        v = smear(v);
-        return v ^ (v >> 1);
-    }
+    // Depreciated in favor of std::floor2
+    //template <typename T, typename>
+    //Q_CONSTEX T floor2(T v) {
+    //    v = smear(v);
+    //    return v ^ (v >> 1);
+    //}
 
-    template <typename T, typename>
-    Q_CONSTEX T ceil2(T v) {
-        return smear(v - T(1)) + T(1);
-    }
+    // Depreciated in favor of std::ceil2
+    //template <typename T, typename>
+    //Q_CONSTEX T ceil2(T v) {
+    //    return smear(v - T(1)) + T(1);
+    //}
 
     template <typename T, typename>
     Q_CX_ABLE int mipmaps(T size) {
         return log2Floor(size) + T(1);
     }
 
-    template <typename T, typename>
-    Q_CX_ABLE T highBit(T v) {
-        using UT = std::make_unsigned_t<T>;
-        constexpr UT mask(UT(1) << (sizeof(T) * 8u - 1u));
-
-        return T(v & mask);
-    }
-
-    template <typename T, typename>
-    Q_CX_ABLE T lowBit(T v) {
-        return v & T(1);
-    }
-
-    template <typename T, typename>
-    Q_CX_ABLE T iBit(T v, int i) {
-        return v & (T(1) << i);
-    }
-
-    template <typename T, typename>
-    Q_CONSTEX T smear(T v) {
-                                       v |= v >>  1;
-                                       v |= v >>  2;
-                                       v |= v >>  4;
-        if constexpr (sizeof(T) >= 2u) v |= v >>  8;
-        if constexpr (sizeof(T) >= 4u) v |= v >> 16;
-        if constexpr (sizeof(T) >= 8u) v |= v >> 32;
-        return v;
-    }
+    //template <typename T, typename>
+    //Q_CONSTEX T smear(T v) {
+    //                                   v |= v >>  1;
+    //                                   v |= v >>  2;
+    //                                   v |= v >>  4;
+    //    if constexpr (sizeof(T) >= 2u) v |= v >>  8;
+    //    if constexpr (sizeof(T) >= 4u) v |= v >> 16;
+    //    if constexpr (sizeof(T) >= 8u) v |= v >> 32;
+    //    return v;
+    //}
 
     template <typename T, typename>
     Q_CX_ABLE T fract(T v) {

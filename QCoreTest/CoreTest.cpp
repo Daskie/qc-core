@@ -126,7 +126,7 @@ void compileFunctionsT() {
     qc::minify(v, v, v);
     qc::minify(v, v, v, v);
     qc::minify(v, v, v, v, v);
-    
+
     qc::maxify(v, v);
     qc::maxify(vp, vp);
     qc::maxify(v, v, v);
@@ -194,25 +194,18 @@ void compileFunctionsFT() {
 
 template <typename T>
 void compileFunctionsIT() {
+
+}
+
+template <typename T>
+void compileFunctionsUIT() {
     T v(1);
-
-    qc::pow2<T>(int(v));
-
-    qc::isPow2(v);
 
     qc::log2Floor(v);
 
     qc::log2Ceil(v);
 
-    qc::floor2(v);
-
-    qc::ceil2(v);
-
     qc::mipmaps(v);
-
-    qc::highBit(v);
-
-    qc::lowBit(v);
 }
 
 void compileFunctionsBT() {
@@ -247,6 +240,11 @@ void compileFunctions() {
     compileFunctionsIT<qc::u32>();
     compileFunctionsIT<qc::s64>();
     compileFunctionsIT<qc::u64>();
+
+    compileFunctionsUIT<qc::u08>();
+    compileFunctionsUIT<qc::u16>();
+    compileFunctionsUIT<qc::u32>();
+    compileFunctionsUIT<qc::u64>();
 
     compileFunctionsBT();
 }
@@ -314,7 +312,7 @@ constexpr void compileFunctionsConstexprT() {
 
     //qc::mod(v, v);
     //qc::mod_q(v, v);
-    
+
     qc::sum(v, v, v, v, v);
     qc::product(v, v, v, v, v);
 }
@@ -340,25 +338,18 @@ constexpr void compileFunctionsConstexprFT() {
 
 template <typename T>
 constexpr void compileFunctionsConstexprIT() {
+
+}
+
+template <typename T>
+constexpr void compileFunctionsConstexprUIT() {
     constexpr T v(1);
 
-    qc::pow2<T>(v);
+    qc::log2Floor(v);
 
-    qc::isPow2(v);
-
-    //qc::log2Floor(v);
-
-    //qc::log2Ceil(v);
-
-    //qc::floor2(v);
-
-    //qc::ceil2(v);
+    qc::log2Ceil(v);
 
     //qc::mipmaps(v);
-
-    //qc::highBit(v);
-
-    //qc::lowBit(v);
 }
 
 constexpr void compileFunctionsConstexprBT() {
@@ -393,7 +384,12 @@ constexpr bool compileFunctionsConstexpr() {
     compileFunctionsConstexprIT<qc::u32>();
     compileFunctionsConstexprIT<qc::s64>();
     compileFunctionsConstexprIT<qc::u64>();
-    
+
+    compileFunctionsConstexprUIT<qc::u08>();
+    compileFunctionsConstexprUIT<qc::u16>();
+    compileFunctionsConstexprUIT<qc::u32>();
+    compileFunctionsConstexprUIT<qc::u64>();
+
     compileFunctionsConstexprBT();
 
     return true;
