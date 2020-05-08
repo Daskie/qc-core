@@ -1,6 +1,6 @@
 #include <sstream>
 
-#include <QCore/matrix-func.hpp>
+#include <qc-core/matrix-func.hpp>
 
 template <typename T>
 static void compileClassesT() {

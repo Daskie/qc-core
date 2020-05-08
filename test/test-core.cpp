@@ -1,4 +1,4 @@
-#include <QCore/core-func.hpp>
+#include <qc-core/core-func.hpp>
 
 static void compileTyping() {
     qc::nat nat_;   nat_;

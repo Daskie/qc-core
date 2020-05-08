@@ -1,4 +1,4 @@
-#include <QCore/log.hpp>
+#include <qc-core/log.hpp>
 
 void testLog() {
 

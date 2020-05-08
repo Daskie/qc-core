@@ -1,2 +1,3 @@
-# QCU
-Q Core Utilities Library
+# QC Core
+
+A work in progress

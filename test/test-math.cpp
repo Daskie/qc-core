@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include <QCore/math.hpp>
+#include <qc-core/math.hpp>
 
 void testMath() {
 

@@ -1,4 +1,4 @@
-#include <QCore/utils.hpp>
+#include <qc-core/utils.hpp>
 
 void testUtils() {
 

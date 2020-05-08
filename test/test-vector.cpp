@@ -1,6 +1,6 @@
 #include <sstream>
 
-#include <QCore/vector-func.hpp>
+#include <qc-core/vector-func.hpp>
 
 template <typename T>
 static void compileClassesT() {

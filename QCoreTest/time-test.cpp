@@ -1,4 +1,4 @@
-#include <QCore/time.hpp>
+#include <qc-core/time.hpp>
 
 void testTime() {
 

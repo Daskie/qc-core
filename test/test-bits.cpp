@@ -1,4 +1,4 @@
-#include <QCore/bits.hpp>
+#include <qc-core/bits.hpp>
 
 template <typename T>
 static void compileFunctionsUT() {
