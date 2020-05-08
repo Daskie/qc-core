@@ -20,18 +20,24 @@ namespace qc {
         return pairwiseSum(n >> 1, vals) + pairwiseSum((n + 1u) >> 1, vals + (n >> 1));
     }
 
-    // Will throw `std::system_error` on failure
-    inline pair<std::unique_ptr<std::byte[]>, size_t> readFile(const std::filesystem::path & path) {
-        pair<std::unique_ptr<std::byte[]>, size_t> result;
+    // Throws `std::system_error` on failure
+    inline pair<std::unique_ptr<std::byte[]>, u64> readFile(const std::filesystem::path & path) {
+        pair<std::unique_ptr<std::byte[]>, u64> result;
+
         result.second = std::filesystem::file_size(path);
-        result.first = std::make_unique<std::byte[]>(result.second);
+        if (result.second > std::numeric_limits<size_t>::max() || result.second > u64(std::numeric_limits<std::streamsize>::max())) {
+            throw std::system_error(std::make_error_code(std::errc::file_too_large));
+        }
+
+        result.first = std::make_unique<std::byte[]>(size_t(result.second));
         std::ifstream ifs(path, std::ios::in | std::ios::binary);
         ifs.exceptions(std::ios::badbit | std::ios::failbit);
-        ifs.read(reinterpret_cast<char *>(result.first.get()), result.second);
+        ifs.read(reinterpret_cast<char *>(result.first.get()), std::streamsize(result.second));
+
         return move(result);
     }
 
-    // Will throw `std::system_error` on failure
+    // Throws `std::system_error` on failure
     inline void writeFile(const std::filesystem::path & path, const void * data, size_t size) {
         std::ofstream ofs(path, std::ios::out | std::ios::binary);
         ofs.exceptions(std::ios::badbit | std::ios::failbit);
@@ -42,7 +48,7 @@ namespace qc {
         static const double k_secondsPerDay(86400.0);
         static const double k_secondsPerHour(3600.0);
         static const double k_secondsPerMinute(60.0);
-    
+
         seconds = std::floor(seconds);
         double days(std::floor(seconds / k_secondsPerDay)); seconds -= days * k_secondsPerDay;
         double hours(std::floor(seconds / k_secondsPerHour)); seconds -= hours * k_secondsPerHour;
@@ -95,7 +101,7 @@ namespace qc {
         }
 
         template <typename T>
-        detail::binary_s<T> binary(const T & v, int blockSize = sizeof(T)) {
+        inline detail::binary_s<T> binary(const T & v, int blockSize = sizeof(T)) {
             return detail::binary_s<T>(v, blockSize);
         }
 

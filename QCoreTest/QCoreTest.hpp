@@ -6,6 +6,8 @@ void testBits();
 
 void testVector();
 
+void testSpan();
+
 void testMatrix();
 
 void testQuaternion();

@@ -66,7 +66,7 @@ namespace qc {
 
     template <typename T>
     inline std::ostream & operator<<(std::ostream & os, const quat<T> & q) {
-        return os << "[ " << q.a.i << " " << q.a.j << " " << q.a.k << " | " << q.w << " ]";
+        return os << "[ " << q.a.x << " " << q.a.y << " " << q.a.z << " | " << q.w << " ]";
     }
 
     //------------------------------------------------------------------------------
@@ -172,16 +172,16 @@ namespace qc {
     }
 
     template <typename T>
-    Q_CX_ABLE mat3<T> toMat(const quat<T> & q) {
-        T wi(q.w   * q.a.i);
-        T wj(q.w   * q.a.j);
-        T wk(q.w   * q.a.k);
-        T ii(q.a.i * q.a.i);
-        T ij(q.a.i * q.a.j);
-        T ik(q.a.i * q.a.k);
-        T jj(q.a.j * q.a.j);
-        T jk(q.a.j * q.a.k);
-        T kk(q.a.k * q.a.k);
+    inline Q_CX_ABLE mat3<T> toMat(const quat<T> & q) {
+        T wi(q.w   * q.a.x);
+        T wj(q.w   * q.a.y);
+        T wk(q.w   * q.a.z);
+        T ii(q.a.x * q.a.x);
+        T ij(q.a.x * q.a.y);
+        T ik(q.a.x * q.a.z);
+        T jj(q.a.y * q.a.y);
+        T jk(q.a.y * q.a.z);
+        T kk(q.a.z * q.a.z);
 
         constexpr T t_1(1.0), t_2(2.0);
 

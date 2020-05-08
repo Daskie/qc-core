@@ -13,15 +13,15 @@ namespace qc {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Types -----------------------------------------------------------------------------------------------------------
 
-    template <typename T, int t_n> struct mat;
+    template <Floater T, int t_n> struct mat;
 
     namespace types {
 
         using qc::mat;
 
-        template <typename T> using mat2 = mat<T, 2>;
-        template <typename T> using mat3 = mat<T, 3>;
-        template <typename T> using mat4 = mat<T, 4>;
+        template <Floater T> using mat2 = mat<T, 2>;
+        template <Floater T> using mat3 = mat<T, 3>;
+        template <Floater T> using mat4 = mat<T, 4>;
 
         template <int t_n> using fmat = mat< float, t_n>;
         template <int t_n> using dmat = mat<double, t_n>;
@@ -38,10 +38,7 @@ namespace qc {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // MAT2 ------------------------------------------------------------------------------------------------------------
 
-    template <typename T>
-    struct mat<T, 2> {
-
-        static_assert(is_floating_point_v<T>, "`qc::mat2<T>` must have floating point `T`");
+    template <Floater T> struct mat<T, 2> {
 
         using type = T;
         static constexpr int dimension{2};
@@ -63,19 +60,19 @@ namespace qc {
             T x2, T y2
         ) noexcept;
 
-        template <typename U> constexpr explicit mat(const mat2<U> & m) noexcept;
-        template <typename U> constexpr explicit mat(const mat3<U> & m) noexcept;
-        template <typename U> constexpr explicit mat(const mat4<U> & m) noexcept;
+        template <Floater U> constexpr explicit mat(const mat2<U> & m) noexcept;
+        template <Floater U> constexpr explicit mat(const mat3<U> & m) noexcept;
+        template <Floater U> constexpr explicit mat(const mat4<U> & m) noexcept;
 
         //--- assignment ---
 
         mat2<T> & operator=(const mat2<T> & m) noexcept = default;
         mat2<T> & operator=(mat2<T> && m) noexcept = default;
 
-        template <typename U, int t_n> mat2<T> & operator=(const mat<U, t_n> & m) noexcept;
+        template <Floater U, int t_n> mat2<T> & operator=(const mat<U, t_n> & m) noexcept;
 
         //--- access ---
-    
+
         vec2<T> & col(int i);
         const vec2<T> & col(int i) const;
 
@@ -90,10 +87,7 @@ namespace qc {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // MAT3 ------------------------------------------------------------------------------------------------------------
 
-    template <typename T>
-    struct mat<T, 3> {
-
-        static_assert(is_floating_point_v<T>, "`qc::mat3<T>` must have floating point `T`");
+    template <Floater T> struct mat<T, 3> {
 
         using type = T;
         static constexpr int dimension{3};
@@ -117,16 +111,16 @@ namespace qc {
             T x3, T y3, T z3
         ) noexcept;
 
-        template <typename U> constexpr explicit mat(const mat2<U> & m) noexcept;
-        template <typename U> constexpr explicit mat(const mat3<U> & m) noexcept;
-        template <typename U> constexpr explicit mat(const mat4<U> & m) noexcept;
+        template <Floater U> constexpr explicit mat(const mat2<U> & m) noexcept;
+        template <Floater U> constexpr explicit mat(const mat3<U> & m) noexcept;
+        template <Floater U> constexpr explicit mat(const mat4<U> & m) noexcept;
 
         //--- assignment ---
 
         mat3<T> & operator=(const mat3<T> & m) noexcept = default;
         mat3<T> & operator=(mat3<T> && m) noexcept = default;
-    
-        template <typename U, int t_n> mat3<T> & operator=(const mat<U, t_n> & m) noexcept;
+
+        template <Floater U, int t_n> mat3<T> & operator=(const mat<U, t_n> & m) noexcept;
 
         //--- access ---
 
@@ -144,10 +138,7 @@ namespace qc {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // MAT4 ------------------------------------------------------------------------------------------------------------
 
-    template <typename T>
-    struct mat<T, 4> {
-
-        static_assert(is_floating_point_v<T>, "`qc::mat4<T>` must have floating point `T`");
+    template <Floater T> struct mat<T, 4> {
 
         using type = T;
         static constexpr int dimension{4};
@@ -173,19 +164,19 @@ namespace qc {
             T x4, T y4, T z4, T w4
         ) noexcept;
 
-        template <typename U> constexpr explicit mat(const mat2<U> & m) noexcept;
-        template <typename U> constexpr explicit mat(const mat3<U> & m) noexcept;
-        template <typename U> constexpr explicit mat(const mat4<U> & m) noexcept;
+        template <Floater U> constexpr explicit mat(const mat2<U> & m) noexcept;
+        template <Floater U> constexpr explicit mat(const mat3<U> & m) noexcept;
+        template <Floater U> constexpr explicit mat(const mat4<U> & m) noexcept;
 
         //--- assignment ---
 
         mat4<T> & operator=(const mat4<T> & m) noexcept = default;
         mat4<T> & operator=(mat4<T> && m) noexcept = default;
-    
-        template <typename U, int t_n> mat4<T> & operator=(const mat<U, t_n> & m) noexcept;
+
+        template <Floater U, int t_n> mat4<T> & operator=(const mat<U, t_n> & m) noexcept;
 
         //--- access ---
-    
+
         vec4<T> & col(int i);
         const vec4<T> & col(int i) const;
 
@@ -259,14 +250,14 @@ namespace qc {
     //------------------------------------------------------------------------------
     // Constructors
 
-    template <typename T>
-    constexpr mat<T, 2>::mat() noexcept :
+    template <Floater T>
+    inline constexpr mat<T, 2>::mat() noexcept :
         c1(T(1.0), T(0.0)),
         c2(T(0.0), T(1.0))
     {}
 
-    template <typename T>
-    constexpr mat<T, 2>::mat(
+    template <Floater T>
+    inline constexpr mat<T, 2>::mat(
         const vec2<T> & c1,
         const vec2<T> & c2
     ) noexcept :
@@ -274,8 +265,8 @@ namespace qc {
         c2(c2)
     {}
 
-    template <typename T>
-    constexpr mat<T, 2>::mat(
+    template <Floater T>
+    inline constexpr mat<T, 2>::mat(
         T x1, T y1,
         T x2, T y2
     ) noexcept :
@@ -283,22 +274,22 @@ namespace qc {
         c2(x2, y2)
     {}
 
-    template <typename T>
-    template <typename U>
-    constexpr mat<T, 2>::mat(const mat2<U> & m) noexcept :
+    template <Floater T>
+    template <Floater U>
+    inline constexpr mat<T, 2>::mat(const mat2<U> & m) noexcept :
         c1(m.c1),
         c2(m.c2)
     {}
 
-    template <typename T>
-    template <typename U>
-    constexpr mat<T, 2>::mat(const mat3<U> & m) noexcept :
+    template <Floater T>
+    template <Floater U>
+    inline constexpr mat<T, 2>::mat(const mat3<U> & m) noexcept :
         c1(m.c1),
         c2(m.c2)
     {}
 
-    template <typename T>
-    template <typename U>
+    template <Floater T>
+    template <Floater U>
     constexpr mat<T, 2>::mat(const mat4<U> & m) noexcept :
         c1(m.c1),
         c2(m.c2)
@@ -307,43 +298,43 @@ namespace qc {
     //------------------------------------------------------------------------------
     // Assignment
 
-    template <typename T>
-    template <typename U, int t_n>
+    template <Floater T>
+    template <Floater U, int t_n>
     inline mat2<T> & mat<T, 2>::operator=(const mat<U, t_n> & m) noexcept {
         if constexpr (t_n >= 1) c1 = m.c1; else c1 = vec2<T>(T(1.0), T(0.0));
         if constexpr (t_n >= 2) c2 = m.c2; else c2 = vec2<T>(T(0.0), T(1.0));
-    
+
         return *this;
     }
 
     //------------------------------------------------------------------------------
     // Access
 
-    template <typename T>
+    template <Floater T>
     inline vec2<T> & mat<T, 2>::col(int i) {
         return *(&c1 + i);
     }
 
-    template <typename T>
+    template <Floater T>
     inline const vec2<T> & mat<T, 2>::col(int i) const {
         return *(&c1 + i);
     }
 
-    template <typename T>
+    template <Floater T>
     inline vec2<T> mat<T, 2>::row(int i) const {
         return {c1[i], c2[i]};
     }
 
-    template <typename T>
+    template <Floater T>
     template <int t_i>
-    constexpr const vec2<T> & mat<T, 2>::col() const noexcept {
+    inline constexpr const vec2<T> & mat<T, 2>::col() const noexcept {
         if constexpr (t_i == 0) return c1;
         if constexpr (t_i == 1) return c2;
     }
 
-    template <typename T>
+    template <Floater T>
     template <int t_i>
-    constexpr vec2<T> mat<T, 2>::row() const noexcept {
+    inline constexpr vec2<T> mat<T, 2>::row() const noexcept {
         return {c1.at<t_i>(), c2.at<t_i>()};
     }
 
@@ -353,15 +344,15 @@ namespace qc {
     //------------------------------------------------------------------------------
     // Constructors
 
-    template <typename T>
-    constexpr mat<T, 3>::mat() noexcept :
+    template <Floater T>
+    inline constexpr mat<T, 3>::mat() noexcept :
         c1(T(1.0), T(0.0), T(0.0)),
         c2(T(0.0), T(1.0), T(0.0)),
         c3(T(0.0), T(0.0), T(1.0))
     {}
 
-    template <typename T>
-    constexpr mat<T, 3>::mat(
+    template <Floater T>
+    inline constexpr mat<T, 3>::mat(
         const vec3<T> & c1,
         const vec3<T> & c2,
         const vec3<T> & c3
@@ -371,8 +362,8 @@ namespace qc {
         c3(c3)
     {}
 
-    template <typename T>
-    constexpr mat<T, 3>::mat(
+    template <Floater T>
+    inline constexpr mat<T, 3>::mat(
         T x1, T y1, T z1,
         T x2, T y2, T z2,
         T x3, T y3, T z3
@@ -382,25 +373,25 @@ namespace qc {
         c3(x3, y3, z3)
     {}
 
-    template <typename T>
-    template <typename U>
-    constexpr mat<T, 3>::mat(const mat2<U> & m) noexcept :
+    template <Floater T>
+    template <Floater U>
+    inline constexpr mat<T, 3>::mat(const mat2<U> & m) noexcept :
         c1(m.c1),
         c2(m.c2),
         c3(T(0.0), T(0.0), T(1.0))
     {}
 
-    template <typename T>
-    template <typename U>
-    constexpr mat<T, 3>::mat(const mat3<U> & m) noexcept :
+    template <Floater T>
+    template <Floater U>
+    inline constexpr mat<T, 3>::mat(const mat3<U> & m) noexcept :
         c1(m.c1),
         c2(m.c2),
         c3(m.c3)
     {}
 
-    template <typename T>
-    template <typename U>
-    constexpr mat<T, 3>::mat(const mat4<U> & m) noexcept :
+    template <Floater T>
+    template <Floater U>
+    inline constexpr mat<T, 3>::mat(const mat4<U> & m) noexcept :
         c1(m.c1),
         c2(m.c2),
         c3(m.c3)
@@ -409,8 +400,8 @@ namespace qc {
     //------------------------------------------------------------------------------
     // Assignment
 
-    template <typename T>
-    template <typename U, int t_n>
+    template <Floater T>
+    template <Floater U, int t_n>
     inline mat3<T> & mat<T, 3>::operator=(const mat<U, t_n> & m) noexcept {
         if constexpr (t_n >= 1) c1 = m.c1; else c1 = vec3<T>(T(1.0), T(0.0), T(0.0));
         if constexpr (t_n >= 2) c2 = m.c2; else c2 = vec3<T>(T(0.0), T(1.0), T(0.0));
@@ -422,32 +413,32 @@ namespace qc {
     //------------------------------------------------------------------------------
     // Access
 
-    template <typename T>
+    template <Floater T>
     inline vec3<T> & mat<T, 3>::col(int i) {
         return *(&c1 + i);
     }
 
-    template <typename T>
+    template <Floater T>
     inline const vec3<T> & mat<T, 3>::col(int i) const {
         return *(&c1 + i);
     }
 
-    template <typename T>
+    template <Floater T>
     inline vec3<T> mat<T, 3>::row(int i) const {
         return {c1[i], c2[i], c3[i]};
     }
 
-    template <typename T>
+    template <Floater T>
     template <int t_i>
-    constexpr const vec3<T> & mat<T, 3>::col() const noexcept {
+    inline constexpr const vec3<T> & mat<T, 3>::col() const noexcept {
         if constexpr (t_i == 0) return c1;
         if constexpr (t_i == 1) return c2;
         if constexpr (t_i == 2) return c3;
     }
 
-    template <typename T>
+    template <Floater T>
     template <int t_i>
-    constexpr vec3<T> mat<T, 3>::row() const noexcept {
+    inline constexpr vec3<T> mat<T, 3>::row() const noexcept {
         return {c1.at<t_i>(), c2.at<t_i>(), c3.at<t_i>()};
     }
 
@@ -457,16 +448,16 @@ namespace qc {
     //------------------------------------------------------------------------------
     // Constructors
 
-    template <typename T>
-    constexpr mat<T, 4>::mat() noexcept :
+    template <Floater T>
+    inline constexpr mat<T, 4>::mat() noexcept :
         c1(T(1.0), T(0.0), T(0.0), T(0.0)),
         c2(T(0.0), T(1.0), T(0.0), T(0.0)),
         c3(T(0.0), T(0.0), T(1.0), T(0.0)),
         c4(T(0.0), T(0.0), T(0.0), T(1.0))
     {}
 
-    template <typename T>
-    constexpr mat<T, 4>::mat(
+    template <Floater T>
+    inline constexpr mat<T, 4>::mat(
         const vec4<T> & c1,
         const vec4<T> & c2,
         const vec4<T> & c3,
@@ -478,8 +469,8 @@ namespace qc {
         c4(c4)
     {}
 
-    template <typename T>
-    constexpr mat<T, 4>::mat(
+    template <Floater T>
+    inline constexpr mat<T, 4>::mat(
         T x1, T y1, T z1, T w1,
         T x2, T y2, T z2, T w2,
         T x3, T y3, T z3, T w3,
@@ -491,27 +482,27 @@ namespace qc {
         c4(x4, y4, z4, w4)
     {}
 
-    template <typename T>
-    template <typename U>
-    constexpr mat<T, 4>::mat(const mat2<U> & m) noexcept :
+    template <Floater T>
+    template <Floater U>
+    inline constexpr mat<T, 4>::mat(const mat2<U> & m) noexcept :
         c1(m.c1),
         c2(m.c2),
         c3(T(0.0), T(0.0), T(1.0), T(0.0)),
         c4(T(0.0), T(0.0), T(0.0), T(1.0))
     {}
 
-    template <typename T>
-    template <typename U>
-    constexpr mat<T, 4>::mat(const mat3<U> & m) noexcept :
+    template <Floater T>
+    template <Floater U>
+    inline constexpr mat<T, 4>::mat(const mat3<U> & m) noexcept :
         c1(m.c1),
         c2(m.c2),
         c3(m.c3),
         c4(T(0.0), T(0.0), T(0.0), T(1.0))
     {}
 
-    template <typename T>
-    template <typename U>
-    constexpr mat<T, 4>::mat(const mat4<U> & m) noexcept :
+    template <Floater T>
+    template <Floater U>
+    inline constexpr mat<T, 4>::mat(const mat4<U> & m) noexcept :
         c1(m.c1),
         c2(m.c2),
         c3(m.c3),
@@ -521,8 +512,8 @@ namespace qc {
     //------------------------------------------------------------------------------
     // Assignment
 
-    template <typename T>
-    template <typename U, int t_n>
+    template <Floater T>
+    template <Floater U, int t_n>
     inline mat4<T> & mat<T, 4>::operator=(const mat<U, t_n> & m) noexcept {
         if constexpr (t_n >= 1) c1 = m.c1; else c1 = vec4<T>(T(1.0), T(0.0), T(0.0), T(0.0));
         if constexpr (t_n >= 2) c2 = m.c2; else c2 = vec4<T>(T(0.0), T(1.0), T(0.0), T(0.0));
@@ -535,33 +526,33 @@ namespace qc {
     //------------------------------------------------------------------------------
     // Access
 
-    template <typename T>
+    template <Floater T>
     inline vec4<T> & mat<T, 4>::col(int i) {
         return *(&c1 + i);
     }
 
-    template <typename T>
+    template <Floater T>
     inline const vec4<T> & mat<T, 4>::col(int i) const {
         return *(&c1 + i);
     }
 
-    template <typename T>
+    template <Floater T>
     inline vec4<T> mat<T, 4>::row(int i) const {
         return {c1[i], c2[i], c3[i], c4[i]};
     }
 
-    template <typename T>
+    template <Floater T>
     template <int t_i>
-    constexpr const vec4<T> & mat<T, 4>::col() const noexcept {
+    inline constexpr const vec4<T> & mat<T, 4>::col() const noexcept {
         if constexpr (t_i == 0) return c1;
         if constexpr (t_i == 1) return c2;
         if constexpr (t_i == 2) return c3;
         if constexpr (t_i == 3) return c4;
     }
 
-    template <typename T>
+    template <Floater T>
     template <int t_i>
-    constexpr vec4<T> mat<T, 4>::row() const noexcept {
+    inline constexpr vec4<T> mat<T, 4>::row() const noexcept {
         return {c1.at<t_i>(), c2.at<t_i>(), c3.at<t_i>(), c4.at<t_i>()};
     }
 
@@ -573,7 +564,7 @@ namespace qc {
 
     //--- add assign ---
 
-    template <typename T, int t_n>
+    template <Floater T, int t_n>
     inline mat<T, t_n> & operator+=(mat<T, t_n> & m, T v) {
         if constexpr (t_n >= 1) m.c1 += v;
         if constexpr (t_n >= 2) m.c2 += v;
@@ -583,7 +574,7 @@ namespace qc {
         return m;
     }
 
-    template <typename T, int t_n>
+    template <Floater T, int t_n>
     inline mat<T, t_n> & operator+=(mat<T, t_n> & m1, const mat<T, t_n> & m2) {
         if constexpr (t_n >= 1) m1.c1 += m2.c1;
         if constexpr (t_n >= 2) m1.c2 += m2.c2;
@@ -595,7 +586,7 @@ namespace qc {
 
     //--- subtract assign ---
 
-    template <typename T, int t_n>
+    template <Floater T, int t_n>
     inline mat<T, t_n> & operator-=(mat<T, t_n> & m, T v) {
         if constexpr (t_n >= 1) m.c1 -= v;
         if constexpr (t_n >= 2) m.c2 -= v;
@@ -605,7 +596,7 @@ namespace qc {
         return m;
     }
 
-    template <typename T, int t_n>
+    template <Floater T, int t_n>
     inline mat<T, t_n> & operator-=(mat<T, t_n> & m1, const mat<T, t_n> & m2) {
         if constexpr (t_n >= 1) m1.c1 -= m2.c1;
         if constexpr (t_n >= 2) m1.c2 -= m2.c2;
@@ -617,7 +608,7 @@ namespace qc {
 
     //--- multiply assign ---
 
-    template <typename T, int t_n>
+    template <Floater T, int t_n>
     inline mat<T, t_n> & operator*=(mat<T, t_n> & m, T v) {
         if constexpr (t_n >= 1) m.c1 *= v;
         if constexpr (t_n >= 2) m.c2 *= v;
@@ -627,7 +618,7 @@ namespace qc {
         return m;
     }
 
-    template <typename T, int t_n>
+    template <Floater T, int t_n>
     inline mat<T, t_n> & operator*=(mat<T, t_n> & m1, const mat<T, t_n> & m2) {
         vec<T, t_n> temp;
         if constexpr (t_n >= 1) {
@@ -664,7 +655,7 @@ namespace qc {
 
     //--- divide assign ---
 
-    template <typename T, int t_n>
+    template <Floater T, int t_n>
     inline mat<T, t_n> & operator/=(mat<T, t_n> & m, T v) {
         return m *= T(1.0) / v;
     }
@@ -674,14 +665,14 @@ namespace qc {
 
     //--- positive ---
 
-    template <typename T, int t_n>
+    template <Floater T, int t_n>
     inline mat<T, t_n> operator+(const mat<T, t_n> & m) {
         return m;
     }
 
     //--- negative ---
 
-    template <typename T, int t_n>
+    template <Floater T, int t_n>
     inline mat<T, t_n> operator-(const mat<T, t_n> & m) {
         if constexpr (t_n == 2) return {-m.c1, -m.c2};
         if constexpr (t_n == 3) return {-m.c1, -m.c2, -m.c3};
@@ -690,42 +681,42 @@ namespace qc {
 
     //--- add ---
 
-    template <typename T, int t_n>
+    template <Floater T, int t_n>
     inline mat<T, t_n> operator+(const mat<T, t_n> & m1, const mat<T, t_n> & m2) {
         if constexpr (t_n == 2) return {m1.c1 + m2.c1, m1.c2 + m2.c2};
         if constexpr (t_n == 3) return {m1.c1 + m2.c1, m1.c2 + m2.c2, m1.c3 + m2.c3};
         if constexpr (t_n == 4) return {m1.c1 + m2.c1, m1.c2 + m2.c2, m1.c3 + m2.c3, m1.c4 + m2.c4};
     }
 
-    template <typename T, int t_n>
+    template <Floater T, int t_n>
     inline mat<T, t_n> operator+(const mat<T, t_n> & m, T v) {
         if constexpr (t_n == 2) return {m.c1 + v, m.c2 + v};
         if constexpr (t_n == 3) return {m.c1 + v, m.c2 + v, m.c3 + v};
         if constexpr (t_n == 4) return {m.c1 + v, m.c2 + v, m.c3 + v, m.c4 + v};
     }
 
-    template <typename T, int t_n>
+    template <Floater T, int t_n>
     inline mat<T, t_n> operator+(T v, const mat<T, t_n> & m) {
         return m + v;
     }
 
     //--- subtract ---
 
-    template <typename T, int t_n>
+    template <Floater T, int t_n>
     inline mat<T, t_n> operator-(const mat<T, t_n> & m1, const mat<T, t_n> & m2) {
         if constexpr (t_n == 2) return {m1.c1 - m2.c1, m1.c2 - m2.c2};
         if constexpr (t_n == 3) return {m1.c1 - m2.c1, m1.c2 - m2.c2, m1.c3 - m2.c3};
         if constexpr (t_n == 4) return {m1.c1 - m2.c1, m1.c2 - m2.c2, m1.c3 - m2.c3, m1.c4 - m2.c4};
     }
 
-    template <typename T, int t_n>
+    template <Floater T, int t_n>
     inline mat<T, t_n> operator-(const mat<T, t_n> & m, T v) {
         if constexpr (t_n == 2) return {m.c1 - v, m.c2 - v};
         if constexpr (t_n == 3) return {m.c1 - v, m.c2 - v, m.c3 - v};
         if constexpr (t_n == 4) return {m.c1 - v, m.c2 - v, m.c3 - v, m.c4 - v};
     }
 
-    template <typename T, int t_n>
+    template <Floater T, int t_n>
     inline mat<T, t_n> operator-(T v, const mat<T, t_n> & m) {
         if constexpr (t_n == 2) return {v - m.c1, v - m.c2};
         if constexpr (t_n == 3) return {v - m.c1, v - m.c2, v - m.c3};
@@ -734,7 +725,7 @@ namespace qc {
 
     //--- multiply ---
 
-    template <typename T, int t_n>
+    template <Floater T, int t_n>
     inline mat<T, t_n> operator*(const mat<T, t_n> & m1, const mat<T, t_n> & m2) {
         if constexpr (t_n == 2) return {
             m1.c1.x * m2.c1.x + m1.c2.x * m2.c1.y,
@@ -779,19 +770,19 @@ namespace qc {
         };
     }
 
-    template <typename T, int t_n>
+    template <Floater T, int t_n>
     inline mat<T, t_n> operator*(const mat<T, t_n> & m, T v) {
         if constexpr (t_n == 2) return {m.c1 * v, m.c2 * v};
         if constexpr (t_n == 3) return {m.c1 * v, m.c2 * v, m.c3 * v};
         if constexpr (t_n == 4) return {m.c1 * v, m.c2 * v, m.c3 * v, m.c4 * v};
     }
 
-    template <typename T, int t_n>
+    template <Floater T, int t_n>
     inline mat<T, t_n> operator*(T v, const mat<T, t_n> & m) {
         return m * v;
     }
 
-    template <typename T, int t_n>
+    template <Floater T, int t_n>
     inline vec<T, t_n> operator*(const mat<T, t_n> & m, const vec<T, t_n> & v) {
         if constexpr (t_n == 2) return {
             m.c1.x * v.x + m.c2.x * v.y,
@@ -812,12 +803,12 @@ namespace qc {
 
     //--- divide ---
 
-    template <typename T, int t_n>
+    template <Floater T, int t_n>
     inline mat<T, t_n> operator/(const mat<T, t_n> & m, T v) {
         return m * (T(1.0) / v);
     }
 
-    template <typename T, int t_n>
+    template <Floater T, int t_n>
     inline mat<T, t_n> operator/(T v, const mat<T, t_n> & m) {
         if constexpr (t_n == 2) return {v / m.c1, v / m.c2};
         if constexpr (t_n == 3) return {v / m.c1, v / m.c2, v / m.c3};
@@ -829,7 +820,7 @@ namespace qc {
 
     //--- equal to ---
 
-    template <typename T, int t_n>
+    template <Floater T, int t_n>
     inline bool operator==(const mat<T, t_n> & m1, const mat<T, t_n> & m2) {
         if constexpr (t_n == 2) return m1.c1 == m2.c1 && m1.c2 == m2.c2;
         if constexpr (t_n == 3) return m1.c1 == m2.c1 && m1.c2 == m2.c2 && m1.c3 == m2.c3;
@@ -838,7 +829,7 @@ namespace qc {
 
     //--- not equal to ---
 
-    template <typename T, int t_n>
+    template <Floater T, int t_n>
     inline bool operator!=(const mat<T, t_n> & m1, const mat<T, t_n> & m2) {
         return !(m1 == m2);
     }
@@ -846,15 +837,15 @@ namespace qc {
     //------------------------------------------------------------------------------
     // Constants
 
-    template <typename T, int t_n>
-    constexpr mat<T, t_n> fullMat(T v) {
+    template <Floater T, int t_n>
+    inline constexpr mat<T, t_n> fullMat(T v) {
         if constexpr (t_n == 2) return {vec2<T>(v), vec2<T>(v)};
         if constexpr (t_n == 3) return {vec3<T>(v), vec3<T>(v), vec3<T>(v)};
         if constexpr (t_n == 4) return {vec4<T>(v), vec4<T>(v), vec4<T>(v), vec4<T>(v)};
     }
 
-    template <typename T, int t_n>
-    constexpr mat<T, t_n> nullMat() {
+    template <Floater T, int t_n>
+    inline constexpr mat<T, t_n> nullMat() {
         return fullMat<T, t_n>(T(0.0));
     }
 

@@ -1,12 +1,13 @@
 #pragma once
 
+#include <concepts>
 #include <cstdint>
 #include <limits>
 #include <utility>
 
 // workaround for IntelliSense bug
 #define Q_CONSTEX constexpr
-#define Q_CX_ABLE inline
+#define Q_CX_ABLE
 
 namespace qc {
 
@@ -50,26 +51,18 @@ namespace qc {
 
         using std::pair;
         template <typename T> using duo = pair<T, T>;
+
+        template <typename T> concept SignedInteger   = std::signed_integral<T> && !std::same_as<T, bool> && !std::same_as<T, char>;
+        template <typename T> concept UnsignedInteger = std::unsigned_integral<T> && !std::same_as<T, bool> && !std::same_as<T, char>;
+        template <typename T> concept Integer         = SignedInteger<T> || UnsignedInteger<T>;
+        template <typename T> concept Floater         = std::floating_point<T>;
+        template <typename T> concept Number          = Integer<T> || Floater<T>;
+        template <typename T> concept Pointer         = std::is_pointer_v<T>;
+        template <typename T> concept Orderable       = Number<T> || Pointer<T>;
+        template <typename T> concept NumberOrBoolean = Number<T> || std::is_same_v<T, bool>;
     }
 
     using namespace types;
-
-    template <typename T, typename... Ts> constexpr bool is_same_v = std::conjunction_v<std::is_same<T, Ts>...>;
-    template <typename... Ts> constexpr bool     is_arithmetic_v = std::conjunction_v<std::    is_arithmetic<Ts>...>;
-    template <typename... Ts> constexpr bool       is_integral_v = std::conjunction_v<std::      is_integral<Ts>...>;
-    template <typename... Ts> constexpr bool is_floating_point_v = std::conjunction_v<std::is_floating_point<Ts>...>;
-    template <typename... Ts> constexpr bool         is_signed_v = std::conjunction_v<std::        is_signed<Ts>...>;
-    template <typename... Ts> constexpr bool       is_unsigned_v = std::conjunction_v<std::      is_unsigned<Ts>...>;
-
-    template <bool t_b> using eif_t = std::enable_if_t<t_b>;
-
-    template <typename... Ts> using eif_arithmetic_t = eif_t<    is_arithmetic_v<Ts...>>;
-    template <typename... Ts> using   eif_floating_t = eif_t<is_floating_point_v<Ts...>>;
-    template <typename... Ts> using   eif_integral_t = eif_t<      is_integral_v<Ts...>>;
-    template <typename... Ts> using     eif_signed_t = eif_t<        is_signed_v<Ts...>>;
-    template <typename... Ts> using   eif_unsigned_t = eif_t<      is_unsigned_v<Ts...>>;
-    template <typename... Ts> using  eif_sintegral_t = eif_t<  is_signed_v<Ts...> && is_integral_v<Ts...>>;
-    template <typename... Ts> using  eif_uintegral_t = eif_t<is_unsigned_v<Ts...> && is_integral_v<Ts...>>;
 
     namespace detail {
         template <typename T, int t_n> struct array_t_struct { using type = T[t_n]; };
@@ -90,13 +83,6 @@ namespace qc {
 
     template <typename T> using remove_cvref_t = std::remove_cv_t<std::remove_reference_t<T>>;
 
-    namespace detail {
-        template <typename T, typename = eif_arithmetic_t<T>> constexpr T getInfinity() {
-            if constexpr (is_floating_point_v<T>) return std::numeric_limits<T>::infinity();
-            else return std::numeric_limits<T>::max();
-        }
-    }
-
     // Unique identification of floating point numbers
     //  precision | bits | digits
     // -----------+------+--------
@@ -106,26 +92,26 @@ namespace qc {
     //   extended |   80 |     21
     //       quad |  128 |     36
 
-    template <typename T, typename =   eif_floating_t<T>> constexpr T       pi = T(3.14159265358979323846264338327950288L);
-    template <typename T, typename =   eif_floating_t<T>> constexpr T        e = T(2.71828182845904523536028747135266250L);
-    template <typename T, typename =   eif_floating_t<T>> constexpr T      phi = T(1.61803398874989484820458683436563812L);
-    template <typename T, typename =   eif_floating_t<T>> constexpr T    sqrt2 = T(1.41421356237309504880168872420969808L);
-    template <typename T, typename =   eif_floating_t<T>> constexpr T    sqrt3 = T(1.73205080756887729352744634150587237L);
-    template <typename T, typename =   eif_floating_t<T>> constexpr T    sqrt5 = T(2.23606797749978969640917366873127624L);
-    template <typename T, typename = eif_arithmetic_t<T>> constexpr T infinity = detail::getInfinity<T>();
-    template <typename T, typename =   eif_floating_t<T>> constexpr T      nan = std::numeric_limits<T>::quiet_NaN();
+    template <Floater T> constexpr T       pi = T(3.14159265358979323846264338327950288L);
+    template <Floater T> constexpr T        e = T(2.71828182845904523536028747135266250L);
+    template <Floater T> constexpr T      phi = T(1.61803398874989484820458683436563812L);
+    template <Floater T> constexpr T    sqrt2 = T(1.41421356237309504880168872420969808L);
+    template <Floater T> constexpr T    sqrt3 = T(1.73205080756887729352744634150587237L);
+    template <Floater T> constexpr T    sqrt5 = T(2.23606797749978969640917366873127624L);
+    template <Floater T> constexpr T infinity = std::numeric_limits<T>::infinity();
+    template <Floater T> constexpr T      nan = std::numeric_limits<T>::quiet_NaN();
 
-    template <typename T, typename = eif_t<is_arithmetic_v<T> || std::is_pointer_v<T>>> Q_CONSTEX T min(T v1, T v2);
-    template <typename T1, typename T2, typename T3, typename... Ts> Q_CONSTEX decltype(auto) min(T1 && v1, T2 && v2, T3 && v3, Ts &&... vs);
+    template <Orderable T> constexpr T min(T v1, T v2);
+    template <typename T1, typename T2, typename T3, typename... Ts> constexpr decltype(auto) min(T1 && v1, T2 && v2, T3 && v3, Ts &&... vs);
 
-    template <typename T, typename = eif_t<is_arithmetic_v<T> || std::is_pointer_v<T>>> Q_CONSTEX T max(T v1, T v2);
-    template <typename T1, typename T2, typename T3, typename... Ts> Q_CONSTEX decltype(auto) max(T1 && v1, T2 && v2, T3 && v3, Ts &&... vs);
+    template <Orderable T> constexpr T max(T v1, T v2);
+    template <typename T1, typename T2, typename T3, typename... Ts> constexpr decltype(auto) max(T1 && v1, T2 && v2, T3 && v3, Ts &&... vs);
 
-    template <typename T, typename = eif_t<is_arithmetic_v<T> || std::is_pointer_v<T>>> T & minify(T & min, T v);
+    template <Orderable T> T & minify(T & v1, T v2);
     template <typename T, typename T1, typename T2, typename... Ts> T & minify(T & min, T1 && v1, T2 && v2, Ts &&... vs);
 
-    template <typename T, typename = eif_t<is_arithmetic_v<T> || std::is_pointer_v<T>>> T & maxify(T & max, T v);
-    template <typename T, typename T1, typename T2, typename... Ts> T & maxify(T & max, T1 && v1, T2 && v2, Ts &&... vs);
+    template <Orderable T> T & maxify(T & v1, T v2);
+    template <typename T, typename T1, typename T2, typename... Ts> T & maxify(T & min, T1 && v1, T2 && v2, Ts &&... vs);
 
 }
 
@@ -133,29 +119,29 @@ namespace qc {
 
 namespace qc {
 
-    template <typename T, typename>
-    Q_CONSTEX T min(T v1, T v2) {
-        return v1 < v2 ? v1 : v2;
+    template <Orderable T>
+    inline constexpr T min(T v1, T v2) {
+        return v1 <= v2 ? v1 : v2;
     }
 
     template <typename T1, typename T2, typename T3, typename... Ts>
-    Q_CONSTEX decltype(auto) min(T1 && v1, T2 && v2, T3 && v3, Ts &&... vs) {
-        return min(forward<T1>(v1), min(forward<T2>(v2), forward<T3>(v3), forward<Ts>(vs)...));
+    inline constexpr decltype(auto) min(T1 && v1, T2 && v2, T3 && v3, Ts &&... vs) {
+        return min(min(forward<T1>(v1), forward<T2>(v2)), forward<T3>(v3), forward<Ts>(vs)...);
     }
 
-    template <typename T, typename>
-    Q_CONSTEX T max(T v1, T v2) {
-        return v1 > v2 ? v1 : v2;
+    template <Orderable T>
+    inline constexpr T max(T v1, T v2) {
+        return v1 >= v2 ? v1 : v2;
     }
 
     template <typename T1, typename T2, typename T3, typename... Ts>
-    Q_CONSTEX decltype(auto) max(T1 && v1, T2 && v2, T3 && v3, Ts &&... vs) {
-        return max(forward<T1>(v1), max(forward<T2>(v2), forward<T3>(v3), forward<Ts>(vs)...));
+    inline constexpr decltype(auto) max(T1 && v1, T2 && v2, T3 && v3, Ts &&... vs) {
+        return max(max(forward<T1>(v1), forward<T2>(v2)), forward<T3>(v3), forward<Ts>(vs)...);
     }
 
-    template <typename T, typename>
-    inline T & minify(T & min, T v) {
-        return (v < min) ? min = v : min;
+    template <Orderable T>
+    inline T & minify(T & v1, T v2) {
+        return v1 <= v2 ? v1 : v1 = v2;
     }
 
     template <typename T, typename T1, typename T2, typename... Ts>
@@ -163,15 +149,14 @@ namespace qc {
         return minify(minify(min, forward<T1>(v1)), forward<T2>(v2), forward<Ts>(vs)...);
     }
 
-    template <typename T, typename>
-    inline T & maxify(T & max, T v) {
-        return (v > max) ? max = v : max;
+    template <Orderable T>
+    inline T & maxify(T & v1, T v2) {
+        return v1 >= v2 ? v1 : v1 = v2;
     }
 
     template <typename T, typename T1, typename T2, typename... Ts>
-    inline T & maxify(T & min, T1 && v1, T2 && v2, Ts && ... vs) {
+    inline T & maxify(T & min, T1 && v1, T2 && v2, Ts &&... vs) {
         return maxify(maxify(min, forward<T1>(v1)), forward<T2>(v2), forward<Ts>(vs)...);
     }
 
 }
-

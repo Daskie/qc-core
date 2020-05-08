@@ -2,9 +2,7 @@
 
 #include <QCore/CoreFunc.hpp>
 
-namespace {
-
-void compileTyping() {
+static void compileTyping() {
     qc::nat nat_;   nat_;
     qc::unat unat_; unat_;
 
@@ -56,21 +54,21 @@ void compileTyping() {
 }
 
 template <typename T>
-void compileConstantsT() {
-    qc::infinity<T>;
+static void compileConstantsT() {
 }
 
 template <typename T>
-void compileConstantsFT() {
+static void compileConstantsFT() {
     qc::pi<T>;
     qc::e<T>;
     qc::phi<T>;
     qc::sqrt2<T>;
     qc::sqrt3<T>;
     qc::sqrt5<T>;
+    qc::infinity<T>;
 }
 
-void compileConstants() {
+static void compileConstants() {
     compileConstantsT<float>();
     compileConstantsT<double>();
     compileConstantsT<qc::s08>();
@@ -87,14 +85,14 @@ void compileConstants() {
 }
 
 template <typename T1, typename T2>
-void compileFunctionsTT() {
+static void compileFunctionsTT() {
     T1 v(1);
 
     qc::transnorm<T2>(v);
 }
 
 template <typename T>
-void compileFunctionsT() {
+static void compileFunctionsT() {
     compileFunctionsTT<T, qc::f32>();
     compileFunctionsTT<T, qc::f64>();
     compileFunctionsTT<T, qc::s08>();
@@ -169,7 +167,7 @@ void compileFunctionsT() {
 }
 
 template <typename T>
-void compileFunctionsFT() {
+static void compileFunctionsFT() {
     T v(1.0);
 
     qc::equal_e(v, v);
@@ -193,12 +191,12 @@ void compileFunctionsFT() {
 }
 
 template <typename T>
-void compileFunctionsIT() {
+static void compileFunctionsIT() {
 
 }
 
 template <typename T>
-void compileFunctionsUIT() {
+static void compileFunctionsUIT() {
     T v(1);
 
     qc::log2Floor(v);
@@ -208,7 +206,7 @@ void compileFunctionsUIT() {
     qc::mipmaps(v);
 }
 
-void compileFunctionsBT() {
+static void compileFunctionsBT() {
     bool v(true);
 
     qc::equal(v, v);
@@ -217,7 +215,7 @@ void compileFunctionsBT() {
     qc::equal(v, v, v, v, v);
 }
 
-void compileFunctions() {
+static void compileFunctions() {
     compileFunctionsT<qc::f32>();
     compileFunctionsT<qc::f64>();
     compileFunctionsT<qc::s08>();
@@ -250,13 +248,13 @@ void compileFunctions() {
 }
 
 template <typename T1, typename T2>
-constexpr void compileFunctionsConstexprTT() {
+static constexpr void compileFunctionsConstexprTT() {
     constexpr T1 v(1);
 
 }
 
 template <typename T>
-constexpr void compileFunctionsConstexprT() {
+static constexpr void compileFunctionsConstexprT() {
     compileFunctionsConstexprTT<T, qc::f32>();
     compileFunctionsConstexprTT<T, qc::f64>();
     compileFunctionsConstexprTT<T, qc::s08>();
@@ -318,7 +316,7 @@ constexpr void compileFunctionsConstexprT() {
 }
 
 template <typename T>
-constexpr void compileFunctionsConstexprFT() {
+static constexpr void compileFunctionsConstexprFT() {
     constexpr T v(1.0);
 
     //qc::equal_e(v, v);
@@ -337,12 +335,12 @@ constexpr void compileFunctionsConstexprFT() {
 }
 
 template <typename T>
-constexpr void compileFunctionsConstexprIT() {
+static constexpr void compileFunctionsConstexprIT() {
 
 }
 
 template <typename T>
-constexpr void compileFunctionsConstexprUIT() {
+static constexpr void compileFunctionsConstexprUIT() {
     constexpr T v(1);
 
     qc::log2Floor(v);
@@ -352,7 +350,7 @@ constexpr void compileFunctionsConstexprUIT() {
     //qc::mipmaps(v);
 }
 
-constexpr void compileFunctionsConstexprBT() {
+static constexpr void compileFunctionsConstexprBT() {
     constexpr bool v(true);
 
     //qc::equal(v, v);
@@ -361,7 +359,7 @@ constexpr void compileFunctionsConstexprBT() {
     //qc::equal(v, v, v, v, v);
 }
 
-constexpr bool compileFunctionsConstexpr() {
+static constexpr bool compileFunctionsConstexpr() {
     compileFunctionsConstexprT<qc::f32>();
     compileFunctionsConstexprT<qc::f64>();
     compileFunctionsConstexprT<qc::s08>();
@@ -393,8 +391,6 @@ constexpr bool compileFunctionsConstexpr() {
     compileFunctionsConstexprBT();
 
     return true;
-}
-
 }
 
 void testCore() {

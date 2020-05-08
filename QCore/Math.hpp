@@ -4,9 +4,9 @@
 
 #include "MatrixFunc.hpp"
 
-namespace qc {    
+namespace qc {
 
-    template <typename T, typename = eif_floating_t<T>>
+    template <Floater T>
     inline vec2<T> polarToCartesian(const vec2<T> & v) {
         return {
             v.rad * std::cos(v.theta),
@@ -14,7 +14,7 @@ namespace qc {
         };
     }
 
-    template <typename T, typename = eif_floating_t<T>>
+    template <Floater T>
     inline vec2<T> cartesianToPolar(const vec2<T> & v) {
         return {
             magnitude(v),
@@ -23,7 +23,7 @@ namespace qc {
     }
 
     //r is radius, theta is angle on xy plane, phi is angle from z axis
-    template <typename T, typename = eif_floating_t<T>>
+    template <Floater T>
     inline vec3<T> sphericalToCartesian(const vec3<T> & v) {
         T sinTheta = std::sin(v.theta);
         T cosTheta = std::cos(v.theta);
@@ -37,7 +37,7 @@ namespace qc {
         };
     }
 
-    template <typename T, typename = eif_floating_t<T>>
+    template <Floater T>
     inline vec3<T> cartesianToSpherical(const vec3<T> & v) {
         T rad(magnitude(v));
         return {
@@ -47,7 +47,7 @@ namespace qc {
         };
     }
 
-    template <typename T, typename = eif_floating_t<T>>
+    template <Floater T>
     inline vec3<T> cylindricToCartesian(const vec3<T> & v) {
         return {
             v.rad * std::cos(v.theta),
@@ -56,7 +56,7 @@ namespace qc {
         };
     }
 
-    template <typename T, typename = eif_floating_t<T>>
+    template <Floater T>
     inline vec3<T> cartesianToCylindric(const vec3<T> & v) {
         return {
             magnitude(v),
@@ -68,8 +68,8 @@ namespace qc {
     //a is distance from vertex A in range [0, 1] (can be outside range and outside triangle), AX, AY, and AZ define cartesian location of A
     inline fvec2 barycentricToCartesian(const fvec3 & v, const fvec2 & A, const fvec2 & B, const fvec2 & C) {
         return fvec2(
-            v.alpha * A.x + v.beta * B.x + v.gamma * C.x,
-            v.alpha * A.y + v.beta * B.y + v.gamma * C.y
+            v.x * A.x + v.y * B.x + v.z * C.x,
+            v.x * A.y + v.y * B.y + v.z * C.y
         );
     }
 
@@ -80,7 +80,7 @@ namespace qc {
         );
         mat = inverse(mat);
         fvec3 bary(mat * (v - C));
-        bary.gamma = 1.0f - bary.alpha - bary.beta;
+        bary.z = 1.0f - bary.x - bary.y;
         return bary;
     }
 
@@ -100,43 +100,43 @@ namespace qc {
     //draw a line from v to A; gets the angle of this line w/ respect to the A bisector
     //possible angles range from -1 (along AB side) to 1 (along AC side), w/ linear-ness
     inline float baryToAngleA(const fvec3 & v) {
-        return (v.gamma - v.beta) / v.alpha;
+        return (v.z - v.y) / v.x;
     }
 
     inline float baryToAngleB(const fvec3 & v) {
-        return (v.alpha - v.gamma) / v.beta;
+        return (v.x - v.z) / v.y;
     }
 
     inline float baryToAngleC(const fvec3 & v) {
-        return (v.beta - v.alpha) / v.gamma;
+        return (v.y - v.x) / v.z;
     }
 
     //given a bary angle, return point along given a corresponding to angle
     inline fvec3 baryFromAngleA(float angle, float a) {
         fvec3 v;
-        v.alpha = a;
-        v.gamma = (angle - 1.0f) * (a - 1.0f);
-        v.beta = 1.0f - v.alpha - v.gamma;
+        v.x = a;
+        v.z = (angle - 1.0f) * (a - 1.0f);
+        v.y = 1.0f - v.x - v.z;
         return v;
     }
 
     inline fvec3 baryFromAngleB(float angle, float b) {
         fvec3 v;
-        v.beta = b;
-        v.alpha = (angle - 1.0f) * (b - 1.0f);
-        v.gamma = 1.0f - v.beta - v.alpha;
+        v.y = b;
+        v.x = (angle - 1.0f) * (b - 1.0f);
+        v.z = 1.0f - v.y - v.x;
         return v;
     }
 
     inline fvec3 baryFromAngleC(float angle, float c) {
         fvec3 v;
-        v.gamma = c;
-        v.beta = (angle - 1.0f) * (c - 1.0f);
-        v.alpha = 1.0f - v.gamma - v.beta;
+        v.z = c;
+        v.y = (angle - 1.0f) * (c - 1.0f);
+        v.x = 1.0f - v.z - v.y;
         return v;
     }
 
-    template <typename T, typename = eif_floating_t<T>>
+    template <Floater T>
     inline vec2<T> pointOnDiscFibonacci(unat i, unat n) {
         return polarToCartesian(qc::vec2<T>(
             std::sqrt(T(i) / T(n - 1u)),
@@ -144,7 +144,7 @@ namespace qc {
         ));
     }
 
-    template <typename T, typename = eif_floating_t<T>>
+    template <Floater T>
     inline vec3<T> pointOnSphereFibonacci(unat i, unat n) {
         T z(T(1.0) - T(2 * i) / T(n - 1u));
         return cylindricToCartesian(qc::vec3<T>(
@@ -221,15 +221,15 @@ namespace qc {
 
     };
 
-    template <typename T, typename U, typename = eif_floating_t<T>>
-    void dampen(U & r_pos, const U & targetPos, U & r_vel, T angularFreq, T dt) {
+    template <Floater T, typename U>
+    inline void dampen(U & r_pos, const U & targetPos, U & r_vel, T angularFreq, T dt) {
         U dist(r_pos - targetPos);
         dampen(dist, r_vel, angularFreq, dt);
         r_pos = targetPos - dist;
     }
 
-    template <typename T, typename U, typename = eif_floating_t<T>>
-    void dampen(U & r_dist, U & r_vel, T angularFreq, T dt) {
+    template <Floater T, typename U>
+    inline void dampen(U & r_dist, U & r_vel, T angularFreq, T dt) {
         T expTerm(std::exp(-angularFreq * dt));
         U c1(r_vel + angularFreq * r_dist);
         U c2((c1 * dt + r_dist) * expTerm);
@@ -263,8 +263,8 @@ namespace qc {
 
     // Calculates the area of a non self-intersecting polygon
     // Points should be the vertices of the polygon given in order without duplicates
-    template <typename T, typename = eif_floating_t<T>>
-    inline T areaOfPoly(size_t n, const vec2<T> * points) {    
+    template <Floater T>
+    inline T areaOfPoly(size_t n, const vec2<T> * points) {
         T a{};
         for (size_t i(0u); i < n - 1u; ++i) {
             const vec2<T> & v1(points[i]), v2(points[i + 1u]);
@@ -277,7 +277,7 @@ namespace qc {
 
     // Calculates the centroid, or center of mass, of a non self-intersecting polygon
     // Points should be the vertices of the polygon given in order without duplicates
-    template <typename T, typename = eif_floating_t<T>>
+    template <Floater T>
     inline vec2<T> centroidOfPoly(size_t n, const vec2<T> * points) {
         T a{};
         vec2<T> c;

@@ -6,6 +6,7 @@ int main() {
     testCore();
     testBits();
     testVector();
+    testSpan();
     testMatrix();
     testQuaternion();
     testMath();

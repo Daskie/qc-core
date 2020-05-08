@@ -4,7 +4,7 @@
 
 namespace qc {
 
-    template <typename T> struct quat;
+    template <Floater T> struct quat;
 
     namespace types {
 
@@ -18,10 +18,7 @@ namespace qc {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // QUAT ------------------------------------------------------------------------------------------------------------
 
-    template <typename T>
-    struct quat {
-
-        static_assert(is_floating_point_v<T>, "quat<T> must have floating point T");
+    template <Floater T> struct quat {
 
         using type = T;
 
@@ -34,7 +31,7 @@ namespace qc {
         constexpr quat(const quat & q) noexcept = default;
         constexpr quat(quat && q) noexcept = default;
 
-        template <typename U> constexpr explicit quat(const quat<U> & q) noexcept;
+        template <Floater U> constexpr explicit quat(const quat<U> & q) noexcept;
 
         constexpr quat(const vec3<T> & a, T w) noexcept;
         constexpr explicit quat(const vec3<T> & v) noexcept;
@@ -52,37 +49,37 @@ namespace qc {
 
     //--- arithmetic assignment ---
 
-    template <typename T> quat<T> & operator+=(quat<T> & q1, const quat<T> & q2);
+    template <Floater T> quat<T> & operator+=(quat<T> & q1, const quat<T> & q2);
 
-    template <typename T> quat<T> & operator-=(quat<T> & q1, const quat<T> & q2);
+    template <Floater T> quat<T> & operator-=(quat<T> & q1, const quat<T> & q2);
 
-    template <typename T> quat<T> & operator*=(quat<T> & q1, const quat<T> & q2);
-    template <typename T> quat<T> & operator*=(quat<T> &  q, T v);
+    template <Floater T> quat<T> & operator*=(quat<T> & q1, const quat<T> & q2);
+    template <Floater T> quat<T> & operator*=(quat<T> &  q, T v);
 
-    template <typename T> quat<T> & operator/=(quat<T> & q1, const quat<T> & q2);
+    template <Floater T> quat<T> & operator/=(quat<T> & q1, const quat<T> & q2);
 
     //--- arithmetic operators ---
 
-    template <typename T> quat<T> operator+(const quat<T> & q);
+    template <Floater T> quat<T> operator+(const quat<T> & q);
 
-    template <typename T> quat<T> operator-(const quat<T> & q);
+    template <Floater T> quat<T> operator-(const quat<T> & q);
 
-    template <typename T> quat<T> operator+(const quat<T> & q1, const quat<T> & q2);
+    template <Floater T> quat<T> operator+(const quat<T> & q1, const quat<T> & q2);
 
-    template <typename T> quat<T> operator-(const quat<T> & q1, const quat<T> & q2);
+    template <Floater T> quat<T> operator-(const quat<T> & q1, const quat<T> & q2);
 
-    template <typename T> quat<T> operator*(const quat<T> & q1, const quat<T> & q2);
-    template <typename T> quat<T> operator*(const quat<T> &  q, T v);
-    template <typename T> quat<T> operator*(const T v, const quat<T> &  q);
-    template <typename T> vec3<T> operator*(const quat<T> &  q, const vec3<T> &  v);
+    template <Floater T> quat<T> operator*(const quat<T> & q1, const quat<T> & q2);
+    template <Floater T> quat<T> operator*(const quat<T> &  q, T v);
+    template <Floater T> quat<T> operator*(const T v, const quat<T> &  q);
+    template <Floater T> vec3<T> operator*(const quat<T> &  q, const vec3<T> &  v);
 
-    template <typename T> quat<T> operator/(const quat<T> & q1, const quat<T> & q2);
+    template <Floater T> quat<T> operator/(const quat<T> & q1, const quat<T> & q2);
 
     //--- comparison operators ---
 
-    template <typename T> bool operator==(const quat<T> & q1, const quat<T> & q2);
+    template <Floater T> bool operator==(const quat<T> & q1, const quat<T> & q2);
 
-    template <typename T> bool operator!=(const quat<T> & q1, const quat<T> & q2);
+    template <Floater T> bool operator!=(const quat<T> & q1, const quat<T> & q2);
 
 }
 
@@ -94,31 +91,32 @@ namespace qc {
     // QUAT IMPLEMENTATION ---------------------------------------------------------------------------------------------
 
     //------------------------------------------------------------------------------
-    // Constructors   
+    // Constructors
 
 
-    template <typename T>
-    constexpr quat<T>::quat() noexcept :
+    template <Floater T>
+    inline constexpr quat<T>::quat() noexcept :
         a(T(0.0)), w(T(1.0))
     {}
 
-    template <typename T> template <typename U>
-    constexpr quat<T>::quat(const quat<U> & q) noexcept :
+    template <Floater T>
+    template <Floater U>
+    inline constexpr quat<T>::quat(const quat<U> & q) noexcept :
         a(q.a), w(T(q.w))
     {}
 
-    template <typename T>
-    constexpr quat<T>::quat(const vec3<T> & a, T w) noexcept :
+    template <Floater T>
+    inline constexpr quat<T>::quat(const vec3<T> & a, T w) noexcept :
         a(a), w(w)
     {}
 
-    template <typename T>
-    constexpr quat<T>::quat(const vec3<T> & v) noexcept :
+    template <Floater T>
+    inline constexpr quat<T>::quat(const vec3<T> & v) noexcept :
         a(v), w(T(0.0))
     {}
 
-    template <typename T>
-    constexpr quat<T>::quat(const vec4<T> & v) noexcept :
+    template <Floater T>
+    inline constexpr quat<T>::quat(const vec4<T> & v) noexcept :
         a(v), w(v.w)
     {}
 
@@ -128,27 +126,27 @@ namespace qc {
     //------------------------------------------------------------------------------
     // Arithmetic Assignment
 
-    template <typename T>
+    template <Floater T>
     inline quat<T> & operator+=(quat<T> & q1, const quat<T> & q2) {
         return q1 = q1 + q2;
     }
 
-    template <typename T>
+    template <Floater T>
     inline quat<T> & operator-=(quat<T> & q1, const quat<T> & q2) {
         return q1 = q1 - q2;
     }
 
-    template <typename T>
+    template <Floater T>
     inline quat<T> & operator*=(quat<T> & q1, const quat<T> & q2) {
         return q1 = q1 * q2;
     }
 
-    template <typename T>
+    template <Floater T>
     inline quat<T> & operator*=(quat<T> & q, T v) {
         return q = q * v;
     }
 
-    template <typename T>
+    template <Floater T>
     inline quat<T> & operator/=(quat<T> & q1, const quat<T> & q2) {
         return q1 = q1 / q2;
     }
@@ -156,27 +154,27 @@ namespace qc {
     //------------------------------------------------------------------------------
     // Arithmetic Operators
 
-    template <typename T>
+    template <Floater T>
     inline quat<T> operator+(const quat<T> & q) {
         return {+q.a, +q.w};
     }
 
-    template <typename T>
+    template <Floater T>
     inline quat<T> operator-(const quat<T> & q) {
         return {-q.a, -q.w};
     }
 
-    template <typename T>
+    template <Floater T>
     inline quat<T> operator+(const quat<T> & q1, const quat<T> & q2) {
         return {q1.a + q2.a, q1.w + q2.w};
     }
 
-    template <typename T>
+    template <Floater T>
     inline quat<T> operator-(const quat<T> & q1, const quat<T> & q2) {
         return {q1.a - q2.a, q1.w - q2.w};
     }
 
-    template <typename T>
+    template <Floater T>
     inline quat<T> operator*(const quat<T> & q1, const quat<T> & q2) {
         return {
             q1.w * q2.a + q2.w * q1.a + cross(q1.a, q2.a),
@@ -184,23 +182,23 @@ namespace qc {
         };
     }
 
-    template <typename T>
+    template <Floater T>
     inline quat<T> operator*(const quat<T> & q, T v) {
         return {q.a * v, q.w * v};
     }
 
-    template <typename T>
+    template <Floater T>
     inline quat<T> operator*(T v, const quat<T> & q) {
         return {v * q.a, v * q.w};
     }
 
-    template <typename T>
+    template <Floater T>
     inline vec3<T> operator*(const quat<T> & q, const vec3<T> & v) {
         vec3<T> t(T(2.0) * cross(q.a, v));
         return v + q.w * t + cross(q.a, t);
     }
 
-    template <typename T>
+    template <Floater T>
     inline quat<T> operator/(const quat<T> & q1, const quat<T> & q2) {
         return {q1.a * q2.w - q2.a * q1.w - cross(q1.a, q2.a), dot(q1, q2)};
     }
@@ -208,12 +206,12 @@ namespace qc {
     //------------------------------------------------------------------------------
     // Comparison Operators
 
-    template <typename T>
+    template <Floater T>
     inline bool operator==(const quat<T> & q1, const quat<T> & q2) {
         return q1.a == q2.a && q1.w == q2.w;
     }
 
-    template <typename T>
+    template <Floater T>
     inline bool operator!=(const quat<T> & q1, const quat<T> & q2) {
         return q1.a != q2.a || q1.w != q2.w;
     }

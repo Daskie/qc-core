@@ -6,13 +6,13 @@ namespace qc {
 
     namespace bits {
 
-        template <typename SrcT, typename DstT, typename = eif_t<is_integral_v<SrcT, DstT> && is_unsigned_v<SrcT, DstT> && (sizeof(DstT) > sizeof(SrcT))>> DstT spread(SrcT v);
+        template <UnsignedInteger SrcT, UnsignedInteger DstT> requires (sizeof(DstT) > sizeof(SrcT)) DstT spread(SrcT v);
 
-        template <typename SrcT, typename DstT, typename = eif_t<is_integral_v<SrcT, DstT> && is_unsigned_v<SrcT, DstT> && (sizeof(DstT) >= sizeof(SrcT))>> DstT repeat(SrcT v);
+        template <UnsignedInteger SrcT, UnsignedInteger DstT> requires (sizeof(DstT) >= sizeof(SrcT)) DstT repeat(SrcT v);
 
-        template <typename T, typename = eif_uintegral_t<T>> T interleave(T v);
+        template <UnsignedInteger T> T interleave(T v);
 
-        template <typename T, typename = eif_uintegral_t<T>> T scramble(T v);
+        template <UnsignedInteger T> T scramble(T v);
 
     }
 
@@ -24,7 +24,8 @@ namespace qc {
 
     namespace bits {
 
-        template <typename SrcT, typename DstT, typename>
+        template <UnsignedInteger SrcT, UnsignedInteger DstT>
+        requires (sizeof(DstT) > sizeof(SrcT))
         inline DstT spread(SrcT v) {
             constexpr uint factor(sizeof(DstT) / sizeof(SrcT) - 1u);
 
@@ -43,7 +44,8 @@ namespace qc {
             return w;
         }
 
-        template <typename SrcT, typename DstT, typename>
+        template <UnsignedInteger SrcT, UnsignedInteger DstT>
+        requires (sizeof(DstT) >= sizeof(SrcT))
         inline DstT repeat(SrcT v) {
             constexpr uint factor(sizeof(DstT) / sizeof(SrcT));
 
@@ -62,7 +64,7 @@ namespace qc {
             return w;
         }
 
-        template <typename T, typename>
+        template <UnsignedInteger T>
         inline T interleave(T v) {
             if constexpr (sizeof(T) > 1u) {
                 using H = utype<sizeof(T) / 2u>;
@@ -83,7 +85,7 @@ namespace qc {
             }
         }
 
-        template <typename T, typename>
+        template <UnsignedInteger T>
         inline T scramble(T v) {
             if constexpr (sizeof(T) == 1u) {
                 return v;

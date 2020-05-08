@@ -4,10 +4,8 @@
 
 #include <QCore/QuaternionFunc.hpp>
 
-namespace {
-
 template <typename T>
-void compileClassesT() {
+static void compileClassesT() {
     T v(1.0);
     qc::vec3<T> v3(1.0);
     qc::vec4<T> v4(1.0);
@@ -56,13 +54,13 @@ void compileClassesT() {
     os << q;
 }
 
-void compileClasses() {
+static void compileClasses() {
     compileClassesT< float>();
     compileClassesT<double>();
 }
 
 template <typename T>
-constexpr void compileClassesConstexprT() {
+static constexpr void compileClassesConstexprT() {
     /*constexpr T v(1.0);
     constexpr qc::vec3<T> v3(1.0f);
     constexpr qc::vec4<T> v4(1.0f);
@@ -81,7 +79,7 @@ constexpr void compileClassesConstexprT() {
     qc::quat<T> q_7(v4);*/
 }
 
-constexpr bool compileClassesConstexpr() {
+static constexpr bool compileClassesConstexpr() {
     compileClassesConstexprT< float>();
     compileClassesConstexprT<double>();
 
@@ -89,7 +87,7 @@ constexpr bool compileClassesConstexpr() {
 }
 
 template <typename T>
-void compileFunctionsT() {
+static void compileFunctionsT() {
     T v(1.0);
     qc::vec3<T> v3(1.0);
     qc::vec4<T> v4(1.0);
@@ -119,13 +117,13 @@ void compileFunctionsT() {
     qc::slerp(q, q, v);
 }
 
-void compileFunctions() {
+static void compileFunctions() {
     compileFunctionsT< float>();
     compileFunctionsT<double>();
 }
 
 template <typename T>
-constexpr void compileFunctionsConstexprT() {
+static constexpr void compileFunctionsConstexprT() {
     /*constexpr T v(1.0);
     constexpr qc::vec3<T> v3(1.0);
     constexpr qc::vec4<T> v4(1.0);
@@ -135,7 +133,7 @@ constexpr void compileFunctionsConstexprT() {
     //qc::toMat(q);*/
 }
 
-constexpr bool compileFunctionsConstexpr() {
+static constexpr bool compileFunctionsConstexpr() {
     compileFunctionsConstexprT< float>();
     compileFunctionsConstexprT<double>();
 
@@ -143,7 +141,7 @@ constexpr bool compileFunctionsConstexpr() {
 }
 
 template <typename T>
-void testPropertiesT() {
+static void testPropertiesT() {
     static_assert(std::             is_standard_layout_v<qc::quat<T>>);
     static_assert(std::          is_trivially_copyable_v<qc::quat<T>>);
     static_assert(std::is_trivially_copy_constructible_v<qc::quat<T>>);
@@ -157,27 +155,25 @@ void testPropertiesT() {
     static_assert(alignof(qc::quat<T>[4]) == alignof(T));
 }
 
-void testProperties() {
+static void testProperties() {
     testPropertiesT< float>();
     testPropertiesT<double>();
 }
 
 template <typename T1, typename T2>
-void compileCastsTT() {
+static void compileCastsTT() {
     static_cast<qc::quat<T2>>(qc::quat<T1>());
 }
 
 template <typename T>
-void compileCastsT() {
+static void compileCastsT() {
     compileCastsTT<T,  float>();
     compileCastsTT<T, double>();
 }
 
-void compileCasts() {
+static void compileCasts() {
     compileCastsT< float>();
     compileCastsT<double>();
-}
-
 }
 
 void testQuaternion() {

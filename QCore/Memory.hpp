@@ -26,7 +26,7 @@ namespace qc {
         {}
 
         constexpr RecordAllocator(const RecordAllocator & other) noexcept = default;
-    
+
         template <typename U>
         constexpr RecordAllocator(const RecordAllocator<U> & other) noexcept :
             m_current(other.m_current),
@@ -65,12 +65,12 @@ namespace qc {
     };
 
     template <typename T1, typename T2>
-    bool operator==(const RecordAllocator<T1> & a1, const RecordAllocator<T2> & a2) noexcept {
+    inline bool operator==(const RecordAllocator<T1> & a1, const RecordAllocator<T2> & a2) noexcept {
         return true;
     }
 
     template <typename T1, typename T2>
-    bool operator!=(const RecordAllocator<T1> & a1, const RecordAllocator<T2> & a2) noexcept {
+    inline bool operator!=(const RecordAllocator<T1> & a1, const RecordAllocator<T2> & a2) noexcept {
         return false;
     }
 

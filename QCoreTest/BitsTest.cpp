@@ -2,10 +2,8 @@
 
 #include <QCore/Bits.hpp>
 
-namespace {
-
 template <typename T>
-void compileFunctionsUT() {
+static void compileFunctionsUT() {
     T v(1);
 
     qc::bits::interleave(v);
@@ -13,7 +11,7 @@ void compileFunctionsUT() {
     qc::bits::scramble(v);
 }
 
-void compileFunctions() {
+static void compileFunctions() {
     compileFunctionsUT<qc::u08>();
     compileFunctionsUT<qc::u16>();
     compileFunctionsUT<qc::u32>();
@@ -32,8 +30,6 @@ void compileFunctions() {
     qc::bits::repeat<qc::u16, qc::u32>(~qc::u16(0u));
     qc::bits::repeat<qc::u16, qc::u64>(~qc::u16(0u));
     qc::bits::repeat<qc::u32, qc::u64>(~qc::u32(0u));
-}
-
 }
 
 void testBits() {
