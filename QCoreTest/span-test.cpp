@@ -1,8 +1,6 @@
-#include "QCoreTest.hpp"
-
 #include <sstream>
 
-#include <QCore/SpanFunc.hpp>
+#include <QCore/span-func.hpp>
 
 template <typename T>
 static void compileClassesT() {

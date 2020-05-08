@@ -1,6 +1,4 @@
-#include "QCoreTest.hpp"
-
-#include <QCore/Bits.hpp>
+#include <QCore/bits.hpp>
 
 template <typename T>
 static void compileFunctionsUT() {

@@ -8,7 +8,7 @@
 #include <iomanip>
 #include <filesystem>
 
-#include "Core.hpp"
+#include "core.hpp"
 
 namespace qc {
 

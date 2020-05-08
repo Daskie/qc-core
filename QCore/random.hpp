@@ -2,7 +2,7 @@
 
 #include <random>
 
-#include "Core.hpp"
+#include "core.hpp"
 
 namespace qc {
 

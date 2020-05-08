@@ -2,7 +2,7 @@
 
 #include <cmath>
 
-#include "MatrixFunc.hpp"
+#include "matrix-func.hpp"
 
 namespace qc {
 

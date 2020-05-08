@@ -6,7 +6,7 @@
 //  y1 y2 y3    01 04 07
 //  z1 z2 z3    02 05 08
 
-#include "Vector.hpp"
+#include "vector.hpp"
 
 namespace qc {
 

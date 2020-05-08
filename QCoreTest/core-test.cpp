@@ -1,6 +1,4 @@
-#include "QCoreTest.hpp"
-
-#include <QCore/CoreFunc.hpp>
+#include <QCore/core-func.hpp>
 
 static void compileTyping() {
     qc::nat nat_;   nat_;

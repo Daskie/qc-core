@@ -3,8 +3,8 @@
 
 #include <iostream>
 
-#include "Span.hpp"
-#include "VectorFunc.hpp"
+#include "span.hpp"
+#include "vector-func.hpp"
 
 namespace qc {
 

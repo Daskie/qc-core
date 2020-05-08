@@ -1,8 +1,6 @@
-#include "QCoreTest.hpp"
-
 #include <sstream>
 
-#include <QCore/MatrixFunc.hpp>
+#include <QCore/matrix-func.hpp>
 
 template <typename T>
 static void compileClassesT() {

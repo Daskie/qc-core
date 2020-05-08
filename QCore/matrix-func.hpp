@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Matrix.hpp"
-#include "VectorFunc.hpp"
+#include "matrix.hpp"
+#include "vector-func.hpp"
 
 namespace qc {
 

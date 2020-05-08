@@ -2,8 +2,8 @@
 
 #include <iostream>
 
-#include "Vector.hpp"
-#include "CoreFunc.hpp"
+#include "vector.hpp"
+#include "core-func.hpp"
 
 namespace qc {
 

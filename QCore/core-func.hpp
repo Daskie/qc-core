@@ -9,7 +9,7 @@
 #undef __cpp_lib_bitops
 #endif
 
-#include "Core.hpp"
+#include "core.hpp"
 
 namespace qc {
 

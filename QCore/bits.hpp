@@ -1,6 +1,6 @@
 #pragma once
 
-#include "CoreFunc.hpp"
+#include "core-func.hpp"
 
 namespace qc {
 

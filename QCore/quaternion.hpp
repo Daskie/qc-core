@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Matrix.hpp"
+#include "matrix.hpp"
 
 namespace qc {
 

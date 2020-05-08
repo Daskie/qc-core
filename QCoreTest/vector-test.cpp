@@ -1,8 +1,6 @@
-#include "QCoreTest.hpp"
-
 #include <sstream>
 
-#include <QCore/VectorFunc.hpp>
+#include <QCore/vector-func.hpp>
 
 template <typename T>
 static void compileClassesT() {

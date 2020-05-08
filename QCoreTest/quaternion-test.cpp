@@ -1,8 +1,6 @@
-#include "QCoreTest.hpp"
-
 #include <sstream>
 
-#include <QCore/QuaternionFunc.hpp>
+#include <QCore/quaternion-func.hpp>
 
 template <typename T>
 static void compileClassesT() {
