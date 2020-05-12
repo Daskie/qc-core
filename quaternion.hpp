@@ -6,9 +6,7 @@ namespace qc {
 
     template <Floater T> struct quat;
 
-    namespace types {
-
-        using qc::quat;
+    inline namespace types {
 
         using fquat = quat< float>;
         using dquat = quat<double>;

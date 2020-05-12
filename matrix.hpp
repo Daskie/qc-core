@@ -15,9 +15,7 @@ namespace qc {
 
     template <Floater T, int t_n> struct mat;
 
-    namespace types {
-
-        using qc::mat;
+    inline namespace types {
 
         template <Floater T> using mat2 = mat<T, 2>;
         template <Floater T> using mat3 = mat<T, 3>;

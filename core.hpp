@@ -11,7 +11,7 @@
 
 namespace qc {
 
-    namespace types {
+    inline namespace types {
         using llong = long long;
 
         using  uchar = unsigned char;
@@ -61,8 +61,6 @@ namespace qc {
         template <typename T> concept Orderable       = Number<T> || Pointer<T>;
         template <typename T> concept NumberOrBoolean = Number<T> || std::is_same_v<T, bool>;
     }
-
-    using namespace types;
 
     namespace detail {
         template <typename T, int t_n> struct array_t_struct { using type = T[t_n]; };

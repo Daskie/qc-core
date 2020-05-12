@@ -14,9 +14,7 @@ namespace qc {
 
     template <NumberOrBoolean T, int t_n> struct vec;
 
-    namespace types {
-
-        using qc::vec;
+    inline namespace types {
 
         template <typename T> using vec2 = vec<T, 2>;
         template <typename T> using vec3 = vec<T, 3>;
