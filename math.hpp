@@ -4,7 +4,7 @@
 
 #include "matrix-func.hpp"
 
-namespace qc {
+namespace qc::core {
 
     template <Floater T>
     inline vec2<T> polarToCartesian(const vec2<T> & v) {

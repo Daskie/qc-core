@@ -4,7 +4,7 @@
 
 #include "core.hpp"
 
-namespace qc {
+namespace qc::core {
 
     // nanoseconds since epoch
     s64 now();
@@ -56,7 +56,7 @@ namespace qc {
 
 // INLINE IMPLEMENTATION ///////////////////////////////////////////////////////////////////////////////////////////////
 
-namespace qc {
+namespace qc::core {
 
     inline s64 now() {
         return std::chrono::nanoseconds(std::chrono::high_resolution_clock::now().time_since_epoch()).count();

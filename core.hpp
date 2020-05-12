@@ -9,7 +9,7 @@
 #define Q_CONSTEX constexpr
 #define Q_CX_ABLE
 
-namespace qc {
+namespace qc::core {
 
     inline namespace types {
         using llong = long long;
@@ -115,7 +115,7 @@ namespace qc {
 
 // INLINE IMPLEMENTATION ///////////////////////////////////////////////////////////////////////////////////////////////
 
-namespace qc {
+namespace qc::core {
 
     template <Orderable T>
     inline constexpr T min(T v1, T v2) {

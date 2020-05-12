@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 
-namespace qc {
+namespace qc::log {
 
     inline void error_break() {}
 
@@ -13,28 +13,28 @@ namespace qc {
 
 }
 
-#define Q_ERROR(msg) do { \
+#define QC_ERROR(msg) do { \
     std::cout << "ERROR" << std::endl; \
     std::cout << "\t" << msg << std::endl; \
     std::cout << "\t" << __func__ << " (" << __FILE__ << "(" << __LINE__ << "))" << std::endl; \
-    qc::error_break(); \
+    qc::log::error_break(); \
 } while (false)
 
-#define Q_WARNING(msg) do { \
+#define QC_WARNING(msg) do { \
     std::cout << "WARNING" << std::endl; \
     std::cout << "\t" << msg << std::endl; \
     std::cout << "\t" << __func__ << " (" << __FILE__ << "(" << __LINE__ << "))" << std::endl; \
-    qc::warning_break(); \
+    qc::log::warning_break(); \
 } while (false)
 
-#define Q_LOG(msg) do { \
+#define QC_LOG(msg) do { \
     std::cout << msg << std::endl; \
 } while (false)
 
-#define Q_EXCEPTION(msg, exception) do { \
+#define QC_EXCEPTION(msg, exception) do { \
     std::cout << "EXCEPTION" << std::endl; \
     std::cout << "\t" << msg << std::endl; \
     std::cout << "\t" << __func__ << " (" << __FILE__ << "(" << __LINE__ << "))" << std::endl; \
-    qc::exception_break(); \
+    qc::log::exception_break(); \
     throw exception; \
 } while (false)

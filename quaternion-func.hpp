@@ -3,7 +3,7 @@
 #include "quaternion.hpp"
 #include "matrix-func.hpp"
 
-namespace qc {
+namespace qc::core {
 
     //--- other ---
 
@@ -59,7 +59,7 @@ namespace qc {
 
 // INLINE IMPLEMENTATION ///////////////////////////////////////////////////////////////////////////////////////////////
 
-namespace qc {
+namespace qc::core {
 
     //------------------------------------------------------------------------------
     // Other

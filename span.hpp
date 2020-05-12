@@ -2,13 +2,13 @@
 
 #include "vector.hpp"
 
-namespace qc {
+namespace qc::core {
 
     template <Number T, int t_n> struct span;
 
-    namespace types {
+    inline namespace types {
 
-        using qc::span;
+        using qc::core::span;
 
         template <Number T> using span1 = span<T, 1>;
         template <Number T> using span2 = span<T, 2>;
@@ -309,7 +309,7 @@ namespace qc {
 
 // INLINE IMPLEMENTATION ///////////////////////////////////////////////////////////////////////////////////////////////
 
-namespace qc {
+namespace qc::core {
 
     //------------------------------------------------------------------------------
     // Constructors

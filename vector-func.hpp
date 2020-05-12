@@ -5,7 +5,7 @@
 #include "vector.hpp"
 #include "core-func.hpp"
 
-namespace qc {
+namespace qc::core {
 
     //==============================================================================
     // minmax
@@ -209,7 +209,7 @@ namespace qc {
 
 // INLINE IMPLEMENTATION ///////////////////////////////////////////////////////////////////////////////////////////////
 
-namespace qc {
+namespace qc::core {
 
     template <Number T, int t_n>
     inline Q_CX_ABLE duo<T> minmax(const vec<T, t_n> & v) {
@@ -534,23 +534,23 @@ namespace qc {
         vec<T, t_n> v;
 
         if constexpr (t_n >= 1) {
-            if      (v1.x > T(0) && v2.x > T(0)) v.x = qc::max(v1.x, v2.x);
-            else if (v1.x < T(0) && v2.x < T(0)) v.x = qc::min(v1.x, v2.x);
+            if      (v1.x > T(0) && v2.x > T(0)) v.x = max(v1.x, v2.x);
+            else if (v1.x < T(0) && v2.x < T(0)) v.x = min(v1.x, v2.x);
             else                                 v.x = v1.x + v2.x;
         }
         if constexpr (t_n >= 2) {
-            if      (v1.y > T(0) && v2.y > T(0)) v.y = qc::max(v1.y, v2.y);
-            else if (v1.y < T(0) && v2.y < T(0)) v.y = qc::min(v1.y, v2.y);
+            if      (v1.y > T(0) && v2.y > T(0)) v.y = max(v1.y, v2.y);
+            else if (v1.y < T(0) && v2.y < T(0)) v.y = min(v1.y, v2.y);
             else                                 v.y = v1.y + v2.y;
         }
         if constexpr (t_n >= 3) {
-            if      (v1.z > T(0) && v2.z > T(0)) v.z = qc::max(v1.z, v2.z);
-            else if (v1.z < T(0) && v2.z < T(0)) v.z = qc::min(v1.z, v2.z);
+            if      (v1.z > T(0) && v2.z > T(0)) v.z = max(v1.z, v2.z);
+            else if (v1.z < T(0) && v2.z < T(0)) v.z = min(v1.z, v2.z);
             else                                 v.z = v1.z + v2.z;
         }
         if constexpr (t_n >= 4) {
-            if      (v1.w > T(0) && v2.w > T(0)) v.w = qc::max(v1.w, v2.w);
-            else if (v1.w < T(0) && v2.w < T(0)) v.w = qc::min(v1.w, v2.w);
+            if      (v1.w > T(0) && v2.w > T(0)) v.w = max(v1.w, v2.w);
+            else if (v1.w < T(0) && v2.w < T(0)) v.w = min(v1.w, v2.w);
             else                                 v.w = v1.w + v2.w;
         }
 

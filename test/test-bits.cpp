@@ -4,30 +4,30 @@ template <typename T>
 static void compileFunctionsUT() {
     T v(1);
 
-    qc::bits::interleave(v);
+    qc::core::bits::interleave(v);
 
-    qc::bits::scramble(v);
+    qc::core::bits::scramble(v);
 }
 
 static void compileFunctions() {
-    compileFunctionsUT<qc::u08>();
-    compileFunctionsUT<qc::u16>();
-    compileFunctionsUT<qc::u32>();
-    compileFunctionsUT<qc::u64>();
+    compileFunctionsUT<qc::core::u08>();
+    compileFunctionsUT<qc::core::u16>();
+    compileFunctionsUT<qc::core::u32>();
+    compileFunctionsUT<qc::core::u64>();
 
-    qc::bits::spread<qc::u08, qc::u16>(~qc::u08(0u));
-    qc::bits::spread<qc::u08, qc::u32>(~qc::u08(0u));
-    qc::bits::spread<qc::u08, qc::u64>(~qc::u08(0u));
-    qc::bits::spread<qc::u16, qc::u32>(~qc::u16(0u));
-    qc::bits::spread<qc::u16, qc::u64>(~qc::u16(0u));
-    qc::bits::spread<qc::u32, qc::u64>(~qc::u32(0u));
+    qc::core::bits::spread<qc::core::u08, qc::core::u16>(~qc::core::u08(0u));
+    qc::core::bits::spread<qc::core::u08, qc::core::u32>(~qc::core::u08(0u));
+    qc::core::bits::spread<qc::core::u08, qc::core::u64>(~qc::core::u08(0u));
+    qc::core::bits::spread<qc::core::u16, qc::core::u32>(~qc::core::u16(0u));
+    qc::core::bits::spread<qc::core::u16, qc::core::u64>(~qc::core::u16(0u));
+    qc::core::bits::spread<qc::core::u32, qc::core::u64>(~qc::core::u32(0u));
 
-    qc::bits::repeat<qc::u08, qc::u16>(~qc::u08(0u));
-    qc::bits::repeat<qc::u08, qc::u32>(~qc::u08(0u));
-    qc::bits::repeat<qc::u08, qc::u64>(~qc::u08(0u));
-    qc::bits::repeat<qc::u16, qc::u32>(~qc::u16(0u));
-    qc::bits::repeat<qc::u16, qc::u64>(~qc::u16(0u));
-    qc::bits::repeat<qc::u32, qc::u64>(~qc::u32(0u));
+    qc::core::bits::repeat<qc::core::u08, qc::core::u16>(~qc::core::u08(0u));
+    qc::core::bits::repeat<qc::core::u08, qc::core::u32>(~qc::core::u08(0u));
+    qc::core::bits::repeat<qc::core::u08, qc::core::u64>(~qc::core::u08(0u));
+    qc::core::bits::repeat<qc::core::u16, qc::core::u32>(~qc::core::u16(0u));
+    qc::core::bits::repeat<qc::core::u16, qc::core::u64>(~qc::core::u16(0u));
+    qc::core::bits::repeat<qc::core::u32, qc::core::u64>(~qc::core::u32(0u));
 }
 
 void testBits() {

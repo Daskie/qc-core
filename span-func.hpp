@@ -6,7 +6,7 @@
 #include "span.hpp"
 #include "vector-func.hpp"
 
-namespace qc {
+namespace qc::core {
 
     //==============================================================================
     // Stream Output
@@ -43,7 +43,7 @@ namespace qc {
 
 // INLINE IMPLEMENTATION ///////////////////////////////////////////////////////////////////////////////////////////////
 
-namespace qc {
+namespace qc::core {
 
     template <Number T, int t_n>
     inline std::ostream & operator<<(std::ostream & os, const span<T, t_n> & s) {

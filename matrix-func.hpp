@@ -3,7 +3,7 @@
 #include "matrix.hpp"
 #include "vector-func.hpp"
 
-namespace qc {
+namespace qc::core {
 
     template <typename T, int t_n> std::ostream & operator<<(std::ostream & os, const mat<T, t_n> & m);
 
@@ -90,7 +90,7 @@ namespace qc {
 
 // INLINE IMPLEMENTATION ///////////////////////////////////////////////////////////////////////////////////////////////
 
-namespace qc {
+namespace qc::core {
 
     //------------------------------------------------------------------------------
     // Other

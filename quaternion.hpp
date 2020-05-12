@@ -2,11 +2,13 @@
 
 #include "matrix.hpp"
 
-namespace qc {
+namespace qc::core {
 
     template <Floater T> struct quat;
 
     inline namespace types {
+
+        using qc::core::quat;
 
         using fquat = quat< float>;
         using dquat = quat<double>;
@@ -83,7 +85,7 @@ namespace qc {
 
 // INLINE IMPLEMENTATION ///////////////////////////////////////////////////////////////////////////////////////////////
 
-namespace qc {
+namespace qc::core {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // QUAT IMPLEMENTATION ---------------------------------------------------------------------------------------------

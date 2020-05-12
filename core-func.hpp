@@ -11,7 +11,7 @@
 
 #include "core.hpp"
 
-namespace qc {
+namespace qc::core {
 
     template <Number T> Q_CX_ABLE duo<T> minmax(T a);
     template <Number T> Q_CX_ABLE duo<T> minmax(T a, T b);
@@ -105,7 +105,7 @@ namespace qc {
 
 // INLINE IMPLEMENTATION ///////////////////////////////////////////////////////////////////////////////////////////////
 
-namespace qc {
+namespace qc::core {
 
     template <Number T>
     inline Q_CX_ABLE duo<T> minmax(T a) {
@@ -133,7 +133,7 @@ namespace qc {
 
     template <Number T>
     inline Q_CX_ABLE T clamp(const T & v, const T & min, const T & max) {
-        return qc::min(qc::max(v, min), max);
+        return ::qc::core::min(::qc::core::max(v, min), max);
     }
 
     template <Number T>
