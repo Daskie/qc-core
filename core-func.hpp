@@ -13,92 +13,186 @@
 
 namespace qc::core {
 
+    //
+    // ...
+    //
     template <Number T> Q_CX_ABLE duo<T> minmax(T a);
     template <Number T> Q_CX_ABLE duo<T> minmax(T a, T b);
     template <Number T, Number... Ts> Q_CX_ABLE duo<T> minmax(T v1, T v2, Ts... vs);
 
+    //
+    // ...
+    //
     template <Number T> Q_CX_ABLE T median(T a, T b, T c);
 
+    //
+    // ...
+    //
     template <Number T> Q_CX_ABLE T clamp(const T & v, const T & min, const T & max);
 
-    // allows unsigned and constexpr
+    //
+    // ...
+    //
     template <Number T> Q_CX_ABLE T abs(T v);
 
+    //
+    // ...
+    //
     template <Number T> Q_CX_ABLE bool zero(T v, T e = std::numeric_limits<T>::epsilon());
 
+    //
+    // ...
+    //
     template <typename T> Q_CX_ABLE bool equal(const T & v1, const T & v2);
     template <typename T, typename... Ts> Q_CX_ABLE bool equal(const T & v1, const T & v2, const T & v3, const Ts &... vs);
 
+    //
+    // ...
+    //
     template <Floater T> Q_CX_ABLE bool equal_e(T v1, T v2, T e = std::numeric_limits<T>::epsilon());
 
+    //
+    // ...
+    //
     template <Number T> Q_CX_ABLE int sign(T v);
 
+    //
+    // ...
     // ~12x faster than std::llround
     // Only works for "normal" values of absolute magnitude smaller than roughly one quadrillion for doubles or one million for floats
     // Any exact 0.5 value is not guaranteed to round up - it may go either way
+    //
     Q_CX_ABLE s64 round(double v);
     Q_CX_ABLE s32 round(float v);
     template <Integer T> Q_CX_ABLE T round(T v);
 
+    //
+    // ...
     // ~2x faster than std::floor
     // doesn't work with extememly large or extremely small floating point values
+    //
     template <Floater T> Q_CX_ABLE nat floor(T v);
     template <Integer T> Q_CX_ABLE T floor(T v);
 
+    //
+    // ...
     // ~2x faster than std::ceil
     // doesn't work with extememly large or extremely small floating point values
+    //
     template <Floater T> Q_CX_ABLE nat ceil(T v);
     template <Integer T> Q_CX_ABLE T ceil(T v);
 
+    //
+    // ...
     // ~2.15x faster than std::pow
+    //
     template <Floater T> Q_CX_ABLE T pow(T v, int e);
     template <Floater T> Q_CX_ABLE T pow(T v, uint e);
 
+    //
+    // ...
     // Depreciated in favor of `std::ispow2`
+    //
     //template <Integer T> Q_CONSTEX bool isPow2(T v);
 
+    //
+    // ...
+    //
     template <UnsignedInteger T> Q_CONSTEX int log2Floor(T v);
 
+    //
+    // ...
+    //
     template <UnsignedInteger T> Q_CONSTEX int log2Ceil(T v);
 
+    //
+    // ...
     // Depreciated in favor of `std::floor2`
+    //
     //template <Integer T> Q_CONSTEX T floor2(T v);
 
+    //
+    // ...
     // Depreciated in favor of `std::ceil2`
+    //
     //template <Integer T> Q_CONSTEX T ceil2(T v);
 
+    //
+    // ...
+    //
     template <UnsignedInteger T> Q_CX_ABLE int mipmaps(T size);
 
+    //
+    // ...
+    //
     //template <Integer T> Q_CONSTEX T smear(T v);
 
+    //
+    // ...
     // ~3.3x faster than std::modf
+    //
     template <Floater T> Q_CX_ABLE T fract(T v);
 
+    //
+    // ...
+    //
     template <Floater T> Q_CX_ABLE pair<T, nat> fract_i(T v);
 
+    //
+    // ...
     // ~2.5x faster than std::fmod
+    //
     template <Number T> Q_CX_ABLE T mod(T v, T d);
 
+    //
+    // ...
+    //
     template <Number T> Q_CX_ABLE duo<T> mod_q(T v, T d);
 
+    //
+    // ...
+    //
     template <Floater T> Q_CX_ABLE T mix(T v1, T v2, T t);
 
+    //
+    // ...
+    //
     template <Floater T> Q_CX_ABLE T unmix(T v1, T v2, T v);
 
+    //
+    // ...
+    //
     template <Floater T> Q_CX_ABLE T smoothstep(T v1, T v2, T t);
 
+    //
+    // ...
+    //
     template <typename T, typename... Args> Q_CONSTEX T sum(const T & v, const Args &... args);
 
+    //
+    // ...
+    //
     template <typename T, typename... Args> Q_CONSTEX T product(const T & v, const Args &... args);
 
+    //
+    // ...
+    //
     template <Floater T, Floater... Args> Q_CX_ABLE T average(T v, Args... args);
 
+    //
+    // ...
+    //
     template <Floater T> Q_CX_ABLE T radians(T degrees);
 
+    //
+    // ...
+    //
     template <Floater T> Q_CX_ABLE T degrees(T radians);
 
-    // converts between normalized types
-    // works with floats and integers, signed and unsigned
+    //
+    // Converts between normalized types.
+    // Works with floats and integers, signed and unsigned.
+    //
     template <Number To, Number From> Q_CONSTEX To transnorm(From v);
 
 }
@@ -373,14 +467,14 @@ namespace qc::core {
 
     template <Floater T>
     inline Q_CX_ABLE T radians(T degrees) {
-        static constexpr T k_factor(pi<T> / T(180.0));
-        return degrees * k_factor;
+        static constexpr T radiansPerDegree(pi<T> / T(180.0));
+        return degrees * radiansPerDegree;
     }
 
     template <Floater T>
     inline Q_CX_ABLE T degrees(T radians) {
-        static constexpr T k_factor(T(180.0) / pi<T>);
-        return radians * k_factor;
+        static constexpr T degreesPerRadian(T(180.0) / pi<T>);
+        return radians * degreesPerRadian;
     }
 
     template <Number To, Number From>

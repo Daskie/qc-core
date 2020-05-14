@@ -19,48 +19,48 @@ namespace qc::core {
         using is_always_equal = std::true_type;
 
         constexpr RecordAllocator() noexcept :
-            m_current(),
-            m_total(),
-            m_allocations(),
-            m_deallocations()
+            _current(),
+            _total(),
+            _allocations(),
+            _deallocations()
         {}
 
         constexpr RecordAllocator(const RecordAllocator & other) noexcept = default;
 
         template <typename U>
         constexpr RecordAllocator(const RecordAllocator<U> & other) noexcept :
-            m_current(other.m_current),
-            m_total(other.m_total),
-            m_allocations(other.m_allocations),
-            m_deallocations(other.m_deallocations)
+            _current(other._current),
+            _total(other._total),
+            _allocations(other._allocations),
+            _deallocations(other._deallocations)
         {}
 
         T * allocate(size_t n) {
             size_t bytes(n * sizeof(T));
-            m_current += bytes;
-            m_total += bytes;
-            ++m_allocations;
+            _current += bytes;
+            _total += bytes;
+            ++_allocations;
             return reinterpret_cast<T *>(::operator new(bytes));
         }
 
         void deallocate(T * p, size_t n) {
             size_t bytes(n * sizeof(T));
-            m_current -= bytes;
-            ++m_deallocations;
+            _current -= bytes;
+            ++_deallocations;
             ::operator delete(p);
         }
 
-        size_t current() const { return m_current; }
-        size_t total() const { return m_total; }
-        size_t allocations() const { return m_allocations; }
-        size_t deallocations() const { return m_deallocations; }
+        size_t current() const { return _current; }
+        size_t total() const { return _total; }
+        size_t allocations() const { return _allocations; }
+        size_t deallocations() const { return _deallocations; }
 
         private:
 
-        size_t m_current;
-        size_t m_total;
-        size_t m_allocations;
-        size_t m_deallocations;
+        size_t _current;
+        size_t _total;
+        size_t _allocations;
+        size_t _deallocations;
 
     };
 

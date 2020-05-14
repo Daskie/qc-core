@@ -5,13 +5,14 @@
 #include <limits>
 #include <utility>
 
-// workaround for IntelliSense bug
+// Workaround for IntelliSense bug
 #define Q_CONSTEX constexpr
 #define Q_CX_ABLE
 
 namespace qc::core {
 
     inline namespace types {
+
         using llong = long long;
 
         using  uchar = unsigned char;
@@ -60,24 +61,24 @@ namespace qc::core {
         template <typename T> concept Pointer         = std::is_pointer_v<T>;
         template <typename T> concept Orderable       = Number<T> || Pointer<T>;
         template <typename T> concept NumberOrBoolean = Number<T> || std::is_same_v<T, bool>;
+
     }
 
-    namespace detail {
-        template <typename T, int t_n> struct array_t_struct { using type = T[t_n]; };
-        template <typename T> struct array_t_struct<T, 0> { using type = T[]; };
-    }
-    template <typename T, int t_n = 0> using array_t = typename detail::array_t_struct<T, t_n>::type;
+    template <typename T, int n> struct _array_t_struct { using type = T[n]; };
+    template <typename T> struct _array_t_struct<T, 0> { using type = T[]; };
 
-    template <int t_s> struct sized;
+    template <typename T, int n = 0> using array_t = typename _array_t_struct<T, n>::type;
+
+    template <int size> struct sized;
     template <> struct sized<1> { using stype = s08; using utype = u08;                    using stype_fast = s08_fast; using utype_fast = u08_fast; };
     template <> struct sized<2> { using stype = s16; using utype = u16;                    using stype_fast = s16_fast; using utype_fast = u16_fast; };
     template <> struct sized<4> { using stype = s32; using utype = u32; using ftype = f32; using stype_fast = s32_fast; using utype_fast = u32_fast; };
     template <> struct sized<8> { using stype = s64; using utype = u64; using ftype = f64; using stype_fast = s64_fast; using utype_fast = u64_fast; };
-    template <int t_s> using stype = typename sized<t_s>::stype;
-    template <int t_s> using utype = typename sized<t_s>::utype;
-    template <int t_s> using ftype = typename sized<t_s>::ftype;
-    template <int t_s> using stype_fast = typename sized<t_s>::stype_fast;
-    template <int t_s> using utype_fast = typename sized<t_s>::utype_fast;
+    template <int size> using stype = typename sized<size>::stype;
+    template <int size> using utype = typename sized<size>::utype;
+    template <int size> using ftype = typename sized<size>::ftype;
+    template <int size> using stype_fast = typename sized<size>::stype_fast;
+    template <int size> using utype_fast = typename sized<size>::utype_fast;
 
     template <typename T> using remove_cvref_t = std::remove_cv_t<std::remove_reference_t<T>>;
 
@@ -99,15 +100,27 @@ namespace qc::core {
     template <Floater T> constexpr T infinity = std::numeric_limits<T>::infinity();
     template <Floater T> constexpr T      nan = std::numeric_limits<T>::quiet_NaN();
 
+    //
+    // ...
+    //
     template <Orderable T> constexpr T min(T v1, T v2);
     template <typename T1, typename T2, typename T3, typename... Ts> constexpr decltype(auto) min(T1 && v1, T2 && v2, T3 && v3, Ts &&... vs);
 
+    //
+    // ...
+    //
     template <Orderable T> constexpr T max(T v1, T v2);
     template <typename T1, typename T2, typename T3, typename... Ts> constexpr decltype(auto) max(T1 && v1, T2 && v2, T3 && v3, Ts &&... vs);
 
+    //
+    // ...
+    //
     template <Orderable T> T & minify(T & v1, T v2);
     template <typename T, typename T1, typename T2, typename... Ts> T & minify(T & min, T1 && v1, T2 && v2, Ts &&... vs);
 
+    //
+    // ...
+    //
     template <Orderable T> T & maxify(T & v1, T v2);
     template <typename T, typename T1, typename T2, typename... Ts> T & maxify(T & min, T1 && v1, T2 && v2, Ts &&... vs);
 

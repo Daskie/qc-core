@@ -5,52 +5,92 @@
 
 namespace qc::core {
 
-    //--- other ---
-
+    //
+    // ...
+    //
     template <typename T> std::ostream & operator<<(std::ostream & os, const quat<T> & q);
 
-    //--- uncategorized ---
-
+    //
+    // ...
+    //
     template <typename T> T dot(const quat<T> & q1, const quat<T> & q2);
 
+    //
+    // ...
+    //
     template <typename T> T magnitude(const quat<T> & q);
 
+    //
+    // ...
+    //
     template <typename T> T magnitude2(const quat<T> & q);
 
+    //
+    // ...
+    //
     template <typename T> quat<T> normalize(const quat<T> & q);
 
+    //
+    // ...
+    //
     template <typename T> quat<T> inverse(const quat<T> & q);
 
+    //
+    // ...
+    //
     template <typename T> T quatAngle(const quat<T> & q);
 
+    //
+    // ...
+    //
     template <typename T> vec3<T> quatAxis(const quat<T> & q);
     template <typename T> vec3<T> quatAxis_n(const quat<T> & q);
 
+    //
+    // ...
+    //
     template <typename T> quat<T> mix(const quat<T> & q1, const quat<T> & q2, T t);
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // TRANSFORMATIONS -------------------------------------------------------------------------------------------------
+    //
+    // ...
+    //
+    //template <typename T> quat<T> pow(const quat<T> & q, T t);
 
-    // template <typename T>
-    // quat<T> pow(const quat<T> & q, T t);
-
+    //
+    // ...
+    //
     template <typename T> quat<T> rotateQ(const vec3<T> & axis, T angle);
     template <typename T> quat<T> rotateQ_n(const vec3<T> & axis, T angle);
 
+    //
+    // ...
+    //
     template <typename T> quat<T> alignQ(const vec3<T> & v1, const vec3<T> & v2);
     template <typename T> quat<T> alignQ_n(const vec3<T> & v1, const vec3<T> & v2);
 
+    //
+    // ...
     // expects orthogonal fvectors
+    //
     template <typename T> quat<T> alignQ(const vec3<T> & forward1, const vec3<T> & up1, const vec3<T> & forward2, const vec3<T> & up2);
     template <typename T> quat<T> alignQ_n(const vec3<T> & forward1, const vec3<T> & up1, const vec3<T> & forward2, const vec3<T> & up2);
 
+    //
+    // ...
     // theta: thumb points up, phi: right, psi: forward
+    //
     template <typename T> quat<T> eulerQ(const vec3<T> & forward, const vec3<T> & up, T theta, T phi, T psi);
     template <typename T> quat<T> eulerQ_n(const vec3<T> & forward, const vec3<T> & up, T theta, T phi, T psi);
 
+    //
+    // ...
+    //
     template <typename T> Q_CX_ABLE mat3<T> toMat(const quat<T> & q);
 
+    //
+    // ...
     // t is a "time" value between 0 and 1
+    //
     template <typename T> quat<T> nlerp(const quat<T> & q1, const quat<T> & q2, T t);
 
     template <typename T> quat<T> slerp(const quat<T> & q1, const quat<T> & q2, T t);
@@ -61,16 +101,10 @@ namespace qc::core {
 
 namespace qc::core {
 
-    //------------------------------------------------------------------------------
-    // Other
-
     template <typename T>
     inline std::ostream & operator<<(std::ostream & os, const quat<T> & q) {
         return os << "[ " << q.a.x << " " << q.a.y << " " << q.a.z << " | " << q.w << " ]";
     }
-
-    //------------------------------------------------------------------------------
-    // Uncategorized
 
     template <typename T>
     inline T dot(const quat<T> & q1, const quat<T> & q2) {
@@ -89,12 +123,12 @@ namespace qc::core {
 
     template <typename T>
     inline quat<T> normalize(const quat<T> & q) {
-        T m2(magnitude2(q));
-        if (zero(m2)) {
+        T mag2(magnitude2(q));
+        if (zero(mag2)) {
             return {};
         }
-        T m_inv(T(1.0) / std::sqrt(m2));
-        return {q.a * m_inv, q.w * m_inv};
+        T invMag(T(1.0) / std::sqrt(mag2));
+        return {q.a * invMag, q.w * invMag};
     }
 
     template <typename T>
@@ -127,12 +161,10 @@ namespace qc::core {
         return {s * q1.a + t * q2.a, s * q1.w + t * q2.w};
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // TRANSFORMATIONS IMPLEMENTATION ----------------------------------------------------------------------------------
-
-    /*inline quat<T> pow(const quat<T> & q, T t) {
-        return angleAxis(angle(q) * t, axis(q));
-    }*/
+    //template <typename T>
+    //inline quat<T> pow(const quat<T> & q, T t) {
+    //    return angleAxis(angle(q) * t, axis(q));
+    //}
 
     template <typename T>
     inline quat<T> rotateQ(const vec3<T> & axis, T angle) {
@@ -183,12 +215,12 @@ namespace qc::core {
         T jk(q.a.y * q.a.z);
         T kk(q.a.z * q.a.z);
 
-        constexpr T t_1(1.0), t_2(2.0);
+        constexpr T _1(1.0), _2(2.0);
 
         return {
-            t_1 - t_2 * (jj + kk), t_2       * (ij + wk), t_2       * (ik - wj),
-            t_2       * (ij - wk), t_1 - t_2 * (ii + kk), t_2       * (jk + wi),
-            t_2       * (ik + wj), t_2       * (jk - wi), t_1 - t_2 * (ii + jj)
+            _1 - _2 * (jj + kk), _2 * (ij + wk), _2 * (ik - wj),
+            _2 * (ij - wk), _1 - _2 * (ii + kk), _2 * (jk + wi),
+            _2 * (ik + wj), _2 * (jk - wi), _1 - _2 * (ii + jj)
         };
     }
 

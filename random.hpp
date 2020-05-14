@@ -124,18 +124,18 @@ namespace qc::core {
         using Value = typename Engine::result_type;
 
         Random(Value seed = Engine::default_seed) noexcept :
-            m_seed(seed),
-            m_engine(m_seed)
+            _seed(seed),
+            _engine(_seed)
         {}
 
         Random(const Random<Engine> & other) noexcept :
-            m_seed(other.m_seed),
-            m_engine(other.m_engine)
+            _seed(other._seed),
+            _engine(other._engine)
         {}
 
         Random<Engine> & operator=(const Random<Engine> & other) noexcept {
-            m_seed = other.m_seed;
-            m_engine = other.m_engine;
+            _seed = other._seed;
+            _engine = other._engine;
 
             return *this;
         }
@@ -146,7 +146,7 @@ namespace qc::core {
         //
         template <typename T>
         T next() {
-            return RandomEngineTransformer<Engine, T>()(m_engine());
+            return RandomEngineTransformer<Engine, T>()(_engine());
         }
 
         //
@@ -175,32 +175,35 @@ namespace qc::core {
             return operator()(max - min) + min;
         }
 
-        Value seed() const { return m_seed;  }
+        //
+        // Returns the seed
+        //
+        Value seed() const { return _seed;  }
 
         private:
 
-        Value m_seed;
-        Engine m_engine;
+        Value _seed;
+        Engine _engine;
 
     };
 
     //
-    //generates n random values between min and 1, the sum of which equals 1
-    //if min * n > 1, min will be scaled down so that min * n == 1
+    // Generates n random values between `min` and `1`, the sum of which equals `1`.
+    // If `min * n > 1`, `min` will be scaled down so that `min * n == 1`.
     //
-    /*inline void randomDistribution(unat n, float * dest, float min) {
-        if (min * n > 1.0f) {
-            min = 1.0f / n;
-        }
-        float total = 0.0f;
-        float excess = max(1.0f - n * min, 0.0f);
-        for (unat i(0); i < n; ++i) {
-            dest[i] = rand(0.0f, 1.0f);
-            total += dest[i];
-        }
-        for (unat i(0); i < n; ++i) {
-            dest[i] = dest[i] / total * excess + min;
-        }
-    }*/
+    //inline void randomDistribution(unat n, float * dest, float min) {
+    //    if (min * n > 1.0f) {
+    //        min = 1.0f / n;
+    //    }
+    //    float total = 0.0f;
+    //    float excess = max(1.0f - n * min, 0.0f);
+    //    for (unat i(0); i < n; ++i) {
+    //        dest[i] = rand(0.0f, 1.0f);
+    //        total += dest[i];
+    //    }
+    //    for (unat i(0); i < n; ++i) {
+    //        dest[i] = dest[i] / total * excess + min;
+    //    }
+    //}
 
 }

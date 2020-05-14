@@ -42,13 +42,13 @@ namespace qc::core {
     // l: luminance [0, 1]
     // uv: point in color space [-1, 1]
     vec3 luv2rgb(vec3 luv) {
-        const mat3 k_m = mat3( // XYZ -> sRGB conversion matrix
+        const mat3 m = mat3( // XYZ -> sRGB conversion matrix
              3.2404542f, -0.9692660f,  0.0556434f,
             -1.5371385f,  1.8760108f, -0.2040259f,
             -0.4985314f,  0.0415560f,  1.0572252f
          );
-        const vec2 k_uv0 = vec2(0.197833037f, 0.468330474f); // coords for D65 white point
-        vec2 uv = k_uv0 + luv.yz / (13.0f * luv.x);
+        const vec2 uv0 = vec2(0.197833037f, 0.468330474f); // coords for D65 white point
+        vec2 uv = uv0 + luv.yz / (13.0f * luv.x);
         vec3 xyz;
         if (luv.x > 0.08f) {
             xyz.y = 0.862068966f * luv.x + 0.137931034f;
@@ -59,13 +59,13 @@ namespace qc::core {
         }
         xyz.x = 2.25f * xyz.y * uv.x / uv.y;
         xyz.z = (3.0f / uv.y - 5.0f) * xyz.y - (1.0f / 3.0f) * xyz.x;
-        return k_m * xyz;
+        return m * xyz;
     }
     // l: luminance [0, 1]
     // c: chroma (similar to saturation) [0, 1]
     // h: hue [0, 1]
     vec3 lch2luv(vec3 lch) {
-        lch.z *= 2.0f * k_pi;
+        lch.z *= 2.0f * pi;
         return luv2rgb(vec3(lch.x, lch.y * cos(lch.z), lch.y * sin(lch.z)));
     }*/
 

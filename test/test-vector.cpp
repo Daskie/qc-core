@@ -1075,19 +1075,19 @@ static constexpr bool compileFunctionsConstexpr() {
     return true;
 }
 
-template <typename T, int t_n>
+template <typename T, int n>
 static void testPropertiesTN() {
-    static_assert(std::is_standard_layout_v<qc::core::vec<T, t_n>>);
-    static_assert(std::is_trivially_copyable_v<qc::core::vec<T, t_n>>);
-    static_assert(std::is_trivially_copy_constructible_v<qc::core::vec<T, t_n>>);
-    static_assert(std::is_trivially_move_constructible_v<qc::core::vec<T, t_n>>);
-    static_assert(std::is_trivially_copy_assignable_v<qc::core::vec<T, t_n>>);
-    static_assert(std::is_trivially_move_assignable_v<qc::core::vec<T, t_n>>);
-    static_assert(std::is_trivially_destructible_v<qc::core::vec<T, t_n>>);
-    static_assert(sizeof(qc::core::vec<T, t_n>) == t_n * sizeof(T));
-    static_assert(sizeof(qc::core::vec<T, t_n>[4]) == 4 * t_n * sizeof(T));
-    static_assert(alignof(qc::core::vec<T, t_n>) == alignof(T));
-    static_assert(alignof(qc::core::vec<T, t_n>[4]) == alignof(T));
+    static_assert(std::is_standard_layout_v<qc::core::vec<T, n>>);
+    static_assert(std::is_trivially_copyable_v<qc::core::vec<T, n>>);
+    static_assert(std::is_trivially_copy_constructible_v<qc::core::vec<T, n>>);
+    static_assert(std::is_trivially_move_constructible_v<qc::core::vec<T, n>>);
+    static_assert(std::is_trivially_copy_assignable_v<qc::core::vec<T, n>>);
+    static_assert(std::is_trivially_move_assignable_v<qc::core::vec<T, n>>);
+    static_assert(std::is_trivially_destructible_v<qc::core::vec<T, n>>);
+    static_assert(sizeof(qc::core::vec<T, n>) == n * sizeof(T));
+    static_assert(sizeof(qc::core::vec<T, n>[4]) == 4 * n * sizeof(T));
+    static_assert(alignof(qc::core::vec<T, n>) == alignof(T));
+    static_assert(alignof(qc::core::vec<T, n>[4]) == alignof(T));
 }
 
 template <typename T>
@@ -1110,19 +1110,19 @@ static void testProperties() {
     testPropertiesT<qc::core::u64>();
 }
 
-template <typename T1, typename T2, int t_n>
+template <typename T1, typename T2, int n>
 static constexpr void compileVecCastsTTN() {
     qc::core::vec2<T1> v2;
     qc::core::vec2<T1> v3;
     qc::core::vec2<T1> v4;
 
-    { qc::core::vec<T2, t_n> v(v2); }
-    { qc::core::vec<T2, t_n> v(v3); }
-    { qc::core::vec<T2, t_n> v(v4); }
+    { qc::core::vec<T2, n> v(v2); }
+    { qc::core::vec<T2, n> v(v3); }
+    { qc::core::vec<T2, n> v(v4); }
 
-    static_cast<qc::core::vec<T2, t_n>>(v2);
-    static_cast<qc::core::vec<T2, t_n>>(v3);
-    static_cast<qc::core::vec<T2, t_n>>(v4);
+    static_cast<qc::core::vec<T2, n>>(v2);
+    static_cast<qc::core::vec<T2, n>>(v3);
+    static_cast<qc::core::vec<T2, n>>(v4);
 }
 
 template <typename T1, typename T2>

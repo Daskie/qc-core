@@ -5,81 +5,153 @@
 
 namespace qc::core {
 
-    template <typename T, int t_n> std::ostream & operator<<(std::ostream & os, const mat<T, t_n> & m);
+    //
+    // ...
+    //
+    template <typename T, int n> std::ostream & operator<<(std::ostream & os, const mat<T, n> & m);
 
-    template <typename T, int t_n> bool isIdentity(const mat<T, t_n> & m);
+    //
+    // ...
+    //
+    template <typename T, int n> bool isIdentity(const mat<T, n> & m);
 
-    template <typename T, int t_n> mat<T, t_n> transpose(const mat<T, t_n> & m);
+    //
+    // ...
+    //
+    template <typename T, int n> mat<T, n> transpose(const mat<T, n> & m);
 
-    template <typename T, int t_n> mat<T, t_n> cofactor(const mat<T, t_n> & m);
+    //
+    // ...
+    //
+    template <typename T, int n> mat<T, n> cofactor(const mat<T, n> & m);
 
-    template <typename T, int t_n> mat<T, t_n> adjoint(const mat<T, t_n> & m);
+    //
+    // ...
+    //
+    template <typename T, int n> mat<T, n> adjoint(const mat<T, n> & m);
 
-    template <typename T, int t_n> T determinant(const mat<T, t_n> & m);
+    //
+    // ...
+    //
+    template <typename T, int n> T determinant(const mat<T, n> & m);
 
-    template <typename T, int t_n> mat<T, t_n> inverse(const mat<T, t_n> & m);
+    //
+    // ...
+    //
+    template <typename T, int n> mat<T, n> inverse(const mat<T, n> & m);
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // TRANSFORMATIONS -------------------------------------------------------------------------------------------------
+    //
+    // ...
+    //
+    template <typename T, int n> mat<T, n + 1> translate(const vec<T, n> & delta);
+    template <typename T, int mn, int vn> requires (mn == vn + 1) mat<T, mn> & translate(mat<T, mn> & mat, const vec<T, vn> & delta);
 
-    template <typename T, int t_n> mat<T, t_n + 1> translate(const vec<T, t_n> & delta);
-    template <typename T, int t_mn, int t_vn> requires (t_mn == t_vn + 1) mat<T, t_mn> & translate(mat<T, t_mn> & mat, const vec<T, t_vn> & delta);
+    //
+    // ...
+    //
+    template <typename T, int n> mat<T, n> scale(const vec<T, n> & scale);
+    template <typename T, int mn, int vn> mat<T, mn> & scale(mat<T, mn> & mat, const vec<T, vn> & scale);
 
-    template <typename T, int t_n> mat<T, t_n> scale(const vec<T, t_n> & scale);
-    template <typename T, int t_mn, int t_vn> mat<T, t_mn> & scale(mat<T, t_mn> & mat, const vec<T, t_vn> & scale);
-
+    //
+    // ...
+    //
     template <typename T> mat2<T> rotate(T angle);
 
+    //
+    // ...
+    //
     template <typename T> mat3<T> rotateX(T angle);
 
+    //
+    // ...
+    //
     template <typename T> mat3<T> rotateY(T angle);
 
+    //
+    // ...
+    //
     template <typename T> mat3<T> rotateZ(T angle);
 
+    //
+    // ...
+    //
     template <typename T> mat3<T> rotate(const vec3<T> & axis, T sinTheta, T cosTheta);
     template <typename T> mat3<T> rotate_n(const vec3<T> & axis, T sinTheta, T cosTheta);
 
+    //
+    // ...
+    //
     template <typename T> mat3<T> rotate(const vec3<T> & axis, T angle);
     template <typename T> mat3<T> rotate_n(const vec3<T> & axis, T angle);
 
+    //
+    // ...
     // theta: thumb points up, phi: right, psi: forward
+    //
     template <typename T> mat3<T> euler(const vec3<T> & forward, const vec3<T> & up, T theta, T phi, T psi);
     template <typename T> mat3<T> euler_n(const vec3<T> & forward, const vec3<T> & up, T theta, T phi, T psi);
 
-    template <typename T, int t_n> mat<T, t_n> align(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
-    template <typename T, int t_n> mat<T, t_n> align_n(const vec<T, t_n> & v1, const vec<T, t_n> & v2);
+    //
+    // ...
+    //
+    template <typename T, int n> mat<T, n> align(const vec<T, n> & v1, const vec<T, n> & v2);
+    template <typename T, int n> mat<T, n> align_n(const vec<T, n> & v1, const vec<T, n> & v2);
 
+    //
+    // ...
     // expects orthogonal fvectors
+    //
     template <typename T> mat3<T> align(const vec3<T> & forward1, const vec3<T> & up1, const vec3<T> & forward2, const vec3<T> & up2);
     template <typename T> mat3<T> align_n(const vec3<T> & forward1, const vec3<T> & up1, const vec3<T> & forward2, const vec3<T> & up2);
 
+    //
+    // ...
     // _o variants (orthogonal) usable when the transformation matrix, T, from basis
     // A to B is orthogonal i.e. A's basis vectors don't need to be orthogonal, nor
     // B's, but the angles between A's basis vectors must be the same as B's
+    //
     template <typename T> mat2<T> map(const vec2<T> & x1, const vec2<T> & y1, const vec2<T> & x2, const vec2<T> & y2);
     template <typename T> mat2<T> map_o(const vec2<T> & x1, const vec2<T> & y1, const vec2<T> & x2, const vec2<T> & y2);
     template <typename T> mat3<T> map(const vec3<T> & x1, const vec3<T> & y1, const vec3<T> & z1, const vec3<T> & x2, const vec3<T> & y2, const vec3<T> & z2);
     template <typename T> mat3<T> map_o(const vec3<T> & x1, const vec3<T> & y1, const vec3<T> & z1, const vec3<T> & x2, const vec3<T> & y2, const vec3<T> & z2);
 
+    //
+    // ...
+    //
     template <typename T> mat2<T> mapTo(const vec2<T> & x, const vec2<T> & y);
     template <typename T> mat2<T> mapTo_o(const vec2<T> & x, const vec2<T> & y);
     template <typename T> mat3<T> mapTo(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z);
     template <typename T> mat3<T> mapTo_o(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z);
 
+    //
+    // ...
+    //
     template <typename T> mat2<T> mapFrom(const vec2<T> & x, const vec2<T> & y);
     template <typename T> mat3<T> mapFrom(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z);
 
-    // If `t_depth0to1` is true, the resulting z will be in [0, 1], else [-1, 1]
-    template <bool t_depth0To1, typename T> mat4<T> orthoProj(T width, T height, T near, T far);
+    //
+    // ...
+    // If `depth0to1` is true, the resulting z will be in [0, 1], else [-1, 1]
+    //
+    template <bool depth0To1, typename T> mat4<T> orthoProj(T width, T height, T near, T far);
 
-    // If `t_depth0to1` is true, the resulting z will be in [0, 1], else [-1, 1]
+    //
+    // ...
+    // If `depth0to1` is true, the resulting z will be in [0, 1], else [-1, 1]
     // `vfov` is the full vertical field of view
     // `aspect` is the "screen" width divided by height
-    template <bool t_depth0To1, typename T> mat4<T> perspProj(T hfov, T aspect, T near, T far);
+    //
+    template <bool depth0To1, typename T> mat4<T> perspProj(T hfov, T aspect, T near, T far);
 
+    //
+    // ...
     // forward and up must not be parallel
+    //
     template <typename T> mat4<T> view(const vec3<T> & camLoc, const vec3<T> & camForward, const vec3<T> & up);
 
+    //
+    // ...
+    //
     template <typename T> mat4<T> view(const vec3<T> & camLoc, const vec3<T> & camU, const vec3<T> & camV, const vec3<T> & camW);
     template <typename T> mat4<T> view_n(const vec3<T> & camLoc, const vec3<T> & camU, const vec3<T> & camV, const vec3<T> & camW);
     // basis vectors are orthonormal (optimination)
@@ -92,34 +164,27 @@ namespace qc::core {
 
 namespace qc::core {
 
-    //------------------------------------------------------------------------------
-    // Other
-
-    //--- operator<< ---
-
-    template <typename T, int t_n>
-    inline std::ostream & operator<<(std::ostream & os, const mat<T, t_n> & m) {
+    template <typename T, int n>
+    inline std::ostream & operator<<(std::ostream & os, const mat<T, n> & m) {
         os << "[";
-        if constexpr (t_n >= 1) { os << m.c1; }
-        if constexpr (t_n >= 2) { os << m.c2; }
-        if constexpr (t_n >= 3) { os << m.c3; }
-        if constexpr (t_n >= 4) { os << m.c4; }
+        if constexpr (n >= 1) { os << m.c1; }
+        if constexpr (n >= 2) { os << m.c2; }
+        if constexpr (n >= 3) { os << m.c3; }
+        if constexpr (n >= 4) { os << m.c4; }
         os << "]";
         return os;
     }
 
-    //--- isIdentity ---
-
-    template <typename T, int t_n>
-    inline bool isIdentity(const mat<T, t_n> & m) {
-        if constexpr (t_n == 2) {
+    template <typename T, int n>
+    inline bool isIdentity(const mat<T, n> & m) {
+        if constexpr (n == 2) {
             return
                 m.c1.x == T(1.0) && m.c2.y == T(1.0) &&
                 m.c2.x == T(0.0) &&
                 m.c1.y == T(0.0);
         }
 
-        if constexpr (t_n == 3) {
+        if constexpr (n == 3) {
             return
                 m.c1.x == T(1.0) && m.c2.y == T(1.0) && m.c3.z == T(1.0) &&
                 m.c3.x == T(0.0) && m.c3.y == T(0.0) &&
@@ -127,7 +192,7 @@ namespace qc::core {
                 m.c2.x == T(0.0) && m.c2.z == T(0.0);
         }
 
-        if constexpr (t_n == 4) {
+        if constexpr (n == 4) {
             return
                 m.c1.x == T(1.0) && m.c2.y == T(1.0) && m.c3.z == T(1.0) && m.c4.w == T(1.0) &&
                 m.c4.x == T(0.0) && m.c4.y == T(0.0) && m.c4.z == T(0.0) &&
@@ -137,31 +202,27 @@ namespace qc::core {
         }
     }
 
-    //--- transpose ---
-
-    template <typename T, int t_n>
-    inline mat<T, t_n> transpose(const mat<T, t_n> & m) {
-        if constexpr (t_n == 2) return {m.row<0>(), m.row<1>()};
-        if constexpr (t_n == 3) return {m.row<0>(), m.row<1>(), m.row<2>()};
-        if constexpr (t_n == 4) return {m.row<0>(), m.row<1>(), m.row<2>(), m.row<3>()};
+    template <typename T, int n>
+    inline mat<T, n> transpose(const mat<T, n> & m) {
+        if constexpr (n == 2) return {m.row<0>(), m.row<1>()};
+        if constexpr (n == 3) return {m.row<0>(), m.row<1>(), m.row<2>()};
+        if constexpr (n == 4) return {m.row<0>(), m.row<1>(), m.row<2>(), m.row<3>()};
     }
 
-    //--- cofactor ---
-
-    template <typename T, int t_n>
-    inline mat<T, t_n> cofactor(const mat<T, t_n> & m) {
-        if constexpr (t_n == 2) return {
+    template <typename T, int n>
+    inline mat<T, n> cofactor(const mat<T, n> & m) {
+        if constexpr (n == 2) return {
             +m.c2.y, -m.c2.x,
             -m.c1.y, +m.c1.x
         };
 
-        if constexpr (t_n == 3) return {
+        if constexpr (n == 3) return {
             +(m.c2.y * m.c3.z - m.c3.y * m.c2.z), -(m.c2.x * m.c3.z - m.c3.x * m.c2.z), +(m.c2.x * m.c3.y - m.c3.x * m.c2.y),
             -(m.c1.y * m.c3.z - m.c3.y * m.c1.z), +(m.c1.x * m.c3.z - m.c3.x * m.c1.z), -(m.c1.x * m.c3.y - m.c3.x * m.c1.y),
             +(m.c1.y * m.c2.z - m.c2.y * m.c1.z), -(m.c1.x * m.c2.z - m.c2.x * m.c1.z), +(m.c1.x * m.c2.y - m.c2.x * m.c1.y)
         };
 
-        if constexpr (t_n == 4) {
+        if constexpr (n == 4) {
             T yz12(m.c1.y * m.c2.z - m.c2.y * m.c1.z);
             T yz13(m.c1.y * m.c3.z - m.c3.y * m.c1.z);
             T yz14(m.c1.y * m.c4.z - m.c4.y * m.c1.z);
@@ -207,25 +268,21 @@ namespace qc::core {
         }
     }
 
-    //-- adjoint ---
-
-    template <typename T, int t_n>
-    inline mat<T, t_n> adjoint(const mat<T, t_n> & m) {
+    template <typename T, int n>
+    inline mat<T, n> adjoint(const mat<T, n> & m) {
         return transpose(cofactor(m));
     }
 
-    //--- determinant ---
-
-    template <typename T, int t_n>
-    inline T determinant(const mat<T, t_n> & m) {
-        if constexpr (t_n == 2) return
+    template <typename T, int n>
+    inline T determinant(const mat<T, n> & m) {
+        if constexpr (n == 2) return
             + m.c1.x * m.c2.y
             - m.c2.x * m.c1.y;
-        if constexpr (t_n == 3) return
+        if constexpr (n == 3) return
             + m.c1.x * (m.c2.y * m.c3.z - m.c3.y * m.c2.z)
             - m.c2.x * (m.c1.y * m.c3.z - m.c3.y * m.c1.z)
             + m.c3.x * (m.c1.y * m.c2.z - m.c2.y * m.c1.z);
-        if constexpr (t_n == 4) {
+        if constexpr (n == 4) {
             T zw12 = m.c1.z * m.c2.w - m.c2.z * m.c1.w;
             T zw13 = m.c1.z * m.c3.w - m.c3.z * m.c1.w;
             T zw14 = m.c1.z * m.c4.w - m.c4.z * m.c1.w;
@@ -240,31 +297,26 @@ namespace qc::core {
         }
     }
 
-    //--- inverse ---
-
-    template <typename T, int t_n>
-    inline mat<T, t_n> inverse(const mat<T, t_n> & m) {
+    template <typename T, int n>
+    inline mat<T, n> inverse(const mat<T, n> & m) {
         T det(determinant(m));
         if (zero(det)) {
-            return nullMat<T, t_n>();
+            return nullMat<T, n>();
         }
 
         return adjoint(m) / determinant(m);
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // TRANSFORMATIONS IMPLEMENTATION ----------------------------------------------------------------------------------
-
-    template <typename T, int t_n>
-    inline mat<T, t_n + 1> translate(const vec<T, t_n> & delta) {
-        if constexpr (t_n == 2) {
+    template <typename T, int n>
+    inline mat<T, n + 1> translate(const vec<T, n> & delta) {
+        if constexpr (n == 2) {
             return {
                  T(1.0),  T(0.0), T(0.0),
                  T(0.0),  T(1.0), T(0.0),
                 delta.x, delta.y, T(1.0)
             };
         }
-        if constexpr (t_n == 3) {
+        if constexpr (n == 3) {
             return {
                  T(1.0),  T(0.0),  T(0.0), T(0.0),
                  T(0.0),  T(1.0),  T(0.0), T(0.0),
@@ -274,10 +326,10 @@ namespace qc::core {
         }
     }
 
-    template <typename T, int t_mn, int t_vn>
-    requires (t_mn == t_vn + 1)
-    inline mat<T, t_mn> & translate(mat<T, t_mn> & m, const vec<T, t_vn> & delta) {
-        if constexpr (t_vn == 2 && t_mn == 3) {
+    template <typename T, int mn, int vn>
+    requires (mn == vn + 1)
+    inline mat<T, mn> & translate(mat<T, mn> & m, const vec<T, vn> & delta) {
+        if constexpr (vn == 2 && mn == 3) {
             m.c1.x += delta.x * m.c1.z;
             m.c2.x += delta.x * m.c2.z;
             m.c3.x += delta.x * m.c3.z;
@@ -287,7 +339,7 @@ namespace qc::core {
 
             return m;
         }
-        if constexpr (t_vn == 3 && t_mn == 4) {
+        if constexpr (vn == 3 && mn == 4) {
             m.c1.x += delta.x * m.c1.w;
             m.c2.x += delta.x * m.c2.w;
             m.c3.x += delta.x * m.c3.w;
@@ -305,18 +357,18 @@ namespace qc::core {
         }
     }
 
-    template <typename T, int t_n>
-    inline mat<T, t_n> scale(const vec<T, t_n> & scale) {
-        if constexpr (t_n == 2) return {
+    template <typename T, int n>
+    inline mat<T, n> scale(const vec<T, n> & scale) {
+        if constexpr (n == 2) return {
             scale.x,  T(0.0),
              T(0.0), scale.y
         };
-        if constexpr (t_n == 3) return {
+        if constexpr (n == 3) return {
             scale.x,  T(0.0),  T(0.0),
              T(0.0), scale.y,  T(0.0),
              T(0.0),  T(0.0), scale.z
         };
-        if constexpr (t_n == 4) return {
+        if constexpr (n == 4) return {
             scale.x,  T(0.0),  T(0.0),  T(0.0),
              T(0.0), scale.y,  T(0.0),  T(0.0),
              T(0.0),  T(0.0), scale.z,  T(0.0),
@@ -324,9 +376,9 @@ namespace qc::core {
         };
     }
 
-    template <typename T, int t_mn, int t_vn>
-    inline mat<T, t_mn> & scale(mat<T, t_mn> & m, const vec<T, t_vn> & scale) {
-        if constexpr (t_vn == 2 && t_mn == 2) {
+    template <typename T, int mn, int vn>
+    inline mat<T, mn> & scale(mat<T, mn> & m, const vec<T, vn> & scale) {
+        if constexpr (vn == 2 && mn == 2) {
             m.c1.x *= scale.x;
             m.c2.x *= scale.x;
             m.c1.y *= scale.y;
@@ -334,7 +386,7 @@ namespace qc::core {
 
             return m;
         }
-        if constexpr (t_vn == 2 && t_mn == 3) {
+        if constexpr (vn == 2 && mn == 3) {
             m.c1.x *= scale.x;
             m.c2.x *= scale.x;
             m.c3.x *= scale.x;
@@ -344,7 +396,7 @@ namespace qc::core {
 
             return m;
         }
-        if constexpr (t_vn == 3 && t_mn == 3) {
+        if constexpr (vn == 3 && mn == 3) {
             m.c1.x *= scale.x;
             m.c2.x *= scale.x;
             m.c3.x *= scale.x;
@@ -357,7 +409,7 @@ namespace qc::core {
 
             return m;
         }
-        if constexpr (t_vn == 3 && t_mn == 4) {
+        if constexpr (vn == 3 && mn == 4) {
             m.c1.x *= scale.x;
             m.c2.x *= scale.x;
             m.c3.x *= scale.x;
@@ -471,8 +523,8 @@ namespace qc::core {
         return rotate_n(up, theta) * rotate_n(cross(forward, up), phi) * rotate_n(forward, psi);
     }
 
-    template <typename T, int t_n>
-    inline mat<T, t_n> align(const vec<T, t_n> & v1, const vec<T, t_n> & v2) {
+    template <typename T, int n>
+    inline mat<T, n> align(const vec<T, n> & v1, const vec<T, n> & v2) {
         return align_n(normalize(v1), normalize(v2));
     }
 
@@ -573,26 +625,26 @@ namespace qc::core {
         return {x, y, z};
     }
 
-    template <bool t_depth0To1, typename T>
+    template <bool depth0To1, typename T>
     inline mat4<T> orthoProj(T width, T height, T near, T far) {
         T nearMinusFar(near - far);
         return {
             T(2.0) / width, T(0.0), T(0.0), T(0.0),
             T(0.0), T(2.0) / height, T(0.0), T(0.0),
-            T(0.0), T(0.0), (t_depth0To1 ? T(1.0) : T(2.0)) / nearMinusFar, T(0.0),
-            T(0.0), T(0.0), (t_depth0To1 ? near : far + near) / nearMinusFar, T(1.0)
+            T(0.0), T(0.0), (depth0To1 ? T(1.0) : T(2.0)) / nearMinusFar, T(0.0),
+            T(0.0), T(0.0), (depth0To1 ? near : far + near) / nearMinusFar, T(1.0)
         };
     }
 
-    template <bool t_depth0To1, typename T>
+    template <bool depth0To1, typename T>
     inline mat4<T> perspProj(T vfov, T aspect, T near, T far) {
         T invTop(T(1.0) / std::tan(vfov * T(0.5)));
         T invNearMinusFar(T(1.0) / (near - far));
         return {
             invTop / aspect, T(0.0), T(0.0), T(0.0),
             T(0.0), invTop, T(0.0), T(0.0),
-            T(0.0), T(0.0), (t_depth0To1 ? far : far + near) * invNearMinusFar, T(-1.0),
-            T(0.0), T(0.0), (t_depth0To1 ? far : T(2.0) * far) * near * invNearMinusFar, T(0.0)
+            T(0.0), T(0.0), (depth0To1 ? far : far + near) * invNearMinusFar, T(-1.0),
+            T(0.0), T(0.0), (depth0To1 ? far : T(2.0) * far) * near * invNearMinusFar, T(0.0)
         };
     }
 

@@ -15,17 +15,10 @@ namespace qc::core {
 
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // QUAT ------------------------------------------------------------------------------------------------------------
-
     template <Floater T> struct quat {
-
-        using type = T;
 
         vec3<T> a;
         T w;
-
-        //--- constructors ---
 
         constexpr quat() noexcept;
         constexpr quat(const quat & q) noexcept = default;
@@ -37,17 +30,10 @@ namespace qc::core {
         constexpr explicit quat(const vec3<T> & v) noexcept;
         constexpr explicit quat(const vec4<T> & v) noexcept;
 
-        //--- assignment ---
-
         quat & operator=(const quat & q) noexcept = default;
         quat & operator=(quat && q) noexcept = default;
 
     };
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // QUAT FUNCTIONS --------------------------------------------------------------------------------------------------
-
-    //--- arithmetic assignment ---
 
     template <Floater T> quat<T> & operator+=(quat<T> & q1, const quat<T> & q2);
 
@@ -57,8 +43,6 @@ namespace qc::core {
     template <Floater T> quat<T> & operator*=(quat<T> &  q, T v);
 
     template <Floater T> quat<T> & operator/=(quat<T> & q1, const quat<T> & q2);
-
-    //--- arithmetic operators ---
 
     template <Floater T> quat<T> operator+(const quat<T> & q);
 
@@ -75,8 +59,6 @@ namespace qc::core {
 
     template <Floater T> quat<T> operator/(const quat<T> & q1, const quat<T> & q2);
 
-    //--- comparison operators ---
-
     template <Floater T> bool operator==(const quat<T> & q1, const quat<T> & q2);
 
     template <Floater T> bool operator!=(const quat<T> & q1, const quat<T> & q2);
@@ -86,13 +68,6 @@ namespace qc::core {
 // INLINE IMPLEMENTATION ///////////////////////////////////////////////////////////////////////////////////////////////
 
 namespace qc::core {
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // QUAT IMPLEMENTATION ---------------------------------------------------------------------------------------------
-
-    //------------------------------------------------------------------------------
-    // Constructors
-
 
     template <Floater T>
     inline constexpr quat<T>::quat() noexcept :
@@ -120,12 +95,6 @@ namespace qc::core {
         a(v), w(v.w)
     {}
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // QUAT FUNCTIONS IMPLEMENTATION -----------------------------------------------------------------------------------
-
-    //------------------------------------------------------------------------------
-    // Arithmetic Assignment
-
     template <Floater T>
     inline quat<T> & operator+=(quat<T> & q1, const quat<T> & q2) {
         return q1 = q1 + q2;
@@ -150,9 +119,6 @@ namespace qc::core {
     inline quat<T> & operator/=(quat<T> & q1, const quat<T> & q2) {
         return q1 = q1 / q2;
     }
-
-    //------------------------------------------------------------------------------
-    // Arithmetic Operators
 
     template <Floater T>
     inline quat<T> operator+(const quat<T> & q) {
@@ -202,9 +168,6 @@ namespace qc::core {
     inline quat<T> operator/(const quat<T> & q1, const quat<T> & q2) {
         return {q1.a * q2.w - q2.a * q1.w - cross(q1.a, q2.a), dot(q1, q2)};
     }
-
-    //------------------------------------------------------------------------------
-    // Comparison Operators
 
     template <Floater T>
     inline bool operator==(const quat<T> & q1, const quat<T> & q2) {

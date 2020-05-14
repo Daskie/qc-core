@@ -395,19 +395,19 @@ static constexpr bool compileFunctionsConstexpr() {
     return true;
 }
 
-template <typename T, int t_n>
+template <typename T, int n>
 static void testPropertiesTN() {
-    static_assert(std::             is_standard_layout_v<qc::core::mat<T, t_n>>);
-    static_assert(std::          is_trivially_copyable_v<qc::core::mat<T, t_n>>);
-    static_assert(std::is_trivially_copy_constructible_v<qc::core::mat<T, t_n>>);
-    static_assert(std::is_trivially_move_constructible_v<qc::core::mat<T, t_n>>);
-    static_assert(std::   is_trivially_copy_assignable_v<qc::core::mat<T, t_n>>);
-    static_assert(std::   is_trivially_move_assignable_v<qc::core::mat<T, t_n>>);
-    static_assert(std::      is_trivially_destructible_v<qc::core::mat<T, t_n>>);
-    static_assert(sizeof(qc::core::mat<T, t_n>) == t_n * t_n * sizeof(T));
-    static_assert(sizeof(qc::core::mat<T, t_n>[4]) == 4 * t_n * t_n * sizeof(T));
-    static_assert(alignof(qc::core::mat<T, t_n>) == alignof(T));
-    static_assert(alignof(qc::core::mat<T, t_n>[4]) == alignof(T));
+    static_assert(std::             is_standard_layout_v<qc::core::mat<T, n>>);
+    static_assert(std::          is_trivially_copyable_v<qc::core::mat<T, n>>);
+    static_assert(std::is_trivially_copy_constructible_v<qc::core::mat<T, n>>);
+    static_assert(std::is_trivially_move_constructible_v<qc::core::mat<T, n>>);
+    static_assert(std::   is_trivially_copy_assignable_v<qc::core::mat<T, n>>);
+    static_assert(std::   is_trivially_move_assignable_v<qc::core::mat<T, n>>);
+    static_assert(std::      is_trivially_destructible_v<qc::core::mat<T, n>>);
+    static_assert(sizeof(qc::core::mat<T, n>) == n * n * sizeof(T));
+    static_assert(sizeof(qc::core::mat<T, n>[4]) == 4 * n * n * sizeof(T));
+    static_assert(alignof(qc::core::mat<T, n>) == alignof(T));
+    static_assert(alignof(qc::core::mat<T, n>[4]) == alignof(T));
 }
 
 template <typename T>

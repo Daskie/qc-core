@@ -451,19 +451,19 @@ static constexpr bool compileFunctionsConstexpr() {
     return true;
 }
 
-template <typename T, int t_n>
+template <typename T, int n>
 static void testPropertiesTN() {
-    static_assert(std::is_standard_layout_v<qc::core::span<T, t_n>>);
-    static_assert(std::is_trivially_copyable_v<qc::core::span<T, t_n>>);
-    static_assert(std::is_trivially_copy_constructible_v<qc::core::span<T, t_n>>);
-    static_assert(std::is_trivially_move_constructible_v<qc::core::span<T, t_n>>);
-    static_assert(std::is_trivially_copy_assignable_v<qc::core::span<T, t_n>>);
-    static_assert(std::is_trivially_move_assignable_v<qc::core::span<T, t_n>>);
-    static_assert(std::is_trivially_destructible_v<qc::core::span<T, t_n>>);
-    static_assert(sizeof(qc::core::span<T, t_n>) == 2 * t_n * sizeof(T));
-    static_assert(sizeof(qc::core::span<T, t_n>[4]) == 4 * 2 * t_n * sizeof(T));
-    static_assert(alignof(qc::core::span<T, t_n>) == alignof(T));
-    static_assert(alignof(qc::core::span<T, t_n>[4]) == alignof(T));
+    static_assert(std::is_standard_layout_v<qc::core::span<T, n>>);
+    static_assert(std::is_trivially_copyable_v<qc::core::span<T, n>>);
+    static_assert(std::is_trivially_copy_constructible_v<qc::core::span<T, n>>);
+    static_assert(std::is_trivially_move_constructible_v<qc::core::span<T, n>>);
+    static_assert(std::is_trivially_copy_assignable_v<qc::core::span<T, n>>);
+    static_assert(std::is_trivially_move_assignable_v<qc::core::span<T, n>>);
+    static_assert(std::is_trivially_destructible_v<qc::core::span<T, n>>);
+    static_assert(sizeof(qc::core::span<T, n>) == 2 * n * sizeof(T));
+    static_assert(sizeof(qc::core::span<T, n>[4]) == 4 * 2 * n * sizeof(T));
+    static_assert(alignof(qc::core::span<T, n>) == alignof(T));
+    static_assert(alignof(qc::core::span<T, n>[4]) == alignof(T));
 }
 
 template <typename T>
@@ -487,22 +487,22 @@ static void testProperties() {
     testPropertiesT<qc::core::u64>();
 }
 
-template <typename T1, typename T2, int t_n>
+template <typename T1, typename T2, int n>
 static constexpr void compileCastsTTN() {
     qc::core::span1<T1> s1;
     qc::core::span2<T1> s2;
     qc::core::span3<T1> s3;
     qc::core::span4<T1> s4;
 
-    { qc::core::span<T2, t_n> s(s1); }
-    { qc::core::span<T2, t_n> s(s2); }
-    { qc::core::span<T2, t_n> s(s3); }
-    { qc::core::span<T2, t_n> s(s4); }
+    { qc::core::span<T2, n> s(s1); }
+    { qc::core::span<T2, n> s(s2); }
+    { qc::core::span<T2, n> s(s3); }
+    { qc::core::span<T2, n> s(s4); }
 
-    static_cast<qc::core::span<T2, t_n>>(s1);
-    static_cast<qc::core::span<T2, t_n>>(s2);
-    static_cast<qc::core::span<T2, t_n>>(s3);
-    static_cast<qc::core::span<T2, t_n>>(s4);
+    static_cast<qc::core::span<T2, n>>(s1);
+    static_cast<qc::core::span<T2, n>>(s2);
+    static_cast<qc::core::span<T2, n>>(s3);
+    static_cast<qc::core::span<T2, n>>(s4);
 }
 
 template <typename T1, typename T2>

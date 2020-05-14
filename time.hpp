@@ -6,48 +6,65 @@
 
 namespace qc::core {
 
-    // nanoseconds since epoch
+    //
+    // Returns nanoseconds since epoch
+    //
     s64 now();
 
+    //
     // Simple clock usable for most timing-related needs
     // Period is the number of seconds per clock cycle
     // Frequency is how many cycles happen per seconds
     // Period = 1 / Frequency
+    //
     class Clock {
 
         private:
 
-        std::chrono::high_resolution_clock::time_point m_start;
-        double m_period;
-        double m_frequency;
+        std::chrono::high_resolution_clock::time_point _start;
+        double _period;
+        double _frequency;
 
         public:
 
+        //
         // constructs clock with 1.0 sec period and 1.0 sec frequency
+        //
         Clock(float frequency = 1.0f);
 
+        //
+        // ...
         // the clock starts now
+        //
         void restart();
         // the clock starts at the given time in nanoseconds since epoch
         void restart(s64 t);
 
+        //
         // the fractional number of cycles since the clock started
+        //
         double age() const;
 
+        //
         // the integral number or cycles since the clock started
+        //
         nat cycles() const;
 
+        //
         // the fractional part of the current cycle
+        //
         double time() const;
 
-        // get the period
+        //
+        // gets/sets the period
+        //
         double period() const;
-        // set the period
         void period(double period);
 
-        // get the frequency
+        //
+        // gets/sets the frequency
+        //
         double frequency() const;
-        // set the frequency
         void frequency(double frequency);
 
     };
@@ -63,21 +80,21 @@ namespace qc::core {
     }
 
     inline Clock::Clock(float frequency) :
-        m_start(),
-        m_period(1.0f / frequency),
-        m_frequency(frequency)
+        _start(),
+        _period(1.0f / frequency),
+        _frequency(frequency)
     {}
 
     inline void Clock::restart() {
-        m_start = std::chrono::high_resolution_clock::now();
+        _start = std::chrono::high_resolution_clock::now();
     }
 
     inline void Clock::restart(s64 t) {
-        m_start = std::chrono::high_resolution_clock::time_point(std::chrono::nanoseconds(t));
+        _start = std::chrono::high_resolution_clock::time_point(std::chrono::nanoseconds(t));
     }
 
     inline double Clock::age() const {
-        return std::chrono::duration_cast<std::chrono::duration<double>>(std::chrono::high_resolution_clock::now() - m_start).count() * m_frequency;
+        return std::chrono::duration_cast<std::chrono::duration<double>>(std::chrono::high_resolution_clock::now() - _start).count() * _frequency;
     }
 
     inline nat Clock::cycles() const {
@@ -90,21 +107,21 @@ namespace qc::core {
     }
 
     inline double Clock::period() const {
-        return m_period;
+        return _period;
     }
 
     inline void Clock::period(double period) {
-        m_period = period;
-        m_frequency = 1.0 / period;
+        _period = period;
+        _frequency = 1.0 / period;
     }
 
     inline double Clock::frequency() const {
-        return m_frequency;
+        return _frequency;
     }
 
     inline void Clock::frequency(double frequency) {
-        m_frequency = frequency;
-        m_period = 1.0 / frequency;
+        _frequency = frequency;
+        _period = 1.0 / frequency;
     }
 
 }

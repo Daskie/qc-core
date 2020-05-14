@@ -4,7 +4,7 @@
 
 namespace qc::core {
 
-    template <Number T, int t_n> struct span;
+    template <Number T, int n> struct span;
 
     inline namespace types {
 
@@ -15,18 +15,18 @@ namespace qc::core {
         template <Number T> using span3 = span<T, 3>;
         template <Number T> using span4 = span<T, 4>;
 
-        template <int t_n> using  fspan = span< f32, t_n>;
-        template <int t_n> using  dspan = span< f64, t_n>;
-        template <int t_n> using  cspan = span< s08, t_n>;
-        template <int t_n> using ucspan = span< u08, t_n>;
-        template <int t_n> using  sspan = span< s16, t_n>;
-        template <int t_n> using usspan = span< u16, t_n>;
-        template <int t_n> using  ispan = span< s32, t_n>;
-        template <int t_n> using uispan = span< u32, t_n>;
-        template <int t_n> using  lspan = span< s64, t_n>;
-        template <int t_n> using ulspan = span< u64, t_n>;
-        template <int t_n> using  nspan = span< nat, t_n>;
-        template <int t_n> using unspan = span<unat, t_n>;
+        template <int n> using  fspan = span< f32, n>;
+        template <int n> using  dspan = span< f64, n>;
+        template <int n> using  cspan = span< s08, n>;
+        template <int n> using ucspan = span< u08, n>;
+        template <int n> using  sspan = span< s16, n>;
+        template <int n> using usspan = span< u16, n>;
+        template <int n> using  ispan = span< s32, n>;
+        template <int n> using uispan = span< u32, n>;
+        template <int n> using  lspan = span< s64, n>;
+        template <int n> using ulspan = span< u64, n>;
+        template <int n> using  nspan = span< nat, n>;
+        template <int n> using unspan = span<unat, n>;
 
         using  fspan1 = span1< f32>;
         using  fspan2 = span2< f32>;
@@ -81,75 +81,40 @@ namespace qc::core {
 
     template <Number T> struct span<T, 1> {
 
-        //--------------------------------------------------------------------------
-        // Static Members
-
-        using Type = T;
-
-        static constexpr int n{1};
-
-        //--------------------------------------------------------------------------
-        // Instance Variables
-
         T min{};
         T max{};
-
-        //--------------------------------------------------------------------------
-        // Construction
 
         constexpr span() noexcept = default;
         constexpr span(const span & v) noexcept = default;
         constexpr span(span && v) noexcept = default;
         template <Number U> constexpr explicit span(const span1<U> & v) noexcept;
-        template <Number U, int t_m> constexpr explicit span(const span<U, t_m> & v) noexcept;
+        template <Number U, int m> constexpr explicit span(const span<U, m> & v) noexcept;
         constexpr span(T v1, T v2) noexcept;
-
-        //--------------------------------------------------------------------------
-        // Assignment
 
         span & operator=(const span & v) noexcept = default;
         span & operator=(span && v) noexcept = default;
 
-        template <int t_m> span & operator=(const span<T, t_m> & v) noexcept;
+        template <int m> span & operator=(const span<T, m> & v) noexcept;
 
     };
 
     template <Number T> struct span<T, 2> {
 
-        //--------------------------------------------------------------------------
-        // Static Members
-
-        using Type = T;
-
-        static constexpr int n{2};
-
-        //--------------------------------------------------------------------------
-        // Instance Variables
-
-        vec2<T> min{};
-        vec2<T> max{};
-
-        //--------------------------------------------------------------------------
-        // Construction
+        vec2<T> min;
+        vec2<T> max;
 
         constexpr span() noexcept = default;
         constexpr span(const span & v) noexcept = default;
         constexpr span(span && v) noexcept = default;
-        template <Number U, int t_m> constexpr explicit span(const span<U, t_m> & v) noexcept;
+        template <Number U, int m> constexpr explicit span(const span<U, m> & v) noexcept;
         constexpr span(T v1, T v2) noexcept;
         constexpr span(const vec2<T> & v1, const vec2<T> & v2) noexcept;
         Q_CONSTEX span(const span1<T> & v1, const span1<T> & v2) noexcept;
 
-        //--------------------------------------------------------------------------
-        // Assignment
-
         span & operator=(const span & v) noexcept = default;
         span & operator=(span && v) noexcept = default;
 
-        template <int t_m> span & operator=(const span<T, t_m> & v) noexcept;
-
-        //--------------------------------------------------------------------------
-        // Other
+        template <int m> span & operator=(const span<T, m> & v) noexcept;
 
         Q_CONSTEX span1<T> x() const noexcept;
         Q_CONSTEX span1<T> y() const noexcept;
@@ -158,42 +123,23 @@ namespace qc::core {
 
     template <Number T> struct span<T, 3> {
 
-        //--------------------------------------------------------------------------
-        // Static Members
-
-        using Type = T;
-
-        static constexpr int n{3};
-
-        //--------------------------------------------------------------------------
-        // Instance Variables
-
-        vec3<T> min{};
-        vec3<T> max{};
-
-        //--------------------------------------------------------------------------
-        // Construction
+        vec3<T> min;
+        vec3<T> max;
 
         constexpr span() noexcept = default;
         constexpr span(const span & v) noexcept = default;
         constexpr span(span && v) noexcept = default;
-        template <Number U, int t_m> constexpr explicit span(const span<U, t_m> & v) noexcept;
+        template <Number U, int m> constexpr explicit span(const span<U, m> & v) noexcept;
         constexpr span(T v1, T v2) noexcept;
         constexpr span(const vec3<T> & v1, const vec3<T> & v2) noexcept;
         Q_CONSTEX span(const span1<T> & v1, const span1<T> & v2, const span1<T> & v3) noexcept;
         Q_CX_ABLE span(const span2<T> & v1, const span1<T> & v2) noexcept;
         Q_CX_ABLE span(const span1<T> & v1, const span2<T> & v2) noexcept;
 
-        //--------------------------------------------------------------------------
-        // Assignment
-
         span & operator=(const span & v) noexcept = default;
         span & operator=(span && v) noexcept = default;
 
-        template <int t_m> span & operator=(const span<T, t_m> & v) noexcept;
-
-        //--------------------------------------------------------------------------
-        // Other
+        template <int m> span & operator=(const span<T, m> & v) noexcept;
 
         Q_CONSTEX span1<T> x() const noexcept;
         Q_CONSTEX span1<T> y() const noexcept;
@@ -206,26 +152,13 @@ namespace qc::core {
 
     template <Number T> struct span<T, 4> {
 
-        //--------------------------------------------------------------------------
-        // Static Members
-
-        using Type = T;
-
-        static constexpr int n{4};
-
-        //--------------------------------------------------------------------------
-        // Instance Variables
-
-        vec4<T> min{};
-        vec4<T> max{};
-
-        //--------------------------------------------------------------------------
-        // Construction
+        vec4<T> min;
+        vec4<T> max;
 
         constexpr span() noexcept = default;
         constexpr span(const span & v) noexcept = default;
         constexpr span(span && v) noexcept = default;
-        template <Number U, int t_m> constexpr explicit span(const span<U, t_m> & v) noexcept;
+        template <Number U, int m> constexpr explicit span(const span<U, m> & v) noexcept;
         constexpr span(T v1, T v2) noexcept;
         constexpr span(const vec4<T> & v1, const vec4<T> & v2) noexcept;
         Q_CONSTEX span(const span1<T> & v1, const span1<T> & v2, const span1<T> & v3, const span1<T> & v4) noexcept;
@@ -236,16 +169,10 @@ namespace qc::core {
         Q_CX_ABLE span(const span3<T> & v1, const span1<T> & v2) noexcept;
         Q_CX_ABLE span(const span1<T> & v1, const span3<T> & v2) noexcept;
 
-        //--------------------------------------------------------------------------
-        // Assignment
-
         span & operator=(const span & v) noexcept = default;
         span & operator=(span && v) noexcept = default;
 
-        template <int t_m> span & operator=(const span<T, t_m> & v) noexcept;
-
-        //--------------------------------------------------------------------------
-        // Other
+        template <int m> span & operator=(const span<T, m> & v) noexcept;
 
         Q_CONSTEX span1<T> x() const noexcept;
         Q_CONSTEX span1<T> y() const noexcept;
@@ -261,58 +188,35 @@ namespace qc::core {
 
     };
 
-    //==================================================================================================================
-    // Constants ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    //------------------------------------------------------------------------------------------------------------------
+    template <Floater T, int n> constexpr span<T, n>  infspan = span<T, n>(-infinity<T>, infinity<T>);
+    template <Floater T, int n> constexpr span<T, n>  nanspan = span<T, n>(nan<T>, nan<T>);
+    template <Floater T, int n> constexpr span<T, n> nullspan = span<T, n>(infinity<T>, -infinity<T>);
 
-    template <Floater T, int t_n> constexpr span<T, t_n>  infspan = span<T, t_n>(-infinity<T>, infinity<T>);
-    template <Floater T, int t_n> constexpr span<T, t_n>  nanspan = span<T, t_n>(nan<T>, nan<T>);
-    template <Floater T, int t_n> constexpr span<T, t_n> nullspan = span<T, t_n>(infinity<T>, -infinity<T>);
+    template <Number T, int n> Q_CX_ABLE span<T, n> & operator+=(span<T, n> & v1, T v2);
+    template <Number T, int n> Q_CX_ABLE span<T, n> & operator+=(span<T, n> & v1, const vec<T, n> & v2);
 
-    //==================================================================================================================
-    // Functions ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    //==================================================================================================================
+    template <Number T, int n> Q_CX_ABLE span<T, n> & operator-=(span<T, n> & v1, T v2);
+    template <Number T, int n> Q_CX_ABLE span<T, n> & operator-=(span<T, n> & v1, const vec<T, n> & v2);
 
-    //==============================================================================
-    // Arithmetic Assignment
-    //------------------------------------------------------------------------------
+    template <Number T, int n> Q_CX_ABLE span<T, n> operator+(const span<T, n> & v1, T v2);
+    template <Number T, int n> Q_CX_ABLE span<T, n> operator+(T v1, const span<T, n> & v2);
+    template <Number T, int n> Q_CX_ABLE span<T, n> operator+(const span<T, n> & v1, const vec<T, n> & v2);
+    template <Number T, int n> Q_CX_ABLE span<T, n> operator+(const vec<T, n> & v1, const span<T, n> & v2);
 
-    template <Number T, int t_n> Q_CX_ABLE span<T, t_n> & operator+=(span<T, t_n> & v1, T v2);
-    template <Number T, int t_n> Q_CX_ABLE span<T, t_n> & operator+=(span<T, t_n> & v1, const vec<T, t_n> & v2);
+    template <Number T, int n> Q_CX_ABLE span<T, n> operator-(const span<T, n> & v1, T v2);
+    template <Number T, int n> Q_CX_ABLE span<T, n> operator-(T v1, const span<T, n> & v2);
+    template <Number T, int n> Q_CX_ABLE span<T, n> operator-(const span<T, n> & v1, const vec<T, n> & v2);
+    template <Number T, int n> Q_CX_ABLE span<T, n> operator-(const vec<T, n> & v1, const span<T, n> & v2);
 
-    template <Number T, int t_n> Q_CX_ABLE span<T, t_n> & operator-=(span<T, t_n> & v1, T v2);
-    template <Number T, int t_n> Q_CX_ABLE span<T, t_n> & operator-=(span<T, t_n> & v1, const vec<T, t_n> & v2);
+    template <typename T, int n> Q_CX_ABLE bool operator==(const span<T, n> & v1, const span<T, n> & v2);
 
-    //==============================================================================
-    // Arithmetic
-    //------------------------------------------------------------------------------
-
-    template <Number T, int t_n> Q_CX_ABLE span<T, t_n> operator+(const span<T, t_n> & v1, T v2);
-    template <Number T, int t_n> Q_CX_ABLE span<T, t_n> operator+(T v1, const span<T, t_n> & v2);
-    template <Number T, int t_n> Q_CX_ABLE span<T, t_n> operator+(const span<T, t_n> & v1, const vec<T, t_n> & v2);
-    template <Number T, int t_n> Q_CX_ABLE span<T, t_n> operator+(const vec<T, t_n> & v1, const span<T, t_n> & v2);
-
-    template <Number T, int t_n> Q_CX_ABLE span<T, t_n> operator-(const span<T, t_n> & v1, T v2);
-    template <Number T, int t_n> Q_CX_ABLE span<T, t_n> operator-(T v1, const span<T, t_n> & v2);
-    template <Number T, int t_n> Q_CX_ABLE span<T, t_n> operator-(const span<T, t_n> & v1, const vec<T, t_n> & v2);
-    template <Number T, int t_n> Q_CX_ABLE span<T, t_n> operator-(const vec<T, t_n> & v1, const span<T, t_n> & v2);
-
-    //==============================================================================
-    // Comparison
-    //------------------------------------------------------------------------------
-
-    template <typename T, int t_n> Q_CX_ABLE bool operator==(const span<T, t_n> & v1, const span<T, t_n> & v2);
-
-    template <typename T, int t_n> Q_CX_ABLE bool operator!=(const span<T, t_n> & v1, const span<T, t_n> & v2);
+    template <typename T, int n> Q_CX_ABLE bool operator!=(const span<T, n> & v1, const span<T, n> & v2);
 
 }
 
 // INLINE IMPLEMENTATION ///////////////////////////////////////////////////////////////////////////////////////////////
 
 namespace qc::core {
-
-    //------------------------------------------------------------------------------
-    // Constructors
 
     template <Number T>
     template <Number U>
@@ -322,8 +226,8 @@ namespace qc::core {
     {}
 
     template <Number T>
-    template <Number U, int t_m>
-    inline constexpr span<T, 1>::span(const span<U, t_m> & v) noexcept :
+    template <Number U, int m>
+    inline constexpr span<T, 1>::span(const span<U, m> & v) noexcept :
         min(T(v.min.x)),
         max(T(v.max.x))
     {}
@@ -334,23 +238,17 @@ namespace qc::core {
         max(v2)
     {}
 
-    //------------------------------------------------------------------------------
-    // Assignment
-
     template <Number T>
-    template <int t_m>
-    inline span1<T> & span<T, 1>::operator=(const span<T, t_m> & v) noexcept {
+    template <int m>
+    inline span1<T> & span<T, 1>::operator=(const span<T, m> & v) noexcept {
         min = v.min.x;
         max = v.max.x;
         return *this;
     }
 
-    //------------------------------------------------------------------------------
-    // Constructors
-
     template <Number T>
-    template <Number U, int t_m>
-    inline constexpr span<T, 2>::span(const span<U, t_m> & v) noexcept :
+    template <Number U, int m>
+    inline constexpr span<T, 2>::span(const span<U, m> & v) noexcept :
         min(v.min),
         max(v.max)
     {}
@@ -373,19 +271,13 @@ namespace qc::core {
         max(v1.max, v2.max)
     {}
 
-    //------------------------------------------------------------------------------
-    // Assignment
-
     template <Number T>
-    template <int t_m>
-    inline span2<T> & span<T, 2>::operator=(const span<T, t_m> & v) noexcept {
+    template <int m>
+    inline span2<T> & span<T, 2>::operator=(const span<T, m> & v) noexcept {
         min = v.min;
         max = v.max;
         return *this;
     }
-
-    //------------------------------------------------------------------------------
-    // Other
 
     template <Number T>
     inline Q_CONSTEX span1<T> span<T, 2>::x() const noexcept {
@@ -397,12 +289,9 @@ namespace qc::core {
         return {min.y, max.y};
     }
 
-    //------------------------------------------------------------------------------
-    // Constructors
-
     template <Number T>
-    template <Number U, int t_m>
-    inline constexpr span<T, 3>::span(const span<U, t_m> & v) noexcept :
+    template <Number U, int m>
+    inline constexpr span<T, 3>::span(const span<U, m> & v) noexcept :
         min(v.min),
         max(v.max)
     {}
@@ -437,19 +326,13 @@ namespace qc::core {
         max(v1.max, v2.max)
     {}
 
-    //------------------------------------------------------------------------------
-    // Assignment
-
     template <Number T>
-    template <int t_m>
-    inline span3<T> & span<T, 3>::operator=(const span<T, t_m> & v) noexcept {
+    template <int m>
+    inline span3<T> & span<T, 3>::operator=(const span<T, m> & v) noexcept {
         min = v.min;
         max = v.max;
         return *this;
     }
-
-    //------------------------------------------------------------------------------
-    // Other
 
     template <Number T>
     inline Q_CONSTEX span1<T> span<T, 3>::x() const noexcept {
@@ -476,12 +359,9 @@ namespace qc::core {
         return {min.yz(), max.yz()};
     }
 
-    //------------------------------------------------------------------------------
-    // Constructors
-
     template <Number T>
-    template <Number U, int t_m>
-    inline constexpr span<T, 4>::span(const span<U, t_m> & v) noexcept :
+    template <Number U, int m>
+    inline constexpr span<T, 4>::span(const span<U, m> & v) noexcept :
         min(v.min),
         max(v.max)
     {}
@@ -540,19 +420,13 @@ namespace qc::core {
         max(v1.max, v2.max)
     {}
 
-    //------------------------------------------------------------------------------
-    // Assignment
-
     template <Number T>
-    template <int t_m>
-    inline span4<T> & span<T, 4>::operator=(const span<T, t_m> & v) noexcept {
+    template <int m>
+    inline span4<T> & span<T, 4>::operator=(const span<T, m> & v) noexcept {
         min = v.min;
         max = v.max;
         return *this;
     }
-
-    //------------------------------------------------------------------------------
-    // Other
 
     template <Number T>
     inline Q_CONSTEX span1<T> span<T, 4>::x() const noexcept {
@@ -599,109 +473,84 @@ namespace qc::core {
         return {min.yzw(), max.yzw()};
     }
 
-    //==================================================================================================================
-    // FUNCTION IMPLEMENTATION /////////////////////////////////////////////////////////////////////////////////////////
-    //==================================================================================================================
-
-    //------------------------------------------------------------------------------
-    // Arithmetic Assignment
-
-    //--- add assign ---
-
-    template <Number T, int t_n>
-    inline Q_CX_ABLE span<T, t_n> & operator+=(span<T, t_n> & v1, T v2) {
+    template <Number T, int n>
+    inline Q_CX_ABLE span<T, n> & operator+=(span<T, n> & v1, T v2) {
         v1.min += v2;
         v1.max += v2;
         return v1;
     }
 
-    template <Number T, int t_n>
-    inline Q_CX_ABLE span<T, t_n> & operator+=(span<T, t_n> & v1, const vec<T, t_n> & v2) {
+    template <Number T, int n>
+    inline Q_CX_ABLE span<T, n> & operator+=(span<T, n> & v1, const vec<T, n> & v2) {
         v1.min += v2;
         v1.max += v2;
         return v1;
     }
 
-    //--- subtract assign ---
-
-    template <Number T, int t_n>
-    inline Q_CX_ABLE span<T, t_n> & operator-=(span<T, t_n> & v1, T v2) {
+    template <Number T, int n>
+    inline Q_CX_ABLE span<T, n> & operator-=(span<T, n> & v1, T v2) {
         v1.min -= v2;
         v1.max -= v2;
         return v1;
     }
 
-    template <Number T, int t_n>
-    inline Q_CX_ABLE span<T, t_n> & operator-=(span<T, t_n> & v1, const vec<T, t_n> & v2) {
+    template <Number T, int n>
+    inline Q_CX_ABLE span<T, n> & operator-=(span<T, n> & v1, const vec<T, n> & v2) {
         v1.min -= v2;
         v1.max -= v2;
         return v1;
     }
 
-    //------------------------------------------------------------------------------
-    // Arithmetic Operators
-
-    //--- add ---
-
-    template <Number T, int t_n>
-    inline Q_CX_ABLE span<T, t_n> operator+(const span<T, t_n> & v1, T v2) {
-        if constexpr (t_n == 1) return {T(v1.min + v2), T(v1.max + v2)};
+    template <Number T, int n>
+    inline Q_CX_ABLE span<T, n> operator+(const span<T, n> & v1, T v2) {
+        if constexpr (n == 1) return {T(v1.min + v2), T(v1.max + v2)};
         else return {v1.min + v2, v1.max + v2};
     }
 
-    template <Number T, int t_n>
-    inline Q_CX_ABLE span<T, t_n> operator+(T v1, const span<T, t_n> & v2) {
+    template <Number T, int n>
+    inline Q_CX_ABLE span<T, n> operator+(T v1, const span<T, n> & v2) {
         return v2 + v1;
     }
 
-    template <Number T, int t_n>
-    inline Q_CX_ABLE span<T, t_n> operator+(const span<T, t_n> & v1, const vec<T, t_n> & v2) {
+    template <Number T, int n>
+    inline Q_CX_ABLE span<T, n> operator+(const span<T, n> & v1, const vec<T, n> & v2) {
         return {v1.min + v2, v1.max + v2};
     }
 
-    template <Number T, int t_n>
-    inline Q_CX_ABLE span<T, t_n> operator+(const vec<T, t_n> & v1, const span<T, t_n> & v2) {
+    template <Number T, int n>
+    inline Q_CX_ABLE span<T, n> operator+(const vec<T, n> & v1, const span<T, n> & v2) {
         return v2 + v1;
     }
 
-    //--- subtract ---
-
-    template <Number T, int t_n>
-    inline Q_CX_ABLE span<T, t_n> operator-(const span<T, t_n> & v1, T v2) {
-        if constexpr (t_n == 1) return {T(v1.min - v2), T(v1.max - v2)};
+    template <Number T, int n>
+    inline Q_CX_ABLE span<T, n> operator-(const span<T, n> & v1, T v2) {
+        if constexpr (n == 1) return {T(v1.min - v2), T(v1.max - v2)};
         else return {v1.min - v2, v1.max - v2};
     }
 
-    template <Number T, int t_n>
-    inline Q_CX_ABLE span<T, t_n> operator-(T v1, const span<T, t_n> & v2) {
-        if constexpr (t_n == 1) return {T(v1 - v2.min), T(v1 - v2.max)};
+    template <Number T, int n>
+    inline Q_CX_ABLE span<T, n> operator-(T v1, const span<T, n> & v2) {
+        if constexpr (n == 1) return {T(v1 - v2.min), T(v1 - v2.max)};
         else return {v1 - v2.min, v1 - v2.max};
     }
 
-    template <Number T, int t_n>
-    inline Q_CX_ABLE span<T, t_n> operator-(const span<T, t_n> & v1, const vec<T, t_n> & v2) {
+    template <Number T, int n>
+    inline Q_CX_ABLE span<T, n> operator-(const span<T, n> & v1, const vec<T, n> & v2) {
         return {v1.min - v2, v1.max - v2};
     }
 
-    template <Number T, int t_n>
-    inline Q_CX_ABLE span<T, t_n> operator-(const vec<T, t_n> & v1, const span<T, t_n> & v2) {
+    template <Number T, int n>
+    inline Q_CX_ABLE span<T, n> operator-(const vec<T, n> & v1, const span<T, n> & v2) {
         return {v1 - v2.min, v1 - v2.max};
     }
 
-    //------------------------------------------------------------------------------
-    // Comparison Operators
-
-    //--- equal to ---
-
-    template <typename T, int t_n>
-    inline Q_CX_ABLE bool operator==(const span<T, t_n> & v1, const span<T, t_n> & v2) {
+    template <typename T, int n>
+    inline Q_CX_ABLE bool operator==(const span<T, n> & v1, const span<T, n> & v2) {
         return v1.min == v2.min && v1.max == v2.max;
     }
 
-    //--- not equal to ---
-
-    template <typename T, int t_n>
-    inline Q_CX_ABLE bool operator!=(const span<T, t_n> & v1, const span<T, t_n> & v2) {
+    template <typename T, int n>
+    inline Q_CX_ABLE bool operator!=(const span<T, n> & v1, const span<T, n> & v2) {
         return !(v1 == v2);
     }
 
