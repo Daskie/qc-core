@@ -139,13 +139,13 @@ namespace qc::core {
     //
     // ...
     //
-    template <Floater T, int n> Q_CX_ABLE vec<nat, n> floor(const vec<T, n> & v);
+    template <Floater T, int n> Q_CX_ABLE vec<stype<sizeof(T)>, n> floor(const vec<T, n> & v);
     template <Integer T, int n> Q_CX_ABLE vec<T, n> floor(const vec<T, n> & v);
 
     //
     // ...
     //
-    template <Floater T, int n> Q_CX_ABLE vec<nat, n> ceil(const vec<T, n> & v);
+    template <Floater T, int n> Q_CX_ABLE vec<stype<sizeof(T)>, n> ceil(const vec<T, n> & v);
     template <Integer T, int n> Q_CX_ABLE vec<T, n> ceil(const vec<T, n> & v);
 
     //
@@ -417,19 +417,7 @@ namespace qc::core {
     }
 
     template <Floater T, int n>
-    inline Q_CX_ABLE vec<stype<sizeof(T)>, n> round(const vec<T, n> & v) {
-        if constexpr (n == 2) return {round(v.x), round(v.y)};
-        if constexpr (n == 3) return {round(v.x), round(v.y), round(v.z)};
-        if constexpr (n == 4) return {round(v.x), round(v.y), round(v.z), round(v.w)};
-    }
-
-    template <Integer T, int n>
-    inline Q_CX_ABLE vec<T, n> round(const vec<T, n> & v) {
-        return v;
-    }
-
-    template <Floater T, int n>
-    inline Q_CX_ABLE vec<nat, n> floor(const vec<T, n> & v) {
+    inline Q_CX_ABLE vec<stype<sizeof(T)>, n> floor(const vec<T, n> & v) {
         if constexpr (n == 2) return {floor(v.x), floor(v.y)};
         if constexpr (n == 3) return {floor(v.x), floor(v.y), floor(v.z)};
         if constexpr (n == 4) return {floor(v.x), floor(v.y), floor(v.z), floor(v.w)};
@@ -441,7 +429,7 @@ namespace qc::core {
     }
 
     template <Floater T, int n>
-    inline Q_CX_ABLE vec<nat, n> ceil(const vec<T, n> & v) {
+    inline Q_CX_ABLE vec<stype<sizeof(T)>, n> ceil(const vec<T, n> & v) {
         if constexpr (n == 2) return {ceil(v.x), ceil(v.y)};
         if constexpr (n == 3) return {ceil(v.x), ceil(v.y), ceil(v.z)};
         if constexpr (n == 4) return {ceil(v.x), ceil(v.y), ceil(v.z), ceil(v.w)};
@@ -449,6 +437,18 @@ namespace qc::core {
 
     template <Integer T, int n>
     inline Q_CX_ABLE vec<T, n> ceil(const vec<T, n> & v) {
+        return v;
+    }
+
+    template <Floater T, int n>
+    inline Q_CX_ABLE vec<stype<sizeof(T)>, n> round(const vec<T, n> & v) {
+        if constexpr (n == 2) return {round(v.x), round(v.y)};
+        if constexpr (n == 3) return {round(v.x), round(v.y), round(v.z)};
+        if constexpr (n == 4) return {round(v.x), round(v.y), round(v.z), round(v.w)};
+    }
+
+    template <Integer T, int n>
+    inline Q_CX_ABLE vec<T, n> round(const vec<T, n> & v) {
         return v;
     }
 

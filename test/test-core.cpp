@@ -3,12 +3,6 @@
 static void compileTyping() {
     using namespace qc::core::types;
 
-    nat nat_;   nat_;
-    unat unat_; unat_;
-
-    operator""_n(0);
-    operator""_un(0);
-
     s08 s08_; s08_;
     u08 u08_; u08_;
     s16 s16_; s16_;
@@ -19,15 +13,6 @@ static void compileTyping() {
     s64 s64_; s64_;
     u64 u64_; u64_;
     f64 f64_; f64_;
-
-    s08_fast s08_fast_; s08_fast_;
-    u08_fast u08_fast_; u08_fast_;
-    s16_fast s16_fast_; s16_fast_;
-    u16_fast u16_fast_; u16_fast_;
-    s32_fast s32_fast_; s32_fast_;
-    u32_fast u32_fast_; u32_fast_;
-    s64_fast s64_fast_; s64_fast_;
-    u64_fast u64_fast_; u64_fast_;
 
     qc::core::array_t<int> a0{ 1, 2, 3 }; a0;
     qc::core::array_t<int, 1> a1; a1;
@@ -42,15 +27,6 @@ static void compileTyping() {
     qc::core::utype<8> utype_64_; utype_64_;
     qc::core::ftype<4> ftype_32_; ftype_32_;
     qc::core::ftype<8> ftype_64_; ftype_64_;
-
-    qc::core::stype_fast<1> stype_fast_08_; stype_fast_08_;
-    qc::core::stype_fast<2> stype_fast_16_; stype_fast_16_;
-    qc::core::stype_fast<4> stype_fast_32_; stype_fast_32_;
-    qc::core::stype_fast<8> stype_fast_64_; stype_fast_64_;
-    qc::core::utype_fast<1> utype_fast_08_; utype_fast_08_;
-    qc::core::utype_fast<2> utype_fast_16_; utype_fast_16_;
-    qc::core::utype_fast<4> utype_fast_32_; utype_fast_32_;
-    qc::core::utype_fast<8> utype_fast_64_; utype_fast_64_;
 
     pair<int, int> p;
 

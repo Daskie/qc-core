@@ -25,8 +25,6 @@ namespace qc::core {
         template <int n> using uispan = span< u32, n>;
         template <int n> using  lspan = span< s64, n>;
         template <int n> using ulspan = span< u64, n>;
-        template <int n> using  nspan = span< nat, n>;
-        template <int n> using unspan = span<unat, n>;
 
         using  fspan1 = span1< f32>;
         using  fspan2 = span2< f32>;
@@ -68,14 +66,6 @@ namespace qc::core {
         using ulspan2 = span2< u64>;
         using ulspan3 = span3< u64>;
         using ulspan4 = span4< u64>;
-        using  nspan1 = span1< nat>;
-        using  nspan2 = span2< nat>;
-        using  nspan3 = span3< nat>;
-        using  nspan4 = span4< nat>;
-        using unspan1 = span1<unat>;
-        using unspan2 = span2<unat>;
-        using unspan3 = span3<unat>;
-        using unspan4 = span4<unat>;
 
     }
 

@@ -24,8 +24,6 @@ namespace qc::core {
         template <int n> using uivec = vec< u32, n>;
         template <int n> using  lvec = vec< s64, n>;
         template <int n> using ulvec = vec< u64, n>;
-        template <int n> using  nvec = vec< nat, n>;
-        template <int n> using unvec = vec<unat, n>;
         template <int n> using  bvec = vec<bool, n>;
 
         using  fvec2 = vec< f32, 2>;
@@ -58,12 +56,6 @@ namespace qc::core {
         using ulvec2 = vec< u64, 2>;
         using ulvec3 = vec< u64, 3>;
         using ulvec4 = vec< u64, 4>;
-        using  nvec2 = vec< nat, 2>;
-        using  nvec3 = vec< nat, 3>;
-        using  nvec4 = vec< nat, 4>;
-        using unvec2 = vec<unat, 2>;
-        using unvec3 = vec<unat, 3>;
-        using unvec4 = vec<unat, 4>;
         using  bvec2 = vec<bool, 2>;
         using  bvec3 = vec<bool, 3>;
         using  bvec4 = vec<bool, 4>;

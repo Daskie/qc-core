@@ -116,7 +116,7 @@ namespace qc::core {
     //   - an operator() that returns a `result_type` whose bits are fully saturated
     //   - a static method `max` that returns the maximum `result_type` that may be generated
     //
-    template <typename Engine = std::conditional_t<sizeof(nat) <= 4u, std::mt19937, std::mt19937_64>>
+    template <typename Engine = std::conditional_t<sizeof(intptr_t) <= 4u, std::mt19937, std::mt19937_64>>
     class Random {
 
         public:
@@ -191,17 +191,17 @@ namespace qc::core {
     // Generates n random values between `min` and `1`, the sum of which equals `1`.
     // If `min * n > 1`, `min` will be scaled down so that `min * n == 1`.
     //
-    //inline void randomDistribution(unat n, float * dest, float min) {
+    //inline void randomDistribution(uint n, float * dest, float min) {
     //    if (min * n > 1.0f) {
     //        min = 1.0f / n;
     //    }
     //    float total = 0.0f;
     //    float excess = max(1.0f - n * min, 0.0f);
-    //    for (unat i(0); i < n; ++i) {
+    //    for (uint i(0); i < n; ++i) {
     //        dest[i] = rand(0.0f, 1.0f);
     //        total += dest[i];
     //    }
-    //    for (unat i(0); i < n; ++i) {
+    //    for (uint i(0); i < n; ++i) {
     //        dest[i] = dest[i] / total * excess + min;
     //    }
     //}

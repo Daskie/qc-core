@@ -39,21 +39,6 @@ namespace qc::core {
         using f32 = float;
         using f64 = double;
 
-        using s08_fast = int_fast8_t;
-        using s16_fast = int_fast16_t;
-        using s32_fast = int_fast32_t;
-        using s64_fast = int_fast64_t;
-        using u08_fast = uint_fast8_t;
-        using u16_fast = uint_fast16_t;
-        using u32_fast = uint_fast32_t;
-        using u64_fast = uint_fast64_t;
-
-        using  nat =  intptr_t;
-        using unat = uintptr_t;
-
-        constexpr  nat  operator""_n(unsigned long long int v) { return  nat(v); }
-        constexpr unat operator""_un(unsigned long long int v) { return unat(v); }
-
         using std::move;
         using std::forward;
 
@@ -77,15 +62,13 @@ namespace qc::core {
     template <typename T, int n = 0> using array_t = typename _array_t_struct<T, n>::type;
 
     template <int size> struct sized;
-    template <> struct sized<1> { using stype = s08; using utype = u08;                    using stype_fast = s08_fast; using utype_fast = u08_fast; };
-    template <> struct sized<2> { using stype = s16; using utype = u16;                    using stype_fast = s16_fast; using utype_fast = u16_fast; };
-    template <> struct sized<4> { using stype = s32; using utype = u32; using ftype = f32; using stype_fast = s32_fast; using utype_fast = u32_fast; };
-    template <> struct sized<8> { using stype = s64; using utype = u64; using ftype = f64; using stype_fast = s64_fast; using utype_fast = u64_fast; };
+    template <> struct sized<1> { using stype = s08; using utype = u08;                    };
+    template <> struct sized<2> { using stype = s16; using utype = u16;                    };
+    template <> struct sized<4> { using stype = s32; using utype = u32; using ftype = f32; };
+    template <> struct sized<8> { using stype = s64; using utype = u64; using ftype = f64; };
     template <int size> using stype = typename sized<size>::stype;
     template <int size> using utype = typename sized<size>::utype;
     template <int size> using ftype = typename sized<size>::ftype;
-    template <int size> using stype_fast = typename sized<size>::stype_fast;
-    template <int size> using utype_fast = typename sized<size>::utype_fast;
 
     template <typename T> using remove_cvref_t = std::remove_cv_t<std::remove_reference_t<T>>;
 

@@ -57,6 +57,30 @@ namespace qc::core {
     template <Number T> Q_CX_ABLE int sign(T v);
 
     //
+    // Returns `v` stripped of any fractional part.
+    // If `T` is a float, only works for values that can fit in an `s32`.
+    // If `T` is a double, only works for values that can fit in a `s64`.
+    // If `T` is integral, simply returns `v`.
+    //
+    template <Number T> Q_CX_ABLE T trunc(T v);
+
+    //
+    // ...
+    // ~2x faster than std::floor
+    // doesn't work with extememly large or extremely small floating point values
+    //
+    template <Floater T> Q_CX_ABLE stype<sizeof(T)> floor(T v);
+    template <Integer T> Q_CX_ABLE T floor(T v);
+
+    //
+    // ...
+    // ~2x faster than std::ceil
+    // doesn't work with extememly large or extremely small floating point values
+    //
+    template <Floater T> Q_CX_ABLE stype<sizeof(T)> ceil(T v);
+    template <Integer T> Q_CX_ABLE T ceil(T v);
+
+    //
     // ...
     // ~12x faster than std::llround
     // Only works for "normal" values of absolute magnitude smaller than roughly one quadrillion for doubles or one million for floats
@@ -65,22 +89,6 @@ namespace qc::core {
     Q_CX_ABLE s64 round(double v);
     Q_CX_ABLE s32 round(float v);
     template <Integer T> Q_CX_ABLE T round(T v);
-
-    //
-    // ...
-    // ~2x faster than std::floor
-    // doesn't work with extememly large or extremely small floating point values
-    //
-    template <Floater T> Q_CX_ABLE nat floor(T v);
-    template <Integer T> Q_CX_ABLE T floor(T v);
-
-    //
-    // ...
-    // ~2x faster than std::ceil
-    // doesn't work with extememly large or extremely small floating point values
-    //
-    template <Floater T> Q_CX_ABLE nat ceil(T v);
-    template <Integer T> Q_CX_ABLE T ceil(T v);
 
     //
     // ...
@@ -136,7 +144,7 @@ namespace qc::core {
     //
     // ...
     //
-    template <Floater T> Q_CX_ABLE pair<T, nat> fract_i(T v);
+    template <Floater T> Q_CX_ABLE pair<T, stype<sizeof(T)>> fract_i(T v);
 
     //
     // ...
@@ -275,25 +283,20 @@ namespace qc::core {
         }
     }
 
-    inline Q_CX_ABLE s64 round(double v) {
-        static_assert((s64(-1) >> 1) == s64(-1)); // Right bit shift on signed integer must be arithmetic
-        return reinterpret_cast<s64 &>(v += 6755399441055744.0) << 13 >> 13;
-    }
-
-    inline Q_CX_ABLE s32 round(float v) {
-        static_assert((s32(-1) >> 1) == s32(-1)); // Right bit shift on signed integer must be arithmetic
-        return reinterpret_cast<s32 &>(v += 12582912.0f) << 10 >> 10;
-    }
-
-    template <Integer T>
-    inline Q_CX_ABLE T round(T v) {
-        return v;
+    template <Number T>
+    inline Q_CX_ABLE T trunc(T v) {
+        if constexpr (std::is_floating_point_v<T>) {
+            return T(stype<sizeof(T)>(v));
+        }
+        else {
+            return v;
+        }
     }
 
     template <Floater T>
-    Q_CX_ABLE nat floor(T v) {
-        nat i{nat(v)};
-        return i - (v < i);
+    Q_CX_ABLE stype<sizeof(T)> floor(T v) {
+        stype<sizeof(T)> i{stype<sizeof(T)>(v)};
+        return i - (v < T(i));
     }
 
     template <Integer T>
@@ -302,13 +305,32 @@ namespace qc::core {
     }
 
     template <Floater T>
-    inline Q_CX_ABLE nat ceil(T v) {
-        nat i{nat(v)};
-        return i + (v > i);
+    inline Q_CX_ABLE stype<sizeof(T)> ceil(T v) {
+        stype<sizeof(T)> i{stype<sizeof(T)>(v)};
+        return i + (v > T(i));
     }
 
     template <Integer T>
     inline Q_CX_ABLE T ceil(T v) {
+        return v;
+    }
+
+    inline Q_CX_ABLE s64 round(double v) {
+        // Right bit shift on signed integer must be arithmetic
+        static_assert((s64(-1) >> 1) == s64(-1));
+
+        return reinterpret_cast<s64 &>(v += 6755399441055744.0) << 13 >> 13;
+    }
+
+    inline Q_CX_ABLE s32 round(float v) {
+        // Right bit shift on signed integer must be arithmetic
+        static_assert((s32(-1) >> 1) == s32(-1));
+
+        return reinterpret_cast<s32 &>(v += 12582912.0f) << 10 >> 10;
+    }
+
+    template <Integer T>
+    inline Q_CX_ABLE T round(T v) {
         return v;
     }
 
@@ -393,13 +415,13 @@ namespace qc::core {
 
     template <Floater T>
     inline Q_CX_ABLE T fract(T v) {
-        return v - nat(v);
+        return v - trunc(v);
     }
 
     template <Floater T>
-    inline Q_CX_ABLE pair<T, nat> fract_i(T v) {
-        nat i = nat(v);
-        return { v - i, i };
+    inline Q_CX_ABLE pair<T, stype<sizeof(T)>> fract_i(T v) {
+        stype<sizeof(T)> i{stype<sizeof(T)>(v)};
+        return { v - T(i), i };
     }
 
     template <Number T>
