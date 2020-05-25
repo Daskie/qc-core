@@ -1,6 +1,13 @@
 #pragma once
 
+// TODO: remove this nonsense once IntelliSense supports concepts
+#ifdef __cpp_lib_concepts
 #include <concepts>
+#else
+#define __cpp_lib_concepts
+#include <concepts>
+#undef __cpp_lib_concepts
+#endif
 #include <cstdint>
 #include <limits>
 #include <utility>
