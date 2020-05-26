@@ -19,18 +19,12 @@ namespace qc::core {
     //
     class Clock {
 
-        private:
-
-        std::chrono::high_resolution_clock::time_point _start;
-        double _period;
-        double _frequency;
-
         public:
 
         //
         // constructs clock with 1.0 sec period and 1.0 sec frequency
         //
-        Clock(float frequency = 1.0f);
+        Clock(double frequency = 1.0f);
 
         //
         // ...
@@ -48,7 +42,7 @@ namespace qc::core {
         //
         // the integral number or cycles since the clock started
         //
-        nat cycles() const;
+        int cycles() const;
 
         //
         // the fractional part of the current cycle
@@ -67,6 +61,12 @@ namespace qc::core {
         double frequency() const;
         void frequency(double frequency);
 
+        private:
+
+        std::chrono::steady_clock::time_point _start;
+        double _period;
+        double _frequency;
+
     };
 
 }
@@ -76,34 +76,34 @@ namespace qc::core {
 namespace qc::core {
 
     inline s64 now() {
-        return std::chrono::nanoseconds(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
+        return std::chrono::nanoseconds(std::chrono::steady_clock::now().time_since_epoch()).count();
     }
 
-    inline Clock::Clock(float frequency) :
+    inline Clock::Clock(double frequency) :
         _start(),
-        _period(1.0f / frequency),
+        _period(1.0 / frequency),
         _frequency(frequency)
     {}
 
     inline void Clock::restart() {
-        _start = std::chrono::high_resolution_clock::now();
+        _start = std::chrono::steady_clock::now();
     }
 
     inline void Clock::restart(s64 t) {
-        _start = std::chrono::high_resolution_clock::time_point(std::chrono::nanoseconds(t));
+        _start = std::chrono::steady_clock::time_point(std::chrono::nanoseconds(t));
     }
 
     inline double Clock::age() const {
-        return std::chrono::duration_cast<std::chrono::duration<double>>(std::chrono::high_resolution_clock::now() - _start).count() * _frequency;
+        return std::chrono::duration<double>(std::chrono::steady_clock::now() - _start).count() * _frequency;
     }
 
-    inline nat Clock::cycles() const {
-        return nat(age());
+    inline int Clock::cycles() const {
+        return int(age());
     }
 
     inline double Clock::time() const {
         double a(age());
-        return a - nat(a);
+        return a - double(int(a));
     }
 
     inline double Clock::period() const {
