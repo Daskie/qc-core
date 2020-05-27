@@ -57,8 +57,6 @@ namespace qc::core {
         mat2<T> & operator=(const mat2<T> & m) noexcept = default;
         mat2<T> & operator=(mat2<T> && m) noexcept = default;
 
-        template <Floater U, int n> mat2<T> & operator=(const mat<U, n> & m) noexcept;
-
         vec2<T> & col(int i);
         const vec2<T> & col(int i) const;
 
@@ -97,8 +95,6 @@ namespace qc::core {
 
         mat3<T> & operator=(const mat3<T> & m) noexcept = default;
         mat3<T> & operator=(mat3<T> && m) noexcept = default;
-
-        template <Floater U, int n> mat3<T> & operator=(const mat<U, n> & m) noexcept;
 
         vec3<T> & col(int i);
         const vec3<T> & col(int i) const;
@@ -141,8 +137,6 @@ namespace qc::core {
 
         mat4<T> & operator=(const mat4<T> & m) noexcept = default;
         mat4<T> & operator=(mat4<T> && m) noexcept = default;
-
-        template <Floater U, int n> mat4<T> & operator=(const mat<U, n> & m) noexcept;
 
         vec4<T> & col(int i);
         const vec4<T> & col(int i) const;
@@ -252,15 +246,6 @@ namespace qc::core {
     {}
 
     template <Floater T>
-    template <Floater U, int n>
-    inline mat2<T> & mat<T, 2>::operator=(const mat<U, n> & m) noexcept {
-        if constexpr (n >= 1) c1 = m.c1; else c1 = vec2<T>(T(1.0), T(0.0));
-        if constexpr (n >= 2) c2 = m.c2; else c2 = vec2<T>(T(0.0), T(1.0));
-
-        return *this;
-    }
-
-    template <Floater T>
     inline vec2<T> & mat<T, 2>::col(int i) {
         return *(&c1 + i);
     }
@@ -340,16 +325,6 @@ namespace qc::core {
         c2(m.c2),
         c3(m.c3)
     {}
-
-    template <Floater T>
-    template <Floater U, int n>
-    inline mat3<T> & mat<T, 3>::operator=(const mat<U, n> & m) noexcept {
-        if constexpr (n >= 1) c1 = m.c1; else c1 = vec3<T>(T(1.0), T(0.0), T(0.0));
-        if constexpr (n >= 2) c2 = m.c2; else c2 = vec3<T>(T(0.0), T(1.0), T(0.0));
-        if constexpr (n >= 3) c3 = m.c3; else c3 = vec3<T>(T(0.0), T(0.0), T(1.0));
-
-        return *this;
-    }
 
     template <Floater T>
     inline vec3<T> & mat<T, 3>::col(int i) {
@@ -440,17 +415,6 @@ namespace qc::core {
         c3(m.c3),
         c4(m.c4)
     {}
-
-    template <Floater T>
-    template <Floater U, int n>
-    inline mat4<T> & mat<T, 4>::operator=(const mat<U, n> & m) noexcept {
-        if constexpr (n >= 1) c1 = m.c1; else c1 = vec4<T>(T(1.0), T(0.0), T(0.0), T(0.0));
-        if constexpr (n >= 2) c2 = m.c2; else c2 = vec4<T>(T(0.0), T(1.0), T(0.0), T(0.0));
-        if constexpr (n >= 3) c3 = m.c3; else c3 = vec4<T>(T(0.0), T(0.0), T(1.0), T(0.0));
-        if constexpr (n >= 4) c4 = m.c4; else c4 = vec4<T>(T(0.0), T(0.0), T(0.0), T(1.0));
-
-        return *this;
-    }
 
     template <Floater T>
     inline vec4<T> & mat<T, 4>::col(int i) {

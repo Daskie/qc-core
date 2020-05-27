@@ -139,15 +139,16 @@ namespace qc::core {
     // ...
     // If `depth0to1` is true, the resulting z will be in [0, 1], else [-1, 1]
     // `vfov` is the full vertical field of view
-    // `aspect` is the "screen" width divided by height
+    // `aspect` is the "screen" height divided by width
     //
-    template <bool depth0To1, typename T> mat4<T> perspProj(T hfov, T aspect, T near, T far);
+    template <bool depth0To1, typename T> mat4<T> perspProj(T vfov, T aspect, T near, T far);
 
     //
     // ...
-    // forward and up must not be parallel
+    // `camLoc` and `lookAt` must not be the same point.
+    // The camera must not be looking parallel to `up`.
     //
-    template <typename T> mat4<T> view(const vec3<T> & camLoc, const vec3<T> & camForward, const vec3<T> & up);
+    template <typename T> mat4<T> view(const vec3<T> & camLoc, const vec3<T> & lookAt, const vec3<T> & up);
 
     //
     // ...
@@ -641,7 +642,7 @@ namespace qc::core {
         T invTop(T(1.0) / std::tan(vfov * T(0.5)));
         T invNearMinusFar(T(1.0) / (near - far));
         return {
-            invTop / aspect, T(0.0), T(0.0), T(0.0),
+            invTop * aspect, T(0.0), T(0.0), T(0.0),
             T(0.0), invTop, T(0.0), T(0.0),
             T(0.0), T(0.0), (depth0To1 ? far : far + near) * invNearMinusFar, T(-1.0),
             T(0.0), T(0.0), (depth0To1 ? far : T(2.0) * far) * near * invNearMinusFar, T(0.0)

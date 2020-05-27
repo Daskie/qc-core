@@ -138,7 +138,7 @@ namespace qc::core {
 
     template <Floater T>
     inline vec2<T> pointOnDiscFibonacci(int i, int n) {
-        return polarToCartesian(qc::vec2<T>(
+        return polarToCartesian(vec2<T>(
             std::sqrt(T(i) / T(n - 1)),
             T(2.0) * pi<T> * (T(2.0) - phi<T>) * T(i)
         ));
@@ -147,14 +147,12 @@ namespace qc::core {
     template <Floater T>
     inline vec3<T> pointOnSphereFibonacci(int i, int n) {
         T z(T(1.0) - T(2 * i) / T(n - 1));
-        return cylindricToCartesian(qc::vec3<T>(
+        return cylindricToCartesian(vec3<T>(
             std::sqrt(T(1.0) - z * z),
             T(2.0) * pi<T> * (T(2.0) - phi<T>) * T(i),
             z
         ));
     }
-
-
 
     template <typename T>
     struct Dampener {

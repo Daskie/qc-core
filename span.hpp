@@ -84,8 +84,6 @@ namespace qc::core {
         span & operator=(const span & v) noexcept = default;
         span & operator=(span && v) noexcept = default;
 
-        template <int m> span & operator=(const span<T, m> & v) noexcept;
-
     };
 
     template <Number T> struct span<T, 2> {
@@ -103,8 +101,6 @@ namespace qc::core {
 
         span & operator=(const span & v) noexcept = default;
         span & operator=(span && v) noexcept = default;
-
-        template <int m> span & operator=(const span<T, m> & v) noexcept;
 
         Q_CONSTEX span1<T> x() const noexcept;
         Q_CONSTEX span1<T> y() const noexcept;
@@ -128,8 +124,6 @@ namespace qc::core {
 
         span & operator=(const span & v) noexcept = default;
         span & operator=(span && v) noexcept = default;
-
-        template <int m> span & operator=(const span<T, m> & v) noexcept;
 
         Q_CONSTEX span1<T> x() const noexcept;
         Q_CONSTEX span1<T> y() const noexcept;
@@ -161,8 +155,6 @@ namespace qc::core {
 
         span & operator=(const span & v) noexcept = default;
         span & operator=(span && v) noexcept = default;
-
-        template <int m> span & operator=(const span<T, m> & v) noexcept;
 
         Q_CONSTEX span1<T> x() const noexcept;
         Q_CONSTEX span1<T> y() const noexcept;
@@ -229,14 +221,6 @@ namespace qc::core {
     {}
 
     template <Number T>
-    template <int m>
-    inline span1<T> & span<T, 1>::operator=(const span<T, m> & v) noexcept {
-        min = v.min.x;
-        max = v.max.x;
-        return *this;
-    }
-
-    template <Number T>
     template <Number U, int m>
     inline constexpr span<T, 2>::span(const span<U, m> & v) noexcept :
         min(v.min),
@@ -260,14 +244,6 @@ namespace qc::core {
         min(v1.min, v2.min),
         max(v1.max, v2.max)
     {}
-
-    template <Number T>
-    template <int m>
-    inline span2<T> & span<T, 2>::operator=(const span<T, m> & v) noexcept {
-        min = v.min;
-        max = v.max;
-        return *this;
-    }
 
     template <Number T>
     inline Q_CONSTEX span1<T> span<T, 2>::x() const noexcept {
@@ -315,14 +291,6 @@ namespace qc::core {
         min(v1.min, v2.min),
         max(v1.max, v2.max)
     {}
-
-    template <Number T>
-    template <int m>
-    inline span3<T> & span<T, 3>::operator=(const span<T, m> & v) noexcept {
-        min = v.min;
-        max = v.max;
-        return *this;
-    }
 
     template <Number T>
     inline Q_CONSTEX span1<T> span<T, 3>::x() const noexcept {
@@ -409,14 +377,6 @@ namespace qc::core {
         min(v1.min, v2.min),
         max(v1.max, v2.max)
     {}
-
-    template <Number T>
-    template <int m>
-    inline span4<T> & span<T, 4>::operator=(const span<T, m> & v) noexcept {
-        min = v.min;
-        max = v.max;
-        return *this;
-    }
 
     template <Number T>
     inline Q_CONSTEX span1<T> span<T, 4>::x() const noexcept {

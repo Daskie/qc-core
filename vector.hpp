@@ -83,9 +83,6 @@ namespace qc::core {
         vec & operator=(const vec & v) noexcept = default;
         vec & operator=(vec && v) noexcept = default;
 
-        vec & operator=(T v) noexcept;
-        template <int n> vec & operator=(const vec<T, n> & v) noexcept;
-
         template <int i> T & at() noexcept;
         template <int i> constexpr T at() const noexcept;
 
@@ -117,9 +114,6 @@ namespace qc::core {
 
         vec & operator=(const vec & v) noexcept = default;
         vec & operator=(vec && v) noexcept = default;
-
-        vec & operator=(T v) noexcept;
-        template <int n> vec & operator=(const vec<T, n> & v) noexcept;
 
         template <int i> T & at() noexcept;
         template <int i> constexpr T at() const noexcept;
@@ -171,9 +165,6 @@ namespace qc::core {
 
         vec & operator=(const vec & v) noexcept = default;
         vec & operator=(vec && v) noexcept = default;
-
-        vec & operator=(T v) noexcept;
-        template <int n> vec & operator=(const vec<T, n> & v) noexcept;
 
         template <int i> T & at() noexcept;
         template <int i> constexpr T at() const noexcept;
@@ -433,20 +424,6 @@ namespace qc::core {
     {}
 
     template <NumberOrBoolean T>
-    inline vec2<T> & vec<T, 2>::operator=(T v) noexcept {
-        x = v; y = v;
-        return *this;
-    }
-
-    template <NumberOrBoolean T>
-    template <int n>
-    inline vec2<T> & vec<T, 2>::operator=(const vec<T, n> & v) noexcept {
-        if constexpr (n >= 1) x = v.x; else x = T(0);
-        if constexpr (n >= 2) y = v.y; else y = T(0);
-        return *this;
-    }
-
-    template <NumberOrBoolean T>
     template <int i>
     inline T & vec<T, 2>::at() noexcept {
         static_assert(i >= 0 && i <= 1, "Index out of bounds");
@@ -515,21 +492,6 @@ namespace qc::core {
     inline Q_CX_ABLE vec<T, 3>::vec(T v1, const vec2<T> & v2) noexcept :
         x(v1), y(v2.x), z(v2.y)
     {}
-
-    template <NumberOrBoolean T>
-    inline vec3<T> & vec<T, 3>::operator=(T v) noexcept {
-        x = v; y = v; z = v;
-        return *this;
-    }
-
-    template <NumberOrBoolean T>
-    template <int n>
-    inline vec3<T> & vec<T, 3>::operator=(const vec<T, n> & v) noexcept {
-        if constexpr (n >= 1) x = v.x; else x = T(0);
-        if constexpr (n >= 2) y = v.y; else y = T(0);
-        if constexpr (n >= 3) z = v.z; else z = T(0);
-        return *this;
-    }
 
     template <NumberOrBoolean T>
     template <int i>
@@ -642,22 +604,6 @@ namespace qc::core {
     inline Q_CX_ABLE vec<T, 4>::vec(T v1, const vec3<T> & v2) noexcept :
         x(v1), y(v2.x), z(v2.y), w(v2.z)
     {}
-
-    template <NumberOrBoolean T>
-    inline vec4<T> & vec<T, 4>::operator=(T v) noexcept {
-        x = v; y = v; z = v; w = v;
-        return *this;
-    }
-
-    template <NumberOrBoolean T>
-    template <int n>
-    inline vec4<T> & vec<T, 4>::operator=(const vec<T, n> & v) noexcept {
-        if constexpr (n >= 1) x = v.x; else x = T(0);
-        if constexpr (n >= 2) y = v.y; else y = T(0);
-        if constexpr (n >= 3) z = v.z; else z = T(0);
-        if constexpr (n >= 4) w = v.w; else w = T(0);
-        return *this;
-    }
 
     template <NumberOrBoolean T>
     template <int i>

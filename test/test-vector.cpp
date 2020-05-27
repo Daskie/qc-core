@@ -24,9 +24,6 @@ static void compileClassesT() {
     // assignment
     v2 = v2;
     v2 = std::move(v2);
-    v2 = v;
-    v2 = v3;
-    v2 = v4;
 
     // access
     v2[0];
@@ -51,9 +48,6 @@ static void compileClassesT() {
     // assignment
     v3 = v3;
     v3 = std::move(v3);
-    v3 = v;
-    v3 = v2;
-    v3 = v4;
 
     // access
     v3[0];
@@ -86,9 +80,6 @@ static void compileClassesT() {
     // assignment
     v4 = v4;
     v4 = std::move(v4);
-    v4 = v;
-    v4 = v2;
-    v4 = v3;
 
     // access
     v4[0];
