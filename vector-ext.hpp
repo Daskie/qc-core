@@ -10,7 +10,7 @@ namespace qc::core {
     //
     // ...
     //
-    template <Number T, int n> Q_CX_ABLE duo<T> minmax(const vec<T, n> & v);
+    template <Number T, int n> Q_CX_ABLE std::pair<T, T> minmax(const vec<T, n> & v);
 
     //
     // ...
@@ -187,7 +187,7 @@ namespace qc::core {
 namespace qc::core {
 
     template <Number T, int n>
-    inline Q_CX_ABLE duo<T> minmax(const vec<T, n> & v) {
+    inline Q_CX_ABLE std::pair<T, T> minmax(const vec<T, n> & v) {
         if constexpr (n == 2) return minmax(v.x, v.y);
         if constexpr (n == 3) return minmax(v.x, v.y, v.z);
         if constexpr (n == 4) return minmax(v.x, v.y, v.z, v.w);

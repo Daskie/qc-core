@@ -21,8 +21,8 @@ namespace qc::core::utils {
     }
 
     // Throws `std::system_error` on failure
-    inline pair<std::unique_ptr<std::byte[]>, u64> readFile(const std::filesystem::path & path) {
-        pair<std::unique_ptr<std::byte[]>, u64> result;
+    inline std::pair<std::unique_ptr<std::byte[]>, u64> readFile(const std::filesystem::path & path) {
+        std::pair<std::unique_ptr<std::byte[]>, u64> result;
 
         result.second = std::filesystem::file_size(path);
         if (result.second > std::numeric_limits<size_t>::max() || result.second > u64(std::numeric_limits<std::streamsize>::max())) {

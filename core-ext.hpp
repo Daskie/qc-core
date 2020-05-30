@@ -16,9 +16,9 @@ namespace qc::core {
     //
     // ...
     //
-    template <Number T> Q_CX_ABLE duo<T> minmax(T a);
-    template <Number T> Q_CX_ABLE duo<T> minmax(T a, T b);
-    template <Number T, Number... Ts> Q_CX_ABLE duo<T> minmax(T v1, T v2, Ts... vs);
+    template <Number T> Q_CX_ABLE std::pair<T, T> minmax(T a);
+    template <Number T> Q_CX_ABLE std::pair<T, T> minmax(T a, T b);
+    template <Number T, Number... Ts> Q_CX_ABLE std::pair<T, T> minmax(T v1, T v2, Ts... vs);
 
     //
     // ...
@@ -144,7 +144,7 @@ namespace qc::core {
     //
     // ...
     //
-    template <Floater T> Q_CX_ABLE pair<T, stype<sizeof(T)>> fract_i(T v);
+    template <Floater T> Q_CX_ABLE std::pair<T, stype<sizeof(T)>> fract_i(T v);
 
     //
     // ...
@@ -155,7 +155,7 @@ namespace qc::core {
     //
     // ...
     //
-    template <Number T> Q_CX_ABLE duo<T> mod_q(T v, T d);
+    template <Number T> Q_CX_ABLE std::pair<T, T> mod_q(T v, T d);
 
     //
     // ...
@@ -210,17 +210,17 @@ namespace qc::core {
 namespace qc::core {
 
     template <Number T>
-    inline Q_CX_ABLE duo<T> minmax(T a) {
+    inline Q_CX_ABLE std::pair<T, T> minmax(T a) {
         return {a, a};
     }
 
     template <Number T>
-    inline Q_CX_ABLE duo<T> minmax(T a, T b) {
-        return (a < b) ? duo<T>{a, b} : duo<T>{b, a};
+    inline Q_CX_ABLE std::pair<T, T> minmax(T a, T b) {
+        return (a < b) ? std::pair<T, T>{a, b} : std::pair<T, T>{b, a};
     }
 
     template <Number T, Number... Ts>
-    inline Q_CX_ABLE duo<T> minmax(T v1, T v2, Ts... vs) {
+    inline Q_CX_ABLE std::pair<T, T> minmax(T v1, T v2, Ts... vs) {
         auto [m1, M1](minmax(v1, v2));
         auto [m2, M2](minmax(vs...));
         return {min(m1, m2), max(M1, M2)};
@@ -419,7 +419,7 @@ namespace qc::core {
     }
 
     template <Floater T>
-    inline Q_CX_ABLE pair<T, stype<sizeof(T)>> fract_i(T v) {
+    inline Q_CX_ABLE std::pair<T, stype<sizeof(T)>> fract_i(T v) {
         stype<sizeof(T)> i{stype<sizeof(T)>(v)};
         return { v - T(i), i };
     }
@@ -435,7 +435,7 @@ namespace qc::core {
     }
 
     template <Number T>
-    inline Q_CX_ABLE duo<T> mod_q(T v, T d) {
+    inline Q_CX_ABLE std::pair<T, T> mod_q(T v, T d) {
         if constexpr (std::is_floating_point_v<T>) {
             T q(v / d);
             return { fract(q) * d, q };

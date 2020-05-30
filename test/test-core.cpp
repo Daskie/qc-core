@@ -27,10 +27,6 @@ static void compileTyping() {
     qc::core::utype<8> utype_64_; utype_64_;
     qc::core::ftype<4> ftype_32_; ftype_32_;
     qc::core::ftype<8> ftype_64_; ftype_64_;
-
-    pair<int, int> p;
-
-    duo<int> d;
 }
 
 template <typename T>

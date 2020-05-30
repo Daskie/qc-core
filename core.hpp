@@ -39,12 +39,6 @@ namespace qc::core {
         using f32 = float;
         using f64 = double;
 
-        using std::move;
-        using std::forward;
-
-        using std::pair;
-        template <typename T> using duo = pair<T, T>;
-
         template <typename T> concept SignedInteger   = std::signed_integral<T> && !std::same_as<T, bool> && !std::same_as<T, char>;
         template <typename T> concept UnsignedInteger = std::unsigned_integral<T> && !std::same_as<T, bool> && !std::same_as<T, char>;
         template <typename T> concept Integer         = SignedInteger<T> || UnsignedInteger<T>;
@@ -127,7 +121,7 @@ namespace qc::core {
 
     template <typename T1, typename T2, typename T3, typename... Ts>
     inline constexpr decltype(auto) min(T1 && v1, T2 && v2, T3 && v3, Ts &&... vs) {
-        return min(min(forward<T1>(v1), forward<T2>(v2)), forward<T3>(v3), forward<Ts>(vs)...);
+        return min(min(std::forward<T1>(v1), std::forward<T2>(v2)), std::forward<T3>(v3), std::forward<Ts>(vs)...);
     }
 
     template <Orderable T>
@@ -137,7 +131,7 @@ namespace qc::core {
 
     template <typename T1, typename T2, typename T3, typename... Ts>
     inline constexpr decltype(auto) max(T1 && v1, T2 && v2, T3 && v3, Ts &&... vs) {
-        return max(max(forward<T1>(v1), forward<T2>(v2)), forward<T3>(v3), forward<Ts>(vs)...);
+        return max(max(std::forward<T1>(v1), std::forward<T2>(v2)), std::forward<T3>(v3), std::forward<Ts>(vs)...);
     }
 
     template <Orderable T>
@@ -147,7 +141,7 @@ namespace qc::core {
 
     template <typename T, typename T1, typename T2, typename... Ts>
     inline T & minify(T & min, T1 && v1, T2 && v2, Ts &&... vs) {
-        return minify(minify(min, forward<T1>(v1)), forward<T2>(v2), forward<Ts>(vs)...);
+        return minify(minify(min, std::forward<T1>(v1)), std::forward<T2>(v2), std::forward<Ts>(vs)...);
     }
 
     template <Orderable T>
@@ -157,7 +151,7 @@ namespace qc::core {
 
     template <typename T, typename T1, typename T2, typename... Ts>
     inline T & maxify(T & min, T1 && v1, T2 && v2, Ts &&... vs) {
-        return maxify(maxify(min, forward<T1>(v1)), forward<T2>(v2), forward<Ts>(vs)...);
+        return maxify(maxify(min, std::forward<T1>(v1)), std::forward<T2>(v2), std::forward<Ts>(vs)...);
     }
 
 }
