@@ -4,7 +4,7 @@
 #include <iostream>
 
 #include "span.hpp"
-#include "vector-func.hpp"
+#include "vector-ext.hpp"
 
 namespace qc::core {
 

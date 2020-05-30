@@ -1,7 +1,7 @@
 #pragma once
 
 #include "matrix.hpp"
-#include "vector-func.hpp"
+#include "vector-ext.hpp"
 
 namespace qc::core {
 

@@ -2,7 +2,7 @@
 
 #include <cmath>
 
-#include "matrix-func.hpp"
+#include "matrix-ext.hpp"
 
 namespace qc::core {
 

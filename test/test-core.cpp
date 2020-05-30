@@ -1,4 +1,4 @@
-#include <qc-core/core-func.hpp>
+#include <qc-core/core-ext.hpp>
 
 static void compileTyping() {
     using namespace qc::core::types;

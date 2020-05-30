@@ -3,7 +3,7 @@
 #include <iostream>
 
 #include "vector.hpp"
-#include "core-func.hpp"
+#include "core-ext.hpp"
 
 namespace qc::core {
 

@@ -1,6 +1,6 @@
 #include <sstream>
 
-#include <qc-core/quaternion-func.hpp>
+#include <qc-core/quaternion-ext.hpp>
 
 template <typename T>
 static void compileClassesT() {

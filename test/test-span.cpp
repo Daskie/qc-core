@@ -1,6 +1,6 @@
 #include <sstream>
 
-#include <qc-core/span-func.hpp>
+#include <qc-core/span-ext.hpp>
 
 template <typename T>
 static void compileClassesT() {
