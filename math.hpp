@@ -24,17 +24,23 @@ namespace qc::core {
 
     //r is radius, theta is angle on xy plane, phi is angle from z axis
     template <Floater T>
-    inline vec3<T> sphericalToCartesian(const vec3<T> & v) {
-        T sinTheta = std::sin(v.theta);
-        T cosTheta = std::cos(v.theta);
-        T sinPhi = std::sin(v.phi);
-        T cosPhi = std::cos(v.phi);
+    inline vec3<T> sphericalToCartesian(const T theta, const T phi) {
+        T sinTheta = std::sin(theta);
+        T cosTheta = std::cos(theta);
+        T sinPhi = std::sin(phi);
+        T cosPhi = std::cos(phi);
 
         return {
-            v.rad * sinPhi * cosTheta,
-            v.rad * sinPhi * sinTheta,
-            v.rad * cosPhi
+            sinPhi * cosTheta,
+            sinPhi * sinTheta,
+            cosPhi
         };
+    }
+
+    //r is radius, theta is angle on xy plane, phi is angle from z axis
+    template <Floater T>
+    inline vec3<T> sphericalToCartesian(const vec3<T> & v) {
+        return sphericalToCartesian(v.y, v.z) * v.r;
     }
 
     template <Floater T>
@@ -65,7 +71,7 @@ namespace qc::core {
         };
     }
 
-    //a is distance from vertex A in range [0, 1] (can be outside range and outside triangle), AX, AY, and AZ define cartesian location of A
+    //a is distance from vertex A in range [0, 1] (can be outside range and outside triangle), AX, AY, and AZ define cartesian position of A
     inline fvec2 barycentricToCartesian(const fvec3 & v, const fvec2 & A, const fvec2 & B, const fvec2 & C) {
         return fvec2(
             v.x * A.x + v.y * B.x + v.z * C.x,

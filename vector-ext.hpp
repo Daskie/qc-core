@@ -133,6 +133,11 @@ namespace qc::core {
     //
     // ...
     //
+    template <Number T, int n> Q_CX_ABLE ivec<n> sign(const vec<T, n> & v);
+
+    //
+    // ...
+    //
     template <Floater T, int n> Q_CX_ABLE vec<stype<sizeof(T)>, n> round(const vec<T, n> & v);
     template <Integer T, int n> Q_CX_ABLE vec<T, n> round(const vec<T, n> & v);
 
@@ -414,6 +419,13 @@ namespace qc::core {
     template <Floater T, int n>
     inline Q_CX_ABLE bool equal_e(const vec<T, n> & v, T e) {
         return zero(v - v.x, e);
+    }
+
+    template <Number T, int n>
+    inline Q_CX_ABLE ivec<n> sign(const vec<T, n> & v) {
+        if constexpr (n == 2) return {sign(v.x), sign(v.y)};
+        if constexpr (n == 3) return {sign(v.x), sign(v.y), sign(v.z)};
+        if constexpr (n == 4) return {sign(v.x), sign(v.y), sign(v.z), sign(v.w)};
     }
 
     template <Floater T, int n>

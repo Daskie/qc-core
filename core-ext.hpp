@@ -253,14 +253,19 @@ namespace qc::core {
         if constexpr (std::is_floating_point_v<T>) {
             return abs(v) < e;
         }
-        if constexpr (std::is_integral_v<T>) {
+        else {
             return v == T(0);
         }
     }
 
     template <typename T>
     inline Q_CX_ABLE bool equal(const T & v1, const T & v2) {
-        return v1 == v2;
+        if constexpr (std::is_floating_point_v<T>) {
+            return zero(v1 - v2);
+        }
+        else {
+            return v1 == v2;
+        }
     }
 
     template <typename T, typename... Ts>

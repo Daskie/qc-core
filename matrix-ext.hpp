@@ -145,19 +145,19 @@ namespace qc::core {
 
     //
     // ...
-    // `camLoc` and `lookAt` must not be the same point.
+    // `camPos` and `lookAt` must not be the same point.
     // The camera must not be looking parallel to `up`.
     //
-    template <typename T> mat4<T> view(const vec3<T> & camLoc, const vec3<T> & lookAt, const vec3<T> & up);
+    template <typename T> mat4<T> view(const vec3<T> & camPos, const vec3<T> & lookAt, const vec3<T> & up);
 
     //
     // ...
     //
-    template <typename T> mat4<T> view(const vec3<T> & camLoc, const vec3<T> & camU, const vec3<T> & camV, const vec3<T> & camW);
-    template <typename T> mat4<T> view_n(const vec3<T> & camLoc, const vec3<T> & camU, const vec3<T> & camV, const vec3<T> & camW);
+    template <typename T> mat4<T> view(const vec3<T> & camPos, const vec3<T> & camU, const vec3<T> & camV, const vec3<T> & camW);
+    template <typename T> mat4<T> view_n(const vec3<T> & camPos, const vec3<T> & camU, const vec3<T> & camV, const vec3<T> & camW);
     // basis vectors are orthonormal (optimination)
-    template <typename T> mat4<T> view_o(const vec3<T> & camLoc, const vec3<T> & camU, const vec3<T> & camV, const vec3<T> & camW);
-    template <typename T> mat4<T> view_on(const vec3<T> & camLoc, const vec3<T> & camU, const vec3<T> & camV, const vec3<T> & camW);
+    template <typename T> mat4<T> view_o(const vec3<T> & camPos, const vec3<T> & camU, const vec3<T> & camV, const vec3<T> & camW);
+    template <typename T> mat4<T> view_on(const vec3<T> & camPos, const vec3<T> & camU, const vec3<T> & camV, const vec3<T> & camW);
 
 }
 
@@ -650,32 +650,32 @@ namespace qc::core {
     }
 
     template <typename T>
-    inline mat4<T> view(const vec3<T> & camLoc, const vec3<T> & lookAt, const vec3<T> & up) {
-        vec3<T> w(normalize(camLoc - lookAt));
+    inline mat4<T> view(const vec3<T> & camPos, const vec3<T> & lookAt, const vec3<T> & up) {
+        vec3<T> w(normalize(camPos - lookAt));
         vec3<T> u(normalize(cross(up, w)));
         vec3<T> v(cross(w, u));
 
-        return view_on(camLoc, u, v, w);
+        return view_on(camPos, u, v, w);
     }
 
     template <typename T>
-    inline mat4<T> view(const vec3<T> & camLoc, const vec3<T> & camU, const vec3<T> & camV, const vec3<T> & camW) {
-        return view_n(camLoc, normalize(camU), normalize(camV), normalize(camW));
+    inline mat4<T> view(const vec3<T> & camPos, const vec3<T> & camU, const vec3<T> & camV, const vec3<T> & camW) {
+        return view_n(camPos, normalize(camU), normalize(camV), normalize(camW));
     }
 
     template <typename T>
-    inline mat4<T> view_n(const vec3<T> & camLoc, const vec3<T> & camU, const vec3<T> & camV, const vec3<T> & camW) {
-        return mat4<T>(mapTo(camU, camV, camW)) * translate(-camLoc);
+    inline mat4<T> view_n(const vec3<T> & camPos, const vec3<T> & camU, const vec3<T> & camV, const vec3<T> & camW) {
+        return mat4<T>(mapTo(camU, camV, camW)) * translate(-camPos);
     }
 
     template <typename T>
-    inline mat4<T> view_o(const vec3<T> & camLoc, const vec3<T> & camU, const vec3<T> & camV, const vec3<T> & camW) {
-        return view_on(camLoc, normalize(camU), normalize(camV), normalize(camW));
+    inline mat4<T> view_o(const vec3<T> & camPos, const vec3<T> & camU, const vec3<T> & camV, const vec3<T> & camW) {
+        return view_on(camPos, normalize(camU), normalize(camV), normalize(camW));
     }
 
     template <typename T>
-    inline mat4<T> view_on(const vec3<T> & camLoc, const vec3<T> & camU, const vec3<T> & camV, const vec3<T> & camW) {
-        vec3<T> trans(-camLoc);
+    inline mat4<T> view_on(const vec3<T> & camPos, const vec3<T> & camU, const vec3<T> & camV, const vec3<T> & camW) {
+        vec3<T> trans(-camPos);
         return {
                       camU.x,           camV.x,           camW.x, T(0.0),
                       camU.y,           camV.y,           camW.y, T(0.0),

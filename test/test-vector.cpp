@@ -25,6 +25,9 @@ static void compileClassesT() {
     v2 = v2;
     v2 = std::move(v2);
 
+    // Conversion
+    static_cast<bool>(v2);
+
     // access
     v2[0];
 
@@ -48,6 +51,9 @@ static void compileClassesT() {
     // assignment
     v3 = v3;
     v3 = std::move(v3);
+
+    // Conversion
+    static_cast<bool>(v3);
 
     // access
     v3[0];
@@ -80,6 +86,9 @@ static void compileClassesT() {
     // assignment
     v4 = v4;
     v4 = std::move(v4);
+
+    // Conversion
+    static_cast<bool>(v4);
 
     // access
     v4[0];
@@ -128,6 +137,9 @@ static constexpr void compileClassesConstexprT() {
     constexpr qc::core::vec2<T> v2_07(v4);
     constexpr qc::core::vec2<T> v2_08(v, v);
 
+    // Conversion
+    static_cast<bool>(v2);
+
     // access
     v2.at<0>();
     v2.at<1>();
@@ -145,6 +157,9 @@ static constexpr void compileClassesConstexprT() {
     constexpr qc::core::vec3<T> v3_08(v, v, v);
     constexpr qc::core::vec3<T> v3_16(v2, v);
     //constexpr qc::core::vec3<T> v3_18(v, v2);
+
+    // Conversion
+    static_cast<bool>(v3);
 
     // access
     v3.at<0>();
@@ -171,6 +186,9 @@ static constexpr void compileClassesConstexprT() {
     constexpr qc::core::vec4<T> v4_35(v2, v2);
     constexpr qc::core::vec4<T> v4_36(v3, v);
     //constexpr qc::core::vec4<T> v4_38(v, v3);
+
+    // Conversion
+    static_cast<bool>(v4);
 
     // access
     v4.at<0>();
@@ -548,6 +566,10 @@ static void compileFunctionsT() {
     qc::core::equal(v2);
     qc::core::equal(v3);
     qc::core::equal(v4);
+
+    qc::core::sign(v2);
+    qc::core::sign(v3);
+    qc::core::sign(v3);
 
     qc::core::round(v2);
     qc::core::round(v3);
@@ -959,6 +981,10 @@ static constexpr void compileFunctionsConstexprT() {
     //qc::core::equal(v2);
     //qc::core::equal(v3);
     //qc::core::equal(v4);
+
+    //qc::core::sign(v2);
+    //qc::core::sign(v3);
+    //qc::core::sign(v3);
 
     //qc::core::round(v2);
     //qc::core::round(v3);

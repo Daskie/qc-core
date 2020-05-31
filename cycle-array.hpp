@@ -93,29 +93,29 @@ namespace qc::core {
         constexpr CycleArray() noexcept = default;
 
         constexpr CycleArray(const CycleArray & other) :
-            _startIndex(other._startIndex),
+            _frontIndex(other._frontIndex),
             _values(other._values)
         {}
 
         constexpr CycleArray(CycleArray && other) noexcept :
-            _startIndex(other._startIndex),
+            _frontIndex(other._frontIndex),
             _values(std::move(other._values))
         {
             other.startIndex = 0u;
         }
 
         CycleArray & operator=(const CycleArray & other) {
-            _startIndex = other._startIndex;
+            _frontIndex = other._frontIndex;
             _values = other._values;
 
             return *this;
         }
 
         CycleArray & operator=(CycleArray && other) noexcept {
-            _startIndex = other._startIndex;
+            _frontIndex = other._frontIndex;
             _values = std::move(other._values);
 
-            other._startIndex = 0u;
+            other._frontIndex = 0u;
 
             return *this;
         }
@@ -124,7 +124,7 @@ namespace qc::core {
 
         constexpr void swap(CycleArray & other) noexcept {
             std::swap(_values, other._values);
-            std::swap(_startIndex, other._startIndex);
+            std::swap(_frontIndex, other._frontIndex);
         }
 
         void fill(const T & v) {
@@ -144,7 +144,7 @@ namespace qc::core {
         }
 
         constexpr bool empty() const noexcept {
-            return size() == 0u;
+            return false;
         }
 
         constexpr value_type & front() noexcept {
@@ -152,7 +152,7 @@ namespace qc::core {
         }
 
         constexpr const value_type & front() const noexcept {
-            return _values[_startIndex];
+            return _values[_frontIndex];
         }
 
         constexpr value_type & back() noexcept {
@@ -160,7 +160,7 @@ namespace qc::core {
         }
 
         constexpr const value_type & back() const noexcept {
-            return _values[(_startIndex == 0u ? n : _startIndex) - 1u];
+            return _values[(_frontIndex == 0u ? n : _frontIndex) - 1u];
         }
 
         constexpr value_type & operator[](size_t i) {
@@ -168,7 +168,7 @@ namespace qc::core {
         }
 
         constexpr const value_type & operator[](size_t i) const {
-            size_t absoluteIndex = _startIndex + i;
+            size_t absoluteIndex = _frontIndex + i;
             if (absoluteIndex >= n) absoluteIndex -= n;
             return _values[absoluteIndex];
         }
@@ -186,11 +186,11 @@ namespace qc::core {
         }
 
         constexpr iterator begin() noexcept {
-            return Iterator<false>(_values.data(), _startIndex, 0);
+            return Iterator<false>(_values.data(), _frontIndex, 0);
         }
 
         constexpr const_iterator begin() const noexcept {
-            return Iterator<true>(_values.data(), _startIndex, 0);
+            return Iterator<true>(_values.data(), _frontIndex, 0);
         }
 
         constexpr const_iterator cbegin() const noexcept {
@@ -198,11 +198,11 @@ namespace qc::core {
         }
 
         constexpr iterator end() noexcept {
-            return Iterator<false>(_values.data(), _startIndex, n);
+            return Iterator<false>(_values.data(), _frontIndex, n);
         }
 
         constexpr const_iterator end() const noexcept {
-            return Iterator<true>(_values.data(), _startIndex, n);
+            return Iterator<true>(_values.data(), _frontIndex, n);
         }
 
         constexpr const_iterator cend() const noexcept {
@@ -213,20 +213,24 @@ namespace qc::core {
 
         template <typename T_>
         T _push(T_ && v) {
-            T * slot(_values.data() + _startIndex);
+            if (_frontIndex == 0u) {
+                _frontIndex = n - 1u;
+            }
+            else {
+                --_frontIndex;
+            }
+
+            T * const slot(_values.data() + _frontIndex);
 
             T prevVal(std::move(*slot));
             slot->~T();
 
             new (slot) T(std::forward<T_>(v));
 
-            ++_startIndex;
-            if (_startIndex == n) _startIndex = 0;
-
             return prevVal;
         }
 
-        size_t _startIndex{};
+        size_t _frontIndex{0u};
         std::array<T, n> _values{};
 
     };
