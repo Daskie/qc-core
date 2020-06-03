@@ -303,6 +303,38 @@ static void compileFunctionsT() {
 
     // uncategorized
 
+    qc::core::min(s1, v);
+    qc::core::min(s2, v);
+    qc::core::min(s2, v2);
+    qc::core::min(s3, v);
+    qc::core::min(s3, v3);
+    qc::core::min(s4, v);
+    qc::core::min(s4, v4);
+
+    qc::core::max(s1, v);
+    qc::core::max(s2, v);
+    qc::core::max(s2, v2);
+    qc::core::max(s3, v);
+    qc::core::max(s3, v3);
+    qc::core::max(s4, v);
+    qc::core::max(s4, v4);
+
+    qc::core::minify(s1, v);
+    qc::core::minify(s2, v);
+    qc::core::minify(s2, v2);
+    qc::core::minify(s3, v);
+    qc::core::minify(s3, v3);
+    qc::core::minify(s4, v);
+    qc::core::minify(s4, v4);
+
+    qc::core::maxify(s1, v);
+    qc::core::maxify(s2, v);
+    qc::core::maxify(s2, v2);
+    qc::core::maxify(s3, v);
+    qc::core::maxify(s3, v3);
+    qc::core::maxify(s4, v);
+    qc::core::maxify(s4, v4);
+
     qc::core::clamp(v, s1);
     qc::core::clamp(v2, s2);
     qc::core::clamp(v3, s3);
@@ -419,6 +451,22 @@ static constexpr void compileFunctionsConstexprT() {
     //s4 != s4;
 
     // uncategorized
+
+    //qc::core::min(s1, v);
+    //qc::core::min(s2, v);
+    //qc::core::min(s2, v2);
+    //qc::core::min(s3, v);
+    //qc::core::min(s3, v3);
+    //qc::core::min(s4, v);
+    //qc::core::min(s4, v4);
+    //
+    //qc::core::max(s1, v);
+    //qc::core::max(s2, v);
+    //qc::core::max(s2, v2);
+    //qc::core::max(s3, v);
+    //qc::core::max(s3, v3);
+    //qc::core::max(s4, v);
+    //qc::core::max(s4, v4);
 
     //qc::core::clamp(v, s1);
     //qc::core::clamp(v2, s2);

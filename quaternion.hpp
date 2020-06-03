@@ -160,7 +160,7 @@ namespace qc::core {
 
     template <Floater T>
     inline vec3<T> operator*(const quat<T> & q, const vec3<T> & v) {
-        vec3<T> t(T(2.0) * cross(q.a, v));
+        const vec3<T> t(T(2.0) * cross(q.a, v));
         return v + q.w * t + cross(q.a, t);
     }
 

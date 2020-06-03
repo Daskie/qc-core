@@ -47,6 +47,7 @@ static void compileClassesT() {
     m2 -= m2;
     m2 *= v;
     m2 *= m2;
+    v2 *= m2;
     m2 /= T(1);
 
     // arithmetic operators
@@ -109,6 +110,7 @@ static void compileClassesT() {
     m3 -= m3;
     m3 *= v;
     m3 *= m3;
+    v3 *= m3;
     m3 /= T(1);
 
     // arithmetic operators
@@ -170,6 +172,7 @@ static void compileClassesT() {
     m4 -= m4;
     m4 *= v;
     m4 *= m4;
+    v4 *= m4;
     m4 /= T(1);
 
     // arithmetic operators

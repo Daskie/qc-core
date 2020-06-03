@@ -205,22 +205,20 @@ namespace qc::core {
 
     template <typename T>
     inline Q_CX_ABLE mat3<T> toMat(const quat<T> & q) {
-        T wi(q.w   * q.a.x);
-        T wj(q.w   * q.a.y);
-        T wk(q.w   * q.a.z);
-        T ii(q.a.x * q.a.x);
-        T ij(q.a.x * q.a.y);
-        T ik(q.a.x * q.a.z);
-        T jj(q.a.y * q.a.y);
-        T jk(q.a.y * q.a.z);
-        T kk(q.a.z * q.a.z);
-
-        constexpr T _1(1.0), _2(2.0);
+        const T wi(q.w   * q.a.x);
+        const T wj(q.w   * q.a.y);
+        const T wk(q.w   * q.a.z);
+        const T ii(q.a.x * q.a.x);
+        const T ij(q.a.x * q.a.y);
+        const T ik(q.a.x * q.a.z);
+        const T jj(q.a.y * q.a.y);
+        const T jk(q.a.y * q.a.z);
+        const T kk(q.a.z * q.a.z);
 
         return {
-            _1 - _2 * (jj + kk), _2 * (ij + wk), _2 * (ik - wj),
-            _2 * (ij - wk), _1 - _2 * (ii + kk), _2 * (jk + wi),
-            _2 * (ik + wj), _2 * (jk - wi), _1 - _2 * (ii + jj)
+            T(1.0) - T(2.0) * (jj + kk), T(2.0) * (ij + wk), T(2.0) * (ik - wj),
+            T(2.0) * (ij - wk), T(1.0) - T(2.0) * (ii + kk), T(2.0) * (jk + wi),
+            T(2.0) * (ik + wj), T(2.0) * (jk - wi), T(1.0) - T(2.0) * (ii + jj)
         };
     }
 

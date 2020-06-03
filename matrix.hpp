@@ -156,7 +156,8 @@ namespace qc::core {
     template <typename T, int n> mat<T, n> & operator-=(mat<T, n> & m1, const mat<T, n> & m2);
 
     template <typename T, int n> mat<T, n> & operator*=(mat<T, n> & m, T v);
-    template <typename T, int n> mat<T, n> & operator*=(mat<T, n> & m1, const mat<T, n> & m2);
+    template <typename T, int n> mat<T, n> & operator*=(mat<T, n> & m1, const mat<T, n> & m2); // THIS IS EQUIVALENT TO m1 = m2 * m1 !!!
+    template <typename T, int n> vec<T, n> & operator*=(vec<T, n> & v, const mat<T, n> & m);
 
     template <typename T, int n> mat<T, n> & operator/=(mat<T, n> & m, T v);
 
@@ -498,37 +499,17 @@ namespace qc::core {
 
     template <Floater T, int n>
     inline mat<T, n> & operator*=(mat<T, n> & m1, const mat<T, n> & m2) {
-        vec<T, n> temp;
-        if constexpr (n >= 1) {
-            temp = m1.row<0>();
-            if constexpr (n >= 1) m1.c1.x = dot(temp, m2.col<0>());
-            if constexpr (n >= 2) m1.c2.x = dot(temp, m2.col<1>());
-            if constexpr (n >= 3) m1.c3.x = dot(temp, m2.col<2>());
-            if constexpr (n >= 4) m1.c4.x = dot(temp, m2.col<3>());
-        }
-        if constexpr (n >= 2) {
-            temp = (m1.row<1>());
-            if constexpr (n >= 1) m1.c1.y = dot(temp, m2.col<0>());
-            if constexpr (n >= 2) m1.c2.y = dot(temp, m2.col<1>());
-            if constexpr (n >= 3) m1.c3.y = dot(temp, m2.col<2>());
-            if constexpr (n >= 4) m1.c4.y = dot(temp, m2.col<3>());
-        }
-        if constexpr (n >= 3) {
-            temp = (m1.row<2>());
-            if constexpr (n >= 1) m1.c1.z = dot(temp, m2.col<0>());
-            if constexpr (n >= 2) m1.c2.z = dot(temp, m2.col<1>());
-            if constexpr (n >= 3) m1.c3.z = dot(temp, m2.col<2>());
-            if constexpr (n >= 4) m1.c4.z = dot(temp, m2.col<3>());
-        }
-        if constexpr (n >= 4) {
-            temp = (m1.row<3>());
-            if constexpr (n >= 1) m1.c1.w = dot(temp, m2.col<0>());
-            if constexpr (n >= 2) m1.c2.w = dot(temp, m2.col<1>());
-            if constexpr (n >= 3) m1.c3.w = dot(temp, m2.col<2>());
-            if constexpr (n >= 4) m1.c4.w = dot(temp, m2.col<3>());
-        }
+        if constexpr (n >= 1) m1.c1 *= m2;
+        if constexpr (n >= 2) m1.c2 *= m2;
+        if constexpr (n >= 3) m1.c3 *= m2;
+        if constexpr (n >= 4) m1.c4 *= m2;
 
         return m1;
+    }
+
+    template <Floater T, int n>
+    inline vec<T, n> & operator*=(vec<T, n> & v, const mat<T, n> & m) {
+        return v = m * v;
     }
 
     template <Floater T, int n>

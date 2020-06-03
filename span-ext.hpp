@@ -16,6 +16,30 @@ namespace qc::core {
     //
     // ...
     //
+    template <Number T, int n> Q_CX_ABLE span<T, n> min(const span<T, n> & v1, T v2);
+    template <Number T, int n> Q_CX_ABLE span<T, n> min(const span<T, n> & v1, const vec<T, n> & v2);
+
+    //
+    // ...
+    //
+    template <Number T, int n> Q_CX_ABLE span<T, n> max(const span<T, n> & v1, T v2);
+    template <Number T, int n> Q_CX_ABLE span<T, n> max(const span<T, n> & v1, const vec<T, n> & v2);
+
+    //
+    // ...
+    //
+    template <Number T, int n> span<T, n> & minify(span<T, n> & v1, T v2);
+    template <Number T, int n> span<T, n> & minify(span<T, n> & v1, const vec<T, n> & v2);
+
+    //
+    // ...
+    //
+    template <Number T, int n> span<T, n> & maxify(span<T, n> & v1, T v2);
+    template <Number T, int n> span<T, n> & maxify(span<T, n> & v1, const vec<T, n> & v2);
+
+    //
+    // ...
+    //
     template <Number T, int n> Q_CX_ABLE vec<T, n> clamp(const vec<T, n> & v, const span<T, n> & span);
     template <Number T> Q_CX_ABLE T clamp(T v, const span1<T> & span);
 
@@ -50,6 +74,54 @@ namespace qc::core {
         if constexpr (n == 1) os << "]";
         os << "]";
         return os;
+    }
+
+    template <Number T, int n>
+    inline Q_CX_ABLE span<T, n> min(const span<T, n> & v1, const T v2) {
+        return {min(v1.min, v2), min(v1.max, v2)};
+    }
+
+    template <Number T, int n>
+    inline Q_CX_ABLE span<T, n> min(const span<T, n> & v1, const vec<T, n> & v2) {
+        return {min(v1.min, v2), min(v1.max, v2)};
+    }
+
+    template <Number T, int n>
+    inline Q_CX_ABLE span<T, n> max(const span<T, n> & v1, const T v2) {
+        return {max(v1.min, v2), max(v1.max, v2)};
+    }
+
+    template <Number T, int n>
+    inline Q_CX_ABLE span<T, n> max(const span<T, n> & v1, const vec<T, n> & v2) {
+        return {max(v1.min, v2), max(v1.max, v2)};
+    }
+
+    template <Number T, int n>
+    inline span<T, n> & minify(span<T, n> & v1, const T v2) {
+        minify(v1.min, v2);
+        minify(v1.max, v2);
+        return v1;
+    }
+
+    template <Number T, int n>
+    inline span<T, n> & minify(span<T, n> & v1, const vec<T, n> & v2) {
+        minify(v1.min, v2);
+        minify(v1.max, v2);
+        return v1;
+    }
+
+    template <Number T, int n>
+    inline span<T, n> & maxify(span<T, n> & v1, const T v2) {
+        maxify(v1.min, v2);
+        maxify(v1.max, v2);
+        return v1;
+    }
+
+    template <Number T, int n>
+    inline span<T, n> & maxify(span<T, n> & v1, const vec<T, n> & v2) {
+        maxify(v1.min, v2);
+        maxify(v1.max, v2);
+        return v1;
     }
 
     template <Number T, int n>

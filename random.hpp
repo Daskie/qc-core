@@ -9,10 +9,7 @@ namespace qc::core {
     //
     // Transforms random engine `Engine` result into some type `T`
     //
-    template <typename Engine, typename T>
-    struct RandomEngineTransformer {
-        T operator()(typename Engine::result_type result) const;
-    };
+    template <typename Engine, Number T> struct RandomEngineTransformer;
 
     //
     // Specialization for std::mt19937
@@ -21,13 +18,13 @@ namespace qc::core {
     //   - any float
     //   - integral up to 4 bytes
     //
-    template <typename T>
+    template <Number T>
     struct RandomEngineTransformer<std::mt19937, T> {
         T operator()(u32 result) const {
             if constexpr (is_floating_point_v<T>) {
                 return T(result) * T(0x1p-32L);
             }
-            else if constexpr (is_integral_v<T>) {
+            else {
                 static_assert(sizeof(T) <= 4u);
 
                 if constexpr (sizeof(T) < 4u || is_signed_v<T>) {
@@ -36,9 +33,6 @@ namespace qc::core {
                 else {
                     return T(result);
                 }
-            }
-            else {
-                static_assert(false);
             }
         }
     };
@@ -50,13 +44,13 @@ namespace qc::core {
     //   - any float
     //   - integral up to 8 bytes
     //
-    template <typename T>
+    template <Number T>
     struct RandomEngineTransformer<std::mt19937_64, T> {
         T operator()(u64 result) const {
             if constexpr (std::is_floating_point_v<T>) {
                 return T(result) * T(0x1p-64L);
             }
-            else if constexpr (std::is_integral_v<T>) {
+            else {
                 static_assert(sizeof(T) <= 8u);
 
                 if constexpr (sizeof(T) < 8u || std::is_signed_v<T>) {
@@ -65,9 +59,6 @@ namespace qc::core {
                 else {
                     return T(result);
                 }
-            }
-            else {
-                static_assert(false);
             }
         }
     };
@@ -80,13 +71,13 @@ namespace qc::core {
     //   - unsigned up to 2 bytes
     //   - signed up to 4 bytes
     //
-    template <typename T>
+    template <Number T>
     struct RandomEngineTransformer<std::minstd_rand, T> {
         T operator()(u32 result) const {
             if constexpr (std::is_floating_point_v<T>) {
                 return T(result) * T(0x1p-31L);
             }
-            else if constexpr (std::is_integral_v<T>) {
+            else {
                 if constexpr (sizeof(T) < 4u) {
                     return T(result & std::numeric_limits<T>::max());
                 }
@@ -96,9 +87,6 @@ namespace qc::core {
                 else {
                     static_assert(false);
                 }
-            }
-            else {
-                static_assert(false);
             }
         }
     };
@@ -141,44 +129,39 @@ namespace qc::core {
         }
 
         //
-        // Returns a random `T`
-        // If `T` is arithmetic, returns an integer in [0, T_MAX] or a float in [0.0, 1.0)
+        // Returns a random integer in [0, T_MAX] or a float in [0.0, 1.0).
         //
-        template <typename T>
-        T next() {
+        template <Number T>
+        T next() noexcept {
             return RandomEngineTransformer<Engine, T>()(_engine());
         }
 
         //
-        // Returns next random value in [0, `max`)
-        // `T` must be arithmetic
+        // Returns next random value in [0, `max`).
+        // `max` should be less than T_MAX by a few orders of magnitude for best results.
         //
-        template <typename T>
-        T next(T max) {
-            if constexpr (is_integral_v<T>) {
-                return operator()() % max;
-            }
-            else if constexpr (is_floating_point_v<T>) {
-                return operator()() * max;
+        template <Number T>
+        T next(T max) noexcept {
+            if constexpr (std::is_integral_v<T>) {
+                return operator()<T>() % max;
             }
             else {
-                static_assert(false, "`T` is an unsupported type");
+                return operator()<T>() * max;
             }
         }
 
         //
-        // Returns next random value in [`min`, `max`)
-        // `T` must be arithmetic
+        // Returns next random value in [`min`, `max`).
         //
-        template <typename T>
-        T next(T min, T max) {
+        template <Number T>
+        T next(T min, T max) noexcept {
             return operator()(max - min) + min;
         }
 
         //
-        // Returns the seed
+        // Returns the seed.
         //
-        Value seed() const { return _seed;  }
+        Value seed() const noexcept { return _seed;  }
 
         private:
 
@@ -186,24 +169,5 @@ namespace qc::core {
         Engine _engine;
 
     };
-
-    //
-    // Generates n random values between `min` and `1`, the sum of which equals `1`.
-    // If `min * n > 1`, `min` will be scaled down so that `min * n == 1`.
-    //
-    //inline void randomDistribution(uint n, float * dest, float min) {
-    //    if (min * n > 1.0f) {
-    //        min = 1.0f / n;
-    //    }
-    //    float total = 0.0f;
-    //    float excess = max(1.0f - n * min, 0.0f);
-    //    for (uint i(0); i < n; ++i) {
-    //        dest[i] = rand(0.0f, 1.0f);
-    //        total += dest[i];
-    //    }
-    //    for (uint i(0); i < n; ++i) {
-    //        dest[i] = dest[i] / total * excess + min;
-    //    }
-    //}
 
 }

@@ -7,11 +7,25 @@
 namespace qc::core {
 
     template <Floater T>
-    inline vec2<T> polarToCartesian(const vec2<T> & v) {
+    inline vec2<T> polarToCartesian(const T theta) {
         return {
-            v.rad * std::cos(v.theta),
-            v.rad * std::sin(v.theta)
+            std::cos(theta),
+            std::sin(theta)
         };
+    }
+
+    template <Floater T>
+    inline vec2<T> polarToCartesian(const T r, const T theta) {
+        return r * polarToCartesian(theta);
+    }
+
+    //
+    // `v.x` is the radius
+    // `v.y` is theta
+    //
+    template <Floater T>
+    inline vec2<T> polarToCartesian(const vec2<T> & v) {
+        return polarToCartesian(v.x, v.y);
     }
 
     template <Floater T>
@@ -22,22 +36,35 @@ namespace qc::core {
         };
     }
 
-    //r is radius, theta is angle on xy plane, phi is angle from z axis
+    //
+    // `theta` is the angle on the xy plane
+    // `phi` is the angle from the z axis
+    //
     template <Floater T>
     inline vec3<T> sphericalToCartesian(const T theta, const T phi) {
-        T sinTheta = std::sin(theta);
-        T cosTheta = std::cos(theta);
-        T sinPhi = std::sin(phi);
-        T cosPhi = std::cos(phi);
-
+        const T sinPhi(std::sin(phi));
         return {
-            sinPhi * cosTheta,
-            sinPhi * sinTheta,
-            cosPhi
+            sinPhi * std::cos(theta),
+            sinPhi * std::sin(theta),
+            std::cos(phi)
         };
     }
 
-    //r is radius, theta is angle on xy plane, phi is angle from z axis
+    //
+    // `r` is the radius
+    // `theta` is the angle on the xy plane
+    // `phi` is the angle from the z axis
+    //
+    template <Floater T>
+    inline vec3<T> sphericalToCartesian(const T r, const T theta, const T phi) {
+        return r * sphericalToCartesian(theta, phi);
+    }
+
+    //
+    // `v.x` is the radius
+    // `v.y` is theta, or the angle on the xy plane
+    // `v.z` is the angle from the z axis
+    //
     template <Floater T>
     inline vec3<T> sphericalToCartesian(const vec3<T> & v) {
         return sphericalToCartesian(v.y, v.z) * v.r;
@@ -45,25 +72,29 @@ namespace qc::core {
 
     template <Floater T>
     inline vec3<T> cartesianToSpherical(const vec3<T> & v) {
-        T rad(magnitude(v));
+        const T r(magnitude(v));
         return {
-            rad,
+            r,
             std::atan2(v.y, v.x),
-            std::acos(v.z / rad)
+            std::acos(v.z / r)
         };
     }
 
     template <Floater T>
-    inline vec3<T> cylindricToCartesian(const vec3<T> & v) {
+    inline vec3<T> cylindricalToCartesian(const T r, const T theta, const T z) {
         return {
-            v.rad * std::cos(v.theta),
-            v.rad * std::sin(v.theta),
-            v.z
+            polarToCartesian(r, theta),
+            z
         };
     }
 
     template <Floater T>
-    inline vec3<T> cartesianToCylindric(const vec3<T> & v) {
+    inline vec3<T> cylindricalToCartesian(const vec3<T> & v) {
+        return cylindricalToCartesian(v.x, v.y, v.z);
+    }
+
+    template <Floater T>
+    inline vec3<T> cartesianToCylindrical(const vec3<T> & v) {
         return {
             magnitude(v),
             std::atan2(v.y, v.x),
@@ -142,22 +173,55 @@ namespace qc::core {
         return v;
     }
 
+    //
+    // Returns a uniformly distributed point on the perimeter of the unit circle given the random input `v`.
+    // `v` should have a linear distribution in range [0, 1].
+    //
     template <Floater T>
-    inline vec2<T> pointOnDiscFibonacci(int i, int n) {
-        return polarToCartesian(vec2<T>(
-            std::sqrt(T(i) / T(n - 1)),
-            T(2.0) * pi<T> * (T(2.0) - phi<T>) * T(i)
-        ));
+    inline vec2<T> discPoint(const T v) {
+        return polarToCartesian((T(2.0) * pi<T>) * v);
+    }
+
+    //
+    // Returns a uniformly distributed point in the unit circle given the random input `v`.
+    // `v` should have a linear distribution in range [0, 1].
+    //
+    template <Floater T>
+    inline vec2<T> circlePoint(const vec2<T> & v) {
+        return std::sqrt(v.x) * discPoint(v.y);
+    }
+
+    //
+    // Returns a uniformly distributed point on the surface of the unit sphere given the random input `v`.
+    // `v` should have a linear distribution in range [0, 1].
+    //
+    template <Floater T>
+    inline vec3<T> spherePoint(const vec2<T> & v) {
+        return sphericalToCartesian(
+            (T(2.0) * pi<T>) * v.x,
+            std::acos(T(1.0) - T(2.0) * v.y)
+        );
+    }
+
+    //
+    // Returns a uniformly distributed point in the unit sphere given the random input `v`.
+    // `v` should have a linear distribution in range [0, 1].
+    //
+    template <Floater T>
+    inline vec3<T> ballPoint(const vec3<T> & v) {
+        return std::cbrt(v.x) * spherePoint(v.yz());
     }
 
     template <Floater T>
-    inline vec3<T> pointOnSphereFibonacci(int i, int n) {
-        T z(T(1.0) - T(2 * i) / T(n - 1));
-        return cylindricToCartesian(vec3<T>(
-            std::sqrt(T(1.0) - z * z),
-            T(2.0) * pi<T> * (T(2.0) - phi<T>) * T(i),
-            z
-        ));
+    inline vec2<T> circlePointFibonacci(const int i, const int n) {
+        const T p(T(i + 1) / T(n + 1));
+        return circlePoint(vec2<T>(p, phi<T> * T(i)));
+    }
+
+    template <Floater T>
+    inline vec3<T> spherePointFibonacci(const int i, const int n) {
+        const T p(T(i + 1) / T(n + 1));
+        return spherePoint(vec2<T>(phi<T> * T(i), p));
     }
 
     template <typename T>
