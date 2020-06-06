@@ -26,6 +26,9 @@ static void compileClassesT() {
     q = q;
     q = std::move(q);
 
+    // conversion
+    static_cast<bool>(q);
+
     // arithmetic assignment
     q += q;
     q -= q;

@@ -262,9 +262,7 @@ namespace qc::core {
 
     template <int n>
     inline Q_CX_ABLE bool any(const bvec<n> & v) {
-        if constexpr (n == 2) return v.x || v.y;
-        if constexpr (n == 3) return v.x || v.y || v.z;
-        if constexpr (n == 4) return v.x || v.y || v.z || v.w;
+        return bool(v);
     }
 
     template <Number T, int n>

@@ -299,7 +299,7 @@ namespace qc::core {
     }
 
     template <Floater T>
-    Q_CX_ABLE stype<sizeof(T)> floor(T v) {
+    inline Q_CX_ABLE stype<sizeof(T)> floor(T v) {
         stype<sizeof(T)> i{stype<sizeof(T)>(v)};
         return i - (v < T(i));
     }
@@ -364,7 +364,7 @@ namespace qc::core {
 
     // Depreciated in favor of `std::ispow2`
     //template <Integer T>
-    //Q_CONSTEX bool isPow2(T v) {
+    //inline Q_CONSTEX bool isPow2(T v) {
     //    return !(v & (v - T(1)));
     //}
 
@@ -403,7 +403,7 @@ namespace qc::core {
     //}
 
     template <UnsignedInteger T>
-    Q_CX_ABLE int mipmaps(T size) {
+    inline Q_CX_ABLE int mipmaps(T size) {
         return log2Floor(size) + T(1);
     }
 

@@ -17,21 +17,24 @@ namespace qc::core {
 
     template <Floater T> struct quat {
 
-        vec3<T> a;
-        T w;
+        vec3<T> a{};
+        T w{T(1.0)};
 
-        constexpr quat() noexcept;
-        constexpr quat(const quat & q) noexcept = default;
-        constexpr quat(quat && q) noexcept = default;
-
+        constexpr quat() noexcept = default;
         template <Floater U> constexpr explicit quat(const quat<U> & q) noexcept;
-
         constexpr quat(const vec3<T> & a, T w) noexcept;
         constexpr explicit quat(const vec3<T> & v) noexcept;
         constexpr explicit quat(const vec4<T> & v) noexcept;
 
+        constexpr quat(const quat & q) noexcept = default;
+        constexpr quat(quat && q) noexcept = default;
+
         quat & operator=(const quat & q) noexcept = default;
         quat & operator=(quat && q) noexcept = default;
+
+        ~quat() noexcept = default;
+
+        constexpr operator bool() const noexcept;
 
     };
 
@@ -70,11 +73,6 @@ namespace qc::core {
 namespace qc::core {
 
     template <Floater T>
-    inline constexpr quat<T>::quat() noexcept :
-        a(T(0.0)), w(T(1.0))
-    {}
-
-    template <Floater T>
     template <Floater U>
     inline constexpr quat<T>::quat(const quat<U> & q) noexcept :
         a(q.a), w(T(q.w))
@@ -94,6 +92,11 @@ namespace qc::core {
     inline constexpr quat<T>::quat(const vec4<T> & v) noexcept :
         a(v), w(v.w)
     {}
+
+    template <Floater T>
+    inline constexpr quat<T>::operator bool() const noexcept {
+        return !a && w == T(1.0);
+    }
 
     template <Floater T>
     inline quat<T> & operator+=(quat<T> & q1, const quat<T> & q2) {

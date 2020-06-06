@@ -13,7 +13,7 @@
 namespace qc::core::utils {
 
     template <typename T>
-    T pairwiseSum(size_t n, const T * vals) {
+    inline T pairwiseSum(size_t n, const T * vals) {
         if (n == 0u) return T(0);
         if (n == 1u) return vals[0];
         if (n == 2u) return vals[0] + vals[1];

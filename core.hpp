@@ -46,7 +46,7 @@ namespace qc::core {
         template <typename T> concept Number          = Integer<T> || Floater<T>;
         template <typename T> concept Pointer         = std::is_pointer_v<T>;
         template <typename T> concept Orderable       = Number<T> || Pointer<T>;
-        template <typename T> concept NumberOrBoolean = Number<T> || std::is_same_v<T, bool>;
+        template <typename T> concept NumberOrBool    = Number<T> || std::is_same_v<T, bool>;
 
     }
 

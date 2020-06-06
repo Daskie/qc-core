@@ -1161,6 +1161,7 @@ static constexpr void compileCastsT() {
     compileCastsTT<T, qc::core::u16>();
     compileCastsTT<T, qc::core::u32>();
     compileCastsTT<T, qc::core::u64>();
+    compileCastsTT<T, bool>();
 }
 
 static constexpr bool compileCasts() {
@@ -1174,6 +1175,7 @@ static constexpr bool compileCasts() {
     compileCastsT<qc::core::u16>();
     compileCastsT<qc::core::u32>();
     compileCastsT<qc::core::u64>();
+    compileCastsT<bool>();
 
     return true;
 }

@@ -75,14 +75,17 @@ namespace qc::core {
         T max{};
 
         constexpr span() noexcept = default;
-        constexpr span(const span & v) noexcept = default;
-        constexpr span(span && v) noexcept = default;
         template <Number U> constexpr explicit span(const span1<U> & v) noexcept;
         template <Number U, int m> constexpr explicit span(const span<U, m> & v) noexcept;
         constexpr span(T v1, T v2) noexcept;
 
+        constexpr span(const span & v) noexcept = default;
+        constexpr span(span && v) noexcept = default;
+
         span & operator=(const span & v) noexcept = default;
         span & operator=(span && v) noexcept = default;
+
+        ~span() noexcept = default;
 
     };
 
@@ -92,15 +95,18 @@ namespace qc::core {
         vec2<T> max;
 
         constexpr span() noexcept = default;
-        constexpr span(const span & v) noexcept = default;
-        constexpr span(span && v) noexcept = default;
         template <Number U, int m> constexpr explicit span(const span<U, m> & v) noexcept;
         constexpr span(T v1, T v2) noexcept;
         constexpr span(const vec2<T> & v1, const vec2<T> & v2) noexcept;
         Q_CONSTEX span(const span1<T> & v1, const span1<T> & v2) noexcept;
 
+        constexpr span(const span & v) noexcept = default;
+        constexpr span(span && v) noexcept = default;
+
         span & operator=(const span & v) noexcept = default;
         span & operator=(span && v) noexcept = default;
+
+        ~span() noexcept = default;
 
         Q_CONSTEX span1<T> x() const noexcept;
         Q_CONSTEX span1<T> y() const noexcept;
@@ -113,8 +119,6 @@ namespace qc::core {
         vec3<T> max;
 
         constexpr span() noexcept = default;
-        constexpr span(const span & v) noexcept = default;
-        constexpr span(span && v) noexcept = default;
         template <Number U, int m> constexpr explicit span(const span<U, m> & v) noexcept;
         constexpr span(T v1, T v2) noexcept;
         constexpr span(const vec3<T> & v1, const vec3<T> & v2) noexcept;
@@ -122,8 +126,13 @@ namespace qc::core {
         Q_CX_ABLE span(const span2<T> & v1, const span1<T> & v2) noexcept;
         Q_CX_ABLE span(const span1<T> & v1, const span2<T> & v2) noexcept;
 
+        constexpr span(const span & v) noexcept = default;
+        constexpr span(span && v) noexcept = default;
+
         span & operator=(const span & v) noexcept = default;
         span & operator=(span && v) noexcept = default;
+
+        ~span() noexcept = default;
 
         Q_CONSTEX span1<T> x() const noexcept;
         Q_CONSTEX span1<T> y() const noexcept;
@@ -140,8 +149,6 @@ namespace qc::core {
         vec4<T> max;
 
         constexpr span() noexcept = default;
-        constexpr span(const span & v) noexcept = default;
-        constexpr span(span && v) noexcept = default;
         template <Number U, int m> constexpr explicit span(const span<U, m> & v) noexcept;
         constexpr span(T v1, T v2) noexcept;
         constexpr span(const vec4<T> & v1, const vec4<T> & v2) noexcept;
@@ -153,8 +160,13 @@ namespace qc::core {
         Q_CX_ABLE span(const span3<T> & v1, const span1<T> & v2) noexcept;
         Q_CX_ABLE span(const span1<T> & v1, const span3<T> & v2) noexcept;
 
+        constexpr span(const span & v) noexcept = default;
+        constexpr span(span && v) noexcept = default;
+
         span & operator=(const span & v) noexcept = default;
         span & operator=(span && v) noexcept = default;
+
+        ~span() noexcept = default;
 
         Q_CONSTEX span1<T> x() const noexcept;
         Q_CONSTEX span1<T> y() const noexcept;

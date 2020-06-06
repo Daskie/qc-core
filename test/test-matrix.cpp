@@ -31,6 +31,10 @@ static void compileClassesT() {
     m2 = m2;
     m2 = std::move(m2);
 
+    // conversion
+
+    static_cast<bool>(m2);
+
     // access
 
     m2.col(0);
@@ -94,6 +98,10 @@ static void compileClassesT() {
     m3 = m3;
     m3 = std::move(m3);
 
+    // conversion
+
+    static_cast<bool>(m3);
+
     // access
 
     m3.col(0);
@@ -155,6 +163,10 @@ static void compileClassesT() {
 
     m4 = m4;
     m4 = std::move(m4);
+
+    // conversion
+
+    static_cast<bool>(m4);
 
     // access
 
