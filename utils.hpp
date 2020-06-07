@@ -131,4 +131,4 @@ namespace qc::core::utils {
 
     }
 
-}
+} // namespace qc::core::utils

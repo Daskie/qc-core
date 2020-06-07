@@ -141,4 +141,4 @@ namespace qc::core {
         return rgb;
     }
 
-}
+} // namespace qc::core

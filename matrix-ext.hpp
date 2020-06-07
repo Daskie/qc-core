@@ -159,7 +159,7 @@ namespace qc::core {
     template <typename T> mat4<T> view_o(const vec3<T> & camPos, const vec3<T> & camU, const vec3<T> & camV, const vec3<T> & camW);
     template <typename T> mat4<T> view_on(const vec3<T> & camPos, const vec3<T> & camU, const vec3<T> & camV, const vec3<T> & camW);
 
-}
+} // namespace qc::core
 
 // INLINE IMPLEMENTATION ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -684,4 +684,4 @@ namespace qc::core {
         };
     }
 
-}
+} // namespace qc::core

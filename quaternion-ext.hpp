@@ -95,7 +95,7 @@ namespace qc::core {
 
     template <typename T> quat<T> slerp(const quat<T> & q1, const quat<T> & q2, T t);
 
-}
+} // namespace qc::core
 
 // INLINE IMPLEMENTATION ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -250,4 +250,4 @@ namespace qc::core {
         return (q1 * std::sin((T(1.0) - t) * halfTheta) + q2 * std::sin(t * halfTheta)) * (T(1.0) / sinHalfTheta);
     }
 
-}
+} // namespace qc::core

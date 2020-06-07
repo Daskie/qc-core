@@ -11,7 +11,7 @@ namespace qc::log {
 
     inline void exception_break() {}
 
-}
+} // namespace qc::log
 
 #define QC_ERROR(msg) do { \
     std::cerr << "ERROR [" << __FILE__ << ":" << __LINE__ << " " << __func__ << "]: " << msg << std::endl; \

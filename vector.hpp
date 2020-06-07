@@ -338,7 +338,7 @@ namespace qc::core {
 
     template <int n> Q_CX_ABLE bvec<n> operator!(const bvec<n> & v1);
 
-}
+} // namespace qc::core
 
 // INLINE IMPLEMENTATION ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1025,4 +1025,4 @@ namespace qc::core {
         if constexpr (n == 4) return {!v.x, !v.y, !v.z, !v.w};
     }
 
-}
+} // namespace qc::core

@@ -58,7 +58,7 @@ namespace qc::core {
     //
     template <Number T, int n> span<T, n> & joinify(span<T, n> & v1, const span<T, n> & v2);
 
-}
+} // namespace qc::core
 
 // INLINE IMPLEMENTATION ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -166,4 +166,4 @@ namespace qc::core {
         return v1;
     }
 
-}
+} // namespace qc::core

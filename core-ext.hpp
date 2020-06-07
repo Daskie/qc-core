@@ -205,7 +205,7 @@ namespace qc::core {
     //
     template <Number To, Number From> Q_CONSTEX To transnorm(From v);
 
-}
+} // namespace qc::core
 
 // INLINE IMPLEMENTATION ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -588,4 +588,4 @@ namespace qc::core {
         }
     }
 
-}
+} // namespace qc::core

@@ -253,7 +253,7 @@ namespace qc::core {
         return true;
     }
 
-}
+} // namespace qc::core
 
 namespace std {
 
@@ -262,4 +262,6 @@ namespace std {
         lhs.swap(rhs);
     }
 
-}
+} // namespace std
+
+

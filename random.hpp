@@ -170,4 +170,4 @@ namespace qc::core {
 
     };
 
-}
+} // namespace qc::core

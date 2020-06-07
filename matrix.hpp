@@ -192,7 +192,7 @@ namespace qc::core {
     //
     template <typename T, int n> constexpr mat<T, n> nullMat();
 
-}
+} // namespace qc::core
 
 // INLINE IMPLEMENTATION ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -681,4 +681,4 @@ namespace qc::core {
         return fullMat<T, n>(T(0.0));
     }
 
-}
+} // namespace qc::core

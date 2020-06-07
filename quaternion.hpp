@@ -66,7 +66,7 @@ namespace qc::core {
 
     template <Floater T> bool operator!=(const quat<T> & q1, const quat<T> & q2);
 
-}
+} // namespace qc::core
 
 // INLINE IMPLEMENTATION ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -182,4 +182,4 @@ namespace qc::core {
         return q1.a != q2.a || q1.w != q2.w;
     }
 
-}
+} // namespace qc::core

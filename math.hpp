@@ -360,4 +360,4 @@ namespace qc::core {
         return c / (T(3.0) * a);
     }
 
-}
+} // namespace qc::core

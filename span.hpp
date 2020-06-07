@@ -206,7 +206,7 @@ namespace qc::core {
 
     template <typename T, int n> Q_CX_ABLE bool operator!=(const span<T, n> & v1, const span<T, n> & v2);
 
-}
+} // namespace qc::core
 
 // INLINE IMPLEMENTATION ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -516,4 +516,4 @@ namespace qc::core {
         return !(v1 == v2);
     }
 
-}
+} // namespace qc::core

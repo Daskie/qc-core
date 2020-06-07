@@ -12,7 +12,7 @@ namespace qc::core::bits {
 
     template <UnsignedInteger T> T scramble(T v);
 
-}
+} // namespace qc::core::bits
 
 // INLINE IMPLEMENTATION ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -121,4 +121,4 @@ namespace qc::core::bits {
         }
     }
 
-}
+} // namespace qc::core::bits

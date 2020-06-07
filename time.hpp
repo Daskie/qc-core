@@ -69,7 +69,7 @@ namespace qc::core {
 
     };
 
-}
+} // namespace qc::core
 
 // INLINE IMPLEMENTATION ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -124,4 +124,4 @@ namespace qc::core {
         _period = 1.0 / frequency;
     }
 
-}
+} // namespace qc::core

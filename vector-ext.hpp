@@ -233,7 +233,7 @@ namespace qc::core {
     //
     template <Number T, int n> Q_CX_ABLE vec<T, n> composite(const vec<T, n> & v1, const vec<T, n> & v2);
 
-}
+} // namespace qc::core
 
 // INLINE IMPLEMENTATION ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -701,4 +701,4 @@ namespace qc::core {
         return v;
     }
 
-}
+} // namespace qc::core

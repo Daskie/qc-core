@@ -74,4 +74,4 @@ namespace qc::core {
         return false;
     }
 
-}
+} // namespace qc::core
