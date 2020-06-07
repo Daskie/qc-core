@@ -9,12 +9,10 @@ namespace qc::core {
 
         static_assert(n > 0);
 
-        public:
-
         template <bool constant>
         class Iterator {
 
-            public:
+            public: //----------------------------------------------------------
 
             using iterator_category = std::forward_iterator_tag;
             using value_type = std::conditional_t<constant, const T, T>;
@@ -23,12 +21,17 @@ namespace qc::core {
             using reference = value_type &;
 
             constexpr Iterator(const Iterator & other) noexcept = default;
-
             constexpr Iterator(const Iterator<false> & other) noexcept requires (constant) :
                 _values(other._values),
                 _currentIndex(other._currentIndex),
                 _relativeIndex(other._relativeIndex)
             {}
+            constexpr Iterator(Iterator && other) noexcept = default;
+
+            Iterator & operator=(const Iterator & other) noexcept = default;
+            Iterator & operator=(Iterator && other) noexcept = default;
+
+            ~Iterator() noexcept = default;
 
             value_type & operator*() const noexcept {
                 return _values[_currentIndex];
@@ -58,7 +61,7 @@ namespace qc::core {
                 return _values == other.values && _relativeIndex == other._relativeIndex;
             }
 
-            private:
+            private: //---------------------------------------------------------
 
             constexpr Iterator(value_type * const values, const size_t currentIndex, const size_t relativeIndex) noexcept :
                 _values(values),
@@ -73,6 +76,8 @@ namespace qc::core {
         };
 
         friend Iterator;
+
+        public: //--------------------------------------------------------------
 
         using value_type = T;
         using size_type = size_t;
@@ -92,7 +97,7 @@ namespace qc::core {
 
         constexpr CycleArray() noexcept = default;
 
-        constexpr CycleArray(const CycleArray & other) :
+        constexpr CycleArray(const CycleArray & other) noexcept :
             _frontIndex(other._frontIndex),
             _values(other._values)
         {}
@@ -104,7 +109,7 @@ namespace qc::core {
             other.startIndex = 0u;
         }
 
-        CycleArray & operator=(const CycleArray & other) {
+        CycleArray & operator=(const CycleArray & other) noexcept {
             _frontIndex = other._frontIndex;
             _values = other._values;
 
@@ -208,7 +213,7 @@ namespace qc::core {
             return end();
         }
 
-        private:
+        private: //-------------------------------------------------------------
 
         template <typename T_>
         T _push(T_ && v) {
@@ -263,5 +268,4 @@ namespace std {
     }
 
 } // namespace std
-
 
