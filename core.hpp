@@ -115,7 +115,7 @@ namespace qc::core {
 namespace qc::core {
 
     template <Orderable T>
-    inline constexpr T min(T v1, T v2) {
+    inline constexpr T min(const T v1, const T v2) {
         return v1 <= v2 ? v1 : v2;
     }
 
@@ -125,7 +125,7 @@ namespace qc::core {
     }
 
     template <Orderable T>
-    inline constexpr T max(T v1, T v2) {
+    inline constexpr T max(const T v1, const T v2) {
         return v1 >= v2 ? v1 : v2;
     }
 
@@ -135,7 +135,7 @@ namespace qc::core {
     }
 
     template <Orderable T>
-    inline T & minify(T & v1, T v2) {
+    inline T & minify(T & v1, const T v2) {
         return v1 <= v2 ? v1 : v1 = v2;
     }
 
@@ -145,7 +145,7 @@ namespace qc::core {
     }
 
     template <Orderable T>
-    inline T & maxify(T & v1, T v2) {
+    inline T & maxify(T & v1, const T v2) {
         return v1 >= v2 ? v1 : v1 = v2;
     }
 

@@ -79,7 +79,7 @@ namespace qc::core {
         return std::chrono::nanoseconds(std::chrono::steady_clock::now().time_since_epoch()).count();
     }
 
-    inline Clock::Clock(double frequency) :
+    inline Clock::Clock(const double frequency) :
         _start(),
         _period(1.0 / frequency),
         _frequency(frequency)
@@ -89,7 +89,7 @@ namespace qc::core {
         _start = std::chrono::steady_clock::now();
     }
 
-    inline void Clock::restart(s64 t) {
+    inline void Clock::restart(const s64 t) {
         _start = std::chrono::steady_clock::time_point(std::chrono::nanoseconds(t));
     }
 
@@ -102,7 +102,7 @@ namespace qc::core {
     }
 
     inline double Clock::time() const {
-        double a(age());
+        const double a(age());
         return a - double(int(a));
     }
 
@@ -110,7 +110,7 @@ namespace qc::core {
         return _period;
     }
 
-    inline void Clock::period(double period) {
+    inline void Clock::period(const double period) {
         _period = period;
         _frequency = 1.0 / period;
     }
@@ -119,7 +119,7 @@ namespace qc::core {
         return _frequency;
     }
 
-    inline void Clock::frequency(double frequency) {
+    inline void Clock::frequency(const double frequency) {
         _frequency = frequency;
         _period = 1.0 / frequency;
     }

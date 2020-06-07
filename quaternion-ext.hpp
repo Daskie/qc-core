@@ -123,11 +123,11 @@ namespace qc::core {
 
     template <typename T>
     inline quat<T> normalize(const quat<T> & q) {
-        T mag2(magnitude2(q));
+        const T mag2(magnitude2(q));
         if (zero(mag2)) {
             return {};
         }
-        T invMag(T(1.0) / std::sqrt(mag2));
+        const T invMag(T(1.0) / std::sqrt(mag2));
         return {q.a * invMag, q.w * invMag};
     }
 
@@ -148,7 +148,7 @@ namespace qc::core {
 
     template <typename T>
     inline vec3<T> quatAxis_n(const quat<T> & q) {
-        T d2(T(1.0) - q.w * q.w);
+        const T d2(T(1.0) - q.w * q.w);
         if (zero(d2)) {
             return {};
         }
@@ -156,22 +156,22 @@ namespace qc::core {
     }
 
     template <typename T>
-    inline quat<T> mix(const quat<T> & q1, const quat<T> & q2, T t) {
-        T s(T(1.0) - t);
+    inline quat<T> mix(const quat<T> & q1, const quat<T> & q2, const T t) {
+        const T s(T(1.0) - t);
         return {s * q1.a + t * q2.a, s * q1.w + t * q2.w};
     }
 
     //template <typename T>
-    //inline quat<T> pow(const quat<T> & q, T t) {
+    //inline quat<T> pow(const quat<T> & q, const T t) {
     //    return angleAxis(angle(q) * t, axis(q));
     //}
 
     template <typename T>
-    inline quat<T> rotateQ(const vec3<T> & axis, T angle) {
+    inline quat<T> rotateQ(const vec3<T> & axis, const T angle) {
         return rotateQ_n(normalize(axis), angle);
     }
     template <typename T>
-    inline quat<T> rotateQ_n(const vec3<T> & axis, T angle) {
+    inline quat<T> rotateQ_n(const vec3<T> & axis, const T angle) {
         return {std::sin(angle * T(0.5)) * axis, std::cos(angle * T(0.5))};
     }
 
@@ -195,11 +195,11 @@ namespace qc::core {
     }
 
     template <typename T>
-    inline quat<T> eulerQ(const vec3<T> & forward, const vec3<T> & up, T theta, T phi, T psi) {
+    inline quat<T> eulerQ(const vec3<T> & forward, const vec3<T> & up, const T theta, const T phi, const T psi) {
         return eulerQ_n(normalize(forward), normalize(up), theta, phi, psi);
     }
     template <typename T>
-    inline quat<T> eulerQ_n(const vec3<T> & forward, const vec3<T> & up, T theta, T phi, T psi) {
+    inline quat<T> eulerQ_n(const vec3<T> & forward, const vec3<T> & up, const T theta, const T phi, const T psi) {
         return rotateQ_n(up, theta) * rotateQ_n(cross(forward, up), phi) * rotateQ_n(forward, psi);
     }
 
@@ -223,28 +223,29 @@ namespace qc::core {
     }
 
     template <typename T>
-    inline quat<T> nlerp(const quat<T> & q1, const quat<T> & q2, T t) {
+    inline quat<T> nlerp(const quat<T> & q1, const quat<T> & q2, const T t) {
         return normalize(quat<T>(mix(q1, q2, t)));
     }
 
     template <typename T>
-    inline quat<T> slerp(const quat<T> & q1, const quat<T> & q2_, T t) {
+    inline quat<T> slerp(const quat<T> & q1, const quat<T> & q2_, const T t) {
         quat<T> q2(q2_);
 
         T cosHalfTheta(dot(q1, q2));
 
-        //make sure to take the shorter route
+        // Make sure to take the shorter route
         if (cosHalfTheta < T(0.0)) {
             cosHalfTheta = -cosHalfTheta;
             q2 = -q2;
         }
-        //if parallel, no interpolation necessary
+
+        // If parallel, no interpolation necessary
         if (equal(cosHalfTheta, T(1.0))) {
             return q1;
         }
 
-        T halfTheta(std::acos(cosHalfTheta));
-        T sinHalfTheta(std::sqrt(T(1.0) - cosHalfTheta * cosHalfTheta));
+        const T halfTheta(std::acos(cosHalfTheta));
+        const T sinHalfTheta(std::sqrt(T(1.0) - cosHalfTheta * cosHalfTheta));
 
         return (q1 * std::sin((T(1.0) - t) * halfTheta) + q2 * std::sin(t * halfTheta)) * (T(1.0) / sinHalfTheta);
     }

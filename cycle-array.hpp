@@ -60,7 +60,7 @@ namespace qc::core {
 
             private:
 
-            constexpr Iterator(value_type * values, size_t currentIndex, size_t relativeIndex) noexcept :
+            constexpr Iterator(value_type * const values, const size_t currentIndex, const size_t relativeIndex) noexcept :
                 _values(values),
                 _currentIndex(currentIndex),
                 _relativeIndex(relativeIndex)
@@ -163,21 +163,20 @@ namespace qc::core {
             return _values[(_frontIndex == 0u ? n : _frontIndex) - 1u];
         }
 
-        constexpr value_type & operator[](size_t i) {
+        constexpr value_type & operator[](const size_t i) {
             return const_cast<value_type &>(const_cast<const CycleArray &>(*this).operator[](i));
         }
 
-        constexpr const value_type & operator[](size_t i) const {
-            size_t absoluteIndex = _frontIndex + i;
-            if (absoluteIndex >= n) absoluteIndex -= n;
-            return _values[absoluteIndex];
+        constexpr const value_type & operator[](const size_t i) const {
+            const size_t absoluteIndex(_frontIndex + i);
+            return _values[absoluteIndex < n ? absoluteIndex : absoluteIndex - n];
         }
 
-        constexpr value_type & at(size_t i) {
+        constexpr value_type & at(const size_t i) {
             return const_cast<value_type &>(const_cast<const CycleArray &>(*this).at(i));
         }
 
-        constexpr const value_type & at(size_t i) const {
+        constexpr const value_type & at(const size_t i) const {
             if (i >= n) {
                 throw std::out_of_range();
             }

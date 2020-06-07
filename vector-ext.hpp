@@ -280,14 +280,14 @@ namespace qc::core {
     }
 
     template <Number T, int n>
-    inline Q_CX_ABLE vec<T, n> min(const vec<T, n> & v1, T v2) {
+    inline Q_CX_ABLE vec<T, n> min(const vec<T, n> & v1, const T v2) {
         if constexpr (n == 2) return {min(v1.x, v2), min(v1.y, v2)};
         if constexpr (n == 3) return {min(v1.x, v2), min(v1.y, v2), min(v1.z, v2)};
         if constexpr (n == 4) return {min(v1.x, v2), min(v1.y, v2), min(v1.z, v2), min(v1.w, v2)};
     }
 
     template <Number T, int n>
-    inline Q_CX_ABLE vec<T, n> min(T v1, const vec<T, n> & v2) {
+    inline Q_CX_ABLE vec<T, n> min(const T v1, const vec<T, n> & v2) {
         return min(v2, v1);
     }
 
@@ -306,14 +306,14 @@ namespace qc::core {
     }
 
     template <Number T, int n>
-    inline Q_CX_ABLE vec<T, n> max(const vec<T, n> & v1, T v2) {
+    inline Q_CX_ABLE vec<T, n> max(const vec<T, n> & v1, const T v2) {
         if constexpr (n == 2) return {max(v1.x, v2), max(v1.y, v2)};
         if constexpr (n == 3) return {max(v1.x, v2), max(v1.y, v2), max(v1.z, v2)};
         if constexpr (n == 4) return {max(v1.x, v2), max(v1.y, v2), max(v1.z, v2), max(v1.w, v2)};
     }
 
     template <Number T, int n>
-    inline Q_CX_ABLE vec<T, n> max(T v1, const vec<T, n> & v2) {
+    inline Q_CX_ABLE vec<T, n> max(const T v1, const vec<T, n> & v2) {
         return max(v2, v1);
     }
 
@@ -327,7 +327,7 @@ namespace qc::core {
     }
 
     template <Number T, int n>
-    inline vec<T, n> & minify(vec<T, n> & v1, T v2) {
+    inline vec<T, n> & minify(vec<T, n> & v1, const T v2) {
         if constexpr (n >= 1) minify(v1.x, v2);
         if constexpr (n >= 2) minify(v1.y, v2);
         if constexpr (n >= 3) minify(v1.z, v2);
@@ -345,7 +345,7 @@ namespace qc::core {
     }
 
     template <Number T, int n>
-    inline vec<T, n> & maxify(vec<T, n> & v1, T v2) {
+    inline vec<T, n> & maxify(vec<T, n> & v1, const T v2) {
         if constexpr (n >= 1) maxify(v1.x, v2);
         if constexpr (n >= 2) maxify(v1.y, v2);
         if constexpr (n >= 3) maxify(v1.z, v2);
@@ -377,7 +377,7 @@ namespace qc::core {
     }
 
     template <Floater T, int n>
-    inline vec<T, n> pow(const vec<T, n> & v, T p) {
+    inline vec<T, n> pow(const vec<T, n> & v, const T p) {
         if constexpr (n == 2) return {std::pow(v.x, p), std::pow(v.y, p)};
         if constexpr (n == 3) return {std::pow(v.x, p), std::pow(v.y, p), std::pow(v.z, p)};
         if constexpr (n == 4) return {std::pow(v.x, p), std::pow(v.y, p), std::pow(v.z, p), std::pow(v.w, p)};
@@ -411,7 +411,7 @@ namespace qc::core {
 
     template <Floater T, int n>
     inline vec<T, n> normalize(const vec<T, n> & v) {
-        T m2(magnitude2(v));
+        const T m2(magnitude2(v));
         if (zero(m2)) {
             return {};
         }
@@ -420,7 +420,7 @@ namespace qc::core {
 
     template <Floater T, int n>
     inline vec<T, n> & normalizeAssign(vec<T, n> & v) {
-        T m2(magnitude2(v));
+        const T m2(magnitude2(v));
         if (zero(m2)) {
             return v;
         }
@@ -446,7 +446,7 @@ namespace qc::core {
 
     template <Number T, int n>
     inline bool parallel(const vec<T, n> & v1, const vec<T, n> & v2) {
-        T d(dot(v1, v2));
+        const T d(dot(v1, v2));
         return equal(d * d, magnitude2(v1) * magnitude2(v2));
     }
 
@@ -460,22 +460,17 @@ namespace qc::core {
         if constexpr (n == 2) {
             return {-v.y, v.x};
         }
-        else if constexpr (n  == 3) {
-            if (abs(v.x) < abs(v.y)) {
-                if (abs(v.x) <= abs(v.z)) { // x or z is smallest
-                    return {T(0), -v.z, v.y}; // rotate around x
-                }
-                else { // z is smallest
-                    return {-v.y, v.x, T(0)}; // rotate around z
-                }
+        else if constexpr (n == 3) {
+            const vec<T, n> absV(abs(v));
+
+            if (absV.x < absV.y && absV.x < absV.z) {
+                return {T(0), -v.z, v.y}; // rotate around x
+            }
+            else if (absV.y < absV.z) {
+                return {v.z, T(0), -v.x}; // rotate around y
             }
             else {
-                if (abs(v.y) < abs(v.z)) { // y or x is smallest
-                    return {v.z, T(0), -v.x}; // rotate around y
-                }
-                else { // z or y is smallest
-                    return {-v.y, v.x, T(0)}; // rotate around z
-                }
+                return {-v.y, v.x, T(0)}; // rotate around z
             }
         }
         else {
@@ -539,7 +534,7 @@ namespace qc::core {
     }
 
     template <Number T, int n>
-    inline Q_CX_ABLE vec<T, n> clamp(const vec<T, n> & v, T min, T max) {
+    inline Q_CX_ABLE vec<T, n> clamp(const vec<T, n> & v, const T min, const T max) {
         if constexpr (n == 2) return {clamp(v.x, min, max), clamp(v.y, min, max)};
         if constexpr (n == 3) return {clamp(v.x, min, max), clamp(v.y, min, max), clamp(v.z, min, max)};
         if constexpr (n == 4) return {clamp(v.x, min, max), clamp(v.y, min, max), clamp(v.z, min, max), clamp(v.w, min, max)};
@@ -560,7 +555,7 @@ namespace qc::core {
     }
 
     template <Number T, int n>
-    inline Q_CX_ABLE bool zero(const vec<T, n> & v, T e) {
+    inline Q_CX_ABLE bool zero(const vec<T, n> & v, const T e) {
         if constexpr (n == 2) return zero(v.x, e) && zero(v.y, e);
         if constexpr (n == 3) return zero(v.x, e) && zero(v.y, e) && zero(v.z, e);
         if constexpr (n == 4) return zero(v.x, e) && zero(v.y, e) && zero(v.z, e) && zero(v.w, e);
@@ -574,12 +569,12 @@ namespace qc::core {
     }
 
     template <Floater T, int n>
-    inline Q_CX_ABLE bool equal_e(const vec<T, n> & v1, const vec<T, n> & v2, T e) {
+    inline Q_CX_ABLE bool equal_e(const vec<T, n> & v1, const vec<T, n> & v2, const T e) {
         return zero(v1 - v2, e);
     }
 
     template <Floater T, int n>
-    inline Q_CX_ABLE bool equal_e(const vec<T, n> & v, T e) {
+    inline Q_CX_ABLE bool equal_e(const vec<T, n> & v, const T e) {
         return zero(v - v.x, e);
     }
 
@@ -627,7 +622,7 @@ namespace qc::core {
     }
 
     template <Floater T, int n>
-    inline Q_CX_ABLE vec<T, n> mix(const vec<T, n> & v1, const vec<T, n> & v2, T t) {
+    inline Q_CX_ABLE vec<T, n> mix(const vec<T, n> & v1, const vec<T, n> & v2, const T t) {
         return (T(1.0) - t) * v1 + t * v2;
     }
 
@@ -647,22 +642,22 @@ namespace qc::core {
     }
 
     template <Floater T>
-    inline Q_CX_ABLE T mix(T v1, T v2, const vec2<T> & weights) {
+    inline Q_CX_ABLE T mix(const T v1, const T v2, const vec2<T> & weights) {
         return weights.x * v1 + weights.y * v2;
     }
 
     template <Floater T>
-    inline Q_CX_ABLE T mix(T v1, T v2, T v3, const vec3<T> & weights) {
+    inline Q_CX_ABLE T mix(const T v1, const T v2, const T v3, const vec3<T> & weights) {
         return weights.x * v1 + weights.y * v2 + weights.z * v3;
     }
 
     template <Floater T>
-    inline Q_CX_ABLE T mix(T v1, T v2, T v3, T v4, const vec4<T> & weights) {
+    inline Q_CX_ABLE T mix(const T v1, const T v2, const T v3, const T v4, const vec4<T> & weights) {
         return weights.x * v1 + weights.y * v2 + weights.z * v3 + weights.w * v4;
     }
 
     template <Floater T, int n>
-    inline Q_CX_ABLE vec<T, n> smoothstep(const vec<T, n> & v1, const vec<T, n> & v2, T t) {
+    inline Q_CX_ABLE vec<T, n> smoothstep(const vec<T, n> & v1, const vec<T, n> & v2, const T t) {
         return mix(v1, v2, t * t * (T(3.0) - T(2.0) * t));
     }
 

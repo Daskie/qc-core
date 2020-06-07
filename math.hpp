@@ -124,12 +124,10 @@ namespace qc::core {
     //maps a point in cartesian space to the surface of a sphere and returns cartesian coordinates
     //the point's x and y components, along with thetaPerUnit, determine the distance in radians from the origin
     //the point's z component determines the radius
-    inline fvec3 mapToSphere(const fvec3 & v, float thetaPerUnit) {
-        static const fmat2 perpMat = rotate(pi<float> / 2.0f);
-
-        fvec2 perp = perpMat * fvec2(v);
-        float theta = magnitude(fvec2(v)) * thetaPerUnit;
-        fmat3 rot = rotate(fvec3(perp.x, perp.y, 0.0f), theta);
+    inline fvec3 mapToSphere(const fvec3 & v, const float thetaPerUnit) {
+        const fvec2 perp(ortho(v.xy()));
+        const float theta(magnitude(v.xy()) * thetaPerUnit);
+        const fmat3 rot(rotate(fvec3(perp), theta));
 
         return rot * fvec3(0.0f, 0.0f, v.z);
     }
@@ -149,7 +147,7 @@ namespace qc::core {
     }
 
     //given a bary angle, return point along given a corresponding to angle
-    inline fvec3 baryFromAngleA(float angle, float a) {
+    inline fvec3 baryFromAngleA(const float angle, const float a) {
         fvec3 v;
         v.x = a;
         v.z = (angle - 1.0f) * (a - 1.0f);
@@ -157,7 +155,7 @@ namespace qc::core {
         return v;
     }
 
-    inline fvec3 baryFromAngleB(float angle, float b) {
+    inline fvec3 baryFromAngleB(const float angle, const float b) {
         fvec3 v;
         v.y = b;
         v.x = (angle - 1.0f) * (b - 1.0f);
@@ -165,7 +163,7 @@ namespace qc::core {
         return v;
     }
 
-    inline fvec3 baryFromAngleC(float angle, float c) {
+    inline fvec3 baryFromAngleC(const float angle, const float c) {
         fvec3 v;
         v.z = c;
         v.y = (angle - 1.0f) * (c - 1.0f);
@@ -231,7 +229,7 @@ namespace qc::core {
 
         const T angularFreq, dampingRatio, dt;
 
-        Dampener(T angularFreq, T dampingRatio, T dt) :
+        Dampener(const T angularFreq, const T dampingRatio, const T dt) :
             angularFreq(angularFreq),
             dampingRatio(dampingRatio),
             dt(dt)
@@ -246,7 +244,7 @@ namespace qc::core {
 
         const T za, zb, z0, z1, z2, expTerm1, expTerm2;
 
-        OverDampener(T angularFreq, T dampingRatio, T dt) :
+        OverDampener(const T angularFreq, const T dampingRatio, const T dt) :
             Dampener(angularFreq, max(dampingRatio, T(1.001)), dt),
             za(-this->angularFreq * this->dampingRatio),
             zb(this->angularFreq * std::sqrt(this->dampingRatio * this->dampingRatio - T(1.0))),
@@ -259,9 +257,9 @@ namespace qc::core {
 
         template <typename U>
         void dampen(U & pos, U & vel, const U & targetPos) const {
-            U dp(pos - targetPos);
-            U c1((vel - dp * z2) * z0);
-            U c2(dp - c1);
+            const U dp(pos - targetPos);
+            const U c1((vel - dp * z2) * z0);
+            const U c2(dp - c1);
             pos = targetPos + c1 * expTerm1 + c2 * expTerm2;
             vel = c1 * z1 * expTerm1 + c2 * z2 * expTerm2;
         }
@@ -273,16 +271,16 @@ namespace qc::core {
 
         const T expTerm;
 
-        CriticalDampener(T angularFreq, T dt) :
+        CriticalDampener(const T angularFreq, const T dt) :
             Dampener(angularFreq, T(1.0), dt),
             expTerm(std::exp(-this->angularFreq * this->dt))
         {}
 
         template <typename U>
         void dampen(U & pos, U & vel, const U & targetPos) const {
-            U dp(pos - targetPos);
-            U c1(vel + this->angularFreq * dp);
-            U c2((c1 * this->dt + dp) * expTerm);
+            const U dp(pos - targetPos);
+            const U c1(vel + this->angularFreq * dp);
+            const U c2((c1 * this->dt + dp) * expTerm);
             pos = targetPos + c2;
             vel = c1 * expTerm - c2 * this->angularFreq;
         }
@@ -290,17 +288,17 @@ namespace qc::core {
     };
 
     template <Floater T, typename U>
-    inline void dampen(U & r_pos, const U & targetPos, U & r_vel, T angularFreq, T dt) {
-        U dist(r_pos - targetPos);
+    inline void dampen(U & r_pos, const U & targetPos, U & r_vel, const T angularFreq, const T dt) {
+        const U dist(r_pos - targetPos);
         dampen(dist, r_vel, angularFreq, dt);
         r_pos = targetPos - dist;
     }
 
     template <Floater T, typename U>
-    inline void dampen(U & r_dist, U & r_vel, T angularFreq, T dt) {
-        T expTerm(std::exp(-angularFreq * dt));
-        U c1(r_vel + angularFreq * r_dist);
-        U c2((c1 * dt + r_dist) * expTerm);
+    inline void dampen(U & r_dist, U & r_vel, const T angularFreq, const T dt) {
+        const T expTerm(std::exp(-angularFreq * dt));
+        const U c1(r_vel + angularFreq * r_dist);
+        const U c2((c1 * dt + r_dist) * expTerm);
         r_dist = -c2;
         r_vel = c1 * expTerm - c2 * angularFreq;
     }
@@ -310,7 +308,7 @@ namespace qc::core {
 
         const T omegaZeta, alpha, expTerm, cosTerm, sinTerm;
 
-        UnderDampener(T angularFreq, T dampingRatio, T dt) :
+        UnderDampener(const T angularFreq, const T dampingRatio, const T dt) :
             Dampener(angularFreq, min(dampingRatio, T(0.999)), dt),
             omegaZeta(this->angularFreq * this->dampingRatio),
             alpha(this->angularFreq * std::sqrt(T(1.0) - this->dampingRatio * this->dampingRatio)),
@@ -321,8 +319,8 @@ namespace qc::core {
 
         template <typename U>
         void dampen(U & pos, U & vel, const U & targetPos) const {
-            U dp(pos - targetPos);
-            U c((vel + omegaZeta * dp) / alpha);
+            const U dp(pos - targetPos);
+            const U c((vel + omegaZeta * dp) / alpha);
             pos = targetPos + expTerm * (dp * cosTerm + c * sinTerm);
             vel = -expTerm * ((dp * omegaZeta - c * alpha) * cosTerm + (dp * alpha + c * omegaZeta) * sinTerm);
         }
@@ -332,7 +330,7 @@ namespace qc::core {
     // Calculates the area of a non self-intersecting polygon
     // Points should be the vertices of the polygon given in order without duplicates
     template <Floater T>
-    inline T areaOfPoly(size_t n, const vec2<T> * points) {
+    inline T areaOfPoly(const size_t n, const vec2<T> * const points) {
         T a{};
         for (size_t i(0u); i < n - 1u; ++i) {
             const vec2<T> & v1(points[i]), v2(points[i + 1u]);
@@ -346,7 +344,7 @@ namespace qc::core {
     // Calculates the centroid, or center of mass, of a non self-intersecting polygon
     // Points should be the vertices of the polygon given in order without duplicates
     template <Floater T>
-    inline vec2<T> centroidOfPoly(size_t n, const vec2<T> * points) {
+    inline vec2<T> centroidOfPoly(const size_t n, const vec2<T> * const points) {
         T a{};
         vec2<T> c;
         for (size_t i(0u); i < n - 1u; ++i) {
@@ -356,7 +354,7 @@ namespace qc::core {
             c += (v1 + v2) * temp;
         }
         const vec2<T> & v1(points[n - 1u]), v2(points[0]);
-        T temp(v1.x * v2.y - v2.x * v1.y);
+        const T temp(v1.x * v2.y - v2.x * v1.y);
         a += temp;
         c += (v1 + v2) * temp;
         return c / (T(3.0) * a);

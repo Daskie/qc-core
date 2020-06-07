@@ -227,7 +227,7 @@ namespace qc::core {
     {}
 
     template <Number T>
-    inline constexpr span<T, 1>::span(T v1, T v2) noexcept :
+    inline constexpr span<T, 1>::span(const T v1, const T v2) noexcept :
         min(v1),
         max(v2)
     {}
@@ -240,7 +240,7 @@ namespace qc::core {
     {}
 
     template <Number T>
-    inline constexpr span<T, 2>::span(T v1, T v2) noexcept :
+    inline constexpr span<T, 2>::span(const T v1, const T v2) noexcept :
         min(v1),
         max(v2)
     {}
@@ -275,7 +275,7 @@ namespace qc::core {
     {}
 
     template <Number T>
-    inline constexpr span<T, 3>::span(T v1, T v2) noexcept :
+    inline constexpr span<T, 3>::span(const T v1, const T v2) noexcept :
         min(v1),
         max(v2)
     {}
@@ -337,7 +337,7 @@ namespace qc::core {
     {}
 
     template <Number T>
-    inline constexpr span<T, 4>::span(T v1, T v2) noexcept :
+    inline constexpr span<T, 4>::span(const T v1, const T v2) noexcept :
         min(v1),
         max(v2)
     {}
@@ -436,7 +436,7 @@ namespace qc::core {
     }
 
     template <Number T, int n>
-    inline Q_CX_ABLE span<T, n> & operator+=(span<T, n> & v1, T v2) {
+    inline Q_CX_ABLE span<T, n> & operator+=(span<T, n> & v1, const T v2) {
         v1.min += v2;
         v1.max += v2;
         return v1;
@@ -450,7 +450,7 @@ namespace qc::core {
     }
 
     template <Number T, int n>
-    inline Q_CX_ABLE span<T, n> & operator-=(span<T, n> & v1, T v2) {
+    inline Q_CX_ABLE span<T, n> & operator-=(span<T, n> & v1, const T v2) {
         v1.min -= v2;
         v1.max -= v2;
         return v1;
@@ -464,13 +464,13 @@ namespace qc::core {
     }
 
     template <Number T, int n>
-    inline Q_CX_ABLE span<T, n> operator+(const span<T, n> & v1, T v2) {
+    inline Q_CX_ABLE span<T, n> operator+(const span<T, n> & v1, const T v2) {
         if constexpr (n == 1) return {T(v1.min + v2), T(v1.max + v2)};
         else return {v1.min + v2, v1.max + v2};
     }
 
     template <Number T, int n>
-    inline Q_CX_ABLE span<T, n> operator+(T v1, const span<T, n> & v2) {
+    inline Q_CX_ABLE span<T, n> operator+(const T v1, const span<T, n> & v2) {
         return v2 + v1;
     }
 
@@ -485,13 +485,13 @@ namespace qc::core {
     }
 
     template <Number T, int n>
-    inline Q_CX_ABLE span<T, n> operator-(const span<T, n> & v1, T v2) {
+    inline Q_CX_ABLE span<T, n> operator-(const span<T, n> & v1, const T v2) {
         if constexpr (n == 1) return {T(v1.min - v2), T(v1.max - v2)};
         else return {v1.min - v2, v1.max - v2};
     }
 
     template <Number T, int n>
-    inline Q_CX_ABLE span<T, n> operator-(T v1, const span<T, n> & v2) {
+    inline Q_CX_ABLE span<T, n> operator-(const T v1, const span<T, n> & v2) {
         if constexpr (n == 1) return {T(v1 - v2.min), T(v1 - v2.max)};
         else return {v1 - v2.min, v1 - v2.max};
     }

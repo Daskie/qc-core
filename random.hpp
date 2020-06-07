@@ -20,7 +20,7 @@ namespace qc::core {
     //
     template <Number T>
     struct RandomEngineTransformer<std::mt19937, T> {
-        T operator()(u32 result) const {
+        T operator()(const u32 result) const {
             if constexpr (is_floating_point_v<T>) {
                 return T(result) * T(0x1p-32L);
             }
@@ -46,7 +46,7 @@ namespace qc::core {
     //
     template <Number T>
     struct RandomEngineTransformer<std::mt19937_64, T> {
-        T operator()(u64 result) const {
+        T operator()(const u64 result) const {
             if constexpr (std::is_floating_point_v<T>) {
                 return T(result) * T(0x1p-64L);
             }
@@ -73,7 +73,7 @@ namespace qc::core {
     //
     template <Number T>
     struct RandomEngineTransformer<std::minstd_rand, T> {
-        T operator()(u32 result) const {
+        T operator()(const u32 result) const {
             if constexpr (std::is_floating_point_v<T>) {
                 return T(result) * T(0x1p-31L);
             }
@@ -111,7 +111,7 @@ namespace qc::core {
 
         using Value = typename Engine::result_type;
 
-        Random(Value seed = Engine::default_seed) noexcept :
+        Random(const Value seed = Engine::default_seed) noexcept :
             _seed(seed),
             _engine(_seed)
         {}
@@ -141,7 +141,7 @@ namespace qc::core {
         // `max` should be less than T_MAX by a few orders of magnitude for best results.
         //
         template <Number T>
-        T next(T max) noexcept {
+        T next(const T max) noexcept {
             if constexpr (std::is_integral_v<T>) {
                 return operator()<T>() % max;
             }
@@ -154,7 +154,7 @@ namespace qc::core {
         // Returns next random value in [`min`, `max`).
         //
         template <Number T>
-        T next(T min, T max) noexcept {
+        T next(const T min, const T max) noexcept {
             return operator()(max - min) + min;
         }
 

@@ -13,7 +13,7 @@
 namespace qc::core::utils {
 
     template <typename T>
-    inline T pairwiseSum(size_t n, const T * vals) {
+    inline T pairwiseSum(const size_t n, const T * const vals) {
         if (n == 0u) return T(0);
         if (n == 1u) return vals[0];
         if (n == 2u) return vals[0] + vals[1];
@@ -38,16 +38,16 @@ namespace qc::core::utils {
     }
 
     // Throws `std::system_error` on failure
-    inline void writeFile(const std::filesystem::path & path, const void * data, size_t size) {
+    inline void writeFile(const std::filesystem::path & path, const void * const data, const size_t size) {
         std::ofstream ofs(path, std::ios::out | std::ios::binary);
         ofs.exceptions(std::ios::badbit | std::ios::failbit);
         ofs.write(reinterpret_cast<const char *>(data), size);
     }
 
     inline std::string timeString(double seconds) {
-        static const double secondsPerDay(86400.0);
-        static const double secondsPerHour(3600.0);
-        static const double secondsPerMinute(60.0);
+        static constexpr double secondsPerMinute(60.0);
+        static constexpr double secondsPerHour(60.0 * secondsPerMinute);
+        static constexpr double secondsPerDay(24.0 * secondsPerHour);
 
         seconds = std::floor(seconds);
         double days(std::floor(seconds / secondsPerDay)); seconds -= days * secondsPerDay;
@@ -71,14 +71,14 @@ namespace qc::core::utils {
             u08 data[sizeof(T)];
             int blockSize;
 
-            _binary_s(const T & v, int blockSize) :
+            _binary_s(const T & v, const int blockSize) :
                 blockSize(blockSize)
             {
                 std::memcpy(data, &v, sizeof(T));
             }
 
             friend std::ostream & operator<<(std::ostream & os, const _binary_s & b) {
-                int nBlocks(sizeof(T) / b.blockSize);
+                const int nBlocks(sizeof(T) / b.blockSize);
 
                 for (int blockI(0); blockI < nBlocks; ++blockI) {
                     for (int byteI(b.blockSize - 1); byteI >= 0; --byteI) {
@@ -97,7 +97,7 @@ namespace qc::core::utils {
         };
 
         template <typename T>
-        inline _binary_s<T> binary(const T & v, int blockSize = sizeof(T)) {
+        inline _binary_s<T> binary(const T & v, const int blockSize = sizeof(T)) {
             return _binary_s<T>(v, blockSize);
         }
 
@@ -106,7 +106,7 @@ namespace qc::core::utils {
             std::string s;
             int n;
 
-            repeat(const std::string & s, int n) : s(s), n(n) {}
+            repeat(const std::string & s, const int n) : s(s), n(n) {}
 
             friend std::ostream & operator<<(std::ostream & os, const repeat & r) {
                 for (int i(0); i < r.n; ++i) {
@@ -121,7 +121,7 @@ namespace qc::core::utils {
 
             int n;
 
-            line(int n) : n(n) {}
+            line(const int n) : n(n) {}
 
             friend std::ostream & operator<<(std::ostream & os, const line & l) {
                 return os << repeat("-", l.n);

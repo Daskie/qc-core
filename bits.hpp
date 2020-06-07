@@ -20,7 +20,7 @@ namespace qc::core::bits {
 
     template <UnsignedInteger SrcT, UnsignedInteger DstT>
     requires (sizeof(DstT) > sizeof(SrcT))
-    inline DstT spread(SrcT v) {
+    inline DstT spread(const SrcT v) {
         constexpr uint factor(sizeof(DstT) / sizeof(SrcT) - 1u);
 
         DstT w(v);
@@ -40,7 +40,7 @@ namespace qc::core::bits {
 
     template <UnsignedInteger SrcT, UnsignedInteger DstT>
     requires (sizeof(DstT) >= sizeof(SrcT))
-    inline DstT repeat(SrcT v) {
+    inline DstT repeat(const SrcT v) {
         constexpr uint factor(sizeof(DstT) / sizeof(SrcT));
 
         DstT w(v);
@@ -59,11 +59,11 @@ namespace qc::core::bits {
     }
 
     template <UnsignedInteger T>
-    inline T interleave(T v) {
+    inline T interleave(const T v) {
         if constexpr (sizeof(T) > 1u) {
             using H = utype<sizeof(T) / 2u>;
 
-            H h1 = H(v >> sizeof(H) * 8u), h2 = H(v);
+            const H h1{H(v >> sizeof(H) * 8u)}, h2{H(v)};
 
             return (spread<H, T>(h1) << 1) | spread<H, T>(h2);
         }

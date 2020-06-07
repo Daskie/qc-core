@@ -113,10 +113,10 @@ namespace qc::core {
 
         // hue
         temp = std::round(hsl.x * T(3.0));
-        int maxI(int(temp) % 3);
+        const int maxI(int(temp) % 3);
         rgb[maxI] = T(1.0);
-        T secondaryWeight((hsl.x * T(3.0) - temp) * T(2.0));
-        int midI((maxI + int(secondaryWeight > 0 ? std::ceil(secondaryWeight) : std::floor(secondaryWeight)) + 3) % 3);
+        const T secondaryWeight((hsl.x * T(3.0) - temp) * T(2.0));
+        const int midI((maxI + int(secondaryWeight > 0 ? std::ceil(secondaryWeight) : std::floor(secondaryWeight)) + 3) % 3);
         rgb[midI] = abs(secondaryWeight);
 
         // saturation

@@ -114,7 +114,7 @@ namespace qc::core {
     }
 
     template <Floater T>
-    inline quat<T> & operator*=(quat<T> & q, T v) {
+    inline quat<T> & operator*=(quat<T> & q, const T v) {
         return q = q * v;
     }
 
@@ -152,12 +152,12 @@ namespace qc::core {
     }
 
     template <Floater T>
-    inline quat<T> operator*(const quat<T> & q, T v) {
+    inline quat<T> operator*(const quat<T> & q, const T v) {
         return {q.a * v, q.w * v};
     }
 
     template <Floater T>
-    inline quat<T> operator*(T v, const quat<T> & q) {
+    inline quat<T> operator*(const T v, const quat<T> & q) {
         return {v * q.a, v * q.w};
     }
 

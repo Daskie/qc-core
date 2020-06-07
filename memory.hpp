@@ -35,16 +35,16 @@ namespace qc::core {
             _deallocations(other._deallocations)
         {}
 
-        T * allocate(size_t n) {
-            size_t bytes(n * sizeof(T));
+        T * allocate(const size_t n) {
+            const size_t bytes(n * sizeof(T));
             _current += bytes;
             _total += bytes;
             ++_allocations;
             return reinterpret_cast<T *>(::operator new(bytes));
         }
 
-        void deallocate(T * p, size_t n) {
-            size_t bytes(n * sizeof(T));
+        void deallocate(T * const p, const size_t n) {
+            const size_t bytes(n * sizeof(T));
             _current -= bytes;
             ++_deallocations;
             ::operator delete(p);

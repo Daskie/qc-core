@@ -130,7 +130,7 @@ namespace qc::core {
     }
 
     template <Number T>
-    inline Q_CX_ABLE T clamp(T v, const span1<T> & span) {
+    inline Q_CX_ABLE T clamp(const T v, const span1<T> & span) {
         return clamp(v, span.min, span.max);
     }
 
