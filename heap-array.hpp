@@ -49,14 +49,24 @@ namespace qc::core {
 
         template <typename Iter>
         HeapArray(const Iter first, const Iter last) :
-            _size(last - first),
+            _size(std::distance(first, last)),
             _values(_size ? static_cast<T *>(::operator new(_size * sizeof(T))) : nullptr)
         {
-            T * pos(_values);
-            for (Iter iter(first); iter != last; ++iter, ++pos) {
-                new (pos) T(*iter);
+            if constexpr (std::is_trivially_copy_constructible_v<T>) {
+                std::copy_n(first, _size, _values);
+            }
+            else {
+                T * pos(_values);
+                for (Iter iter(first); iter != last; ++iter, ++pos) {
+                    new (pos) T(*iter);
+                }
             }
         }
+
+        HeapArray(T * const values, const size_t size) :
+            _size(size),
+            _values(values)
+        {}
 
         HeapArray(const HeapArray & other) noexcept :
             _size(other._size),
