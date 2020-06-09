@@ -5,16 +5,17 @@
 #include <qc-core/matrix-ext.hpp>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+using namespace qc::core::types;
 
 template <typename T>
 static void compileClassesT() {
     T v(T(1.0));
-    qc::core::vec2<T> v2;
-    qc::core::vec3<T> v3;
-    qc::core::vec4<T> v4;
-    qc::core::mat2<T> m2;
-    qc::core::mat3<T> m3;
-    qc::core::mat4<T> m4;
+    vec2<T> v2;
+    vec3<T> v3;
+    vec4<T> v4;
+    mat2<T> m2;
+    mat3<T> m3;
+    mat4<T> m4;
     std::stringstream os;
 
     //--------------------------------------------------------------------------
@@ -22,13 +23,13 @@ static void compileClassesT() {
 
     // constructors
 
-    qc::core::mat2<T> m2_1;
-    qc::core::mat2<T> m2_2(m2);
-    qc::core::mat2<T> m2_3(std::move(m2));
-    qc::core::mat2<T> m2_4(v, v, v, v);
-    qc::core::mat2<T> m2_6(m3);
-    qc::core::mat2<T> m2_7(m4);
-    qc::core::mat2<T> m2_8(v2, v2);
+    mat2<T> m2_1;
+    mat2<T> m2_2(m2);
+    mat2<T> m2_3(std::move(m2));
+    mat2<T> m2_4(v, v, v, v);
+    mat2<T> m2_6(m3);
+    mat2<T> m2_7(m4);
+    mat2<T> m2_8(v2, v2);
 
     // assignment
 
@@ -89,13 +90,13 @@ static void compileClassesT() {
 
     // constructors
 
-    qc::core::mat3<T> m3_1;
-    qc::core::mat3<T> m3_2(m3);
-    qc::core::mat3<T> m3_3(std::move(m3));
-    qc::core::mat3<T> m3_4(v, v, v, v, v, v, v, v, v);
-    qc::core::mat3<T> m3_6(m2);
-    qc::core::mat3<T> m3_7(m4);
-    qc::core::mat3<T> m3_8(v3, v3, v3);
+    mat3<T> m3_1;
+    mat3<T> m3_2(m3);
+    mat3<T> m3_3(std::move(m3));
+    mat3<T> m3_4(v, v, v, v, v, v, v, v, v);
+    mat3<T> m3_6(m2);
+    mat3<T> m3_7(m4);
+    mat3<T> m3_8(v3, v3, v3);
 
     // assignment
 
@@ -155,13 +156,13 @@ static void compileClassesT() {
 
     // constructors
 
-    qc::core::mat4<T> m4_1;
-    qc::core::mat4<T> m4_2(m4);
-    qc::core::mat4<T> m4_3(std::move(m4));
-    qc::core::mat4<T> m4_4(v, v, v, v, v, v, v, v, v, v, v, v, v, v, v, v);
-    qc::core::mat4<T> m4_6(m2);
-    qc::core::mat4<T> m4_7(m3);
-    qc::core::mat4<T> m4_8(v4, v4, v4, v4);
+    mat4<T> m4_1;
+    mat4<T> m4_2(m4);
+    mat4<T> m4_3(std::move(m4));
+    mat4<T> m4_4(v, v, v, v, v, v, v, v, v, v, v, v, v, v, v, v);
+    mat4<T> m4_6(m2);
+    mat4<T> m4_7(m3);
+    mat4<T> m4_8(v4, v4, v4, v4);
 
     // assignment
 
@@ -225,25 +226,25 @@ static void compileClasses() {
 template <typename T>
 static constexpr void compileClassesConstexprT() {
     constexpr T v(T(1.0));
-    constexpr qc::core::vec2<T> v2;
-    constexpr qc::core::vec3<T> v3;
-    constexpr qc::core::vec4<T> v4;
-    constexpr qc::core::mat2<T> m2;
-    constexpr qc::core::mat3<T> m3;
-    constexpr qc::core::mat4<T> m4;
+    constexpr vec2<T> v2;
+    constexpr vec3<T> v3;
+    constexpr vec4<T> v4;
+    constexpr mat2<T> m2;
+    constexpr mat3<T> m3;
+    constexpr mat4<T> m4;
 
     //--------------------------------------------------------------------------
     // Mat2
 
     // constructors
 
-    constexpr qc::core::mat2<T> m2_1;
-    constexpr qc::core::mat2<T> m2_2(m2);
-    constexpr qc::core::mat2<T> m2_3(std::move(m2));
-    constexpr qc::core::mat2<T> m2_4(v, v, v, v);
-    constexpr qc::core::mat2<T> m2_6(m3);
-    constexpr qc::core::mat2<T> m2_7(m4);
-    constexpr qc::core::mat2<T> m2_8(v2, v2);
+    constexpr mat2<T> m2_1;
+    constexpr mat2<T> m2_2(m2);
+    constexpr mat2<T> m2_3(std::move(m2));
+    constexpr mat2<T> m2_4(v, v, v, v);
+    constexpr mat2<T> m2_6(m3);
+    constexpr mat2<T> m2_7(m4);
+    constexpr mat2<T> m2_8(v2, v2);
 
     // access
 
@@ -255,13 +256,13 @@ static constexpr void compileClassesConstexprT() {
 
     // constructors
 
-    constexpr qc::core::mat3<T> m3_1;
-    constexpr qc::core::mat3<T> m3_2(m3);
-    constexpr qc::core::mat3<T> m3_3(std::move(m3));
-    constexpr qc::core::mat3<T> m3_4(v, v, v, v, v, v, v, v, v);
-    constexpr qc::core::mat3<T> m3_6(m2);
-    constexpr qc::core::mat3<T> m3_7(m4);
-    constexpr qc::core::mat3<T> m3_8(v3, v3, v3);
+    constexpr mat3<T> m3_1;
+    constexpr mat3<T> m3_2(m3);
+    constexpr mat3<T> m3_3(std::move(m3));
+    constexpr mat3<T> m3_4(v, v, v, v, v, v, v, v, v);
+    constexpr mat3<T> m3_6(m2);
+    constexpr mat3<T> m3_7(m4);
+    constexpr mat3<T> m3_8(v3, v3, v3);
 
     // access
 
@@ -273,13 +274,13 @@ static constexpr void compileClassesConstexprT() {
 
     // constructors
 
-    constexpr qc::core::mat4<T> m4_1;
-    constexpr qc::core::mat4<T> m4_2(m4);
-    constexpr qc::core::mat4<T> m4_3(std::move(m4));
-    constexpr qc::core::mat4<T> m4_4(v, v, v, v, v, v, v, v, v, v, v, v, v, v, v, v);
-    constexpr qc::core::mat4<T> m4_6(m2);
-    constexpr qc::core::mat4<T> m4_7(m3);
-    constexpr qc::core::mat4<T> m4_8(v4, v4, v4, v4);
+    constexpr mat4<T> m4_1;
+    constexpr mat4<T> m4_2(m4);
+    constexpr mat4<T> m4_3(std::move(m4));
+    constexpr mat4<T> m4_4(v, v, v, v, v, v, v, v, v, v, v, v, v, v, v, v);
+    constexpr mat4<T> m4_6(m2);
+    constexpr mat4<T> m4_7(m3);
+    constexpr mat4<T> m4_8(v4, v4, v4, v4);
 
     // access
 
@@ -298,12 +299,12 @@ static constexpr bool compileClassesConstexpr() {
 template <typename T>
 static void compileFunctionsT() {
     T v(1.0);
-    qc::core::vec2<T> v2;
-    qc::core::vec3<T> v3;
-    qc::core::vec4<T> v4;
-    qc::core::mat2<T> m2;
-    qc::core::mat3<T> m3;
-    qc::core::mat4<T> m4;
+    vec2<T> v2;
+    vec3<T> v3;
+    vec4<T> v4;
+    mat2<T> m2;
+    mat3<T> m3;
+    mat4<T> m4;
 
     qc::core::isIdentity(m2);
     qc::core::isIdentity(m3);
@@ -386,12 +387,12 @@ static void compileFunctions() {
 template <typename T>
 static constexpr void compileFunctionsConstexprT() {
     constexpr T v(T(1.0));
-    constexpr qc::core::vec2<T> v2(T(1.0));
-    constexpr qc::core::vec3<T> v3(T(1.0));
-    constexpr qc::core::vec4<T> v4(T(1.0));
-    constexpr qc::core::mat2<T> m2(v2, v2);
-    constexpr qc::core::mat3<T> m3(v3, v3, v3);
-    constexpr qc::core::mat4<T> m4(v4, v4, v4, v4);
+    constexpr vec2<T> v2(T(1.0));
+    constexpr vec3<T> v3(T(1.0));
+    constexpr vec4<T> v4(T(1.0));
+    constexpr mat2<T> m2(v2, v2);
+    constexpr mat3<T> m3(v3, v3, v3);
+    constexpr mat4<T> m4(v4, v4, v4, v4);
 
     qc::core::fullMat<T, 2>(v);
     qc::core::fullMat<T, 3>(v);
@@ -410,17 +411,17 @@ static constexpr bool compileFunctionsConstexpr() {
 
 template <typename T, int n>
 static void testPropertiesTN() {
-    static_assert(std::             is_standard_layout_v<qc::core::mat<T, n>>);
-    static_assert(std::          is_trivially_copyable_v<qc::core::mat<T, n>>);
-    static_assert(std::is_trivially_copy_constructible_v<qc::core::mat<T, n>>);
-    static_assert(std::is_trivially_move_constructible_v<qc::core::mat<T, n>>);
-    static_assert(std::   is_trivially_copy_assignable_v<qc::core::mat<T, n>>);
-    static_assert(std::   is_trivially_move_assignable_v<qc::core::mat<T, n>>);
-    static_assert(std::      is_trivially_destructible_v<qc::core::mat<T, n>>);
-    static_assert(sizeof(qc::core::mat<T, n>) == n * n * sizeof(T));
-    static_assert(sizeof(qc::core::mat<T, n>[4]) == 4 * n * n * sizeof(T));
-    static_assert(alignof(qc::core::mat<T, n>) == alignof(T));
-    static_assert(alignof(qc::core::mat<T, n>[4]) == alignof(T));
+    static_assert(std::             is_standard_layout_v<mat<T, n>>);
+    static_assert(std::          is_trivially_copyable_v<mat<T, n>>);
+    static_assert(std::is_trivially_copy_constructible_v<mat<T, n>>);
+    static_assert(std::is_trivially_move_constructible_v<mat<T, n>>);
+    static_assert(std::   is_trivially_copy_assignable_v<mat<T, n>>);
+    static_assert(std::   is_trivially_move_assignable_v<mat<T, n>>);
+    static_assert(std::      is_trivially_destructible_v<mat<T, n>>);
+    static_assert(sizeof(mat<T, n>) == n * n * sizeof(T));
+    static_assert(sizeof(mat<T, n>[4]) == 4 * n * n * sizeof(T));
+    static_assert(alignof(mat<T, n>) == alignof(T));
+    static_assert(alignof(mat<T, n>[4]) == alignof(T));
 }
 
 template <typename T>
@@ -437,9 +438,9 @@ static void testProperties() {
 
 template <typename T1, typename T2>
 static void compileCastsTT() {
-    static_cast<qc::core::mat2<T2>>(qc::core::mat2<T1>());
-    static_cast<qc::core::mat3<T2>>(qc::core::mat3<T1>());
-    static_cast<qc::core::mat4<T2>>(qc::core::mat4<T1>());
+    static_cast<mat2<T2>>(mat2<T1>());
+    static_cast<mat3<T2>>(mat3<T1>());
+    static_cast<mat4<T2>>(mat4<T1>());
 }
 
 template <typename T>
@@ -464,6 +465,28 @@ TEST_CLASS(TestMatrix) {
         static_assert(compileFunctionsConstexpr(), "");
         testProperties();
         compileCasts();
+    }
+
+    TEST_METHOD(testConcepts) {
+        static_assert(Matrix<fmat2>);
+        static_assert(Matrix<fmat3>);
+        static_assert(Matrix<fmat4>);
+        static_assert(Matrix<dmat2>);
+        static_assert(Matrix<dmat3>);
+        static_assert(Matrix<dmat4>);
+        static_assert(!Matrix<int>);
+
+        static_assert(Matrix2<fmat2>);
+        static_assert(Matrix2<dmat2>);
+        static_assert(!Matrix2<fmat3>);
+
+        static_assert(Matrix3<fmat3>);
+        static_assert(Matrix3<dmat3>);
+        static_assert(!Matrix3<fmat4>);
+
+        static_assert(Matrix4<fmat4>);
+        static_assert(Matrix4<dmat4>);
+        static_assert(!Matrix4<fmat2>);
     }
 
 };

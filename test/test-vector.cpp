@@ -1356,10 +1356,6 @@ TEST_CLASS(TestVector) {
         static_assert(UnsignedIntegerVector<vec4<T>>);
     }
 
-    template <int n>
-    void testVectorNConcept() {
-    }
-
     TEST_METHOD(testConcepts) {
         testVectorConceptT<s08>();
         testVectorConceptT<u08>();

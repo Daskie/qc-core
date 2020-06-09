@@ -30,9 +30,18 @@ namespace qc::core {
         using dmat3 = mat<double, 3>;
         using dmat4 = mat<double, 4>;
 
+        template <typename T> concept Matrix = std::is_same_v<T, mat<typename T::Type, T::n>>;
+
+        template <typename T> concept Matrix2 = Matrix<T> && T::n == 2;
+        template <typename T> concept Matrix3 = Matrix<T> && T::n == 3;
+        template <typename T> concept Matrix4 = Matrix<T> && T::n == 4;
+
     }
 
     template <Floater T> struct mat<T, 2> {
+
+        using Type = T;
+        static constexpr int n{2};
 
         vec2<T> c1;
         vec2<T> c2;
@@ -69,6 +78,9 @@ namespace qc::core {
     };
 
     template <Floater T> struct mat<T, 3> {
+
+        using Type = T;
+        static constexpr int n{3};
 
         vec3<T> c1;
         vec3<T> c2;
@@ -107,6 +119,9 @@ namespace qc::core {
     };
 
     template <Floater T> struct mat<T, 4> {
+
+        using Type = T;
+        static constexpr int n{4};
 
         vec4<T> c1;
         vec4<T> c2;
