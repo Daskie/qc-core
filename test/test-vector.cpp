@@ -1,6 +1,10 @@
 #include <sstream>
 
+#include <CppUnitTest.h>
+
 #include <qc-core/vector-ext.hpp>
+
+using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 template <typename T>
 static void compileClassesT() {
@@ -224,10 +228,6 @@ static void compileFunctionsTT() {
     qc::core::vec2<T1> v2; v2;
     qc::core::vec3<T1> v3; v3;
     qc::core::vec4<T1> v4; v4;
-
-    qc::core::transnorm<T2>(v2);
-    qc::core::transnorm<T2>(v3);
-    qc::core::transnorm<T2>(v4);
 }
 
 template <typename T>
@@ -662,6 +662,37 @@ static void compileFunctionsFT() {
     qc::core::smoothstep(v2, v2, v);
     qc::core::smoothstep(v3, v3, v);
     qc::core::smoothstep(v4, v4, v);
+
+    qc::core::transnorm<qc::core::f32>(v2);
+    qc::core::transnorm<qc::core::f32>(v3);
+    qc::core::transnorm<qc::core::f32>(v4);
+    qc::core::transnorm<qc::core::f64>(v2);
+    qc::core::transnorm<qc::core::f64>(v3);
+    qc::core::transnorm<qc::core::f64>(v4);
+    qc::core::transnorm<qc::core::s08>(v2);
+    qc::core::transnorm<qc::core::s08>(v3);
+    qc::core::transnorm<qc::core::s08>(v4);
+    qc::core::transnorm<qc::core::s16>(v2);
+    qc::core::transnorm<qc::core::s16>(v3);
+    qc::core::transnorm<qc::core::s16>(v4);
+    qc::core::transnorm<qc::core::s32>(v2);
+    qc::core::transnorm<qc::core::s32>(v3);
+    qc::core::transnorm<qc::core::s32>(v4);
+    qc::core::transnorm<qc::core::s64>(v2);
+    qc::core::transnorm<qc::core::s64>(v3);
+    qc::core::transnorm<qc::core::s64>(v4);
+    qc::core::transnorm<qc::core::u08>(v2);
+    qc::core::transnorm<qc::core::u08>(v3);
+    qc::core::transnorm<qc::core::u08>(v4);
+    qc::core::transnorm<qc::core::u16>(v2);
+    qc::core::transnorm<qc::core::u16>(v3);
+    qc::core::transnorm<qc::core::u16>(v4);
+    qc::core::transnorm<qc::core::u32>(v2);
+    qc::core::transnorm<qc::core::u32>(v3);
+    qc::core::transnorm<qc::core::u32>(v4);
+    qc::core::transnorm<qc::core::u64>(v2);
+    qc::core::transnorm<qc::core::u64>(v3);
+    qc::core::transnorm<qc::core::u64>(v4);
 }
 
 template <typename T>
@@ -673,11 +704,45 @@ static void compileFunctionsIT() {
 }
 
 template <typename T>
+static void compileFunctionsSIT() {
+    T v{}; v;
+    qc::core::vec2<T> v2; v2;
+    qc::core::vec3<T> v3; v3;
+    qc::core::vec4<T> v4; v4;
+
+    qc::core::transnorm<qc::core::f32>(v2);
+    qc::core::transnorm<qc::core::f32>(v3);
+    qc::core::transnorm<qc::core::f32>(v4);
+    qc::core::transnorm<qc::core::f64>(v2);
+    qc::core::transnorm<qc::core::f64>(v3);
+    qc::core::transnorm<qc::core::f64>(v4);
+}
+
+template <typename T>
 static void compileFunctionsUIT() {
     T v{}; v;
     qc::core::vec2<T> v2; v2;
     qc::core::vec3<T> v3; v3;
     qc::core::vec4<T> v4; v4;
+
+    qc::core::transnorm<qc::core::f32>(v2);
+    qc::core::transnorm<qc::core::f32>(v3);
+    qc::core::transnorm<qc::core::f32>(v4);
+    qc::core::transnorm<qc::core::f64>(v2);
+    qc::core::transnorm<qc::core::f64>(v3);
+    qc::core::transnorm<qc::core::f64>(v4);
+    qc::core::transnorm<qc::core::u08>(v2);
+    qc::core::transnorm<qc::core::u08>(v3);
+    qc::core::transnorm<qc::core::u08>(v4);
+    qc::core::transnorm<qc::core::u16>(v2);
+    qc::core::transnorm<qc::core::u16>(v3);
+    qc::core::transnorm<qc::core::u16>(v4);
+    qc::core::transnorm<qc::core::u32>(v2);
+    qc::core::transnorm<qc::core::u32>(v3);
+    qc::core::transnorm<qc::core::u32>(v4);
+    qc::core::transnorm<qc::core::u64>(v2);
+    qc::core::transnorm<qc::core::u64>(v3);
+    qc::core::transnorm<qc::core::u64>(v4);
 
     qc::core::mipmaps(v2);
     qc::core::mipmaps(v3);
@@ -733,6 +798,16 @@ static void compileFunctions() {
     compileFunctionsIT<qc::core::u16>();
     compileFunctionsIT<qc::core::u32>();
     compileFunctionsIT<qc::core::u64>();
+
+    compileFunctionsSIT<qc::core::s08>();
+    compileFunctionsSIT<qc::core::s16>();
+    compileFunctionsSIT<qc::core::s32>();
+    compileFunctionsSIT<qc::core::s64>();
+
+    compileFunctionsUIT<qc::core::u08>();
+    compileFunctionsUIT<qc::core::u16>();
+    compileFunctionsUIT<qc::core::u32>();
+    compileFunctionsUIT<qc::core::u64>();
 
     compileFunctionsBT();
 }
@@ -1231,12 +1306,18 @@ static constexpr bool compileConstants() {
     return true;
 }
 
-void testVector() {
-    compileClasses();
-    static_assert(compileClassesConstexpr());
-    compileFunctions();
-    static_assert(compileFunctionsConstexpr());
-    testProperties();
-    static_assert(compileCasts());
-    static_assert(compileConstants());
-}
+TEST_CLASS(TestVector) {
+
+    public:
+
+    TEST_METHOD(testCompilation) {
+        compileClasses();
+        static_assert(compileClassesConstexpr());
+        compileFunctions();
+        static_assert(compileFunctionsConstexpr());
+        testProperties();
+        static_assert(compileCasts());
+        static_assert(compileConstants());
+    }
+
+};

@@ -1,6 +1,10 @@
 #include <sstream>
 
+#include <CppUnitTest.h>
+
 #include <qc-core/span-ext.hpp>
+
+using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 template <typename T>
 static void compileClassesT() {
@@ -615,12 +619,18 @@ static constexpr bool compileConstants() {
     return true;
 }
 
-void testSpan() {
-    compileClasses();
-    static_assert(compileClassesConstexpr());
-    compileFunctions();
-    static_assert(compileFunctionsConstexpr());
-    testProperties();
-    static_assert(compileCasts());
-    static_assert(compileConstants());
-}
+TEST_CLASS(TestSpan) {
+
+    public:
+
+    TEST_METHOD(testCompilation) {
+        compileClasses();
+        static_assert(compileClassesConstexpr());
+        compileFunctions();
+        static_assert(compileFunctionsConstexpr());
+        testProperties();
+        static_assert(compileCasts());
+        static_assert(compileConstants());
+    }
+
+};

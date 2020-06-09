@@ -1,4 +1,8 @@
+#include <CppUnitTest.h>
+
 #include <qc-core/bits.hpp>
+
+using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 template <typename T>
 static void compileFunctionsUT() {
@@ -30,6 +34,12 @@ static void compileFunctions() {
     qc::core::bits::repeat<qc::core::u32, qc::core::u64>(~qc::core::u32(0u));
 }
 
-void testBits() {
-    compileFunctions();
-}
+TEST_CLASS(TestBits) {
+
+    public:
+
+    TEST_METHOD(testCompilation) {
+        compileFunctions();
+    }
+
+};

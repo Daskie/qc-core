@@ -1,6 +1,10 @@
 #include <sstream>
 
+#include <CppUnitTest.h>
+
 #include <qc-core/matrix-ext.hpp>
+
+using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 template <typename T>
 static void compileClassesT() {
@@ -449,11 +453,17 @@ static void compileCasts() {
     compileCastsT<double>();
 }
 
-void testMatrix() {
-    compileClasses();
-    static_assert(compileClassesConstexpr(), "");
-    compileFunctions();
-    static_assert(compileFunctionsConstexpr(), "");
-    testProperties();
-    compileCasts();
-}
+TEST_CLASS(TestMatrix) {
+
+    public:
+
+    TEST_METHOD(testCompilation) {
+        compileClasses();
+        static_assert(compileClassesConstexpr(), "");
+        compileFunctions();
+        static_assert(compileFunctionsConstexpr(), "");
+        testProperties();
+        compileCasts();
+    }
+
+};

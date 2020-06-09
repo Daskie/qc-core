@@ -1,5 +1,13 @@
+#include <CppUnitTest.h>
+
 #include <qc-core/utils.hpp>
 
-void testUtils() {
+using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
-}
+TEST_CLASS(TestUtils) {
+
+	public:
+
+	TEST_METHOD(test) {}
+
+};

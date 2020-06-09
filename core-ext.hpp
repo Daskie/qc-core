@@ -201,9 +201,13 @@ namespace qc::core {
 
     //
     // Converts between normalized types.
-    // Works with floats and integers, signed and unsigned.
     //
-    template <Number To, Number From> Q_CONSTEX To transnorm(From v);
+    template <Floater To, Floater From> Q_CX_ABLE To transnorm(From v);
+    template <SignedInteger To, Floater From> Q_CX_ABLE To transnorm(From v);
+    template <UnsignedInteger To, Floater From> Q_CX_ABLE To transnorm(From v);
+    template <Floater To, SignedInteger From> Q_CX_ABLE To transnorm(From v);
+    template <Floater To, UnsignedInteger From> Q_CX_ABLE To transnorm(From v);
+    template <UnsignedInteger To, UnsignedInteger From> Q_CX_ABLE To transnorm(From v);
 
 } // namespace qc::core
 
@@ -503,88 +507,47 @@ namespace qc::core {
         return radians * (T(180.0) / pi<T>);
     }
 
-    template <Number To, Number From>
-    inline Q_CONSTEX To transnorm(const From v) {
-        if constexpr (std::is_same_v<From, To>) {
+    template <Floater To, Floater From>
+    inline Q_CX_ABLE To transnorm(const From v) {
+        return To(v);
+    }
+
+    template <SignedInteger To, Floater From>
+    inline Q_CX_ABLE To transnorm(const From v) {
+        if (v <= From(-1.0)) return std::numeric_limits<To>::min();
+        if (v >= From(1.0)) return std::numeric_limits<To>::max();
+        return v < From(0.0) ? To(std::round(v * -From(std::numeric_limits<To>::min()))) : To(std::round(v * From(std::numeric_limits<To>::max())));
+    }
+
+    template <UnsignedInteger To, Floater From>
+    inline Q_CX_ABLE To transnorm(const From v) {
+        if (v <= From(0.0)) return To(0u);
+        if (v >= From(1.0)) return std::numeric_limits<To>::max();
+        return To(std::round(v * From(std::numeric_limits<To>::max())));
+    }
+
+    template <Floater To, SignedInteger From>
+    inline Q_CX_ABLE To transnorm(const From v) {
+        return To(v) * (v < 0 ? To(1.0) / -To(std::numeric_limits<From>::min()) : To(1.0) / To(std::numeric_limits<From>::max()));
+    }
+
+    template <Floater To, UnsignedInteger From>
+    inline Q_CX_ABLE To transnorm(const From v) {
+        return To(v) * (To(1.0) / To(std::numeric_limits<From>::max()));
+    }
+
+    template <UnsignedInteger To, UnsignedInteger From>
+    inline Q_CX_ABLE To transnorm(const From v) {
+        if constexpr (sizeof(From) == sizeof(To)) {
             return v;
         }
-        // float -> float
-        if constexpr (std::is_floating_point_v<To> && std::is_floating_point_v<From>) {
-            return To(v);
+        else if constexpr (sizeof(From) > sizeof(To)) {
+            return To(v >> (8u * (sizeof(From) - sizeof(To))));
         }
-        if constexpr (std::is_integral_v<From> && std::is_integral_v<To>) {
-            // signed int -> signed int / unsigned int -> unsigned int
-            if constexpr (std::is_signed_v<From> == std::is_signed_v<To>) {
-                if constexpr (sizeof(From) > sizeof(To)) {
-                    return To(v >> ((sizeof(From) - sizeof(To)) * 8u));
-                }
-                if constexpr (sizeof(From) < sizeof(To)) {
-                    if (v == std::numeric_limits<From>::max()) return std::numeric_limits<To>::max();
-                    return To(v) << ((sizeof(To) - sizeof(From)) * 8u);
-                }
-            }
-            // signed int -> unsigned int
-            if constexpr (std::is_signed_v<From>) {
-                if constexpr (sizeof(From) == sizeof(To)) {
-                    if (v <= 0) return 0u;
-                    if (v == std::numeric_limits<From>::max()) return std::numeric_limits<To>::max();
-                    return To(v << 1);
-                }
-                if constexpr (sizeof(From) > sizeof(To)) {
-                    if (v <= 0) return 0u;
-                    return To(v >> ((sizeof(From) - sizeof(To)) * 8u - 1u));
-                }
-                if constexpr (sizeof(From) < sizeof(To)) {
-                    if (v <= 0) return 0u;
-                    if (v == std::numeric_limits<From>::max()) return std::numeric_limits<To>::max();
-                    return To(v) << ((sizeof(To) - sizeof(From)) * 8u + 1u);
-                }
-            }
-            // unsigned int -> signed int
-            if constexpr (std::is_unsigned_v<From>) {
-                if constexpr (sizeof(From) == sizeof(To)) {
-                    return To(v >> 1);
-                }
-                if constexpr (sizeof(From) > sizeof(To)) {
-                    return To(v >> ((sizeof(From) - sizeof(To)) * 8u + 1u));
-                }
-                if constexpr (sizeof(From) < sizeof(To)) {
-                    if (v == std::numeric_limits<From>::max()) return std::numeric_limits<To>::max();
-                    return To(v) << ((sizeof(To) - sizeof(From)) * 8u - 1u);
-                }
-            }
-        }
-        if constexpr (std::is_floating_point_v<From> && std::is_integral_v<To>) {
-            // float -> signed int
-            if constexpr (std::is_signed_v<To>) {
-                constexpr From maxVal(From(std::numeric_limits<To>::max()) + From(1.0));
-                constexpr From upperThreshold(From(1.0) - From(1.0) / maxVal);
-                if (v >=  upperThreshold) return std::numeric_limits<To>::max();
-                if (v <= -upperThreshold) return std::numeric_limits<To>::min();
-                return To(v * maxVal);
-            }
-            // float -> unsigned int
-            if constexpr (std::is_unsigned_v<To>) {
-                constexpr From maxVal(From(std::numeric_limits<To>::max()) + From(1.0));
-                constexpr From upperThreshold(From(1.0) - From(1.0) / maxVal);
-                if (v < From(0.0)) return 0u;
-                if (v >= upperThreshold) return std::numeric_limits<To>::max();
-                return To(v * maxVal);
-            }
-        }
-        if constexpr (std::is_integral_v<From> && std::is_floating_point_v<To>) {
-            // signed int -> float
-            if constexpr (std::is_signed_v<From>) {
-                constexpr To maxVal(To(std::numeric_limits<From>::max()) + To(1.0));
-                if (v == std::numeric_limits<From>::max()) return To(1.0);
-                return To(v) * (To(1.0) / maxVal);
-            }
-            // unsigned int -> float
-            if constexpr (std::is_unsigned_v<From>) {
-                constexpr To maxVal(To(std::numeric_limits<From>::max()) + To(1.0));
-                if (v == std::numeric_limits<From>::max()) return To(1.0);
-                return To(v) * (To(1.0) / maxVal);
-            }
+        else {
+            using NextFrom = sized<sizeof(From) * 2>::utype;
+            using OpType = sized<max(sizeof(NextFrom), sizeof(decltype(v << 1)))>::utype;
+            return transnorm<To>(NextFrom(v | (OpType(v) << (8u * sizeof(From)))));
         }
     }
 

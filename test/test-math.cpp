@@ -1,7 +1,15 @@
 #include <iostream>
 
+#include <CppUnitTest.h>
+
 #include <qc-core/math.hpp>
 
-void testMath() {
+using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
-}
+TEST_CLASS(TestMath) {
+
+	public:
+
+	TEST_METHOD(test) {}
+
+};

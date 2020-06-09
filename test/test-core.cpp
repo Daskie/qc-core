@@ -1,8 +1,18 @@
+#include <CppUnitTest.h>
+
 #include <qc-core/core-ext.hpp>
 
-static void compileTyping() {
-    using namespace qc::core::types;
+using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+using namespace qc::core::types;
 
+namespace Microsoft::VisualStudio::CppUnitTestFramework {
+    template <>
+    static std::wstring ToString<uint16_t>(const uint16_t & v) {
+        return std::to_wstring(v);
+    }
+}
+
+static void compileTyping() {
     s08 s08_; s08_;
     u08 u08_; u08_;
     s16 s16_; s16_;
@@ -14,7 +24,7 @@ static void compileTyping() {
     u64 u64_; u64_;
     f64 f64_; f64_;
 
-    qc::core::array_t<int> a0{ 1, 2, 3 }; a0;
+    qc::core::array_t<int> a0{1, 2, 3}; a0;
     qc::core::array_t<int, 1> a1; a1;
 
     qc::core::stype<1> stype_08_; stype_08_;
@@ -30,10 +40,6 @@ static void compileTyping() {
 }
 
 template <typename T>
-static void compileConstantsT() {
-}
-
-template <typename T>
 static void compileConstantsFT() {
     qc::core::pi<T>;
     qc::core::e<T>;
@@ -45,17 +51,6 @@ static void compileConstantsFT() {
 }
 
 static void compileConstants() {
-    compileConstantsT<float>();
-    compileConstantsT<double>();
-    compileConstantsT<qc::core::s08>();
-    compileConstantsT<qc::core::u08>();
-    compileConstantsT<qc::core::s16>();
-    compileConstantsT<qc::core::u16>();
-    compileConstantsT<qc::core::s32>();
-    compileConstantsT<qc::core::u32>();
-    compileConstantsT<qc::core::s64>();
-    compileConstantsT<qc::core::u64>();
-
     compileConstantsFT<float>();
     compileConstantsFT<double>();
 }
@@ -63,22 +58,20 @@ static void compileConstants() {
 template <typename T1, typename T2>
 static void compileFunctionsTT() {
     T1 v(1);
-
-    qc::core::transnorm<T2>(v);
 }
 
 template <typename T>
 static void compileFunctionsT() {
-    compileFunctionsTT<T, qc::core::f32>();
-    compileFunctionsTT<T, qc::core::f64>();
-    compileFunctionsTT<T, qc::core::s08>();
-    compileFunctionsTT<T, qc::core::u08>();
-    compileFunctionsTT<T, qc::core::s16>();
-    compileFunctionsTT<T, qc::core::u16>();
-    compileFunctionsTT<T, qc::core::s32>();
-    compileFunctionsTT<T, qc::core::u32>();
-    compileFunctionsTT<T, qc::core::s64>();
-    compileFunctionsTT<T, qc::core::u64>();
+    compileFunctionsTT<T, f32>();
+    compileFunctionsTT<T, f64>();
+    compileFunctionsTT<T, s08>();
+    compileFunctionsTT<T, u08>();
+    compileFunctionsTT<T, s16>();
+    compileFunctionsTT<T, u16>();
+    compileFunctionsTT<T, s32>();
+    compileFunctionsTT<T, u32>();
+    compileFunctionsTT<T, s64>();
+    compileFunctionsTT<T, u64>();
 
     T v(1);
     T * vp(nullptr);
@@ -192,33 +185,33 @@ static void compileFunctionsBT() {
 }
 
 static void compileFunctions() {
-    compileFunctionsT<qc::core::f32>();
-    compileFunctionsT<qc::core::f64>();
-    compileFunctionsT<qc::core::s08>();
-    compileFunctionsT<qc::core::u08>();
-    compileFunctionsT<qc::core::s16>();
-    compileFunctionsT<qc::core::u16>();
-    compileFunctionsT<qc::core::s32>();
-    compileFunctionsT<qc::core::u32>();
-    compileFunctionsT<qc::core::s64>();
-    compileFunctionsT<qc::core::u64>();
+    compileFunctionsT<f32>();
+    compileFunctionsT<f64>();
+    compileFunctionsT<s08>();
+    compileFunctionsT<u08>();
+    compileFunctionsT<s16>();
+    compileFunctionsT<u16>();
+    compileFunctionsT<s32>();
+    compileFunctionsT<u32>();
+    compileFunctionsT<s64>();
+    compileFunctionsT<u64>();
 
-    compileFunctionsFT<qc::core::f32>();
-    compileFunctionsFT<qc::core::f64>();
+    compileFunctionsFT<f32>();
+    compileFunctionsFT<f64>();
 
-    compileFunctionsIT<qc::core::s08>();
-    compileFunctionsIT<qc::core::u08>();
-    compileFunctionsIT<qc::core::s16>();
-    compileFunctionsIT<qc::core::u16>();
-    compileFunctionsIT<qc::core::s32>();
-    compileFunctionsIT<qc::core::u32>();
-    compileFunctionsIT<qc::core::s64>();
-    compileFunctionsIT<qc::core::u64>();
+    compileFunctionsIT<s08>();
+    compileFunctionsIT<u08>();
+    compileFunctionsIT<s16>();
+    compileFunctionsIT<u16>();
+    compileFunctionsIT<s32>();
+    compileFunctionsIT<u32>();
+    compileFunctionsIT<s64>();
+    compileFunctionsIT<u64>();
 
-    compileFunctionsUIT<qc::core::u08>();
-    compileFunctionsUIT<qc::core::u16>();
-    compileFunctionsUIT<qc::core::u32>();
-    compileFunctionsUIT<qc::core::u64>();
+    compileFunctionsUIT<u08>();
+    compileFunctionsUIT<u16>();
+    compileFunctionsUIT<u32>();
+    compileFunctionsUIT<u64>();
 
     compileFunctionsBT();
 }
@@ -231,16 +224,16 @@ static constexpr void compileFunctionsConstexprTT() {
 
 template <typename T>
 static constexpr void compileFunctionsConstexprT() {
-    compileFunctionsConstexprTT<T, qc::core::f32>();
-    compileFunctionsConstexprTT<T, qc::core::f64>();
-    compileFunctionsConstexprTT<T, qc::core::s08>();
-    compileFunctionsConstexprTT<T, qc::core::u08>();
-    compileFunctionsConstexprTT<T, qc::core::s16>();
-    compileFunctionsConstexprTT<T, qc::core::u16>();
-    compileFunctionsConstexprTT<T, qc::core::s32>();
-    compileFunctionsConstexprTT<T, qc::core::u32>();
-    compileFunctionsConstexprTT<T, qc::core::s64>();
-    compileFunctionsConstexprTT<T, qc::core::u64>();
+    compileFunctionsConstexprTT<T, f32>();
+    compileFunctionsConstexprTT<T, f64>();
+    compileFunctionsConstexprTT<T, s08>();
+    compileFunctionsConstexprTT<T, u08>();
+    compileFunctionsConstexprTT<T, s16>();
+    compileFunctionsConstexprTT<T, u16>();
+    compileFunctionsConstexprTT<T, s32>();
+    compileFunctionsConstexprTT<T, u32>();
+    compileFunctionsConstexprTT<T, s64>();
+    compileFunctionsConstexprTT<T, u64>();
 
     constexpr T v(1);
     constexpr T * vp(nullptr);
@@ -336,42 +329,172 @@ static constexpr void compileFunctionsConstexprBT() {
 }
 
 static constexpr bool compileFunctionsConstexpr() {
-    compileFunctionsConstexprT<qc::core::f32>();
-    compileFunctionsConstexprT<qc::core::f64>();
-    compileFunctionsConstexprT<qc::core::s08>();
-    compileFunctionsConstexprT<qc::core::u08>();
-    compileFunctionsConstexprT<qc::core::s16>();
-    compileFunctionsConstexprT<qc::core::u16>();
-    compileFunctionsConstexprT<qc::core::s32>();
-    compileFunctionsConstexprT<qc::core::u32>();
-    compileFunctionsConstexprT<qc::core::s64>();
-    compileFunctionsConstexprT<qc::core::u64>();
+    compileFunctionsConstexprT<f32>();
+    compileFunctionsConstexprT<f64>();
+    compileFunctionsConstexprT<s08>();
+    compileFunctionsConstexprT<u08>();
+    compileFunctionsConstexprT<s16>();
+    compileFunctionsConstexprT<u16>();
+    compileFunctionsConstexprT<s32>();
+    compileFunctionsConstexprT<u32>();
+    compileFunctionsConstexprT<s64>();
+    compileFunctionsConstexprT<u64>();
 
-    compileFunctionsConstexprFT<qc::core::f32>();
-    compileFunctionsConstexprFT<qc::core::f64>();
+    compileFunctionsConstexprFT<f32>();
+    compileFunctionsConstexprFT<f64>();
 
-    compileFunctionsConstexprIT<qc::core::s08>();
-    compileFunctionsConstexprIT<qc::core::u08>();
-    compileFunctionsConstexprIT<qc::core::s16>();
-    compileFunctionsConstexprIT<qc::core::u16>();
-    compileFunctionsConstexprIT<qc::core::s32>();
-    compileFunctionsConstexprIT<qc::core::u32>();
-    compileFunctionsConstexprIT<qc::core::s64>();
-    compileFunctionsConstexprIT<qc::core::u64>();
+    compileFunctionsConstexprIT<s08>();
+    compileFunctionsConstexprIT<u08>();
+    compileFunctionsConstexprIT<s16>();
+    compileFunctionsConstexprIT<u16>();
+    compileFunctionsConstexprIT<s32>();
+    compileFunctionsConstexprIT<u32>();
+    compileFunctionsConstexprIT<s64>();
+    compileFunctionsConstexprIT<u64>();
 
-    compileFunctionsConstexprUIT<qc::core::u08>();
-    compileFunctionsConstexprUIT<qc::core::u16>();
-    compileFunctionsConstexprUIT<qc::core::u32>();
-    compileFunctionsConstexprUIT<qc::core::u64>();
+    compileFunctionsConstexprUIT<u08>();
+    compileFunctionsConstexprUIT<u16>();
+    compileFunctionsConstexprUIT<u32>();
+    compileFunctionsConstexprUIT<u64>();
 
     compileFunctionsConstexprBT();
 
     return true;
 }
 
-void testCore() {
-    compileTyping();
-    compileConstants();
-    compileFunctions();
-    static_assert(compileFunctionsConstexpr());
-}
+TEST_CLASS(TestCore) {
+
+    public:
+
+    TEST_METHOD(testCompilation) {
+        compileTyping();
+        compileConstants();
+        compileFunctions();
+        static_assert(compileFunctionsConstexpr());
+    }
+
+    template <Integer T> static constexpr T halfVal{T(std::numeric_limits<T>::max() / 2 + T(1))};
+    template <Integer T> static constexpr T quarterVal{T(halfVal<T> / 2)};
+    template <Integer T> static constexpr T threeQuartersVal{T(halfVal<T> + quarterVal<T>)};
+
+    template <typename From, typename To>
+    void testTransnormFTFT() {
+        Assert::AreEqual(To(0.0), qc::core::transnorm<To>(From(0.0)));
+        Assert::AreEqual(To(0.25), qc::core::transnorm<To>(From(0.25)));
+        Assert::AreEqual(To(0.5), qc::core::transnorm<To>(From(0.5)));
+        Assert::AreEqual(To(0.75), qc::core::transnorm<To>(From(0.75)));
+        Assert::AreEqual(To(1.0), qc::core::transnorm<To>(From(1.0)));
+    }
+
+    template <typename From, typename To>
+    void testTransnormFTST() {
+        const double epsilon(1.0 / std::ldexp(1.0, std::numeric_limits<To>::digits));
+
+        Assert::AreEqual(To(std::numeric_limits<To>::min()), qc::core::transnorm<To>(From(-1.0)));
+        Assert::AreEqual(0.75, double(qc::core::transnorm<To>(From(-0.75))) / double(std::numeric_limits<To>::min()), epsilon);
+        Assert::AreEqual(0.5, double(qc::core::transnorm<To>(From(-0.5))) / double(std::numeric_limits<To>::min()), epsilon);
+        Assert::AreEqual(0.25, double(qc::core::transnorm<To>(From(-0.25))) / double(std::numeric_limits<To>::min()), epsilon);
+        Assert::AreEqual(To(0u), qc::core::transnorm<To>(From(0.0)));
+        Assert::AreEqual(0.25, double(qc::core::transnorm<To>(From(0.25))) / double(std::numeric_limits<To>::max()), epsilon);
+        Assert::AreEqual(0.5, double(qc::core::transnorm<To>(From(0.5))) / double(std::numeric_limits<To>::max()), epsilon);
+        Assert::AreEqual(0.75, double(qc::core::transnorm<To>(From(0.75))) / double(std::numeric_limits<To>::max()), epsilon);
+        Assert::AreEqual(std::numeric_limits<To>::max(), qc::core::transnorm<To>(From(1.0)));
+    }
+
+    template <typename From, typename To>
+    void testTransnormFTUT() {
+        const double epsilon(1.0 / std::ldexp(1.0, std::numeric_limits<To>::digits));
+
+        Assert::AreEqual(To(0u), qc::core::transnorm<To>(From(0.0)));
+        Assert::AreEqual(0.25, double(qc::core::transnorm<To>(From(0.25))) / double(std::numeric_limits<To>::max()), epsilon);
+        Assert::AreEqual(0.5, double(qc::core::transnorm<To>(From(0.5))) / double(std::numeric_limits<To>::max()), epsilon);
+        Assert::AreEqual(0.75, double(qc::core::transnorm<To>(From(0.75))) / double(std::numeric_limits<To>::max()), epsilon);
+        Assert::AreEqual(std::numeric_limits<To>::max(), qc::core::transnorm<To>(From(1.0)));
+    }
+
+    template <typename From, typename To>
+    void testTransnormSTFT() {
+        const To epsilon(To(1.0 / std::ldexp(1.0, std::numeric_limits<From>::digits)));
+
+        Assert::AreEqual(To(-1.0), qc::core::transnorm<To>(std::numeric_limits<From>::min()));
+        Assert::AreEqual(To(-0.75), qc::core::transnorm<To>(From(-threeQuartersVal<From>)), epsilon);
+        Assert::AreEqual(To(-0.5), qc::core::transnorm<To>(From(-halfVal<From>)), epsilon);
+        Assert::AreEqual(To(-0.25), qc::core::transnorm<To>(From(-quarterVal<From>)), epsilon);
+        Assert::AreEqual(To(0.0), qc::core::transnorm<To>(From(0)));
+        Assert::AreEqual(To(0.25), qc::core::transnorm<To>(quarterVal<From>), epsilon);
+        Assert::AreEqual(To(0.5), qc::core::transnorm<To>(halfVal<From>), epsilon);
+        Assert::AreEqual(To(0.75), qc::core::transnorm<To>(threeQuartersVal<From>), epsilon);
+        Assert::AreEqual(To(1.0), qc::core::transnorm<To>(std::numeric_limits<From>::max()));
+    }
+
+    template <typename From, typename To>
+    void testTransnormUTFT() {
+        const To epsilon(To(1.0 / std::ldexp(1.0, std::numeric_limits<From>::digits)));
+
+        Assert::AreEqual(To(0.0), qc::core::transnorm<To>(From(0u)));
+        Assert::AreEqual(To(0.25), qc::core::transnorm<To>(quarterVal<From>), epsilon);
+        Assert::AreEqual(To(0.5), qc::core::transnorm<To>(halfVal<From>), epsilon);
+        Assert::AreEqual(To(0.75), qc::core::transnorm<To>(threeQuartersVal<From>), epsilon);
+        Assert::AreEqual(To(1.0), qc::core::transnorm<To>(std::numeric_limits<From>::max()));
+    }
+
+    template <typename From, typename To>
+    void testTransnormUTUT() {
+        const double epsilon(1.0 / std::ldexp(1.0, qc::core::min(std::numeric_limits<To>::digits, std::numeric_limits<From>::digits)));
+
+        Assert::AreEqual(To(0u), qc::core::transnorm<To>(From(0u)));
+        Assert::AreEqual(0.25, double(qc::core::transnorm<To>(From(quarterVal<From>))) / double(std::numeric_limits<To>::max()), epsilon);
+        Assert::AreEqual(0.5, double(qc::core::transnorm<To>(From(halfVal<From>))) / double(std::numeric_limits<To>::max()), epsilon);
+        Assert::AreEqual(0.75, double(qc::core::transnorm<To>(From(threeQuartersVal<From>))) / double(std::numeric_limits<To>::max()), epsilon);
+        Assert::AreEqual( To(std::numeric_limits<To>::max()), qc::core::transnorm<To>(std::numeric_limits<From>::max()));
+    }
+
+    template <typename From>
+    void testTransnormST() {
+        testTransnormSTFT<From, f32>();
+        testTransnormSTFT<From, f64>();
+    }
+
+    template <typename From>
+    void testTransnormUT() {
+        testTransnormUTUT<From, u08>();
+        testTransnormUTUT<From, u16>();
+        testTransnormUTUT<From, u32>();
+        testTransnormUTUT<From, u64>();
+
+        testTransnormUTFT<From, f32>();
+        testTransnormUTFT<From, f64>();
+    }
+
+    template <typename From>
+    void testTransnormFT() {
+        testTransnormFTST<From, s08>();
+        testTransnormFTST<From, s16>();
+        testTransnormFTST<From, s32>();
+        testTransnormFTST<From, s64>();
+
+        testTransnormFTUT<From, u08>();
+        testTransnormFTUT<From, u16>();
+        testTransnormFTUT<From, u32>();
+        testTransnormFTUT<From, u64>();
+
+        testTransnormFTFT<From, f32>();
+        testTransnormFTFT<From, f64>();
+    }
+
+    TEST_METHOD(testTransnorm) {
+        testTransnormST<s08>();
+        testTransnormST<s16>();
+        testTransnormST<s32>();
+        testTransnormST<s64>();
+
+        testTransnormUT<u08>();
+        testTransnormUT<u16>();
+        testTransnormUT<u32>();
+        testTransnormUT<u64>();
+
+        testTransnormFT<f32>();
+        testTransnormFT<f64>();
+    }
+
+};
