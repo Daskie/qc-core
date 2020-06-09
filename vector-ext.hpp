@@ -221,7 +221,7 @@ namespace qc::core {
     // Converts between normalized types.
     // Works with floats, signed, and unsigned integers.
     //
-    template <Number To, Number From, int n> Q_CONSTEX vec<To, n> transnorm(const vec<From, n> & v);
+    template <Vector ToVec, Number From, int n> requires(ToVec::n == n) Q_CX_ABLE ToVec transnorm(const vec<From, n> & v);
 
     //
     // ...
@@ -661,8 +661,10 @@ namespace qc::core {
         return mix(v1, v2, t * t * (T(3.0) - T(2.0) * t));
     }
 
-    template <Number To, Number From, int n>
-    inline Q_CONSTEX vec<To, n> transnorm(const vec<From, n> & v) {
+    template <Vector ToVec, Number From, int n>
+    requires(ToVec::n == n)
+    inline Q_CX_ABLE ToVec transnorm(const vec<From, n> & v) {
+        using To = ToVec::Type;
         if constexpr (n == 2) return {transnorm<To>(v.x), transnorm<To>(v.y)};
         if constexpr (n == 3) return {transnorm<To>(v.x), transnorm<To>(v.y), transnorm<To>(v.z)};
         if constexpr (n == 4) return {transnorm<To>(v.x), transnorm<To>(v.y), transnorm<To>(v.z), transnorm<To>(v.w)};

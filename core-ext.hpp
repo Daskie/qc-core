@@ -8,6 +8,7 @@
 #include <bit>
 #undef __cpp_lib_bitops
 #endif
+#include <cmath>
 
 #include "core.hpp"
 
@@ -545,8 +546,8 @@ namespace qc::core {
             return To(v >> (8u * (sizeof(From) - sizeof(To))));
         }
         else {
-            using NextFrom = sized<sizeof(From) * 2>::utype;
-            using OpType = sized<max(sizeof(NextFrom), sizeof(decltype(v << 1)))>::utype;
+            using NextFrom = typename sized<sizeof(From) * 2>::utype;
+            using OpType = typename sized<max(sizeof(NextFrom), sizeof(decltype(v << 1)))>::utype;
             return transnorm<To>(NextFrom(v | (OpType(v) << (8u * sizeof(From)))));
         }
     }
