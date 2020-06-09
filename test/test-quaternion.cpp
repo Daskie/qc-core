@@ -5,26 +5,27 @@
 #include <qc-core/quaternion-ext.hpp>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+using namespace qc::core::types;
 
 template <typename T>
 static void compileClassesT() {
     T v(1.0);
-    qc::core::vec3<T> v3(1.0);
-    qc::core::vec4<T> v4(1.0);
-    qc::core::mat3<T> m3(v3, v3, v3);
-    qc::core::quat<T> q(v4);
+    vec3<T> v3(1.0);
+    vec4<T> v4(1.0);
+    mat3<T> m3(v3, v3, v3);
+    quat<T> q(v4);
     std::stringstream os;
 
     //--------------------------------------------------------------------------
     // Quat
 
     // constructors
-    qc::core::quat<T> q_1;
-    qc::core::quat<T> q_2(q);
-    qc::core::quat<T> q_3(std::move(q));
-    qc::core::quat<T> q_4(v3, v);
-    qc::core::quat<T> q_6(v3);
-    qc::core::quat<T> q_7(v4);
+    quat<T> q_1;
+    quat<T> q_2(q);
+    quat<T> q_3(std::move(q));
+    quat<T> q_4(v3, v);
+    quat<T> q_6(v3);
+    quat<T> q_7(v4);
 
     // assignment
     q = q;
@@ -67,21 +68,21 @@ static void compileClasses() {
 template <typename T>
 static constexpr void compileClassesConstexprT() {
     /*constexpr T v(1.0);
-    constexpr qc::core::vec3<T> v3(1.0f);
-    constexpr qc::core::vec4<T> v4(1.0f);
-    constexpr qc::core::mat3<T> m3(v3, v3, v3);
-    constexpr qc::core::quat<T> q(v4);
+    constexpr vec3<T> v3(1.0f);
+    constexpr vec4<T> v4(1.0f);
+    constexpr mat3<T> m3(v3, v3, v3);
+    constexpr quat<T> q(v4);
 
     //--------------------------------------------------------------------------
     // Quat
 
     // constructors
-    qc::core::quat<T> q_1;
-    qc::core::quat<T> q_2(q);
-    qc::core::quat<T> q_3(std::move(q));
-    qc::core::quat<T> q_4(v3, v);
-    qc::core::quat<T> q_6(v3);
-    qc::core::quat<T> q_7(v4);*/
+    quat<T> q_1;
+    quat<T> q_2(q);
+    quat<T> q_3(std::move(q));
+    quat<T> q_4(v3, v);
+    quat<T> q_6(v3);
+    quat<T> q_7(v4);*/
 }
 
 static constexpr bool compileClassesConstexpr() {
@@ -94,10 +95,10 @@ static constexpr bool compileClassesConstexpr() {
 template <typename T>
 static void compileFunctionsT() {
     T v(1.0);
-    qc::core::vec3<T> v3(1.0);
-    qc::core::vec4<T> v4(1.0);
-    qc::core::mat3<T> m3(v3, v3, v3);
-    qc::core::quat<T> q(v4);
+    vec3<T> v3(1.0);
+    vec4<T> v4(1.0);
+    mat3<T> m3(v3, v3, v3);
+    quat<T> q(v4);
 
     qc::core::dot(q, q);
     qc::core::magnitude(q);
@@ -130,12 +131,12 @@ static void compileFunctions() {
 template <typename T>
 static constexpr void compileFunctionsConstexprT() {
     /*constexpr T v(1.0);
-    constexpr qc::core::vec3<T> v3(1.0);
-    constexpr qc::core::vec4<T> v4(1.0);
-    constexpr qc::core::mat3<T> m3(v3, v3, v3);
-    constexpr qc::core::quat<T> q(v4);
+    constexpr vec3<T> v3(1.0);
+    constexpr vec4<T> v4(1.0);
+    constexpr mat3<T> m3(v3, v3, v3);
+    constexpr quat<T> q(v4);
 
-    //qc::core::toMat(q);*/
+    //toMat(q);*/
 }
 
 static constexpr bool compileFunctionsConstexpr() {
@@ -147,17 +148,17 @@ static constexpr bool compileFunctionsConstexpr() {
 
 template <typename T>
 static void testPropertiesT() {
-    static_assert(std::             is_standard_layout_v<qc::core::quat<T>>);
-    static_assert(std::          is_trivially_copyable_v<qc::core::quat<T>>);
-    static_assert(std::is_trivially_copy_constructible_v<qc::core::quat<T>>);
-    static_assert(std::is_trivially_move_constructible_v<qc::core::quat<T>>);
-    static_assert(std::   is_trivially_copy_assignable_v<qc::core::quat<T>>);
-    static_assert(std::   is_trivially_move_assignable_v<qc::core::quat<T>>);
-    static_assert(std::      is_trivially_destructible_v<qc::core::quat<T>>);
-    static_assert(sizeof(qc::core::quat<T>) == 4 * sizeof(T));
-    static_assert(sizeof(qc::core::quat<T>[4]) == 4 * 4 * sizeof(T));
-    static_assert(alignof(qc::core::quat<T>) == alignof(T));
-    static_assert(alignof(qc::core::quat<T>[4]) == alignof(T));
+    static_assert(std::             is_standard_layout_v<quat<T>>);
+    static_assert(std::          is_trivially_copyable_v<quat<T>>);
+    static_assert(std::is_trivially_copy_constructible_v<quat<T>>);
+    static_assert(std::is_trivially_move_constructible_v<quat<T>>);
+    static_assert(std::   is_trivially_copy_assignable_v<quat<T>>);
+    static_assert(std::   is_trivially_move_assignable_v<quat<T>>);
+    static_assert(std::      is_trivially_destructible_v<quat<T>>);
+    static_assert(sizeof(quat<T>) == 4 * sizeof(T));
+    static_assert(sizeof(quat<T>[4]) == 4 * 4 * sizeof(T));
+    static_assert(alignof(quat<T>) == alignof(T));
+    static_assert(alignof(quat<T>[4]) == alignof(T));
 }
 
 static void testProperties() {
@@ -167,7 +168,7 @@ static void testProperties() {
 
 template <typename T1, typename T2>
 static void compileCastsTT() {
-    static_cast<qc::core::quat<T2>>(qc::core::quat<T1>());
+    static_cast<quat<T2>>(quat<T1>());
 }
 
 template <typename T>
@@ -192,6 +193,12 @@ TEST_CLASS(TestQuaternion) {
         static_assert(compileFunctionsConstexpr(), "");
         testProperties();
         compileCasts();
+    }
+
+    TEST_METHOD(testConcepts) {
+        static_assert(Quaternion<fquat>);
+        static_assert(Quaternion<dquat>);
+        static_assert(!Quaternion<int>);
     }
 
 };

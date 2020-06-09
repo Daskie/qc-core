@@ -13,9 +13,13 @@ namespace qc::core {
         using fquat = quat< float>;
         using dquat = quat<double>;
 
+        template <typename T> concept Quaternion = std::is_same_v<T, quat<typename T::Type>>;
+
     }
 
     template <Floater T> struct quat {
+
+        using Type = T;
 
         vec3<T> a{};
         T w{T(1.0)};
