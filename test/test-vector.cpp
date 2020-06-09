@@ -1371,9 +1371,11 @@ TEST_CLASS(TestVector) {
         testVectorConceptT<f64>();
         testVectorConceptT<s64>();
         testVectorConceptT<u64>();
+        static_assert(!Vector<int>);
 
         testFloaterVectorConceptT<f32>();
         testFloaterVectorConceptT<f64>();
+        static_assert(!FloaterVector<ivec2>);
 
         testIntegerVectorConceptT<s08>();
         testIntegerVectorConceptT<u08>();
@@ -1383,16 +1385,24 @@ TEST_CLASS(TestVector) {
         testIntegerVectorConceptT<u32>();
         testIntegerVectorConceptT<s64>();
         testIntegerVectorConceptT<u64>();
+        static_assert(!IntegerVector<fvec2>);
 
         testSignedIntegerVectorConceptT<s08>();
         testSignedIntegerVectorConceptT<s16>();
         testSignedIntegerVectorConceptT<s32>();
         testSignedIntegerVectorConceptT<s64>();
+        static_assert(!SignedIntegerVector<uivec2>);
 
         testUnsignedIntegerVectorConceptT<u08>();
         testUnsignedIntegerVectorConceptT<u16>();
         testUnsignedIntegerVectorConceptT<u32>();
         testUnsignedIntegerVectorConceptT<u64>();
+        static_assert(!UnsignedIntegerVector<ivec2>);
+
+        static_assert(BoolVector<bvec2>);
+        static_assert(BoolVector<bvec3>);
+        static_assert(BoolVector<bvec4>);
+        static_assert(!BoolVector<fvec2>);
 
         static_assert(Vector2<cvec2>);
         static_assert(Vector2<ucvec2>);
@@ -1404,6 +1414,7 @@ TEST_CLASS(TestVector) {
         static_assert(Vector2<lvec2>);
         static_assert(Vector2<ulvec2>);
         static_assert(Vector2<dvec2>);
+        static_assert(!Vector2<ivec3>);
 
         static_assert(Vector3<cvec3>);
         static_assert(Vector3<ucvec3>);
@@ -1415,6 +1426,7 @@ TEST_CLASS(TestVector) {
         static_assert(Vector3<lvec3>);
         static_assert(Vector3<ulvec3>);
         static_assert(Vector3<dvec3>);
+        static_assert(!Vector3<ivec4>);
 
         static_assert(Vector4<cvec4>);
         static_assert(Vector4<ucvec4>);
@@ -1426,6 +1438,7 @@ TEST_CLASS(TestVector) {
         static_assert(Vector4<lvec4>);
         static_assert(Vector4<ulvec4>);
         static_assert(Vector4<dvec4>);
+        static_assert(!Vector4<ivec2>);
     }
 
 };

@@ -60,13 +60,7 @@ namespace qc::core {
         using  bvec3 = vec<bool, 3>;
         using  bvec4 = vec<bool, 4>;
 
-        //template <typename T> concept FloaterVec =
-        //    std::is_same_v<T, fvec2> || std::is_same_v<T, fvec3> || std::is_same_v<T, fvec4> ||
-        //    std::is_same_v<T, dvec2> || std::is_same_v<T, dvec3> || std::is_same_v<T, dvec4>;
-
-        template <typename T, int n> void _vectorTypeHelper(const vec<T, n> &) {}
-
-        template <typename T> concept Vector = requires { _vectorTypeHelper(T()); };
+        template <typename T> concept Vector = std::is_same_v<T, vec<typename T::Type, T::n>>;
 
         template <typename T> concept FloaterVector = Vector<T> && Floater<typename T::Type>;
         template <typename T> concept IntegerVector = Vector<T> && Integer<typename T::Type>;
