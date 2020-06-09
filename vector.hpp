@@ -60,9 +60,29 @@ namespace qc::core {
         using  bvec3 = vec<bool, 3>;
         using  bvec4 = vec<bool, 4>;
 
+        //template <typename T> concept FloaterVec =
+        //    std::is_same_v<T, fvec2> || std::is_same_v<T, fvec3> || std::is_same_v<T, fvec4> ||
+        //    std::is_same_v<T, dvec2> || std::is_same_v<T, dvec3> || std::is_same_v<T, dvec4>;
+
+        template <typename T, int n> void _vectorTypeHelper(const vec<T, n> &) {}
+
+        template <typename T> concept Vector = requires { _vectorTypeHelper(T()); };
+
+        template <typename T> concept FloaterVector = Vector<T> && Floater<typename T::Type>;
+        template <typename T> concept IntegerVector = Vector<T> && Integer<typename T::Type>;
+        template <typename T> concept SignedIntegerVector = Vector<T> && SignedInteger<typename T::Type>;
+        template <typename T> concept UnsignedIntegerVector = Vector<T> && UnsignedInteger<typename T::Type>;
+        template <typename T> concept BoolVector = Vector<T> && std::is_same_v<typename T::Type, bool>;
+
+        template <typename T> concept Vector2 = Vector<T> && T::n == 2;
+        template <typename T> concept Vector3 = Vector<T> && T::n == 3;
+        template <typename T> concept Vector4 = Vector<T> && T::n == 4;
     }
 
     template <NumberOrBool T> struct vec<T, 2> {
+
+        using Type = T;
+        static constexpr int n{2};
 
         T x{};
         T y{};
@@ -93,6 +113,9 @@ namespace qc::core {
     };
 
     template <NumberOrBool T> struct vec<T, 3> {
+
+        using Type = T;
+        static constexpr int n{3};
 
         T x{};
         T y{};
@@ -140,6 +163,9 @@ namespace qc::core {
     };
 
     template <NumberOrBool T> struct vec<T, 4> {
+
+        using Type = T;
+        static constexpr int n{4};
 
         T x{};
         T y{};
