@@ -4,8 +4,7 @@
 
 namespace qc::core {
 
-    template <typename T>
-    class HeapArray {
+    template <typename T> class HeapArray {
 
         public: //--------------------------------------------------------------
 
@@ -26,208 +25,294 @@ namespace qc::core {
         static_assert(std::is_nothrow_destructible_v<T>);
 
         constexpr HeapArray() noexcept = default;
+        explicit HeapArray(const size_t size) noexcept;
+        HeapArray(const size_t size, const T & v) noexcept;
+        template <typename Iter> HeapArray(const Iter first, const Iter last);
+        HeapArray(T * const values, const size_t size);
 
-        explicit HeapArray(const size_t size) noexcept :
-            _size(size),
-            _values(_size ? static_cast<T *>(::operator new(_size * sizeof(T))) : nullptr)
-        {
-            if constexpr (!std::is_trivially_default_constructible_v<T>) {
-                for (size_t i{0u}; i < _size; ++i) {
-                    new (_values + i) T();
-                }
-            }
-        }
+        HeapArray(const HeapArray & other) noexcept;
+        constexpr HeapArray(HeapArray && other) noexcept;
 
-        HeapArray(const size_t size, const T & v) noexcept :
-            _size(size),
-            _values(_size ? ::operator new(_size * sizeof(T)) : nullptr)
-        {
-            for (size_t i{0u}; i < _size; ++i) {
-                new (_values + i) T(v);
-            }
-        }
+        HeapArray & operator=(const HeapArray & other) noexcept;
+        HeapArray & operator=(HeapArray && other) noexcept;
 
-        template <typename Iter>
-        HeapArray(const Iter first, const Iter last) :
-            _size(std::distance(first, last)),
-            _values(_size ? static_cast<T *>(::operator new(_size * sizeof(T))) : nullptr)
-        {
-            if constexpr (std::is_trivially_copy_constructible_v<T>) {
-                std::copy_n(first, _size, _values);
-            }
-            else {
-                T * pos{_values};
-                for (Iter iter(first); iter != last; ++iter, ++pos) {
-                    new (pos) T(*iter);
-                }
-            }
-        }
+        ~HeapArray() noexcept;
 
-        HeapArray(T * const values, const size_t size) :
-            _size(size),
-            _values(values)
-        {}
+        constexpr void swap(HeapArray & other) noexcept;
 
-        HeapArray(const HeapArray & other) noexcept :
-            _size(other._size),
-            _values(_size ? static_cast<T *>(::operator new(_size * sizeof(T))) : nullptr)
-        {
-            for (size_t i{0u}; i < _size; ++i) {
-                new (_values + i) T(other._values[i]);
-            }
-        }
+        void clear() noexcept;
 
-        constexpr HeapArray(HeapArray && other) noexcept :
-            _size(std::exchange(other._size, 0u)),
-            _values(std::exchange(other._values, nullptr))
-        {}
+        constexpr size_t size() const noexcept;
 
-        HeapArray & operator=(const HeapArray & other) noexcept {
-            if (&other == this) {
-                return *this;
-            }
+        constexpr bool empty() const noexcept;
 
-            if (_size == other.size) {
-                for (size_t i{0u}; i < _size; ++i) {
-                    _values[i] = other._values[i];
-                }
-            }
-            else {
-                clear();
+        constexpr T * data() noexcept;
+        constexpr const T * data() const noexcept;
 
-                if (other._size) {
-                    _size = other._size;
-                    _values = ::operator new(_size * sizeof(T));
-                    for (size_t i{0u}; i < _size; ++i) {
-                        new (_values + i) T(other._values[i]);
-                    }
-                }
-            }
+        constexpr T & front() noexcept;
+        constexpr const T & front() const noexcept;
 
-            return *this;
-        }
+        constexpr T & back() noexcept;
+        constexpr const T & back() const noexcept;
 
-        HeapArray & operator=(HeapArray && other) noexcept {
-            if (&other == this) {
-                return *this;
-            }
+        constexpr T & operator[](const size_t i);
+        constexpr const T & operator[](const size_t i) const;
 
-            clear();
+        constexpr T & at(const size_t i);
+        constexpr const T & at(const size_t i) const;
 
-            _size = std::exchange(other._size, 0u);
-            _values = std::exchange(other._values, nullptr);
+        constexpr iterator begin() noexcept;
+        constexpr const_iterator begin() const noexcept;
+        constexpr const_iterator cbegin() const noexcept;
 
-            return *this;
-        }
-
-        ~HeapArray() noexcept {
-            clear();
-        }
-
-        constexpr void swap(HeapArray & other) noexcept {
-            std::swap(_size, other._size);
-            std::swap(_values, other._values);
-        }
-
-        constexpr size_t size() const noexcept {
-            return _size;
-        }
-
-        constexpr bool empty() const noexcept {
-            return !_size;
-        }
-
-        constexpr T * data() noexcept {
-            return _values;
-        }
-
-        constexpr const T * data() const noexcept {
-            return _values;
-        }
-
-        constexpr T & front() noexcept {
-            return *_values;
-        }
-
-        constexpr const T & front() const noexcept {
-            return *_values;
-        }
-
-        constexpr T & back() noexcept {
-            return _values[_size - 1u];
-        }
-
-        constexpr const T & back() const noexcept {
-            return _values[_size - 1u];
-        }
-
-        constexpr T & operator[](const size_t i) {
-            return _values[i];
-        }
-
-        constexpr const T & operator[](const size_t i) const {
-            return _values[i];
-        }
-
-        constexpr T & at(const size_t i) {
-            return const_cast<T &>(const_cast<const HeapArray &>(*this).at(i));
-        }
-
-        constexpr const T & at(const size_t i) const {
-            if (i >= _size) {
-                throw std::out_of_range();
-            }
-
-            return operator[](i);
-        }
-
-        constexpr iterator begin() noexcept {
-            return _values;
-        }
-
-        constexpr const_iterator begin() const noexcept {
-            return _values;
-        }
-
-        constexpr const_iterator cbegin() const noexcept {
-            return _values;
-        }
-
-        constexpr iterator end() noexcept {
-            return _values + _size - 1u;
-        }
-
-        constexpr const_iterator end() const noexcept {
-            return _values + _size - 1u;
-        }
-
-        constexpr const_iterator cend() const noexcept {
-            return _values + _size - 1u;
-        }
-
-        void clear() noexcept {
-            if (_size) {
-                if constexpr (!std::is_trivially_destructible_v<T>) {
-                    for (size_t i{0u}; i < _size; ++i) {
-                        _values[i].~T();
-                    }
-                }
-
-                ::operator delete(_values);
-                _size = 0u;
-                _values = nullptr;
-            }
-        }
+        constexpr iterator end() noexcept;
+        constexpr const_iterator end() const noexcept;
+        constexpr const_iterator cend() const noexcept;
 
         private: //-------------------------------------------------------------
 
-        size_t _size{};
-        T * _values{};
+        size_t _size{0u};
+        T * _values{nullptr};
 
     };
 
+    template <typename T> bool operator==(const HeapArray<T> & arr1, const HeapArray<T> & arr2);
+
+} // namespace qc::core
+
+namespace std {
+
+    template <typename T> constexpr void swap(qc::core::HeapArray<T> & lhs, qc::core::HeapArray<T> & rhs) noexcept;
+
+} // namespace std
+
+// INLINE IMPLEMENTATION ///////////////////////////////////////////////////////////////////////////////////////////////
+
+namespace qc::core {
+
     template <typename T>
-    bool operator==(const HeapArray<T> & arr1, const HeapArray<T> & arr2) {
+    inline HeapArray<T>::HeapArray(const size_t size) noexcept :
+        _size(size),
+        _values(_size ? static_cast<T *>(::operator new(_size * sizeof(T))) : nullptr)
+    {
+        if constexpr (!std::is_trivially_default_constructible_v<T>) {
+            for (size_t i{0u}; i < _size; ++i) {
+                new (_values + i) T();
+            }
+        }
+    }
+
+    template <typename T>
+    inline HeapArray<T>::HeapArray(const size_t size, const T & v) noexcept :
+        _size(size),
+        _values(_size ? ::operator new(_size * sizeof(T)) : nullptr)
+    {
+        for (size_t i{0u}; i < _size; ++i) {
+            new (_values + i) T(v);
+        }
+    }
+
+    template <typename T>
+    template <typename Iter>
+    inline HeapArray<T>::HeapArray(const Iter first, const Iter last) :
+        _size(std::distance(first, last)),
+        _values(_size ? static_cast<T *>(::operator new(_size * sizeof(T))) : nullptr)
+    {
+        if constexpr (std::is_trivially_copy_constructible_v<T>) {
+            std::copy_n(first, _size, _values);
+        }
+        else {
+            T * pos{_values};
+            for (Iter iter(first); iter != last; ++iter, ++pos) {
+                new (pos) T(*iter);
+            }
+        }
+    }
+
+    template <typename T>
+    inline HeapArray<T>::HeapArray(T * const values, const size_t size) :
+        _size(size),
+        _values(values)
+    {}
+
+    template <typename T>
+    inline HeapArray<T>::HeapArray(const HeapArray & other) noexcept :
+        _size(other._size),
+        _values(_size ? static_cast<T *>(::operator new(_size * sizeof(T))) : nullptr)
+    {
+        for (size_t i{0u}; i < _size; ++i) {
+            new (_values + i) T(other._values[i]);
+        }
+    }
+
+    template <typename T>
+    inline constexpr HeapArray<T>::HeapArray(HeapArray && other) noexcept :
+        _size(std::exchange(other._size, 0u)),
+        _values(std::exchange(other._values, nullptr))
+    {}
+
+    template <typename T>
+    inline HeapArray<T> & HeapArray<T>::operator=(const HeapArray & other) noexcept {
+        if (&other == this) {
+            return *this;
+        }
+
+        if (_size == other.size) {
+            for (size_t i{0u}; i < _size; ++i) {
+                _values[i] = other._values[i];
+            }
+        }
+        else {
+            clear();
+
+            if (other._size) {
+                _size = other._size;
+                _values = ::operator new(_size * sizeof(T));
+                for (size_t i{0u}; i < _size; ++i) {
+                    new (_values + i) T(other._values[i]);
+                }
+            }
+        }
+
+        return *this;
+    }
+
+    template <typename T>
+    inline HeapArray<T> & HeapArray<T>::operator=(HeapArray && other) noexcept {
+        if (&other == this) {
+            return *this;
+        }
+
+        clear();
+
+        _size = std::exchange(other._size, 0u);
+        _values = std::exchange(other._values, nullptr);
+
+        return *this;
+    }
+
+    template <typename T>
+    inline HeapArray<T>::~HeapArray() noexcept {
+        clear();
+    }
+
+    template <typename T>
+    inline constexpr void HeapArray<T>::swap(HeapArray & other) noexcept {
+        std::swap(_size, other._size);
+        std::swap(_values, other._values);
+    }
+
+    template <typename T>
+    inline void HeapArray<T>::clear() noexcept {
+        if (_size) {
+            if constexpr (!std::is_trivially_destructible_v<T>) {
+                for (size_t i{0u}; i < _size; ++i) {
+                    _values[i].~T();
+                }
+            }
+
+            ::operator delete(_values);
+            _size = 0u;
+            _values = nullptr;
+        }
+    }
+
+    template <typename T>
+    inline constexpr size_t HeapArray<T>::size() const noexcept {
+        return _size;
+    }
+
+    template <typename T>
+    inline constexpr bool HeapArray<T>::empty() const noexcept {
+        return !_size;
+    }
+
+    template <typename T>
+    inline constexpr T * HeapArray<T>::data() noexcept {
+        return _values;
+    }
+
+    template <typename T>
+    inline constexpr const T * HeapArray<T>::data() const noexcept {
+        return _values;
+    }
+
+    template <typename T>
+    inline constexpr T & HeapArray<T>::front() noexcept {
+        return *_values;
+    }
+
+    template <typename T>
+    inline constexpr const T & HeapArray<T>::front() const noexcept {
+        return *_values;
+    }
+
+    template <typename T>
+    inline constexpr T & HeapArray<T>::back() noexcept {
+        return _values[_size - 1u];
+    }
+
+    template <typename T>
+    inline constexpr const T & HeapArray<T>::back() const noexcept {
+        return _values[_size - 1u];
+    }
+
+    template <typename T>
+    inline constexpr T & HeapArray<T>::operator[](const size_t i) {
+        return _values[i];
+    }
+
+    template <typename T>
+    inline constexpr const T & HeapArray<T>::operator[](const size_t i) const {
+        return _values[i];
+    }
+
+    template <typename T>
+    inline constexpr T & HeapArray<T>::at(const size_t i) {
+        return const_cast<T &>(const_cast<const HeapArray &>(*this).at(i));
+    }
+
+    template <typename T>
+    inline constexpr const T & HeapArray<T>::at(const size_t i) const {
+        if (i >= _size) {
+            throw std::out_of_range();
+        }
+
+        return operator[](i);
+    }
+
+    template <typename T>
+    inline constexpr auto HeapArray<T>::begin() noexcept -> iterator {
+        return _values;
+    }
+
+    template <typename T>
+    inline constexpr auto HeapArray<T>::begin() const noexcept -> const_iterator {
+        return _values;
+    }
+
+    template <typename T>
+    inline constexpr auto HeapArray<T>::cbegin() const noexcept -> const_iterator {
+        return _values;
+    }
+
+    template <typename T>
+    inline constexpr auto HeapArray<T>::end() noexcept -> iterator {
+        return _values + _size - 1u;
+    }
+
+    template <typename T>
+    inline constexpr auto HeapArray<T>::end() const noexcept -> const_iterator {
+        return _values + _size - 1u;
+    }
+
+    template <typename T>
+    inline constexpr auto HeapArray<T>::cend() const noexcept -> const_iterator {
+        return _values + _size - 1u;
+    }
+
+    template <typename T>
+    inline bool operator==(const HeapArray<T> & arr1, const HeapArray<T> & arr2) {
         if (&arr1 == &arr2) {
             return true;
         }
