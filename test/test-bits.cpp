@@ -6,7 +6,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 template <typename T>
 static void compileFunctionsUT() {
-    T v(1);
+    T v{1};
 
     qc::core::bits::interleave(v);
 

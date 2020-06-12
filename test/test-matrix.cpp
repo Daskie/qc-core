@@ -9,7 +9,7 @@ using namespace qc::core::types;
 
 template <typename T>
 static void compileClassesT() {
-    T v(T(1.0));
+    T v{T(1.0)};
     vec2<T> v2;
     vec3<T> v3;
     vec4<T> v4;
@@ -225,7 +225,7 @@ static void compileClasses() {
 
 template <typename T>
 static constexpr void compileClassesConstexprT() {
-    constexpr T v(T(1.0));
+    constexpr T v{T(1.0)};
     constexpr vec2<T> v2;
     constexpr vec3<T> v3;
     constexpr vec4<T> v4;
@@ -298,7 +298,7 @@ static constexpr bool compileClassesConstexpr() {
 
 template <typename T>
 static void compileFunctionsT() {
-    T v(1.0);
+    T v{1.0};
     vec2<T> v2;
     vec3<T> v3;
     vec4<T> v4;
@@ -386,7 +386,7 @@ static void compileFunctions() {
 
 template <typename T>
 static constexpr void compileFunctionsConstexprT() {
-    constexpr T v(T(1.0));
+    constexpr T v{T(1.0)};
     constexpr vec2<T> v2(T(1.0));
     constexpr vec3<T> v3(T(1.0));
     constexpr vec4<T> v4(T(1.0));

@@ -358,7 +358,7 @@ namespace qc::core {
 
     template <Floater T>
     inline Q_CX_ABLE T pow(T v, uint e) {
-        T r(T(1.0));
+        T r{T(1.0)};
 
         do {
             if (e & 1u) r *= v; // exponent is odd
@@ -379,7 +379,7 @@ namespace qc::core {
     inline Q_CONSTEX int log2Floor(const T v) {
         //static_assert(sizeof(T) <= 8u);
         //
-        //int log(0);
+        //int log{0};
         //if constexpr (sizeof(T) >= 8u) if (v & 0xFFFFFFFF00000000) { v >>= 32; log += 32; }
         //if constexpr (sizeof(T) >= 4u) if (v & 0x00000000FFFF0000) { v >>= 16; log += 16; }
         //if constexpr (sizeof(T) >= 2u) if (v & 0x000000000000FF00) { v >>=  8; log +=  8; }
@@ -432,7 +432,7 @@ namespace qc::core {
 
     template <Floater T>
     inline Q_CX_ABLE std::pair<T, stype<sizeof(T)>> fract_i(const T v) {
-        stype<sizeof(T)> i{stype<sizeof(T)>(v)};
+        const stype<sizeof(T)> i{stype<sizeof(T)>(v)};
         return { v - T(i), i };
     }
 
@@ -449,11 +449,11 @@ namespace qc::core {
     template <Number T>
     inline Q_CX_ABLE std::pair<T, T> mod_q(const T v, const T d) {
         if constexpr (std::is_floating_point_v<T>) {
-            T q(v / d);
+            const T q{v / d};
             return { fract(q) * d, q };
         }
         if constexpr (std::is_integral_v<T>) {
-            T q(v / d);
+            const auto q{v / d};
             return { v - q * d, q };
         }
     }

@@ -173,7 +173,7 @@ namespace qc::core {
         }
 
         constexpr const value_type & operator[](const size_t i) const {
-            const size_t absoluteIndex(_frontIndex + i);
+            const size_t absoluteIndex{_frontIndex + i};
             return _values[absoluteIndex < n ? absoluteIndex : absoluteIndex - n];
         }
 

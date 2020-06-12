@@ -9,7 +9,7 @@ using namespace qc::core::types;
 
 template <typename T>
 static void compileClassesT() {
-    T v(1.0);
+    T v{1.0};
     vec3<T> v3(1.0);
     vec4<T> v4(1.0);
     mat3<T> m3(v3, v3, v3);
@@ -67,7 +67,7 @@ static void compileClasses() {
 
 template <typename T>
 static constexpr void compileClassesConstexprT() {
-    /*constexpr T v(1.0);
+    /*constexpr T v{1.0};
     constexpr vec3<T> v3(1.0f);
     constexpr vec4<T> v4(1.0f);
     constexpr mat3<T> m3(v3, v3, v3);
@@ -94,7 +94,7 @@ static constexpr bool compileClassesConstexpr() {
 
 template <typename T>
 static void compileFunctionsT() {
-    T v(1.0);
+    T v{1.0};
     vec3<T> v3(1.0);
     vec4<T> v4(1.0);
     mat3<T> m3(v3, v3, v3);
@@ -130,7 +130,7 @@ static void compileFunctions() {
 
 template <typename T>
 static constexpr void compileFunctionsConstexprT() {
-    /*constexpr T v(1.0);
+    /*constexpr T v{1.0};
     constexpr vec3<T> v3(1.0);
     constexpr vec4<T> v4(1.0);
     constexpr mat3<T> m3(v3, v3, v3);
@@ -155,8 +155,8 @@ static void testPropertiesT() {
     static_assert(std::   is_trivially_copy_assignable_v<quat<T>>);
     static_assert(std::   is_trivially_move_assignable_v<quat<T>>);
     static_assert(std::      is_trivially_destructible_v<quat<T>>);
-    static_assert(sizeof(quat<T>) == 4 * sizeof(T));
-    static_assert(sizeof(quat<T>[4]) == 4 * 4 * sizeof(T));
+    static_assert(sizeof(quat<T>) == 4u * sizeof(T));
+    static_assert(sizeof(quat<T>[4]) == 4u * 4u * sizeof(T));
     static_assert(alignof(quat<T>) == alignof(T));
     static_assert(alignof(quat<T>[4]) == alignof(T));
 }

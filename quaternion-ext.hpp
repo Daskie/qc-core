@@ -148,7 +148,7 @@ namespace qc::core {
 
     template <typename T>
     inline vec3<T> quatAxis_n(const quat<T> & q) {
-        const T d2(T(1.0) - q.w * q.w);
+        const T d2{T(1.0) - q.w * q.w};
         if (zero(d2)) {
             return {};
         }
@@ -157,7 +157,7 @@ namespace qc::core {
 
     template <typename T>
     inline quat<T> mix(const quat<T> & q1, const quat<T> & q2, const T t) {
-        const T s(T(1.0) - t);
+        const T s{T(1.0) - t};
         return {s * q1.a + t * q2.a, s * q1.w + t * q2.w};
     }
 
@@ -205,15 +205,15 @@ namespace qc::core {
 
     template <typename T>
     inline Q_CX_ABLE mat3<T> toMat(const quat<T> & q) {
-        const T wi(q.w   * q.a.x);
-        const T wj(q.w   * q.a.y);
-        const T wk(q.w   * q.a.z);
-        const T ii(q.a.x * q.a.x);
-        const T ij(q.a.x * q.a.y);
-        const T ik(q.a.x * q.a.z);
-        const T jj(q.a.y * q.a.y);
-        const T jk(q.a.y * q.a.z);
-        const T kk(q.a.z * q.a.z);
+        const T wi{q.w   * q.a.x};
+        const T wj{q.w   * q.a.y};
+        const T wk{q.w   * q.a.z};
+        const T ii{q.a.x * q.a.x};
+        const T ij{q.a.x * q.a.y};
+        const T ik{q.a.x * q.a.z};
+        const T jj{q.a.y * q.a.y};
+        const T jk{q.a.y * q.a.z};
+        const T kk{q.a.z * q.a.z};
 
         return {
             T(1.0) - T(2.0) * (jj + kk), T(2.0) * (ij + wk), T(2.0) * (ik - wj),
@@ -231,7 +231,7 @@ namespace qc::core {
     inline quat<T> slerp(const quat<T> & q1, const quat<T> & q2_, const T t) {
         quat<T> q2(q2_);
 
-        T cosHalfTheta(dot(q1, q2));
+        T cosHalfTheta{dot(q1, q2)};
 
         // Make sure to take the shorter route
         if (cosHalfTheta < T(0.0)) {
@@ -244,8 +244,8 @@ namespace qc::core {
             return q1;
         }
 
-        const T halfTheta(std::acos(cosHalfTheta));
-        const T sinHalfTheta(std::sqrt(T(1.0) - cosHalfTheta * cosHalfTheta));
+        const T halfTheta{std::acos(cosHalfTheta)};
+        const T sinHalfTheta{std::sqrt(T(1.0) - cosHalfTheta * cosHalfTheta)};
 
         return (q1 * std::sin((T(1.0) - t) * halfTheta) + q2 * std::sin(t * halfTheta)) * (T(1.0) / sinHalfTheta);
     }

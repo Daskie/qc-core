@@ -32,7 +32,7 @@ namespace qc::core {
             _values(_size ? static_cast<T *>(::operator new(_size * sizeof(T))) : nullptr)
         {
             if constexpr (!std::is_trivially_default_constructible_v<T>) {
-                for (size_t i(0u); i < _size; ++i) {
+                for (size_t i{0u}; i < _size; ++i) {
                     new (_values + i) T();
                 }
             }
@@ -42,7 +42,7 @@ namespace qc::core {
             _size(size),
             _values(_size ? ::operator new(_size * sizeof(T)) : nullptr)
         {
-            for (size_t i(0u); i < _size; ++i) {
+            for (size_t i{0u}; i < _size; ++i) {
                 new (_values + i) T(v);
             }
         }
@@ -56,7 +56,7 @@ namespace qc::core {
                 std::copy_n(first, _size, _values);
             }
             else {
-                T * pos(_values);
+                T * pos{_values};
                 for (Iter iter(first); iter != last; ++iter, ++pos) {
                     new (pos) T(*iter);
                 }
@@ -72,7 +72,7 @@ namespace qc::core {
             _size(other._size),
             _values(_size ? static_cast<T *>(::operator new(_size * sizeof(T))) : nullptr)
         {
-            for (size_t i(0u); i < _size; ++i) {
+            for (size_t i{0u}; i < _size; ++i) {
                 new (_values + i) T(other._values[i]);
             }
         }
@@ -88,7 +88,7 @@ namespace qc::core {
             }
 
             if (_size == other.size) {
-                for (size_t i(0u); i < _size; ++i) {
+                for (size_t i{0u}; i < _size; ++i) {
                     _values[i] = other._values[i];
                 }
             }
@@ -98,7 +98,7 @@ namespace qc::core {
                 if (other._size) {
                     _size = other._size;
                     _values = ::operator new(_size * sizeof(T));
-                    for (size_t i(0u); i < _size; ++i) {
+                    for (size_t i{0u}; i < _size; ++i) {
                         new (_values + i) T(other._values[i]);
                     }
                 }
@@ -134,7 +134,7 @@ namespace qc::core {
         }
 
         constexpr bool empty() const noexcept {
-            return bool(_size);
+            return !_size;
         }
 
         constexpr T * data() noexcept {
@@ -208,7 +208,7 @@ namespace qc::core {
         void clear() noexcept {
             if (_size) {
                 if constexpr (!std::is_trivially_destructible_v<T>) {
-                    for (size_t i(0u); i < _size; ++i) {
+                    for (size_t i{0u}; i < _size; ++i) {
                         _values[i].~T();
                     }
                 }
@@ -236,7 +236,7 @@ namespace qc::core {
             return false;
         }
 
-        for (size_t i(0u); i < arr1.size(); ++i) {
+        for (size_t i{0u}; i < arr1.size(); ++i) {
             if (arr1[i] != arr2[i]) {
                 return false;
             }

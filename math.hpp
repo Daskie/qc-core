@@ -42,7 +42,7 @@ namespace qc::core {
     //
     template <Floater T>
     inline vec3<T> sphericalToCartesian(const T theta, const T phi) {
-        const T sinPhi(std::sin(phi));
+        const T sinPhi{std::sin(phi)};
         return {
             sinPhi * std::cos(theta),
             sinPhi * std::sin(theta),
@@ -72,7 +72,7 @@ namespace qc::core {
 
     template <Floater T>
     inline vec3<T> cartesianToSpherical(const vec3<T> & v) {
-        const T r(magnitude(v));
+        const T r{magnitude(v)};
         return {
             r,
             std::atan2(v.y, v.x),
@@ -212,13 +212,13 @@ namespace qc::core {
 
     template <Floater T>
     inline vec2<T> circlePointFibonacci(const int i, const int n) {
-        const T p(T(i + 1) / T(n + 1));
+        const T p{T(i + 1) / T(n + 1)};
         return circlePoint(vec2<T>(p, phi<T> * T(i)));
     }
 
     template <Floater T>
     inline vec3<T> spherePointFibonacci(const int i, const int n) {
-        const T p(T(i + 1) / T(n + 1));
+        const T p{T(i + 1) / T(n + 1)};
         return spherePoint(vec2<T>(phi<T> * T(i), p));
     }
 
@@ -257,9 +257,9 @@ namespace qc::core {
 
         template <typename U>
         void dampen(U & pos, U & vel, const U & targetPos) const {
-            const U dp(pos - targetPos);
-            const U c1((vel - dp * z2) * z0);
-            const U c2(dp - c1);
+            const U dp{pos - targetPos};
+            const U c1{(vel - dp * z2) * z0};
+            const U c2{dp - c1};
             pos = targetPos + c1 * expTerm1 + c2 * expTerm2;
             vel = c1 * z1 * expTerm1 + c2 * z2 * expTerm2;
         }
@@ -278,9 +278,9 @@ namespace qc::core {
 
         template <typename U>
         void dampen(U & pos, U & vel, const U & targetPos) const {
-            const U dp(pos - targetPos);
-            const U c1(vel + this->angularFreq * dp);
-            const U c2((c1 * this->dt + dp) * expTerm);
+            const U dp{pos - targetPos};
+            const U c1{vel + this->angularFreq * dp};
+            const U c2{(c1 * this->dt + dp) * expTerm};
             pos = targetPos + c2;
             vel = c1 * expTerm - c2 * this->angularFreq;
         }
@@ -289,16 +289,16 @@ namespace qc::core {
 
     template <Floater T, typename U>
     inline void dampen(U & r_pos, const U & targetPos, U & r_vel, const T angularFreq, const T dt) {
-        const U dist(r_pos - targetPos);
+        const U dist{r_pos - targetPos};
         dampen(dist, r_vel, angularFreq, dt);
         r_pos = targetPos - dist;
     }
 
     template <Floater T, typename U>
     inline void dampen(U & r_dist, U & r_vel, const T angularFreq, const T dt) {
-        const T expTerm(std::exp(-angularFreq * dt));
-        const U c1(r_vel + angularFreq * r_dist);
-        const U c2((c1 * dt + r_dist) * expTerm);
+        const T expTerm{std::exp(-angularFreq * dt)};
+        const U c1{r_vel + angularFreq * r_dist};
+        const U c2{(c1 * dt + r_dist) * expTerm};
         r_dist = -c2;
         r_vel = c1 * expTerm - c2 * angularFreq;
     }
@@ -319,8 +319,8 @@ namespace qc::core {
 
         template <typename U>
         void dampen(U & pos, U & vel, const U & targetPos) const {
-            const U dp(pos - targetPos);
-            const U c((vel + omegaZeta * dp) / alpha);
+            const U dp{pos - targetPos};
+            const U c{(vel + omegaZeta * dp) / alpha};
             pos = targetPos + expTerm * (dp * cosTerm + c * sinTerm);
             vel = -expTerm * ((dp * omegaZeta - c * alpha) * cosTerm + (dp * alpha + c * omegaZeta) * sinTerm);
         }
@@ -332,7 +332,7 @@ namespace qc::core {
     template <Floater T>
     inline T areaOfPoly(const size_t n, const vec2<T> * const points) {
         T a{};
-        for (size_t i(0u); i < n - 1u; ++i) {
+        for (size_t i{0u}; i < n - 1u; ++i) {
             const vec2<T> & v1(points[i]), v2(points[i + 1u]);
             a += v1.x * v2.y - v2.x * v1.y;
         }
@@ -347,14 +347,14 @@ namespace qc::core {
     inline vec2<T> centroidOfPoly(const size_t n, const vec2<T> * const points) {
         T a{};
         vec2<T> c;
-        for (size_t i(0u); i < n - 1u; ++i) {
+        for (size_t i{0u}; i < n - 1u; ++i) {
             const vec2<T> & v1(points[i]), v2(points[i + 1u]);
-            T temp(v1.x * v2.y - v2.x * v1.y);
+            T temp{v1.x * v2.y - v2.x * v1.y};
             a += temp;
             c += (v1 + v2) * temp;
         }
         const vec2<T> & v1(points[n - 1u]), v2(points[0]);
-        const T temp(v1.x * v2.y - v2.x * v1.y);
+        const T temp{v1.x * v2.y - v2.x * v1.y};
         a += temp;
         c += (v1 + v2) * temp;
         return c / (T(3.0) * a);

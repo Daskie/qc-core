@@ -36,7 +36,7 @@ namespace qc::core {
         {}
 
         T * allocate(const size_t n) {
-            const size_t bytes(n * sizeof(T));
+            const size_t bytes{n * sizeof(T)};
             _current += bytes;
             _total += bytes;
             ++_allocations;
@@ -44,7 +44,7 @@ namespace qc::core {
         }
 
         void deallocate(T * const p, const size_t n) {
-            const size_t bytes(n * sizeof(T));
+            const size_t bytes{n * sizeof(T)};
             _current -= bytes;
             ++_deallocations;
             ::operator delete(p);

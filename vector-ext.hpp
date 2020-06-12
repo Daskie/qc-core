@@ -411,7 +411,7 @@ namespace qc::core {
 
     template <Floater T, int n>
     inline vec<T, n> normalize(const vec<T, n> & v) {
-        const T m2(magnitude2(v));
+        const T m2{magnitude2(v)};
         if (zero(m2)) {
             return {};
         }
@@ -420,7 +420,7 @@ namespace qc::core {
 
     template <Floater T, int n>
     inline vec<T, n> & normalizeAssign(vec<T, n> & v) {
-        const T m2(magnitude2(v));
+        const T m2{magnitude2(v)};
         if (zero(m2)) {
             return v;
         }
@@ -446,7 +446,7 @@ namespace qc::core {
 
     template <Number T, int n>
     inline bool parallel(const vec<T, n> & v1, const vec<T, n> & v2) {
-        const T d(dot(v1, v2));
+        const T d{dot(v1, v2)};
         return equal(d * d, magnitude2(v1) * magnitude2(v2));
     }
 
@@ -664,7 +664,7 @@ namespace qc::core {
     template <Vector ToVec, Number From, int n>
     requires(ToVec::n == n)
     inline Q_CX_ABLE ToVec transnorm(const vec<From, n> & v) {
-        using To = ToVec::Type;
+        using To = typename ToVec::Type;
         if constexpr (n == 2) return {transnorm<To>(v.x), transnorm<To>(v.y)};
         if constexpr (n == 3) return {transnorm<To>(v.x), transnorm<To>(v.y), transnorm<To>(v.z)};
         if constexpr (n == 4) return {transnorm<To>(v.x), transnorm<To>(v.y), transnorm<To>(v.z), transnorm<To>(v.w)};

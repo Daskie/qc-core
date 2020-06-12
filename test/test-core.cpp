@@ -56,9 +56,7 @@ static void compileConstants() {
 }
 
 template <typename T1, typename T2>
-static void compileFunctionsTT() {
-    T1 v(1);
-}
+static void compileFunctionsTT() {}
 
 template <typename T>
 static void compileFunctionsT() {
@@ -73,8 +71,8 @@ static void compileFunctionsT() {
     compileFunctionsTT<T, s64>();
     compileFunctionsTT<T, u64>();
 
-    T v(1);
-    T * vp(nullptr);
+    T v{1};
+    T * vp{nullptr};
 
     qc::core::min(v, v);
     qc::core::min(vp, vp);
@@ -137,7 +135,7 @@ static void compileFunctionsT() {
 
 template <typename T>
 static void compileFunctionsFT() {
-    T v(1.0);
+    T v{1.0};
 
     qc::core::equal_e(v, v);
     qc::core::equal_e(v, v, v);
@@ -166,7 +164,7 @@ static void compileFunctionsIT() {
 
 template <typename T>
 static void compileFunctionsUIT() {
-    T v(1);
+    T v{1u};
 
     qc::core::log2Floor(v);
 
@@ -176,7 +174,7 @@ static void compileFunctionsUIT() {
 }
 
 static void compileFunctionsBT() {
-    bool v(true);
+    bool v{true};
 
     qc::core::equal(v, v);
     qc::core::equal(v, v, v);
@@ -218,7 +216,7 @@ static void compileFunctions() {
 
 template <typename T1, typename T2>
 static constexpr void compileFunctionsConstexprTT() {
-    constexpr T1 v(1);
+    constexpr T1 v{1};
 
 }
 
@@ -235,8 +233,8 @@ static constexpr void compileFunctionsConstexprT() {
     compileFunctionsConstexprTT<T, s64>();
     compileFunctionsConstexprTT<T, u64>();
 
-    constexpr T v(1);
-    constexpr T * vp(nullptr);
+    constexpr T v{1};
+    constexpr T * vp{nullptr};
 
     qc::core::min(v, v);
     qc::core::min(vp, vp);
@@ -286,7 +284,7 @@ static constexpr void compileFunctionsConstexprT() {
 
 template <typename T>
 static constexpr void compileFunctionsConstexprFT() {
-    constexpr T v(1.0);
+    constexpr T v{1.0};
 
     //qc::core::equal_e(v, v);
     //qc::core::equal_e(v, v, v);
@@ -310,7 +308,7 @@ static constexpr void compileFunctionsConstexprIT() {
 
 template <typename T>
 static constexpr void compileFunctionsConstexprUIT() {
-    constexpr T v(1);
+    constexpr T v{1};
 
     qc::core::log2Floor(v);
 
@@ -320,7 +318,7 @@ static constexpr void compileFunctionsConstexprUIT() {
 }
 
 static constexpr void compileFunctionsConstexprBT() {
-    constexpr bool v(true);
+    constexpr bool v{true};
 
     //qc::core::equal(v, v);
     //qc::core::equal(v, v, v);
@@ -414,7 +412,7 @@ TEST_CLASS(TestCore) {
 
     template <typename From, typename To>
     void testTransnormSTFT() {
-        const To epsilon(To(1.0 / std::ldexp(1.0, std::numeric_limits<From>::digits)));
+        const To epsilon{To(1.0 / std::ldexp(1.0, std::numeric_limits<From>::digits))};
 
         Assert::AreEqual(To(-1.0), qc::core::transnorm<To>(std::numeric_limits<From>::min()));
         Assert::AreEqual(To(-0.75), qc::core::transnorm<To>(From(-threeQuartersVal<From>)), epsilon);
@@ -429,7 +427,7 @@ TEST_CLASS(TestCore) {
 
     template <typename From, typename To>
     void testTransnormUTFT() {
-        const To epsilon(To(1.0 / std::ldexp(1.0, std::numeric_limits<From>::digits)));
+        const To epsilon{To(1.0 / std::ldexp(1.0, std::numeric_limits<From>::digits))};
 
         Assert::AreEqual(To(0.0), qc::core::transnorm<To>(From(0u)));
         Assert::AreEqual(To(0.25), qc::core::transnorm<To>(quarterVal<From>), epsilon);

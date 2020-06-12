@@ -224,41 +224,41 @@ namespace qc::core {
         };
 
         if constexpr (n == 4) {
-            T yz12(m.c1.y * m.c2.z - m.c2.y * m.c1.z);
-            T yz13(m.c1.y * m.c3.z - m.c3.y * m.c1.z);
-            T yz14(m.c1.y * m.c4.z - m.c4.y * m.c1.z);
-            T yw12(m.c1.y * m.c2.w - m.c2.y * m.c1.w);
-            T yw13(m.c1.y * m.c3.w - m.c3.y * m.c1.w);
-            T yw14(m.c1.y * m.c4.w - m.c4.y * m.c1.w);
-            T yz23(m.c2.y * m.c3.z - m.c3.y * m.c2.z);
-            T yz24(m.c2.y * m.c4.z - m.c4.y * m.c2.z);
-            T yw23(m.c2.y * m.c3.w - m.c3.y * m.c2.w);
-            T yw24(m.c2.y * m.c4.w - m.c4.y * m.c2.w);
-            T zw12(m.c1.z * m.c2.w - m.c2.z * m.c1.w);
-            T zw13(m.c1.z * m.c3.w - m.c3.z * m.c1.w);
-            T zw14(m.c1.z * m.c4.w - m.c4.z * m.c1.w);
-            T yz34(m.c3.y * m.c4.z - m.c4.y * m.c3.z);
-            T yw34(m.c3.y * m.c4.w - m.c4.y * m.c3.w);
-            T zw23(m.c2.z * m.c3.w - m.c3.z * m.c2.w);
-            T zw24(m.c2.z * m.c4.w - m.c4.z * m.c2.w);
-            T zw34(m.c3.z * m.c4.w - m.c4.z * m.c3.w);
+            T yz12{m.c1.y * m.c2.z - m.c2.y * m.c1.z};
+            T yz13{m.c1.y * m.c3.z - m.c3.y * m.c1.z};
+            T yz14{m.c1.y * m.c4.z - m.c4.y * m.c1.z};
+            T yw12{m.c1.y * m.c2.w - m.c2.y * m.c1.w};
+            T yw13{m.c1.y * m.c3.w - m.c3.y * m.c1.w};
+            T yw14{m.c1.y * m.c4.w - m.c4.y * m.c1.w};
+            T yz23{m.c2.y * m.c3.z - m.c3.y * m.c2.z};
+            T yz24{m.c2.y * m.c4.z - m.c4.y * m.c2.z};
+            T yw23{m.c2.y * m.c3.w - m.c3.y * m.c2.w};
+            T yw24{m.c2.y * m.c4.w - m.c4.y * m.c2.w};
+            T zw12{m.c1.z * m.c2.w - m.c2.z * m.c1.w};
+            T zw13{m.c1.z * m.c3.w - m.c3.z * m.c1.w};
+            T zw14{m.c1.z * m.c4.w - m.c4.z * m.c1.w};
+            T yz34{m.c3.y * m.c4.z - m.c4.y * m.c3.z};
+            T yw34{m.c3.y * m.c4.w - m.c4.y * m.c3.w};
+            T zw23{m.c2.z * m.c3.w - m.c3.z * m.c2.w};
+            T zw24{m.c2.z * m.c4.w - m.c4.z * m.c2.w};
+            T zw34{m.c3.z * m.c4.w - m.c4.z * m.c3.w};
 
-            T xyz123(m.c1.x * yz23 - m.c2.x * yz13 + m.c3.x * yz12);
-            T xyz124(m.c1.x * yz24 - m.c2.x * yz14 + m.c4.x * yz12);
-            T xyz134(m.c1.x * yz34 - m.c3.x * yz14 + m.c4.x * yz13);
-            T xyw123(m.c1.x * yw23 - m.c2.x * yw13 + m.c3.x * yw12);
-            T xyw124(m.c1.x * yw24 - m.c2.x * yw14 + m.c4.x * yw12);
-            T xyw134(m.c1.x * yw34 - m.c3.x * yw14 + m.c4.x * yw13);
-            T xzw123(m.c1.x * zw23 - m.c2.x * zw13 + m.c3.x * zw12);
-            T xzw124(m.c1.x * zw24 - m.c2.x * zw14 + m.c4.x * zw12);
-            T xzw134(m.c1.x * zw34 - m.c3.x * zw14 + m.c4.x * zw13);
-            T xyz234(m.c2.x * yz34 - m.c3.x * yz24 + m.c4.x * yz23);
-            T xyw234(m.c2.x * yw34 - m.c3.x * yw24 + m.c4.x * yw23);
-            T xzw234(m.c2.x * zw34 - m.c3.x * zw24 + m.c4.x * zw23);
-            T yzw123(m.c1.y * zw23 - m.c2.y * zw13 + m.c3.y * zw12);
-            T yzw124(m.c1.y * zw24 - m.c2.y * zw14 + m.c4.y * zw12);
-            T yzw134(m.c1.y * zw34 - m.c3.y * zw14 + m.c4.y * zw13);
-            T yzw234(m.c2.y * zw34 - m.c3.y * zw24 + m.c4.y * zw23);
+            T xyz123{m.c1.x * yz23 - m.c2.x * yz13 + m.c3.x * yz12};
+            T xyz124{m.c1.x * yz24 - m.c2.x * yz14 + m.c4.x * yz12};
+            T xyz134{m.c1.x * yz34 - m.c3.x * yz14 + m.c4.x * yz13};
+            T xyw123{m.c1.x * yw23 - m.c2.x * yw13 + m.c3.x * yw12};
+            T xyw124{m.c1.x * yw24 - m.c2.x * yw14 + m.c4.x * yw12};
+            T xyw134{m.c1.x * yw34 - m.c3.x * yw14 + m.c4.x * yw13};
+            T xzw123{m.c1.x * zw23 - m.c2.x * zw13 + m.c3.x * zw12};
+            T xzw124{m.c1.x * zw24 - m.c2.x * zw14 + m.c4.x * zw12};
+            T xzw134{m.c1.x * zw34 - m.c3.x * zw14 + m.c4.x * zw13};
+            T xyz234{m.c2.x * yz34 - m.c3.x * yz24 + m.c4.x * yz23};
+            T xyw234{m.c2.x * yw34 - m.c3.x * yw24 + m.c4.x * yw23};
+            T xzw234{m.c2.x * zw34 - m.c3.x * zw24 + m.c4.x * zw23};
+            T yzw123{m.c1.y * zw23 - m.c2.y * zw13 + m.c3.y * zw12};
+            T yzw124{m.c1.y * zw24 - m.c2.y * zw14 + m.c4.y * zw12};
+            T yzw134{m.c1.y * zw34 - m.c3.y * zw14 + m.c4.y * zw13};
+            T yzw234{m.c2.y * zw34 - m.c3.y * zw24 + m.c4.y * zw23};
 
             return {
                  yzw234, -xzw234,  xyw234, -xyz234,
@@ -300,7 +300,7 @@ namespace qc::core {
 
     template <typename T, int n>
     inline mat<T, n> inverse(const mat<T, n> & m) {
-        const T det(determinant(m));
+        const T det{determinant(m)};
         if (zero(det)) {
             return nullMat<T, n>();
         }
@@ -430,8 +430,8 @@ namespace qc::core {
 
     template <typename T>
     inline mat2<T> rotate(const T angle) {
-        const T s(std::sin(angle));
-        const T c(std::cos(angle));
+        const T s{std::sin(angle)};
+        const T c{std::cos(angle)};
 
         return {
              c, s,
@@ -441,8 +441,8 @@ namespace qc::core {
 
     template <typename T>
     inline mat3<T> rotateX(const T angle) {
-        const T s(std::sin(angle));
-        const T c(std::cos(angle));
+        const T s{std::sin(angle)};
+        const T c{std::cos(angle)};
 
         return {
             T(1.0), T(0.0), T(0.0),
@@ -453,8 +453,8 @@ namespace qc::core {
 
     template <typename T>
     inline mat3<T> rotateY(const T angle) {
-        const T s(std::sin(angle));
-        const T c(std::cos(angle));
+        const T s{std::sin(angle)};
+        const T c{std::cos(angle)};
 
         return {
                  c, T(0.0),     -s,
@@ -465,8 +465,8 @@ namespace qc::core {
 
     template <typename T>
     inline mat3<T> rotateZ(const T angle) {
-        const T s(std::sin(angle));
-        const T c(std::cos(angle));
+        const T s{std::sin(angle)};
+        const T c{std::cos(angle)};
 
         return {
                  c,      s, T(0.0),
@@ -486,16 +486,16 @@ namespace qc::core {
 
     template <typename T>
     inline mat3<T> rotate_n(const vec3<T> & axis, const T s, const T c) {
-        const T cm(T(1.0) - c);
-        const T xs(axis.x * s);
-        const T ys(axis.y * s);
-        const T zs(axis.z * s);
-        const T xcm(axis.x * cm);
-        const T ycm(axis.y * cm);
-        const T zcm(axis.z * cm);
-        const T xycm(xcm * axis.y);
-        const T yzcm(ycm * axis.z);
-        const T zxcm(zcm * axis.x);
+        const T cm{T(1.0) - c};
+        const T xs{axis.x * s};
+        const T ys{axis.y * s};
+        const T zs{axis.z * s};
+        const T xcm{axis.x * cm};
+        const T ycm{axis.y * cm};
+        const T zcm{axis.z * cm};
+        const T xycm{xcm * axis.y};
+        const T yzcm{ycm * axis.z};
+        const T zxcm{zcm * axis.x};
 
         return {
             xcm * axis.x + c, xycm + zs, zxcm - ys,
@@ -531,15 +531,15 @@ namespace qc::core {
 
     template <typename T>
     inline mat2<T> align_n(const vec2<T> & v1, const vec2<T> & v2) {
-        T c(cross(v1, v2));
-        T d(dot(v1, v2));
+        T c{cross(v1, v2)};
+        T d{dot(v1, v2)};
 
         return rotate(c < T(0.0) ? -std::acos(d) : std::acos(d));
     }
 
     template <typename T>
     inline mat3<T> align_n(const vec3<T> & v1, const vec3<T> & v2) {
-        const T d(dot(v1, v2));
+        const T d{dot(v1, v2)};
         if (equal(d, T(1.0))) { // already aligned, and would break rotation
             return {};
         }
@@ -548,7 +548,7 @@ namespace qc::core {
         }
 
         const vec3<T> c(cross(v1, v2));
-        const T m(magnitude(c));
+        const T m{magnitude(c)};
 
         return rotate_n(c * (T(1.0) / m), m, d);
     }
@@ -628,7 +628,7 @@ namespace qc::core {
 
     template <bool depth0To1, typename T>
     inline mat4<T> orthoProj(const T width, const T height, const T near, const T far) {
-        const T nearMinusFar(near - far);
+        const T nearMinusFar{near - far};
         return {
             T(2.0) / width, T(0.0), T(0.0), T(0.0),
             T(0.0), T(2.0) / height, T(0.0), T(0.0),
@@ -639,8 +639,8 @@ namespace qc::core {
 
     template <bool depth0To1, typename T>
     inline mat4<T> perspProj(const T vfov, const T aspect, const T near, const T far) {
-        const T invTop(T(1.0) / std::tan(vfov * T(0.5)));
-        const T invNearMinusFar(T(1.0) / (near - far));
+        const T invTop{T(1.0) / std::tan(vfov * T(0.5))};
+        const T invNearMinusFar{T(1.0) / (near - far)};
         return {
             invTop * aspect, T(0.0), T(0.0), T(0.0),
             T(0.0), invTop, T(0.0), T(0.0),

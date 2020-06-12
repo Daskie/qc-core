@@ -815,7 +815,7 @@ static void compileFunctions() {
 
 template <typename T1, typename T2>
 static constexpr void compileFunctionsConstexprTT() {
-    constexpr T1 v(T1(1.0));
+    constexpr T1 v{T1(1.0)};
     constexpr vec2<T1> v2(T1(1.0));
     constexpr vec3<T1> v3(T1(1.0));
     constexpr vec4<T1> v4(T1(1.0));

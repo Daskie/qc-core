@@ -21,9 +21,9 @@ namespace qc::core::bits {
     template <UnsignedInteger SrcT, UnsignedInteger DstT>
     requires (sizeof(DstT) > sizeof(SrcT))
     inline DstT spread(const SrcT v) {
-        constexpr uint factor(sizeof(DstT) / sizeof(SrcT) - 1u);
+        constexpr uint factor{sizeof(DstT) / sizeof(SrcT) - 1u};
 
-        DstT w(v);
+        DstT w{v};
 
         if constexpr (sizeof(SrcT) >= 4u) {
             w = ((w << (factor << 4)) | w) & DstT(0x0000FFFF0000FFFF);
@@ -41,9 +41,9 @@ namespace qc::core::bits {
     template <UnsignedInteger SrcT, UnsignedInteger DstT>
     requires (sizeof(DstT) >= sizeof(SrcT))
     inline DstT repeat(const SrcT v) {
-        constexpr uint factor(sizeof(DstT) / sizeof(SrcT));
+        constexpr uint factor{sizeof(DstT) / sizeof(SrcT)};
 
-        DstT w(v);
+        DstT w{v};
 
         if constexpr (factor >= 2u) {
             w |= w << sizeof(SrcT) * 1u * 8u;
@@ -68,7 +68,8 @@ namespace qc::core::bits {
             return (spread<H, T>(h1) << 1) | spread<H, T>(h2);
         }
         if constexpr (sizeof(T) == 1u) {
-            T h1(v >> 4), h2(v);
+            T h1{T(v >> 4)};
+            T h2{v};
 
             h1 = ((h1 << 2) | h1) & T(0x33);
             h1 = ((h1 << 1) | h1) & T(0x55);

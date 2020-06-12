@@ -73,9 +73,9 @@ namespace qc::core {
     inline vec3<T> rgb2hsl(const vec3<T> & rgb) {
         vec3<T> hsl(0, 0, 0);
 
-        int minI(rgb.r <= rgb.g ? 0 : 1);
+        int minI{rgb.r <= rgb.g ? 0 : 1};
         if (rgb.b < rgb[minI]) minI = 2;
-        int maxI(rgb.r >= rgb.g ? 0 : 1);
+        int maxI{rgb.r >= rgb.g ? 0 : 1};
         if (rgb.b > rgb[maxI]) maxI = 2;
 
         // lightness
@@ -113,10 +113,10 @@ namespace qc::core {
 
         // hue
         temp = std::round(hsl.x * T(3.0));
-        const int maxI(int(temp) % 3);
+        const int maxI{int(temp) % 3};
         rgb[maxI] = T(1.0);
-        const T secondaryWeight((hsl.x * T(3.0) - temp) * T(2.0));
-        const int midI((maxI + int(secondaryWeight > 0 ? std::ceil(secondaryWeight) : std::floor(secondaryWeight)) + 3) % 3);
+        const T secondaryWeight{(hsl.x * T(3.0) - temp) * T(2.0)};
+        const int midI{(maxI + int(secondaryWeight > 0 ? std::ceil(secondaryWeight) : std::floor(secondaryWeight)) + 3) % 3};
         rgb[midI] = abs(secondaryWeight);
 
         // saturation

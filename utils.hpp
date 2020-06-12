@@ -93,12 +93,12 @@ namespace qc::core::utils {
             }
 
             friend std::ostream & operator<<(std::ostream & os, const _binary_s & b) {
-                const int nBlocks(sizeof(T) / b.blockSize);
+                const int nBlocks{sizeof(T) / b.blockSize};
 
-                for (int blockI(0); blockI < nBlocks; ++blockI) {
-                    for (int byteI(b.blockSize - 1); byteI >= 0; --byteI) {
+                for (int blockI{0}; blockI < nBlocks; ++blockI) {
+                    for (int byteI{b.blockSize - 1}; byteI >= 0; --byteI) {
                         u08 byte(b.data[blockI * b.blockSize + byteI]);
-                        for (int bitI(0); bitI < 8; ++bitI) {
+                        for (int bitI{0}; bitI < 8; ++bitI) {
                             os << ((byte & 0b10000000) ? "1" : "0");
                             byte <<= 1;
                         }
@@ -124,7 +124,7 @@ namespace qc::core::utils {
             repeat(const std::string & s, const int n) : s(s), n(n) {}
 
             friend std::ostream & operator<<(std::ostream & os, const repeat & r) {
-                for (int i(0); i < r.n; ++i) {
+                for (int i{0}; i < r.n; ++i) {
                     os << r.s;
                 }
                 return os;
