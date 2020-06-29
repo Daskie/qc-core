@@ -47,7 +47,7 @@ namespace qc::core {
         vec2<T> c2;
 
         constexpr mat() noexcept;
-        constexpr mat(const vec2<T> & c1, const vec2<T> & c2) noexcept;
+        constexpr mat(vec2<T> c1, vec2<T> c2) noexcept;
         constexpr mat(
             T x1, T y1,
             T x2, T y2
@@ -67,13 +67,13 @@ namespace qc::core {
         constexpr operator bool() const noexcept;
 
         vec2<T> & col(int i);
-        const vec2<T> & col(int i) const;
+        vec2<T> col(int i) const;
 
         vec2<T> row(int i) const;
 
         template <int i> constexpr vec2<T> row() const noexcept;
 
-        template <int i> constexpr const vec2<T> & col() const noexcept;
+        template <int i> constexpr vec2<T> col() const noexcept;
 
     };
 
@@ -87,7 +87,7 @@ namespace qc::core {
         vec3<T> c3;
 
         constexpr mat() noexcept;
-        constexpr mat(const vec3<T> & c1, const vec3<T> & c2, const vec3<T> & c3) noexcept;
+        constexpr mat(vec3<T> c1, vec3<T> c2, vec3<T> c3) noexcept;
         constexpr mat(
             T x1, T y1, T z1,
             T x2, T y2, T z2,
@@ -108,13 +108,13 @@ namespace qc::core {
         constexpr operator bool() const noexcept;
 
         vec3<T> & col(int i);
-        const vec3<T> & col(int i) const;
+        vec3<T> col(int i) const;
 
         vec3<T> row(int i) const;
 
         template <int i> constexpr vec3<T> row() const noexcept;
 
-        template <int i> constexpr const vec3<T> & col() const noexcept;
+        template <int i> constexpr vec3<T> col() const noexcept;
 
     };
 
@@ -129,7 +129,7 @@ namespace qc::core {
         vec4<T> c4;
 
         constexpr mat() noexcept;
-        constexpr mat(const vec4<T> & c1, const vec4<T> & c2, const vec4<T> & c3, const vec4<T> & c4) noexcept;
+        constexpr mat(vec4<T> c1, vec4<T> c2, vec4<T> c3, vec4<T> c4) noexcept;
         constexpr mat(
             T x1, T y1, T z1, T w1,
             T x2, T y2, T z2, T w2,
@@ -151,13 +151,13 @@ namespace qc::core {
         constexpr operator bool() const noexcept;
 
         vec4<T> & col(int i);
-        const vec4<T> & col(int i) const;
+        vec4<T> col(int i) const;
 
         vec4<T> row(int i) const;
 
         template <int i> constexpr vec4<T> row() const noexcept;
 
-        template <int i> constexpr const vec4<T> & col() const noexcept;
+        template <int i> constexpr vec4<T> col() const noexcept;
 
     };
 
@@ -220,7 +220,7 @@ namespace qc::core {
     {}
 
     template <Floater T>
-    inline constexpr mat<T, 2>::mat(const vec2<T> & c1, const vec2<T> & c2) noexcept :
+    inline constexpr mat<T, 2>::mat(const vec2<T> c1, const vec2<T> c2) noexcept :
         c1(c1),
         c2(c2)
     {}
@@ -266,7 +266,7 @@ namespace qc::core {
     }
 
     template <Floater T>
-    inline const vec2<T> & mat<T, 2>::col(const int i) const {
+    inline vec2<T> mat<T, 2>::col(const int i) const {
         return *(&c1 + i);
     }
 
@@ -277,7 +277,7 @@ namespace qc::core {
 
     template <Floater T>
     template <int i>
-    inline constexpr const vec2<T> & mat<T, 2>::col() const noexcept {
+    inline constexpr vec2<T> mat<T, 2>::col() const noexcept {
         if constexpr (i == 0) return c1;
         if constexpr (i == 1) return c2;
     }
@@ -296,7 +296,7 @@ namespace qc::core {
     {}
 
     template <Floater T>
-    inline constexpr mat<T, 3>::mat(const vec3<T> & c1, const vec3<T> & c2, const vec3<T> & c3) noexcept :
+    inline constexpr mat<T, 3>::mat(const vec3<T> c1, const vec3<T> c2, const vec3<T> c3) noexcept :
         c1(c1),
         c2(c2),
         c3(c3)
@@ -348,7 +348,7 @@ namespace qc::core {
     }
 
     template <Floater T>
-    inline const vec3<T> & mat<T, 3>::col(const int i) const {
+    inline vec3<T> mat<T, 3>::col(const int i) const {
         return *(&c1 + i);
     }
 
@@ -359,7 +359,7 @@ namespace qc::core {
 
     template <Floater T>
     template <int i>
-    inline constexpr const vec3<T> & mat<T, 3>::col() const noexcept {
+    inline constexpr vec3<T> mat<T, 3>::col() const noexcept {
         if constexpr (i == 0) return c1;
         if constexpr (i == 1) return c2;
         if constexpr (i == 2) return c3;
@@ -380,7 +380,7 @@ namespace qc::core {
     {}
 
     template <Floater T>
-    inline constexpr mat<T, 4>::mat(const vec4<T> & c1, const vec4<T> & c2, const vec4<T> & c3, const vec4<T> & c4) noexcept :
+    inline constexpr mat<T, 4>::mat(const vec4<T> c1, const vec4<T> c2, const vec4<T> c3, const vec4<T> c4) noexcept :
         c1(c1),
         c2(c2),
         c3(c3),
@@ -438,7 +438,7 @@ namespace qc::core {
     }
 
     template <Floater T>
-    inline const vec4<T> & mat<T, 4>::col(const int i) const {
+    inline vec4<T> mat<T, 4>::col(const int i) const {
         return *(&c1 + i);
     }
 
@@ -449,7 +449,7 @@ namespace qc::core {
 
     template <Floater T>
     template <int i>
-    inline constexpr const vec4<T> & mat<T, 4>::col() const noexcept {
+    inline constexpr vec4<T> mat<T, 4>::col() const noexcept {
         if constexpr (i == 0) return c1;
         if constexpr (i == 1) return c2;
         if constexpr (i == 2) return c3;

@@ -24,12 +24,12 @@ namespace qc::core {
     // `v.y` is theta
     //
     template <Floater T>
-    inline vec2<T> polarToCartesian(const vec2<T> & v) {
+    inline vec2<T> polarToCartesian(const vec2<T> v) {
         return polarToCartesian(v.x, v.y);
     }
 
     template <Floater T>
-    inline vec2<T> cartesianToPolar(const vec2<T> & v) {
+    inline vec2<T> cartesianToPolar(const vec2<T> v) {
         return {
             magnitude(v),
             std::atan2(v.y, v.x)
@@ -66,12 +66,12 @@ namespace qc::core {
     // `v.z` is the angle from the z axis
     //
     template <Floater T>
-    inline vec3<T> sphericalToCartesian(const vec3<T> & v) {
+    inline vec3<T> sphericalToCartesian(const vec3<T> v) {
         return sphericalToCartesian(v.y, v.z) * v.r;
     }
 
     template <Floater T>
-    inline vec3<T> cartesianToSpherical(const vec3<T> & v) {
+    inline vec3<T> cartesianToSpherical(const vec3<T> v) {
         const T r{magnitude(v)};
         return {
             r,
@@ -89,12 +89,12 @@ namespace qc::core {
     }
 
     template <Floater T>
-    inline vec3<T> cylindricalToCartesian(const vec3<T> & v) {
+    inline vec3<T> cylindricalToCartesian(const vec3<T> v) {
         return cylindricalToCartesian(v.x, v.y, v.z);
     }
 
     template <Floater T>
-    inline vec3<T> cartesianToCylindrical(const vec3<T> & v) {
+    inline vec3<T> cartesianToCylindrical(const vec3<T> v) {
         return {
             magnitude(v),
             std::atan2(v.y, v.x),
@@ -103,14 +103,14 @@ namespace qc::core {
     }
 
     //a is distance from vertex A in range [0, 1] (can be outside range and outside triangle), AX, AY, and AZ define cartesian position of A
-    inline fvec2 barycentricToCartesian(const fvec3 & v, const fvec2 & A, const fvec2 & B, const fvec2 & C) {
+    inline fvec2 barycentricToCartesian(const fvec3 v, const fvec2 A, const fvec2 B, const fvec2 C) {
         return fvec2(
             v.x * A.x + v.y * B.x + v.z * C.x,
             v.x * A.y + v.y * B.y + v.z * C.y
         );
     }
 
-    inline fvec3 cartesianToBarycentric(const fvec2 & v, const fvec2 & A, const fvec2 & B, const fvec2 & C) {
+    inline fvec3 cartesianToBarycentric(const fvec2 v, const fvec2 A, const fvec2 B, const fvec2 C) {
         fmat2 mat(
             A.x - C.x, A.y - C.y,
             B.x - C.x, B.y - C.y
@@ -124,7 +124,7 @@ namespace qc::core {
     //maps a point in cartesian space to the surface of a sphere and returns cartesian coordinates
     //the point's x and y components, along with thetaPerUnit, determine the distance in radians from the origin
     //the point's z component determines the radius
-    inline fvec3 mapToSphere(const fvec3 & v, const float thetaPerUnit) {
+    inline fvec3 mapToSphere(const fvec3 v, const float thetaPerUnit) {
         const fvec2 perp(ortho(v.xy()));
         const float theta(magnitude(v.xy()) * thetaPerUnit);
         const fmat3 rot(rotate(fvec3(perp), theta));
@@ -134,15 +134,15 @@ namespace qc::core {
 
     //draw a line from v to A; gets the angle of this line w/ respect to the A bisector
     //possible angles range from -1 (along AB side) to 1 (along AC side), w/ linear-ness
-    inline float baryToAngleA(const fvec3 & v) {
+    inline float baryToAngleA(const fvec3 v) {
         return (v.z - v.y) / v.x;
     }
 
-    inline float baryToAngleB(const fvec3 & v) {
+    inline float baryToAngleB(const fvec3 v) {
         return (v.x - v.z) / v.y;
     }
 
-    inline float baryToAngleC(const fvec3 & v) {
+    inline float baryToAngleC(const fvec3 v) {
         return (v.y - v.x) / v.z;
     }
 
@@ -185,7 +185,7 @@ namespace qc::core {
     // `v` should have a linear distribution in range [0, 1].
     //
     template <Floater T>
-    inline vec2<T> circlePoint(const vec2<T> & v) {
+    inline vec2<T> circlePoint(const vec2<T> v) {
         return std::sqrt(v.x) * discPoint(v.y);
     }
 
@@ -194,7 +194,7 @@ namespace qc::core {
     // `v` should have a linear distribution in range [0, 1].
     //
     template <Floater T>
-    inline vec3<T> spherePoint(const vec2<T> & v) {
+    inline vec3<T> spherePoint(const vec2<T> v) {
         return sphericalToCartesian(
             (T(2.0) * pi<T>) * v.x,
             std::acos(T(1.0) - T(2.0) * v.y)
@@ -206,7 +206,7 @@ namespace qc::core {
     // `v` should have a linear distribution in range [0, 1].
     //
     template <Floater T>
-    inline vec3<T> ballPoint(const vec3<T> & v) {
+    inline vec3<T> ballPoint(const vec3<T> v) {
         return std::cbrt(v.x) * spherePoint(v.yz());
     }
 
@@ -333,10 +333,10 @@ namespace qc::core {
     inline T areaOfPoly(const size_t n, const vec2<T> * const points) {
         T a{};
         for (size_t i{0u}; i < n - 1u; ++i) {
-            const vec2<T> & v1(points[i]), v2(points[i + 1u]);
+            const vec2<T> v1(points[i]), v2(points[i + 1u]);
             a += v1.x * v2.y - v2.x * v1.y;
         }
-        const vec2<T> & v1(points[n - 1u]), v2(points[0]);
+        const vec2<T> v1(points[n - 1u]), v2(points[0]);
         a += v1.x * v2.y - v2.x * v1.y;
         return T(0.5) * a;
     }
@@ -348,12 +348,12 @@ namespace qc::core {
         T a{};
         vec2<T> c;
         for (size_t i{0u}; i < n - 1u; ++i) {
-            const vec2<T> & v1(points[i]), v2(points[i + 1u]);
+            const vec2<T> v1(points[i]), v2(points[i + 1u]);
             T temp{v1.x * v2.y - v2.x * v1.y};
             a += temp;
             c += (v1 + v2) * temp;
         }
-        const vec2<T> & v1(points[n - 1u]), v2(points[0]);
+        const vec2<T> v1(points[n - 1u]), v2(points[0]);
         const T temp{v1.x * v2.y - v2.x * v1.y};
         a += temp;
         c += (v1 + v2) * temp;

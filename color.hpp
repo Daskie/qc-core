@@ -6,7 +6,7 @@ namespace qc::core {
 
     namespace color {
 
-        template <typename T, typename From> constexpr vec3<T> custom(const vec3<From> & color) { return transnorm<T>(color); }
+        template <typename T, typename From> constexpr vec3<T> custom(const vec3<From> color) { return transnorm<T>(color); }
         template <typename T, typename From> constexpr vec3<T> custom(From r, From g, From b) { return custom<T>(vec3<From>(r, g, b)); }
 
         template <typename T> constexpr vec3<T>     black = custom<T>(0.00, 0.00, 0.00);
@@ -70,7 +70,7 @@ namespace qc::core {
     }*/
 
     template <Floater T>
-    inline vec3<T> rgb2hsl(const vec3<T> & rgb) {
+    inline vec3<T> rgb2hsl(const vec3<T> rgb) {
         vec3<T> hsl(0, 0, 0);
 
         int minI{rgb.r <= rgb.g ? 0 : 1};
@@ -103,7 +103,7 @@ namespace qc::core {
     }
 
     template <Floater T>
-    inline vec3<T> hsl2rgb(const vec3<T> & hsl) {
+    inline vec3<T> hsl2rgb(const vec3<T> hsl) {
         if (hsl.y == 0) {
             return {hsl.z, hsl.z, hsl.z};
         }

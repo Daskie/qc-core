@@ -75,21 +75,21 @@ namespace qc::core {
     //
     // ...
     //
-    template <typename T> mat3<T> rotate(const vec3<T> & axis, T sinTheta, T cosTheta);
-    template <typename T> mat3<T> rotate_n(const vec3<T> & axis, T sinTheta, T cosTheta);
+    template <typename T> mat3<T> rotate(vec3<T> axis, T sinTheta, T cosTheta);
+    template <typename T> mat3<T> rotate_n(vec3<T> axis, T sinTheta, T cosTheta);
 
     //
     // ...
     //
-    template <typename T> mat3<T> rotate(const vec3<T> & axis, T angle);
-    template <typename T> mat3<T> rotate_n(const vec3<T> & axis, T angle);
+    template <typename T> mat3<T> rotate(vec3<T> axis, T angle);
+    template <typename T> mat3<T> rotate_n(vec3<T> axis, T angle);
 
     //
     // ...
     // theta: thumb points up, phi: right, psi: forward
     //
-    template <typename T> mat3<T> euler(const vec3<T> & forward, const vec3<T> & up, T theta, T phi, T psi);
-    template <typename T> mat3<T> euler_n(const vec3<T> & forward, const vec3<T> & up, T theta, T phi, T psi);
+    template <typename T> mat3<T> euler(vec3<T> forward, vec3<T> up, T theta, T phi, T psi);
+    template <typename T> mat3<T> euler_n(vec3<T> forward, vec3<T> up, T theta, T phi, T psi);
 
     //
     // ...
@@ -101,8 +101,8 @@ namespace qc::core {
     // ...
     // expects orthogonal fvectors
     //
-    template <typename T> mat3<T> align(const vec3<T> & forward1, const vec3<T> & up1, const vec3<T> & forward2, const vec3<T> & up2);
-    template <typename T> mat3<T> align_n(const vec3<T> & forward1, const vec3<T> & up1, const vec3<T> & forward2, const vec3<T> & up2);
+    template <typename T> mat3<T> align(vec3<T> forward1, vec3<T> up1, vec3<T> forward2, vec3<T> up2);
+    template <typename T> mat3<T> align_n(vec3<T> forward1, vec3<T> up1, vec3<T> forward2, vec3<T> up2);
 
     //
     // ...
@@ -110,24 +110,24 @@ namespace qc::core {
     // A to B is orthogonal i.e. A's basis vectors don't need to be orthogonal, nor
     // B's, but the angles between A's basis vectors must be the same as B's
     //
-    template <typename T> mat2<T> map(const vec2<T> & x1, const vec2<T> & y1, const vec2<T> & x2, const vec2<T> & y2);
-    template <typename T> mat2<T> map_o(const vec2<T> & x1, const vec2<T> & y1, const vec2<T> & x2, const vec2<T> & y2);
-    template <typename T> mat3<T> map(const vec3<T> & x1, const vec3<T> & y1, const vec3<T> & z1, const vec3<T> & x2, const vec3<T> & y2, const vec3<T> & z2);
-    template <typename T> mat3<T> map_o(const vec3<T> & x1, const vec3<T> & y1, const vec3<T> & z1, const vec3<T> & x2, const vec3<T> & y2, const vec3<T> & z2);
+    template <typename T> mat2<T> map(vec2<T> x1, vec2<T> y1, vec2<T> x2, vec2<T> y2);
+    template <typename T> mat2<T> map_o(vec2<T> x1, vec2<T> y1, vec2<T> x2, vec2<T> y2);
+    template <typename T> mat3<T> map(vec3<T> x1, vec3<T> y1, vec3<T> z1, vec3<T> x2, vec3<T> y2, vec3<T> z2);
+    template <typename T> mat3<T> map_o(vec3<T> x1, vec3<T> y1, vec3<T> z1, vec3<T> x2, vec3<T> y2, vec3<T> z2);
 
     //
     // ...
     //
-    template <typename T> mat2<T> mapTo(const vec2<T> & x, const vec2<T> & y);
-    template <typename T> mat2<T> mapTo_o(const vec2<T> & x, const vec2<T> & y);
-    template <typename T> mat3<T> mapTo(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z);
-    template <typename T> mat3<T> mapTo_o(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z);
+    template <typename T> mat2<T> mapTo(vec2<T> x, vec2<T> y);
+    template <typename T> mat2<T> mapTo_o(vec2<T> x, vec2<T> y);
+    template <typename T> mat3<T> mapTo(vec3<T> x, vec3<T> y, vec3<T> z);
+    template <typename T> mat3<T> mapTo_o(vec3<T> x, vec3<T> y, vec3<T> z);
 
     //
     // ...
     //
-    template <typename T> mat2<T> mapFrom(const vec2<T> & x, const vec2<T> & y);
-    template <typename T> mat3<T> mapFrom(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z);
+    template <typename T> mat2<T> mapFrom(vec2<T> x, vec2<T> y);
+    template <typename T> mat3<T> mapFrom(vec3<T> x, vec3<T> y, vec3<T> z);
 
     //
     // ...
@@ -148,16 +148,16 @@ namespace qc::core {
     // `camPos` and `lookAt` must not be the same point.
     // The camera must not be looking parallel to `up`.
     //
-    template <typename T> mat4<T> view(const vec3<T> & camPos, const vec3<T> & lookAt, const vec3<T> & up);
+    template <typename T> mat4<T> view(vec3<T> camPos, vec3<T> lookAt, vec3<T> up);
 
     //
     // ...
     //
-    template <typename T> mat4<T> view(const vec3<T> & camPos, const vec3<T> & camU, const vec3<T> & camV, const vec3<T> & camW);
-    template <typename T> mat4<T> view_n(const vec3<T> & camPos, const vec3<T> & camU, const vec3<T> & camV, const vec3<T> & camW);
+    template <typename T> mat4<T> view(vec3<T> camPos, vec3<T> camU, vec3<T> camV, vec3<T> camW);
+    template <typename T> mat4<T> view_n(vec3<T> camPos, vec3<T> camU, vec3<T> camV, vec3<T> camW);
     // basis vectors are orthonormal (optimination)
-    template <typename T> mat4<T> view_o(const vec3<T> & camPos, const vec3<T> & camU, const vec3<T> & camV, const vec3<T> & camW);
-    template <typename T> mat4<T> view_on(const vec3<T> & camPos, const vec3<T> & camU, const vec3<T> & camV, const vec3<T> & camW);
+    template <typename T> mat4<T> view_o(vec3<T> camPos, vec3<T> camU, vec3<T> camV, vec3<T> camW);
+    template <typename T> mat4<T> view_on(vec3<T> camPos, vec3<T> camU, vec3<T> camV, vec3<T> camW);
 
 } // namespace qc::core
 
@@ -476,7 +476,7 @@ namespace qc::core {
     }
 
     template <typename T>
-    inline mat3<T> rotate(const vec3<T> & axis, const T sinTheta, const T cosTheta) {
+    inline mat3<T> rotate(const vec3<T> axis, const T sinTheta, const T cosTheta) {
         if (zero(magnitude2(axis))) { //can't rotate around 0 length fvector
             return {};
         }
@@ -485,7 +485,7 @@ namespace qc::core {
     }
 
     template <typename T>
-    inline mat3<T> rotate_n(const vec3<T> & axis, const T s, const T c) {
+    inline mat3<T> rotate_n(const vec3<T> axis, const T s, const T c) {
         const T cm{T(1.0) - c};
         const T xs{axis.x * s};
         const T ys{axis.y * s};
@@ -505,22 +505,22 @@ namespace qc::core {
     }
 
     template <typename T>
-    inline mat3<T> rotate(const vec3<T> & axis, const T angle) {
+    inline mat3<T> rotate(const vec3<T> axis, const T angle) {
         return rotate(axis, std::sin(angle), std::cos(angle));
     }
 
     template <typename T>
-    inline mat3<T> rotate_n(const vec3<T> & axis, const T angle) {
+    inline mat3<T> rotate_n(const vec3<T> axis, const T angle) {
         return rotate_n(axis, std::sin(angle), std::cos(angle));
     }
 
     template <typename T>
-    inline mat3<T> euler(const vec3<T> & forward, const vec3<T> & up, const T theta, const T phi, const T psi) {
+    inline mat3<T> euler(const vec3<T> forward, const vec3<T> up, const T theta, const T phi, const T psi) {
         return euler_n(normalize(forward), normalize(up), theta, phi, psi);
     }
 
     template <typename T>
-    inline mat3<T> euler_n(const vec3<T> & forward, const vec3<T> & up, const T theta, const T phi, const T psi) {
+    inline mat3<T> euler_n(const vec3<T> forward, const vec3<T> up, const T theta, const T phi, const T psi) {
         return rotate_n(up, theta) * rotate_n(cross(forward, up), phi) * rotate_n(forward, psi);
     }
 
@@ -530,7 +530,7 @@ namespace qc::core {
     }
 
     template <typename T>
-    inline mat2<T> align_n(const vec2<T> & v1, const vec2<T> & v2) {
+    inline mat2<T> align_n(const vec2<T> v1, const vec2<T> v2) {
         T c{cross(v1, v2)};
         T d{dot(v1, v2)};
 
@@ -538,7 +538,7 @@ namespace qc::core {
     }
 
     template <typename T>
-    inline mat3<T> align_n(const vec3<T> & v1, const vec3<T> & v2) {
+    inline mat3<T> align_n(const vec3<T> v1, const vec3<T> v2) {
         const T d{dot(v1, v2)};
         if (equal(d, T(1.0))) { // already aligned, and would break rotation
             return {};
@@ -554,18 +554,18 @@ namespace qc::core {
     }
 
     template <typename T>
-    inline mat3<T> align(const vec3<T> & forward1, const vec3<T> & up1, const vec3<T> & forward2, const vec3<T> & up2) {
+    inline mat3<T> align(const vec3<T> forward1, const vec3<T> up1, const vec3<T> forward2, const vec3<T> up2) {
         return align_n(normalize(forward1), normalize(up1), normalize(forward2), normalize(up2));
     }
 
     template <typename T>
-    inline mat3<T> align_n(const vec3<T> & forward1, const vec3<T> & up1, const vec3<T> & forward2, const vec3<T> & up2) {
+    inline mat3<T> align_n(const vec3<T> forward1, const vec3<T> up1, const vec3<T> forward2, const vec3<T> up2) {
         const mat3<T> m(align_n(forward1, forward2));
         return align_n(m * up1, up2) * m;
     }
 
     template <typename T>
-    inline mat2<T> map(const vec2<T> & x1, const vec2<T> & y1, const vec2<T> & x2, const vec2<T> & y2) {
+    inline mat2<T> map(const vec2<T> x1, const vec2<T> y1, const vec2<T> x2, const vec2<T> y2) {
         const mat2<T> a(x1, y1);
         const mat2<T> b(x2, y2);
 
@@ -573,7 +573,7 @@ namespace qc::core {
     }
 
     template <typename T>
-    inline mat2<T> map_o(const vec2<T> & x1, const vec2<T> & y1, const vec2<T> & x2, const vec2<T> & y2) {
+    inline mat2<T> map_o(const vec2<T> x1, const vec2<T> y1, const vec2<T> x2, const vec2<T> y2) {
         const mat2<T> a(x1, y1);
         const mat2<T> b(x2, y2);
 
@@ -581,7 +581,7 @@ namespace qc::core {
     }
 
     template <typename T>
-    inline mat3<T> map(const vec3<T> & x1, const vec3<T> & y1, const vec3<T> & z1, const vec3<T> & x2, const vec3<T> & y2, const vec3<T> & z2) {
+    inline mat3<T> map(const vec3<T> x1, const vec3<T> y1, const vec3<T> z1, const vec3<T> x2, const vec3<T> y2, const vec3<T> z2) {
         const mat3<T> a(x1, y1, z1);
         const mat3<T> b(x2, y2, z2);
 
@@ -589,7 +589,7 @@ namespace qc::core {
     }
 
     template <typename T>
-    inline mat3<T> map_o(const vec3<T> & x1, const vec3<T> & y1, const vec3<T> & z1, const vec3<T> & x2, const vec3<T> & y2, const vec3<T> & z2) {
+    inline mat3<T> map_o(const vec3<T> x1, const vec3<T> y1, const vec3<T> z1, const vec3<T> x2, const vec3<T> y2, const vec3<T> z2) {
         const mat3<T> a(x1, y1, z1);
         const mat3<T> b(x2, y2, z2);
 
@@ -597,32 +597,32 @@ namespace qc::core {
     }
 
     template <typename T>
-    inline mat2<T> mapTo(const vec2<T> & x, const vec2<T> & y) {
+    inline mat2<T> mapTo(const vec2<T> x, const vec2<T> y) {
         return inverse(mat2<T>(x, y));
     }
 
     template <typename T>
-    inline mat2<T> mapTo_o(const vec2<T> & x, const vec2<T> & y) {
+    inline mat2<T> mapTo_o(const vec2<T> x, const vec2<T> y) {
         return transpose(mat2<T>(x, y));
     }
 
     template <typename T>
-    inline mat3<T> mapTo(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z) {
+    inline mat3<T> mapTo(const vec3<T> x, const vec3<T> y, const vec3<T> z) {
         return inverse(mat3<T>(x, y, z));
     }
 
     template <typename T>
-    inline mat3<T> mapTo_o(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z) {
+    inline mat3<T> mapTo_o(const vec3<T> x, const vec3<T> y, const vec3<T> z) {
         return transpose(mat3<T>(x, y, z));
     }
 
     template <typename T>
-    inline mat2<T> mapFrom(const vec2<T> & x, const vec2<T> & y) {
+    inline mat2<T> mapFrom(const vec2<T> x, const vec2<T> y) {
         return {x, y};
     }
 
     template <typename T>
-    inline mat3<T> mapFrom(const vec3<T> & x, const vec3<T> & y, const vec3<T> & z) {
+    inline mat3<T> mapFrom(const vec3<T> x, const vec3<T> y, const vec3<T> z) {
         return {x, y, z};
     }
 
@@ -650,7 +650,7 @@ namespace qc::core {
     }
 
     template <typename T>
-    inline mat4<T> view(const vec3<T> & camPos, const vec3<T> & lookAt, const vec3<T> & up) {
+    inline mat4<T> view(const vec3<T> camPos, const vec3<T> lookAt, const vec3<T> up) {
         const vec3<T> w(normalize(camPos - lookAt));
         const vec3<T> u(normalize(cross(up, w)));
         const vec3<T> v(cross(w, u));
@@ -659,22 +659,22 @@ namespace qc::core {
     }
 
     template <typename T>
-    inline mat4<T> view(const vec3<T> & camPos, const vec3<T> & camU, const vec3<T> & camV, const vec3<T> & camW) {
+    inline mat4<T> view(const vec3<T> camPos, const vec3<T> camU, const vec3<T> camV, const vec3<T> camW) {
         return view_n(camPos, normalize(camU), normalize(camV), normalize(camW));
     }
 
     template <typename T>
-    inline mat4<T> view_n(const vec3<T> & camPos, const vec3<T> & camU, const vec3<T> & camV, const vec3<T> & camW) {
+    inline mat4<T> view_n(const vec3<T> camPos, const vec3<T> camU, const vec3<T> camV, const vec3<T> camW) {
         return mat4<T>(mapTo(camU, camV, camW)) * translate(-camPos);
     }
 
     template <typename T>
-    inline mat4<T> view_o(const vec3<T> & camPos, const vec3<T> & camU, const vec3<T> & camV, const vec3<T> & camW) {
+    inline mat4<T> view_o(const vec3<T> camPos, const vec3<T> camU, const vec3<T> camV, const vec3<T> camW) {
         return view_on(camPos, normalize(camU), normalize(camV), normalize(camW));
     }
 
     template <typename T>
-    inline mat4<T> view_on(const vec3<T> & camPos, const vec3<T> & camU, const vec3<T> & camV, const vec3<T> & camW) {
+    inline mat4<T> view_on(const vec3<T> camPos, const vec3<T> camU, const vec3<T> camV, const vec3<T> camW) {
         const vec3<T> trans(-camPos);
         return {
                       camU.x,           camV.x,           camW.x, T(0.0),

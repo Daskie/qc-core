@@ -157,7 +157,7 @@ namespace qc::core {
             return *this;
         }
 
-        if (_size == other.size) {
+        if (_size == other._size) {
             for (size_t i{0u}; i < _size; ++i) {
                 _values[i] = other._values[i];
             }
@@ -167,7 +167,7 @@ namespace qc::core {
 
             if (other._size) {
                 _size = other._size;
-                _values = ::operator new(_size * sizeof(T));
+                _values = static_cast<T *>(::operator new(_size * sizeof(T)));
                 for (size_t i{0u}; i < _size; ++i) {
                     new (_values + i) T(other._values[i]);
                 }
@@ -298,17 +298,17 @@ namespace qc::core {
 
     template <typename T>
     inline constexpr auto HeapArray<T>::end() noexcept -> iterator {
-        return _values + _size - 1u;
+        return _values + _size;
     }
 
     template <typename T>
     inline constexpr auto HeapArray<T>::end() const noexcept -> const_iterator {
-        return _values + _size - 1u;
+        return _values + _size;
     }
 
     template <typename T>
     inline constexpr auto HeapArray<T>::cend() const noexcept -> const_iterator {
-        return _values + _size - 1u;
+        return _values + _size;
     }
 
     template <typename T>

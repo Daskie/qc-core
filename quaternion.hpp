@@ -26,9 +26,9 @@ namespace qc::core {
 
         constexpr quat() noexcept = default;
         template <Floater U> constexpr explicit quat(const quat<U> & q) noexcept;
-        constexpr quat(const vec3<T> & a, T w) noexcept;
-        constexpr explicit quat(const vec3<T> & v) noexcept;
-        constexpr explicit quat(const vec4<T> & v) noexcept;
+        constexpr quat(vec3<T> a, T w) noexcept;
+        constexpr explicit quat(vec3<T> v) noexcept;
+        constexpr explicit quat(vec4<T> v) noexcept;
 
         constexpr quat(const quat & q) noexcept = default;
         constexpr quat(quat && q) noexcept = default;
@@ -47,7 +47,7 @@ namespace qc::core {
     template <Floater T> quat<T> & operator-=(quat<T> & q1, const quat<T> & q2);
 
     template <Floater T> quat<T> & operator*=(quat<T> & q1, const quat<T> & q2);
-    template <Floater T> quat<T> & operator*=(quat<T> &  q, T v);
+    template <Floater T> quat<T> & operator*=(quat<T> & q, T v);
 
     template <Floater T> quat<T> & operator/=(quat<T> & q1, const quat<T> & q2);
 
@@ -60,9 +60,9 @@ namespace qc::core {
     template <Floater T> quat<T> operator-(const quat<T> & q1, const quat<T> & q2);
 
     template <Floater T> quat<T> operator*(const quat<T> & q1, const quat<T> & q2);
-    template <Floater T> quat<T> operator*(const quat<T> &  q, T v);
-    template <Floater T> quat<T> operator*(const T v, const quat<T> &  q);
-    template <Floater T> vec3<T> operator*(const quat<T> &  q, const vec3<T> &  v);
+    template <Floater T> quat<T> operator*(const quat<T> & q, T v);
+    template <Floater T> quat<T> operator*(T v, const quat<T> & q);
+    template <Floater T> vec3<T> operator*(const quat<T> & q, vec3<T> v);
 
     template <Floater T> quat<T> operator/(const quat<T> & q1, const quat<T> & q2);
 
@@ -83,17 +83,17 @@ namespace qc::core {
     {}
 
     template <Floater T>
-    inline constexpr quat<T>::quat(const vec3<T> & a, T w) noexcept :
+    inline constexpr quat<T>::quat(const vec3<T> a, T w) noexcept :
         a(a), w(w)
     {}
 
     template <Floater T>
-    inline constexpr quat<T>::quat(const vec3<T> & v) noexcept :
+    inline constexpr quat<T>::quat(const vec3<T> v) noexcept :
         a(v), w(T(0.0))
     {}
 
     template <Floater T>
-    inline constexpr quat<T>::quat(const vec4<T> & v) noexcept :
+    inline constexpr quat<T>::quat(const vec4<T> v) noexcept :
         a(v), w(v.w)
     {}
 
@@ -166,7 +166,7 @@ namespace qc::core {
     }
 
     template <Floater T>
-    inline vec3<T> operator*(const quat<T> & q, const vec3<T> & v) {
+    inline vec3<T> operator*(const quat<T> & q, const vec3<T> v) {
         const vec3<T> t(T(2.0) * cross(q.a, v));
         return v + q.w * t + cross(q.a, t);
     }

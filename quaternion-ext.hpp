@@ -59,28 +59,28 @@ namespace qc::core {
     //
     // ...
     //
-    template <typename T> quat<T> rotateQ(const vec3<T> & axis, T angle);
-    template <typename T> quat<T> rotateQ_n(const vec3<T> & axis, T angle);
+    template <typename T> quat<T> rotateQ(vec3<T> axis, T angle);
+    template <typename T> quat<T> rotateQ_n(vec3<T> axis, T angle);
 
     //
     // ...
     //
-    template <typename T> quat<T> alignQ(const vec3<T> & v1, const vec3<T> & v2);
-    template <typename T> quat<T> alignQ_n(const vec3<T> & v1, const vec3<T> & v2);
+    template <typename T> quat<T> alignQ(vec3<T> v1, vec3<T> v2);
+    template <typename T> quat<T> alignQ_n(vec3<T> v1, vec3<T> v2);
 
     //
     // ...
     // expects orthogonal fvectors
     //
-    template <typename T> quat<T> alignQ(const vec3<T> & forward1, const vec3<T> & up1, const vec3<T> & forward2, const vec3<T> & up2);
-    template <typename T> quat<T> alignQ_n(const vec3<T> & forward1, const vec3<T> & up1, const vec3<T> & forward2, const vec3<T> & up2);
+    template <typename T> quat<T> alignQ(vec3<T> forward1, vec3<T> up1, vec3<T> forward2, vec3<T> up2);
+    template <typename T> quat<T> alignQ_n(vec3<T> forward1, vec3<T> up1, vec3<T> forward2, vec3<T> up2);
 
     //
     // ...
     // theta: thumb points up, phi: right, psi: forward
     //
-    template <typename T> quat<T> eulerQ(const vec3<T> & forward, const vec3<T> & up, T theta, T phi, T psi);
-    template <typename T> quat<T> eulerQ_n(const vec3<T> & forward, const vec3<T> & up, T theta, T phi, T psi);
+    template <typename T> quat<T> eulerQ(vec3<T> forward, vec3<T> up, T theta, T phi, T psi);
+    template <typename T> quat<T> eulerQ_n(vec3<T> forward, vec3<T> up, T theta, T phi, T psi);
 
     //
     // ...
@@ -167,39 +167,39 @@ namespace qc::core {
     //}
 
     template <typename T>
-    inline quat<T> rotateQ(const vec3<T> & axis, const T angle) {
+    inline quat<T> rotateQ(const vec3<T> axis, const T angle) {
         return rotateQ_n(normalize(axis), angle);
     }
     template <typename T>
-    inline quat<T> rotateQ_n(const vec3<T> & axis, const T angle) {
+    inline quat<T> rotateQ_n(const vec3<T> axis, const T angle) {
         return {std::sin(angle * T(0.5)) * axis, std::cos(angle * T(0.5))};
     }
 
     template <typename T>
-    inline quat<T> alignQ(const vec3<T> & v1, const vec3<T> & v2) {
+    inline quat<T> alignQ(const vec3<T> v1, const vec3<T> v2) {
         return alignQ_n(normalize(v1), normalize(v2));
     }
     template <typename T>
-    inline quat<T> alignQ_n(const vec3<T> & v1, const vec3<T> & v2) {
+    inline quat<T> alignQ_n(const vec3<T> v1, const vec3<T> v2) {
         return rotateQ(cross(v1, v2), std::acos(dot(v1, v2)));
     }
 
     template <typename T>
-    inline quat<T> alignQ(const vec3<T> & forward1, const vec3<T> & up1, const vec3<T> & forward2, const vec3<T> & up2) {
+    inline quat<T> alignQ(const vec3<T> forward1, const vec3<T> up1, const vec3<T> forward2, const vec3<T> up2) {
         return alignQ_n(normalize(forward1), normalize(up1), normalize(forward2), normalize(up2));
     }
     template <typename T>
-    inline quat<T> alignQ_n(const vec3<T> & forward1, const vec3<T> & up1, const vec3<T> & forward2, const vec3<T> & up2) {
+    inline quat<T> alignQ_n(const vec3<T> forward1, const vec3<T> up1, const vec3<T> forward2, const vec3<T> up2) {
         quat<T> q(alignQ_n(forward1, forward2));
         return alignQ_n(q * up1, up2) * q;
     }
 
     template <typename T>
-    inline quat<T> eulerQ(const vec3<T> & forward, const vec3<T> & up, const T theta, const T phi, const T psi) {
+    inline quat<T> eulerQ(const vec3<T> forward, const vec3<T> up, const T theta, const T phi, const T psi) {
         return eulerQ_n(normalize(forward), normalize(up), theta, phi, psi);
     }
     template <typename T>
-    inline quat<T> eulerQ_n(const vec3<T> & forward, const vec3<T> & up, const T theta, const T phi, const T psi) {
+    inline quat<T> eulerQ_n(const vec3<T> forward, const vec3<T> up, const T theta, const T phi, const T psi) {
         return rotateQ_n(up, theta) * rotateQ_n(cross(forward, up), phi) * rotateQ_n(forward, psi);
     }
 

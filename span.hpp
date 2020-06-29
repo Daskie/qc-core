@@ -97,7 +97,7 @@ namespace qc::core {
         constexpr span() noexcept = default;
         template <Number U, int m> constexpr explicit span(const span<U, m> & v) noexcept;
         constexpr span(T v1, T v2) noexcept;
-        constexpr span(const vec2<T> & v1, const vec2<T> & v2) noexcept;
+        constexpr span(vec2<T> v1, vec2<T> v2) noexcept;
         Q_CONSTEX span(const span1<T> & v1, const span1<T> & v2) noexcept;
 
         constexpr span(const span & v) noexcept = default;
@@ -121,7 +121,7 @@ namespace qc::core {
         constexpr span() noexcept = default;
         template <Number U, int m> constexpr explicit span(const span<U, m> & v) noexcept;
         constexpr span(T v1, T v2) noexcept;
-        constexpr span(const vec3<T> & v1, const vec3<T> & v2) noexcept;
+        constexpr span(vec3<T> v1, vec3<T> v2) noexcept;
         Q_CONSTEX span(const span1<T> & v1, const span1<T> & v2, const span1<T> & v3) noexcept;
         Q_CX_ABLE span(const span2<T> & v1, const span1<T> & v2) noexcept;
         Q_CX_ABLE span(const span1<T> & v1, const span2<T> & v2) noexcept;
@@ -151,7 +151,7 @@ namespace qc::core {
         constexpr span() noexcept = default;
         template <Number U, int m> constexpr explicit span(const span<U, m> & v) noexcept;
         constexpr span(T v1, T v2) noexcept;
-        constexpr span(const vec4<T> & v1, const vec4<T> & v2) noexcept;
+        constexpr span(vec4<T> v1, vec4<T> v2) noexcept;
         Q_CONSTEX span(const span1<T> & v1, const span1<T> & v2, const span1<T> & v3, const span1<T> & v4) noexcept;
         Q_CX_ABLE span(const span2<T> & v1, const span1<T> & v2, const span1<T> & v3) noexcept;
         Q_CX_ABLE span(const span1<T> & v1, const span2<T> & v2, const span1<T> & v3) noexcept;
@@ -246,7 +246,7 @@ namespace qc::core {
     {}
 
     template <Number T>
-    inline constexpr span<T, 2>::span(const vec2<T> & v1, const vec2<T> & v2) noexcept :
+    inline constexpr span<T, 2>::span(const vec2<T> v1, const vec2<T> v2) noexcept :
         min(v1),
         max(v2)
     {}
@@ -281,7 +281,7 @@ namespace qc::core {
     {}
 
     template <Number T>
-    inline constexpr span<T, 3>::span(const vec3<T> & v1, const vec3<T> & v2) noexcept :
+    inline constexpr span<T, 3>::span(const vec3<T> v1, const vec3<T> v2) noexcept :
         min(v1),
         max(v2)
     {}
@@ -343,7 +343,7 @@ namespace qc::core {
     {}
 
     template <Number T>
-    inline constexpr span<T, 4>::span(const vec4<T> & v1, const vec4<T> & v2) noexcept :
+    inline constexpr span<T, 4>::span(const vec4<T> v1, const vec4<T> v2) noexcept :
         min(v1),
         max(v2)
     {}

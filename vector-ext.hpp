@@ -20,12 +20,12 @@ namespace qc::core {
     //
     // ...
     //
-    template <int n> Q_CX_ABLE bool any(const bvec<n> & v);
+    template <int n> Q_CX_ABLE bool any(bvec<n> v);
 
     //
     // ...
     //
-    template <int n> Q_CX_ABLE bool all(const bvec<n> & v);
+    template <int n> Q_CX_ABLE bool all(bvec<n> v);
 
     //
     // ...
@@ -63,7 +63,7 @@ namespace qc::core {
     //
     // ...
     //
-    template <Number T> Q_CX_ABLE T median(const vec3<T> & v);
+    template <Number T> Q_CX_ABLE T median(vec3<T> v);
 
     //
     // ...
@@ -109,8 +109,8 @@ namespace qc::core {
     //
     // ...
     //
-    template <Number T> T cross(const vec2<T> & v1, const vec2<T> & v2);
-    template <Number T> vec3<T> cross(const vec3<T> & v1, const vec3<T> & v2);
+    template <Number T> T cross(vec2<T> v1, vec2<T> v2);
+    template <Number T> vec3<T> cross(vec3<T> v1, vec3<T> v2);
 
     //
     // ...
@@ -131,8 +131,8 @@ namespace qc::core {
     // ...
     //
     template <Floater T, int n> void orthogonalize(const vec<T, n> & v1, vec<T, n> & v2);
-    template <Floater T> void orthogonalize(const vec3<T> & v1, vec3<T> & v2, vec3<T> & v3);
-    template <Floater T> void orthogonalize_n(const vec3<T> & v1, vec3<T> & v2, vec3<T> & v3);
+    template <Floater T> void orthogonalize(vec3<T> v1, vec3<T> & v2, vec3<T> & v3);
+    template <Floater T> void orthogonalize_n(vec3<T> v1, vec3<T> & v2, vec3<T> & v3);
 
     //
     // ...
@@ -205,12 +205,12 @@ namespace qc::core {
     // ...
     //
     template <Floater T, int n> Q_CX_ABLE vec<T, n> mix(const vec<T, n> & v1, const vec<T, n> & v2, T t);
-    template <Floater T, int n> Q_CX_ABLE vec<T, n> mix(const vec<T, n> & v1, const vec<T, n> & v2, const vec2<T> & weights);
-    template <Floater T, int n> Q_CX_ABLE vec<T, n> mix(const vec<T, n> & v1, const vec<T, n> & v2, const vec<T, n> & v3, const vec3<T> & weights);
-    template <Floater T, int n> Q_CX_ABLE vec<T, n> mix(const vec<T, n> & v1, const vec<T, n> & v2, const vec<T, n> & v3, const vec<T, n> & v4, const vec4<T> & weights);
-    template <Floater T> Q_CX_ABLE T mix(T v1, T v2, const vec2<T> & weights);
-    template <Floater T> Q_CX_ABLE T mix(T v1, T v2, T v3, const vec3<T> & weights);
-    template <Floater T> Q_CX_ABLE T mix(T v1, T v2, T v3, T v4, const vec4<T> & weights);
+    template <Floater T, int n> Q_CX_ABLE vec<T, n> mix(const vec<T, n> & v1, const vec<T, n> & v2, vec2<T> weights);
+    template <Floater T, int n> Q_CX_ABLE vec<T, n> mix(const vec<T, n> & v1, const vec<T, n> & v2, const vec<T, n> & v3, vec3<T> weights);
+    template <Floater T, int n> Q_CX_ABLE vec<T, n> mix(const vec<T, n> & v1, const vec<T, n> & v2, const vec<T, n> & v3, const vec<T, n> & v4, vec4<T> weights);
+    template <Floater T> Q_CX_ABLE T mix(T v1, T v2, vec2<T> weights);
+    template <Floater T> Q_CX_ABLE T mix(T v1, T v2, T v3, vec3<T> weights);
+    template <Floater T> Q_CX_ABLE T mix(T v1, T v2, T v3, T v4, vec4<T> weights);
 
     //
     // ...
@@ -254,14 +254,14 @@ namespace qc::core {
     }
 
     template <int n>
-    inline Q_CX_ABLE bool all(const bvec<n> & v) {
+    inline Q_CX_ABLE bool all(const bvec<n> v) {
         if constexpr (n == 2) return v.x && v.y;
         if constexpr (n == 3) return v.x && v.y && v.z;
         if constexpr (n == 4) return v.x && v.y && v.z && v.w;
     }
 
     template <int n>
-    inline Q_CX_ABLE bool any(const bvec<n> & v) {
+    inline Q_CX_ABLE bool any(const bvec<n> v) {
         return bool(v);
     }
 
@@ -361,7 +361,7 @@ namespace qc::core {
     }
 
     template <Number T>
-    inline Q_CX_ABLE T median(const vec3<T> & v) {
+    inline Q_CX_ABLE T median(const vec3<T> v) {
         return median(v.x, v.y, v.z);
     }
 
@@ -435,12 +435,12 @@ namespace qc::core {
     }
 
     template <Number T>
-    inline T cross(const vec2<T> & v1, const vec2<T> & v2) {
+    inline T cross(const vec2<T> v1, const vec2<T> v2) {
         return v1.x * v2.y - v1.y * v2.x;
     }
 
     template <Number T>
-    inline vec3<T> cross(const vec3<T> & v1, const vec3<T> & v2) {
+    inline vec3<T> cross(const vec3<T> v1, const vec3<T> v2) {
         return {T(v1.y * v2.z - v1.z * v2.y), T(v1.z * v2.x - v1.x * v2.z), T(v1.x * v2.y - v1.y * v2.x)};
     }
 
@@ -485,7 +485,7 @@ namespace qc::core {
 
     // in order of priority
     template <Floater T>
-    inline void orthogonalize(const vec3<T> & v1, vec3<T> & v2, vec3<T> & v3) {
+    inline void orthogonalize(const vec3<T> v1, vec3<T> & v2, vec3<T> & v3) {
         orthogonalize_n(v1, v2, v3);
         v2 = normalize(v2);
         v3 = normalize(v3);
@@ -493,7 +493,7 @@ namespace qc::core {
 
     // in order of priority
     template <Floater T>
-    inline void orthogonalize_n(const vec3<T> & v1, vec3<T> & v2, vec3<T> & v3) {
+    inline void orthogonalize_n(const vec3<T> v1, vec3<T> & v2, vec3<T> & v3) {
         orthogonalize(v1, v2);
         v3 = cross(v2, v1);
     }
@@ -627,32 +627,32 @@ namespace qc::core {
     }
 
     template <Floater T, int n>
-    inline Q_CX_ABLE vec<T, n> mix(const vec<T, n> & v1, const vec<T, n> & v2, const vec2<T> & weights) {
+    inline Q_CX_ABLE vec<T, n> mix(const vec<T, n> & v1, const vec<T, n> & v2, const vec2<T> weights) {
         return weights.x * v1 + weights.y * v2;
     }
 
     template <Floater T, int n>
-    inline Q_CX_ABLE vec<T, n> mix(const vec<T, n> & v1, const vec<T, n> & v2, const vec<T, n> & v3, const vec3<T> & weights) {
+    inline Q_CX_ABLE vec<T, n> mix(const vec<T, n> & v1, const vec<T, n> & v2, const vec<T, n> & v3, const vec3<T> weights) {
         return weights.x * v1 + weights.y * v2 + weights.z * v3;
     }
 
     template <Floater T, int n>
-    inline Q_CX_ABLE vec<T, n> mix(const vec<T, n> & v1, const vec<T, n> & v2, const vec<T, n> & v3, const vec<T, n> & v4, const vec4<T> & weights) {
+    inline Q_CX_ABLE vec<T, n> mix(const vec<T, n> & v1, const vec<T, n> & v2, const vec<T, n> & v3, const vec<T, n> & v4, const vec4<T> weights) {
         return weights.x * v1 + weights.y * v2 + weights.z * v3 + weights.w * v4;
     }
 
     template <Floater T>
-    inline Q_CX_ABLE T mix(const T v1, const T v2, const vec2<T> & weights) {
+    inline Q_CX_ABLE T mix(const T v1, const T v2, const vec2<T> weights) {
         return weights.x * v1 + weights.y * v2;
     }
 
     template <Floater T>
-    inline Q_CX_ABLE T mix(const T v1, const T v2, const T v3, const vec3<T> & weights) {
+    inline Q_CX_ABLE T mix(const T v1, const T v2, const T v3, const vec3<T> weights) {
         return weights.x * v1 + weights.y * v2 + weights.z * v3;
     }
 
     template <Floater T>
-    inline Q_CX_ABLE T mix(const T v1, const T v2, const T v3, const T v4, const vec4<T> & weights) {
+    inline Q_CX_ABLE T mix(const T v1, const T v2, const T v3, const T v4, const vec4<T> weights) {
         return weights.x * v1 + weights.y * v2 + weights.z * v3 + weights.w * v4;
     }
 

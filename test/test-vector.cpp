@@ -67,8 +67,8 @@ static void compileClassesT() {
     v3.at<1>();
     v3.at<2>();
 
-    v3.xy(); v3.rg(); v3.st();
-    v3.yz(); v3.gb(); v3.tp();
+    v3.xy();
+    v3.yz();
 
     //--------------------------------------------------------------------------
     // Vec4
@@ -103,11 +103,11 @@ static void compileClassesT() {
     v4.at<2>();
     v4.at<3>();
 
-    v4.xy(); v4.rg(); v4.st();
-    v4.yz(); v4.gb(); v4.tp();
-    v4.zw(); v4.ba(); v4.pq();
-    v4.xyz(); v4.rgb(); v4.stp();
-    v4.yzw(); v4.gba(); v4.tpq();
+    v4.xy();
+    v4.yz();
+    v4.zw();
+    v4.xyz();
+    v4.yzw();
 }
 
 static void compileClasses() {
@@ -171,8 +171,8 @@ static constexpr void compileClassesConstexprT() {
     v3.at<1>();
     v3.at<2>();
 
-    //v3.xy(); v3.rg(); v3.st();
-    //v3.yz(); v3.gb(); v3.tp();
+    //v3.xy();
+    //v3.yz();
 
     //--------------------------------------------------------------------------
     // Vec4
@@ -201,11 +201,11 @@ static constexpr void compileClassesConstexprT() {
     v4.at<2>();
     v4.at<3>();
 
-    //v4.xy(); v4.rg(); v4.st();
-    //v4.yz(); v4.gb(); v4.tp();
-    //v4.zw(); v4.ba(); v4.pq();
-    //v4.xyz(); v4.rgb(); v4.stp();
-    //v4.yzw(); v4.gba(); v4.tpq();
+    //v4.xy();
+    //v4.yz();
+    //v4.zw();
+    //v4.xyz();
+    //v4.yzw();
 }
 
 static constexpr bool compileClassesConstexpr() {
