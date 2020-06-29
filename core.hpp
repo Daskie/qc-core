@@ -1,13 +1,5 @@
 #pragma once
 
-// TODO: remove this nonsense once IntelliSense supports concepts
-#ifdef __cpp_lib_concepts
-#include <concepts>
-#else
-#define __cpp_lib_concepts
-#include <concepts>
-#undef __cpp_lib_concepts
-#endif
 #include <cstdint>
 #include <limits>
 #include <utility>
@@ -39,14 +31,14 @@ namespace qc::core {
         using f32 = float;
         using f64 = double;
 
-        template <typename T> concept SignedInteger   = std::signed_integral<T> && !std::same_as<T, bool> && !std::same_as<T, char>;
-        template <typename T> concept UnsignedInteger = std::unsigned_integral<T> && !std::same_as<T, bool> && !std::same_as<T, char>;
-        template <typename T> concept Integer         = SignedInteger<T> || UnsignedInteger<T>;
-        template <typename T> concept Floater         = std::floating_point<T>;
-        template <typename T> concept Number          = Integer<T> || Floater<T>;
-        template <typename T> concept Pointer         = std::is_pointer_v<T>;
-        template <typename T> concept Orderable       = Number<T> || Pointer<T>;
-        template <typename T> concept NumberOrBool    = Number<T> || std::is_same_v<T, bool>;
+        template <typename T> concept Integral = std::is_integral_v<T> && !std::is_same_v<T, bool> && !std::is_same_v<T, char>;
+        template <typename T> concept SignedIntegral = Integral<T> && std::is_signed_v<T>;
+        template <typename T> concept UnsignedIntegral = Integral<T> && std::is_unsigned_v<T>;
+        template <typename T> concept Floating = std::is_floating_point_v<T>;
+        template <typename T> concept Numeric = Integral<T> || Floating<T>;
+        template <typename T> concept Pointer = std::is_pointer_v<T>;
+        template <typename T> concept Orderable = Numeric<T> || Pointer<T>;
+        template <typename T> concept NumericOrBoolean = Numeric<T> || std::is_same_v<T, bool>;
 
     }
 
@@ -75,14 +67,14 @@ namespace qc::core {
     //   extended |   80 |     21
     //       quad |  128 |     36
 
-    template <Floater T> constexpr T       pi = T(3.14159265358979323846264338327950288L);
-    template <Floater T> constexpr T        e = T(2.71828182845904523536028747135266250L);
-    template <Floater T> constexpr T      phi = T(1.61803398874989484820458683436563812L);
-    template <Floater T> constexpr T    sqrt2 = T(1.41421356237309504880168872420969808L);
-    template <Floater T> constexpr T    sqrt3 = T(1.73205080756887729352744634150587237L);
-    template <Floater T> constexpr T    sqrt5 = T(2.23606797749978969640917366873127624L);
-    template <Floater T> constexpr T infinity = std::numeric_limits<T>::infinity();
-    template <Floater T> constexpr T      nan = std::numeric_limits<T>::quiet_NaN();
+    template <Floating T> constexpr T       pi = T(3.14159265358979323846264338327950288L);
+    template <Floating T> constexpr T        e = T(2.71828182845904523536028747135266250L);
+    template <Floating T> constexpr T      phi = T(1.61803398874989484820458683436563812L);
+    template <Floating T> constexpr T    sqrt2 = T(1.41421356237309504880168872420969808L);
+    template <Floating T> constexpr T    sqrt3 = T(1.73205080756887729352744634150587237L);
+    template <Floating T> constexpr T    sqrt5 = T(2.23606797749978969640917366873127624L);
+    template <Floating T> constexpr T infinity = std::numeric_limits<T>::infinity();
+    template <Floating T> constexpr T      nan = std::numeric_limits<T>::quiet_NaN();
 
     //
     // ...

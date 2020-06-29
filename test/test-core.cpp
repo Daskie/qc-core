@@ -371,9 +371,9 @@ TEST_CLASS(TestCore) {
         static_assert(compileFunctionsConstexpr());
     }
 
-    template <Integer T> static constexpr T halfVal{T(std::numeric_limits<T>::max() / 2 + T(1))};
-    template <Integer T> static constexpr T quarterVal{T(halfVal<T> / 2)};
-    template <Integer T> static constexpr T threeQuartersVal{T(halfVal<T> + quarterVal<T>)};
+    template <Integral T> static constexpr T halfVal{T(std::numeric_limits<T>::max() / 2 + T(1))};
+    template <Integral T> static constexpr T quarterVal{T(halfVal<T> / 2)};
+    template <Integral T> static constexpr T threeQuartersVal{T(halfVal<T> + quarterVal<T>)};
 
     template <typename From, typename To>
     void testTransnormFTFT() {

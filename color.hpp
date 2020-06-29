@@ -69,7 +69,7 @@ namespace qc::core {
         return luv2rgb(vec3(lch.x, lch.y * cos(lch.z), lch.y * sin(lch.z)));
     }*/
 
-    template <Floater T>
+    template <Floating T>
     inline vec3<T> rgb2hsl(const vec3<T> rgb) {
         vec3<T> hsl(0, 0, 0);
 
@@ -102,7 +102,7 @@ namespace qc::core {
         return hsl;
     }
 
-    template <Floater T>
+    template <Floating T>
     inline vec3<T> hsl2rgb(const vec3<T> hsl) {
         if (hsl.y == 0) {
             return {hsl.z, hsl.z, hsl.z};

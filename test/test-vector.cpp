@@ -1330,30 +1330,30 @@ TEST_CLASS(TestVector) {
 
     template <typename T>
     void testFloaterVectorConceptT() {
-        static_assert(FloaterVector<vec2<T>>);
-        static_assert(FloaterVector<vec3<T>>);
-        static_assert(FloaterVector<vec4<T>>);
+        static_assert(FloatingVector<vec2<T>>);
+        static_assert(FloatingVector<vec3<T>>);
+        static_assert(FloatingVector<vec4<T>>);
     }
 
     template <typename T>
     void testIntegerVectorConceptT() {
-        static_assert(IntegerVector<vec2<T>>);
-        static_assert(IntegerVector<vec3<T>>);
-        static_assert(IntegerVector<vec4<T>>);
+        static_assert(IntegralVector<vec2<T>>);
+        static_assert(IntegralVector<vec3<T>>);
+        static_assert(IntegralVector<vec4<T>>);
     }
 
     template <typename T>
     void testSignedIntegerVectorConceptT() {
-        static_assert(SignedIntegerVector<vec2<T>>);
-        static_assert(SignedIntegerVector<vec3<T>>);
-        static_assert(SignedIntegerVector<vec4<T>>);
+        static_assert(SignedIntegralVector<vec2<T>>);
+        static_assert(SignedIntegralVector<vec3<T>>);
+        static_assert(SignedIntegralVector<vec4<T>>);
     }
 
     template <typename T>
     void testUnsignedIntegerVectorConceptT() {
-        static_assert(UnsignedIntegerVector<vec2<T>>);
-        static_assert(UnsignedIntegerVector<vec3<T>>);
-        static_assert(UnsignedIntegerVector<vec4<T>>);
+        static_assert(UnsignedIntegralVector<vec2<T>>);
+        static_assert(UnsignedIntegralVector<vec3<T>>);
+        static_assert(UnsignedIntegralVector<vec4<T>>);
     }
 
     TEST_METHOD(testConcepts) {
@@ -1371,7 +1371,7 @@ TEST_CLASS(TestVector) {
 
         testFloaterVectorConceptT<f32>();
         testFloaterVectorConceptT<f64>();
-        static_assert(!FloaterVector<ivec2>);
+        static_assert(!FloatingVector<ivec2>);
 
         testIntegerVectorConceptT<s08>();
         testIntegerVectorConceptT<u08>();
@@ -1381,24 +1381,24 @@ TEST_CLASS(TestVector) {
         testIntegerVectorConceptT<u32>();
         testIntegerVectorConceptT<s64>();
         testIntegerVectorConceptT<u64>();
-        static_assert(!IntegerVector<fvec2>);
+        static_assert(!IntegralVector<fvec2>);
 
         testSignedIntegerVectorConceptT<s08>();
         testSignedIntegerVectorConceptT<s16>();
         testSignedIntegerVectorConceptT<s32>();
         testSignedIntegerVectorConceptT<s64>();
-        static_assert(!SignedIntegerVector<uivec2>);
+        static_assert(!SignedIntegralVector<uivec2>);
 
         testUnsignedIntegerVectorConceptT<u08>();
         testUnsignedIntegerVectorConceptT<u16>();
         testUnsignedIntegerVectorConceptT<u32>();
         testUnsignedIntegerVectorConceptT<u64>();
-        static_assert(!UnsignedIntegerVector<ivec2>);
+        static_assert(!UnsignedIntegralVector<ivec2>);
 
-        static_assert(BoolVector<bvec2>);
-        static_assert(BoolVector<bvec3>);
-        static_assert(BoolVector<bvec4>);
-        static_assert(!BoolVector<fvec2>);
+        static_assert(BooleanVector<bvec2>);
+        static_assert(BooleanVector<bvec3>);
+        static_assert(BooleanVector<bvec4>);
+        static_assert(!BooleanVector<fvec2>);
 
         static_assert(Vector2<cvec2>);
         static_assert(Vector2<ucvec2>);

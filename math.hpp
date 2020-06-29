@@ -6,7 +6,7 @@
 
 namespace qc::core {
 
-    template <Floater T>
+    template <Floating T>
     inline vec2<T> polarToCartesian(const T theta) {
         return {
             std::cos(theta),
@@ -14,7 +14,7 @@ namespace qc::core {
         };
     }
 
-    template <Floater T>
+    template <Floating T>
     inline vec2<T> polarToCartesian(const T r, const T theta) {
         return r * polarToCartesian(theta);
     }
@@ -23,12 +23,12 @@ namespace qc::core {
     // `v.x` is the radius
     // `v.y` is theta
     //
-    template <Floater T>
+    template <Floating T>
     inline vec2<T> polarToCartesian(const vec2<T> v) {
         return polarToCartesian(v.x, v.y);
     }
 
-    template <Floater T>
+    template <Floating T>
     inline vec2<T> cartesianToPolar(const vec2<T> v) {
         return {
             magnitude(v),
@@ -40,7 +40,7 @@ namespace qc::core {
     // `theta` is the angle on the xy plane
     // `phi` is the angle from the z axis
     //
-    template <Floater T>
+    template <Floating T>
     inline vec3<T> sphericalToCartesian(const T theta, const T phi) {
         const T sinPhi{std::sin(phi)};
         return {
@@ -55,7 +55,7 @@ namespace qc::core {
     // `theta` is the angle on the xy plane
     // `phi` is the angle from the z axis
     //
-    template <Floater T>
+    template <Floating T>
     inline vec3<T> sphericalToCartesian(const T r, const T theta, const T phi) {
         return r * sphericalToCartesian(theta, phi);
     }
@@ -65,12 +65,12 @@ namespace qc::core {
     // `v.y` is theta, or the angle on the xy plane
     // `v.z` is the angle from the z axis
     //
-    template <Floater T>
+    template <Floating T>
     inline vec3<T> sphericalToCartesian(const vec3<T> v) {
         return sphericalToCartesian(v.y, v.z) * v.r;
     }
 
-    template <Floater T>
+    template <Floating T>
     inline vec3<T> cartesianToSpherical(const vec3<T> v) {
         const T r{magnitude(v)};
         return {
@@ -80,7 +80,7 @@ namespace qc::core {
         };
     }
 
-    template <Floater T>
+    template <Floating T>
     inline vec3<T> cylindricalToCartesian(const T r, const T theta, const T z) {
         return {
             polarToCartesian(r, theta),
@@ -88,12 +88,12 @@ namespace qc::core {
         };
     }
 
-    template <Floater T>
+    template <Floating T>
     inline vec3<T> cylindricalToCartesian(const vec3<T> v) {
         return cylindricalToCartesian(v.x, v.y, v.z);
     }
 
-    template <Floater T>
+    template <Floating T>
     inline vec3<T> cartesianToCylindrical(const vec3<T> v) {
         return {
             magnitude(v),
@@ -175,7 +175,7 @@ namespace qc::core {
     // Returns a uniformly distributed point on the perimeter of the unit circle given the random input `v`.
     // `v` should have a linear distribution in range [0, 1].
     //
-    template <Floater T>
+    template <Floating T>
     inline vec2<T> discPoint(const T v) {
         return polarToCartesian((T(2.0) * pi<T>) * v);
     }
@@ -184,7 +184,7 @@ namespace qc::core {
     // Returns a uniformly distributed point in the unit circle given the random input `v`.
     // `v` should have a linear distribution in range [0, 1].
     //
-    template <Floater T>
+    template <Floating T>
     inline vec2<T> circlePoint(const vec2<T> v) {
         return std::sqrt(v.x) * discPoint(v.y);
     }
@@ -193,7 +193,7 @@ namespace qc::core {
     // Returns a uniformly distributed point on the surface of the unit sphere given the random input `v`.
     // `v` should have a linear distribution in range [0, 1].
     //
-    template <Floater T>
+    template <Floating T>
     inline vec3<T> spherePoint(const vec2<T> v) {
         return sphericalToCartesian(
             (T(2.0) * pi<T>) * v.x,
@@ -205,18 +205,18 @@ namespace qc::core {
     // Returns a uniformly distributed point in the unit sphere given the random input `v`.
     // `v` should have a linear distribution in range [0, 1].
     //
-    template <Floater T>
+    template <Floating T>
     inline vec3<T> ballPoint(const vec3<T> v) {
         return std::cbrt(v.x) * spherePoint(v.yz());
     }
 
-    template <Floater T>
+    template <Floating T>
     inline vec2<T> circlePointFibonacci(const int i, const int n) {
         const T p{T(i + 1) / T(n + 1)};
         return circlePoint(vec2<T>(p, phi<T> * T(i)));
     }
 
-    template <Floater T>
+    template <Floating T>
     inline vec3<T> spherePointFibonacci(const int i, const int n) {
         const T p{T(i + 1) / T(n + 1)};
         return spherePoint(vec2<T>(phi<T> * T(i), p));
@@ -287,14 +287,14 @@ namespace qc::core {
 
     };
 
-    template <Floater T, typename U>
+    template <Floating T, typename U>
     inline void dampen(U & r_pos, const U & targetPos, U & r_vel, const T angularFreq, const T dt) {
         const U dist{r_pos - targetPos};
         dampen(dist, r_vel, angularFreq, dt);
         r_pos = targetPos - dist;
     }
 
-    template <Floater T, typename U>
+    template <Floating T, typename U>
     inline void dampen(U & r_dist, U & r_vel, const T angularFreq, const T dt) {
         const T expTerm{std::exp(-angularFreq * dt)};
         const U c1{r_vel + angularFreq * r_dist};
@@ -329,7 +329,7 @@ namespace qc::core {
 
     // Calculates the area of a non self-intersecting polygon
     // Points should be the vertices of the polygon given in order without duplicates
-    template <Floater T>
+    template <Floating T>
     inline T areaOfPoly(const size_t n, const vec2<T> * const points) {
         T a{};
         for (size_t i{0u}; i < n - 1u; ++i) {
@@ -343,7 +343,7 @@ namespace qc::core {
 
     // Calculates the centroid, or center of mass, of a non self-intersecting polygon
     // Points should be the vertices of the polygon given in order without duplicates
-    template <Floater T>
+    template <Floating T>
     inline vec2<T> centroidOfPoly(const size_t n, const vec2<T> * const points) {
         T a{};
         vec2<T> c;

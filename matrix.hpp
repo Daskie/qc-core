@@ -10,15 +10,15 @@
 
 namespace qc::core {
 
-    template <Floater T, int n> struct mat;
+    template <Floating T, int n> struct mat;
 
     inline namespace types {
 
         using qc::core::mat;
 
-        template <Floater T> using mat2 = mat<T, 2>;
-        template <Floater T> using mat3 = mat<T, 3>;
-        template <Floater T> using mat4 = mat<T, 4>;
+        template <Floating T> using mat2 = mat<T, 2>;
+        template <Floating T> using mat3 = mat<T, 3>;
+        template <Floating T> using mat4 = mat<T, 4>;
 
         template <int n> using fmat = mat< float, n>;
         template <int n> using dmat = mat<double, n>;
@@ -38,7 +38,7 @@ namespace qc::core {
 
     }
 
-    template <Floater T> struct mat<T, 2> {
+    template <Floating T> struct mat<T, 2> {
 
         using Type = T;
         static constexpr int n{2};
@@ -52,9 +52,9 @@ namespace qc::core {
             T x1, T y1,
             T x2, T y2
         ) noexcept;
-        template <Floater U> constexpr explicit mat(const mat2<U> & m) noexcept;
-        template <Floater U> constexpr explicit mat(const mat3<U> & m) noexcept;
-        template <Floater U> constexpr explicit mat(const mat4<U> & m) noexcept;
+        template <Floating U> constexpr explicit mat(const mat2<U> & m) noexcept;
+        template <Floating U> constexpr explicit mat(const mat3<U> & m) noexcept;
+        template <Floating U> constexpr explicit mat(const mat4<U> & m) noexcept;
 
         constexpr mat(const mat2<T> & m) noexcept = default;
         constexpr mat(mat2<T> && m) noexcept = default;
@@ -77,7 +77,7 @@ namespace qc::core {
 
     };
 
-    template <Floater T> struct mat<T, 3> {
+    template <Floating T> struct mat<T, 3> {
 
         using Type = T;
         static constexpr int n{3};
@@ -93,9 +93,9 @@ namespace qc::core {
             T x2, T y2, T z2,
             T x3, T y3, T z3
         ) noexcept;
-        template <Floater U> constexpr explicit mat(const mat2<U> & m) noexcept;
-        template <Floater U> constexpr explicit mat(const mat3<U> & m) noexcept;
-        template <Floater U> constexpr explicit mat(const mat4<U> & m) noexcept;
+        template <Floating U> constexpr explicit mat(const mat2<U> & m) noexcept;
+        template <Floating U> constexpr explicit mat(const mat3<U> & m) noexcept;
+        template <Floating U> constexpr explicit mat(const mat4<U> & m) noexcept;
 
         constexpr mat(const mat3<T> & m) noexcept = default;
         constexpr mat(mat3<T> && m) noexcept = default;
@@ -118,7 +118,7 @@ namespace qc::core {
 
     };
 
-    template <Floater T> struct mat<T, 4> {
+    template <Floating T> struct mat<T, 4> {
 
         using Type = T;
         static constexpr int n{4};
@@ -136,9 +136,9 @@ namespace qc::core {
             T x3, T y3, T z3, T w3,
             T x4, T y4, T z4, T w4
         ) noexcept;
-        template <Floater U> constexpr explicit mat(const mat2<U> & m) noexcept;
-        template <Floater U> constexpr explicit mat(const mat3<U> & m) noexcept;
-        template <Floater U> constexpr explicit mat(const mat4<U> & m) noexcept;
+        template <Floating U> constexpr explicit mat(const mat2<U> & m) noexcept;
+        template <Floating U> constexpr explicit mat(const mat3<U> & m) noexcept;
+        template <Floating U> constexpr explicit mat(const mat4<U> & m) noexcept;
 
         constexpr mat(const mat4<T> & m) noexcept = default;
         constexpr mat(mat4<T> && m) noexcept = default;
@@ -213,19 +213,19 @@ namespace qc::core {
 
 namespace qc::core {
 
-    template <Floater T>
+    template <Floating T>
     inline constexpr mat<T, 2>::mat() noexcept :
         c1(T(1.0), T(0.0)),
         c2(T(0.0), T(1.0))
     {}
 
-    template <Floater T>
+    template <Floating T>
     inline constexpr mat<T, 2>::mat(const vec2<T> c1, const vec2<T> c2) noexcept :
         c1(c1),
         c2(c2)
     {}
 
-    template <Floater T>
+    template <Floating T>
     inline constexpr mat<T, 2>::mat(
         const T x1, const T y1,
         const T x2, const T y2
@@ -234,75 +234,75 @@ namespace qc::core {
         c2(x2, y2)
     {}
 
-    template <Floater T>
-    template <Floater U>
+    template <Floating T>
+    template <Floating U>
     inline constexpr mat<T, 2>::mat(const mat2<U> & m) noexcept :
         c1(m.c1),
         c2(m.c2)
     {}
 
-    template <Floater T>
-    template <Floater U>
+    template <Floating T>
+    template <Floating U>
     inline constexpr mat<T, 2>::mat(const mat3<U> & m) noexcept :
         c1(m.c1),
         c2(m.c2)
     {}
 
-    template <Floater T>
-    template <Floater U>
+    template <Floating T>
+    template <Floating U>
     inline constexpr mat<T, 2>::mat(const mat4<U> & m) noexcept :
         c1(m.c1),
         c2(m.c2)
     {}
 
-    template <Floater T>
+    template <Floating T>
     inline constexpr mat<T, 2>::operator bool() const noexcept {
         return *this == mat{};
     }
 
-    template <Floater T>
+    template <Floating T>
     inline vec2<T> & mat<T, 2>::col(const int i) {
         return *(&c1 + i);
     }
 
-    template <Floater T>
+    template <Floating T>
     inline vec2<T> mat<T, 2>::col(const int i) const {
         return *(&c1 + i);
     }
 
-    template <Floater T>
+    template <Floating T>
     inline vec2<T> mat<T, 2>::row(const int i) const {
         return {c1[i], c2[i]};
     }
 
-    template <Floater T>
+    template <Floating T>
     template <int i>
     inline constexpr vec2<T> mat<T, 2>::col() const noexcept {
         if constexpr (i == 0) return c1;
         if constexpr (i == 1) return c2;
     }
 
-    template <Floater T>
+    template <Floating T>
     template <int i>
     inline constexpr vec2<T> mat<T, 2>::row() const noexcept {
         return {c1.at<i>(), c2.at<i>()};
     }
 
-    template <Floater T>
+    template <Floating T>
     inline constexpr mat<T, 3>::mat() noexcept :
         c1(T(1.0), T(0.0), T(0.0)),
         c2(T(0.0), T(1.0), T(0.0)),
         c3(T(0.0), T(0.0), T(1.0))
     {}
 
-    template <Floater T>
+    template <Floating T>
     inline constexpr mat<T, 3>::mat(const vec3<T> c1, const vec3<T> c2, const vec3<T> c3) noexcept :
         c1(c1),
         c2(c2),
         c3(c3)
     {}
 
-    template <Floater T>
+    template <Floating T>
     inline constexpr mat<T, 3>::mat(
         const T x1, const T y1, const T z1,
         const T x2, const T y2, const T z2,
@@ -313,51 +313,51 @@ namespace qc::core {
         c3(x3, y3, z3)
     {}
 
-    template <Floater T>
-    template <Floater U>
+    template <Floating T>
+    template <Floating U>
     inline constexpr mat<T, 3>::mat(const mat2<U> & m) noexcept :
         c1(m.c1),
         c2(m.c2),
         c3(T(0.0), T(0.0), T(1.0))
     {}
 
-    template <Floater T>
-    template <Floater U>
+    template <Floating T>
+    template <Floating U>
     inline constexpr mat<T, 3>::mat(const mat3<U> & m) noexcept :
         c1(m.c1),
         c2(m.c2),
         c3(m.c3)
     {}
 
-    template <Floater T>
-    template <Floater U>
+    template <Floating T>
+    template <Floating U>
     inline constexpr mat<T, 3>::mat(const mat4<U> & m) noexcept :
         c1(m.c1),
         c2(m.c2),
         c3(m.c3)
     {}
 
-    template <Floater T>
+    template <Floating T>
     inline constexpr mat<T, 3>::operator bool() const noexcept {
         return *this == mat{};
     }
 
-    template <Floater T>
+    template <Floating T>
     inline vec3<T> & mat<T, 3>::col(const int i) {
         return *(&c1 + i);
     }
 
-    template <Floater T>
+    template <Floating T>
     inline vec3<T> mat<T, 3>::col(const int i) const {
         return *(&c1 + i);
     }
 
-    template <Floater T>
+    template <Floating T>
     inline vec3<T> mat<T, 3>::row(const int i) const {
         return {c1[i], c2[i], c3[i]};
     }
 
-    template <Floater T>
+    template <Floating T>
     template <int i>
     inline constexpr vec3<T> mat<T, 3>::col() const noexcept {
         if constexpr (i == 0) return c1;
@@ -365,13 +365,13 @@ namespace qc::core {
         if constexpr (i == 2) return c3;
     }
 
-    template <Floater T>
+    template <Floating T>
     template <int i>
     inline constexpr vec3<T> mat<T, 3>::row() const noexcept {
         return {c1.at<i>(), c2.at<i>(), c3.at<i>()};
     }
 
-    template <Floater T>
+    template <Floating T>
     inline constexpr mat<T, 4>::mat() noexcept :
         c1(T(1.0), T(0.0), T(0.0), T(0.0)),
         c2(T(0.0), T(1.0), T(0.0), T(0.0)),
@@ -379,7 +379,7 @@ namespace qc::core {
         c4(T(0.0), T(0.0), T(0.0), T(1.0))
     {}
 
-    template <Floater T>
+    template <Floating T>
     inline constexpr mat<T, 4>::mat(const vec4<T> c1, const vec4<T> c2, const vec4<T> c3, const vec4<T> c4) noexcept :
         c1(c1),
         c2(c2),
@@ -387,7 +387,7 @@ namespace qc::core {
         c4(c4)
     {}
 
-    template <Floater T>
+    template <Floating T>
     inline constexpr mat<T, 4>::mat(
         const T x1, const T y1, const T z1, const T w1,
         const T x2, const T y2, const T z2, const T w2,
@@ -400,8 +400,8 @@ namespace qc::core {
         c4(x4, y4, z4, w4)
     {}
 
-    template <Floater T>
-    template <Floater U>
+    template <Floating T>
+    template <Floating U>
     inline constexpr mat<T, 4>::mat(const mat2<U> & m) noexcept :
         c1(m.c1),
         c2(m.c2),
@@ -409,8 +409,8 @@ namespace qc::core {
         c4(T(0.0), T(0.0), T(0.0), T(1.0))
     {}
 
-    template <Floater T>
-    template <Floater U>
+    template <Floating T>
+    template <Floating U>
     inline constexpr mat<T, 4>::mat(const mat3<U> & m) noexcept :
         c1(m.c1),
         c2(m.c2),
@@ -418,8 +418,8 @@ namespace qc::core {
         c4(T(0.0), T(0.0), T(0.0), T(1.0))
     {}
 
-    template <Floater T>
-    template <Floater U>
+    template <Floating T>
+    template <Floating U>
     inline constexpr mat<T, 4>::mat(const mat4<U> & m) noexcept :
         c1(m.c1),
         c2(m.c2),
@@ -427,27 +427,27 @@ namespace qc::core {
         c4(m.c4)
     {}
 
-    template <Floater T>
+    template <Floating T>
     inline constexpr mat<T, 4>::operator bool() const noexcept {
         return *this == mat{};
     }
 
-    template <Floater T>
+    template <Floating T>
     inline vec4<T> & mat<T, 4>::col(const int i) {
         return *(&c1 + i);
     }
 
-    template <Floater T>
+    template <Floating T>
     inline vec4<T> mat<T, 4>::col(const int i) const {
         return *(&c1 + i);
     }
 
-    template <Floater T>
+    template <Floating T>
     inline vec4<T> mat<T, 4>::row(const int i) const {
         return {c1[i], c2[i], c3[i], c4[i]};
     }
 
-    template <Floater T>
+    template <Floating T>
     template <int i>
     inline constexpr vec4<T> mat<T, 4>::col() const noexcept {
         if constexpr (i == 0) return c1;
@@ -456,13 +456,13 @@ namespace qc::core {
         if constexpr (i == 3) return c4;
     }
 
-    template <Floater T>
+    template <Floating T>
     template <int i>
     inline constexpr vec4<T> mat<T, 4>::row() const noexcept {
         return {c1.at<i>(), c2.at<i>(), c3.at<i>(), c4.at<i>()};
     }
 
-    template <Floater T, int n>
+    template <Floating T, int n>
     inline mat<T, n> & operator+=(mat<T, n> & m, const T v) {
         if constexpr (n >= 1) m.c1 += v;
         if constexpr (n >= 2) m.c2 += v;
@@ -472,7 +472,7 @@ namespace qc::core {
         return m;
     }
 
-    template <Floater T, int n>
+    template <Floating T, int n>
     inline mat<T, n> & operator+=(mat<T, n> & m1, const mat<T, n> & m2) {
         if constexpr (n >= 1) m1.c1 += m2.c1;
         if constexpr (n >= 2) m1.c2 += m2.c2;
@@ -482,7 +482,7 @@ namespace qc::core {
         return m1;
     }
 
-    template <Floater T, int n>
+    template <Floating T, int n>
     inline mat<T, n> & operator-=(mat<T, n> & m, const T v) {
         if constexpr (n >= 1) m.c1 -= v;
         if constexpr (n >= 2) m.c2 -= v;
@@ -492,7 +492,7 @@ namespace qc::core {
         return m;
     }
 
-    template <Floater T, int n>
+    template <Floating T, int n>
     inline mat<T, n> & operator-=(mat<T, n> & m1, const mat<T, n> & m2) {
         if constexpr (n >= 1) m1.c1 -= m2.c1;
         if constexpr (n >= 2) m1.c2 -= m2.c2;
@@ -502,7 +502,7 @@ namespace qc::core {
         return m1;
     }
 
-    template <Floater T, int n>
+    template <Floating T, int n>
     inline mat<T, n> & operator*=(mat<T, n> & m, const T v) {
         if constexpr (n >= 1) m.c1 *= v;
         if constexpr (n >= 2) m.c2 *= v;
@@ -512,7 +512,7 @@ namespace qc::core {
         return m;
     }
 
-    template <Floater T, int n>
+    template <Floating T, int n>
     inline mat<T, n> & operator*=(mat<T, n> & m1, const mat<T, n> & m2) {
         if constexpr (n >= 1) m1.c1 *= m2;
         if constexpr (n >= 2) m1.c2 *= m2;
@@ -522,69 +522,69 @@ namespace qc::core {
         return m1;
     }
 
-    template <Floater T, int n>
+    template <Floating T, int n>
     inline vec<T, n> & operator*=(vec<T, n> & v, const mat<T, n> & m) {
         return v = m * v;
     }
 
-    template <Floater T, int n>
+    template <Floating T, int n>
     inline mat<T, n> & operator/=(mat<T, n> & m, const T v) {
         return m *= T(1.0) / v;
     }
 
-    template <Floater T, int n>
+    template <Floating T, int n>
     inline mat<T, n> operator+(const mat<T, n> & m) {
         return m;
     }
 
-    template <Floater T, int n>
+    template <Floating T, int n>
     inline mat<T, n> operator-(const mat<T, n> & m) {
         if constexpr (n == 2) return {-m.c1, -m.c2};
         if constexpr (n == 3) return {-m.c1, -m.c2, -m.c3};
         if constexpr (n == 4) return {-m.c1, -m.c2, -m.c3, -m.c4};
     }
 
-    template <Floater T, int n>
+    template <Floating T, int n>
     inline mat<T, n> operator+(const mat<T, n> & m1, const mat<T, n> & m2) {
         if constexpr (n == 2) return {m1.c1 + m2.c1, m1.c2 + m2.c2};
         if constexpr (n == 3) return {m1.c1 + m2.c1, m1.c2 + m2.c2, m1.c3 + m2.c3};
         if constexpr (n == 4) return {m1.c1 + m2.c1, m1.c2 + m2.c2, m1.c3 + m2.c3, m1.c4 + m2.c4};
     }
 
-    template <Floater T, int n>
+    template <Floating T, int n>
     inline mat<T, n> operator+(const mat<T, n> & m, const T v) {
         if constexpr (n == 2) return {m.c1 + v, m.c2 + v};
         if constexpr (n == 3) return {m.c1 + v, m.c2 + v, m.c3 + v};
         if constexpr (n == 4) return {m.c1 + v, m.c2 + v, m.c3 + v, m.c4 + v};
     }
 
-    template <Floater T, int n>
+    template <Floating T, int n>
     inline mat<T, n> operator+(const T v, const mat<T, n> & m) {
         return m + v;
     }
 
-    template <Floater T, int n>
+    template <Floating T, int n>
     inline mat<T, n> operator-(const mat<T, n> & m1, const mat<T, n> & m2) {
         if constexpr (n == 2) return {m1.c1 - m2.c1, m1.c2 - m2.c2};
         if constexpr (n == 3) return {m1.c1 - m2.c1, m1.c2 - m2.c2, m1.c3 - m2.c3};
         if constexpr (n == 4) return {m1.c1 - m2.c1, m1.c2 - m2.c2, m1.c3 - m2.c3, m1.c4 - m2.c4};
     }
 
-    template <Floater T, int n>
+    template <Floating T, int n>
     inline mat<T, n> operator-(const mat<T, n> & m, const T v) {
         if constexpr (n == 2) return {m.c1 - v, m.c2 - v};
         if constexpr (n == 3) return {m.c1 - v, m.c2 - v, m.c3 - v};
         if constexpr (n == 4) return {m.c1 - v, m.c2 - v, m.c3 - v, m.c4 - v};
     }
 
-    template <Floater T, int n>
+    template <Floating T, int n>
     inline mat<T, n> operator-(const T v, const mat<T, n> & m) {
         if constexpr (n == 2) return {v - m.c1, v - m.c2};
         if constexpr (n == 3) return {v - m.c1, v - m.c2, v - m.c3};
         if constexpr (n == 4) return {v - m.c1, v - m.c2, v - m.c3, v - m.c4};
     }
 
-    template <Floater T, int n>
+    template <Floating T, int n>
     inline mat<T, n> operator*(const mat<T, n> & m1, const mat<T, n> & m2) {
         if constexpr (n == 2) return {
             m1.c1.x * m2.c1.x + m1.c2.x * m2.c1.y,
@@ -629,19 +629,19 @@ namespace qc::core {
         };
     }
 
-    template <Floater T, int n>
+    template <Floating T, int n>
     inline mat<T, n> operator*(const mat<T, n> & m, const T v) {
         if constexpr (n == 2) return {m.c1 * v, m.c2 * v};
         if constexpr (n == 3) return {m.c1 * v, m.c2 * v, m.c3 * v};
         if constexpr (n == 4) return {m.c1 * v, m.c2 * v, m.c3 * v, m.c4 * v};
     }
 
-    template <Floater T, int n>
+    template <Floating T, int n>
     inline mat<T, n> operator*(const T v, const mat<T, n> & m) {
         return m * v;
     }
 
-    template <Floater T, int n>
+    template <Floating T, int n>
     inline vec<T, n> operator*(const mat<T, n> & m, const vec<T, n> & v) {
         if constexpr (n == 2) return {
             m.c1.x * v.x + m.c2.x * v.y,
@@ -660,38 +660,38 @@ namespace qc::core {
         };
     }
 
-    template <Floater T, int n>
+    template <Floating T, int n>
     inline mat<T, n> operator/(const mat<T, n> & m, const T v) {
         return m * (T(1.0) / v);
     }
 
-    template <Floater T, int n>
+    template <Floating T, int n>
     inline mat<T, n> operator/(const T v, const mat<T, n> & m) {
         if constexpr (n == 2) return {v / m.c1, v / m.c2};
         if constexpr (n == 3) return {v / m.c1, v / m.c2, v / m.c3};
         if constexpr (n == 4) return {v / m.c1, v / m.c2, v / m.c3, v / m.c4};
     }
 
-    template <Floater T, int n>
+    template <Floating T, int n>
     inline bool operator==(const mat<T, n> & m1, const mat<T, n> & m2) {
         if constexpr (n == 2) return m1.c1 == m2.c1 && m1.c2 == m2.c2;
         if constexpr (n == 3) return m1.c1 == m2.c1 && m1.c2 == m2.c2 && m1.c3 == m2.c3;
         if constexpr (n == 4) return m1.c1 == m2.c1 && m1.c2 == m2.c2 && m1.c3 == m2.c3 && m1.c4 == m2.c4;
     }
 
-    template <Floater T, int n>
+    template <Floating T, int n>
     inline bool operator!=(const mat<T, n> & m1, const mat<T, n> & m2) {
         return !(m1 == m2);
     }
 
-    template <Floater T, int n>
+    template <Floating T, int n>
     inline constexpr mat<T, n> fullMat(const T v) {
         if constexpr (n == 2) return {vec2<T>(v), vec2<T>(v)};
         if constexpr (n == 3) return {vec3<T>(v), vec3<T>(v), vec3<T>(v)};
         if constexpr (n == 4) return {vec4<T>(v), vec4<T>(v), vec4<T>(v), vec4<T>(v)};
     }
 
-    template <Floater T, int n>
+    template <Floating T, int n>
     inline constexpr mat<T, n> nullMat() {
         return fullMat<T, n>(T(0.0));
     }

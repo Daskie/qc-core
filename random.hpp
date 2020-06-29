@@ -9,7 +9,7 @@ namespace qc::core {
     //
     // Transforms random engine `Engine` result into some type `T`
     //
-    template <typename Engine, Number T> struct RandomEngineTransformer;
+    template <typename Engine, Numeric T> struct RandomEngineTransformer;
 
     //
     // Specialization for std::mt19937
@@ -18,7 +18,7 @@ namespace qc::core {
     //   - any float
     //   - integral up to 4 bytes
     //
-    template <Number T>
+    template <Numeric T>
     struct RandomEngineTransformer<std::mt19937, T> {
         T operator()(const u32 result) const {
             if constexpr (is_floating_point_v<T>) {
@@ -44,7 +44,7 @@ namespace qc::core {
     //   - any float
     //   - integral up to 8 bytes
     //
-    template <Number T>
+    template <Numeric T>
     struct RandomEngineTransformer<std::mt19937_64, T> {
         T operator()(const u64 result) const {
             if constexpr (std::is_floating_point_v<T>) {
@@ -71,7 +71,7 @@ namespace qc::core {
     //   - unsigned up to 2 bytes
     //   - signed up to 4 bytes
     //
-    template <Number T>
+    template <Numeric T>
     struct RandomEngineTransformer<std::minstd_rand, T> {
         T operator()(const u32 result) const {
             if constexpr (std::is_floating_point_v<T>) {
@@ -131,7 +131,7 @@ namespace qc::core {
         //
         // Returns a random integer in [0, T_MAX] or a float in [0.0, 1.0).
         //
-        template <Number T>
+        template <Numeric T>
         T next() noexcept {
             return RandomEngineTransformer<Engine, T>()(_engine());
         }
@@ -140,7 +140,7 @@ namespace qc::core {
         // Returns next random value in [0, `max`).
         // `max` should be less than T_MAX by a few orders of magnitude for best results.
         //
-        template <Number T>
+        template <Numeric T>
         T next(const T max) noexcept {
             if constexpr (std::is_integral_v<T>) {
                 return operator()<T>() % max;
@@ -153,7 +153,7 @@ namespace qc::core {
         //
         // Returns next random value in [`min`, `max`).
         //
-        template <Number T>
+        template <Numeric T>
         T next(const T min, const T max) noexcept {
             return operator()(max - min) + min;
         }
