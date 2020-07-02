@@ -15,7 +15,7 @@ namespace qc::core {
 
         template <typename T> concept Quaternion = std::is_same_v<T, quat<typename T::Type>>;
 
-    }
+    } // namespace types
 
     template <Floating T> struct quat {
 

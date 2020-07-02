@@ -15,14 +15,14 @@ namespace qc::core {
         using uint = unsigned int;
 
         using s8 = int8_t;
-        using s16 = int16_t;
-        using s32 = int32_t;
-        using s64 = int64_t;
         using u8 = uint8_t;
+        using s16 = int16_t;
         using u16 = uint16_t;
+        using s32 = int32_t;
         using u32 = uint32_t;
-        using u64 = uint64_t;
         using f32 = float;
+        using s64 = int64_t;
+        using u64 = uint64_t;
         using f64 = double;
 
         template <typename T> concept Integral = std::is_integral_v<T> && !std::is_same_v<T, bool> && !std::is_same_v<T, char>;
@@ -31,9 +31,8 @@ namespace qc::core {
         template <typename T> concept Floating = std::is_floating_point_v<T>;
         template <typename T> concept Numeric = Integral<T> || Floating<T>;
         template <typename T> concept Orderable = Numeric<T> || std::is_pointer_v<T>;
-        template <typename T> concept NumericOrBoolean = Numeric<T> || std::is_same_v<T, bool>;
 
-    }
+    } // namespace types
 
     template <typename T, int n> struct _array_t_struct { using type = T[n]; };
     template <typename T> struct _array_t_struct<T, 0> { using type = T[]; };

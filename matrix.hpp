@@ -1,10 +1,12 @@
 #pragma once
 
+//
 // Column-major ordering
 //
 //  x1 x2 x3    00 03 06
 //  y1 y2 y3    01 04 07
 //  z1 z2 z3    02 05 08
+//
 
 #include "vector.hpp"
 
@@ -36,7 +38,7 @@ namespace qc::core {
         template <typename T> concept Matrix3 = Matrix<T> && T::n == 3;
         template <typename T> concept Matrix4 = Matrix<T> && T::n == 4;
 
-    }
+    } // namespace types
 
     template <Floating T> struct mat<T, 2> {
 

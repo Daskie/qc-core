@@ -4,6 +4,12 @@
 
 namespace qc::core {
 
+    inline namespace types {
+
+        template <typename T> concept NumericOrBoolean = Numeric<T> || std::is_same_v<T, bool>;
+
+    } // namespace types
+
     template <NumericOrBoolean T, int n> struct vec;
 
     inline namespace types {
@@ -72,7 +78,8 @@ namespace qc::core {
         template <typename T> concept Vector2 = Vector<T> && T::n == 2;
         template <typename T> concept Vector3 = Vector<T> && T::n == 3;
         template <typename T> concept Vector4 = Vector<T> && T::n == 4;
-    }
+
+    } // namespace types
 
     template <NumericOrBoolean T> struct vec<T, 2> {
 

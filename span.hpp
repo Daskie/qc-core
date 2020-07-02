@@ -67,7 +67,7 @@ namespace qc::core {
         using ulspan3 = span3<u64>;
         using ulspan4 = span4<u64>;
 
-    }
+    } // namespace types
 
     template <Numeric T> struct span<T, 1> {
 
