@@ -23,9 +23,9 @@ namespace qc::core {
         template <int n> using fmat = mat< float, n>;
         template <int n> using dmat = mat<double, n>;
 
-        using fmat2 = mat< float, 2>;
-        using fmat3 = mat< float, 3>;
-        using fmat4 = mat< float, 4>;
+        using fmat2 = mat<float, 2>;
+        using fmat3 = mat<float, 3>;
+        using fmat4 = mat<float, 4>;
         using dmat2 = mat<double, 2>;
         using dmat3 = mat<double, 3>;
         using dmat4 = mat<double, 4>;

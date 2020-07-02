@@ -13,8 +13,8 @@ namespace Microsoft::VisualStudio::CppUnitTestFramework {
 }
 
 static void compileTyping() {
-    s08 s08_; s08_;
-    u08 u08_; u08_;
+    s8 s08_; s08_;
+    u8 u08_; u08_;
     s16 s16_; s16_;
     u16 u16_; u16_;
     s32 s32_; s32_;
@@ -62,8 +62,8 @@ template <typename T>
 static void compileFunctionsT() {
     compileFunctionsTT<T, f32>();
     compileFunctionsTT<T, f64>();
-    compileFunctionsTT<T, s08>();
-    compileFunctionsTT<T, u08>();
+    compileFunctionsTT<T, s8>();
+    compileFunctionsTT<T, u8>();
     compileFunctionsTT<T, s16>();
     compileFunctionsTT<T, u16>();
     compileFunctionsTT<T, s32>();
@@ -185,8 +185,8 @@ static void compileFunctionsBT() {
 static void compileFunctions() {
     compileFunctionsT<f32>();
     compileFunctionsT<f64>();
-    compileFunctionsT<s08>();
-    compileFunctionsT<u08>();
+    compileFunctionsT<s8>();
+    compileFunctionsT<u8>();
     compileFunctionsT<s16>();
     compileFunctionsT<u16>();
     compileFunctionsT<s32>();
@@ -197,8 +197,8 @@ static void compileFunctions() {
     compileFunctionsFT<f32>();
     compileFunctionsFT<f64>();
 
-    compileFunctionsIT<s08>();
-    compileFunctionsIT<u08>();
+    compileFunctionsIT<s8>();
+    compileFunctionsIT<u8>();
     compileFunctionsIT<s16>();
     compileFunctionsIT<u16>();
     compileFunctionsIT<s32>();
@@ -206,7 +206,7 @@ static void compileFunctions() {
     compileFunctionsIT<s64>();
     compileFunctionsIT<u64>();
 
-    compileFunctionsUIT<u08>();
+    compileFunctionsUIT<u8>();
     compileFunctionsUIT<u16>();
     compileFunctionsUIT<u32>();
     compileFunctionsUIT<u64>();
@@ -224,8 +224,8 @@ template <typename T>
 static constexpr void compileFunctionsConstexprT() {
     compileFunctionsConstexprTT<T, f32>();
     compileFunctionsConstexprTT<T, f64>();
-    compileFunctionsConstexprTT<T, s08>();
-    compileFunctionsConstexprTT<T, u08>();
+    compileFunctionsConstexprTT<T, s8>();
+    compileFunctionsConstexprTT<T, u8>();
     compileFunctionsConstexprTT<T, s16>();
     compileFunctionsConstexprTT<T, u16>();
     compileFunctionsConstexprTT<T, s32>();
@@ -329,8 +329,8 @@ static constexpr void compileFunctionsConstexprBT() {
 static constexpr bool compileFunctionsConstexpr() {
     compileFunctionsConstexprT<f32>();
     compileFunctionsConstexprT<f64>();
-    compileFunctionsConstexprT<s08>();
-    compileFunctionsConstexprT<u08>();
+    compileFunctionsConstexprT<s8>();
+    compileFunctionsConstexprT<u8>();
     compileFunctionsConstexprT<s16>();
     compileFunctionsConstexprT<u16>();
     compileFunctionsConstexprT<s32>();
@@ -341,8 +341,8 @@ static constexpr bool compileFunctionsConstexpr() {
     compileFunctionsConstexprFT<f32>();
     compileFunctionsConstexprFT<f64>();
 
-    compileFunctionsConstexprIT<s08>();
-    compileFunctionsConstexprIT<u08>();
+    compileFunctionsConstexprIT<s8>();
+    compileFunctionsConstexprIT<u8>();
     compileFunctionsConstexprIT<s16>();
     compileFunctionsConstexprIT<u16>();
     compileFunctionsConstexprIT<s32>();
@@ -350,7 +350,7 @@ static constexpr bool compileFunctionsConstexpr() {
     compileFunctionsConstexprIT<s64>();
     compileFunctionsConstexprIT<u64>();
 
-    compileFunctionsConstexprUIT<u08>();
+    compileFunctionsConstexprUIT<u8>();
     compileFunctionsConstexprUIT<u16>();
     compileFunctionsConstexprUIT<u32>();
     compileFunctionsConstexprUIT<u64>();
@@ -455,7 +455,7 @@ TEST_CLASS(TestCore) {
 
     template <typename From>
     void testTransnormUT() {
-        testTransnormUTUT<From, u08>();
+        testTransnormUTUT<From, u8>();
         testTransnormUTUT<From, u16>();
         testTransnormUTUT<From, u32>();
         testTransnormUTUT<From, u64>();
@@ -466,12 +466,12 @@ TEST_CLASS(TestCore) {
 
     template <typename From>
     void testTransnormFT() {
-        testTransnormFTST<From, s08>();
+        testTransnormFTST<From, s8>();
         testTransnormFTST<From, s16>();
         testTransnormFTST<From, s32>();
         testTransnormFTST<From, s64>();
 
-        testTransnormFTUT<From, u08>();
+        testTransnormFTUT<From, u8>();
         testTransnormFTUT<From, u16>();
         testTransnormFTUT<From, u32>();
         testTransnormFTUT<From, u64>();
@@ -481,12 +481,12 @@ TEST_CLASS(TestCore) {
     }
 
     TEST_METHOD(testTransnorm) {
-        testTransnormST<s08>();
+        testTransnormST<s8>();
         testTransnormST<s16>();
         testTransnormST<s32>();
         testTransnormST<s64>();
 
-        testTransnormUT<u08>();
+        testTransnormUT<u8>();
         testTransnormUT<u16>();
         testTransnormUT<u32>();
         testTransnormUT<u64>();

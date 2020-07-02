@@ -89,8 +89,8 @@ namespace qc::core::bits {
         if constexpr (sizeof(T) == 2u) {
             u64 w(0u);
 
-            w |= spread<u08, u64>(u08(v)) << 0; v >>= 8;
-            w |= spread<u08, u64>(u08(v)) << 4; v >>= 8;
+            w |= spread<u8, u64>(u8(v)) << 0; v >>= 8;
+            w |= spread<u8, u64>(u8(v)) << 4; v >>= 8;
 
             return u16(w >> 45) | u16(w >> 30) | u16(w >> 15) | u16(w);
         }
@@ -98,10 +98,10 @@ namespace qc::core::bits {
         if constexpr (sizeof(T) == 4u) {
             u64 w(0u);
 
-            w |= spread<u08, u64>(u08(v)) << 0; v >>= 8;
-            w |= spread<u08, u64>(u08(v)) << 2; v >>= 8;
-            w |= spread<u08, u64>(u08(v)) << 4; v >>= 8;
-            w |= spread<u08, u64>(u08(v)) << 6; v >>= 8;
+            w |= spread<u8, u64>(u8(v)) << 0; v >>= 8;
+            w |= spread<u8, u64>(u8(v)) << 2; v >>= 8;
+            w |= spread<u8, u64>(u8(v)) << 4; v >>= 8;
+            w |= spread<u8, u64>(u8(v)) << 6; v >>= 8;
 
             return u32(w >> 31) | u32(w);
         }
@@ -109,14 +109,14 @@ namespace qc::core::bits {
         if constexpr (sizeof(T) == 8u) {
             u64 w(0u);
 
-            w |= spread<u08, u64>(u08(v)) << 0; v >>= 8;
-            w |= spread<u08, u64>(u08(v)) << 1; v >>= 8;
-            w |= spread<u08, u64>(u08(v)) << 2; v >>= 8;
-            w |= spread<u08, u64>(u08(v)) << 3; v >>= 8;
-            w |= spread<u08, u64>(u08(v)) << 4; v >>= 8;
-            w |= spread<u08, u64>(u08(v)) << 5; v >>= 8;
-            w |= spread<u08, u64>(u08(v)) << 6; v >>= 8;
-            w |= spread<u08, u64>(u08(v)) << 7; v >>= 8;
+            w |= spread<u8, u64>(u8(v)) << 0; v >>= 8;
+            w |= spread<u8, u64>(u8(v)) << 1; v >>= 8;
+            w |= spread<u8, u64>(u8(v)) << 2; v >>= 8;
+            w |= spread<u8, u64>(u8(v)) << 3; v >>= 8;
+            w |= spread<u8, u64>(u8(v)) << 4; v >>= 8;
+            w |= spread<u8, u64>(u8(v)) << 5; v >>= 8;
+            w |= spread<u8, u64>(u8(v)) << 6; v >>= 8;
+            w |= spread<u8, u64>(u8(v)) << 7; v >>= 8;
 
             return w;
         }

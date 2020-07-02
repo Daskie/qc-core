@@ -83,7 +83,7 @@ namespace qc::core::utils {
         template <typename T>
         struct _binary_s {
 
-            u08 data[sizeof(T)];
+            u8 data[sizeof(T)];
             int blockSize;
 
             _binary_s(const T & v, const int blockSize) :
@@ -97,7 +97,7 @@ namespace qc::core::utils {
 
                 for (int blockI{0}; blockI < nBlocks; ++blockI) {
                     for (int byteI{b.blockSize - 1}; byteI >= 0; --byteI) {
-                        u08 byte(b.data[blockI * b.blockSize + byteI]);
+                        u8 byte(b.data[blockI * b.blockSize + byteI]);
                         for (int bitI{0}; bitI < 8; ++bitI) {
                             os << ((byte & 0b10000000) ? "1" : "0");
                             byte <<= 1;

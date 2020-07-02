@@ -14,48 +14,48 @@ namespace qc::core {
         template <typename T> using vec3 = vec<T, 3>;
         template <typename T> using vec4 = vec<T, 4>;
 
-        template <int n> using  fvec = vec< f32, n>;
-        template <int n> using  dvec = vec< f64, n>;
-        template <int n> using  cvec = vec< s08, n>;
-        template <int n> using ucvec = vec< u08, n>;
-        template <int n> using  svec = vec< s16, n>;
-        template <int n> using usvec = vec< u16, n>;
-        template <int n> using  ivec = vec< s32, n>;
-        template <int n> using uivec = vec< u32, n>;
-        template <int n> using  lvec = vec< s64, n>;
-        template <int n> using ulvec = vec< u64, n>;
+        template <int n> using  fvec = vec<f32, n>;
+        template <int n> using  dvec = vec<f64, n>;
+        template <int n> using  cvec = vec< s8, n>;
+        template <int n> using ucvec = vec< u8, n>;
+        template <int n> using  svec = vec<s16, n>;
+        template <int n> using usvec = vec<u16, n>;
+        template <int n> using  ivec = vec<s32, n>;
+        template <int n> using uivec = vec<u32, n>;
+        template <int n> using  lvec = vec<s64, n>;
+        template <int n> using ulvec = vec<u64, n>;
         template <int n> using  bvec = vec<bool, n>;
 
-        using  fvec2 = vec< f32, 2>;
-        using  fvec3 = vec< f32, 3>;
-        using  fvec4 = vec< f32, 4>;
-        using  dvec2 = vec< f64, 2>;
-        using  dvec3 = vec< f64, 3>;
-        using  dvec4 = vec< f64, 4>;
-        using  cvec2 = vec< s08, 2>;
-        using  cvec3 = vec< s08, 3>;
-        using  cvec4 = vec< s08, 4>;
-        using ucvec2 = vec< u08, 2>;
-        using ucvec3 = vec< u08, 3>;
-        using ucvec4 = vec< u08, 4>;
-        using  svec2 = vec< s16, 2>;
-        using  svec3 = vec< s16, 3>;
-        using  svec4 = vec< s16, 4>;
-        using usvec2 = vec< u16, 2>;
-        using usvec3 = vec< u16, 3>;
-        using usvec4 = vec< u16, 4>;
-        using  ivec2 = vec< s32, 2>;
-        using  ivec3 = vec< s32, 3>;
-        using  ivec4 = vec< s32, 4>;
-        using uivec2 = vec< u32, 2>;
-        using uivec3 = vec< u32, 3>;
-        using uivec4 = vec< u32, 4>;
-        using  lvec2 = vec< s64, 2>;
-        using  lvec3 = vec< s64, 3>;
-        using  lvec4 = vec< s64, 4>;
-        using ulvec2 = vec< u64, 2>;
-        using ulvec3 = vec< u64, 3>;
-        using ulvec4 = vec< u64, 4>;
+        using  fvec2 = vec<f32, 2>;
+        using  fvec3 = vec<f32, 3>;
+        using  fvec4 = vec<f32, 4>;
+        using  dvec2 = vec<f64, 2>;
+        using  dvec3 = vec<f64, 3>;
+        using  dvec4 = vec<f64, 4>;
+        using  cvec2 = vec< s8, 2>;
+        using  cvec3 = vec< s8, 3>;
+        using  cvec4 = vec< s8, 4>;
+        using ucvec2 = vec< u8, 2>;
+        using ucvec3 = vec< u8, 3>;
+        using ucvec4 = vec< u8, 4>;
+        using  svec2 = vec<s16, 2>;
+        using  svec3 = vec<s16, 3>;
+        using  svec4 = vec<s16, 4>;
+        using usvec2 = vec<u16, 2>;
+        using usvec3 = vec<u16, 3>;
+        using usvec4 = vec<u16, 4>;
+        using  ivec2 = vec<s32, 2>;
+        using  ivec3 = vec<s32, 3>;
+        using  ivec4 = vec<s32, 4>;
+        using uivec2 = vec<u32, 2>;
+        using uivec3 = vec<u32, 3>;
+        using uivec4 = vec<u32, 4>;
+        using  lvec2 = vec<s64, 2>;
+        using  lvec3 = vec<s64, 3>;
+        using  lvec4 = vec<s64, 4>;
+        using ulvec2 = vec<u64, 2>;
+        using ulvec3 = vec<u64, 3>;
+        using ulvec4 = vec<u64, 4>;
         using  bvec2 = vec<bool, 2>;
         using  bvec3 = vec<bool, 3>;
         using  bvec4 = vec<bool, 4>;
@@ -281,31 +281,31 @@ namespace qc::core {
 
     template <Numeric T, int n> Q_CX_ABLE vec<T, n> operator-(const vec<T, n> & v);
 
-    template <Numeric T, int n> Q_CX_ABLE  vec<T, n> operator+(const vec<T, n> & v1, const vec<T, n> & v2);
-    template <Numeric T, int n> Q_CX_ABLE  vec<T, n> operator+(const vec<T, n> & v1, T v2);
-    template <Numeric T, int n> Q_CX_ABLE  vec<T, n> operator+(T v1, const vec<T, n> & v2);
+    template <Numeric T, int n> Q_CX_ABLE vec<T, n> operator+(const vec<T, n> & v1, const vec<T, n> & v2);
+    template <Numeric T, int n> Q_CX_ABLE vec<T, n> operator+(const vec<T, n> & v1, T v2);
+    template <Numeric T, int n> Q_CX_ABLE vec<T, n> operator+(T v1, const vec<T, n> & v2);
 
-    template <Numeric T, int n> Q_CX_ABLE  vec<T, n> operator-(const vec<T, n> & v1, const vec<T, n> & v2);
-    template <Numeric T, int n> Q_CX_ABLE  vec<T, n> operator-(const vec<T, n> & v1, T v2);
-    template <Numeric T, int n> Q_CX_ABLE  vec<T, n> operator-(T v1, const vec<T, n> & v2);
+    template <Numeric T, int n> Q_CX_ABLE vec<T, n> operator-(const vec<T, n> & v1, const vec<T, n> & v2);
+    template <Numeric T, int n> Q_CX_ABLE vec<T, n> operator-(const vec<T, n> & v1, T v2);
+    template <Numeric T, int n> Q_CX_ABLE vec<T, n> operator-(T v1, const vec<T, n> & v2);
 
-    template <Numeric T, int n> Q_CX_ABLE  vec<T, n> operator*(const vec<T, n> & v1, const vec<T, n> & v2);
-    template <Numeric T, int n> Q_CX_ABLE  vec<T, n> operator*(const vec<T, n> & v1, T v2);
-    template <Numeric T, int n> Q_CX_ABLE  vec<T, n> operator*(T v1, const vec<T, n> & v2);
+    template <Numeric T, int n> Q_CX_ABLE vec<T, n> operator*(const vec<T, n> & v1, const vec<T, n> & v2);
+    template <Numeric T, int n> Q_CX_ABLE vec<T, n> operator*(const vec<T, n> & v1, T v2);
+    template <Numeric T, int n> Q_CX_ABLE vec<T, n> operator*(T v1, const vec<T, n> & v2);
 
-    template <Numeric T, int n> Q_CX_ABLE  vec<T, n> operator/(const vec<T, n> & v1, const vec<T, n> & v2);
-    template <Numeric T, int n> Q_CX_ABLE  vec<T, n> operator/(const vec<T, n> & v1, T v2);
-    template <Numeric T, int n> Q_CX_ABLE  vec<T, n> operator/(T v1, const vec<T, n> & v2);
+    template <Numeric T, int n> Q_CX_ABLE vec<T, n> operator/(const vec<T, n> & v1, const vec<T, n> & v2);
+    template <Numeric T, int n> Q_CX_ABLE vec<T, n> operator/(const vec<T, n> & v1, T v2);
+    template <Numeric T, int n> Q_CX_ABLE vec<T, n> operator/(T v1, const vec<T, n> & v2);
 
     template <Numeric T, int n> Q_CX_ABLE vec<T, n> operator%(const vec<T, n> & v1, const vec<T, n> & v2);
     template <Numeric T, int n> Q_CX_ABLE vec<T, n> operator%(const vec<T, n> & v1, T v2);
     template <Numeric T, int n> Q_CX_ABLE vec<T, n> operator%(T v1, const vec<T, n> & v2);
 
-    template <typename T, int n> Q_CX_ABLE      bool operator==(const vec<T, n> & v1, const vec<T, n> & v2);
+    template <typename T, int n> Q_CX_ABLE    bool operator==(const vec<T, n> & v1, const vec<T, n> & v2);
     template <typename T, int n> Q_CX_ABLE bvec<n> operator==(const vec<T, n> & v1, T v2);
     template <typename T, int n> Q_CX_ABLE bvec<n> operator==(T v1, const vec<T, n> & v2);
 
-    template <typename T, int n> Q_CX_ABLE      bool operator!=(const vec<T, n> & v1, const vec<T, n> & v2);
+    template <typename T, int n> Q_CX_ABLE    bool operator!=(const vec<T, n> & v1, const vec<T, n> & v2);
     template <typename T, int n> Q_CX_ABLE bvec<n> operator!=(const vec<T, n> & v1, T v2);
     template <typename T, int n> Q_CX_ABLE bvec<n> operator!=(T v1, const vec<T, n> & v2);
 

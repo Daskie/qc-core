@@ -12,19 +12,13 @@ namespace qc::core {
 
     inline namespace types {
 
-        using llong = long long;
+        using uint = unsigned int;
 
-        using  uchar = unsigned char;
-        using ushort = unsigned short;
-        using   uint = unsigned int;
-        using  ulong = unsigned long;
-        using ullong = unsigned long long;
-
-        using s08 = int8_t;
+        using s8 = int8_t;
         using s16 = int16_t;
         using s32 = int32_t;
         using s64 = int64_t;
-        using u08 = uint8_t;
+        using u8 = uint8_t;
         using u16 = uint16_t;
         using u32 = uint32_t;
         using u64 = uint64_t;
@@ -36,8 +30,7 @@ namespace qc::core {
         template <typename T> concept UnsignedIntegral = Integral<T> && std::is_unsigned_v<T>;
         template <typename T> concept Floating = std::is_floating_point_v<T>;
         template <typename T> concept Numeric = Integral<T> || Floating<T>;
-        template <typename T> concept Pointer = std::is_pointer_v<T>;
-        template <typename T> concept Orderable = Numeric<T> || Pointer<T>;
+        template <typename T> concept Orderable = Numeric<T> || std::is_pointer_v<T>;
         template <typename T> concept NumericOrBoolean = Numeric<T> || std::is_same_v<T, bool>;
 
     }
@@ -48,8 +41,8 @@ namespace qc::core {
     template <typename T, int n = 0> using array_t = typename _array_t_struct<T, n>::type;
 
     template <int size> struct sized;
-    template <> struct sized<1> { using stype = s08; using utype = u08;                    };
-    template <> struct sized<2> { using stype = s16; using utype = u16;                    };
+    template <> struct sized<1> { using stype =  s8; using utype =  u8; };
+    template <> struct sized<2> { using stype = s16; using utype = u16; };
     template <> struct sized<4> { using stype = s32; using utype = u32; using ftype = f32; };
     template <> struct sized<8> { using stype = s64; using utype = u64; using ftype = f64; };
     template <int size> using stype = typename sized<size>::stype;
@@ -58,23 +51,25 @@ namespace qc::core {
 
     template <typename T> using remove_cvref_t = std::remove_cv_t<std::remove_reference_t<T>>;
 
+    //
     // Unique identification of floating point numbers
+    //
     //  precision | bits | digits
     // -----------+------+--------
-    //       half |   16 |      5
-    //     single |   32 |      9
-    //     double |   64 |     17
-    //   extended |   80 |     21
-    //       quad |  128 |     36
-
-    template <Floating T> constexpr T       pi = T(3.14159265358979323846264338327950288L);
-    template <Floating T> constexpr T        e = T(2.71828182845904523536028747135266250L);
-    template <Floating T> constexpr T      phi = T(1.61803398874989484820458683436563812L);
-    template <Floating T> constexpr T    sqrt2 = T(1.41421356237309504880168872420969808L);
-    template <Floating T> constexpr T    sqrt3 = T(1.73205080756887729352744634150587237L);
-    template <Floating T> constexpr T    sqrt5 = T(2.23606797749978969640917366873127624L);
+    //  half      |   16 |      5
+    //  single    |   32 |      9
+    //  double    |   64 |     17
+    //  extended  |   80 |     21
+    //  quad      |  128 |     36
+    //
+    template <Floating T> constexpr T    pi = T(3.14159265358979323846264338327950288L);
+    template <Floating T> constexpr T     e = T(2.71828182845904523536028747135266250L);
+    template <Floating T> constexpr T   phi = T(1.61803398874989484820458683436563812L);
+    template <Floating T> constexpr T sqrt2 = T(1.41421356237309504880168872420969808L);
+    template <Floating T> constexpr T sqrt3 = T(1.73205080756887729352744634150587237L);
+    template <Floating T> constexpr T sqrt5 = T(2.23606797749978969640917366873127624L);
     template <Floating T> constexpr T infinity = std::numeric_limits<T>::infinity();
-    template <Floating T> constexpr T      nan = std::numeric_limits<T>::quiet_NaN();
+    template <Floating T> constexpr T nan = std::numeric_limits<T>::quiet_NaN();
 
     //
     // ...

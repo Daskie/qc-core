@@ -108,11 +108,11 @@ static void compileClassesT() {
 static void compileClasses() {
     compileClassesT<qc::core::f32>();
     compileClassesT<qc::core::f64>();
-    compileClassesT<qc::core::s08>();
+    compileClassesT<qc::core::s8>();
     compileClassesT<qc::core::s16>();
     compileClassesT<qc::core::s32>();
     compileClassesT<qc::core::s64>();
-    compileClassesT<qc::core::u08>();
+    compileClassesT<qc::core::u8>();
     compileClassesT<qc::core::u16>();
     compileClassesT<qc::core::u32>();
     compileClassesT<qc::core::u64>();
@@ -204,11 +204,11 @@ static constexpr void compileClassesConstexprT() {
 static constexpr bool compileClassesConstexpr() {
     compileClassesConstexprT<qc::core::f32>();
     compileClassesConstexprT<qc::core::f64>();
-    compileClassesConstexprT<qc::core::s08>();
+    compileClassesConstexprT<qc::core::s8>();
     compileClassesConstexprT<qc::core::s16>();
     compileClassesConstexprT<qc::core::s32>();
     compileClassesConstexprT<qc::core::s64>();
-    compileClassesConstexprT<qc::core::u08>();
+    compileClassesConstexprT<qc::core::u8>();
     compileClassesConstexprT<qc::core::u16>();
     compileClassesConstexprT<qc::core::u32>();
     compileClassesConstexprT<qc::core::u64>();
@@ -363,11 +363,11 @@ static void compileFunctionsT() {
 static void compileFunctions() {
     compileFunctionsT<qc::core::f32>();
     compileFunctionsT<qc::core::f64>();
-    compileFunctionsT<qc::core::s08>();
+    compileFunctionsT<qc::core::s8>();
     compileFunctionsT<qc::core::s16>();
     compileFunctionsT<qc::core::s32>();
     compileFunctionsT<qc::core::s64>();
-    compileFunctionsT<qc::core::u08>();
+    compileFunctionsT<qc::core::u8>();
     compileFunctionsT<qc::core::u16>();
     compileFunctionsT<qc::core::u32>();
     compileFunctionsT<qc::core::u64>();
@@ -491,11 +491,11 @@ static constexpr void compileFunctionsConstexprT() {
 static constexpr bool compileFunctionsConstexpr() {
     compileFunctionsConstexprT<qc::core::f32>();
     compileFunctionsConstexprT<qc::core::f64>();
-    compileFunctionsConstexprT<qc::core::s08>();
+    compileFunctionsConstexprT<qc::core::s8>();
     compileFunctionsConstexprT<qc::core::s16>();
     compileFunctionsConstexprT<qc::core::s32>();
     compileFunctionsConstexprT<qc::core::s64>();
-    compileFunctionsConstexprT<qc::core::u08>();
+    compileFunctionsConstexprT<qc::core::u8>();
     compileFunctionsConstexprT<qc::core::u16>();
     compileFunctionsConstexprT<qc::core::u32>();
     compileFunctionsConstexprT<qc::core::u64>();
@@ -529,11 +529,11 @@ static void testPropertiesT() {
 static void testProperties() {
     testPropertiesT<qc::core::f32>();
     testPropertiesT<qc::core::f64>();
-    testPropertiesT<qc::core::s08>();
+    testPropertiesT<qc::core::s8>();
     testPropertiesT<qc::core::s16>();
     testPropertiesT<qc::core::s32>();
     testPropertiesT<qc::core::s64>();
-    testPropertiesT<qc::core::u08>();
+    testPropertiesT<qc::core::u8>();
     testPropertiesT<qc::core::u16>();
     testPropertiesT<qc::core::u32>();
     testPropertiesT<qc::core::u64>();
@@ -569,11 +569,11 @@ template <typename T>
 static constexpr void compileCastsT() {
     compileCastsTT<T, qc::core::f32>();
     compileCastsTT<T, qc::core::f64>();
-    compileCastsTT<T, qc::core::s08>();
+    compileCastsTT<T, qc::core::s8>();
     compileCastsTT<T, qc::core::s16>();
     compileCastsTT<T, qc::core::s32>();
     compileCastsTT<T, qc::core::s64>();
-    compileCastsTT<T, qc::core::u08>();
+    compileCastsTT<T, qc::core::u8>();
     compileCastsTT<T, qc::core::u16>();
     compileCastsTT<T, qc::core::u32>();
     compileCastsTT<T, qc::core::u64>();
@@ -582,11 +582,11 @@ static constexpr void compileCastsT() {
 static constexpr bool compileCasts() {
     compileCastsT<qc::core::f32>();
     compileCastsT<qc::core::f64>();
-    compileCastsT<qc::core::s08>();
+    compileCastsT<qc::core::s8>();
     compileCastsT<qc::core::s16>();
     compileCastsT<qc::core::s32>();
     compileCastsT<qc::core::s64>();
-    compileCastsT<qc::core::u08>();
+    compileCastsT<qc::core::u8>();
     compileCastsT<qc::core::u16>();
     compileCastsT<qc::core::u32>();
     compileCastsT<qc::core::u64>();

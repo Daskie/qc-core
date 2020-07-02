@@ -113,11 +113,11 @@ static void compileClassesT() {
 static void compileClasses() {
     compileClassesT<f32>();
     compileClassesT<f64>();
-    compileClassesT<s08>();
+    compileClassesT<s8>();
     compileClassesT<s16>();
     compileClassesT<s32>();
     compileClassesT<s64>();
-    compileClassesT<u08>();
+    compileClassesT<u8>();
     compileClassesT<u16>();
     compileClassesT<u32>();
     compileClassesT<u64>();
@@ -211,11 +211,11 @@ static constexpr void compileClassesConstexprT() {
 static constexpr bool compileClassesConstexpr() {
     compileClassesConstexprT<f32>();
     compileClassesConstexprT<f64>();
-    compileClassesConstexprT<s08>();
+    compileClassesConstexprT<s8>();
     compileClassesConstexprT<s16>();
     compileClassesConstexprT<s32>();
     compileClassesConstexprT<s64>();
-    compileClassesConstexprT<u08>();
+    compileClassesConstexprT<u8>();
     compileClassesConstexprT<u16>();
     compileClassesConstexprT<u32>();
     compileClassesConstexprT<u64>();
@@ -235,11 +235,11 @@ template <typename T>
 static void compileFunctionsT() {
     compileFunctionsTT<T, f32>();
     compileFunctionsTT<T, f64>();
-    compileFunctionsTT<T, s08>();
+    compileFunctionsTT<T, s8>();
     compileFunctionsTT<T, s16>();
     compileFunctionsTT<T, s32>();
     compileFunctionsTT<T, s64>();
-    compileFunctionsTT<T, u08>();
+    compileFunctionsTT<T, u8>();
     compileFunctionsTT<T, u16>();
     compileFunctionsTT<T, u32>();
     compileFunctionsTT<T, u64>();
@@ -779,11 +779,11 @@ static void compileFunctionsBT() {
 static void compileFunctions() {
     compileFunctionsT<f32>();
     compileFunctionsT<f64>();
-    compileFunctionsT<s08>();
+    compileFunctionsT<s8>();
     compileFunctionsT<s16>();
     compileFunctionsT<s32>();
     compileFunctionsT<s64>();
-    compileFunctionsT<u08>();
+    compileFunctionsT<u8>();
     compileFunctionsT<u16>();
     compileFunctionsT<u32>();
     compileFunctionsT<u64>();
@@ -791,21 +791,21 @@ static void compileFunctions() {
     compileFunctionsFT<f32>();
     compileFunctionsFT<f64>();
 
-    compileFunctionsIT<s08>();
+    compileFunctionsIT<s8>();
     compileFunctionsIT<s16>();
     compileFunctionsIT<s32>();
     compileFunctionsIT<s64>();
-    compileFunctionsIT<u08>();
+    compileFunctionsIT<u8>();
     compileFunctionsIT<u16>();
     compileFunctionsIT<u32>();
     compileFunctionsIT<u64>();
 
-    compileFunctionsSIT<s08>();
+    compileFunctionsSIT<s8>();
     compileFunctionsSIT<s16>();
     compileFunctionsSIT<s32>();
     compileFunctionsSIT<s64>();
 
-    compileFunctionsUIT<u08>();
+    compileFunctionsUIT<u8>();
     compileFunctionsUIT<u16>();
     compileFunctionsUIT<u32>();
     compileFunctionsUIT<u64>();
@@ -827,11 +827,11 @@ template <typename T>
 static constexpr void compileFunctionsConstexprT() {
     compileFunctionsConstexprTT<T, f32>();
     compileFunctionsConstexprTT<T, f64>();
-    compileFunctionsConstexprTT<T, s08>();
+    compileFunctionsConstexprTT<T, s8>();
     compileFunctionsConstexprTT<T, s16>();
     compileFunctionsConstexprTT<T, s32>();
     compileFunctionsConstexprTT<T, s64>();
-    compileFunctionsConstexprTT<T, u08>();
+    compileFunctionsConstexprTT<T, u8>();
     compileFunctionsConstexprTT<T, u16>();
     compileFunctionsConstexprTT<T, u32>();
     compileFunctionsConstexprTT<T, u64>();
@@ -1193,11 +1193,11 @@ static void testPropertiesT() {
 static void testProperties() {
     testPropertiesT<f32>();
     testPropertiesT<f64>();
-    testPropertiesT<s08>();
+    testPropertiesT<s8>();
     testPropertiesT<s16>();
     testPropertiesT<s32>();
     testPropertiesT<s64>();
-    testPropertiesT<u08>();
+    testPropertiesT<u8>();
     testPropertiesT<u16>();
     testPropertiesT<u32>();
     testPropertiesT<u64>();
@@ -1229,11 +1229,11 @@ template <typename T>
 static constexpr void compileCastsT() {
     compileCastsTT<T, f32>();
     compileCastsTT<T, f64>();
-    compileCastsTT<T, s08>();
+    compileCastsTT<T, s8>();
     compileCastsTT<T, s16>();
     compileCastsTT<T, s32>();
     compileCastsTT<T, s64>();
-    compileCastsTT<T, u08>();
+    compileCastsTT<T, u8>();
     compileCastsTT<T, u16>();
     compileCastsTT<T, u32>();
     compileCastsTT<T, u64>();
@@ -1243,11 +1243,11 @@ static constexpr void compileCastsT() {
 static constexpr bool compileCasts() {
     compileCastsT<f32>();
     compileCastsT<f64>();
-    compileCastsT<s08>();
+    compileCastsT<s8>();
     compileCastsT<s16>();
     compileCastsT<s32>();
     compileCastsT<s64>();
-    compileCastsT<u08>();
+    compileCastsT<u8>();
     compileCastsT<u16>();
     compileCastsT<u32>();
     compileCastsT<u64>();
@@ -1292,11 +1292,11 @@ static constexpr void compileConstantsFT() {
 static constexpr bool compileConstants() {
     compileConstantsT<f32>();
     compileConstantsT<f64>();
-    compileConstantsT<s08>();
+    compileConstantsT<s8>();
     compileConstantsT<s16>();
     compileConstantsT<s32>();
     compileConstantsT<s64>();
-    compileConstantsT<u08>();
+    compileConstantsT<u8>();
     compileConstantsT<u16>();
     compileConstantsT<u32>();
     compileConstantsT<u64>();
@@ -1357,8 +1357,8 @@ TEST_CLASS(TestVector) {
     }
 
     TEST_METHOD(testConcepts) {
-        testVectorConceptT<s08>();
-        testVectorConceptT<u08>();
+        testVectorConceptT<s8>();
+        testVectorConceptT<u8>();
         testVectorConceptT<s16>();
         testVectorConceptT<u16>();
         testVectorConceptT<f32>();
@@ -1373,8 +1373,8 @@ TEST_CLASS(TestVector) {
         testFloaterVectorConceptT<f64>();
         static_assert(!FloatingVector<ivec2>);
 
-        testIntegerVectorConceptT<s08>();
-        testIntegerVectorConceptT<u08>();
+        testIntegerVectorConceptT<s8>();
+        testIntegerVectorConceptT<u8>();
         testIntegerVectorConceptT<s16>();
         testIntegerVectorConceptT<u16>();
         testIntegerVectorConceptT<s32>();
@@ -1383,13 +1383,13 @@ TEST_CLASS(TestVector) {
         testIntegerVectorConceptT<u64>();
         static_assert(!IntegralVector<fvec2>);
 
-        testSignedIntegerVectorConceptT<s08>();
+        testSignedIntegerVectorConceptT<s8>();
         testSignedIntegerVectorConceptT<s16>();
         testSignedIntegerVectorConceptT<s32>();
         testSignedIntegerVectorConceptT<s64>();
         static_assert(!SignedIntegralVector<uivec2>);
 
-        testUnsignedIntegerVectorConceptT<u08>();
+        testUnsignedIntegerVectorConceptT<u8>();
         testUnsignedIntegerVectorConceptT<u16>();
         testUnsignedIntegerVectorConceptT<u32>();
         testUnsignedIntegerVectorConceptT<u64>();

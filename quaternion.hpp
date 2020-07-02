@@ -10,7 +10,7 @@ namespace qc::core {
 
         using qc::core::quat;
 
-        using fquat = quat< float>;
+        using fquat = quat<float>;
         using dquat = quat<double>;
 
         template <typename T> concept Quaternion = std::is_same_v<T, quat<typename T::Type>>;
