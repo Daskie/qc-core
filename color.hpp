@@ -2,7 +2,7 @@
 
 #include "vector.hpp"
 
-namespace qc::core {
+namespace qc {
 
     namespace color {
 
@@ -141,4 +141,4 @@ namespace qc::core {
         return rgb;
     }
 
-} // namespace qc::core
+} // namespace qc

@@ -12,7 +12,7 @@
 
 #include "core.hpp"
 
-namespace qc::core {
+namespace qc {
 
     //
     // ...
@@ -210,11 +210,11 @@ namespace qc::core {
     template <Floating To, UnsignedIntegral From> Q_CX_ABLE To transnorm(From v);
     template <UnsignedIntegral To, UnsignedIntegral From> Q_CX_ABLE To transnorm(From v);
 
-} // namespace qc::core
+} // namespace qc
 
 // INLINE IMPLEMENTATION ///////////////////////////////////////////////////////////////////////////////////////////////
 
-namespace qc::core {
+namespace qc {
 
     template <Numeric T>
     inline Q_CX_ABLE std::pair<T, T> minmax(const T a) {
@@ -242,7 +242,7 @@ namespace qc::core {
 
     template <Numeric T>
     inline Q_CX_ABLE T clamp(const T & v, const T & min, const T & max) {
-        return ::qc::core::min(::qc::core::max(v, min), max);
+        return ::qc::min(::qc::max(v, min), max);
     }
 
     template <Numeric T>
@@ -552,4 +552,4 @@ namespace qc::core {
         }
     }
 
-} // namespace qc::core
+} // namespace qc

@@ -2,7 +2,7 @@
 
 #include <array>
 
-namespace qc::core {
+namespace qc {
 
     template <typename T, size_t n>
     class CycleArray {
@@ -258,12 +258,12 @@ namespace qc::core {
         return true;
     }
 
-} // namespace qc::core
+} // namespace qc
 
 namespace std {
 
     template <typename T, size_t n>
-    inline constexpr void swap(qc::core::CycleArray<T, n> & lhs, qc::core::CycleArray<T, n> & rhs) noexcept {
+    inline constexpr void swap(qc::CycleArray<T, n> & lhs, qc::CycleArray<T, n> & rhs) noexcept {
         lhs.swap(rhs);
     }
 

@@ -10,7 +10,7 @@
 
 #include "core.hpp"
 
-namespace qc::core::utils {
+namespace qc::utils {
 
     template <typename T>
     inline T pairwiseSum(const size_t n, const T * const vals) {
@@ -146,4 +146,4 @@ namespace qc::core::utils {
 
     }
 
-} // namespace qc::core::utils
+} // namespace qc::utils

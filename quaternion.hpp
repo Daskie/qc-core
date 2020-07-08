@@ -2,13 +2,13 @@
 
 #include "matrix.hpp"
 
-namespace qc::core {
+namespace qc {
 
     template <Floating T> struct quat;
 
     inline namespace types {
 
-        using qc::core::quat;
+        using qc::quat;
 
         using fquat = quat<float>;
         using dquat = quat<double>;
@@ -70,11 +70,11 @@ namespace qc::core {
 
     template <Floating T> bool operator!=(const quat<T> & q1, const quat<T> & q2);
 
-} // namespace qc::core
+} // namespace qc
 
 // INLINE IMPLEMENTATION ///////////////////////////////////////////////////////////////////////////////////////////////
 
-namespace qc::core {
+namespace qc {
 
     template <Floating T>
     template <Floating U>
@@ -186,4 +186,4 @@ namespace qc::core {
         return q1.a != q2.a || q1.w != q2.w;
     }
 
-} // namespace qc::core
+} // namespace qc

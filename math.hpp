@@ -4,7 +4,7 @@
 
 #include "matrix-ext.hpp"
 
-namespace qc::core {
+namespace qc {
 
     template <Floating T>
     inline vec2<T> polarToCartesian(const T theta) {
@@ -360,4 +360,4 @@ namespace qc::core {
         return c / (T(3.0) * a);
     }
 
-} // namespace qc::core
+} // namespace qc

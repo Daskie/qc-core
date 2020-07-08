@@ -8,7 +8,7 @@
 #define Q_CONSTEX constexpr
 #define Q_CX_ABLE
 
-namespace qc::core {
+namespace qc {
 
     inline namespace types {
 
@@ -94,11 +94,11 @@ namespace qc::core {
     template <Orderable T> T & maxify(T & v1, T v2);
     template <typename T, typename T1, typename T2, typename... Ts> T & maxify(T & min, T1 && v1, T2 && v2, Ts &&... vs);
 
-} // namespace qc::core
+} // namespace qc
 
 // INLINE IMPLEMENTATION ///////////////////////////////////////////////////////////////////////////////////////////////
 
-namespace qc::core {
+namespace qc {
 
     template <Orderable T>
     inline constexpr T min(const T v1, const T v2) {
@@ -140,4 +140,4 @@ namespace qc::core {
         return maxify(maxify(min, std::forward<T1>(v1)), std::forward<T2>(v2), std::forward<Ts>(vs)...);
     }
 
-} // namespace qc::core
+} // namespace qc

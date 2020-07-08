@@ -2,7 +2,7 @@
 
 #include "core-ext.hpp"
 
-namespace qc::core {
+namespace qc {
 
     inline namespace types {
 
@@ -14,7 +14,7 @@ namespace qc::core {
 
     inline namespace types {
 
-        using qc::core::vec;
+        using qc::vec;
 
         template <typename T> using vec2 = vec<T, 2>;
         template <typename T> using vec3 = vec<T, 3>;
@@ -338,11 +338,11 @@ namespace qc::core {
 
     template <int n> Q_CX_ABLE bvec<n> operator!(bvec<n> v1);
 
-} // namespace qc::core
+} // namespace qc
 
 // INLINE IMPLEMENTATION ///////////////////////////////////////////////////////////////////////////////////////////////
 
-namespace qc::core {
+namespace qc {
 
     template <NumericOrBoolean T>
     template <NumericOrBoolean U>
@@ -1025,4 +1025,4 @@ namespace qc::core {
         if constexpr (n == 4) return {!v.x, !v.y, !v.z, !v.w};
     }
 
-} // namespace qc::core
+} // namespace qc

@@ -5,7 +5,7 @@
 #include <qc-core/vector-ext.hpp>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
-using namespace qc::core::types;
+using namespace qc::types;
 
 template <typename T>
 static void compileClassesT() {
@@ -426,13 +426,13 @@ static void compileFunctionsT() {
 
     // condensation
 
-    qc::core::sum(v2);
-    qc::core::sum(v3);
-    qc::core::sum(v4);
+    qc::sum(v2);
+    qc::sum(v3);
+    qc::sum(v4);
 
-    qc::core::product(v2);
-    qc::core::product(v3);
-    qc::core::product(v4);
+    qc::product(v2);
+    qc::product(v3);
+    qc::product(v4);
 
     // other
 
@@ -442,151 +442,151 @@ static void compileFunctionsT() {
 
     // uncategorized
 
-    qc::core::magnitude2(v2);
-    qc::core::magnitude2(v3);
-    qc::core::magnitude2(v4);
+    qc::magnitude2(v2);
+    qc::magnitude2(v3);
+    qc::magnitude2(v4);
 
-    qc::core::dot(v2, v2);
-    qc::core::dot(v3, v3);
-    qc::core::dot(v4, v4);
+    qc::dot(v2, v2);
+    qc::dot(v3, v3);
+    qc::dot(v4, v4);
 
-    qc::core::cross(v2, v2);
-    qc::core::cross(v3, v3);
+    qc::cross(v2, v2);
+    qc::cross(v3, v3);
 
-    qc::core::parallel(v2, v2);
-    qc::core::parallel(v3, v3);
-    qc::core::parallel(v4, v4);
+    qc::parallel(v2, v2);
+    qc::parallel(v3, v3);
+    qc::parallel(v4, v4);
 
-    qc::core::orthogonal(v2, v2);
-    qc::core::orthogonal(v3, v3);
-    qc::core::orthogonal(v4, v4);
+    qc::orthogonal(v2, v2);
+    qc::orthogonal(v3, v3);
+    qc::orthogonal(v4, v4);
 
     if constexpr (!std::is_unsigned_v<T>) {
-        qc::core::ortho(v2);
-        qc::core::ortho(v3);
+        qc::ortho(v2);
+        qc::ortho(v3);
     }
 
-    qc::core::min(v2);
-    qc::core::min(v3);
-    qc::core::min(v4);
+    qc::min(v2);
+    qc::min(v3);
+    qc::min(v4);
 
-    qc::core::min(v2, v2);
-    qc::core::min(v3, v3);
-    qc::core::min(v4, v4);
+    qc::min(v2, v2);
+    qc::min(v3, v3);
+    qc::min(v4, v4);
 
-    qc::core::min(v2, v2, v2);
-    qc::core::min(v3, v3, v3);
-    qc::core::min(v4, v4, v4);
+    qc::min(v2, v2, v2);
+    qc::min(v3, v3, v3);
+    qc::min(v4, v4, v4);
 
-    qc::core::min(v2, v2, v2, v2);
-    qc::core::min(v3, v3, v3, v3);
-    qc::core::min(v4, v4, v4, v4);
+    qc::min(v2, v2, v2, v2);
+    qc::min(v3, v3, v3, v3);
+    qc::min(v4, v4, v4, v4);
 
-    qc::core::min(v2, v2, v2, v2, v2);
-    qc::core::min(v3, v3, v3, v3, v3);
-    qc::core::min(v4, v4, v4, v4, v4);
+    qc::min(v2, v2, v2, v2, v2);
+    qc::min(v3, v3, v3, v3, v3);
+    qc::min(v4, v4, v4, v4, v4);
 
-    qc::core::min(v2, v);
-    qc::core::min(v3, v);
-    qc::core::min(v4, v);
-    qc::core::min(v, v2);
-    qc::core::min(v, v3);
-    qc::core::min(v, v4);
+    qc::min(v2, v);
+    qc::min(v3, v);
+    qc::min(v4, v);
+    qc::min(v, v2);
+    qc::min(v, v3);
+    qc::min(v, v4);
 
-    qc::core::max(v2);
-    qc::core::max(v3);
-    qc::core::max(v4);
+    qc::max(v2);
+    qc::max(v3);
+    qc::max(v4);
 
-    qc::core::max(v2, v2);
-    qc::core::max(v3, v3);
-    qc::core::max(v4, v4);
+    qc::max(v2, v2);
+    qc::max(v3, v3);
+    qc::max(v4, v4);
 
-    qc::core::max(v2, v2, v2);
-    qc::core::max(v3, v3, v3);
-    qc::core::max(v4, v4, v4);
+    qc::max(v2, v2, v2);
+    qc::max(v3, v3, v3);
+    qc::max(v4, v4, v4);
 
-    qc::core::max(v2, v2, v2, v2);
-    qc::core::max(v3, v3, v3, v3);
-    qc::core::max(v4, v4, v4, v4);
+    qc::max(v2, v2, v2, v2);
+    qc::max(v3, v3, v3, v3);
+    qc::max(v4, v4, v4, v4);
 
-    qc::core::max(v2, v2, v2, v2, v2);
-    qc::core::max(v3, v3, v3, v3, v3);
-    qc::core::max(v4, v4, v4, v4, v4);
+    qc::max(v2, v2, v2, v2, v2);
+    qc::max(v3, v3, v3, v3, v3);
+    qc::max(v4, v4, v4, v4, v4);
 
-    qc::core::max(v2, v);
-    qc::core::max(v3, v);
-    qc::core::max(v4, v);
-    qc::core::max(v, v2);
-    qc::core::max(v, v3);
-    qc::core::max(v, v4);
+    qc::max(v2, v);
+    qc::max(v3, v);
+    qc::max(v4, v);
+    qc::max(v, v2);
+    qc::max(v, v3);
+    qc::max(v, v4);
 
-    qc::core::minify(v2, v2);
-    qc::core::minify(v3, v3);
-    qc::core::minify(v4, v4);
-    qc::core::minify(v2, v);
-    qc::core::minify(v3, v);
-    qc::core::minify(v4, v);
+    qc::minify(v2, v2);
+    qc::minify(v3, v3);
+    qc::minify(v4, v4);
+    qc::minify(v2, v);
+    qc::minify(v3, v);
+    qc::minify(v4, v);
 
-    qc::core::maxify(v2, v2);
-    qc::core::maxify(v3, v3);
-    qc::core::maxify(v4, v4);
-    qc::core::maxify(v2, v);
-    qc::core::maxify(v3, v);
-    qc::core::maxify(v4, v);
+    qc::maxify(v2, v2);
+    qc::maxify(v3, v3);
+    qc::maxify(v4, v4);
+    qc::maxify(v2, v);
+    qc::maxify(v3, v);
+    qc::maxify(v4, v);
 
-    qc::core::minmax(v2);
-    qc::core::minmax(v3);
-    qc::core::minmax(v4);
+    qc::minmax(v2);
+    qc::minmax(v3);
+    qc::minmax(v4);
 
-    qc::core::median(v3);
+    qc::median(v3);
 
-    qc::core::sort(v2);
-    qc::core::sort(v3);
-    qc::core::sort(v4);
+    qc::sort(v2);
+    qc::sort(v3);
+    qc::sort(v4);
 
-    qc::core::clamp(v2, v, v);
-    qc::core::clamp(v3, v, v);
-    qc::core::clamp(v4, v, v);
+    qc::clamp(v2, v, v);
+    qc::clamp(v3, v, v);
+    qc::clamp(v4, v, v);
 
-    qc::core::clamp(v2, v2, v2);
-    qc::core::clamp(v3, v3, v3);
-    qc::core::clamp(v4, v4, v4);
+    qc::clamp(v2, v2, v2);
+    qc::clamp(v3, v3, v3);
+    qc::clamp(v4, v4, v4);
 
-    qc::core::abs(v2);
-    qc::core::abs(v3);
-    qc::core::abs(v4);
+    qc::abs(v2);
+    qc::abs(v3);
+    qc::abs(v4);
 
-    qc::core::zero(v2);
-    qc::core::zero(v3);
-    qc::core::zero(v4);
+    qc::zero(v2);
+    qc::zero(v3);
+    qc::zero(v4);
 
-    qc::core::equal(v2, v2, v2, v2, v2);
-    qc::core::equal(v3, v3, v3, v3, v3);
-    qc::core::equal(v4, v4, v4, v4, v4);
+    qc::equal(v2, v2, v2, v2, v2);
+    qc::equal(v3, v3, v3, v3, v3);
+    qc::equal(v4, v4, v4, v4, v4);
 
-    qc::core::equal(v2);
-    qc::core::equal(v3);
-    qc::core::equal(v4);
+    qc::equal(v2);
+    qc::equal(v3);
+    qc::equal(v4);
 
-    qc::core::sign(v2);
-    qc::core::sign(v3);
-    qc::core::sign(v3);
+    qc::sign(v2);
+    qc::sign(v3);
+    qc::sign(v3);
 
-    qc::core::round(v2);
-    qc::core::round(v3);
-    qc::core::round(v4);
+    qc::round(v2);
+    qc::round(v3);
+    qc::round(v4);
 
-    qc::core::floor(v2);
-    qc::core::floor(v3);
-    qc::core::floor(v4);
+    qc::floor(v2);
+    qc::floor(v3);
+    qc::floor(v4);
 
-    qc::core::ceil(v2);
-    qc::core::ceil(v3);
-    qc::core::ceil(v4);
+    qc::ceil(v2);
+    qc::ceil(v3);
+    qc::ceil(v4);
 
-    qc::core::composite(v2, v2);
-    qc::core::composite(v3, v3);
-    qc::core::composite(v4, v4);
+    qc::composite(v2, v2);
+    qc::composite(v3, v3);
+    qc::composite(v4, v4);
 }
 
 template <typename T>
@@ -596,104 +596,104 @@ static void compileFunctionsFT() {
     vec3<T> v3;
     vec4<T> v4;
 
-    qc::core::equal_e(v2, v);
-    qc::core::equal_e(v3, v);
-    qc::core::equal_e(v4, v);
-    qc::core::equal_e(v2, v2, v);
-    qc::core::equal_e(v3, v3, v);
-    qc::core::equal_e(v4, v4, v);
+    qc::equal_e(v2, v);
+    qc::equal_e(v3, v);
+    qc::equal_e(v4, v);
+    qc::equal_e(v2, v2, v);
+    qc::equal_e(v3, v3, v);
+    qc::equal_e(v4, v4, v);
 
-    qc::core::pow(v2, v);
-    qc::core::pow(v3, v);
-    qc::core::pow(v4, v);
+    qc::pow(v2, v);
+    qc::pow(v3, v);
+    qc::pow(v4, v);
 
-    qc::core::pow(v2, v2);
-    qc::core::pow(v3, v3);
-    qc::core::pow(v4, v4);
+    qc::pow(v2, v2);
+    qc::pow(v3, v3);
+    qc::pow(v4, v4);
 
-    qc::core::exp(v2);
-    qc::core::exp(v3);
-    qc::core::exp(v4);
+    qc::exp(v2);
+    qc::exp(v3);
+    qc::exp(v4);
 
-    qc::core::magnitude(v2);
-    qc::core::magnitude(v3);
-    qc::core::magnitude(v4);
+    qc::magnitude(v2);
+    qc::magnitude(v3);
+    qc::magnitude(v4);
 
-    qc::core::normalize(v2);
-    qc::core::normalize(v3);
-    qc::core::normalize(v4);
+    qc::normalize(v2);
+    qc::normalize(v3);
+    qc::normalize(v4);
 
-    qc::core::normalizeAssign(v2);
-    qc::core::normalizeAssign(v3);
-    qc::core::normalizeAssign(v4);
+    qc::normalizeAssign(v2);
+    qc::normalizeAssign(v3);
+    qc::normalizeAssign(v4);
 
-    qc::core::orthogonalize(v2, v2);
-    qc::core::orthogonalize(v3, v3);
-    qc::core::orthogonalize(v4, v4);
-    qc::core::orthogonalize(v3, v3, v3);
-    qc::core::orthogonalize_n(v3, v3, v3);
+    qc::orthogonalize(v2, v2);
+    qc::orthogonalize(v3, v3);
+    qc::orthogonalize(v4, v4);
+    qc::orthogonalize(v3, v3, v3);
+    qc::orthogonalize_n(v3, v3, v3);
 
-    qc::core::reflect(v2, v2);
-    qc::core::reflect(v3, v3);
+    qc::reflect(v2, v2);
+    qc::reflect(v3, v3);
 
-    qc::core::angle(v2, v2);
-    qc::core::angle_n(v2, v2);
-    qc::core::angle(v3, v3);
-    qc::core::angle_n(v3, v3);
-    qc::core::angle(v4, v4);
-    qc::core::angle_n(v4, v4);
+    qc::angle(v2, v2);
+    qc::angle_n(v2, v2);
+    qc::angle(v3, v3);
+    qc::angle_n(v3, v3);
+    qc::angle(v4, v4);
+    qc::angle_n(v4, v4);
 
-    qc::core::mix(v2, v2, v);
-    qc::core::mix(v3, v3, v);
-    qc::core::mix(v4, v4, v);
+    qc::mix(v2, v2, v);
+    qc::mix(v3, v3, v);
+    qc::mix(v4, v4, v);
 
-    qc::core::mix(v, v, v2);
-    qc::core::mix(v2, v2, v2);
-    qc::core::mix(v3, v3, v2);
-    qc::core::mix(v4, v4, v2);
-    qc::core::mix(v, v, v, v3);
-    qc::core::mix(v2, v2, v2, v3);
-    qc::core::mix(v3, v3, v3, v3);
-    qc::core::mix(v4, v4, v4, v3);
-    qc::core::mix(v, v, v, v, v4);
-    qc::core::mix(v2, v2, v2, v2, v4);
-    qc::core::mix(v3, v3, v3, v3, v4);
-    qc::core::mix(v4, v4, v4, v4, v4);
+    qc::mix(v, v, v2);
+    qc::mix(v2, v2, v2);
+    qc::mix(v3, v3, v2);
+    qc::mix(v4, v4, v2);
+    qc::mix(v, v, v, v3);
+    qc::mix(v2, v2, v2, v3);
+    qc::mix(v3, v3, v3, v3);
+    qc::mix(v4, v4, v4, v3);
+    qc::mix(v, v, v, v, v4);
+    qc::mix(v2, v2, v2, v2, v4);
+    qc::mix(v3, v3, v3, v3, v4);
+    qc::mix(v4, v4, v4, v4, v4);
 
-    qc::core::smoothstep(v2, v2, v);
-    qc::core::smoothstep(v3, v3, v);
-    qc::core::smoothstep(v4, v4, v);
+    qc::smoothstep(v2, v2, v);
+    qc::smoothstep(v3, v3, v);
+    qc::smoothstep(v4, v4, v);
 
-    qc::core::transnorm<fvec2>(v2);
-    qc::core::transnorm<fvec3>(v3);
-    qc::core::transnorm<fvec4>(v4);
-    qc::core::transnorm<dvec2>(v2);
-    qc::core::transnorm<dvec3>(v3);
-    qc::core::transnorm<dvec4>(v4);
-    qc::core::transnorm<cvec2>(v2);
-    qc::core::transnorm<cvec3>(v3);
-    qc::core::transnorm<cvec4>(v4);
-    qc::core::transnorm<svec2>(v2);
-    qc::core::transnorm<svec3>(v3);
-    qc::core::transnorm<svec4>(v4);
-    qc::core::transnorm<ivec2>(v2);
-    qc::core::transnorm<ivec3>(v3);
-    qc::core::transnorm<ivec4>(v4);
-    qc::core::transnorm<lvec2>(v2);
-    qc::core::transnorm<lvec3>(v3);
-    qc::core::transnorm<lvec4>(v4);
-    qc::core::transnorm<ucvec2>(v2);
-    qc::core::transnorm<ucvec3>(v3);
-    qc::core::transnorm<ucvec4>(v4);
-    qc::core::transnorm<usvec2>(v2);
-    qc::core::transnorm<usvec3>(v3);
-    qc::core::transnorm<usvec4>(v4);
-    qc::core::transnorm<uivec2>(v2);
-    qc::core::transnorm<uivec3>(v3);
-    qc::core::transnorm<uivec4>(v4);
-    qc::core::transnorm<ulvec2>(v2);
-    qc::core::transnorm<ulvec3>(v3);
-    qc::core::transnorm<ulvec4>(v4);
+    qc::transnorm<fvec2>(v2);
+    qc::transnorm<fvec3>(v3);
+    qc::transnorm<fvec4>(v4);
+    qc::transnorm<dvec2>(v2);
+    qc::transnorm<dvec3>(v3);
+    qc::transnorm<dvec4>(v4);
+    qc::transnorm<cvec2>(v2);
+    qc::transnorm<cvec3>(v3);
+    qc::transnorm<cvec4>(v4);
+    qc::transnorm<svec2>(v2);
+    qc::transnorm<svec3>(v3);
+    qc::transnorm<svec4>(v4);
+    qc::transnorm<ivec2>(v2);
+    qc::transnorm<ivec3>(v3);
+    qc::transnorm<ivec4>(v4);
+    qc::transnorm<lvec2>(v2);
+    qc::transnorm<lvec3>(v3);
+    qc::transnorm<lvec4>(v4);
+    qc::transnorm<ucvec2>(v2);
+    qc::transnorm<ucvec3>(v3);
+    qc::transnorm<ucvec4>(v4);
+    qc::transnorm<usvec2>(v2);
+    qc::transnorm<usvec3>(v3);
+    qc::transnorm<usvec4>(v4);
+    qc::transnorm<uivec2>(v2);
+    qc::transnorm<uivec3>(v3);
+    qc::transnorm<uivec4>(v4);
+    qc::transnorm<ulvec2>(v2);
+    qc::transnorm<ulvec3>(v3);
+    qc::transnorm<ulvec4>(v4);
 }
 
 template <typename T>
@@ -711,12 +711,12 @@ static void compileFunctionsSIT() {
     vec3<T> v3; v3;
     vec4<T> v4; v4;
 
-    qc::core::transnorm<fvec2>(v2);
-    qc::core::transnorm<fvec3>(v3);
-    qc::core::transnorm<fvec4>(v4);
-    qc::core::transnorm<dvec2>(v2);
-    qc::core::transnorm<dvec3>(v3);
-    qc::core::transnorm<dvec4>(v4);
+    qc::transnorm<fvec2>(v2);
+    qc::transnorm<fvec3>(v3);
+    qc::transnorm<fvec4>(v4);
+    qc::transnorm<dvec2>(v2);
+    qc::transnorm<dvec3>(v3);
+    qc::transnorm<dvec4>(v4);
 }
 
 template <typename T>
@@ -726,28 +726,28 @@ static void compileFunctionsUIT() {
     vec3<T> v3; v3;
     vec4<T> v4; v4;
 
-    qc::core::transnorm<fvec2>(v2);
-    qc::core::transnorm<fvec3>(v3);
-    qc::core::transnorm<fvec4>(v4);
-    qc::core::transnorm<dvec2>(v2);
-    qc::core::transnorm<dvec3>(v3);
-    qc::core::transnorm<dvec4>(v4);
-    qc::core::transnorm<ucvec2>(v2);
-    qc::core::transnorm<ucvec3>(v3);
-    qc::core::transnorm<ucvec4>(v4);
-    qc::core::transnorm<usvec2>(v2);
-    qc::core::transnorm<usvec3>(v3);
-    qc::core::transnorm<usvec4>(v4);
-    qc::core::transnorm<uivec2>(v2);
-    qc::core::transnorm<uivec3>(v3);
-    qc::core::transnorm<uivec4>(v4);
-    qc::core::transnorm<ulvec2>(v2);
-    qc::core::transnorm<ulvec3>(v3);
-    qc::core::transnorm<ulvec4>(v4);
+    qc::transnorm<fvec2>(v2);
+    qc::transnorm<fvec3>(v3);
+    qc::transnorm<fvec4>(v4);
+    qc::transnorm<dvec2>(v2);
+    qc::transnorm<dvec3>(v3);
+    qc::transnorm<dvec4>(v4);
+    qc::transnorm<ucvec2>(v2);
+    qc::transnorm<ucvec3>(v3);
+    qc::transnorm<ucvec4>(v4);
+    qc::transnorm<usvec2>(v2);
+    qc::transnorm<usvec3>(v3);
+    qc::transnorm<usvec4>(v4);
+    qc::transnorm<uivec2>(v2);
+    qc::transnorm<uivec3>(v3);
+    qc::transnorm<uivec4>(v4);
+    qc::transnorm<ulvec2>(v2);
+    qc::transnorm<ulvec3>(v3);
+    qc::transnorm<ulvec4>(v4);
 
-    qc::core::mipmaps(v2);
-    qc::core::mipmaps(v3);
-    qc::core::mipmaps(v4);
+    qc::mipmaps(v2);
+    qc::mipmaps(v3);
+    qc::mipmaps(v4);
 }
 
 static void compileFunctionsBT() {
@@ -767,13 +767,13 @@ static void compileFunctionsBT() {
     !b3;
     !b4;
 
-    qc::core::all(b2);
-    qc::core::all(b3);
-    qc::core::all(b4);
+    qc::all(b2);
+    qc::all(b3);
+    qc::all(b4);
 
-    qc::core::any(b2);
-    qc::core::any(b3);
-    qc::core::any(b4);
+    qc::any(b2);
+    qc::any(b3);
+    qc::any(b4);
 }
 
 static void compileFunctions() {
@@ -966,117 +966,117 @@ static constexpr void compileFunctionsConstexprT() {
 
     // condensation
 
-    //qc::core::sum(v2);
-    //qc::core::sum(v3);
-    //qc::core::sum(v4);
+    //qc::sum(v2);
+    //qc::sum(v3);
+    //qc::sum(v4);
 
-    //qc::core::product(v2);
-    //qc::core::product(v3);
-    //qc::core::product(v4);
+    //qc::product(v2);
+    //qc::product(v3);
+    //qc::product(v4);
 
     // uncategorized
 
-    //qc::core::min(v2);
-    //qc::core::min(v3);
-    //qc::core::min(v4);
+    //qc::min(v2);
+    //qc::min(v3);
+    //qc::min(v4);
 
-    //qc::core::min(v2, v2);
-    //qc::core::min(v3, v3);
-    //qc::core::min(v4, v4);
+    //qc::min(v2, v2);
+    //qc::min(v3, v3);
+    //qc::min(v4, v4);
 
-    //qc::core::min(v2, v2, v2);
-    //qc::core::min(v3, v3, v3);
-    //qc::core::min(v4, v4, v4);
+    //qc::min(v2, v2, v2);
+    //qc::min(v3, v3, v3);
+    //qc::min(v4, v4, v4);
 
-    //qc::core::min(v2, v2, v2, v2);
-    //qc::core::min(v3, v3, v3, v3);
-    //qc::core::min(v4, v4, v4, v4);
+    //qc::min(v2, v2, v2, v2);
+    //qc::min(v3, v3, v3, v3);
+    //qc::min(v4, v4, v4, v4);
 
-    //qc::core::min(v2, v2, v2, v2, v2);
-    //qc::core::min(v3, v3, v3, v3, v3);
-    //qc::core::min(v4, v4, v4, v4, v4);
+    //qc::min(v2, v2, v2, v2, v2);
+    //qc::min(v3, v3, v3, v3, v3);
+    //qc::min(v4, v4, v4, v4, v4);
 
-    //qc::core::min(v2, v);
-    //qc::core::min(v3, v);
-    //qc::core::min(v4, v);
-    //qc::core::min(v, v2);
-    //qc::core::min(v, v3);
-    //qc::core::min(v, v4);
+    //qc::min(v2, v);
+    //qc::min(v3, v);
+    //qc::min(v4, v);
+    //qc::min(v, v2);
+    //qc::min(v, v3);
+    //qc::min(v, v4);
 
-    //qc::core::max(v2);
-    //qc::core::max(v3);
-    //qc::core::max(v4);
+    //qc::max(v2);
+    //qc::max(v3);
+    //qc::max(v4);
 
-    //qc::core::max(v2, v2);
-    //qc::core::max(v3, v3);
-    //qc::core::max(v4, v4);
+    //qc::max(v2, v2);
+    //qc::max(v3, v3);
+    //qc::max(v4, v4);
 
-    //qc::core::max(v2, v2, v2);
-    //qc::core::max(v3, v3, v3);
-    //qc::core::max(v4, v4, v4);
+    //qc::max(v2, v2, v2);
+    //qc::max(v3, v3, v3);
+    //qc::max(v4, v4, v4);
 
-    //qc::core::max(v2, v2, v2, v2);
-    //qc::core::max(v3, v3, v3, v3);
-    //qc::core::max(v4, v4, v4, v4);
+    //qc::max(v2, v2, v2, v2);
+    //qc::max(v3, v3, v3, v3);
+    //qc::max(v4, v4, v4, v4);
 
-    //qc::core::max(v2, v2, v2, v2, v2);
-    //qc::core::max(v3, v3, v3, v3, v3);
-    //qc::core::max(v4, v4, v4, v4, v4);
+    //qc::max(v2, v2, v2, v2, v2);
+    //qc::max(v3, v3, v3, v3, v3);
+    //qc::max(v4, v4, v4, v4, v4);
 
-    //qc::core::max(v2, v);
-    //qc::core::max(v3, v);
-    //qc::core::max(v4, v);
-    //qc::core::max(v, v2);
-    //qc::core::max(v, v3);
-    //qc::core::max(v, v4);
+    //qc::max(v2, v);
+    //qc::max(v3, v);
+    //qc::max(v4, v);
+    //qc::max(v, v2);
+    //qc::max(v, v3);
+    //qc::max(v, v4);
 
-    //qc::core::minmax(v2);
-    //qc::core::minmax(v3);
-    //qc::core::minmax(v4);
+    //qc::minmax(v2);
+    //qc::minmax(v3);
+    //qc::minmax(v4);
 
-    //qc::core::clamp(v2, v, v);
-    //qc::core::clamp(v3, v, v);
-    //qc::core::clamp(v4, v, v);
+    //qc::clamp(v2, v, v);
+    //qc::clamp(v3, v, v);
+    //qc::clamp(v4, v, v);
 
-    //qc::core::clamp(v2, v2, v2);
-    //qc::core::clamp(v3, v3, v3);
-    //qc::core::clamp(v4, v4, v4);
+    //qc::clamp(v2, v2, v2);
+    //qc::clamp(v3, v3, v3);
+    //qc::clamp(v4, v4, v4);
 
-    //qc::core::abs(v2);
-    //qc::core::abs(v3);
-    //qc::core::abs(v4);
+    //qc::abs(v2);
+    //qc::abs(v3);
+    //qc::abs(v4);
 
-    //qc::core::zero(v2);
-    //qc::core::zero(v3);
-    //qc::core::zero(v4);
+    //qc::zero(v2);
+    //qc::zero(v3);
+    //qc::zero(v4);
 
-    //qc::core::equal(v2, v2, v2, v2, v2);
-    //qc::core::equal(v3, v3, v3, v3, v3);
-    //qc::core::equal(v4, v4, v4, v4, v4);
+    //qc::equal(v2, v2, v2, v2, v2);
+    //qc::equal(v3, v3, v3, v3, v3);
+    //qc::equal(v4, v4, v4, v4, v4);
 
-    //qc::core::equal(v2);
-    //qc::core::equal(v3);
-    //qc::core::equal(v4);
+    //qc::equal(v2);
+    //qc::equal(v3);
+    //qc::equal(v4);
 
-    //qc::core::sign(v2);
-    //qc::core::sign(v3);
-    //qc::core::sign(v3);
+    //qc::sign(v2);
+    //qc::sign(v3);
+    //qc::sign(v3);
 
-    //qc::core::round(v2);
-    //qc::core::round(v3);
-    //qc::core::round(v4);
+    //qc::round(v2);
+    //qc::round(v3);
+    //qc::round(v4);
 
-    //qc::core::floor(v2);
-    //qc::core::floor(v3);
-    //qc::core::floor(v4);
+    //qc::floor(v2);
+    //qc::floor(v3);
+    //qc::floor(v4);
 
-    //qc::core::ceil(v2);
-    //qc::core::ceil(v3);
-    //qc::core::ceil(v4);
+    //qc::ceil(v2);
+    //qc::ceil(v3);
+    //qc::ceil(v4);
 
-    //qc::core::composite(v2, v2);
-    //qc::core::composite(v3, v3);
-    //qc::core::composite(v4, v4);
+    //qc::composite(v2, v2);
+    //qc::composite(v3, v3);
+    //qc::composite(v4, v4);
 }
 
 template <typename T>
@@ -1086,40 +1086,40 @@ static constexpr void compileFunctionsConstexprFT() {
     constexpr vec3<T> v3(T(1.0));
     constexpr vec4<T> v4(T(1.0));
 
-    //qc::core::equal_e(v2);
-    //qc::core::equal_e(v3);
-    //qc::core::equal_e(v4);
-    //qc::core::equal_e(v2, v);
-    //qc::core::equal_e(v3, v);
-    //qc::core::equal_e(v4, v);
+    //qc::equal_e(v2);
+    //qc::equal_e(v3);
+    //qc::equal_e(v4);
+    //qc::equal_e(v2, v);
+    //qc::equal_e(v3, v);
+    //qc::equal_e(v4, v);
 
-    //qc::core::equal_e(v2, v2);
-    //qc::core::equal_e(v3, v3);
-    //qc::core::equal_e(v4, v4);
-    //qc::core::equal_e(v2, v2, v);
-    //qc::core::equal_e(v3, v3, v);
-    //qc::core::equal_e(v4, v4, v);
+    //qc::equal_e(v2, v2);
+    //qc::equal_e(v3, v3);
+    //qc::equal_e(v4, v4);
+    //qc::equal_e(v2, v2, v);
+    //qc::equal_e(v3, v3, v);
+    //qc::equal_e(v4, v4, v);
 
-    //qc::core::mix(v2, v2, v);
-    //qc::core::mix(v3, v3, v);
-    //qc::core::mix(v4, v4, v);
+    //qc::mix(v2, v2, v);
+    //qc::mix(v3, v3, v);
+    //qc::mix(v4, v4, v);
 
-    //qc::core::mix(v, v, v2);
-    //qc::core::mix(v2, v2, v2);
-    //qc::core::mix(v3, v3, v2);
-    //qc::core::mix(v4, v4, v2);
-    //qc::core::mix(v, v, v, v3);
-    //qc::core::mix(v2, v2, v2, v3);
-    //qc::core::mix(v3, v3, v3, v3);
-    //qc::core::mix(v4, v4, v4, v3);
-    //qc::core::mix(v, v, v, v, v4);
-    //qc::core::mix(v2, v2, v2, v2, v4);
-    //qc::core::mix(v3, v3, v3, v3, v4);
-    //qc::core::mix(v4, v4, v4, v4, v4);
+    //qc::mix(v, v, v2);
+    //qc::mix(v2, v2, v2);
+    //qc::mix(v3, v3, v2);
+    //qc::mix(v4, v4, v2);
+    //qc::mix(v, v, v, v3);
+    //qc::mix(v2, v2, v2, v3);
+    //qc::mix(v3, v3, v3, v3);
+    //qc::mix(v4, v4, v4, v3);
+    //qc::mix(v, v, v, v, v4);
+    //qc::mix(v2, v2, v2, v2, v4);
+    //qc::mix(v3, v3, v3, v3, v4);
+    //qc::mix(v4, v4, v4, v4, v4);
 
-    //qc::core::smoothstep(v2, v2, v);
-    //qc::core::smoothstep(v3, v3, v);
-    //qc::core::smoothstep(v4, v4, v);
+    //qc::smoothstep(v2, v2, v);
+    //qc::smoothstep(v3, v3, v);
+    //qc::smoothstep(v4, v4, v);
 }
 
 template <typename T>
@@ -1129,9 +1129,9 @@ static constexpr void compileFunctionsConstexprIT() {
     constexpr vec3<T> v3(T(1.0));
     constexpr vec4<T> v4(T(1.0));
 
-    //qc::core::mipmaps(v2);
-    //qc::core::mipmaps(v3);
-    //qc::core::mipmaps(v4);
+    //qc::mipmaps(v2);
+    //qc::mipmaps(v3);
+    //qc::mipmaps(v4);
 }
 
 static constexpr void compileBoolFunctionsConstexpr() {
@@ -1151,13 +1151,13 @@ static constexpr void compileBoolFunctionsConstexpr() {
     //!b3;
     //!b4;
 
-    //qc::core::all(b2);
-    //qc::core::all(b3);
-    //qc::core::all(b4);
+    //qc::all(b2);
+    //qc::all(b3);
+    //qc::all(b4);
 
-    //qc::core::any(b2);
-    //qc::core::any(b3);
-    //qc::core::any(b4);
+    //qc::any(b2);
+    //qc::any(b3);
+    //qc::any(b4);
 }
 
 static constexpr bool compileFunctionsConstexpr() {
@@ -1258,35 +1258,35 @@ static constexpr bool compileCasts() {
 
 template <typename T>
 static constexpr void compileConstantsT() {
-    constexpr vec2<T> px2(qc::core::px2<T>);
-    constexpr vec3<T> px3(qc::core::px3<T>);
-    constexpr vec4<T> px4(qc::core::px4<T>);
-    constexpr vec2<T> py2(qc::core::py2<T>);
-    constexpr vec3<T> py3(qc::core::py3<T>);
-    constexpr vec4<T> py4(qc::core::py4<T>);
-    constexpr vec3<T> pz3(qc::core::pz3<T>);
-    constexpr vec4<T> pz4(qc::core::pz4<T>);
-    constexpr vec4<T> pw4(qc::core::pw4<T>);
-    constexpr vec2<T> nx2(qc::core::nx2<T>);
-    constexpr vec3<T> nx3(qc::core::nx3<T>);
-    constexpr vec4<T> nx4(qc::core::nx4<T>);
-    constexpr vec2<T> ny2(qc::core::ny2<T>);
-    constexpr vec3<T> ny3(qc::core::ny3<T>);
-    constexpr vec4<T> ny4(qc::core::ny4<T>);
-    constexpr vec3<T> nz3(qc::core::nz3<T>);
-    constexpr vec4<T> nz4(qc::core::nz4<T>);
-    constexpr vec4<T> nw4(qc::core::nw4<T>);
+    constexpr vec2<T> px2(qc::px2<T>);
+    constexpr vec3<T> px3(qc::px3<T>);
+    constexpr vec4<T> px4(qc::px4<T>);
+    constexpr vec2<T> py2(qc::py2<T>);
+    constexpr vec3<T> py3(qc::py3<T>);
+    constexpr vec4<T> py4(qc::py4<T>);
+    constexpr vec3<T> pz3(qc::pz3<T>);
+    constexpr vec4<T> pz4(qc::pz4<T>);
+    constexpr vec4<T> pw4(qc::pw4<T>);
+    constexpr vec2<T> nx2(qc::nx2<T>);
+    constexpr vec3<T> nx3(qc::nx3<T>);
+    constexpr vec4<T> nx4(qc::nx4<T>);
+    constexpr vec2<T> ny2(qc::ny2<T>);
+    constexpr vec3<T> ny3(qc::ny3<T>);
+    constexpr vec4<T> ny4(qc::ny4<T>);
+    constexpr vec3<T> nz3(qc::nz3<T>);
+    constexpr vec4<T> nz4(qc::nz4<T>);
+    constexpr vec4<T> nw4(qc::nw4<T>);
 }
 
 template <typename T>
 static constexpr void compileConstantsFT() {
-    constexpr vec2<T> iv2(qc::core::infvec<T, 2>);
-    constexpr vec3<T> iv3(qc::core::infvec<T, 3>);
-    constexpr vec4<T> iv4(qc::core::infvec<T, 4>);
+    constexpr vec2<T> iv2(qc::infvec<T, 2>);
+    constexpr vec3<T> iv3(qc::infvec<T, 3>);
+    constexpr vec4<T> iv4(qc::infvec<T, 4>);
 
-    constexpr vec2<T> nv2(qc::core::nanvec<T, 2>);
-    constexpr vec3<T> nv3(qc::core::nanvec<T, 3>);
-    constexpr vec4<T> nv4(qc::core::nanvec<T, 4>);
+    constexpr vec2<T> nv2(qc::nanvec<T, 2>);
+    constexpr vec3<T> nv3(qc::nanvec<T, 3>);
+    constexpr vec4<T> nv4(qc::nanvec<T, 4>);
 }
 
 static constexpr bool compileConstants() {

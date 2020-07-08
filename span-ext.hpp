@@ -6,7 +6,7 @@
 #include "span.hpp"
 #include "vector-ext.hpp"
 
-namespace qc::core {
+namespace qc {
 
     //
     // ...
@@ -58,11 +58,11 @@ namespace qc::core {
     //
     template <Numeric T, int n> span<T, n> & joinify(span<T, n> & v1, const span<T, n> & v2);
 
-} // namespace qc::core
+} // namespace qc
 
 // INLINE IMPLEMENTATION ///////////////////////////////////////////////////////////////////////////////////////////////
 
-namespace qc::core {
+namespace qc {
 
     template <Numeric T, int n>
     inline std::ostream & operator<<(std::ostream & os, const span<T, n> & s) {
@@ -166,4 +166,4 @@ namespace qc::core {
         return v1;
     }
 
-} // namespace qc::core
+} // namespace qc

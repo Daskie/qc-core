@@ -2,13 +2,13 @@
 
 #include "vector.hpp"
 
-namespace qc::core {
+namespace qc {
 
     template <Numeric T, int n> struct span;
 
     inline namespace types {
 
-        using qc::core::span;
+        using qc::span;
 
         template <Numeric T> using span1 = span<T, 1>;
         template <Numeric T> using span2 = span<T, 2>;
@@ -206,11 +206,11 @@ namespace qc::core {
 
     template <typename T, int n> Q_CX_ABLE bool operator!=(const span<T, n> & v1, const span<T, n> & v2);
 
-} // namespace qc::core
+} // namespace qc
 
 // INLINE IMPLEMENTATION ///////////////////////////////////////////////////////////////////////////////////////////////
 
-namespace qc::core {
+namespace qc {
 
     template <Numeric T>
     template <Numeric U>
@@ -516,4 +516,4 @@ namespace qc::core {
         return !(v1 == v2);
     }
 
-} // namespace qc::core
+} // namespace qc

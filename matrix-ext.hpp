@@ -3,7 +3,7 @@
 #include "matrix.hpp"
 #include "vector-ext.hpp"
 
-namespace qc::core {
+namespace qc {
 
     //
     // ...
@@ -159,11 +159,11 @@ namespace qc::core {
     template <typename T> mat4<T> view_o(vec3<T> camPos, vec3<T> camU, vec3<T> camV, vec3<T> camW);
     template <typename T> mat4<T> view_on(vec3<T> camPos, vec3<T> camU, vec3<T> camV, vec3<T> camW);
 
-} // namespace qc::core
+} // namespace qc
 
 // INLINE IMPLEMENTATION ///////////////////////////////////////////////////////////////////////////////////////////////
 
-namespace qc::core {
+namespace qc {
 
     template <typename T, int n>
     inline std::ostream & operator<<(std::ostream & os, const mat<T, n> & m) {
@@ -684,4 +684,4 @@ namespace qc::core {
         };
     }
 
-} // namespace qc::core
+} // namespace qc

@@ -5,7 +5,7 @@
 #include "vector.hpp"
 #include "core-ext.hpp"
 
-namespace qc::core {
+namespace qc {
 
     //
     // ...
@@ -233,11 +233,11 @@ namespace qc::core {
     //
     template <Numeric T, int n> Q_CX_ABLE vec<T, n> composite(const vec<T, n> & v1, const vec<T, n> & v2);
 
-} // namespace qc::core
+} // namespace qc
 
 // INLINE IMPLEMENTATION ///////////////////////////////////////////////////////////////////////////////////////////////
 
-namespace qc::core {
+namespace qc {
 
     template <Numeric T, int n>
     inline Q_CX_ABLE T sum(const vec<T, n> & v) {
@@ -703,4 +703,4 @@ namespace qc::core {
         return v;
     }
 
-} // namespace qc::core
+} // namespace qc

@@ -5,7 +5,7 @@
 #include <qc-core/quaternion-ext.hpp>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
-using namespace qc::core::types;
+using namespace qc::types;
 
 template <typename T>
 static void compileClassesT() {
@@ -100,27 +100,27 @@ static void compileFunctionsT() {
     mat3<T> m3(v3, v3, v3);
     quat<T> q(v4);
 
-    qc::core::dot(q, q);
-    qc::core::magnitude(q);
-    qc::core::magnitude2(q);
-    qc::core::normalize(q);
-    qc::core::inverse(q);
-    qc::core::quatAngle(q);
-    qc::core::quatAxis(q);
-    qc::core::quatAxis_n(q);
-    qc::core::mix(q, q, v);
+    qc::dot(q, q);
+    qc::magnitude(q);
+    qc::magnitude2(q);
+    qc::normalize(q);
+    qc::inverse(q);
+    qc::quatAngle(q);
+    qc::quatAxis(q);
+    qc::quatAxis_n(q);
+    qc::mix(q, q, v);
 
-    qc::core::rotateQ(v3, v);
-    qc::core::rotateQ_n(v3, v);
-    qc::core::alignQ(v3, v3);
-    qc::core::alignQ_n(v3, v3);
-    qc::core::alignQ(v3, v3, v3, v3);
-    qc::core::alignQ_n(v3, v3, v3, v3);
-    qc::core::eulerQ(v3, v3, v, v, v);
-    qc::core::eulerQ_n(v3, v3, v, v, v);
-    qc::core::toMat(q);
-    qc::core::nlerp(q, q, v);
-    qc::core::slerp(q, q, v);
+    qc::rotateQ(v3, v);
+    qc::rotateQ_n(v3, v);
+    qc::alignQ(v3, v3);
+    qc::alignQ_n(v3, v3);
+    qc::alignQ(v3, v3, v3, v3);
+    qc::alignQ_n(v3, v3, v3, v3);
+    qc::eulerQ(v3, v3, v, v, v);
+    qc::eulerQ_n(v3, v3, v, v, v);
+    qc::toMat(q);
+    qc::nlerp(q, q, v);
+    qc::slerp(q, q, v);
 }
 
 static void compileFunctions() {

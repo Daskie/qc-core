@@ -4,7 +4,7 @@
 
 #include "core.hpp"
 
-namespace qc::core {
+namespace qc {
 
     //
     // Transforms random engine `Engine` result into some type `T`
@@ -170,4 +170,4 @@ namespace qc::core {
 
     };
 
-} // namespace qc::core
+} // namespace qc

@@ -5,7 +5,7 @@
 #include <qc-core/matrix-ext.hpp>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
-using namespace qc::core::types;
+using namespace qc::types;
 
 template <typename T>
 static void compileClassesT() {
@@ -306,77 +306,77 @@ static void compileFunctionsT() {
     mat3<T> m3;
     mat4<T> m4;
 
-    qc::core::isIdentity(m2);
-    qc::core::isIdentity(m3);
-    qc::core::isIdentity(m4);
-    qc::core::transpose(m2);
-    qc::core::transpose(m3);
-    qc::core::transpose(m4);
-    qc::core::cofactor(m2);
-    qc::core::cofactor(m3);
-    qc::core::cofactor(m4);
-    qc::core::adjoint(m2);
-    qc::core::adjoint(m3);
-    qc::core::adjoint(m4);
-    qc::core::determinant(m2);
-    qc::core::determinant(m3);
-    qc::core::determinant(m4);
-    qc::core::inverse(m2);
-    qc::core::inverse(m3);
-    qc::core::inverse(m4);
-    qc::core::fullMat<T, 2>(v);
-    qc::core::fullMat<T, 3>(v);
-    qc::core::fullMat<T, 4>(v);
-    qc::core::nullMat<T, 2>();
-    qc::core::nullMat<T, 3>();
-    qc::core::nullMat<T, 4>();
+    qc::isIdentity(m2);
+    qc::isIdentity(m3);
+    qc::isIdentity(m4);
+    qc::transpose(m2);
+    qc::transpose(m3);
+    qc::transpose(m4);
+    qc::cofactor(m2);
+    qc::cofactor(m3);
+    qc::cofactor(m4);
+    qc::adjoint(m2);
+    qc::adjoint(m3);
+    qc::adjoint(m4);
+    qc::determinant(m2);
+    qc::determinant(m3);
+    qc::determinant(m4);
+    qc::inverse(m2);
+    qc::inverse(m3);
+    qc::inverse(m4);
+    qc::fullMat<T, 2>(v);
+    qc::fullMat<T, 3>(v);
+    qc::fullMat<T, 4>(v);
+    qc::nullMat<T, 2>();
+    qc::nullMat<T, 3>();
+    qc::nullMat<T, 4>();
 
-    qc::core::translate(v2);
-    qc::core::translate(v3);
-    qc::core::translate(m3, v2);
-    qc::core::translate(m4, v3);
-    qc::core::scale(v2);
-    qc::core::scale(v3);
-    qc::core::scale(v4);
-    qc::core::scale(m2, v2);
-    qc::core::scale(m3, v2);
-    qc::core::scale(m3, v3);
-    qc::core::scale(m4, v3);
-    qc::core::rotate(v);
-    qc::core::rotateX(v);
-    qc::core::rotateY(v);
-    qc::core::rotateZ(v);
-    qc::core::rotate(v3, v, v);
-    qc::core::rotate_n(v3, v, v);
-    qc::core::rotate(v3, v);
-    qc::core::rotate_n(v3, v);
-    qc::core::euler(v3, v3, v, v, v);
-    qc::core::euler_n(v3, v3, v, v, v);
-    qc::core::align(v2, v2);
-    qc::core::align(v3, v3);
-    qc::core::align_n(v2, v2);
-    qc::core::align_n(v3, v3);
-    qc::core::align(v3, v3, v3, v3);
-    qc::core::align_n(v3, v3, v3, v3);
-    qc::core::map(v2, v2, v2, v2);
-    qc::core::map_o(v2, v2, v2, v2);
-    qc::core::map(v3, v3, v3, v3, v3, v3);
-    qc::core::map_o(v3, v3, v3, v3, v3, v3);
-    qc::core::mapTo(v2, v2);
-    qc::core::mapTo_o(v2, v2);
-    qc::core::mapTo(v3, v3, v3);
-    qc::core::mapTo_o(v3, v3, v3);
-    qc::core::mapFrom(v2, v2);
-    qc::core::mapFrom(v3, v3, v3);
-    qc::core::orthoProj<true>(v, v, v, v);
-    qc::core::orthoProj<false>(v, v, v, v);
-    qc::core::perspProj<true>(v, v, v, v);
-    qc::core::perspProj<false>(v, v, v, v);
-    qc::core::view(v3, v3, v3);
-    qc::core::view(v3, v3, v3, v3);
-    qc::core::view_n(v3, v3, v3, v3);
-    qc::core::view_o(v3, v3, v3, v3);
-    qc::core::view_on(v3, v3, v3, v3);
+    qc::translate(v2);
+    qc::translate(v3);
+    qc::translate(m3, v2);
+    qc::translate(m4, v3);
+    qc::scale(v2);
+    qc::scale(v3);
+    qc::scale(v4);
+    qc::scale(m2, v2);
+    qc::scale(m3, v2);
+    qc::scale(m3, v3);
+    qc::scale(m4, v3);
+    qc::rotate(v);
+    qc::rotateX(v);
+    qc::rotateY(v);
+    qc::rotateZ(v);
+    qc::rotate(v3, v, v);
+    qc::rotate_n(v3, v, v);
+    qc::rotate(v3, v);
+    qc::rotate_n(v3, v);
+    qc::euler(v3, v3, v, v, v);
+    qc::euler_n(v3, v3, v, v, v);
+    qc::align(v2, v2);
+    qc::align(v3, v3);
+    qc::align_n(v2, v2);
+    qc::align_n(v3, v3);
+    qc::align(v3, v3, v3, v3);
+    qc::align_n(v3, v3, v3, v3);
+    qc::map(v2, v2, v2, v2);
+    qc::map_o(v2, v2, v2, v2);
+    qc::map(v3, v3, v3, v3, v3, v3);
+    qc::map_o(v3, v3, v3, v3, v3, v3);
+    qc::mapTo(v2, v2);
+    qc::mapTo_o(v2, v2);
+    qc::mapTo(v3, v3, v3);
+    qc::mapTo_o(v3, v3, v3);
+    qc::mapFrom(v2, v2);
+    qc::mapFrom(v3, v3, v3);
+    qc::orthoProj<true>(v, v, v, v);
+    qc::orthoProj<false>(v, v, v, v);
+    qc::perspProj<true>(v, v, v, v);
+    qc::perspProj<false>(v, v, v, v);
+    qc::view(v3, v3, v3);
+    qc::view(v3, v3, v3, v3);
+    qc::view_n(v3, v3, v3, v3);
+    qc::view_o(v3, v3, v3, v3);
+    qc::view_on(v3, v3, v3, v3);
 }
 
 static void compileFunctions() {
@@ -394,12 +394,12 @@ static constexpr void compileFunctionsConstexprT() {
     constexpr mat3<T> m3(v3, v3, v3);
     constexpr mat4<T> m4(v4, v4, v4, v4);
 
-    qc::core::fullMat<T, 2>(v);
-    qc::core::fullMat<T, 3>(v);
-    qc::core::fullMat<T, 4>(v);
-    qc::core::nullMat<T, 2>();
-    qc::core::nullMat<T, 3>();
-    qc::core::nullMat<T, 4>();
+    qc::fullMat<T, 2>(v);
+    qc::fullMat<T, 3>(v);
+    qc::fullMat<T, 4>(v);
+    qc::nullMat<T, 2>();
+    qc::nullMat<T, 3>();
+    qc::nullMat<T, 4>();
 }
 
 static constexpr bool compileFunctionsConstexpr() {

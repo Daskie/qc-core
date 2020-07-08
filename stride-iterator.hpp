@@ -1,6 +1,6 @@
 #pragma once
 
-namespace qc::core {
+namespace qc {
 
     template <typename T>
     class StrideIter {
@@ -80,4 +80,4 @@ namespace qc::core {
 
     };
 
-} // namespace qc::core
+} // namespace qc

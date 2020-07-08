@@ -2,7 +2,7 @@
 
 #include <cstddef>
 
-namespace qc::core {
+namespace qc {
 
     template <typename T> class RecordAllocator {
 
@@ -74,4 +74,4 @@ namespace qc::core {
         return false;
     }
 
-} // namespace qc::core
+} // namespace qc

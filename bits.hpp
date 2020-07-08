@@ -2,7 +2,7 @@
 
 #include "core-ext.hpp"
 
-namespace qc::core::bits {
+namespace qc::bits {
 
     template <UnsignedIntegral SrcT, UnsignedIntegral DstT> requires (sizeof(DstT) > sizeof(SrcT)) DstT spread(SrcT v);
 
@@ -12,11 +12,11 @@ namespace qc::core::bits {
 
     template <UnsignedIntegral T> T scramble(T v);
 
-} // namespace qc::core::bits
+} // namespace qc::bits
 
 // INLINE IMPLEMENTATION ///////////////////////////////////////////////////////////////////////////////////////////////
 
-namespace qc::core::bits {
+namespace qc::bits {
 
     template <UnsignedIntegral SrcT, UnsignedIntegral DstT>
     requires (sizeof(DstT) > sizeof(SrcT))
@@ -122,4 +122,4 @@ namespace qc::core::bits {
         }
     }
 
-} // namespace qc::core::bits
+} // namespace qc::bits

@@ -3,7 +3,7 @@
 #include <qc-core/core-ext.hpp>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
-using namespace qc::core::types;
+using namespace qc::types;
 
 namespace Microsoft::VisualStudio::CppUnitTestFramework {
     template <>
@@ -24,30 +24,30 @@ static void compileTyping() {
     u64 u64_; u64_;
     f64 f64_; f64_;
 
-    qc::core::array_t<int> a0{1, 2, 3}; a0;
-    qc::core::array_t<int, 1> a1; a1;
+    qc::array_t<int> a0{1, 2, 3}; a0;
+    qc::array_t<int, 1> a1; a1;
 
-    qc::core::stype<1> stype_08_; stype_08_;
-    qc::core::stype<2> stype_16_; stype_16_;
-    qc::core::stype<4> stype_32_; stype_32_;
-    qc::core::stype<8> stype_64_; stype_64_;
-    qc::core::utype<1> utype_08_; utype_08_;
-    qc::core::utype<2> utype_16_; utype_16_;
-    qc::core::utype<4> utype_32_; utype_32_;
-    qc::core::utype<8> utype_64_; utype_64_;
-    qc::core::ftype<4> ftype_32_; ftype_32_;
-    qc::core::ftype<8> ftype_64_; ftype_64_;
+    qc::stype<1> stype_08_; stype_08_;
+    qc::stype<2> stype_16_; stype_16_;
+    qc::stype<4> stype_32_; stype_32_;
+    qc::stype<8> stype_64_; stype_64_;
+    qc::utype<1> utype_08_; utype_08_;
+    qc::utype<2> utype_16_; utype_16_;
+    qc::utype<4> utype_32_; utype_32_;
+    qc::utype<8> utype_64_; utype_64_;
+    qc::ftype<4> ftype_32_; ftype_32_;
+    qc::ftype<8> ftype_64_; ftype_64_;
 }
 
 template <typename T>
 static void compileConstantsFT() {
-    qc::core::pi<T>;
-    qc::core::e<T>;
-    qc::core::phi<T>;
-    qc::core::sqrt2<T>;
-    qc::core::sqrt3<T>;
-    qc::core::sqrt5<T>;
-    qc::core::infinity<T>;
+    qc::pi<T>;
+    qc::e<T>;
+    qc::phi<T>;
+    qc::sqrt2<T>;
+    qc::sqrt3<T>;
+    qc::sqrt5<T>;
+    qc::infinity<T>;
 }
 
 static void compileConstants() {
@@ -74,87 +74,87 @@ static void compileFunctionsT() {
     T v{1};
     T * vp{nullptr};
 
-    qc::core::min(v, v);
-    qc::core::min(vp, vp);
-    qc::core::min(v, v, v);
-    qc::core::min(v, v, v, v);
-    qc::core::min(v, v, v, v, v);
+    qc::min(v, v);
+    qc::min(vp, vp);
+    qc::min(v, v, v);
+    qc::min(v, v, v, v);
+    qc::min(v, v, v, v, v);
 
-    qc::core::max(v, v);
-    qc::core::max(vp, vp);
-    qc::core::max(v, v, v);
-    qc::core::max(v, v, v, v);
-    qc::core::max(v, v, v, v, v);
+    qc::max(v, v);
+    qc::max(vp, vp);
+    qc::max(v, v, v);
+    qc::max(v, v, v, v);
+    qc::max(v, v, v, v, v);
 
-    qc::core::minify(v, v);
-    qc::core::minify(vp, vp);
-    qc::core::minify(v, v, v);
-    qc::core::minify(v, v, v, v);
-    qc::core::minify(v, v, v, v, v);
+    qc::minify(v, v);
+    qc::minify(vp, vp);
+    qc::minify(v, v, v);
+    qc::minify(v, v, v, v);
+    qc::minify(v, v, v, v, v);
 
-    qc::core::maxify(v, v);
-    qc::core::maxify(vp, vp);
-    qc::core::maxify(v, v, v);
-    qc::core::maxify(v, v, v, v);
-    qc::core::maxify(v, v, v, v, v);
+    qc::maxify(v, v);
+    qc::maxify(vp, vp);
+    qc::maxify(v, v, v);
+    qc::maxify(v, v, v, v);
+    qc::maxify(v, v, v, v, v);
 
-    qc::core::minmax(v);
-    qc::core::minmax(v, v);
-    qc::core::minmax(v, v, v);
-    qc::core::minmax(v, v, v, v);
-    qc::core::minmax(v, v, v, v, v);
+    qc::minmax(v);
+    qc::minmax(v, v);
+    qc::minmax(v, v, v);
+    qc::minmax(v, v, v, v);
+    qc::minmax(v, v, v, v, v);
 
-    qc::core::median(v, v, v);
+    qc::median(v, v, v);
 
-    qc::core::abs(v);
+    qc::abs(v);
 
-    qc::core::clamp(v, v, v);
+    qc::clamp(v, v, v);
 
-    qc::core::zero(v);
-    qc::core::zero(v, v);
+    qc::zero(v);
+    qc::zero(v, v);
 
-    qc::core::equal(v, v);
-    qc::core::equal(v, v, v);
-    qc::core::equal(v, v, v, v);
-    qc::core::equal(v, v, v, v, v);
+    qc::equal(v, v);
+    qc::equal(v, v, v);
+    qc::equal(v, v, v, v);
+    qc::equal(v, v, v, v, v);
 
-    qc::core::sign(v);
+    qc::sign(v);
 
-    qc::core::round(v);
+    qc::round(v);
 
-    qc::core::floor(v);
+    qc::floor(v);
 
-    qc::core::ceil(v);
+    qc::ceil(v);
 
-    qc::core::mod(v, v);
-    qc::core::mod_q(v, v);
+    qc::mod(v, v);
+    qc::mod_q(v, v);
 
-    qc::core::sum(v, v, v, v, v);
-    qc::core::product(v, v, v, v, v);
+    qc::sum(v, v, v, v, v);
+    qc::product(v, v, v, v, v);
 }
 
 template <typename T>
 static void compileFunctionsFT() {
     T v{1.0};
 
-    qc::core::equal_e(v, v);
-    qc::core::equal_e(v, v, v);
+    qc::equal_e(v, v);
+    qc::equal_e(v, v, v);
 
-    qc::core::pow(v, 1);
-    qc::core::pow(v, 1u);
+    qc::pow(v, 1);
+    qc::pow(v, 1u);
 
-    qc::core::fract(v);
-    qc::core::fract_i(v);
+    qc::fract(v);
+    qc::fract_i(v);
 
-    qc::core::mix(v, v, v);
+    qc::mix(v, v, v);
 
-    qc::core::unmix(v, v, v);
+    qc::unmix(v, v, v);
 
-    qc::core::average(v, v, v, v, v);
+    qc::average(v, v, v, v, v);
 
-    qc::core::radians(v);
+    qc::radians(v);
 
-    qc::core::degrees(v);
+    qc::degrees(v);
 }
 
 template <typename T>
@@ -166,20 +166,20 @@ template <typename T>
 static void compileFunctionsUIT() {
     T v{1u};
 
-    qc::core::log2Floor(v);
+    qc::log2Floor(v);
 
-    qc::core::log2Ceil(v);
+    qc::log2Ceil(v);
 
-    qc::core::mipmaps(v);
+    qc::mipmaps(v);
 }
 
 static void compileFunctionsBT() {
     bool v{true};
 
-    qc::core::equal(v, v);
-    qc::core::equal(v, v, v);
-    qc::core::equal(v, v, v, v);
-    qc::core::equal(v, v, v, v, v);
+    qc::equal(v, v);
+    qc::equal(v, v, v);
+    qc::equal(v, v, v, v);
+    qc::equal(v, v, v, v, v);
 }
 
 static void compileFunctions() {
@@ -236,69 +236,69 @@ static constexpr void compileFunctionsConstexprT() {
     constexpr T v{1};
     constexpr T * vp{nullptr};
 
-    qc::core::min(v, v);
-    qc::core::min(vp, vp);
-    qc::core::min(v, v, v);
-    qc::core::min(v, v, v, v);
-    qc::core::min(v, v, v, v, v);
+    qc::min(v, v);
+    qc::min(vp, vp);
+    qc::min(v, v, v);
+    qc::min(v, v, v, v);
+    qc::min(v, v, v, v, v);
 
-    qc::core::max(v, v);
-    qc::core::max(vp, vp);
-    qc::core::max(v, v, v);
-    qc::core::max(v, v, v, v);
-    qc::core::max(v, v, v, v, v);
+    qc::max(v, v);
+    qc::max(vp, vp);
+    qc::max(v, v, v);
+    qc::max(v, v, v, v);
+    qc::max(v, v, v, v, v);
 
-    //qc::core::minmax(v, v);
-    //qc::core::minmax(v, v, v);
-    //qc::core::minmax(v, v, v, v);
-    //qc::core::minmax(v, v, v, v, v);
+    //qc::minmax(v, v);
+    //qc::minmax(v, v, v);
+    //qc::minmax(v, v, v, v);
+    //qc::minmax(v, v, v, v, v);
 
-    //qc::core::median(v, v, v);
+    //qc::median(v, v, v);
 
-    //qc::core::clamp(v, v, v);
+    //qc::clamp(v, v, v);
 
-    //qc::core::abs(v);
+    //qc::abs(v);
 
-    //qc::core::zero(v);
-    //qc::core::zero(v, v);
+    //qc::zero(v);
+    //qc::zero(v, v);
 
-    //qc::core::equal(v, v);
-    //qc::core::equal(v, v, v
-    //qc::core::equal(v, v, v, v);
-    //qc::core::equal(v, v, v, v, v);
+    //qc::equal(v, v);
+    //qc::equal(v, v, v
+    //qc::equal(v, v, v, v);
+    //qc::equal(v, v, v, v, v);
 
-    //qc::core::sign(v);
+    //qc::sign(v);
 
-    //qc::core::round(v);
+    //qc::round(v);
 
-    //qc::core::floor(v);
+    //qc::floor(v);
 
-    //qc::core::ceil(v);
+    //qc::ceil(v);
 
-    //qc::core::mod(v, v);
-    //qc::core::mod_q(v, v);
+    //qc::mod(v, v);
+    //qc::mod_q(v, v);
 
-    qc::core::sum(v, v, v, v, v);
-    qc::core::product(v, v, v, v, v);
+    qc::sum(v, v, v, v, v);
+    qc::product(v, v, v, v, v);
 }
 
 template <typename T>
 static constexpr void compileFunctionsConstexprFT() {
     constexpr T v{1.0};
 
-    //qc::core::equal_e(v, v);
-    //qc::core::equal_e(v, v, v);
+    //qc::equal_e(v, v);
+    //qc::equal_e(v, v, v);
 
-    //qc::core::fract(v);
-    //qc::core::fract_i(v);
+    //qc::fract(v);
+    //qc::fract_i(v);
 
-    //qc::core::mix(v, v, v);
+    //qc::mix(v, v, v);
 
-    //qc::core::average(v, v, v, v, v);
+    //qc::average(v, v, v, v, v);
 
-    //qc::core::radians(v);
+    //qc::radians(v);
 
-    //qc::core::degrees(v);
+    //qc::degrees(v);
 }
 
 template <typename T>
@@ -310,20 +310,20 @@ template <typename T>
 static constexpr void compileFunctionsConstexprUIT() {
     constexpr T v{1};
 
-    qc::core::log2Floor(v);
+    qc::log2Floor(v);
 
-    qc::core::log2Ceil(v);
+    qc::log2Ceil(v);
 
-    //qc::core::mipmaps(v);
+    //qc::mipmaps(v);
 }
 
 static constexpr void compileFunctionsConstexprBT() {
     constexpr bool v{true};
 
-    //qc::core::equal(v, v);
-    //qc::core::equal(v, v, v);
-    //qc::core::equal(v, v, v, v);
-    //qc::core::equal(v, v, v, v, v);
+    //qc::equal(v, v);
+    //qc::equal(v, v, v);
+    //qc::equal(v, v, v, v);
+    //qc::equal(v, v, v, v, v);
 }
 
 static constexpr bool compileFunctionsConstexpr() {
@@ -377,74 +377,74 @@ TEST_CLASS(TestCore) {
 
     template <typename From, typename To>
     void testTransnormFTFT() {
-        Assert::AreEqual(To(0.0), qc::core::transnorm<To>(From(0.0)));
-        Assert::AreEqual(To(0.25), qc::core::transnorm<To>(From(0.25)));
-        Assert::AreEqual(To(0.5), qc::core::transnorm<To>(From(0.5)));
-        Assert::AreEqual(To(0.75), qc::core::transnorm<To>(From(0.75)));
-        Assert::AreEqual(To(1.0), qc::core::transnorm<To>(From(1.0)));
+        Assert::AreEqual(To(0.0), qc::transnorm<To>(From(0.0)));
+        Assert::AreEqual(To(0.25), qc::transnorm<To>(From(0.25)));
+        Assert::AreEqual(To(0.5), qc::transnorm<To>(From(0.5)));
+        Assert::AreEqual(To(0.75), qc::transnorm<To>(From(0.75)));
+        Assert::AreEqual(To(1.0), qc::transnorm<To>(From(1.0)));
     }
 
     template <typename From, typename To>
     void testTransnormFTST() {
         const double epsilon(1.0 / std::ldexp(1.0, std::numeric_limits<To>::digits));
 
-        Assert::AreEqual(To(std::numeric_limits<To>::min()), qc::core::transnorm<To>(From(-1.0)));
-        Assert::AreEqual(0.75, double(qc::core::transnorm<To>(From(-0.75))) / double(std::numeric_limits<To>::min()), epsilon);
-        Assert::AreEqual(0.5, double(qc::core::transnorm<To>(From(-0.5))) / double(std::numeric_limits<To>::min()), epsilon);
-        Assert::AreEqual(0.25, double(qc::core::transnorm<To>(From(-0.25))) / double(std::numeric_limits<To>::min()), epsilon);
-        Assert::AreEqual(To(0u), qc::core::transnorm<To>(From(0.0)));
-        Assert::AreEqual(0.25, double(qc::core::transnorm<To>(From(0.25))) / double(std::numeric_limits<To>::max()), epsilon);
-        Assert::AreEqual(0.5, double(qc::core::transnorm<To>(From(0.5))) / double(std::numeric_limits<To>::max()), epsilon);
-        Assert::AreEqual(0.75, double(qc::core::transnorm<To>(From(0.75))) / double(std::numeric_limits<To>::max()), epsilon);
-        Assert::AreEqual(std::numeric_limits<To>::max(), qc::core::transnorm<To>(From(1.0)));
+        Assert::AreEqual(To(std::numeric_limits<To>::min()), qc::transnorm<To>(From(-1.0)));
+        Assert::AreEqual(0.75, double(qc::transnorm<To>(From(-0.75))) / double(std::numeric_limits<To>::min()), epsilon);
+        Assert::AreEqual(0.5, double(qc::transnorm<To>(From(-0.5))) / double(std::numeric_limits<To>::min()), epsilon);
+        Assert::AreEqual(0.25, double(qc::transnorm<To>(From(-0.25))) / double(std::numeric_limits<To>::min()), epsilon);
+        Assert::AreEqual(To(0u), qc::transnorm<To>(From(0.0)));
+        Assert::AreEqual(0.25, double(qc::transnorm<To>(From(0.25))) / double(std::numeric_limits<To>::max()), epsilon);
+        Assert::AreEqual(0.5, double(qc::transnorm<To>(From(0.5))) / double(std::numeric_limits<To>::max()), epsilon);
+        Assert::AreEqual(0.75, double(qc::transnorm<To>(From(0.75))) / double(std::numeric_limits<To>::max()), epsilon);
+        Assert::AreEqual(std::numeric_limits<To>::max(), qc::transnorm<To>(From(1.0)));
     }
 
     template <typename From, typename To>
     void testTransnormFTUT() {
         const double epsilon(1.0 / std::ldexp(1.0, std::numeric_limits<To>::digits));
 
-        Assert::AreEqual(To(0u), qc::core::transnorm<To>(From(0.0)));
-        Assert::AreEqual(0.25, double(qc::core::transnorm<To>(From(0.25))) / double(std::numeric_limits<To>::max()), epsilon);
-        Assert::AreEqual(0.5, double(qc::core::transnorm<To>(From(0.5))) / double(std::numeric_limits<To>::max()), epsilon);
-        Assert::AreEqual(0.75, double(qc::core::transnorm<To>(From(0.75))) / double(std::numeric_limits<To>::max()), epsilon);
-        Assert::AreEqual(std::numeric_limits<To>::max(), qc::core::transnorm<To>(From(1.0)));
+        Assert::AreEqual(To(0u), qc::transnorm<To>(From(0.0)));
+        Assert::AreEqual(0.25, double(qc::transnorm<To>(From(0.25))) / double(std::numeric_limits<To>::max()), epsilon);
+        Assert::AreEqual(0.5, double(qc::transnorm<To>(From(0.5))) / double(std::numeric_limits<To>::max()), epsilon);
+        Assert::AreEqual(0.75, double(qc::transnorm<To>(From(0.75))) / double(std::numeric_limits<To>::max()), epsilon);
+        Assert::AreEqual(std::numeric_limits<To>::max(), qc::transnorm<To>(From(1.0)));
     }
 
     template <typename From, typename To>
     void testTransnormSTFT() {
         const To epsilon{To(1.0 / std::ldexp(1.0, std::numeric_limits<From>::digits))};
 
-        Assert::AreEqual(To(-1.0), qc::core::transnorm<To>(std::numeric_limits<From>::min()));
-        Assert::AreEqual(To(-0.75), qc::core::transnorm<To>(From(-threeQuartersVal<From>)), epsilon);
-        Assert::AreEqual(To(-0.5), qc::core::transnorm<To>(From(-halfVal<From>)), epsilon);
-        Assert::AreEqual(To(-0.25), qc::core::transnorm<To>(From(-quarterVal<From>)), epsilon);
-        Assert::AreEqual(To(0.0), qc::core::transnorm<To>(From(0)));
-        Assert::AreEqual(To(0.25), qc::core::transnorm<To>(quarterVal<From>), epsilon);
-        Assert::AreEqual(To(0.5), qc::core::transnorm<To>(halfVal<From>), epsilon);
-        Assert::AreEqual(To(0.75), qc::core::transnorm<To>(threeQuartersVal<From>), epsilon);
-        Assert::AreEqual(To(1.0), qc::core::transnorm<To>(std::numeric_limits<From>::max()));
+        Assert::AreEqual(To(-1.0), qc::transnorm<To>(std::numeric_limits<From>::min()));
+        Assert::AreEqual(To(-0.75), qc::transnorm<To>(From(-threeQuartersVal<From>)), epsilon);
+        Assert::AreEqual(To(-0.5), qc::transnorm<To>(From(-halfVal<From>)), epsilon);
+        Assert::AreEqual(To(-0.25), qc::transnorm<To>(From(-quarterVal<From>)), epsilon);
+        Assert::AreEqual(To(0.0), qc::transnorm<To>(From(0)));
+        Assert::AreEqual(To(0.25), qc::transnorm<To>(quarterVal<From>), epsilon);
+        Assert::AreEqual(To(0.5), qc::transnorm<To>(halfVal<From>), epsilon);
+        Assert::AreEqual(To(0.75), qc::transnorm<To>(threeQuartersVal<From>), epsilon);
+        Assert::AreEqual(To(1.0), qc::transnorm<To>(std::numeric_limits<From>::max()));
     }
 
     template <typename From, typename To>
     void testTransnormUTFT() {
         const To epsilon{To(1.0 / std::ldexp(1.0, std::numeric_limits<From>::digits))};
 
-        Assert::AreEqual(To(0.0), qc::core::transnorm<To>(From(0u)));
-        Assert::AreEqual(To(0.25), qc::core::transnorm<To>(quarterVal<From>), epsilon);
-        Assert::AreEqual(To(0.5), qc::core::transnorm<To>(halfVal<From>), epsilon);
-        Assert::AreEqual(To(0.75), qc::core::transnorm<To>(threeQuartersVal<From>), epsilon);
-        Assert::AreEqual(To(1.0), qc::core::transnorm<To>(std::numeric_limits<From>::max()));
+        Assert::AreEqual(To(0.0), qc::transnorm<To>(From(0u)));
+        Assert::AreEqual(To(0.25), qc::transnorm<To>(quarterVal<From>), epsilon);
+        Assert::AreEqual(To(0.5), qc::transnorm<To>(halfVal<From>), epsilon);
+        Assert::AreEqual(To(0.75), qc::transnorm<To>(threeQuartersVal<From>), epsilon);
+        Assert::AreEqual(To(1.0), qc::transnorm<To>(std::numeric_limits<From>::max()));
     }
 
     template <typename From, typename To>
     void testTransnormUTUT() {
-        const double epsilon(1.0 / std::ldexp(1.0, qc::core::min(std::numeric_limits<To>::digits, std::numeric_limits<From>::digits)));
+        const double epsilon(1.0 / std::ldexp(1.0, qc::min(std::numeric_limits<To>::digits, std::numeric_limits<From>::digits)));
 
-        Assert::AreEqual(To(0u), qc::core::transnorm<To>(From(0u)));
-        Assert::AreEqual(0.25, double(qc::core::transnorm<To>(From(quarterVal<From>))) / double(std::numeric_limits<To>::max()), epsilon);
-        Assert::AreEqual(0.5, double(qc::core::transnorm<To>(From(halfVal<From>))) / double(std::numeric_limits<To>::max()), epsilon);
-        Assert::AreEqual(0.75, double(qc::core::transnorm<To>(From(threeQuartersVal<From>))) / double(std::numeric_limits<To>::max()), epsilon);
-        Assert::AreEqual( To(std::numeric_limits<To>::max()), qc::core::transnorm<To>(std::numeric_limits<From>::max()));
+        Assert::AreEqual(To(0u), qc::transnorm<To>(From(0u)));
+        Assert::AreEqual(0.25, double(qc::transnorm<To>(From(quarterVal<From>))) / double(std::numeric_limits<To>::max()), epsilon);
+        Assert::AreEqual(0.5, double(qc::transnorm<To>(From(halfVal<From>))) / double(std::numeric_limits<To>::max()), epsilon);
+        Assert::AreEqual(0.75, double(qc::transnorm<To>(From(threeQuartersVal<From>))) / double(std::numeric_limits<To>::max()), epsilon);
+        Assert::AreEqual( To(std::numeric_limits<To>::max()), qc::transnorm<To>(std::numeric_limits<From>::max()));
     }
 
     template <typename From>

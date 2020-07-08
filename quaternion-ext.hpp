@@ -3,7 +3,7 @@
 #include "quaternion.hpp"
 #include "matrix-ext.hpp"
 
-namespace qc::core {
+namespace qc {
 
     //
     // ...
@@ -95,11 +95,11 @@ namespace qc::core {
 
     template <typename T> quat<T> slerp(const quat<T> & q1, const quat<T> & q2, T t);
 
-} // namespace qc::core
+} // namespace qc
 
 // INLINE IMPLEMENTATION ///////////////////////////////////////////////////////////////////////////////////////////////
 
-namespace qc::core {
+namespace qc {
 
     template <typename T>
     inline std::ostream & operator<<(std::ostream & os, const quat<T> & q) {
@@ -250,4 +250,4 @@ namespace qc::core {
         return (q1 * std::sin((T(1.0) - t) * halfTheta) + q2 * std::sin(t * halfTheta)) * (T(1.0) / sinHalfTheta);
     }
 
-} // namespace qc::core
+} // namespace qc

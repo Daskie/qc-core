@@ -10,13 +10,13 @@
 
 #include "vector.hpp"
 
-namespace qc::core {
+namespace qc {
 
     template <Floating T, int n> struct mat;
 
     inline namespace types {
 
-        using qc::core::mat;
+        using qc::mat;
 
         template <Floating T> using mat2 = mat<T, 2>;
         template <Floating T> using mat3 = mat<T, 3>;
@@ -209,11 +209,11 @@ namespace qc::core {
     //
     template <typename T, int n> constexpr mat<T, n> nullMat();
 
-} // namespace qc::core
+} // namespace qc
 
 // INLINE IMPLEMENTATION ///////////////////////////////////////////////////////////////////////////////////////////////
 
-namespace qc::core {
+namespace qc {
 
     template <Floating T>
     inline constexpr mat<T, 2>::mat() noexcept :
@@ -698,4 +698,4 @@ namespace qc::core {
         return fullMat<T, n>(T(0.0));
     }
 
-} // namespace qc::core
+} // namespace qc

@@ -2,7 +2,7 @@
 
 #include <stdexcept>
 
-namespace qc::core {
+namespace qc {
 
     template <typename T> class HeapArray {
 
@@ -78,17 +78,17 @@ namespace qc::core {
 
     template <typename T> bool operator==(const HeapArray<T> & arr1, const HeapArray<T> & arr2);
 
-} // namespace qc::core
+} // namespace qc
 
 namespace std {
 
-    template <typename T> constexpr void swap(qc::core::HeapArray<T> & lhs, qc::core::HeapArray<T> & rhs) noexcept;
+    template <typename T> constexpr void swap(qc::HeapArray<T> & lhs, qc::HeapArray<T> & rhs) noexcept;
 
 } // namespace std
 
 // INLINE IMPLEMENTATION ///////////////////////////////////////////////////////////////////////////////////////////////
 
-namespace qc::core {
+namespace qc {
 
     template <typename T>
     inline HeapArray<T>::HeapArray(const size_t size) noexcept :
@@ -330,12 +330,12 @@ namespace qc::core {
         return true;
     }
 
-} // namespace qc::core
+} // namespace qc
 
 namespace std {
 
     template <typename T>
-    inline constexpr void swap(qc::core::HeapArray<T> & lhs, qc::core::HeapArray<T> & rhs) noexcept {
+    inline constexpr void swap(qc::HeapArray<T> & lhs, qc::HeapArray<T> & rhs) noexcept {
         lhs.swap(rhs);
     }
 
