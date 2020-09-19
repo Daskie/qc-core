@@ -1,12 +1,12 @@
 #pragma once
 
-#include <memory>
 #include <fstream>
 #include <codecvt>
 #include <string>
 #include <sstream>
 #include <iomanip>
 #include <filesystem>
+#include <vector>
 
 #include "core.hpp"
 
@@ -21,20 +21,35 @@ namespace qc::utils {
     }
 
     // Throws `std::system_error` on failure
-    inline std::pair<std::unique_ptr<std::byte[]>, u64> readFile(const std::filesystem::path & path) {
-        std::pair<std::unique_ptr<std::byte[]>, u64> result;
-
-        result.second = std::filesystem::file_size(path);
-        if (result.second > std::numeric_limits<size_t>::max() || result.second > u64(std::numeric_limits<std::streamsize>::max())) {
+    inline std::vector<std::byte> readFile(const std::filesystem::path & path) {
+        const size_t size{std::filesystem::file_size(path)};
+        if (size > size_t(std::numeric_limits<std::streamsize>::max())) {
             throw std::system_error(std::make_error_code(std::errc::file_too_large));
         }
 
-        result.first = std::make_unique<std::byte[]>(size_t(result.second));
-        std::ifstream ifs(path, std::ios::in | std::ios::binary);
-        ifs.exceptions(std::ios::badbit | std::ios::failbit);
-        ifs.read(reinterpret_cast<char *>(result.first.get()), std::streamsize(result.second));
+        std::vector<std::byte> data(size); // TODO: default initializes its memory - potential performance concern for large files
 
-        return move(result);
+        std::ifstream ifs(path, std::ios::binary);
+        ifs.exceptions(std::ios::badbit | std::ios::failbit);
+        ifs.read(reinterpret_cast<char *>(data.data()), std::streamsize(size));
+
+        return data;
+    }
+
+    // Throws `std::system_error` on failure
+    inline std::string readAsciiFile(const std::filesystem::path & path) {
+        const size_t size{std::filesystem::file_size(path)};
+        if (size > size_t(std::numeric_limits<std::streamsize>::max())) {
+            throw std::system_error(std::make_error_code(std::errc::file_too_large));
+        }
+
+        std::string str(size, '\0'); // TODO: explicitly initializes its memory - potential performance concern for large files
+
+        std::ifstream ifs(path, std::ios::binary);
+        ifs.exceptions(std::ios::badbit | std::ios::failbit);
+        ifs.read(&str.front(), std::streamsize(size));
+
+        return str;
     }
 
     // Throws `std::system_error` on failure
@@ -42,6 +57,11 @@ namespace qc::utils {
         std::ofstream ofs(path, std::ios::out | std::ios::binary);
         ofs.exceptions(std::ios::badbit | std::ios::failbit);
         ofs.write(reinterpret_cast<const char *>(data), size);
+    }
+
+    // Throws `std::system_error` on failure
+    inline void writeAsciiFile(const std::filesystem::path & path, const std::string_view str) {
+        writeFile(path, str.data(), str.size());
     }
 
     //
