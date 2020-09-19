@@ -143,10 +143,10 @@ namespace qc {
         template <Numeric T>
         T next(const T max) noexcept {
             if constexpr (std::is_integral_v<T>) {
-                return operator()<T>() % max;
+                return next<T>() % max;
             }
             else {
-                return operator()<T>() * max;
+                return next<T>() * max;
             }
         }
 
@@ -155,7 +155,7 @@ namespace qc {
         //
         template <Numeric T>
         T next(const T min, const T max) noexcept {
-            return operator()(max - min) + min;
+            return next<T>(max - min) + min;
         }
 
         //
