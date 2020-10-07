@@ -1,13 +1,22 @@
 #pragma once
 
-// TODO: remove this define nonsense once Microsoft gets their shit together
-#ifdef __cpp_lib_bitops
-#include <bit>
-#else
-#define __cpp_lib_bitops
-#include <bit>
-#undef __cpp_lib_bitops
-#endif
+// TODO: Use <bit> once MSVC has countl_zero
+//#include <bit>
+namespace std {
+    template <typename T>
+    inline constexpr int countl_zero(T v) noexcept {
+        int count{std::numeric_limits<T>::digits};
+
+        if constexpr (sizeof(v) >= 8) if (v & 0b11111111'11111111'11111111'11111111'00000000'00000000'00000000'00000000u) { count -= 32; v >>= 32; }
+        if constexpr (sizeof(v) >= 4) if (v & 0b11111111'11111111'00000000'00000000u) { count -= 16; v >>= 16; }
+        if constexpr (sizeof(v) >= 2) if (v & 0b11111111'00000000u) { count -= 8; v >>= 8; }
+        if (v & 0b11110000u) { count -= 4; v >>= 4; }
+        if (v & 0b1100u) { count -= 2; v >>= 2; }
+        if (v & 0b10u) { count -= 1; v >>= 1; }
+
+        return count - int(v);
+    }
+}
 #include <cmath>
 
 #include "core.hpp"

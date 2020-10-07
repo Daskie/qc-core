@@ -42,4 +42,21 @@ TEST_CLASS(TestBits) {
         compileFunctions();
     }
 
+    TEST_METHOD(testCountLZero) {
+        Assert::AreEqual(8, std::countl_zero(qc::u8(0)));
+        Assert::AreEqual(16, std::countl_zero(qc::u16(0)));
+        Assert::AreEqual(32, std::countl_zero(qc::u32(0)));
+        Assert::AreEqual(64, std::countl_zero(qc::u64(0)));
+        Assert::AreEqual(0, std::countl_zero(qc::u8(-1)));
+        Assert::AreEqual(0, std::countl_zero(qc::u16(-1)));
+        Assert::AreEqual(0, std::countl_zero(qc::u32(-1)));
+        Assert::AreEqual(0, std::countl_zero(qc::u64(-1)));
+
+        int zeroes{63};
+        for (qc::u64 v{1u}; v; v <<= 1) {
+            Assert::AreEqual(zeroes, std::countl_zero(v));
+            --zeroes;
+        }
+    }
+
 };
