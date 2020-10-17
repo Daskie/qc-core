@@ -1,10 +1,9 @@
 #include <sstream>
 
-#include <CppUnitTest.h>
+#include <gtest/gtest.h>
 
 #include <qc-core/vector-ext.hpp>
 
-using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace qc::types;
 
 template <typename T>
@@ -36,8 +35,8 @@ static void compileClassesT() {
     // access
     v2[0];
 
-    v2.at<0>();
-    v2.at<1>();
+    v2.template at<0>();
+    v2.template at<1>();
 
     //--------------------------------------------------------------------------
     // Vec3
@@ -63,9 +62,9 @@ static void compileClassesT() {
     // access
     v3[0];
 
-    v3.at<0>();
-    v3.at<1>();
-    v3.at<2>();
+    v3.template at<0>();
+    v3.template at<1>();
+    v3.template at<2>();
 
     v3.xy();
     v3.yz();
@@ -98,10 +97,10 @@ static void compileClassesT() {
     // access
     v4[0];
 
-    v4.at<0>();
-    v4.at<1>();
-    v4.at<2>();
-    v4.at<3>();
+    v4.template at<0>();
+    v4.template at<1>();
+    v4.template at<2>();
+    v4.template at<3>();
 
     v4.xy();
     v4.yz();
@@ -146,8 +145,8 @@ static constexpr void compileClassesConstexprT() {
     static_cast<bool>(v2);
 
     // access
-    v2.at<0>();
-    v2.at<1>();
+    v2.template at<0>();
+    v2.template at<1>();
 
     //--------------------------------------------------------------------------
     // Vec3
@@ -167,9 +166,9 @@ static constexpr void compileClassesConstexprT() {
     static_cast<bool>(v3);
 
     // access
-    v3.at<0>();
-    v3.at<1>();
-    v3.at<2>();
+    v3.template at<0>();
+    v3.template at<1>();
+    v3.template at<2>();
 
     //v3.xy();
     //v3.yz();
@@ -196,10 +195,10 @@ static constexpr void compileClassesConstexprT() {
     static_cast<bool>(v4);
 
     // access
-    v4.at<0>();
-    v4.at<1>();
-    v4.at<2>();
-    v4.at<3>();
+    v4.template at<0>();
+    v4.template at<1>();
+    v4.template at<2>();
+    v4.template at<3>();
 
     //v4.xy();
     //v4.yz();
@@ -1307,134 +1306,128 @@ static constexpr bool compileConstants() {
     return true;
 }
 
-TEST_CLASS(TestVector) {
+TEST(vector, compilation) {
+    compileClasses();
+    static_assert(compileClassesConstexpr());
+    compileFunctions();
+    static_assert(compileFunctionsConstexpr());
+    testProperties();
+    static_assert(compileCasts());
+    static_assert(compileConstants());
+}
 
-    public:
+template <typename T>
+void testVectorConceptT() {
+    static_assert(Vector<vec2<T>>);
+    static_assert(Vector<vec3<T>>);
+    static_assert(Vector<vec4<T>>);
+}
 
-    TEST_METHOD(testCompilation) {
-        compileClasses();
-        static_assert(compileClassesConstexpr());
-        compileFunctions();
-        static_assert(compileFunctionsConstexpr());
-        testProperties();
-        static_assert(compileCasts());
-        static_assert(compileConstants());
-    }
+template <typename T>
+void testFloaterVectorConceptT() {
+    static_assert(FloatingVector<vec2<T>>);
+    static_assert(FloatingVector<vec3<T>>);
+    static_assert(FloatingVector<vec4<T>>);
+}
 
-    template <typename T>
-    void testVectorConceptT() {
-        static_assert(Vector<vec2<T>>);
-        static_assert(Vector<vec3<T>>);
-        static_assert(Vector<vec4<T>>);
-    }
+template <typename T>
+void testIntegerVectorConceptT() {
+    static_assert(IntegralVector<vec2<T>>);
+    static_assert(IntegralVector<vec3<T>>);
+    static_assert(IntegralVector<vec4<T>>);
+}
 
-    template <typename T>
-    void testFloaterVectorConceptT() {
-        static_assert(FloatingVector<vec2<T>>);
-        static_assert(FloatingVector<vec3<T>>);
-        static_assert(FloatingVector<vec4<T>>);
-    }
+template <typename T>
+void testSignedIntegerVectorConceptT() {
+    static_assert(SignedIntegralVector<vec2<T>>);
+    static_assert(SignedIntegralVector<vec3<T>>);
+    static_assert(SignedIntegralVector<vec4<T>>);
+}
 
-    template <typename T>
-    void testIntegerVectorConceptT() {
-        static_assert(IntegralVector<vec2<T>>);
-        static_assert(IntegralVector<vec3<T>>);
-        static_assert(IntegralVector<vec4<T>>);
-    }
+template <typename T>
+void testUnsignedIntegerVectorConceptT() {
+    static_assert(UnsignedIntegralVector<vec2<T>>);
+    static_assert(UnsignedIntegralVector<vec3<T>>);
+    static_assert(UnsignedIntegralVector<vec4<T>>);
+}
 
-    template <typename T>
-    void testSignedIntegerVectorConceptT() {
-        static_assert(SignedIntegralVector<vec2<T>>);
-        static_assert(SignedIntegralVector<vec3<T>>);
-        static_assert(SignedIntegralVector<vec4<T>>);
-    }
+TEST(vector, concepts) {
+    testVectorConceptT<s8>();
+    testVectorConceptT<u8>();
+    testVectorConceptT<s16>();
+    testVectorConceptT<u16>();
+    testVectorConceptT<f32>();
+    testVectorConceptT<s32>();
+    testVectorConceptT<u32>();
+    testVectorConceptT<f64>();
+    testVectorConceptT<s64>();
+    testVectorConceptT<u64>();
+    static_assert(!Vector<int>);
 
-    template <typename T>
-    void testUnsignedIntegerVectorConceptT() {
-        static_assert(UnsignedIntegralVector<vec2<T>>);
-        static_assert(UnsignedIntegralVector<vec3<T>>);
-        static_assert(UnsignedIntegralVector<vec4<T>>);
-    }
+    testFloaterVectorConceptT<f32>();
+    testFloaterVectorConceptT<f64>();
+    static_assert(!FloatingVector<ivec2>);
 
-    TEST_METHOD(testConcepts) {
-        testVectorConceptT<s8>();
-        testVectorConceptT<u8>();
-        testVectorConceptT<s16>();
-        testVectorConceptT<u16>();
-        testVectorConceptT<f32>();
-        testVectorConceptT<s32>();
-        testVectorConceptT<u32>();
-        testVectorConceptT<f64>();
-        testVectorConceptT<s64>();
-        testVectorConceptT<u64>();
-        static_assert(!Vector<int>);
+    testIntegerVectorConceptT<s8>();
+    testIntegerVectorConceptT<u8>();
+    testIntegerVectorConceptT<s16>();
+    testIntegerVectorConceptT<u16>();
+    testIntegerVectorConceptT<s32>();
+    testIntegerVectorConceptT<u32>();
+    testIntegerVectorConceptT<s64>();
+    testIntegerVectorConceptT<u64>();
+    static_assert(!IntegralVector<fvec2>);
 
-        testFloaterVectorConceptT<f32>();
-        testFloaterVectorConceptT<f64>();
-        static_assert(!FloatingVector<ivec2>);
+    testSignedIntegerVectorConceptT<s8>();
+    testSignedIntegerVectorConceptT<s16>();
+    testSignedIntegerVectorConceptT<s32>();
+    testSignedIntegerVectorConceptT<s64>();
+    static_assert(!SignedIntegralVector<uivec2>);
 
-        testIntegerVectorConceptT<s8>();
-        testIntegerVectorConceptT<u8>();
-        testIntegerVectorConceptT<s16>();
-        testIntegerVectorConceptT<u16>();
-        testIntegerVectorConceptT<s32>();
-        testIntegerVectorConceptT<u32>();
-        testIntegerVectorConceptT<s64>();
-        testIntegerVectorConceptT<u64>();
-        static_assert(!IntegralVector<fvec2>);
+    testUnsignedIntegerVectorConceptT<u8>();
+    testUnsignedIntegerVectorConceptT<u16>();
+    testUnsignedIntegerVectorConceptT<u32>();
+    testUnsignedIntegerVectorConceptT<u64>();
+    static_assert(!UnsignedIntegralVector<ivec2>);
 
-        testSignedIntegerVectorConceptT<s8>();
-        testSignedIntegerVectorConceptT<s16>();
-        testSignedIntegerVectorConceptT<s32>();
-        testSignedIntegerVectorConceptT<s64>();
-        static_assert(!SignedIntegralVector<uivec2>);
+    static_assert(BooleanVector<bvec2>);
+    static_assert(BooleanVector<bvec3>);
+    static_assert(BooleanVector<bvec4>);
+    static_assert(!BooleanVector<fvec2>);
 
-        testUnsignedIntegerVectorConceptT<u8>();
-        testUnsignedIntegerVectorConceptT<u16>();
-        testUnsignedIntegerVectorConceptT<u32>();
-        testUnsignedIntegerVectorConceptT<u64>();
-        static_assert(!UnsignedIntegralVector<ivec2>);
+    static_assert(Vector2<cvec2>);
+    static_assert(Vector2<ucvec2>);
+    static_assert(Vector2<svec2>);
+    static_assert(Vector2<usvec2>);
+    static_assert(Vector2<fvec2>);
+    static_assert(Vector2<ivec2>);
+    static_assert(Vector2<uivec2>);
+    static_assert(Vector2<lvec2>);
+    static_assert(Vector2<ulvec2>);
+    static_assert(Vector2<dvec2>);
+    static_assert(!Vector2<ivec3>);
 
-        static_assert(BooleanVector<bvec2>);
-        static_assert(BooleanVector<bvec3>);
-        static_assert(BooleanVector<bvec4>);
-        static_assert(!BooleanVector<fvec2>);
+    static_assert(Vector3<cvec3>);
+    static_assert(Vector3<ucvec3>);
+    static_assert(Vector3<svec3>);
+    static_assert(Vector3<usvec3>);
+    static_assert(Vector3<fvec3>);
+    static_assert(Vector3<ivec3>);
+    static_assert(Vector3<uivec3>);
+    static_assert(Vector3<lvec3>);
+    static_assert(Vector3<ulvec3>);
+    static_assert(Vector3<dvec3>);
+    static_assert(!Vector3<ivec4>);
 
-        static_assert(Vector2<cvec2>);
-        static_assert(Vector2<ucvec2>);
-        static_assert(Vector2<svec2>);
-        static_assert(Vector2<usvec2>);
-        static_assert(Vector2<fvec2>);
-        static_assert(Vector2<ivec2>);
-        static_assert(Vector2<uivec2>);
-        static_assert(Vector2<lvec2>);
-        static_assert(Vector2<ulvec2>);
-        static_assert(Vector2<dvec2>);
-        static_assert(!Vector2<ivec3>);
-
-        static_assert(Vector3<cvec3>);
-        static_assert(Vector3<ucvec3>);
-        static_assert(Vector3<svec3>);
-        static_assert(Vector3<usvec3>);
-        static_assert(Vector3<fvec3>);
-        static_assert(Vector3<ivec3>);
-        static_assert(Vector3<uivec3>);
-        static_assert(Vector3<lvec3>);
-        static_assert(Vector3<ulvec3>);
-        static_assert(Vector3<dvec3>);
-        static_assert(!Vector3<ivec4>);
-
-        static_assert(Vector4<cvec4>);
-        static_assert(Vector4<ucvec4>);
-        static_assert(Vector4<svec4>);
-        static_assert(Vector4<usvec4>);
-        static_assert(Vector4<fvec4>);
-        static_assert(Vector4<ivec4>);
-        static_assert(Vector4<uivec4>);
-        static_assert(Vector4<lvec4>);
-        static_assert(Vector4<ulvec4>);
-        static_assert(Vector4<dvec4>);
-        static_assert(!Vector4<ivec2>);
-    }
-
-};
+    static_assert(Vector4<cvec4>);
+    static_assert(Vector4<ucvec4>);
+    static_assert(Vector4<svec4>);
+    static_assert(Vector4<usvec4>);
+    static_assert(Vector4<fvec4>);
+    static_assert(Vector4<ivec4>);
+    static_assert(Vector4<uivec4>);
+    static_assert(Vector4<lvec4>);
+    static_assert(Vector4<ulvec4>);
+    static_assert(Vector4<dvec4>);
+    static_assert(!Vector4<ivec2>);
+}

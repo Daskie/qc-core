@@ -1,7 +1,7 @@
 #pragma once
 
-#include "matrix.hpp"
-#include "vector-ext.hpp"
+#include <qc-core/matrix.hpp>
+#include <qc-core/vector-ext.hpp>
 
 namespace qc {
 
@@ -205,9 +205,9 @@ namespace qc {
 
     template <typename T, int n>
     inline mat<T, n> transpose(const mat<T, n> & m) {
-        if constexpr (n == 2) return {m.row<0>(), m.row<1>()};
-        if constexpr (n == 3) return {m.row<0>(), m.row<1>(), m.row<2>()};
-        if constexpr (n == 4) return {m.row<0>(), m.row<1>(), m.row<2>(), m.row<3>()};
+        if constexpr (n == 2) return {m.template row<0>(), m.template row<1>()};
+        if constexpr (n == 3) return {m.template row<0>(), m.template row<1>(), m.template row<2>()};
+        if constexpr (n == 4) return {m.template row<0>(), m.template row<1>(), m.template row<2>(), m.template row<3>()};
     }
 
     template <typename T, int n>

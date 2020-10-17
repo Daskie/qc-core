@@ -1,6 +1,6 @@
 #pragma once
 
-#include "vector.hpp"
+#include <qc-core/vector.hpp>
 
 namespace qc {
 

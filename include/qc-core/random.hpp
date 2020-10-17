@@ -2,7 +2,7 @@
 
 #include <random>
 
-#include "core.hpp"
+#include <qc-core/core.hpp>
 
 namespace qc {
 
@@ -14,25 +14,28 @@ namespace qc {
     //
     // Specialization for std::mt19937
     // std::mt19937 produces 32 bits
-    // Supports
-    //   - any float
-    //   - integral up to 4 bytes
+    // Supports any float
     //
-    template <Numeric T>
+    template <Floating T>
     struct RandomEngineTransformer<std::mt19937, T> {
         T operator()(const u32 result) const {
-            if constexpr (is_floating_point_v<T>) {
-                return T(result) * T(0x1p-32L);
+            return T(result) * T(0x1p-32L);
+        }
+    };
+
+    //
+    // Specialization for std::mt19937
+    // std::mt19937 produces 32 bits
+    // Supports any integral up to 4 bytes
+    //
+    template <Integral T> requires (sizeof(T) <= 4)
+    struct RandomEngineTransformer<std::mt19937, T> {
+        T operator()(const u32 result) const {
+            if constexpr (sizeof(T) < 4u || std::is_signed_v<T>) {
+                return T(result & std::numeric_limits<T>::max());
             }
             else {
-                static_assert(sizeof(T) <= 4u);
-
-                if constexpr (sizeof(T) < 4u || is_signed_v<T>) {
-                    return T(result & std::numeric_limits<T>::max());
-                }
-                else {
-                    return T(result);
-                }
+                return T(result);
             }
         }
     };
@@ -40,25 +43,28 @@ namespace qc {
     //
     // Specialization for std::mt19937_64
     // std::mt19937_64 produces 64 bits
-    // Supports
-    //   - any float
-    //   - integral up to 8 bytes
+    // Supports any float
     //
-    template <Numeric T>
+    template <Floating T>
     struct RandomEngineTransformer<std::mt19937_64, T> {
         T operator()(const u64 result) const {
-            if constexpr (std::is_floating_point_v<T>) {
-                return T(result) * T(0x1p-64L);
+            return T(result) * T(0x1p-64L);
+        }
+    };
+
+    //
+    // Specialization for std::mt19937_64
+    // std::mt19937_64 produces 64 bits
+    // Supports any integral up to 8 bytes
+    //
+    template <Integral T> requires (sizeof(T) <= 8)
+    struct RandomEngineTransformer<std::mt19937_64, T> {
+        T operator()(const u64 result) const {
+            if constexpr (sizeof(T) < 8u || std::is_signed_v<T>) {
+                return T(result & std::numeric_limits<T>::max());
             }
             else {
-                static_assert(sizeof(T) <= 8u);
-
-                if constexpr (sizeof(T) < 8u || std::is_signed_v<T>) {
-                    return T(result & std::numeric_limits<T>::max());
-                }
-                else {
-                    return T(result);
-                }
+                return T(result);
             }
         }
     };
@@ -66,27 +72,40 @@ namespace qc {
     //
     // Specialization for std::minstd_rand
     // std::minstd_rand produces 31 bits
-    // Supports
-    //   - any float
-    //   - unsigned up to 2 bytes
-    //   - signed up to 4 bytes
+    // Supports any float
     //
-    template <Numeric T>
+    template <Floating T>
     struct RandomEngineTransformer<std::minstd_rand, T> {
         T operator()(const u32 result) const {
-            if constexpr (std::is_floating_point_v<T>) {
-                return T(result) * T(0x1p-31L);
+            return T(result) * T(0x1p-31L);
+        }
+    };
+
+    //
+    // Specialization for std::minstd_rand
+    // std::minstd_rand produces 31 bits
+    // Supports any unsigned up to 2 bytes
+    //
+    template <UnsignedIntegral T> requires (sizeof(T) <= 2)
+    struct RandomEngineTransformer<std::minstd_rand, T> {
+        T operator()(const u32 result) const {
+            return T(result & std::numeric_limits<T>::max());
+        }
+    };
+
+    //
+    // Specialization for std::minstd_rand
+    // std::minstd_rand produces 31 bits
+    // Supports any signed up to 4 bytes
+    //
+    template <SignedIntegral T> requires (sizeof(T) <= 4)
+    struct RandomEngineTransformer<std::minstd_rand, T> {
+        T operator()(const u32 result) const {
+            if constexpr (sizeof(T) < 4u) {
+                return T(result & std::numeric_limits<T>::max());
             }
             else {
-                if constexpr (sizeof(T) < 4u) {
-                    return T(result & std::numeric_limits<T>::max());
-                }
-                else if constexpr (sizeof(T) == 4u && std::is_signed_v<T>) {
-                    return T(result);
-                }
-                else {
-                    static_assert(false);
-                }
+                return T(result);
             }
         }
     };
@@ -161,7 +180,7 @@ namespace qc {
         //
         // Returns the seed.
         //
-        Value seed() const noexcept { return _seed;  }
+        Value seed() const noexcept { return _seed; }
 
         private:
 

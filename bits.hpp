@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core-ext.hpp"
+#include "include/qc-core/core-ext.hpp"
 
 namespace qc::bits {
 

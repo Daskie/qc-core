@@ -1,10 +1,9 @@
 #include <sstream>
 
-#include <CppUnitTest.h>
+#include <gtest/gtest.h>
 
 #include <qc-core/matrix-ext.hpp>
 
-using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace qc::types;
 
 template <typename T>
@@ -45,8 +44,8 @@ static void compileClassesT() {
     m2.col(0);
     m2.row(0);
 
-    m2.row<0>(); m2.row<1>();
-    m2.col<0>(); m2.col<1>();
+    m2.template row<0>(); m2.template row<1>();
+    m2.template col<0>(); m2.template col<1>();
 
     // arithmetic assignment
 
@@ -112,8 +111,8 @@ static void compileClassesT() {
     m3.col(0);
     m3.row(0);
 
-    m3.row<0>(); m3.row<1>(); m3.row<2>();
-    m3.col<0>(); m3.col<1>(); m3.col<2>();
+    m3.template row<0>(); m3.template row<1>(); m3.template row<2>();
+    m3.template col<0>(); m3.template col<1>(); m3.template col<2>();
 
     // arithmetic assignment
 
@@ -178,8 +177,8 @@ static void compileClassesT() {
     m4.col(0);
     m4.row(0);
 
-    m4.row<0>(); m4.row<1>(); m4.row<2>(); m4.row<3>();
-    m4.col<0>(); m4.col<1>(); m4.col<2>(); m4.col<3>();
+    m4.template row<0>(); m4.template row<1>(); m4.template row<2>(); m4.template row<3>();
+    m4.template col<0>(); m4.template col<1>(); m4.template col<2>(); m4.template col<3>();
 
     // arithmetic assignment
 
@@ -248,8 +247,8 @@ static constexpr void compileClassesConstexprT() {
 
     // access
 
-    m2.col<0>(); m2.col<1>();
-    m2.row<0>(); m2.row<1>();
+    m2.template col<0>(); m2.template col<1>();
+    m2.template row<0>(); m2.template row<1>();
 
     //--------------------------------------------------------------------------
     // Mat3
@@ -266,8 +265,8 @@ static constexpr void compileClassesConstexprT() {
 
     // access
 
-    m3.col<0>(); m3.col<1>(); m3.col<2>();
-    m3.row<0>(); m3.row<1>(); m3.row<2>();
+    m3.template col<0>(); m3.template col<1>(); m3.template col<2>();
+    m3.template row<0>(); m3.template row<1>(); m3.template row<2>();
 
     //--------------------------------------------------------------------------
     // Mat4
@@ -284,8 +283,8 @@ static constexpr void compileClassesConstexprT() {
 
     // access
 
-    m4.col<0>(); m4.col<1>(); m4.col<2>(); m4.col<3>();
-    m4.row<0>(); m4.row<1>(); m4.row<2>(); m4.row<3>();
+    m4.template col<0>(); m4.template col<1>(); m4.template col<2>(); m4.template col<3>();
+    m4.template row<0>(); m4.template row<1>(); m4.template row<2>(); m4.template row<3>();
 
 }
 
@@ -454,39 +453,33 @@ static void compileCasts() {
     compileCastsT<double>();
 }
 
-TEST_CLASS(TestMatrix) {
+TEST(matrix, compilation) {
+    compileClasses();
+    static_assert(compileClassesConstexpr(), "");
+    compileFunctions();
+    static_assert(compileFunctionsConstexpr(), "");
+    testProperties();
+    compileCasts();
+}
 
-    public:
+TEST(matrix, concepts) {
+    static_assert(Matrix<fmat2>);
+    static_assert(Matrix<fmat3>);
+    static_assert(Matrix<fmat4>);
+    static_assert(Matrix<dmat2>);
+    static_assert(Matrix<dmat3>);
+    static_assert(Matrix<dmat4>);
+    static_assert(!Matrix<int>);
 
-    TEST_METHOD(testCompilation) {
-        compileClasses();
-        static_assert(compileClassesConstexpr(), "");
-        compileFunctions();
-        static_assert(compileFunctionsConstexpr(), "");
-        testProperties();
-        compileCasts();
-    }
+    static_assert(Matrix2<fmat2>);
+    static_assert(Matrix2<dmat2>);
+    static_assert(!Matrix2<fmat3>);
 
-    TEST_METHOD(testConcepts) {
-        static_assert(Matrix<fmat2>);
-        static_assert(Matrix<fmat3>);
-        static_assert(Matrix<fmat4>);
-        static_assert(Matrix<dmat2>);
-        static_assert(Matrix<dmat3>);
-        static_assert(Matrix<dmat4>);
-        static_assert(!Matrix<int>);
+    static_assert(Matrix3<fmat3>);
+    static_assert(Matrix3<dmat3>);
+    static_assert(!Matrix3<fmat4>);
 
-        static_assert(Matrix2<fmat2>);
-        static_assert(Matrix2<dmat2>);
-        static_assert(!Matrix2<fmat3>);
-
-        static_assert(Matrix3<fmat3>);
-        static_assert(Matrix3<dmat3>);
-        static_assert(!Matrix3<fmat4>);
-
-        static_assert(Matrix4<fmat4>);
-        static_assert(Matrix4<dmat4>);
-        static_assert(!Matrix4<fmat2>);
-    }
-
-};
+    static_assert(Matrix4<fmat4>);
+    static_assert(Matrix4<dmat4>);
+    static_assert(!Matrix4<fmat2>);
+}

@@ -2,7 +2,7 @@
 
 #include <chrono>
 
-#include "core.hpp"
+#include <qc-core/core.hpp>
 
 namespace qc {
 

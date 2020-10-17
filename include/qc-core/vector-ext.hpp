@@ -2,8 +2,8 @@
 
 #include <iostream>
 
-#include "vector.hpp"
-#include "core-ext.hpp"
+#include <qc-core/vector.hpp>
+#include <qc-core/core-ext.hpp>
 
 namespace qc {
 
@@ -125,7 +125,8 @@ namespace qc {
     //
     // ...
     //
-    template <Numeric T, int n> Q_CX_ABLE vec<T, n> ortho(const vec<T, n> & v);
+    template <SignedNumeric T> Q_CX_ABLE vec2<T> ortho(const vec2<T> & v);
+    template <SignedNumeric T> Q_CX_ABLE vec3<T> ortho(const vec3<T> & v);
 
     //
     // ...
@@ -455,26 +456,23 @@ namespace qc {
         return zero(dot(v1, v2));
     }
 
-    template <Numeric T, int n>
-    inline Q_CX_ABLE vec<T, n> ortho(const vec<T, n> & v) {
-        if constexpr (n == 2) {
-            return {-v.y, v.x};
-        }
-        else if constexpr (n == 3) {
-            const vec<T, n> absV(abs(v));
+    template <SignedNumeric T>
+    inline Q_CX_ABLE vec2<T> ortho(const vec2<T> & v) {
+        return {T(-v.y), v.x};
+    }
 
-            if (absV.x < absV.y && absV.x < absV.z) {
-                return {T(0), -v.z, v.y}; // rotate around x
-            }
-            else if (absV.y < absV.z) {
-                return {v.z, T(0), -v.x}; // rotate around y
-            }
-            else {
-                return {-v.y, v.x, T(0)}; // rotate around z
-            }
+    template <SignedNumeric T>
+    inline Q_CX_ABLE vec3<T> ortho(const vec3<T> & v) {
+        const vec3<T> absV(abs(v));
+
+        if (absV.x < absV.y && absV.x < absV.z) {
+            return {T(0), T(-v.z), v.y}; // rotate around x
+        }
+        else if (absV.y < absV.z) {
+            return {v.z, T(0), T(-v.x)}; // rotate around y
         }
         else {
-            static_assert(false);
+            return {T(-v.y), v.x, T(0)}; // rotate around z
         }
     }
 

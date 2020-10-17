@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core-ext.hpp"
+#include <qc-core/core-ext.hpp>
 
 namespace qc {
 
@@ -104,7 +104,7 @@ namespace qc {
 
         ~vec() noexcept = default;
 
-        constexpr operator bool() const noexcept;
+        constexpr explicit operator bool() const noexcept;
 
         template <int i> T & at() noexcept;
         template <int i> constexpr T at() const noexcept;
@@ -140,7 +140,7 @@ namespace qc {
 
         ~vec() noexcept = default;
 
-        constexpr operator bool() const noexcept;
+        constexpr explicit operator bool() const noexcept;
 
         template <int i> T & at() noexcept;
         template <int i> constexpr T at() const noexcept;
@@ -187,7 +187,7 @@ namespace qc {
 
         ~vec() noexcept = default;
 
-        constexpr operator bool() const noexcept;
+        constexpr explicit operator bool() const noexcept;
 
         template <int i> T & at() noexcept;
         template <int i> constexpr T at() const noexcept;
@@ -772,9 +772,9 @@ namespace qc {
     inline Q_CX_ABLE vec<T, n> operator-(const vec<T, n> & v) {
         if constexpr (std::is_unsigned_v<T>) return v;
         if constexpr (!std::is_unsigned_v<T>) {
-            if constexpr (n == 2) return {-v.x, -v.y};
-            if constexpr (n == 3) return {-v.x, -v.y, -v.z};
-            if constexpr (n == 4) return {-v.x, -v.y, -v.z, -v.w};
+            if constexpr (n == 2) return {T(-v.x), T(-v.y)};
+            if constexpr (n == 3) return {T(-v.x), T(-v.y), T(-v.z)};
+            if constexpr (n == 4) return {T(-v.x), T(-v.y), T(-v.z), T(-v.w)};
         }
     }
 

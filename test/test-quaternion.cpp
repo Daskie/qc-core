@@ -1,10 +1,9 @@
 #include <sstream>
 
-#include <CppUnitTest.h>
+#include <gtest/gtest.h>
 
 #include <qc-core/quaternion-ext.hpp>
 
-using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace qc::types;
 
 template <typename T>
@@ -182,23 +181,17 @@ static void compileCasts() {
     compileCastsT<double>();
 }
 
-TEST_CLASS(TestQuaternion) {
+TEST(quaternion, compilation) {
+    compileClasses();
+    static_assert(compileClassesConstexpr(), "");
+    compileFunctions();
+    static_assert(compileFunctionsConstexpr(), "");
+    testProperties();
+    compileCasts();
+}
 
-    public:
-
-    TEST_METHOD(testCompilation) {
-        compileClasses();
-        static_assert(compileClassesConstexpr(), "");
-        compileFunctions();
-        static_assert(compileFunctionsConstexpr(), "");
-        testProperties();
-        compileCasts();
-    }
-
-    TEST_METHOD(testConcepts) {
-        static_assert(Quaternion<fquat>);
-        static_assert(Quaternion<dquat>);
-        static_assert(!Quaternion<int>);
-    }
-
-};
+TEST(quaternion, concepts) {
+    static_assert(Quaternion<fquat>);
+    static_assert(Quaternion<dquat>);
+    static_assert(!Quaternion<int>);
+}

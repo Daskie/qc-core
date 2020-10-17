@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cmath>
+
 #include <fstream>
 #include <codecvt>
 #include <string>
@@ -8,7 +10,7 @@
 #include <filesystem>
 #include <vector>
 
-#include "core.hpp"
+#include <qc-core/core.hpp>
 
 namespace qc::utils {
 
@@ -103,13 +105,13 @@ namespace qc::utils {
         template <typename T>
         struct _binary_s {
 
-            u8 data[sizeof(T)];
+            alignas(T) u8 data[sizeof(T)];
             int blockSize;
 
             _binary_s(const T & v, const int blockSize) :
                 blockSize(blockSize)
             {
-                std::memcpy(data, &v, sizeof(T));
+                std::copy_n(reinterpret_cast<const u8 *>(&v), sizeof(T), data);
             }
 
             friend std::ostream & operator<<(std::ostream & os, const _binary_s & b) {

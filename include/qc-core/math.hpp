@@ -2,7 +2,7 @@
 
 #include <cmath>
 
-#include "matrix-ext.hpp"
+#include <qc-core/matrix-ext.hpp>
 
 namespace qc {
 
@@ -222,10 +222,8 @@ namespace qc {
         return spherePoint(vec2<T>(phi<T> * T(i), p));
     }
 
-    template <typename T>
+    template <Floating T>
     struct Dampener {
-
-        static_assert(is_floating_point_v<T>);
 
         const T angularFreq, dampingRatio, dt;
 
@@ -239,13 +237,13 @@ namespace qc {
 
     };
 
-    template <typename T>
+    template <Floating T>
     struct OverDampener : public Dampener<T> {
 
         const T za, zb, z0, z1, z2, expTerm1, expTerm2;
 
         OverDampener(const T angularFreq, const T dampingRatio, const T dt) :
-            Dampener(angularFreq, max(dampingRatio, T(1.001)), dt),
+            Dampener<T>(angularFreq, max(dampingRatio, T(1.001)), dt),
             za(-this->angularFreq * this->dampingRatio),
             zb(this->angularFreq * std::sqrt(this->dampingRatio * this->dampingRatio - T(1.0))),
             z0(T(1.0) / (T(-2.0) * zb)),
@@ -255,7 +253,7 @@ namespace qc {
             expTerm2(std::exp(z2 * this->dt))
         {}
 
-        template <typename U>
+        template <Floating U>
         void dampen(U & pos, U & vel, const U & targetPos) const {
             const U dp{pos - targetPos};
             const U c1{(vel - dp * z2) * z0};
@@ -266,17 +264,17 @@ namespace qc {
 
     };
 
-    template <typename T>
+    template <Floating T>
     struct CriticalDampener : public Dampener<T> {
 
         const T expTerm;
 
         CriticalDampener(const T angularFreq, const T dt) :
-            Dampener(angularFreq, T(1.0), dt),
+            Dampener<T>(angularFreq, T(1.0), dt),
             expTerm(std::exp(-this->angularFreq * this->dt))
         {}
 
-        template <typename U>
+        template <Floating U>
         void dampen(U & pos, U & vel, const U & targetPos) const {
             const U dp{pos - targetPos};
             const U c1{vel + this->angularFreq * dp};
@@ -303,13 +301,13 @@ namespace qc {
         r_vel = c1 * expTerm - c2 * angularFreq;
     }
 
-    template <typename T>
+    template <Floating T>
     struct UnderDampener : public Dampener<T> {
 
         const T omegaZeta, alpha, expTerm, cosTerm, sinTerm;
 
         UnderDampener(const T angularFreq, const T dampingRatio, const T dt) :
-            Dampener(angularFreq, min(dampingRatio, T(0.999)), dt),
+            Dampener<T>(angularFreq, min(dampingRatio, T(0.999)), dt),
             omegaZeta(this->angularFreq * this->dampingRatio),
             alpha(this->angularFreq * std::sqrt(T(1.0) - this->dampingRatio * this->dampingRatio)),
             expTerm(std::exp(-omegaZeta * dt)),
@@ -317,7 +315,7 @@ namespace qc {
             sinTerm(std::sin(alpha * this->dt))
         {}
 
-        template <typename U>
+        template <Floating U>
         void dampen(U & pos, U & vel, const U & targetPos) const {
             const U dp{pos - targetPos};
             const U c{(vel + omegaZeta * dp) / alpha};

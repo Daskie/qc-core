@@ -3,8 +3,8 @@
 
 #include <iostream>
 
-#include "span.hpp"
-#include "vector-ext.hpp"
+#include <qc-core/span.hpp>
+#include <qc-core/vector-ext.hpp>
 
 namespace qc {
 

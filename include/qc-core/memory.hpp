@@ -2,6 +2,8 @@
 
 #include <cstddef>
 
+#include <type_traits>
+
 namespace qc {
 
     template <typename T> class RecordAllocator {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "matrix.hpp"
+#include <qc-core/matrix.hpp>
 
 namespace qc {
 
@@ -38,7 +38,7 @@ namespace qc {
 
         ~quat() noexcept = default;
 
-        constexpr operator bool() const noexcept;
+        constexpr explicit operator bool() const noexcept;
 
     };
 

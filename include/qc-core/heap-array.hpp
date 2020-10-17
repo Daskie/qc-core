@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdexcept>
+#include <utility>
 
 namespace qc {
 
@@ -275,7 +276,7 @@ namespace qc {
     template <typename T>
     inline constexpr const T & HeapArray<T>::at(const size_t i) const {
         if (i >= _size) {
-            throw std::out_of_range();
+            throw std::out_of_range("Index out of bounds");
         }
 
         return operator[](i);

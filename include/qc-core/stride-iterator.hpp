@@ -1,5 +1,7 @@
 #pragma once
 
+#include <iterator>
+
 namespace qc {
 
     template <typename T>

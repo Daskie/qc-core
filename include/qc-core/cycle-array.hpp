@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <stdexcept>
 
 namespace qc {
 
@@ -183,7 +184,7 @@ namespace qc {
 
         constexpr const value_type & at(const size_t i) const {
             if (i >= n) {
-                throw std::out_of_range();
+                throw std::out_of_range("Index out of bounds");
             }
 
             return operator[](i);

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "quaternion.hpp"
-#include "matrix-ext.hpp"
+#include <qc-core/quaternion.hpp>
+#include <qc-core/matrix-ext.hpp>
 
 namespace qc {
 

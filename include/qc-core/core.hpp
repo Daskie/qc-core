@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+
 #include <limits>
 #include <utility>
 
@@ -30,6 +31,7 @@ namespace qc {
         template <typename T> concept UnsignedIntegral = Integral<T> && std::is_unsigned_v<T>;
         template <typename T> concept Floating = std::is_floating_point_v<T>;
         template <typename T> concept Numeric = Integral<T> || Floating<T>;
+        template <typename T> concept SignedNumeric = SignedIntegral<T> || Floating<T>;
         template <typename T> concept Orderable = Numeric<T> || std::is_pointer_v<T>;
 
     } // namespace types

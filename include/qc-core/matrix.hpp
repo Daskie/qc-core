@@ -8,7 +8,7 @@
 //  z1 z2 z3    02 05 08
 //
 
-#include "vector.hpp"
+#include <qc-core/vector.hpp>
 
 namespace qc {
 
@@ -66,7 +66,7 @@ namespace qc {
 
         ~mat() noexcept = default;
 
-        constexpr operator bool() const noexcept;
+        constexpr explicit operator bool() const noexcept;
 
         vec2<T> & col(int i);
         vec2<T> col(int i) const;
@@ -107,7 +107,7 @@ namespace qc {
 
         ~mat() noexcept = default;
 
-        constexpr operator bool() const noexcept;
+        constexpr explicit operator bool() const noexcept;
 
         vec3<T> & col(int i);
         vec3<T> col(int i) const;
@@ -150,7 +150,7 @@ namespace qc {
 
         ~mat() noexcept = default;
 
-        constexpr operator bool() const noexcept;
+        constexpr explicit operator bool() const noexcept;
 
         vec4<T> & col(int i);
         vec4<T> col(int i) const;
@@ -287,7 +287,7 @@ namespace qc {
     template <Floating T>
     template <int i>
     inline constexpr vec2<T> mat<T, 2>::row() const noexcept {
-        return {c1.at<i>(), c2.at<i>()};
+        return {c1.template at<i>(), c2.template at<i>()};
     }
 
     template <Floating T>
@@ -370,7 +370,7 @@ namespace qc {
     template <Floating T>
     template <int i>
     inline constexpr vec3<T> mat<T, 3>::row() const noexcept {
-        return {c1.at<i>(), c2.at<i>(), c3.at<i>()};
+        return {c1.template at<i>(), c2.template at<i>(), c3.template at<i>()};
     }
 
     template <Floating T>
@@ -461,7 +461,7 @@ namespace qc {
     template <Floating T>
     template <int i>
     inline constexpr vec4<T> mat<T, 4>::row() const noexcept {
-        return {c1.at<i>(), c2.at<i>(), c3.at<i>(), c4.at<i>()};
+        return {c1.template at<i>(), c2.template at<i>(), c3.template at<i>(), c4.template at<i>()};
     }
 
     template <Floating T, int n>

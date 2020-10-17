@@ -24,21 +24,21 @@ namespace std {
 }
 #include <cmath>
 
-#include "core.hpp"
+#include <qc-core/core.hpp>
 
 namespace qc {
 
     //
     // ...
     //
-    template <Numeric T> Q_CX_ABLE std::pair<T, T> minmax(T a);
-    template <Numeric T> Q_CX_ABLE std::pair<T, T> minmax(T a, T b);
-    template <Numeric T, Numeric... Ts> Q_CX_ABLE std::pair<T, T> minmax(T v1, T v2, Ts... vs);
+    template <Numeric T> Q_CX_ABLE std::pair<T, T> minmax(T v);
+    template <Numeric T> Q_CX_ABLE std::pair<T, T> minmax(T v1, T v2);
+    template <Numeric T, Numeric... Ts> Q_CX_ABLE std::pair<T, T> minmax(T v1, T v2, T v3, Ts... vs);
 
     //
     // ...
     //
-    template <Numeric T> Q_CX_ABLE T median(T a, T b, T c);
+    template <Numeric T> Q_CX_ABLE T median(T v1, T v2, T v3);
 
     //
     // ...
@@ -232,20 +232,26 @@ namespace qc {
 namespace qc {
 
     template <Numeric T>
-    inline Q_CX_ABLE std::pair<T, T> minmax(const T a) {
-        return {a, a};
+    inline Q_CX_ABLE std::pair<T, T> minmax(const T v) {
+        return {v, v};
     }
 
     template <Numeric T>
-    inline Q_CX_ABLE std::pair<T, T> minmax(const T a, const T b) {
-        return (a < b) ? std::pair<T, T>{a, b} : std::pair<T, T>{b, a};
+    inline Q_CX_ABLE std::pair<T, T> minmax(const T v1, const T v2) {
+        return (v1 < v2) ? std::pair<T, T>{v1, v2} : std::pair<T, T>{v2, v1};
     }
 
     template <Numeric T, Numeric... Ts>
-    inline Q_CX_ABLE std::pair<T, T> minmax(const T v1, const T v2, const Ts... vs) {
-        const auto [m1, M1](minmax(v1, v2));
-        const auto [m2, M2](minmax(vs...));
-        return {min(m1, m2), max(M1, M2)};
+    inline Q_CX_ABLE std::pair<T, T> minmax(T v1, T v2, T v3, Ts... vs) {
+        if constexpr (!sizeof...(Ts)) {
+            const auto [m1, M1](minmax(v1, v2));
+            return {min(m1, v3), max(M1, v3)};
+        }
+        else {
+            const auto [m1, M1](minmax(v1, v2));
+            const auto [m2, M2](minmax(vs...));
+            return {min(m1, m2), max(M1, M2)};
+        }
     }
 
     template <Numeric T>
@@ -509,7 +515,7 @@ namespace qc {
     }
 
     template <Floating T, Floating... Args>
-    inline Q_CX_ABLE T average(const T v, const Args... args) {
+    inline Q_CX_ABLE T average(T v, Args... args) {
         return sum(v, args...) / T(sizeof...(Args) + 1);
     }
 
