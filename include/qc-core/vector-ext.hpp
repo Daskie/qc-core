@@ -10,38 +10,38 @@ namespace qc {
     //
     // ...
     //
-    template <Numeric  T, int n> Q_CX_ABLE T sum(const vec<T, n> & v);
+    template <Numeric  T, int n> constexpr T sum(const vec<T, n> & v);
 
     //
     // ...
     //
-    template <Numeric T, int n> Q_CX_ABLE T product(const vec<T, n> & v);
+    template <Numeric T, int n> constexpr T product(const vec<T, n> & v);
 
     //
     // ...
     //
-    template <int n> Q_CX_ABLE bool any(bvec<n> v);
+    template <int n> constexpr bool any(bvec<n> v);
 
     //
     // ...
     //
-    template <int n> Q_CX_ABLE bool all(bvec<n> v);
+    template <int n> constexpr bool all(bvec<n> v);
 
     //
     // ...
     //
-    template <Numeric T, int n> Q_CX_ABLE         T min(const vec<T, n> & v);
-    template <Numeric T, int n> Q_CX_ABLE vec<T, n> min(const vec<T, n> & v1, const vec<T, n> & v2);
-    template <Numeric T, int n> Q_CX_ABLE vec<T, n> min(const vec<T, n> & v1, T v2);
-    template <Numeric T, int n> Q_CX_ABLE vec<T, n> min(T v1, const vec<T, n> & v2);
+    template <Numeric T, int n> constexpr         T min(const vec<T, n> & v);
+    template <Numeric T, int n> constexpr vec<T, n> min(const vec<T, n> & v1, const vec<T, n> & v2);
+    template <Numeric T, int n> constexpr vec<T, n> min(const vec<T, n> & v1, T v2);
+    template <Numeric T, int n> constexpr vec<T, n> min(T v1, const vec<T, n> & v2);
 
     //
     // ...
     //
-    template <Numeric T, int n> Q_CX_ABLE         T max(const vec<T, n> & v);
-    template <Numeric T, int n> Q_CX_ABLE vec<T, n> max(const vec<T, n> & v1, const vec<T, n> & v2);
-    template <Numeric T, int n> Q_CX_ABLE vec<T, n> max(const vec<T, n> & v1, T v2);
-    template <Numeric T, int n> Q_CX_ABLE vec<T, n> max(T v1, const vec<T, n> & v2);
+    template <Numeric T, int n> constexpr         T max(const vec<T, n> & v);
+    template <Numeric T, int n> constexpr vec<T, n> max(const vec<T, n> & v1, const vec<T, n> & v2);
+    template <Numeric T, int n> constexpr vec<T, n> max(const vec<T, n> & v1, T v2);
+    template <Numeric T, int n> constexpr vec<T, n> max(T v1, const vec<T, n> & v2);
 
     //
     // ...
@@ -58,12 +58,12 @@ namespace qc {
     //
     // ...
     //
-    template <Numeric T, int n> Q_CX_ABLE std::pair<T, T> minmax(const vec<T, n> & v);
+    template <Numeric T, int n> constexpr std::pair<T, T> minmax(const vec<T, n> & v);
 
     //
     // ...
     //
-    template <Numeric T> Q_CX_ABLE T median(vec3<T> v);
+    template <Numeric T> constexpr T median(vec3<T> v);
 
     //
     // ...
@@ -125,8 +125,8 @@ namespace qc {
     //
     // ...
     //
-    template <SignedNumeric T> Q_CX_ABLE vec2<T> ortho(const vec2<T> & v);
-    template <SignedNumeric T> Q_CX_ABLE vec3<T> ortho(const vec3<T> & v);
+    template <SignedNumeric T> vec2<T> ortho(const vec2<T> & v);
+    template <SignedNumeric T> vec3<T> ortho(const vec3<T> & v);
 
     //
     // ...
@@ -155,84 +155,84 @@ namespace qc {
     //
     // ...
     //
-    template <Numeric T, int n> Q_CX_ABLE vec<T, n> clamp(const vec<T, n> & v, T min, T max);
-    template <Numeric T, int n> Q_CX_ABLE vec<T, n> clamp(const vec<T, n> & v, const vec<T, n> & min, const vec<T, n> & max);
+    template <Numeric T, int n> constexpr vec<T, n> clamp(const vec<T, n> & v, T min, T max);
+    template <Numeric T, int n> constexpr vec<T, n> clamp(const vec<T, n> & v, const vec<T, n> & min, const vec<T, n> & max);
 
     //
     // ...
     //
-    template <Numeric T, int n> Q_CX_ABLE vec<T, n> abs(const vec<T, n> & v);
+    template <Numeric T, int n> constexpr vec<T, n> abs(const vec<T, n> & v);
 
     //
     // ...
     //
-    template <Numeric T, int n> Q_CX_ABLE bool zero(const vec<T, n> & v, T e = std::numeric_limits<T>::epsilon());
+    template <Numeric T, int n> bool zero(const vec<T, n> & v, T e = std::numeric_limits<T>::epsilon());
 
     //
     // ...
     //
-    template <Numeric T, int n> Q_CX_ABLE bool equal(const vec<T, n> & v);
+    template <Numeric T, int n> bool equal(const vec<T, n> & v);
 
     //
     // ...
     //
-    template <Floating T, int n> Q_CX_ABLE bool equal_e(const vec<T, n> & v1, const vec<T, n> & v2, T e = std::numeric_limits<T>::epsilon());
-    template <Floating T, int n> Q_CX_ABLE bool equal_e(const vec<T, n> & v, T e = std::numeric_limits<T>::epsilon());
+    template <Floating T, int n> bool equal_e(const vec<T, n> & v1, const vec<T, n> & v2, T e = std::numeric_limits<T>::epsilon());
+    template <Floating T, int n> bool equal_e(const vec<T, n> & v, T e = std::numeric_limits<T>::epsilon());
 
     //
     // ...
     //
-    template <Numeric T, int n> Q_CX_ABLE ivec<n> sign(const vec<T, n> & v);
+    template <Numeric T, int n> constexpr ivec<n> sign(const vec<T, n> & v);
 
     //
     // ...
     //
-    template <Floating T, int n> Q_CX_ABLE vec<stype<sizeof(T)>, n> round(const vec<T, n> & v);
-    template <Integral T, int n> Q_CX_ABLE vec<T, n> round(const vec<T, n> & v);
+    template <Floating T, int n> vec<stype<sizeof(T)>, n> round(const vec<T, n> & v);
+    template <Integral T, int n> vec<T, n> round(const vec<T, n> & v);
 
     //
     // ...
     //
-    template <Floating T, int n> Q_CX_ABLE vec<stype<sizeof(T)>, n> floor(const vec<T, n> & v);
-    template <Integral T, int n> Q_CX_ABLE vec<T, n> floor(const vec<T, n> & v);
+    template <Floating T, int n> vec<stype<sizeof(T)>, n> floor(const vec<T, n> & v);
+    template <Integral T, int n> vec<T, n> floor(const vec<T, n> & v);
 
     //
     // ...
     //
-    template <Floating T, int n> Q_CX_ABLE vec<stype<sizeof(T)>, n> ceil(const vec<T, n> & v);
-    template <Integral T, int n> Q_CX_ABLE vec<T, n> ceil(const vec<T, n> & v);
+    template <Floating T, int n> vec<stype<sizeof(T)>, n> ceil(const vec<T, n> & v);
+    template <Integral T, int n> vec<T, n> ceil(const vec<T, n> & v);
 
     //
     // ...
     //
-    template <Floating T, int n> Q_CX_ABLE vec<T, n> mix(const vec<T, n> & v1, const vec<T, n> & v2, T t);
-    template <Floating T, int n> Q_CX_ABLE vec<T, n> mix(const vec<T, n> & v1, const vec<T, n> & v2, vec2<T> weights);
-    template <Floating T, int n> Q_CX_ABLE vec<T, n> mix(const vec<T, n> & v1, const vec<T, n> & v2, const vec<T, n> & v3, vec3<T> weights);
-    template <Floating T, int n> Q_CX_ABLE vec<T, n> mix(const vec<T, n> & v1, const vec<T, n> & v2, const vec<T, n> & v3, const vec<T, n> & v4, vec4<T> weights);
-    template <Floating T> Q_CX_ABLE T mix(T v1, T v2, vec2<T> weights);
-    template <Floating T> Q_CX_ABLE T mix(T v1, T v2, T v3, vec3<T> weights);
-    template <Floating T> Q_CX_ABLE T mix(T v1, T v2, T v3, T v4, vec4<T> weights);
+    template <Floating T, int n> vec<T, n> mix(const vec<T, n> & v1, const vec<T, n> & v2, T t);
+    template <Floating T, int n> vec<T, n> mix(const vec<T, n> & v1, const vec<T, n> & v2, vec2<T> weights);
+    template <Floating T, int n> vec<T, n> mix(const vec<T, n> & v1, const vec<T, n> & v2, const vec<T, n> & v3, vec3<T> weights);
+    template <Floating T, int n> vec<T, n> mix(const vec<T, n> & v1, const vec<T, n> & v2, const vec<T, n> & v3, const vec<T, n> & v4, vec4<T> weights);
+    template <Floating T> T mix(T v1, T v2, vec2<T> weights);
+    template <Floating T> T mix(T v1, T v2, T v3, vec3<T> weights);
+    template <Floating T> T mix(T v1, T v2, T v3, T v4, vec4<T> weights);
 
     //
     // ...
     //
-    template <Floating T, int n> Q_CX_ABLE vec<T, n> smoothstep(const vec<T, n> & v1, const vec<T, n> & v2, T t);
+    template <Floating T, int n> vec<T, n> smoothstep(const vec<T, n> & v1, const vec<T, n> & v2, T t);
 
     //
     // Converts between normalized types.
     // Works with floats, signed, and unsigned integers.
     //
-    template <Vector ToVec, Numeric From, int n> requires(ToVec::n == n) Q_CX_ABLE ToVec transnorm(const vec<From, n> & v);
+    template <Vector ToVec, Numeric From, int n> requires(ToVec::n == n) ToVec transnorm(const vec<From, n> & v);
 
     //
     // ...
     //
-    template <UnsignedIntegral T, int n> Q_CX_ABLE T mipmaps(const vec<T, n> & size);
+    template <UnsignedIntegral T, int n> constexpr T mipmaps(const vec<T, n> & size);
 
     //
     // ...
     //
-    template <Numeric T, int n> Q_CX_ABLE vec<T, n> composite(const vec<T, n> & v1, const vec<T, n> & v2);
+    template <Numeric T, int n> vec<T, n> composite(const vec<T, n> & v1, const vec<T, n> & v2);
 
 } // namespace qc
 
@@ -241,80 +241,80 @@ namespace qc {
 namespace qc {
 
     template <Numeric T, int n>
-    inline Q_CX_ABLE T sum(const vec<T, n> & v) {
+    inline constexpr T sum(const vec<T, n> & v) {
         if constexpr (n == 2) return v.x + v.y;
         if constexpr (n == 3) return v.x + v.y + v.z;
         if constexpr (n == 4) return v.x + v.y + v.z + v.w;
     }
 
     template <Numeric T, int n>
-    inline Q_CX_ABLE T product(const vec<T, n> & v) {
+    inline constexpr T product(const vec<T, n> & v) {
         if constexpr (n == 2) return v.x * v.y;
         if constexpr (n == 3) return v.x * v.y * v.z;
         if constexpr (n == 4) return v.x * v.y * v.z * v.w;
     }
 
     template <int n>
-    inline Q_CX_ABLE bool all(const bvec<n> v) {
+    inline constexpr bool all(const bvec<n> v) {
         if constexpr (n == 2) return v.x && v.y;
         if constexpr (n == 3) return v.x && v.y && v.z;
         if constexpr (n == 4) return v.x && v.y && v.z && v.w;
     }
 
     template <int n>
-    inline Q_CX_ABLE bool any(const bvec<n> v) {
+    inline constexpr bool any(const bvec<n> v) {
         return bool(v);
     }
 
     template <Numeric T, int n>
-    inline Q_CX_ABLE T min(const vec<T, n> & v) {
+    inline constexpr T min(const vec<T, n> & v) {
         if constexpr (n == 2) return min(v.x, v.y);
         if constexpr (n == 3) return min(v.x, v.y, v.z);
         if constexpr (n == 4) return min(v.x, v.y, v.z, v.w);
     }
 
     template <Numeric T, int n>
-    inline Q_CX_ABLE vec<T, n> min(const vec<T, n> & v1, const vec<T, n> & v2) {
+    inline constexpr vec<T, n> min(const vec<T, n> & v1, const vec<T, n> & v2) {
         if constexpr (n == 2) return {min(v1.x, v2.x), min(v1.y, v2.y)};
         if constexpr (n == 3) return {min(v1.x, v2.x), min(v1.y, v2.y), min(v1.z, v2.z)};
         if constexpr (n == 4) return {min(v1.x, v2.x), min(v1.y, v2.y), min(v1.z, v2.z), min(v1.w, v2.w)};
     }
 
     template <Numeric T, int n>
-    inline Q_CX_ABLE vec<T, n> min(const vec<T, n> & v1, const T v2) {
+    inline constexpr vec<T, n> min(const vec<T, n> & v1, const T v2) {
         if constexpr (n == 2) return {min(v1.x, v2), min(v1.y, v2)};
         if constexpr (n == 3) return {min(v1.x, v2), min(v1.y, v2), min(v1.z, v2)};
         if constexpr (n == 4) return {min(v1.x, v2), min(v1.y, v2), min(v1.z, v2), min(v1.w, v2)};
     }
 
     template <Numeric T, int n>
-    inline Q_CX_ABLE vec<T, n> min(const T v1, const vec<T, n> & v2) {
+    inline constexpr vec<T, n> min(const T v1, const vec<T, n> & v2) {
         return min(v2, v1);
     }
 
     template <Numeric T, int n>
-    inline Q_CX_ABLE T max(const vec<T, n> & v) {
+    inline constexpr T max(const vec<T, n> & v) {
         if constexpr (n == 2) return max(v.x, v.y);
         if constexpr (n == 3) return max(v.x, v.y, v.z);
         if constexpr (n == 4) return max(v.x, v.y, v.z, v.w);
     }
 
     template <Numeric T, int n>
-    inline Q_CX_ABLE vec<T, n> max(const vec<T, n> & v1, const vec<T, n> & v2) {
+    inline constexpr vec<T, n> max(const vec<T, n> & v1, const vec<T, n> & v2) {
         if constexpr (n == 2) return {max(v1.x, v2.x), max(v1.y, v2.y)};
         if constexpr (n == 3) return {max(v1.x, v2.x), max(v1.y, v2.y), max(v1.z, v2.z)};
         if constexpr (n == 4) return {max(v1.x, v2.x), max(v1.y, v2.y), max(v1.z, v2.z), max(v1.w, v2.w)};
     }
 
     template <Numeric T, int n>
-    inline Q_CX_ABLE vec<T, n> max(const vec<T, n> & v1, const T v2) {
+    inline constexpr vec<T, n> max(const vec<T, n> & v1, const T v2) {
         if constexpr (n == 2) return {max(v1.x, v2), max(v1.y, v2)};
         if constexpr (n == 3) return {max(v1.x, v2), max(v1.y, v2), max(v1.z, v2)};
         if constexpr (n == 4) return {max(v1.x, v2), max(v1.y, v2), max(v1.z, v2), max(v1.w, v2)};
     }
 
     template <Numeric T, int n>
-    inline Q_CX_ABLE vec<T, n> max(const T v1, const vec<T, n> & v2) {
+    inline constexpr vec<T, n> max(const T v1, const vec<T, n> & v2) {
         return max(v2, v1);
     }
 
@@ -355,14 +355,14 @@ namespace qc {
     }
 
     template <Numeric T, int n>
-    inline Q_CX_ABLE std::pair<T, T> minmax(const vec<T, n> & v) {
+    inline constexpr std::pair<T, T> minmax(const vec<T, n> & v) {
         if constexpr (n == 2) return minmax(v.x, v.y);
         if constexpr (n == 3) return minmax(v.x, v.y, v.z);
         if constexpr (n == 4) return minmax(v.x, v.y, v.z, v.w);
     }
 
     template <Numeric T>
-    inline Q_CX_ABLE T median(const vec3<T> v) {
+    inline constexpr T median(const vec3<T> v) {
         return median(v.x, v.y, v.z);
     }
 
@@ -457,12 +457,12 @@ namespace qc {
     }
 
     template <SignedNumeric T>
-    inline Q_CX_ABLE vec2<T> ortho(const vec2<T> & v) {
+    inline vec2<T> ortho(const vec2<T> & v) {
         return {T(-v.y), v.x};
     }
 
     template <SignedNumeric T>
-    inline Q_CX_ABLE vec3<T> ortho(const vec3<T> & v) {
+    inline vec3<T> ortho(const vec3<T> & v) {
         const vec3<T> absV(abs(v));
 
         if (absV.x < absV.y && absV.x < absV.z) {
@@ -532,136 +532,136 @@ namespace qc {
     }
 
     template <Numeric T, int n>
-    inline Q_CX_ABLE vec<T, n> clamp(const vec<T, n> & v, const T min, const T max) {
+    inline constexpr vec<T, n> clamp(const vec<T, n> & v, const T min, const T max) {
         if constexpr (n == 2) return {clamp(v.x, min, max), clamp(v.y, min, max)};
         if constexpr (n == 3) return {clamp(v.x, min, max), clamp(v.y, min, max), clamp(v.z, min, max)};
         if constexpr (n == 4) return {clamp(v.x, min, max), clamp(v.y, min, max), clamp(v.z, min, max), clamp(v.w, min, max)};
     }
 
     template <Numeric T, int n>
-    inline Q_CX_ABLE vec<T, n> clamp(const vec<T, n> & v, const vec<T, n> & min, const vec<T, n> & max) {
+    inline constexpr vec<T, n> clamp(const vec<T, n> & v, const vec<T, n> & min, const vec<T, n> & max) {
         if constexpr (n == 2) return {clamp(v.x, min.x, max.x), clamp(v.y, min.y, max.y)};
         if constexpr (n == 3) return {clamp(v.x, min.x, max.x), clamp(v.y, min.y, max.y), clamp(v.z, min.z, max.z)};
         if constexpr (n == 4) return {clamp(v.x, min.x, max.x), clamp(v.y, min.y, max.y), clamp(v.z, min.z, max.z), clamp(v.w, min.w, max.w)};
     }
 
     template <Numeric T, int n>
-    inline Q_CX_ABLE vec<T, n> abs(const vec<T, n> & v) {
+    inline constexpr vec<T, n> abs(const vec<T, n> & v) {
         if constexpr (n == 2) return {abs(v.x), abs(v.y)};
         if constexpr (n == 3) return {abs(v.x), abs(v.y), abs(v.z)};
         if constexpr (n == 4) return {abs(v.x), abs(v.y), abs(v.z), abs(v.w)};
     }
 
     template <Numeric T, int n>
-    inline Q_CX_ABLE bool zero(const vec<T, n> & v, const T e) {
+    inline bool zero(const vec<T, n> & v, const T e) {
         if constexpr (n == 2) return zero(v.x, e) && zero(v.y, e);
         if constexpr (n == 3) return zero(v.x, e) && zero(v.y, e) && zero(v.z, e);
         if constexpr (n == 4) return zero(v.x, e) && zero(v.y, e) && zero(v.z, e) && zero(v.w, e);
     }
 
     template <Numeric T, int n>
-    inline Q_CX_ABLE bool equal(const vec<T, n> & v) {
+    inline bool equal(const vec<T, n> & v) {
         if constexpr (n == 2) return v.x == v.y;
         if constexpr (n == 3) return v.x == v.y && v.x == v.z;
         if constexpr (n == 4) return v.x == v.y && v.x == v.z && v.x == v.w;
     }
 
     template <Floating T, int n>
-    inline Q_CX_ABLE bool equal_e(const vec<T, n> & v1, const vec<T, n> & v2, const T e) {
+    inline bool equal_e(const vec<T, n> & v1, const vec<T, n> & v2, const T e) {
         return zero(v1 - v2, e);
     }
 
     template <Floating T, int n>
-    inline Q_CX_ABLE bool equal_e(const vec<T, n> & v, const T e) {
+    inline bool equal_e(const vec<T, n> & v, const T e) {
         return zero(v - v.x, e);
     }
 
     template <Numeric T, int n>
-    inline Q_CX_ABLE ivec<n> sign(const vec<T, n> & v) {
+    inline constexpr ivec<n> sign(const vec<T, n> & v) {
         if constexpr (n == 2) return {sign(v.x), sign(v.y)};
         if constexpr (n == 3) return {sign(v.x), sign(v.y), sign(v.z)};
         if constexpr (n == 4) return {sign(v.x), sign(v.y), sign(v.z), sign(v.w)};
     }
 
     template <Floating T, int n>
-    inline Q_CX_ABLE vec<stype<sizeof(T)>, n> floor(const vec<T, n> & v) {
+    inline vec<stype<sizeof(T)>, n> floor(const vec<T, n> & v) {
         if constexpr (n == 2) return {floor(v.x), floor(v.y)};
         if constexpr (n == 3) return {floor(v.x), floor(v.y), floor(v.z)};
         if constexpr (n == 4) return {floor(v.x), floor(v.y), floor(v.z), floor(v.w)};
     }
 
     template <Integral T, int n>
-    inline Q_CX_ABLE vec<T, n> floor(const vec<T, n> & v) {
+    inline vec<T, n> floor(const vec<T, n> & v) {
         return v;
     }
 
     template <Floating T, int n>
-    inline Q_CX_ABLE vec<stype<sizeof(T)>, n> ceil(const vec<T, n> & v) {
+    inline vec<stype<sizeof(T)>, n> ceil(const vec<T, n> & v) {
         if constexpr (n == 2) return {ceil(v.x), ceil(v.y)};
         if constexpr (n == 3) return {ceil(v.x), ceil(v.y), ceil(v.z)};
         if constexpr (n == 4) return {ceil(v.x), ceil(v.y), ceil(v.z), ceil(v.w)};
     }
 
     template <Integral T, int n>
-    inline Q_CX_ABLE vec<T, n> ceil(const vec<T, n> & v) {
+    inline vec<T, n> ceil(const vec<T, n> & v) {
         return v;
     }
 
     template <Floating T, int n>
-    inline Q_CX_ABLE vec<stype<sizeof(T)>, n> round(const vec<T, n> & v) {
+    inline vec<stype<sizeof(T)>, n> round(const vec<T, n> & v) {
         if constexpr (n == 2) return {round(v.x), round(v.y)};
         if constexpr (n == 3) return {round(v.x), round(v.y), round(v.z)};
         if constexpr (n == 4) return {round(v.x), round(v.y), round(v.z), round(v.w)};
     }
 
     template <Integral T, int n>
-    inline Q_CX_ABLE vec<T, n> round(const vec<T, n> & v) {
+    inline vec<T, n> round(const vec<T, n> & v) {
         return v;
     }
 
     template <Floating T, int n>
-    inline Q_CX_ABLE vec<T, n> mix(const vec<T, n> & v1, const vec<T, n> & v2, const T t) {
+    inline vec<T, n> mix(const vec<T, n> & v1, const vec<T, n> & v2, const T t) {
         return (T(1.0) - t) * v1 + t * v2;
     }
 
     template <Floating T, int n>
-    inline Q_CX_ABLE vec<T, n> mix(const vec<T, n> & v1, const vec<T, n> & v2, const vec2<T> weights) {
+    inline vec<T, n> mix(const vec<T, n> & v1, const vec<T, n> & v2, const vec2<T> weights) {
         return weights.x * v1 + weights.y * v2;
     }
 
     template <Floating T, int n>
-    inline Q_CX_ABLE vec<T, n> mix(const vec<T, n> & v1, const vec<T, n> & v2, const vec<T, n> & v3, const vec3<T> weights) {
+    inline vec<T, n> mix(const vec<T, n> & v1, const vec<T, n> & v2, const vec<T, n> & v3, const vec3<T> weights) {
         return weights.x * v1 + weights.y * v2 + weights.z * v3;
     }
 
     template <Floating T, int n>
-    inline Q_CX_ABLE vec<T, n> mix(const vec<T, n> & v1, const vec<T, n> & v2, const vec<T, n> & v3, const vec<T, n> & v4, const vec4<T> weights) {
+    inline vec<T, n> mix(const vec<T, n> & v1, const vec<T, n> & v2, const vec<T, n> & v3, const vec<T, n> & v4, const vec4<T> weights) {
         return weights.x * v1 + weights.y * v2 + weights.z * v3 + weights.w * v4;
     }
 
     template <Floating T>
-    inline Q_CX_ABLE T mix(const T v1, const T v2, const vec2<T> weights) {
+    inline T mix(const T v1, const T v2, const vec2<T> weights) {
         return weights.x * v1 + weights.y * v2;
     }
 
     template <Floating T>
-    inline Q_CX_ABLE T mix(const T v1, const T v2, const T v3, const vec3<T> weights) {
+    inline T mix(const T v1, const T v2, const T v3, const vec3<T> weights) {
         return weights.x * v1 + weights.y * v2 + weights.z * v3;
     }
 
     template <Floating T>
-    inline Q_CX_ABLE T mix(const T v1, const T v2, const T v3, const T v4, const vec4<T> weights) {
+    inline T mix(const T v1, const T v2, const T v3, const T v4, const vec4<T> weights) {
         return weights.x * v1 + weights.y * v2 + weights.z * v3 + weights.w * v4;
     }
 
     template <Floating T, int n>
-    inline Q_CX_ABLE vec<T, n> smoothstep(const vec<T, n> & v1, const vec<T, n> & v2, const T t) {
+    inline vec<T, n> smoothstep(const vec<T, n> & v1, const vec<T, n> & v2, const T t) {
         return mix(v1, v2, t * t * (T(3.0) - T(2.0) * t));
     }
 
     template <Vector ToVec, Numeric From, int n>
     requires(ToVec::n == n)
-    inline Q_CX_ABLE ToVec transnorm(const vec<From, n> & v) {
+    inline ToVec transnorm(const vec<From, n> & v) {
         using To = typename ToVec::Type;
         if constexpr (n == 2) return {transnorm<To>(v.x), transnorm<To>(v.y)};
         if constexpr (n == 3) return {transnorm<To>(v.x), transnorm<To>(v.y), transnorm<To>(v.z)};
@@ -669,12 +669,12 @@ namespace qc {
     }
 
     template <UnsignedIntegral T, int n>
-    inline Q_CX_ABLE T mipmaps(const vec<T, n> & size) {
+    inline constexpr T mipmaps(const vec<T, n> & size) {
         return mipmaps(max(size));
     }
 
     template <Numeric T, int n>
-    inline Q_CX_ABLE vec<T, n> composite(const vec<T, n> & v1, const vec<T, n> & v2) {
+    inline vec<T, n> composite(const vec<T, n> & v1, const vec<T, n> & v2) {
         vec<T, n> v;
 
         if constexpr (n >= 1) {

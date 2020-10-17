@@ -16,14 +16,14 @@ namespace qc {
     //
     // ...
     //
-    template <Numeric T, int n> Q_CX_ABLE span<T, n> min(const span<T, n> & v1, T v2);
-    template <Numeric T, int n> Q_CX_ABLE span<T, n> min(const span<T, n> & v1, const vec<T, n> & v2);
+    template <Numeric T, int n> span<T, n> min(const span<T, n> & v1, T v2);
+    template <Numeric T, int n> span<T, n> min(const span<T, n> & v1, const vec<T, n> & v2);
 
     //
     // ...
     //
-    template <Numeric T, int n> Q_CX_ABLE span<T, n> max(const span<T, n> & v1, T v2);
-    template <Numeric T, int n> Q_CX_ABLE span<T, n> max(const span<T, n> & v1, const vec<T, n> & v2);
+    template <Numeric T, int n> span<T, n> max(const span<T, n> & v1, T v2);
+    template <Numeric T, int n> span<T, n> max(const span<T, n> & v1, const vec<T, n> & v2);
 
     //
     // ...
@@ -40,18 +40,18 @@ namespace qc {
     //
     // ...
     //
-    template <Numeric T, int n> Q_CX_ABLE vec<T, n> clamp(const vec<T, n> & v, const span<T, n> & span);
-    template <Numeric T> Q_CX_ABLE T clamp(T v, const span1<T> & span);
+    template <Numeric T, int n> vec<T, n> clamp(const vec<T, n> & v, const span<T, n> & span);
+    template <Numeric T> T clamp(T v, const span1<T> & span);
 
     //
     // ...
     //
-    template <Numeric T, int n> Q_CX_ABLE span<T, n> intersect(const span<T, n> & v1, const span<T, n> & v2);
+    template <Numeric T, int n> span<T, n> intersect(const span<T, n> & v1, const span<T, n> & v2);
 
     //
     // ...
     //
-    template <Numeric T, int n> Q_CX_ABLE span<T, n> join(const span<T, n> & v1, const span<T, n> & v2);
+    template <Numeric T, int n> span<T, n> join(const span<T, n> & v1, const span<T, n> & v2);
 
     //
     // ...
@@ -77,22 +77,22 @@ namespace qc {
     }
 
     template <Numeric T, int n>
-    inline Q_CX_ABLE span<T, n> min(const span<T, n> & v1, const T v2) {
+    inline span<T, n> min(const span<T, n> & v1, const T v2) {
         return {min(v1.min, v2), min(v1.max, v2)};
     }
 
     template <Numeric T, int n>
-    inline Q_CX_ABLE span<T, n> min(const span<T, n> & v1, const vec<T, n> & v2) {
+    inline span<T, n> min(const span<T, n> & v1, const vec<T, n> & v2) {
         return {min(v1.min, v2), min(v1.max, v2)};
     }
 
     template <Numeric T, int n>
-    inline Q_CX_ABLE span<T, n> max(const span<T, n> & v1, const T v2) {
+    inline span<T, n> max(const span<T, n> & v1, const T v2) {
         return {max(v1.min, v2), max(v1.max, v2)};
     }
 
     template <Numeric T, int n>
-    inline Q_CX_ABLE span<T, n> max(const span<T, n> & v1, const vec<T, n> & v2) {
+    inline span<T, n> max(const span<T, n> & v1, const vec<T, n> & v2) {
         return {max(v1.min, v2), max(v1.max, v2)};
     }
 
@@ -125,17 +125,17 @@ namespace qc {
     }
 
     template <Numeric T, int n>
-    inline Q_CX_ABLE vec<T, n> clamp(const vec<T, n> & v, const span<T, n> & span) {
+    inline vec<T, n> clamp(const vec<T, n> & v, const span<T, n> & span) {
         return clamp(v, span.min, span.max);
     }
 
     template <Numeric T>
-    inline Q_CX_ABLE T clamp(const T v, const span1<T> & span) {
+    inline T clamp(const T v, const span1<T> & span) {
         return clamp(v, span.min, span.max);
     }
 
     template <Numeric T, int n>
-    inline Q_CX_ABLE span<T, n> intersect(const span<T, n> & v1, const span<T, n> & v2) {
+    inline span<T, n> intersect(const span<T, n> & v1, const span<T, n> & v2) {
         if constexpr (n == 1) return {
             max(v1.min, v2.min),
             min(v1.max, v2.max)
@@ -155,7 +155,7 @@ namespace qc {
     }
 
     template <Numeric T, int n>
-    inline Q_CX_ABLE span<T, n> join(const span<T, n> & v1, const span<T, n> & v2) {
+    inline span<T, n> join(const span<T, n> & v1, const span<T, n> & v2) {
         return {min(v1.min, v2.min), max(v1.max, v2.max)};
     }
 

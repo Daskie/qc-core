@@ -85,7 +85,7 @@ namespace qc {
     //
     // ...
     //
-    template <typename T> Q_CX_ABLE mat3<T> toMat(const quat<T> & q);
+    template <typename T> mat3<T> toMat(const quat<T> & q);
 
     //
     // ...
@@ -204,7 +204,7 @@ namespace qc {
     }
 
     template <typename T>
-    inline Q_CX_ABLE mat3<T> toMat(const quat<T> & q) {
+    inline mat3<T> toMat(const quat<T> & q) {
         const T wi{q.w   * q.a.x};
         const T wj{q.w   * q.a.y};
         const T wk{q.w   * q.a.z};

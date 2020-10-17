@@ -5,10 +5,6 @@
 #include <limits>
 #include <utility>
 
-// Workaround for IntelliSense bug
-#define Q_CONSTEX constexpr
-#define Q_CX_ABLE
-
 namespace qc {
 
     inline namespace types {
