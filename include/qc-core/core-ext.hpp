@@ -1,27 +1,6 @@
 #pragma once
 
 #include <bit>
-// TODO: Remove once MSVC has countl_zero and has_single_bit
-namespace std {
-    template <typename T> requires std::is_unsigned_v<T>
-    inline constexpr int countl_zero(T v) noexcept {
-        int count{std::numeric_limits<T>::digits};
-
-        if constexpr (sizeof(v) >= 8) if (v & 0b11111111'11111111'11111111'11111111'00000000'00000000'00000000'00000000u) { count -= 32; v >>= 32; }
-        if constexpr (sizeof(v) >= 4) if (v & 0b11111111'11111111'00000000'00000000u) { count -= 16; v >>= 16; }
-        if constexpr (sizeof(v) >= 2) if (v & 0b11111111'00000000u) { count -= 8; v >>= 8; }
-        if (v & 0b11110000u) { count -= 4; v >>= 4; }
-        if (v & 0b1100u) { count -= 2; v >>= 2; }
-        if (v & 0b10u) { count -= 1; v >>= 1; }
-
-        return count - int(v);
-    }
-
-    template <typename T> requires std::is_unsigned_v<T>
-    inline constexpr bool has_single_bit(const T v) noexcept {
-        return !(v & (v - T(1)));
-    }
-}
 #include <cmath>
 
 #include <qc-core/core.hpp>
@@ -114,12 +93,6 @@ namespace qc {
 
     //
     // ...
-    // Depreciated in favor of `std::has_single_bit`
-    //
-    //template <Integral T> Q_CONSTEX bool isPow2(T v);
-
-    //
-    // ...
     //
     template <UnsignedIntegral T> Q_CONSTEX int log2Floor(T v);
 
@@ -130,26 +103,8 @@ namespace qc {
 
     //
     // ...
-    // TODO: Replace with `std::bit_floor` once supported
     //
-    template <UnsignedIntegral T> Q_CONSTEX T floor2(T v);
-
-    //
-    // ...
-    // TODO: Replace with `std::bit_ceil` once supported
-    //
-    template <UnsignedIntegral T> Q_CONSTEX T ceil2(T v);
-
-    //
-    // ...
-    //
-    template <UnsignedIntegral T> Q_CX_ABLE int mipmaps(T size);
-
-    //
-    // ...
-    // TODO: Remove once floor2 and ceil2 are gone (or move to qc-bits)
-    //
-    template <UnsignedIntegral T> Q_CONSTEX T smear(T v);
+    Q_CX_ABLE int mipmaps(UnsignedIntegral auto size);
 
     //
     // ...
@@ -390,12 +345,6 @@ namespace qc {
         return r;
     }
 
-    // Depreciated in favor of `std::has_single_bit`
-    //template <Integral T>
-    //inline Q_CONSTEX bool isPow2(const T v) {
-    //    return !(v & (v - T(1)));
-    //}
-
     template <UnsignedIntegral T>
     inline Q_CONSTEX int log2Floor(const T v) {
         //static_assert(sizeof(T) <= 8u);
@@ -417,33 +366,8 @@ namespace qc {
         return v == T(0) ? 0 : std::numeric_limits<T>::digits - std::countl_zero(std::make_unsigned_t<decltype(v - 1u)>(v - 1u));
     }
 
-    // TODO: Remove once `std::bit_floor` is supported
-    template <UnsignedIntegral T>
-    inline Q_CONSTEX T floor2(T v) {
-        v = smear(v);
-        return T(v ^ (v >> 1));
-    }
-
-    // TODO: Remove once `std::bit_ceil` is supported
-    template <UnsignedIntegral T>
-    inline Q_CONSTEX T ceil2(const T v) {
-        return T(smear(v - 1u) + 1u);
-    }
-
-    template <UnsignedIntegral T>
-    inline Q_CX_ABLE int mipmaps(const T size) {
-        return log2Floor(size) + T(1);
-    }
-
-    template <UnsignedIntegral T>
-    inline Q_CONSTEX T smear(T v) {
-                                       v |= v >>  1;
-                                       v |= v >>  2;
-                                       v |= v >>  4;
-        if constexpr (sizeof(T) >= 2u) v |= v >>  8;
-        if constexpr (sizeof(T) >= 4u) v |= v >> 16;
-        if constexpr (sizeof(T) >= 8u) v |= v >> 32;
-        return v;
+    inline Q_CX_ABLE int mipmaps(const UnsignedIntegral auto size) {
+        return log2Floor(size) + 1;
     }
 
     template <Floating T>
