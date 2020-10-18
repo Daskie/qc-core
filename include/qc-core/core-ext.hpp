@@ -61,7 +61,7 @@ namespace qc {
     //
     // ...
     // ~2x faster than std::floor
-    // doesn't work with extememly large or extremely small floating point values
+    // doesn't work with extremely large or extremely small floating point values
     //
     template <Floating T> stype<sizeof(T)> floor(T v);
     template <Integral T> T floor(T v);
@@ -69,7 +69,7 @@ namespace qc {
     //
     // ...
     // ~2x faster than std::ceil
-    // doesn't work with extememly large or extremely small floating point values
+    // doesn't work with extremely large or extremely small floating point values
     //
     template <Floating T> stype<sizeof(T)> ceil(T v);
     template <Integral T> T ceil(T v);
@@ -210,10 +210,10 @@ namespace qc {
     }
 
     template <Numeric T>
-    inline constexpr T median(T a, T b, T c) {
-        if (a > b) std::swap(a, b);
-        if (b > c) std::swap(b, c);
-        return max(a, b);
+    inline constexpr T median(T v1, T v2, T v3) {
+        if (v1 > v2) std::swap(v1, v2);
+        if (v2 > v3) std::swap(v2, v3);
+        return max(v1, v2);
     }
 
     template <Numeric T>

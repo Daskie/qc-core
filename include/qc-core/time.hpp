@@ -24,7 +24,7 @@ namespace qc {
         //
         // constructs clock with 1.0 sec period and 1.0 sec frequency
         //
-        Clock(double frequency = 1.0f);
+        explicit Clock(double frequency = 1.0f);
 
         //
         // ...

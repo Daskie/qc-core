@@ -30,7 +30,7 @@ namespace qc {
         constexpr RecordAllocator(const RecordAllocator & other) noexcept = default;
 
         template <typename U>
-        constexpr RecordAllocator(const RecordAllocator<U> & other) noexcept :
+        constexpr explicit RecordAllocator(const RecordAllocator<U> & other) noexcept :
             _current(other._current),
             _total(other._total),
             _allocations(other._allocations),

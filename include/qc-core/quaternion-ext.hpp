@@ -70,7 +70,7 @@ namespace qc {
 
     //
     // ...
-    // expects orthogonal fvectors
+    // expects orthogonal vectors
     //
     template <typename T> quat<T> alignQ(vec3<T> forward1, vec3<T> up1, vec3<T> forward2, vec3<T> up2);
     template <typename T> quat<T> alignQ_n(vec3<T> forward1, vec3<T> up1, vec3<T> forward2, vec3<T> up2);

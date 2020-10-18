@@ -130,7 +130,7 @@ namespace qc {
 
         using Value = typename Engine::result_type;
 
-        Random(const Value seed = Engine::default_seed) noexcept :
+        explicit Random(const Value seed = Engine::default_seed) noexcept :
             _seed(seed),
             _engine(_seed)
         {}

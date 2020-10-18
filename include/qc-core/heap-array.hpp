@@ -26,10 +26,10 @@ namespace qc {
         static_assert(std::is_nothrow_destructible_v<T>);
 
         constexpr HeapArray() noexcept = default;
-        explicit HeapArray(const size_t size) noexcept;
-        HeapArray(const size_t size, const T & v) noexcept;
-        template <typename Iter> HeapArray(const Iter first, const Iter last);
-        HeapArray(T * const values, const size_t size);
+        explicit HeapArray(size_t size) noexcept;
+        HeapArray(size_t size, const T & v) noexcept;
+        template <typename Iter> HeapArray(Iter first, Iter last);
+        HeapArray(T * values, size_t size);
 
         HeapArray(const HeapArray & other) noexcept;
         constexpr HeapArray(HeapArray && other) noexcept;
@@ -56,11 +56,11 @@ namespace qc {
         constexpr T & back() noexcept;
         constexpr const T & back() const noexcept;
 
-        constexpr T & operator[](const size_t i);
-        constexpr const T & operator[](const size_t i) const;
+        constexpr T & operator[](size_t i);
+        constexpr const T & operator[](size_t i) const;
 
-        constexpr T & at(const size_t i);
-        constexpr const T & at(const size_t i) const;
+        constexpr T & at(size_t i);
+        constexpr const T & at(size_t i) const;
 
         constexpr iterator begin() noexcept;
         constexpr const_iterator begin() const noexcept;
@@ -80,12 +80,6 @@ namespace qc {
     template <typename T> bool operator==(const HeapArray<T> & arr1, const HeapArray<T> & arr2);
 
 } // namespace qc
-
-namespace std {
-
-    template <typename T> constexpr void swap(qc::HeapArray<T> & lhs, qc::HeapArray<T> & rhs) noexcept;
-
-} // namespace std
 
 // INLINE IMPLEMENTATION ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -332,12 +326,3 @@ namespace qc {
     }
 
 } // namespace qc
-
-namespace std {
-
-    template <typename T>
-    inline constexpr void swap(qc::HeapArray<T> & lhs, qc::HeapArray<T> & rhs) noexcept {
-        lhs.swap(rhs);
-    }
-
-} // namespace std

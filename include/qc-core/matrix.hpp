@@ -58,11 +58,11 @@ namespace qc {
         template <Floating U> constexpr explicit mat(const mat3<U> & m) noexcept;
         template <Floating U> constexpr explicit mat(const mat4<U> & m) noexcept;
 
-        constexpr mat(const mat2<T> & m) noexcept = default;
-        constexpr mat(mat2<T> && m) noexcept = default;
+        constexpr mat(const mat & m) noexcept = default;
+        constexpr mat(mat && m) noexcept = default;
 
-        mat2<T> & operator=(const mat2<T> & m) noexcept = default;
-        mat2<T> & operator=(mat2<T> && m) noexcept = default;
+        mat & operator=(const mat & m) noexcept = default;
+        mat & operator=(mat && m) noexcept = default;
 
         ~mat() noexcept = default;
 
@@ -99,11 +99,11 @@ namespace qc {
         template <Floating U> constexpr explicit mat(const mat3<U> & m) noexcept;
         template <Floating U> constexpr explicit mat(const mat4<U> & m) noexcept;
 
-        constexpr mat(const mat3<T> & m) noexcept = default;
-        constexpr mat(mat3<T> && m) noexcept = default;
+        constexpr mat(const mat & m) noexcept = default;
+        constexpr mat(mat && m) noexcept = default;
 
-        mat3<T> & operator=(const mat3<T> & m) noexcept = default;
-        mat3<T> & operator=(mat3<T> && m) noexcept = default;
+        mat & operator=(const mat & m) noexcept = default;
+        mat & operator=(mat && m) noexcept = default;
 
         ~mat() noexcept = default;
 
@@ -142,11 +142,11 @@ namespace qc {
         template <Floating U> constexpr explicit mat(const mat3<U> & m) noexcept;
         template <Floating U> constexpr explicit mat(const mat4<U> & m) noexcept;
 
-        constexpr mat(const mat4<T> & m) noexcept = default;
-        constexpr mat(mat4<T> && m) noexcept = default;
+        constexpr mat(const mat & m) noexcept = default;
+        constexpr mat(mat && m) noexcept = default;
 
-        mat4<T> & operator=(const mat4<T> & m) noexcept = default;
-        mat4<T> & operator=(mat4<T> && m) noexcept = default;
+        mat & operator=(const mat & m) noexcept = default;
+        mat & operator=(mat && m) noexcept = default;
 
         ~mat() noexcept = default;
 

@@ -455,9 +455,9 @@ static void compileCasts() {
 
 TEST(matrix, compilation) {
     compileClasses();
-    static_assert(compileClassesConstexpr(), "");
+    static_assert(compileClassesConstexpr());
     compileFunctions();
-    static_assert(compileFunctionsConstexpr(), "");
+    static_assert(compileFunctionsConstexpr());
     testProperties();
     compileCasts();
 }

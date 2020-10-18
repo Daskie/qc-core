@@ -99,7 +99,7 @@ namespace qc {
 
     //
     // ...
-    // expects orthogonal fvectors
+    // expects orthogonal vectors
     //
     template <typename T> mat3<T> align(vec3<T> forward1, vec3<T> up1, vec3<T> forward2, vec3<T> up2);
     template <typename T> mat3<T> align_n(vec3<T> forward1, vec3<T> up1, vec3<T> forward2, vec3<T> up2);
@@ -155,7 +155,7 @@ namespace qc {
     //
     template <typename T> mat4<T> view(vec3<T> camPos, vec3<T> camU, vec3<T> camV, vec3<T> camW);
     template <typename T> mat4<T> view_n(vec3<T> camPos, vec3<T> camU, vec3<T> camV, vec3<T> camW);
-    // basis vectors are orthonormal (optimination)
+    // basis vectors are orthonormal (optimization)
     template <typename T> mat4<T> view_o(vec3<T> camPos, vec3<T> camU, vec3<T> camV, vec3<T> camW);
     template <typename T> mat4<T> view_on(vec3<T> camPos, vec3<T> camU, vec3<T> camV, vec3<T> camW);
 
@@ -477,7 +477,7 @@ namespace qc {
 
     template <typename T>
     inline mat3<T> rotate(const vec3<T> axis, const T sinTheta, const T cosTheta) {
-        if (zero(magnitude2(axis))) { //can't rotate around 0 length fvector
+        if (zero(magnitude2(axis))) { //can't rotate around 0 length vector
             return {};
         }
 

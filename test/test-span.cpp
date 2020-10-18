@@ -24,7 +24,7 @@ static void compileClassesT() {
     qc::span<T, 1> s1_3(std::move(s1));
     qc::span<T, 1> s1_4(v, v);
 
-    // asignment operators
+    // assignment operators
     s1 = s1;
     s1 = std::move(s1);
 
@@ -39,7 +39,7 @@ static void compileClassesT() {
     qc::span<T, 2> s2_5(v, v);
     qc::span<T, 2> s2_6(s1, s1);
 
-    // asignment operators
+    // assignment operators
     s2 = s2;
     s2 = std::move(s2);
 
@@ -60,7 +60,7 @@ static void compileClassesT() {
     qc::span<T, 3> s3_7(s2, s1);
     qc::span<T, 3> s3_8(s1, s2);
 
-    // asignment operators
+    // assignment operators
     s3 = s3;
     s3 = std::move(s3);
 
@@ -88,7 +88,7 @@ static void compileClassesT() {
     qc::span<T, 4> s4_11(s3, s1);
     qc::span<T, 4> s4_12(s1, s3);
 
-    // asignment operators
+    // assignment operators
     s4 = s4;
     s4 = std::move(s4);
 

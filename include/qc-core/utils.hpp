@@ -109,7 +109,8 @@ namespace qc::utils {
             int blockSize;
 
             _binary_s(const T & v, const int blockSize) :
-                blockSize(blockSize)
+                data{},
+                blockSize{blockSize}
             {
                 std::copy_n(reinterpret_cast<const u8 *>(&v), sizeof(T), data);
             }
@@ -143,7 +144,7 @@ namespace qc::utils {
             std::string s;
             int n;
 
-            repeat(const std::string & s, const int n) : s(s), n(n) {}
+            repeat(std::string s, const int n) : s(std::move(s)), n(n) {}
 
             friend std::ostream & operator<<(std::ostream & os, const repeat & r) {
                 for (int i{0}; i < r.n; ++i) {
@@ -158,7 +159,7 @@ namespace qc::utils {
 
             int n;
 
-            line(const int n) : n(n) {}
+            explicit line(const int n) : n(n) {}
 
             friend std::ostream & operator<<(std::ostream & os, const line & l) {
                 return os << repeat("-", l.n);

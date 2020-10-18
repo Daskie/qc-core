@@ -27,7 +27,7 @@ namespace qc {
         constexpr StrideIter(const StrideIter & other) noexcept = default;
 
         template <typename U> requires (std::is_same_v<std::remove_const_t<U>, std::remove_const_t<T>> && std::is_const_v<T>)
-        constexpr StrideIter(const StrideIter<U> & other) noexcept :
+        constexpr explicit StrideIter(const StrideIter<U> & other) noexcept :
             _ptr(other._ptr),
             _stride(other._stride)
         {}

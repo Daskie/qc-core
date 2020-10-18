@@ -22,7 +22,7 @@ namespace qc {
             using reference = value_type &;
 
             constexpr Iterator(const Iterator & other) noexcept = default;
-            constexpr Iterator(const Iterator<false> & other) noexcept requires (constant) :
+            constexpr explicit Iterator(const Iterator<false> & other) noexcept requires (constant) :
                 _values(other._values),
                 _currentIndex(other._currentIndex),
                 _relativeIndex(other._relativeIndex)
@@ -76,7 +76,7 @@ namespace qc {
 
         };
 
-        friend Iterator;
+        template <bool constant> friend class Iterator;
 
         public: //--------------------------------------------------------------
 
@@ -260,13 +260,3 @@ namespace qc {
     }
 
 } // namespace qc
-
-namespace std {
-
-    template <typename T, size_t n>
-    inline constexpr void swap(qc::CycleArray<T, n> & lhs, qc::CycleArray<T, n> & rhs) noexcept {
-        lhs.swap(rhs);
-    }
-
-} // namespace std
-
