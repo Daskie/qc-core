@@ -5,6 +5,26 @@
 
 #include <qc-core/core.hpp>
 
+// TODO: Remove once MSVC has implemented <bit>
+#ifdef _MSC_VER
+namespace std {
+
+    template <qc::UnsignedIntegral T>
+    constexpr inline int countl_zero(T v) noexcept {
+        int n{0};
+        if constexpr (sizeof(T) >= 8) if (!(v & 0xFFFFFFFF00000000u)) n += 32; else v >>= 32;
+        if constexpr (sizeof(T) >= 4) if (!(v &         0xFFFF0000u)) n += 16; else v >>= 16;
+        if constexpr (sizeof(T) >= 2) if (!(v &             0xFF00u)) n +=  8; else v >>=  8;
+                                      if (!(v &               0xF0u)) n +=  4; else v >>=  4;
+                                      if (!(v &                0xCu)) n +=  2; else v >>=  2;
+                                      if (!(v &                0x2u))     ++n; else v >>=  1;
+                                      if (!(v &                0x1u))     ++n;
+        return n;
+    }
+
+}
+#endif
+
 namespace qc {
 
     //
@@ -104,7 +124,7 @@ namespace qc {
     //
     // ...
     //
-    constexpr int mipmaps(UnsignedIntegral auto size);
+    template <UnsignedIntegral T> constexpr int mipmaps(T size);
 
     //
     // ...
@@ -204,7 +224,7 @@ namespace qc {
         }
         else {
             const auto [m1, M1](minmax(v1, v2));
-            const auto [m2, M2](minmax(vs...));
+            const auto [m2, M2](minmax(v3, vs...));
             return {min(m1, m2), max(M1, M2)};
         }
     }
@@ -366,7 +386,8 @@ namespace qc {
         return v == T(0) ? 0 : std::numeric_limits<T>::digits - std::countl_zero(std::make_unsigned_t<decltype(v - 1u)>(v - 1u));
     }
 
-    inline constexpr int mipmaps(const UnsignedIntegral auto size) {
+    template <UnsignedIntegral T>
+    inline constexpr int mipmaps(const T size) {
         return log2Floor(size) + 1;
     }
 
@@ -387,7 +408,7 @@ namespace qc {
             return fract(v / d) * d;
         }
         if constexpr (std::is_integral_v<T>) {
-            return v % d;
+            return T(v % d);
         }
     }
 
@@ -399,7 +420,7 @@ namespace qc {
         }
         if constexpr (std::is_integral_v<T>) {
             const auto q{v / d};
-            return { v - q * d, q };
+            return { T(v - q * d), T(q) };
         }
     }
 

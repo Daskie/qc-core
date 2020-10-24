@@ -737,12 +737,16 @@ namespace qc {
 
     template <Numeric T, int n>
     inline vec<T, n> & operator/=(vec<T, n> & v1, const T v2) {
-        if constexpr (n > 1 && std::is_floating_point_v<T>) return v1 *= T(1.0) / v2;
-        if constexpr (n >= 1) v1.x /= v2;
-        if constexpr (n >= 2) v1.y /= v2;
-        if constexpr (n >= 3) v1.z /= v2;
-        if constexpr (n >= 4) v1.w /= v2;
-        return v1;
+        if constexpr (n > 1 && std::is_floating_point_v<T>) {
+            return v1 *= T(1.0) / v2;
+        }
+        else {
+            if constexpr (n >= 1) v1.x /= v2;
+            if constexpr (n >= 2) v1.y /= v2;
+            if constexpr (n >= 3) v1.z /= v2;
+            if constexpr (n >= 4) v1.w /= v2;
+            return v1;
+        }
     }
 
     template <Numeric T, int n>

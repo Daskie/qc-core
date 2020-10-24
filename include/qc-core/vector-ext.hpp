@@ -227,7 +227,7 @@ namespace qc {
     //
     // ...
     //
-    template <UnsignedIntegral T, int n> constexpr T mipmaps(const vec<T, n> & size);
+    template <UnsignedIntegral T, int n> constexpr int mipmaps(const vec<T, n> & size);
 
     //
     // ...
@@ -669,7 +669,7 @@ namespace qc {
     }
 
     template <UnsignedIntegral T, int n>
-    inline constexpr T mipmaps(const vec<T, n> & size) {
+    inline constexpr int mipmaps(const vec<T, n> & size) {
         return mipmaps(max(size));
     }
 
