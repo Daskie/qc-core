@@ -22,6 +22,11 @@ namespace std {
         return n;
     }
 
+    template <qc::UnsignedIntegral T>
+    constexpr inline bool has_single_bit(const T v) noexcept {
+        return v != 0u && (v & (v - 1u)) == 0u;
+    }
+
 }
 #endif
 
