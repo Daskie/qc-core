@@ -1,3 +1,5 @@
+include(FetchContent)
+
 add_executable(qc-core-test
         test-core.cpp
         test-matrix.cpp
@@ -5,10 +7,16 @@ add_executable(qc-core-test
         test-span.cpp
         test-vector.cpp)
 
+FetchContent_Declare(
+        googletest
+        GIT_REPOSITORY https://github.com/google/googletest.git)
+
+FetchContent_MakeAvailable(googletest)
+
 target_include_directories(qc-core-test PRIVATE ${gtest_SOURCE_DIR}/include)
 
 target_link_libraries(qc-core-test PRIVATE gtest gtest_main qc-core)
 
 if (${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
     target_compile_options(qc-core-test PRIVATE -Wno-unused-value -Wno-unused-variable)
-endif()
+endif ()

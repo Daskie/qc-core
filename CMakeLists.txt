@@ -3,7 +3,6 @@ project(qc-core)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_subdirectory(extern)
 add_subdirectory(test)
 
 # qc-core
