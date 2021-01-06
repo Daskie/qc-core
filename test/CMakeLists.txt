@@ -1,17 +1,17 @@
 include(FetchContent)
 
+FetchContent_Declare(
+        googletest
+        SOURCE_DIR $ENV{DEV_DIR}/googletest)
+
+FetchContent_MakeAvailable(googletest)
+
 add_executable(qc-core-test
         test-core.cpp
         test-matrix.cpp
         test-quaternion.cpp
         test-span.cpp
         test-vector.cpp)
-
-FetchContent_Declare(
-        googletest
-        GIT_REPOSITORY https://github.com/google/googletest.git)
-
-FetchContent_MakeAvailable(googletest)
 
 target_include_directories(qc-core-test PRIVATE ${gtest_SOURCE_DIR}/include)
 
