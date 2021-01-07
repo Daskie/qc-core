@@ -87,6 +87,8 @@ namespace qc {
 
         ~span() noexcept = default;
 
+        constexpr T size() const noexcept;
+
     };
 
     template <Numeric T> struct span<T, 2> {
@@ -107,6 +109,8 @@ namespace qc {
         span & operator=(span && v) noexcept = default;
 
         ~span() noexcept = default;
+
+        constexpr vec2<T> size() const noexcept;
 
         constexpr span1<T> x() const noexcept;
         constexpr span1<T> y() const noexcept;
@@ -133,6 +137,8 @@ namespace qc {
         span & operator=(span && v) noexcept = default;
 
         ~span() noexcept = default;
+
+        constexpr vec3<T> size() const noexcept;
 
         constexpr span1<T> x() const noexcept;
         constexpr span1<T> y() const noexcept;
@@ -167,6 +173,8 @@ namespace qc {
         span & operator=(span && v) noexcept = default;
 
         ~span() noexcept = default;
+
+        constexpr vec4<T> size() const noexcept;
 
         constexpr span1<T> x() const noexcept;
         constexpr span1<T> y() const noexcept;
@@ -247,6 +255,11 @@ namespace qc {
     {}
 
     template <Numeric T>
+    inline constexpr T span<T, 1>::size() const noexcept {
+        return max - min;
+    }
+
+    template <Numeric T>
     template <Numeric U, int m>
     inline constexpr span<T, 2>::span(const span<U, m> & v) noexcept :
         min(v.min),
@@ -270,6 +283,11 @@ namespace qc {
         min(v1.min, v2.min),
         max(v1.max, v2.max)
     {}
+
+    template <Numeric T>
+    inline constexpr vec2<T> span<T, 2>::size() const noexcept {
+        return max - min;
+    }
 
     template <Numeric T>
     inline constexpr span1<T> span<T, 2>::x() const noexcept {
@@ -317,6 +335,11 @@ namespace qc {
         min(v1.min, v2.min),
         max(v1.max, v2.max)
     {}
+
+    template <Numeric T>
+    inline constexpr vec3<T> span<T, 3>::size() const noexcept {
+        return max - min;
+    }
 
     template <Numeric T>
     inline constexpr span1<T> span<T, 3>::x() const noexcept {
@@ -403,6 +426,11 @@ namespace qc {
         min(v1.min, v2.min),
         max(v1.max, v2.max)
     {}
+
+    template <Numeric T>
+    inline constexpr vec4<T> span<T, 4>::size() const noexcept {
+        return max - min;
+    }
 
     template <Numeric T>
     inline constexpr span1<T> span<T, 4>::x() const noexcept {

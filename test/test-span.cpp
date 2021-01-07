@@ -28,6 +28,9 @@ static void compileClassesT() {
     s1 = s1;
     s1 = std::move(s1);
 
+    // other
+    s1.size();
+
     //--------------------------------------------------------------------------
     // Span2
 
@@ -44,6 +47,7 @@ static void compileClassesT() {
     s2 = std::move(s2);
 
     // other
+    s2.size();
     s2.x();
     s2.y();
 
@@ -65,6 +69,7 @@ static void compileClassesT() {
     s3 = std::move(s3);
 
     // other
+    s3.size();
     s3.x();
     s3.y();
     s3.z();
@@ -93,6 +98,7 @@ static void compileClassesT() {
     s4 = std::move(s4);
 
     // other
+    s4.size();
     s4.x();
     s4.y();
     s4.z();
@@ -136,6 +142,9 @@ static constexpr void compileClassesConstexprT() {
     constexpr qc::span<T, 1> s1_3(std::move(s1));
     constexpr qc::span<T, 1> s1_4(v, v);
 
+    // other
+    s1.size();
+
     //--------------------------------------------------------------------------
     // Span2
 
@@ -148,6 +157,7 @@ static constexpr void compileClassesConstexprT() {
     constexpr qc::span<T, 2> s2_6(s1, s1);
 
     // other
+    s2.size();
     s2.x();
     s2.y();
 
@@ -165,6 +175,7 @@ static constexpr void compileClassesConstexprT() {
     //constexpr qc::span<T, 3> s3_8(s1, s2);
 
     // other
+    s3.size();
     s3.x();
     s3.y();
     s3.z();
@@ -189,6 +200,7 @@ static constexpr void compileClassesConstexprT() {
     //constexpr qc::span<T, 4> s4_12(s1, s3);
 
     // other
+    s4.size();
     s4.x();
     s4.y();
     s4.z();
