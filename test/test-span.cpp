@@ -394,6 +394,11 @@ static void compileFunctionsT() {
     qc::maxify(s4, v);
     qc::maxify(s4, v4);
 
+    qc::round(s1);
+    qc::round(s2);
+    qc::round(s3);
+    qc::round(s4);
+
     qc::clamp(v, s1);
     qc::clamp(v2, s2);
     qc::clamp(v3, s3);

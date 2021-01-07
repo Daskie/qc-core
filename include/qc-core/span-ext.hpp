@@ -40,6 +40,12 @@ namespace qc {
     //
     // ...
     //
+    template <Floating T, int n> span<stype<sizeof(T)>, n> round(const span<T, n> & v);
+    template <Integral T, int n> span<T, n> round(const span<T, n> & v);
+
+    //
+    // ...
+    //
     template <Numeric T, int n> vec<T, n> clamp(const vec<T, n> & v, const span<T, n> & span);
     template <Numeric T> T clamp(T v, const span1<T> & span);
 
@@ -122,6 +128,16 @@ namespace qc {
         maxify(v1.min, v2);
         maxify(v1.max, v2);
         return v1;
+    }
+
+    template <Floating T, int n>
+    inline span<stype<sizeof(T)>, n> round(const span<T, n> & v) {
+        return {round(v.min), round(v.max)};
+    }
+
+    template <Integral T, int n>
+    inline span<T, n> round(const span<T, n> & v) {
+        return v;
     }
 
     template <Numeric T, int n>
