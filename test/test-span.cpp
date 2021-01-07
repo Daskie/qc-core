@@ -246,6 +246,24 @@ static void compileFunctionsT() {
     s3 -= v3;
     s4 -= v4;
 
+    s1 *= v;
+    s2 *= v;
+    s3 *= v;
+    s4 *= v;
+
+    s2 *= v2;
+    s3 *= v3;
+    s4 *= v4;
+
+    s1 /= v;
+    s2 /= v;
+    s3 /= v;
+    s4 /= v;
+
+    s2 /= v2;
+    s3 /= v3;
+    s4 /= v4;
+
     // arithmetic
 
     s1 + v;
@@ -283,6 +301,33 @@ static void compileFunctionsT() {
     v2 - s2;
     v3 - s3;
     v4 - s4;
+
+    s1 * v;
+    s2 * v;
+    s3 * v;
+    s4 * v;
+
+    s2 * v2;
+    s3 * v3;
+    s4 * v4;
+
+    v * s1;
+    v * s2;
+    v * s3;
+    v * s4;
+
+    v2 * s2;
+    v3 * s3;
+    v4 * s4;
+
+    s1 / v;
+    s2 / v;
+    s3 / v;
+    s4 / v;
+
+    s2 / v2;
+    s3 / v3;
+    s4 / v4;
 
     // comparison
 

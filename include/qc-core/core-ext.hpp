@@ -260,17 +260,17 @@ namespace qc {
 
     template <Numeric T>
     inline constexpr T abs(const T v) {
-        if constexpr (std::is_unsigned_v<T>) {
+        if constexpr (UnsignedIntegral<T>) {
             return v;
         }
-        if constexpr (std::is_signed_v<T>) {
+        else {
             return v < 0 ? -v : v;
         }
     }
 
     template <Numeric T>
     inline bool zero(const T v, const T e) {
-        if constexpr (std::is_floating_point_v<T>) {
+        if constexpr (Floating<T>) {
             return abs(v) < e;
         }
         else {
@@ -280,7 +280,7 @@ namespace qc {
 
     template <typename T>
     inline bool equal(const T & v1, const T & v2) {
-        if constexpr (std::is_floating_point_v<T>) {
+        if constexpr (Floating<T>) {
             return zero(v1 - v2);
         }
         else {
@@ -300,17 +300,17 @@ namespace qc {
 
     template <Numeric T>
     inline constexpr int sign(const T v) {
-        if constexpr (std::is_signed_v<T>) {
-            return int(0 < v) - int(v < 0);
-        }
-        if constexpr (std::is_unsigned_v<T>) {
+        if constexpr (UnsignedIntegral<T>) {
             return int(v > 0u);
+        }
+        else {
+            return int(0 < v) - int(v < 0);
         }
     }
 
     template <Numeric T>
     inline T trunc(const T v) {
-        if constexpr (std::is_floating_point_v<T>) {
+        if constexpr (Floating<T>) {
             return T(stype<sizeof(T)>(v));
         }
         else {
@@ -421,21 +421,21 @@ namespace qc {
 
     template <Numeric T>
     inline constexpr T mod(const T v, const T d) {
-        if constexpr (std::is_floating_point_v<T>) {
+        if constexpr (Floating<T>) {
             return fract(v / d) * d;
         }
-        if constexpr (std::is_integral_v<T>) {
+        else {
             return T(v % d);
         }
     }
 
     template <Numeric T>
     inline constexpr std::pair<T, T> mod_q(const T v, const T d) {
-        if constexpr (std::is_floating_point_v<T>) {
+        if constexpr (Floating<T>) {
             const T q{v / d};
             return { fract(q) * d, q };
         }
-        if constexpr (std::is_integral_v<T>) {
+        else {
             const auto q{v / d};
             return { T(v - q * d), T(q) };
         }

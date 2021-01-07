@@ -737,7 +737,7 @@ namespace qc {
 
     template <Numeric T, int n>
     inline vec<T, n> & operator/=(vec<T, n> & v1, const T v2) {
-        if constexpr (n > 1 && std::is_floating_point_v<T>) {
+        if constexpr (Floating<T>) {
             return v1 *= T(1.0) / v2;
         }
         else {
@@ -774,8 +774,10 @@ namespace qc {
 
     template <Numeric T, int n>
     inline constexpr vec<T, n> operator-(const vec<T, n> & v) {
-        if constexpr (std::is_unsigned_v<T>) return v;
-        if constexpr (!std::is_unsigned_v<T>) {
+        if constexpr (UnsignedIntegral<T>) {
+            return v;
+        }
+        else {
             if constexpr (n == 2) return {T(-v.x), T(-v.y)};
             if constexpr (n == 3) return {T(-v.x), T(-v.y), T(-v.z)};
             if constexpr (n == 4) return {T(-v.x), T(-v.y), T(-v.z), T(-v.w)};
@@ -852,7 +854,7 @@ namespace qc {
 
     template <Numeric T, int n>
     inline constexpr vec<T, n> operator/(const vec<T, n> & v1, const T v2) {
-        if constexpr (std::is_floating_point_v<T>) {
+        if constexpr (Floating<T>) {
             return v1 * (T(1.0) / v2);
         }
         else {

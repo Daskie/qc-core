@@ -31,7 +31,7 @@ namespace qc {
     template <Integral T> requires (sizeof(T) <= 4)
     struct RandomEngineTransformer<std::mt19937, T> {
         T operator()(const u32 result) const {
-            if constexpr (sizeof(T) < 4u || std::is_signed_v<T>) {
+            if constexpr (sizeof(T) < 4u || SignedIntegral<T>) {
                 return T(result & std::numeric_limits<T>::max());
             }
             else {
@@ -60,7 +60,7 @@ namespace qc {
     template <Integral T> requires (sizeof(T) <= 8)
     struct RandomEngineTransformer<std::mt19937_64, T> {
         T operator()(const u64 result) const {
-            if constexpr (sizeof(T) < 8u || std::is_signed_v<T>) {
+            if constexpr (sizeof(T) < 8u || SignedIntegral<T>) {
                 return T(result & std::numeric_limits<T>::max());
             }
             else {
@@ -161,7 +161,7 @@ namespace qc {
         //
         template <Numeric T>
         T next(const T max) noexcept {
-            if constexpr (std::is_integral_v<T>) {
+            if constexpr (Integral<T>) {
                 return next<T>() % max;
             }
             else {
