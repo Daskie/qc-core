@@ -1,7 +1,8 @@
 #pragma once
 
-#include <bit>
 #include <cmath>
+
+#include <bit>
 #include <numbers>
 
 #include <qc-core/core.hpp>
