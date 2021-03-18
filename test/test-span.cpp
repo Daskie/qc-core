@@ -656,20 +656,15 @@ static constexpr bool compileCasts() {
 
 template <typename T>
 static constexpr void compileConstantsFT() {
-    constexpr qc::span1<T> is1(qc::infspan<T, 1>);
-    constexpr qc::span2<T> is2(qc::infspan<T, 2>);
-    constexpr qc::span3<T> is3(qc::infspan<T, 3>);
-    constexpr qc::span4<T> is4(qc::infspan<T, 4>);
+    constexpr qc::span1<T> is1(qc::fullSpan<T, 1>);
+    constexpr qc::span2<T> is2(qc::fullSpan<T, 2>);
+    constexpr qc::span3<T> is3(qc::fullSpan<T, 3>);
+    constexpr qc::span4<T> is4(qc::fullSpan<T, 4>);
 
-    constexpr qc::span1<T> ns1(qc::nanspan<T, 1>);
-    constexpr qc::span2<T> ns2(qc::nanspan<T, 2>);
-    constexpr qc::span3<T> ns3(qc::nanspan<T, 3>);
-    constexpr qc::span4<T> ns4(qc::nanspan<T, 4>);
-
-    constexpr qc::span1<T> nulls1(qc::nullspan<T, 1>);
-    constexpr qc::span2<T> nulls2(qc::nullspan<T, 2>);
-    constexpr qc::span3<T> nulls3(qc::nullspan<T, 3>);
-    constexpr qc::span4<T> nulls4(qc::nullspan<T, 4>);
+    constexpr qc::span1<T> nulls1(qc::nullSpan<T, 1>);
+    constexpr qc::span2<T> nulls2(qc::nullSpan<T, 2>);
+    constexpr qc::span3<T> nulls3(qc::nullSpan<T, 3>);
+    constexpr qc::span4<T> nulls4(qc::nullSpan<T, 4>);
 }
 
 static constexpr bool compileConstants() {

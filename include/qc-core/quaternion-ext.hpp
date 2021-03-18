@@ -124,7 +124,7 @@ namespace qc {
     template <typename T>
     inline quat<T> normalize(const quat<T> & q) {
         const T mag2(magnitude2(q));
-        if (zero(mag2)) {
+        if (isZero(mag2)) {
             return {};
         }
         const T invMag(T(1.0) / std::sqrt(mag2));
@@ -149,7 +149,7 @@ namespace qc {
     template <typename T>
     inline vec3<T> quatAxis_n(const quat<T> & q) {
         const T d2{T(1.0) - q.w * q.w};
-        if (zero(d2)) {
+        if (isZero(d2)) {
             return {};
         }
         return q.a * (T(1.0) / std::sqrt(d2));
@@ -240,7 +240,7 @@ namespace qc {
         }
 
         // If parallel, no interpolation necessary
-        if (equal(cosHalfTheta, T(1.0))) {
+        if (areEqual(cosHalfTheta, T(1.0))) {
             return q1;
         }
 

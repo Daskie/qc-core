@@ -2,6 +2,7 @@
 
 #include <bit>
 #include <cmath>
+#include <numbers>
 
 #include <qc-core/core.hpp>
 
@@ -32,18 +33,18 @@ namespace qc {
     //
     // ...
     //
-    template <Numeric T> bool zero(T v, T e = std::numeric_limits<T>::epsilon());
+    template <Numeric T> bool isZero(T v, T e = std::numeric_limits<T>::epsilon());
 
     //
     // ...
     //
-    template <typename T> bool equal(const T & v1, const T & v2);
-    template <typename T, typename... Ts> bool equal(const T & v1, const T & v2, const T & v3, const Ts &... vs);
+    template <typename T> bool areEqual(const T & v1, const T & v2);
+    template <typename T, typename... Ts> bool areEqual(const T & v1, const T & v2, const T & v3, const Ts &... vs);
 
     //
     // ...
     //
-    template <Floating T> bool equal_e(T v1, T v2, T e = std::numeric_limits<T>::epsilon());
+    template <Floating T> bool areEqual_e(T v1, T v2, T e = std::numeric_limits<T>::epsilon());
 
     //
     // ...
@@ -95,11 +96,6 @@ namespace qc {
     // ...
     //
     template <UnsignedIntegral T> constexpr int log2Floor(T v);
-
-    //
-    // ...
-    //
-    template <UnsignedIntegral T> constexpr int log2Ceil(T v);
 
     //
     // ...
@@ -193,7 +189,7 @@ namespace qc {
 
     template <Numeric T>
     inline constexpr std::pair<T, T> minmax(const T v1, const T v2) {
-        return (v1 < v2) ? std::pair<T, T>{v1, v2} : std::pair<T, T>{v2, v1};
+        return (v2 < v1) ? std::pair<T, T>{v2, v1} : std::pair<T, T>{v1, v2};
     }
 
     template <Numeric T, Numeric... Ts>
@@ -218,7 +214,7 @@ namespace qc {
 
     template <Numeric T>
     inline constexpr T clamp(const T & v, const T & min, const T & max) {
-        return ::qc::min(::qc::max(v, min), max);
+        return qc::min(qc::max(v, min), max);
     }
 
     template <Numeric T>
@@ -232,19 +228,19 @@ namespace qc {
     }
 
     template <Numeric T>
-    inline bool zero(const T v, const T e) {
+    inline bool isZero(const T v, const T e) {
         if constexpr (Floating<T>) {
-            return abs(v) < e;
+            return abs(v) <= e;
         }
         else {
-            return v == T(0);
+            return !v;
         }
     }
 
     template <typename T>
-    inline bool equal(const T & v1, const T & v2) {
+    inline bool areEqual(const T & v1, const T & v2) {
         if constexpr (Floating<T>) {
-            return zero(v1 - v2);
+            return isZero(v1 - v2);
         }
         else {
             return v1 == v2;
@@ -252,13 +248,13 @@ namespace qc {
     }
 
     template <typename T, typename... Ts>
-    inline bool equal(const T & v1, const T & v2, const T & v3, const Ts &... vs) {
-        return equal(v1, v2) && equal(v2, v3, vs...);
+    inline bool areEqual(const T & v1, const T & v2, const T & v3, const Ts &... vs) {
+        return areEqual(v1, v2) && areEqual(v2, v3, vs...);
     }
 
     template <Floating T>
-    inline bool equal_e(const T v1, const T v2, const T e) {
-        return zero(v1 - v2, e);
+    inline bool areEqual_e(const T v1, const T v2, const T e) {
+        return isZero(v1 - v2, e);
     }
 
     template <Numeric T>
@@ -307,14 +303,14 @@ namespace qc {
         // Right bit shift on signed integer must be arithmetic
         static_assert((s64(-1) >> 1) == s64(-1));
 
-        return reinterpret_cast<s64 &>(v += 6755399441055744.0) << 13 >> 13;
+        return std::bit_cast<s64>(v + 6755399441055744.0) << 13 >> 13;
     }
 
     inline s32 round(float v) {
         // Right bit shift on signed integer must be arithmetic
         static_assert((s32(-1) >> 1) == s32(-1));
 
-        return reinterpret_cast<s32 &>(v += 12582912.0f) << 10 >> 10;
+        return std::bit_cast<s32>(v + 12582912.0f) << 10 >> 10;
     }
 
     template <Integral T>
@@ -358,17 +354,12 @@ namespace qc {
         //                               if (v & 0x0000000000000002) {           log +=  1; }
         //return log;
 
-        return v == T(0) ? 0 : std::numeric_limits<T>::digits - 1 - std::countl_zero(v);
-    }
-
-    template <UnsignedIntegral T>
-    inline constexpr int log2Ceil(const T v) {
-        return v == T(0) ? 0 : std::numeric_limits<T>::digits - std::countl_zero(std::make_unsigned_t<decltype(v - 1u)>(v - 1u));
+        return v == T(0) ? 0 : std::bit_width(v) - 1;
     }
 
     template <UnsignedIntegral T>
     inline constexpr int mipmaps(const T size) {
-        return log2Floor(size) + 1;
+        return std::bit_width(size);
     }
 
     template <Floating T>
@@ -379,7 +370,7 @@ namespace qc {
     template <Floating T>
     inline std::pair<T, stype<sizeof(T)>> fract_i(const T v) {
         const stype<sizeof(T)> i{stype<sizeof(T)>(v)};
-        return { v - T(i), i };
+        return {v - T(i), i};
     }
 
     template <Numeric T>
@@ -396,17 +387,17 @@ namespace qc {
     inline constexpr std::pair<T, T> mod_q(const T v, const T d) {
         if constexpr (Floating<T>) {
             const T q{v / d};
-            return { fract(q) * d, q };
+            return {fract(q) * d, q};
         }
         else {
             const auto q{v / d};
-            return { T(v - q * d), T(q) };
+            return {T(v - q * d), T(q)};
         }
     }
 
     template <Floating T>
     inline T mix(const T v1, const T v2, const T t) {
-        return (T(1.0) - t) * v1 + t * v2;
+        return std::lerp(v1, v2, t);
     }
 
     template <Floating T>
@@ -421,37 +412,27 @@ namespace qc {
 
     template <typename T, typename... Args>
     inline constexpr T sum(const T & v, const Args &... args) {
-        if constexpr (sizeof...(Args) == 0) {
-            return v;
-        }
-        else {
-            return v + sum(args...);
-        }
+        return (v + ... + args);
     }
 
     template <typename T, typename... Args>
     inline constexpr T product(const T & v, const Args &... args) {
-        if constexpr (sizeof...(Args) == 0) {
-            return v;
-        }
-        else {
-            return v * product(args...);
-        }
+        return (v * ... * args);
     }
 
     template <Floating T, Floating... Args>
-    inline T average(T v, Args... args) {
-        return sum(v, args...) / T(sizeof...(Args) + 1);
+    inline T average(const T v, const Args... args) {
+        return (v + ... + args) / T(1 + sizeof...(Args));
     }
 
     template <Floating T>
     inline T radians(const T degrees) {
-        return degrees * (pi<T> / T(180.0));
+        return degrees * T(std::numbers::pi / 180.0);
     }
 
     template <Floating T>
-    inline T degrees(T radians) {
-        return radians * (T(180.0) / pi<T>);
+    inline T degrees(const T radians) {
+        return radians * T(180.0 / std::numbers::pi);
     }
 
     template <Floating To, Floating From>

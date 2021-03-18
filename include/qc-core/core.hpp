@@ -28,14 +28,8 @@ namespace qc {
         template <typename T> concept Floating = std::is_floating_point_v<T>;
         template <typename T> concept Numeric = Integral<T> || Floating<T>;
         template <typename T> concept SignedNumeric = SignedIntegral<T> || Floating<T>;
-        template <typename T> concept Orderable = Numeric<T> || std::is_pointer_v<T>;
 
     } // namespace types
-
-    template <typename T, int n> struct _array_t_struct { using type = T[n]; };
-    template <typename T> struct _array_t_struct<T, 0> { using type = T[]; };
-
-    template <typename T, int n = 0> using array_t = typename _array_t_struct<T, n>::type;
 
     template <int size> struct sized;
     template <> struct sized<1> { using stype =  s8; using utype =  u8; };
@@ -46,50 +40,30 @@ namespace qc {
     template <int size> using utype = typename sized<size>::utype;
     template <int size> using ftype = typename sized<size>::ftype;
 
-    template <typename T> using remove_cvref_t = std::remove_cv_t<std::remove_reference_t<T>>;
-
-    //
-    // Unique identification of floating point numbers
-    //
-    //  precision | bits | digits
-    // -----------+------+--------
-    //  half      |   16 |      5
-    //  single    |   32 |      9
-    //  double    |   64 |     17
-    //  extended  |   80 |     21
-    //  quad      |  128 |     36
-    //
-    template <Floating T> constexpr T    pi = T(3.14159265358979323846264338327950288L);
-    template <Floating T> constexpr T     e = T(2.71828182845904523536028747135266250L);
-    template <Floating T> constexpr T   phi = T(1.61803398874989484820458683436563812L);
-    template <Floating T> constexpr T sqrt2 = T(1.41421356237309504880168872420969808L);
-    template <Floating T> constexpr T sqrt3 = T(1.73205080756887729352744634150587237L);
-    template <Floating T> constexpr T sqrt5 = T(2.23606797749978969640917366873127624L);
-    template <Floating T> constexpr T infinity = std::numeric_limits<T>::infinity();
-    template <Floating T> constexpr T nan = std::numeric_limits<T>::quiet_NaN();
+    template <typename T> concept _MinMaxable = Numeric<T> || std::is_pointer_v<T>;
 
     //
     // ...
     //
-    template <Orderable T> constexpr T min(T v1, T v2);
+    template <_MinMaxable T> constexpr T min(T v1, T v2);
     template <typename T1, typename T2, typename T3, typename... Ts> constexpr decltype(auto) min(T1 && v1, T2 && v2, T3 && v3, Ts &&... vs);
 
     //
     // ...
     //
-    template <Orderable T> constexpr T max(T v1, T v2);
+    template <_MinMaxable T> constexpr T max(T v1, T v2);
     template <typename T1, typename T2, typename T3, typename... Ts> constexpr decltype(auto) max(T1 && v1, T2 && v2, T3 && v3, Ts &&... vs);
 
     //
     // ...
     //
-    template <Orderable T> T & minify(T & v1, T v2);
+    template <_MinMaxable T> T & minify(T & v1, T v2);
     template <typename T, typename T1, typename T2, typename... Ts> T & minify(T & min, T1 && v1, T2 && v2, Ts &&... vs);
 
     //
     // ...
     //
-    template <Orderable T> T & maxify(T & v1, T v2);
+    template <_MinMaxable T> T & maxify(T & v1, T v2);
     template <typename T, typename T1, typename T2, typename... Ts> T & maxify(T & min, T1 && v1, T2 && v2, Ts &&... vs);
 
 } // namespace qc
@@ -98,9 +72,9 @@ namespace qc {
 
 namespace qc {
 
-    template <Orderable T>
+    template <_MinMaxable T>
     inline constexpr T min(const T v1, const T v2) {
-        return v1 <= v2 ? v1 : v2;
+        return v2 < v1 ? v2 : v1;
     }
 
     template <typename T1, typename T2, typename T3, typename... Ts>
@@ -108,9 +82,9 @@ namespace qc {
         return min(min(std::forward<T1>(v1), std::forward<T2>(v2)), std::forward<T3>(v3), std::forward<Ts>(vs)...);
     }
 
-    template <Orderable T>
+    template <_MinMaxable T>
     inline constexpr T max(const T v1, const T v2) {
-        return v1 >= v2 ? v1 : v2;
+        return v2 > v1 ? v2 : v1;
     }
 
     template <typename T1, typename T2, typename T3, typename... Ts>
@@ -118,9 +92,9 @@ namespace qc {
         return max(max(std::forward<T1>(v1), std::forward<T2>(v2)), std::forward<T3>(v3), std::forward<Ts>(vs)...);
     }
 
-    template <Orderable T>
+    template <_MinMaxable T>
     inline T & minify(T & v1, const T v2) {
-        return v1 <= v2 ? v1 : v1 = v2;
+        return v2 < v1 ? v1 = v2 : v1;
     }
 
     template <typename T, typename T1, typename T2, typename... Ts>
@@ -128,9 +102,9 @@ namespace qc {
         return minify(minify(min, std::forward<T1>(v1)), std::forward<T2>(v2), std::forward<Ts>(vs)...);
     }
 
-    template <Orderable T>
+    template <_MinMaxable T>
     inline T & maxify(T & v1, const T v2) {
-        return v1 >= v2 ? v1 : v1 = v2;
+        return v2 > v1 ? v1 = v2 : v1;
     }
 
     template <typename T, typename T1, typename T2, typename... Ts>

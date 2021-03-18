@@ -555,17 +555,17 @@ static void compileFunctionsT() {
     qc::abs(v3);
     qc::abs(v4);
 
-    qc::zero(v2);
-    qc::zero(v3);
-    qc::zero(v4);
+    qc::isZero(v2);
+    qc::isZero(v3);
+    qc::isZero(v4);
 
-    qc::equal(v2, v2, v2, v2, v2);
-    qc::equal(v3, v3, v3, v3, v3);
-    qc::equal(v4, v4, v4, v4, v4);
+    qc::areEqual(v2, v2, v2, v2, v2);
+    qc::areEqual(v3, v3, v3, v3, v3);
+    qc::areEqual(v4, v4, v4, v4, v4);
 
-    qc::equal(v2);
-    qc::equal(v3);
-    qc::equal(v4);
+    qc::areEqual(v2);
+    qc::areEqual(v3);
+    qc::areEqual(v4);
 
     qc::sign(v2);
     qc::sign(v3);
@@ -595,12 +595,12 @@ static void compileFunctionsFT() {
     vec3<T> v3;
     vec4<T> v4;
 
-    qc::equal_e(v2, v);
-    qc::equal_e(v3, v);
-    qc::equal_e(v4, v);
-    qc::equal_e(v2, v2, v);
-    qc::equal_e(v3, v3, v);
-    qc::equal_e(v4, v4, v);
+    qc::areEqual_e(v2, v);
+    qc::areEqual_e(v3, v);
+    qc::areEqual_e(v4, v);
+    qc::areEqual_e(v2, v2, v);
+    qc::areEqual_e(v3, v3, v);
+    qc::areEqual_e(v4, v4, v);
 
     qc::pow(v2, v);
     qc::pow(v3, v);
@@ -1277,17 +1277,6 @@ static constexpr void compileConstantsT() {
     constexpr vec4<T> nw4(qc::nw4<T>);
 }
 
-template <typename T>
-static constexpr void compileConstantsFT() {
-    constexpr vec2<T> iv2(qc::infvec<T, 2>);
-    constexpr vec3<T> iv3(qc::infvec<T, 3>);
-    constexpr vec4<T> iv4(qc::infvec<T, 4>);
-
-    constexpr vec2<T> nv2(qc::nanvec<T, 2>);
-    constexpr vec3<T> nv3(qc::nanvec<T, 3>);
-    constexpr vec4<T> nv4(qc::nanvec<T, 4>);
-}
-
 static constexpr bool compileConstants() {
     compileConstantsT<f32>();
     compileConstantsT<f64>();
@@ -1299,9 +1288,6 @@ static constexpr bool compileConstants() {
     compileConstantsT<u16>();
     compileConstantsT<u32>();
     compileConstantsT<u64>();
-
-    compileConstantsFT<f32>();
-    compileConstantsFT<f64>();
 
     return true;
 }

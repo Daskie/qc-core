@@ -16,9 +16,6 @@ static void compileTyping() {
     u64 u64_; u64_;
     f64 f64_; f64_;
 
-    qc::array_t<int> a0{1, 2, 3}; a0;
-    qc::array_t<int, 1> a1; a1;
-
     qc::stype<1> stype_08_; stype_08_;
     qc::stype<2> stype_16_; stype_16_;
     qc::stype<4> stype_32_; stype_32_;
@@ -29,22 +26,6 @@ static void compileTyping() {
     qc::utype<8> utype_64_; utype_64_;
     qc::ftype<4> ftype_32_; ftype_32_;
     qc::ftype<8> ftype_64_; ftype_64_;
-}
-
-template <typename T>
-static void compileConstantsFT() {
-    qc::pi<T>;
-    qc::e<T>;
-    qc::phi<T>;
-    qc::sqrt2<T>;
-    qc::sqrt3<T>;
-    qc::sqrt5<T>;
-    qc::infinity<T>;
-}
-
-static void compileConstants() {
-    compileConstantsFT<float>();
-    compileConstantsFT<double>();
 }
 
 template <typename T1, typename T2>
@@ -102,13 +83,13 @@ static void compileFunctionsT() {
 
     qc::clamp(v, v, v);
 
-    qc::zero(v);
-    qc::zero(v, v);
+    qc::isZero(v);
+    qc::isZero(v, v);
 
-    qc::equal(v, v);
-    qc::equal(v, v, v);
-    qc::equal(v, v, v, v);
-    qc::equal(v, v, v, v, v);
+    qc::areEqual(v, v);
+    qc::areEqual(v, v, v);
+    qc::areEqual(v, v, v, v);
+    qc::areEqual(v, v, v, v, v);
 
     qc::sign(v);
 
@@ -129,8 +110,8 @@ template <typename T>
 static void compileFunctionsFT() {
     T v{1.0};
 
-    qc::equal_e(v, v);
-    qc::equal_e(v, v, v);
+    qc::areEqual_e(v, v);
+    qc::areEqual_e(v, v, v);
 
     qc::pow(v, 1);
     qc::pow(v, 1u);
@@ -159,19 +140,15 @@ static void compileFunctionsUIT() {
     T v{1u};
 
     qc::log2Floor(v);
-
-    qc::log2Ceil(v);
-
-    qc::mipmaps(v);
 }
 
 static void compileFunctionsBT() {
     bool v{true};
 
-    qc::equal(v, v);
-    qc::equal(v, v, v);
-    qc::equal(v, v, v, v);
-    qc::equal(v, v, v, v, v);
+    qc::areEqual(v, v);
+    qc::areEqual(v, v, v);
+    qc::areEqual(v, v, v, v);
+    qc::areEqual(v, v, v, v, v);
 }
 
 static void compileFunctions() {
@@ -303,10 +280,6 @@ static constexpr void compileFunctionsConstexprUIT() {
     constexpr T v{1};
 
     qc::log2Floor(v);
-
-    qc::log2Ceil(v);
-
-    //qc::mipmaps(v);
 }
 
 static constexpr void compileFunctionsConstexprBT() {
@@ -354,7 +327,6 @@ static constexpr bool compileFunctionsConstexpr() {
 
 TEST(core, compilation) {
     compileTyping();
-    compileConstants();
     compileFunctions();
     static_assert(compileFunctionsConstexpr());
 }
@@ -567,18 +539,4 @@ TEST(core, concepts) {
     static_assert(!SignedNumeric<bool>);
     static_assert(!SignedNumeric<char>);
     static_assert(!SignedNumeric<void *>);
-
-    static_assert(Orderable<s8>);
-    static_assert(Orderable<s16>);
-    static_assert(Orderable<s32>);
-    static_assert(Orderable<s64>);
-    static_assert(Orderable<u8>);
-    static_assert(Orderable<u16>);
-    static_assert(Orderable<u32>);
-    static_assert(Orderable<u64>);
-    static_assert(Orderable<f32>);
-    static_assert(Orderable<f64>);
-    static_assert(!Orderable<bool>);
-    static_assert(!Orderable<char>);
-    static_assert(Orderable<void *>);
 }

@@ -190,9 +190,8 @@ namespace qc {
 
     };
 
-    template <Floating T, int n> constexpr span<T, n>  infspan = span<T, n>(-infinity<T>, infinity<T>);
-    template <Floating T, int n> constexpr span<T, n>  nanspan = span<T, n>(nan<T>, nan<T>);
-    template <Numeric T, int n> constexpr span<T, n> nullspan = span<T, n>(std::numeric_limits<T>::max(), std::numeric_limits<T>::min());
+    template <Numeric T, int n> constexpr span<T, n> fullSpan{Floating<T> ? -std::numeric_limits<T>::infinity() : std::numeric_limits<T>::min(), Floating<T> ? std::numeric_limits<T>::infinity() : std::numeric_limits<T>::max()};
+    template <Numeric T, int n> constexpr span<T, n> nullSpan{fullSpan<T, n>.max, fullSpan<T, n>.min};
 
     template <Numeric T, int n> span<T, n> & operator+=(span<T, n> & v1, T v2);
     template <Numeric T, int n> span<T, n> & operator+=(span<T, n> & v1, const vec<T, n> & v2);

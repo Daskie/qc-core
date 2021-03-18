@@ -260,9 +260,6 @@ namespace qc {
     template <typename T> constexpr vec4<T> pw4 = pw<T, 4>;
     template <typename T> constexpr vec4<T> nw4 = nw<T, 4>;
 
-    template <Floating T, int n> constexpr vec<T, n> infvec = vec<T, n>(infinity<T>);
-    template <Floating T, int n> constexpr vec<T, n> nanvec = vec<T, n>(     nan<T>);
-
     template <Numeric T, int n> vec<T, n> & operator++(vec<T, n> & v);
     template <Numeric T, int n> vec<T, n>   operator++(vec<T, n> & v, int);
 

@@ -301,7 +301,7 @@ namespace qc {
     template <typename T, int n>
     inline mat<T, n> inverse(const mat<T, n> & m) {
         const T det{determinant(m)};
-        if (zero(det)) {
+        if (isZero(det)) {
             return nullMat<T, n>();
         }
 
@@ -477,7 +477,7 @@ namespace qc {
 
     template <typename T>
     inline mat3<T> rotate(const vec3<T> axis, const T sinTheta, const T cosTheta) {
-        if (zero(magnitude2(axis))) { //can't rotate around 0 length vector
+        if (isZero(magnitude2(axis))) { //can't rotate around 0 length vector
             return {};
         }
 
@@ -540,11 +540,11 @@ namespace qc {
     template <typename T>
     inline mat3<T> align_n(const vec3<T> v1, const vec3<T> v2) {
         const T d{dot(v1, v2)};
-        if (equal(d, T(1.0))) { // already aligned, and would break rotation
+        if (areEqual(d, T(1.0))) { // already aligned, and would break rotation
             return {};
         }
-        if (equal(d, T(-1.0))) { // opposite direction, pick arbitrary axis to rotate around
-            return rotate_n(ortho(v1), pi<T>);
+        if (areEqual(d, T(-1.0))) { // opposite direction, pick arbitrary axis to rotate around
+            return rotate_n(ortho(v1), std::numbers::pi_v<T>);
         }
 
         const vec3<T> c(cross(v1, v2));
