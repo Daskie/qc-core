@@ -4,15 +4,15 @@ project(qc-core)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_DEBUG_POSTFIX d)
 
-### qc-core ###
+### QC-CORE ###
 
 add_library(qc-core INTERFACE)
 
 target_include_directories(
-    ${PROJECT_NAME}
+    qc-core
     INTERFACE
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    $<INSTALL_INTERFACE:include>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<INSTALL_INTERFACE:include>
 )
 
 if (${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
@@ -21,8 +21,9 @@ elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL "MSVC")
     target_compile_options(qc-core INTERFACE /W4 /WX)
 endif()
 
-### qc-core-test ###
+### SUBDIRECTORIES ###
 
+# qc-core-test
 add_subdirectory(test EXCLUDE_FROM_ALL)
 
 ### INSTALL ###
