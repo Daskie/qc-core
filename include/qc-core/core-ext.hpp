@@ -5,43 +5,6 @@
 
 #include <qc-core/core.hpp>
 
-// TODO: Remove once MSVC has implemented <bit>
-#ifdef _MSC_VER
-namespace std {
-
-    template <qc::UnsignedIntegral T>
-    constexpr T bit_ceil(T v) {
-        --v;
-                                       v |= v >>  1;
-                                       v |= v >>  2;
-                                       v |= v >>  4;
-        if constexpr (sizeof(T) >= 2u) v |= v >>  8;
-        if constexpr (sizeof(T) >= 4u) v |= v >> 16;
-        if constexpr (sizeof(T) >= 8u) v |= v >> 32;
-        return ++v;
-    }
-
-    template <qc::UnsignedIntegral T>
-    constexpr int countl_zero(T v) noexcept {
-        int n{0};
-        if constexpr (sizeof(T) >= 8) if (!(v & 0xFFFFFFFF00000000u)) n += 32; else v >>= 32;
-        if constexpr (sizeof(T) >= 4) if (!(v &         0xFFFF0000u)) n += 16; else v >>= 16;
-        if constexpr (sizeof(T) >= 2) if (!(v &             0xFF00u)) n +=  8; else v >>=  8;
-                                      if (!(v &               0xF0u)) n +=  4; else v >>=  4;
-                                      if (!(v &                0xCu)) n +=  2; else v >>=  2;
-                                      if (!(v &                0x2u))     ++n; else v >>=  1;
-                                      if (!(v &                0x1u))     ++n;
-        return n;
-    }
-
-    template <qc::UnsignedIntegral T>
-    constexpr bool has_single_bit(const T v) noexcept {
-        return v != 0u && (v & (v - 1u)) == 0u;
-    }
-
-}
-#endif
-
 namespace qc {
 
     //

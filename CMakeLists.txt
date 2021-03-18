@@ -2,17 +2,63 @@ cmake_minimum_required(VERSION 3.17)
 project(qc-core)
 
 set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_DEBUG_POSTFIX d)
 
-add_subdirectory(test)
-
-# qc-core
+### qc-core ###
 
 add_library(qc-core INTERFACE)
 
-target_include_directories(qc-core INTERFACE include)
+target_include_directories(
+    ${PROJECT_NAME}
+    INTERFACE
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+)
 
 if (${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
     target_compile_options(qc-core INTERFACE -Wall -Werror -Wextra -Wpedantic)
 elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL "MSVC")
     target_compile_options(qc-core INTERFACE /W4 /WX)
 endif()
+
+### qc-core-test ###
+
+add_subdirectory(test EXCLUDE_FROM_ALL)
+
+### INSTALL ###
+
+# General install and target setup
+install(
+    TARGETS ${PROJECT_NAME}
+    EXPORT ${PROJECT_NAME}-targets
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib
+    RUNTIME DESTINATION bin
+    INCLUDES DESTINATION include
+)
+
+# Install headers
+install(DIRECTORY include DESTINATION .)
+
+# Export targets to create importable cmake file
+install(
+    EXPORT ${PROJECT_NAME}-targets
+    NAMESPACE ${PROJECT_NAME}::
+    DESTINATION lib/cmake/${PROJECT_NAME}
+)
+
+# Allow library to be found via find_package
+include(CMakePackageConfigHelpers)
+
+# Create config.cmake files
+configure_package_config_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/Config.cmake.in
+    ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake
+    INSTALL_DESTINATION lib/cmake/${PROJECT_NAME}
+)
+
+# Install config.cmake files
+install(
+    FILES ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake
+    DESTINATION lib/cmake/${PROJECT_NAME}
+)
