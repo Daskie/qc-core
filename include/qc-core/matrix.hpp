@@ -45,10 +45,10 @@ namespace qc {
         using Type = T;
         static constexpr int n{2};
 
-        vec2<T> c1;
-        vec2<T> c2;
+        vec2<T> c1{T(1.0), T(0.0)};
+        vec2<T> c2{T(0.0), T(1.0)};
 
-        constexpr mat() noexcept;
+        constexpr mat() noexcept = default;
         constexpr mat(vec2<T> c1, vec2<T> c2) noexcept;
         constexpr mat(
             T x1, T y1,
@@ -84,11 +84,11 @@ namespace qc {
         using Type = T;
         static constexpr int n{3};
 
-        vec3<T> c1;
-        vec3<T> c2;
-        vec3<T> c3;
+        vec3<T> c1{T(1.0), T(0.0), T(0.0)};
+        vec3<T> c2{T(0.0), T(1.0), T(0.0)};
+        vec3<T> c3{T(0.0), T(0.0), T(1.0)};
 
-        constexpr mat() noexcept;
+        constexpr mat() noexcept = default;
         constexpr mat(vec3<T> c1, vec3<T> c2, vec3<T> c3) noexcept;
         constexpr mat(
             T x1, T y1, T z1,
@@ -125,12 +125,12 @@ namespace qc {
         using Type = T;
         static constexpr int n{4};
 
-        vec4<T> c1;
-        vec4<T> c2;
-        vec4<T> c3;
-        vec4<T> c4;
+        vec4<T> c1{T(1.0), T(0.0), T(0.0), T(0.0)};
+        vec4<T> c2{T(0.0), T(1.0), T(0.0), T(0.0)};
+        vec4<T> c3{T(0.0), T(0.0), T(1.0), T(0.0)};
+        vec4<T> c4{T(0.0), T(0.0), T(0.0), T(1.0)};
 
-        constexpr mat() noexcept;
+        constexpr mat() noexcept = default;
         constexpr mat(vec4<T> c1, vec4<T> c2, vec4<T> c3, vec4<T> c4) noexcept;
         constexpr mat(
             T x1, T y1, T z1, T w1,
@@ -216,12 +216,6 @@ namespace qc {
 namespace qc {
 
     template <Floating T>
-    inline constexpr mat<T, 2>::mat() noexcept :
-        c1(T(1.0), T(0.0)),
-        c2(T(0.0), T(1.0))
-    {}
-
-    template <Floating T>
     inline constexpr mat<T, 2>::mat(const vec2<T> c1, const vec2<T> c2) noexcept :
         c1(c1),
         c2(c2)
@@ -289,13 +283,6 @@ namespace qc {
     inline constexpr vec2<T> mat<T, 2>::row() const noexcept {
         return {c1.template at<i>(), c2.template at<i>()};
     }
-
-    template <Floating T>
-    inline constexpr mat<T, 3>::mat() noexcept :
-        c1(T(1.0), T(0.0), T(0.0)),
-        c2(T(0.0), T(1.0), T(0.0)),
-        c3(T(0.0), T(0.0), T(1.0))
-    {}
 
     template <Floating T>
     inline constexpr mat<T, 3>::mat(const vec3<T> c1, const vec3<T> c2, const vec3<T> c3) noexcept :
@@ -372,14 +359,6 @@ namespace qc {
     inline constexpr vec3<T> mat<T, 3>::row() const noexcept {
         return {c1.template at<i>(), c2.template at<i>(), c3.template at<i>()};
     }
-
-    template <Floating T>
-    inline constexpr mat<T, 4>::mat() noexcept :
-        c1(T(1.0), T(0.0), T(0.0), T(0.0)),
-        c2(T(0.0), T(1.0), T(0.0), T(0.0)),
-        c3(T(0.0), T(0.0), T(1.0), T(0.0)),
-        c4(T(0.0), T(0.0), T(0.0), T(1.0))
-    {}
 
     template <Floating T>
     inline constexpr mat<T, 4>::mat(const vec4<T> c1, const vec4<T> c2, const vec4<T> c3, const vec4<T> c4) noexcept :
