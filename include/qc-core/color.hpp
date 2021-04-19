@@ -1,26 +1,96 @@
 #pragma once
 
-#include <qc-core/vector.hpp>
+#include <qc-core/vector-ext.hpp>
 
 namespace qc {
 
     namespace color {
 
-        template <typename T> constexpr vec3<T>     black = transnorm<T>(vec3<T>{0.00, 0.00, 0.00});
-        template <typename T> constexpr vec3<T>  darkGray = transnorm<T>(vec3<T>{0.25, 0.25, 0.25});
-        template <typename T> constexpr vec3<T>      gray = transnorm<T>(vec3<T>{0.50, 0.50, 0.50});
-        template <typename T> constexpr vec3<T> lightGray = transnorm<T>(vec3<T>{0.75, 0.75, 0.75});
-        template <typename T> constexpr vec3<T>     white = transnorm<T>(vec3<T>{1.00, 1.00, 1.00});
+        template <typename T> inline const vec3<T> black    {transnorm<vec3<T>>(dvec3{0.00, 0.00, 0.00})};
+        template <typename T> inline const vec3<T> darkGray {transnorm<vec3<T>>(dvec3{0.25, 0.25, 0.25})};
+        template <typename T> inline const vec3<T> gray     {transnorm<vec3<T>>(dvec3{0.50, 0.50, 0.50})};
+        template <typename T> inline const vec3<T> lightGray{transnorm<vec3<T>>(dvec3{0.75, 0.75, 0.75})};
+        template <typename T> inline const vec3<T> white    {transnorm<vec3<T>>(dvec3{1.00, 1.00, 1.00})};
 
-        template <typename T> constexpr vec3<T>       red = transnorm<T>(vec3<T>{1.00, 0.00, 0.00});
-        template <typename T> constexpr vec3<T>    yellow = transnorm<T>(vec3<T>{1.00, 1.00, 0.00});
-        template <typename T> constexpr vec3<T>     green = transnorm<T>(vec3<T>{0.00, 1.00, 0.00});
-        template <typename T> constexpr vec3<T>      cyan = transnorm<T>(vec3<T>{0.00, 1.00, 1.00});
-        template <typename T> constexpr vec3<T>      blue = transnorm<T>(vec3<T>{0.00, 0.00, 1.00});
-        template <typename T> constexpr vec3<T>   magenta = transnorm<T>(vec3<T>{1.00, 0.00, 1.00});
+        template <typename T> inline const vec3<T> red      {transnorm<vec3<T>>(dvec3{1.00, 0.00, 0.00})};
+        template <typename T> inline const vec3<T> yellow   {transnorm<vec3<T>>(dvec3{1.00, 1.00, 0.00})};
+        template <typename T> inline const vec3<T> green    {transnorm<vec3<T>>(dvec3{0.00, 1.00, 0.00})};
+        template <typename T> inline const vec3<T> cyan     {transnorm<vec3<T>>(dvec3{0.00, 1.00, 1.00})};
+        template <typename T> inline const vec3<T> blue     {transnorm<vec3<T>>(dvec3{0.00, 0.00, 1.00})};
+        template <typename T> inline const vec3<T> magenta  {transnorm<vec3<T>>(dvec3{1.00, 0.00, 1.00})};
 
     }
 
+    template <Floating T>
+    inline vec3<T> rgbToHsl(const vec3<T> & rgb) {
+        vec3<T> hsl{};
+
+        int maxI{rgb.y > rgb.x};
+        int minI{1 - maxI};
+        if (rgb.z > rgb[maxI]) maxI = 2;
+        else if (rgb.z < rgb[minI]) minI = 2;
+        const T maxComp{rgb[maxI]};
+        const T minComp{rgb[minI]};
+
+        // Lightness
+        hsl.z = (minComp + maxComp) * T(0.5);
+
+        if (hsl.z > T(0.0) && hsl.z < T(1.0)) {
+            const T compRange{maxComp - minComp};
+
+            // Saturation
+            if (hsl.z > T(0.5)) {
+                hsl.y = compRange / (T(2.0) - (hsl.z * T(2.0)));
+            }
+            else {
+                hsl.y = compRange / (hsl.z * T(2.0));
+            }
+
+            if (hsl.y > T(0.0)) {
+                // Hue
+                // TODO: Test if this is acually faster than the two `% 3`s
+                const T overflowRgb[5]{rgb.x, rgb.y, rgb.z, rgb.x, rgb.y};
+                hsl.x = T(maxI * 2 + 6);
+                hsl.x += (overflowRgb[maxI + 1] - overflowRgb[maxI + 2]) / compRange;
+                hsl.x = fract(hsl.x * T(1.0 / 6.0));
+            }
+        }
+
+        return hsl;
+    }
+
+    template <Floating T>
+    constexpr inline vec3<T> _hueToRgb(const T hue, const T minComp, const T maxComp) {
+        const auto [fraction, whole]{fract_i(hue * T(6.0))};
+        const T midOffset{(maxComp - minComp) * fraction};
+        switch (whole) {
+            case  1: return {maxComp - midOffset, maxComp, minComp};
+            case  2: return {minComp, maxComp, minComp + midOffset};
+            case  3: return {minComp, maxComp - midOffset, maxComp};
+            case  4: return {minComp + midOffset, minComp, maxComp};
+            case  5: return {maxComp, minComp, maxComp - midOffset};
+            default: return {maxComp, minComp + midOffset, minComp};
+        }
+    }
+
+    template <Floating T>
+    constexpr inline vec3<T> hueToRgb(const T hue) {
+        return _hueToRgb(hue, T(0.0), T(1.0));
+    }
+
+    //
+    // There is a desmos graph for this
+    //
+    template <Floating T>
+    inline vec3<T> hslToRgb(const vec3<T> & hsl) {
+        const T maxSpread{T(0.5) - qc::abs(hsl.z - T(0.5))};
+        const T spread{maxSpread * hsl.y};
+        const T minComp{hsl.z - spread};
+        const T maxComp{hsl.z + spread};
+        return _hueToRgb(hsl.x, minComp, maxComp);
+    }
+
+    // GPU (saved for later)
     /*vec3 hsv2rgb(vec3 c) {
         vec4 K = vec4(1.0f, 2.0f / 3.0f, 1.0f / 3.0f, 3.0f);
         vec3 p = abs(fract(c.xxx + K.xyz) * 6.0f - K.www);
@@ -65,77 +135,5 @@ namespace qc {
         lch.z *= 2.0f * pi;
         return luv2rgb(vec3(lch.x, lch.y * cos(lch.z), lch.y * sin(lch.z)));
     }*/
-
-    template <Floating T>
-    inline vec3<T> rgb2hsl(const vec3<T> rgb) {
-        vec3<T> hsl(0, 0, 0);
-
-        int minI{rgb.r <= rgb.g ? 0 : 1};
-        if (rgb.b < rgb[minI]) minI = 2;
-        int maxI{rgb.r >= rgb.g ? 0 : 1};
-        if (rgb.b > rgb[maxI]) maxI = 2;
-
-        // lightness
-        hsl.z = (rgb[minI] + rgb[maxI]) * T(0.5);
-
-        if (hsl.z > 0 && hsl.z < T(1.0)) {
-            // saturation
-            if (hsl.z > T(0.5)) {
-                hsl.y = (rgb[maxI] - rgb[minI]) / (T(2.0) - (hsl.z * T(2.0)));
-            }
-            else {
-                hsl.y = (rgb[maxI] - rgb[minI]) / (hsl.z * T(2.0));
-            }
-
-            if (hsl.y > 0) {
-                // hue
-                hsl.x = maxI * T(1.0 / 3.0);
-                hsl.x += (rgb[(maxI + 1) % 3] - rgb[((maxI + 2) % 3)]) / (rgb[maxI] - rgb[minI]) * T(1.0 / 6.0);
-                hsl.x += T(1.0);
-                hsl.x -= std::floor(hsl.x);
-            }
-        }
-
-        return hsl;
-    }
-
-    template <Floating T>
-    inline vec3<T> hsl2rgb(const vec3<T> hsl) {
-        if (hsl.y == 0) {
-            return {hsl.z, hsl.z, hsl.z};
-        }
-
-        vec3<T> rgb(0, 0, 0);
-        T temp;
-
-        // hue
-        temp = std::round(hsl.x * T(3.0));
-        const int maxI{int(temp) % 3};
-        rgb[maxI] = T(1.0);
-        const T secondaryWeight{(hsl.x * T(3.0) - temp) * T(2.0)};
-        const int midI{(maxI + int(secondaryWeight > 0 ? std::ceil(secondaryWeight) : std::floor(secondaryWeight)) + 3) % 3};
-        rgb[midI] = abs(secondaryWeight);
-
-        // saturation
-        temp = T(1.0) - hsl.y;
-        rgb.r += (T(0.5) - rgb.r) * temp;
-        rgb.g += (T(0.5) - rgb.g) * temp;
-        rgb.b += (T(0.5) - rgb.b) * temp;
-
-        // lightness
-        temp = (hsl.z - T(0.5)) * T(2.0);
-        if (hsl.z > T(0.5)) {
-            rgb.r += (T(1.0) - rgb.r) * temp;
-            rgb.g += (T(1.0) - rgb.g) * temp;
-            rgb.b += (T(1.0) - rgb.b) * temp;
-        }
-        else {
-            rgb.r += rgb.r * temp;
-            rgb.g += rgb.g * temp;
-            rgb.b += rgb.b * temp;
-        }
-
-        return rgb;
-    }
 
 } // namespace qc
