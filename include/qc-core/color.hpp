@@ -22,15 +22,15 @@ namespace qc {
     }
 
     template <Floating T>
-    inline vec3<T> rgbToHsl(const vec3<T> & rgb) {
+    inline vec3<T> srgbToHsl(const vec3<T> & srgb) {
         vec3<T> hsl{};
 
-        int maxI{rgb.y > rgb.x};
+        int maxI{srgb.y > srgb.x};
         int minI{1 - maxI};
-        if (rgb.z > rgb[maxI]) maxI = 2;
-        else if (rgb.z < rgb[minI]) minI = 2;
-        const T maxComp{rgb[maxI]};
-        const T minComp{rgb[minI]};
+        if (srgb.z > srgb[maxI]) maxI = 2;
+        else if (srgb.z < srgb[minI]) minI = 2;
+        const T maxComp{srgb[maxI]};
+        const T minComp{srgb[minI]};
 
         // Lightness
         hsl.z = (minComp + maxComp) * T(0.5);
@@ -49,7 +49,7 @@ namespace qc {
             if (hsl.y > T(0.0)) {
                 // Hue
                 // TODO: Test if this is acually faster than the two `% 3`s
-                const T overflowRgb[5]{rgb.x, rgb.y, rgb.z, rgb.x, rgb.y};
+                const T overflowRgb[5]{srgb.x, srgb.y, srgb.z, srgb.x, srgb.y};
                 hsl.x = T(maxI * 2 + 6);
                 hsl.x += (overflowRgb[maxI + 1] - overflowRgb[maxI + 2]) / compRange;
                 hsl.x = fract(hsl.x * T(1.0 / 6.0));
@@ -60,34 +60,53 @@ namespace qc {
     }
 
     template <Floating T>
-    constexpr inline vec3<T> _hueToRgb(const T hue, const T minComp, const T maxComp) {
+    inline vec3<T> _hueToSrgb(const T hue, const T minComp, const T maxComp) {
         const auto [fraction, whole]{fract_i(hue * T(6.0))};
         const T midOffset{(maxComp - minComp) * fraction};
         switch (whole) {
+            default: return {maxComp, minComp + midOffset, minComp};
             case  1: return {maxComp - midOffset, maxComp, minComp};
             case  2: return {minComp, maxComp, minComp + midOffset};
             case  3: return {minComp, maxComp - midOffset, maxComp};
             case  4: return {minComp + midOffset, minComp, maxComp};
             case  5: return {maxComp, minComp, maxComp - midOffset};
-            default: return {maxComp, minComp + midOffset, minComp};
         }
     }
 
     template <Floating T>
-    constexpr inline vec3<T> hueToRgb(const T hue) {
-        return _hueToRgb(hue, T(0.0), T(1.0));
+    inline vec3<T> hueToSrgb(const T hue) {
+        return _hueToSrgb(hue, T(0.0), T(1.0));
     }
 
     //
     // There is a desmos graph for this
     //
     template <Floating T>
-    inline vec3<T> hslToRgb(const vec3<T> & hsl) {
+    inline vec3<T> hslToSrgb(const vec3<T> & hsl) {
         const T maxSpread{T(0.5) - qc::abs(hsl.z - T(0.5))};
         const T spread{maxSpread * hsl.y};
         const T minComp{hsl.z - spread};
         const T maxComp{hsl.z + spread};
-        return _hueToRgb(hsl.x, minComp, maxComp);
+        return _hueToSrgb(hsl.x, minComp, maxComp);
+    }
+
+    //
+    //
+    //
+    template <Floating T>
+    inline vec3<T> thermalToSrgb(const T thermal) {
+        T r1{T(1.09) * (thermal - T(1.0))};
+        r1 *= r1;
+        constexpr T b0{T(0.885)};
+        constexpr T b1{b0 * b0 * b0 * b0};
+        T b2{T(3.7) * thermal - b0};
+        b2 *= b2;
+
+        return {
+            T(1.0) - r1 * r1,
+            T(1.6) * thermal - T(0.5),
+            thermal < T(0.5) ? b1 - b2 * b2 : T(6.5) * thermal - T(5.5)
+        };
     }
 
     // GPU (saved for later)
