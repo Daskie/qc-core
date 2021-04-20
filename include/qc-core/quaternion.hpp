@@ -51,24 +51,24 @@ namespace qc {
 
     template <Floating T> quat<T> & operator/=(quat<T> & q1, const quat<T> & q2);
 
-    template <Floating T> quat<T> operator+(const quat<T> & q);
+    template <Floating T> constexpr quat<T> operator+(const quat<T> & q);
 
-    template <Floating T> quat<T> operator-(const quat<T> & q);
+    template <Floating T> constexpr quat<T> operator-(const quat<T> & q);
 
-    template <Floating T> quat<T> operator+(const quat<T> & q1, const quat<T> & q2);
+    template <Floating T> constexpr quat<T> operator+(const quat<T> & q1, const quat<T> & q2);
 
-    template <Floating T> quat<T> operator-(const quat<T> & q1, const quat<T> & q2);
+    template <Floating T> constexpr quat<T> operator-(const quat<T> & q1, const quat<T> & q2);
 
-    template <Floating T> quat<T> operator*(const quat<T> & q1, const quat<T> & q2);
-    template <Floating T> quat<T> operator*(const quat<T> & q, T v);
-    template <Floating T> quat<T> operator*(T v, const quat<T> & q);
-    template <Floating T> vec3<T> operator*(const quat<T> & q, vec3<T> v);
+    template <Floating T> constexpr quat<T> operator*(const quat<T> & q1, const quat<T> & q2);
+    template <Floating T> constexpr quat<T> operator*(const quat<T> & q, T v);
+    template <Floating T> constexpr quat<T> operator*(T v, const quat<T> & q);
+    template <Floating T> constexpr vec3<T> operator*(const quat<T> & q, vec3<T> v);
 
-    template <Floating T> quat<T> operator/(const quat<T> & q1, const quat<T> & q2);
+    template <Floating T> constexpr quat<T> operator/(const quat<T> & q1, const quat<T> & q2);
 
-    template <Floating T> bool operator==(const quat<T> & q1, const quat<T> & q2);
+    template <Floating T> constexpr bool operator==(const quat<T> & q1, const quat<T> & q2);
 
-    template <Floating T> bool operator!=(const quat<T> & q1, const quat<T> & q2);
+    template <Floating T> constexpr bool operator!=(const quat<T> & q1, const quat<T> & q2);
 
 } // namespace qc
 
@@ -128,27 +128,27 @@ namespace qc {
     }
 
     template <Floating T>
-    inline quat<T> operator+(const quat<T> & q) {
+    inline constexpr quat<T> operator+(const quat<T> & q) {
         return {+q.a, +q.w};
     }
 
     template <Floating T>
-    inline quat<T> operator-(const quat<T> & q) {
+    inline constexpr quat<T> operator-(const quat<T> & q) {
         return {-q.a, -q.w};
     }
 
     template <Floating T>
-    inline quat<T> operator+(const quat<T> & q1, const quat<T> & q2) {
+    inline constexpr quat<T> operator+(const quat<T> & q1, const quat<T> & q2) {
         return {q1.a + q2.a, q1.w + q2.w};
     }
 
     template <Floating T>
-    inline quat<T> operator-(const quat<T> & q1, const quat<T> & q2) {
+    inline constexpr quat<T> operator-(const quat<T> & q1, const quat<T> & q2) {
         return {q1.a - q2.a, q1.w - q2.w};
     }
 
     template <Floating T>
-    inline quat<T> operator*(const quat<T> & q1, const quat<T> & q2) {
+    inline constexpr quat<T> operator*(const quat<T> & q1, const quat<T> & q2) {
         return {
             q1.w * q2.a + q2.w * q1.a + cross(q1.a, q2.a),
             q1.w * q2.w - dot(q1.a, q2.a)
@@ -156,33 +156,33 @@ namespace qc {
     }
 
     template <Floating T>
-    inline quat<T> operator*(const quat<T> & q, const T v) {
+    inline constexpr quat<T> operator*(const quat<T> & q, const T v) {
         return {q.a * v, q.w * v};
     }
 
     template <Floating T>
-    inline quat<T> operator*(const T v, const quat<T> & q) {
+    inline constexpr quat<T> operator*(const T v, const quat<T> & q) {
         return {v * q.a, v * q.w};
     }
 
     template <Floating T>
-    inline vec3<T> operator*(const quat<T> & q, const vec3<T> v) {
+    inline constexpr vec3<T> operator*(const quat<T> & q, const vec3<T> v) {
         const vec3<T> t(T(2.0) * cross(q.a, v));
         return v + q.w * t + cross(q.a, t);
     }
 
     template <Floating T>
-    inline quat<T> operator/(const quat<T> & q1, const quat<T> & q2) {
+    inline constexpr quat<T> operator/(const quat<T> & q1, const quat<T> & q2) {
         return {q1.a * q2.w - q2.a * q1.w - cross(q1.a, q2.a), dot(q1, q2)};
     }
 
     template <Floating T>
-    inline bool operator==(const quat<T> & q1, const quat<T> & q2) {
+    inline constexpr bool operator==(const quat<T> & q1, const quat<T> & q2) {
         return q1.a == q2.a && q1.w == q2.w;
     }
 
     template <Floating T>
-    inline bool operator!=(const quat<T> & q1, const quat<T> & q2) {
+    inline constexpr bool operator!=(const quat<T> & q1, const quat<T> & q2) {
         return q1.a != q2.a || q1.w != q2.w;
     }
 
