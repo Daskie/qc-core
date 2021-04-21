@@ -1,28 +1,25 @@
 #pragma once
 
 #include <qc-core/vector-ext.hpp>
+#include <qc-core/matrix.hpp>
 
-namespace qc {
+namespace qc::color {
 
-    namespace color {
+    template <Numeric T> inline const vec3<T> black    {transnorm<vec3<T>>(dvec3{0.00, 0.00, 0.00})};
+    template <Numeric T> inline const vec3<T> darkGray {transnorm<vec3<T>>(dvec3{0.25, 0.25, 0.25})};
+    template <Numeric T> inline const vec3<T> gray     {transnorm<vec3<T>>(dvec3{0.50, 0.50, 0.50})};
+    template <Numeric T> inline const vec3<T> lightGray{transnorm<vec3<T>>(dvec3{0.75, 0.75, 0.75})};
+    template <Numeric T> inline const vec3<T> white    {transnorm<vec3<T>>(dvec3{1.00, 1.00, 1.00})};
 
-        template <typename T> inline const vec3<T> black    {transnorm<vec3<T>>(dvec3{0.00, 0.00, 0.00})};
-        template <typename T> inline const vec3<T> darkGray {transnorm<vec3<T>>(dvec3{0.25, 0.25, 0.25})};
-        template <typename T> inline const vec3<T> gray     {transnorm<vec3<T>>(dvec3{0.50, 0.50, 0.50})};
-        template <typename T> inline const vec3<T> lightGray{transnorm<vec3<T>>(dvec3{0.75, 0.75, 0.75})};
-        template <typename T> inline const vec3<T> white    {transnorm<vec3<T>>(dvec3{1.00, 1.00, 1.00})};
-
-        template <typename T> inline const vec3<T> red      {transnorm<vec3<T>>(dvec3{1.00, 0.00, 0.00})};
-        template <typename T> inline const vec3<T> yellow   {transnorm<vec3<T>>(dvec3{1.00, 1.00, 0.00})};
-        template <typename T> inline const vec3<T> green    {transnorm<vec3<T>>(dvec3{0.00, 1.00, 0.00})};
-        template <typename T> inline const vec3<T> cyan     {transnorm<vec3<T>>(dvec3{0.00, 1.00, 1.00})};
-        template <typename T> inline const vec3<T> blue     {transnorm<vec3<T>>(dvec3{0.00, 0.00, 1.00})};
-        template <typename T> inline const vec3<T> magenta  {transnorm<vec3<T>>(dvec3{1.00, 0.00, 1.00})};
-
-    }
+    template <Numeric T> inline const vec3<T> red      {transnorm<vec3<T>>(dvec3{1.00, 0.00, 0.00})};
+    template <Numeric T> inline const vec3<T> yellow   {transnorm<vec3<T>>(dvec3{1.00, 1.00, 0.00})};
+    template <Numeric T> inline const vec3<T> green    {transnorm<vec3<T>>(dvec3{0.00, 1.00, 0.00})};
+    template <Numeric T> inline const vec3<T> cyan     {transnorm<vec3<T>>(dvec3{0.00, 1.00, 1.00})};
+    template <Numeric T> inline const vec3<T> blue     {transnorm<vec3<T>>(dvec3{0.00, 0.00, 1.00})};
+    template <Numeric T> inline const vec3<T> magenta  {transnorm<vec3<T>>(dvec3{1.00, 0.00, 1.00})};
 
     template <Floating T>
-    inline vec3<T> srgbToHsl(const vec3<T> & srgb) {
+    inline vec3<T> srgbToHsl(const vec3<T> & srgb) noexcept {
         vec3<T> hsl{};
 
         int maxI{srgb.y > srgb.x};
@@ -60,7 +57,7 @@ namespace qc {
     }
 
     template <Floating T>
-    inline vec3<T> _hueToSrgb(const T hue, const T minComp, const T maxComp) {
+    inline vec3<T> _hueToSrgb(const T hue, const T minComp, const T maxComp) noexcept {
         const auto [fraction, whole]{fract_i(hue * T(6.0))};
         const T midOffset{(maxComp - minComp) * fraction};
         switch (whole) {
@@ -74,7 +71,7 @@ namespace qc {
     }
 
     template <Floating T>
-    inline vec3<T> hueToSrgb(const T hue) {
+    inline vec3<T> hueToSrgb(const T hue) noexcept {
         return _hueToSrgb(hue, T(0.0), T(1.0));
     }
 
@@ -82,7 +79,7 @@ namespace qc {
     // There is a desmos graph for this
     //
     template <Floating T>
-    inline vec3<T> hslToSrgb(const vec3<T> & hsl) {
+    inline vec3<T> hslToSrgb(const vec3<T> & hsl) noexcept {
         const T maxSpread{T(0.5) - qc::abs(hsl.z - T(0.5))};
         const T spread{maxSpread * hsl.y};
         const T minComp{hsl.z - spread};
@@ -90,11 +87,8 @@ namespace qc {
         return _hueToSrgb(hsl.x, minComp, maxComp);
     }
 
-    //
-    //
-    //
     template <Floating T>
-    inline vec3<T> thermalToSrgb(const T thermal) {
+    inline vec3<T> thermalToSrgb(const T thermal) noexcept {
         T r1{T(1.09) * (thermal - T(1.0))};
         r1 *= r1;
         constexpr T b0{T(0.885)};
@@ -106,6 +100,159 @@ namespace qc {
             T(1.0) - r1 * r1,
             T(1.6) * thermal - T(0.5),
             thermal < T(0.5) ? b1 - b2 * b2 : T(6.5) * thermal - T(5.5)
+        };
+    }
+
+    //
+    // Linear sRGB
+    //
+    template <Floating T>
+    inline vec3<T> srgbToLrgb(const vec3<T> & srgb) noexcept {
+        return pow(srgb, T(2.2));
+    }
+
+    template <Floating T>
+    inline vec3<T> lrgbToSrgb(const vec3<T> & lrgb) noexcept {
+        return pow(clamp(lrgb, T(0.0), T(1.0)), T(1.0 / 2.2));
+    }
+
+    // D65
+    // See: http://terathon.com/blog/rgb-xyz-conversion-matrix-accuracy/
+    template <Floating T> inline constexpr mat3<T> lrgbToXyzMatrix{
+        506752.0 / 1228815.0, 87098.0 / 409605.0, 7918.0 / 409605.0,
+        87881.0 / 245763.0, 175762.0 / 245763.0, 87881.0 / 737289.0,
+        12673.0 / 70218.0, 12673.0 / 175545.0, 1001167.0 / 1053270.0
+    };
+    template <Floating T> inline constexpr mat3<T> xyzToLrgbMatrix{
+        12831.0 / 3959.0, -851781.0 / 878810.0, 705.0 / 12673.0,
+        -329.0 / 214.0, 1648619.0 / 878810.0, -2585.0 / 12673.0,
+        -1974.0 / 3959.0, 36519.0 / 878810.0, 705.0 / 667.0
+    };
+    template <Floating T> inline constexpr vec3<T> xyzWhitePoint{lrgbToXyzMatrix<T> * vec3<T>{T(1.0)}};
+
+    //
+    // CIE XYZ, the "foundational" linear color space
+    //
+    template <Floating T>
+    inline vec3<T> lrgbToXyz(const vec3<T> & lrgb) noexcept {
+        return lrgbToXyzMatrix<T> * lrgb;
+    }
+
+    template <Floating T>
+    inline vec3<T> xyzToLrgb(const vec3<T> & xyz) noexcept {
+        return xyzToLrgbMatrix<T> * xyz;
+    }
+
+    //
+    // CIE xyY, CIE XYZ normalized to uniform brightness
+    //
+    template <Floating T>
+    inline vec3<T> xyzToXyy(const vec3<T> & xyz) noexcept {
+        const T temp{sum(xyz)};
+        if (temp) {
+            return {xyz.xy() / temp, xyz.y};
+        }
+        else {
+            return {T(1.0 / 3.0), T(1.0 / 3.0), 0.0f};
+        }
+    }
+
+    template <Floating T>
+    inline vec3<T> xyyToXyz(const vec3<T> & xyy) noexcept {
+        const T temp{xyy.z / xyy.y};
+        return {temp * xyy.x, xyy.z, temp * (T(1.0) - xyy.x - xyy.y)};
+    }
+
+
+    //
+    // CIE LAB, good perceptual uniformity in print and physical media
+    //
+    template <Floating T>
+    inline vec3<T> xyzToLab(const vec3<T> & xyz) noexcept {
+        static const vec3<T> invWhitePoint{T(1.0) / xyzWhitePoint<T>};
+
+        // Not doing piecewise approximation
+        const vec3<T> normalized{xyz * invWhitePoint};
+        const T cbrtNY{std::cbrt(normalized.y)};
+        return {
+            cbrtNY,
+            T(5.0) * (std::cbrt(normalized.x) - cbrtNY),
+            T(2.0) * (cbrtNY - std::cbrt(normalized.z))
+        };
+    }
+
+    template <Floating T>
+    inline vec3<T> labToXyz(const vec3<T> & lab) noexcept {
+        // Not doing piecewise approximation
+        const vec3<T> xyz{
+            lab.x + lab.y * T(0.2),
+            lab.x,
+            lab.x - lab.z * T(0.5)
+        };
+        return xyz * xyz * xyz * xyzWhitePoint<T>;
+    }
+
+    //
+    // CIE LUV, good perceptual uniformity for light and digital screens
+    //
+    template <Floating T>
+    inline vec3<T> xyzToLuv(const vec3<T> & xyz) noexcept {
+        static constexpr T u_v_nDivisor{xyzWhitePoint<T>.x + T(15.0) * xyzWhitePoint<T>.y + T(3.0) * xyzWhitePoint<T>.z};
+        static constexpr T u_n{T(4.0) * xyzWhitePoint<T>.x / u_v_nDivisor};
+        static constexpr T v_n{T(9.0) * xyzWhitePoint<T>.y / u_v_nDivisor};
+        static constexpr T invYn{T(1.0) / xyzWhitePoint<T>.y};
+
+        // Not doing piecewise approximation
+        if (xyz) {
+            const T l{std::cbrt(xyz.y * invYn)};
+            const T _13l{T(13.0) * l};
+            const T uvFactor{T(1.0) / (xyz.x + T(15.0) * xyz.y + T(3.0) * xyz.z)};
+            const T u_{T(4.0) * xyz.x * uvFactor};
+            const T v_{T(9.0) * xyz.y * uvFactor};
+            const T u{_13l * (u_ - u_n)};
+            const T v{_13l * (v_ - v_n)};
+            return {l, u, v};
+        }
+        else {
+            return {};
+        }
+    }
+
+    template <Floating T>
+    inline vec3<T> luvToXyz(const vec3<T> & luv) noexcept {
+        static constexpr T u_v_nDivisor{xyzWhitePoint<T>.x + T(15.0) * xyzWhitePoint<T>.y + T(3.0) * xyzWhitePoint<T>.z};
+        static constexpr T u_n{T(4.0) * xyzWhitePoint<T>.x / u_v_nDivisor};
+        static constexpr T v_n{T(9.0) * xyzWhitePoint<T>.y / u_v_nDivisor};
+
+        // Not doing piecewise approximation
+        const T inv13L{T(1.0) / (T(13.0) * luv.x)};
+        const T u_{luv.y * inv13L + u_n};
+        const T v_{luv.z * inv13L + v_n};
+        const T y{xyzWhitePoint<T>.y * luv.x * luv.x * luv.x};
+        const T inv4v_{T(1.0) / (T(4.0) * v_)};
+        const T x{y * T(9.0) * u_ * inv4v_};
+        const T z{y * (T(12.0) - T(3.0) * u_ - T(20.0) * v_) * inv4v_};
+        return {x, y, z};
+    }
+
+    //
+    // CIE LCH (UV), hue-chroma form of CIE LUV
+    //
+    template <Floating T>
+    inline vec3<T> luvToLch(const vec3<T> & luv) noexcept {
+        return {
+            luv.x,
+            magnitude(luv.yz()),
+            std::atan2(luv.z, luv.y)
+        };
+    }
+
+    template <Floating T>
+    inline vec3<T> lchToLuv(const vec3<T> & lch) noexcept {
+        return {
+            lch.x,
+            std::cos(lch.z) * lch.y,
+            std::sin(lch.z) * lch.y
         };
     }
 
@@ -155,4 +302,4 @@ namespace qc {
         return luv2rgb(vec3(lch.x, lch.y * cos(lch.z), lch.y * sin(lch.z)));
     }*/
 
-} // namespace qc
+} // namespace qc::color
