@@ -93,6 +93,11 @@ namespace qc::color {
         return _hueToSrgb(hsl.x, minComp, maxComp);
     }
 
+    //
+    // `thermal`: [0, 1]
+    //
+    // Curve fitted to match ironbow palette. See Desmos graph
+    //
     template <Floating T>
     inline vec3<T> thermalToSrgb(const T thermal) noexcept {
         T r1{T(1.09) * (thermal - T(1.0))};
