@@ -18,6 +18,12 @@ namespace qc::color {
     template <Numeric T> inline const vec3<T> blue     {transnorm<vec3<T>>(dvec3{0.00, 0.00, 1.00})};
     template <Numeric T> inline const vec3<T> magenta  {transnorm<vec3<T>>(dvec3{1.00, 0.00, 1.00})};
 
+    //
+    // Domain:
+    //     H: [0, 1]
+    //     S: [0, 1]
+    //     L: [0, 1]
+    //
     template <Floating T>
     inline vec3<T> srgbToHsl(const vec3<T> & srgb) noexcept {
         vec3<T> hsl{};
@@ -106,14 +112,22 @@ namespace qc::color {
     //
     // Linear sRGB
     //
+    // Domain:
+    //     r: [0, inf)
+    //     g: [0, inf)
+    //     b: [0, inf)
+    //
     template <Floating T>
     inline vec3<T> srgbToLrgb(const vec3<T> & srgb) noexcept {
         return pow(srgb, T(2.2));
     }
 
+    //
+    // `lrgb` must be positive
+    //
     template <Floating T>
     inline vec3<T> lrgbToSrgb(const vec3<T> & lrgb) noexcept {
-        return pow(clamp(lrgb, T(0.0), T(1.0)), T(1.0 / 2.2));
+        return pow(lrgb, T(1.0 / 2.2));
     }
 
     // D65
@@ -133,6 +147,11 @@ namespace qc::color {
     //
     // CIE XYZ, the "foundational" linear color space
     //
+    // Domain:
+    //     X: (-inf, inf)
+    //     Y: (-inf, inf)
+    //     Z: (-inf, inf)
+    //
     template <Floating T>
     inline vec3<T> lrgbToXyz(const vec3<T> & lrgb) noexcept {
         return lrgbToXyzMatrix<T> * lrgb;
@@ -145,6 +164,11 @@ namespace qc::color {
 
     //
     // CIE xyY, CIE XYZ normalized to uniform brightness
+    //
+    // Domain:
+    //     x: (-inf, inf)
+    //     y: (-inf, inf)
+    //     Y: (-inf, inf)
     //
     template <Floating T>
     inline vec3<T> xyzToXyy(const vec3<T> & xyz) noexcept {
@@ -166,6 +190,11 @@ namespace qc::color {
 
     //
     // CIE LAB, good perceptual uniformity in print and physical media
+    //
+    // Domain:
+    //     L: [0, 1]
+    //     a: (-inf, inf)
+    //     b: (-inf, inf)
     //
     template <Floating T>
     inline vec3<T> xyzToLab(const vec3<T> & xyz) noexcept {
@@ -194,6 +223,11 @@ namespace qc::color {
 
     //
     // CIE LUV, good perceptual uniformity for light and digital screens
+    //
+    // Domain:
+    //     L: [0, 1]
+    //     u: (-inf, inf)
+    //     v: (-inf, inf)
     //
     template <Floating T>
     inline vec3<T> xyzToLuv(const vec3<T> & xyz) noexcept {
@@ -225,18 +259,28 @@ namespace qc::color {
         static constexpr T v_n{T(9.0) * xyzWhitePoint<T>.y / u_v_nDivisor};
 
         // Not doing piecewise approximation
-        const T inv13L{T(1.0) / (T(13.0) * luv.x)};
-        const T u_{luv.y * inv13L + u_n};
-        const T v_{luv.z * inv13L + v_n};
-        const T y{xyzWhitePoint<T>.y * luv.x * luv.x * luv.x};
-        const T inv4v_{T(1.0) / (T(4.0) * v_)};
-        const T x{y * T(9.0) * u_ * inv4v_};
-        const T z{y * (T(12.0) - T(3.0) * u_ - T(20.0) * v_) * inv4v_};
-        return {x, y, z};
+        if (luv.x) {
+            const T inv13L{T(1.0) / (T(13.0) * luv.x)};
+            const T u_{luv.y * inv13L + u_n};
+            const T v_{luv.z * inv13L + v_n};
+            const T y{xyzWhitePoint<T>.y * luv.x * luv.x * luv.x};
+            const T inv4v_{T(1.0) / (T(4.0) * v_)};
+            const T x{y * T(9.0) * u_ * inv4v_};
+            const T z{y * (T(12.0) - T(3.0) * u_ - T(20.0) * v_) * inv4v_};
+            return {x, y, z};
+        }
+        else {
+            return {};
+        }
     }
 
     //
     // CIE LCH (UV), hue-chroma form of CIE LUV
+    //
+    // Domain:
+    //     L: [0, 1]
+    //     C: [0, inf)
+    //     h: [-pi, pi]
     //
     template <Floating T>
     inline vec3<T> luvToLch(const vec3<T> & luv) noexcept {
@@ -265,41 +309,6 @@ namespace qc::color {
     vec3 hue2rgb(float h) {
         vec3 p = abs(fract(h + vec3(1.0f, 2.0f / 3.0f, 1.0f / 3.0f)) * 6.0f - 3.0f);
         return clamp(p - 1.0f, 0.0, 1.0);
-    }
-    vec3 hue2rgb_flat(float h) {
-        vec3 rgb = hue2rgb(h);
-        vec3 temp = rgb * vec3(0.546808925f, 0.766159252f, 0.337638860f);
-        float pb = sqrt(dot(temp, temp));
-        return rgb * (0.337638860f / pb);
-    }
-    // l: luminance [0, 1]
-    // uv: point in color space [-1, 1]
-    vec3 luv2rgb(vec3 luv) {
-        const mat3 m = mat3( // XYZ -> sRGB conversion matrix
-             3.2404542f, -0.9692660f,  0.0556434f,
-            -1.5371385f,  1.8760108f, -0.2040259f,
-            -0.4985314f,  0.0415560f,  1.0572252f
-         );
-        const vec2 uv0 = vec2(0.197833037f, 0.468330474f); // coords for D65 white point
-        vec2 uv = uv0 + luv.yz / (13.0f * luv.x);
-        vec3 xyz;
-        if (luv.x > 0.08f) {
-            xyz.y = 0.862068966f * luv.x + 0.137931034f;
-            xyz.y *= xyz.y * xyz.y;
-        }
-        else {
-            xyz.y = 0.110705646f * luv.x;
-        }
-        xyz.x = 2.25f * xyz.y * uv.x / uv.y;
-        xyz.z = (3.0f / uv.y - 5.0f) * xyz.y - (1.0f / 3.0f) * xyz.x;
-        return m * xyz;
-    }
-    // l: luminance [0, 1]
-    // c: chroma (similar to saturation) [0, 1]
-    // h: hue [0, 1]
-    vec3 lch2luv(vec3 lch) {
-        lch.z *= 2.0f * pi;
-        return luv2rgb(vec3(lch.x, lch.y * cos(lch.z), lch.y * sin(lch.z)));
     }*/
 
 } // namespace qc::color
