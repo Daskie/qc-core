@@ -71,7 +71,6 @@ static void compileFunctionsT() {
     qc::maxify(v, v, v, v);
     qc::maxify(v, v, v, v, v);
 
-    qc::minmax(v);
     qc::minmax(v, v);
     qc::minmax(v, v, v);
     qc::minmax(v, v, v, v);

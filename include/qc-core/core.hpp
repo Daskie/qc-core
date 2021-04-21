@@ -65,6 +65,12 @@ namespace qc {
     template <_MinMaxable T> T & maxify(T & v1, T v2);
     template <typename T, typename T1, typename T2, typename... Ts> T & maxify(T & min, T1 && v1, T2 && v2, Ts &&... vs);
 
+    //
+    // ...
+    //
+    template <_MinMaxable T> constexpr std::pair<T, T> minmax(T v1, T v2);
+    template <typename T1, typename T2, typename T3, typename... Ts> constexpr auto minmax(T1 && v1, T2 && v2, T3 && v3, Ts &&... vs);
+
 } // namespace qc
 
 // INLINE IMPLEMENTATION ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -109,6 +115,24 @@ namespace qc {
     template <typename T, typename T1, typename T2, typename... Ts>
     inline T & maxify(T & min, T1 && v1, T2 && v2, Ts &&... vs) {
         return maxify(maxify(min, std::forward<T1>(v1)), std::forward<T2>(v2), std::forward<Ts>(vs)...);
+    }
+
+    template <_MinMaxable T>
+    inline constexpr std::pair<T, T> minmax(const T v1, const T v2) {
+        return (v2 < v1) ? std::pair{v2, v1} : std::pair{v1, v2};
+    }
+
+    template <typename T1, typename T2, typename T3, typename... Ts>
+    inline constexpr auto minmax(T1 && v1, T2 && v2, T3 && v3, Ts &&... vs) {
+        if constexpr (!sizeof...(Ts)) {
+            const auto [min1, max1]{minmax(v1, v2)};
+            return std::pair{min(min1, v3), max(max1, v3)};
+        }
+        else {
+            const auto [min1, max1]{minmax(v1, v2)};
+            const auto [min2, max2]{minmax(v3, vs...)};
+            return std::pair{min(min1, min2), max(max1, max2)};
+        }
     }
 
 } // namespace qc

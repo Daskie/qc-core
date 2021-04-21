@@ -12,13 +12,6 @@ namespace qc {
     //
     // ...
     //
-    template <Numeric T> constexpr std::pair<T, T> minmax(T v);
-    template <Numeric T> constexpr std::pair<T, T> minmax(T v1, T v2);
-    template <Numeric T, Numeric... Ts> constexpr std::pair<T, T> minmax(T v1, T v2, T v3, Ts... vs);
-
-    //
-    // ...
-    //
     template <Numeric T> constexpr T median(T v1, T v2, T v3);
 
     //
@@ -182,29 +175,6 @@ namespace qc {
 // INLINE IMPLEMENTATION ///////////////////////////////////////////////////////////////////////////////////////////////
 
 namespace qc {
-
-    template <Numeric T>
-    inline constexpr std::pair<T, T> minmax(const T v) {
-        return {v, v};
-    }
-
-    template <Numeric T>
-    inline constexpr std::pair<T, T> minmax(const T v1, const T v2) {
-        return (v2 < v1) ? std::pair<T, T>{v2, v1} : std::pair<T, T>{v1, v2};
-    }
-
-    template <Numeric T, Numeric... Ts>
-    inline constexpr std::pair<T, T> minmax(T v1, T v2, T v3, Ts... vs) {
-        if constexpr (!sizeof...(Ts)) {
-            const auto [m1, M1](minmax(v1, v2));
-            return {min(m1, v3), max(M1, v3)};
-        }
-        else {
-            const auto [m1, M1](minmax(v1, v2));
-            const auto [m2, M2](minmax(v3, vs...));
-            return {min(m1, m2), max(M1, M2)};
-        }
-    }
 
     template <Numeric T>
     inline constexpr T median(T v1, T v2, T v3) {

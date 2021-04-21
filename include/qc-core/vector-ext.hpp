@@ -59,6 +59,7 @@ namespace qc {
     // ...
     //
     template <Numeric T, int n> constexpr std::pair<T, T> minmax(const vec<T, n> & v);
+    template <Numeric T, int n> constexpr std::pair<vec<T, n>, vec<T, n>> minmax(const vec<T, n> & v1, const vec<T, n> & v2);
 
     //
     // ...
@@ -359,6 +360,28 @@ namespace qc {
         if constexpr (n == 2) return minmax(v.x, v.y);
         if constexpr (n == 3) return minmax(v.x, v.y, v.z);
         if constexpr (n == 4) return minmax(v.x, v.y, v.z, v.w);
+    }
+
+    template <Numeric T, int n>
+    inline constexpr std::pair<vec<T, n>, vec<T, n>> minmax(const vec<T, n> & v1, const vec<T, n> & v2) {
+        const auto [xMin, xMax]{minmax(v1.x, v2.x)};
+        const auto [yMin, yMax]{minmax(v1.y, v2.y)};
+
+        if constexpr (n > 2) {
+            const auto [zMin, zMax]{minmax(v1.z, v2.z)};
+
+            if constexpr (n > 3) {
+                const auto [wMin, wMax]{minmax(v1.w, v2.w)};
+
+                return {{xMin, yMin, zMin, wMin}, {xMax, yMax, zMax, wMax}};
+            }
+            else {
+                return {{xMin, yMin, zMin}, {xMax, yMax, zMax}};
+            }
+        }
+        else {
+            return {{xMin, yMin}, {xMax, yMax}};
+        }
     }
 
     template <Numeric T>
