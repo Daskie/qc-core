@@ -67,12 +67,12 @@ namespace qc {
     };
 
     template <typename T1, typename T2>
-    inline bool operator==(const RecordAllocator<T1> & a1, const RecordAllocator<T2> & a2) noexcept {
+    inline bool operator==(const RecordAllocator<T1> &, const RecordAllocator<T2> &) noexcept {
         return true;
     }
 
     template <typename T1, typename T2>
-    inline bool operator!=(const RecordAllocator<T1> & a1, const RecordAllocator<T2> & a2) noexcept {
+    inline bool operator!=(const RecordAllocator<T1> &, const RecordAllocator<T2> &) noexcept {
         return false;
     }
 

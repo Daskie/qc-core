@@ -325,12 +325,12 @@ namespace qc {
         //                               if (v & 0x0000000000000002) {           log +=  1; }
         //return log;
 
-        return v == T(0) ? 0 : std::bit_width(v) - 1;
+        return v == T(0) ? 0 : int(std::bit_width(v)) - 1;
     }
 
     template <UnsignedIntegral T>
     inline constexpr int mipmaps(const T size) {
-        return std::bit_width(size);
+        return int(std::bit_width(size));
     }
 
     template <Floating T>

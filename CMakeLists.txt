@@ -15,10 +15,10 @@ target_include_directories(
         $<INSTALL_INTERFACE:include>
 )
 
-if (${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
-    target_compile_options(qc-core INTERFACE -Wall -Werror -Wextra -Wpedantic)
-elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL "MSVC")
+if(MSVC)
     target_compile_options(qc-core INTERFACE /W4 /WX)
+else()
+    add_compile_options(qc-core INTERFACE -Wall -Wextra -Wpedantic -Werror)
 endif()
 
 ### SUBDIRECTORIES ###
