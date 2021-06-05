@@ -15,12 +15,6 @@ target_include_directories(
         $<INSTALL_INTERFACE:include>
 )
 
-if(MSVC)
-    target_compile_options(qc-core INTERFACE /W4 /WX)
-else()
-    add_compile_options(qc-core INTERFACE -Wall -Wextra -Wpedantic -Werror)
-endif()
-
 ### SUBDIRECTORIES ###
 
 # qc-core-test
