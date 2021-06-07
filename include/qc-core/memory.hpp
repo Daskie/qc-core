@@ -1,6 +1,7 @@
 #pragma once
 
 #include <exception>
+#include <new>
 #include <utility>
 
 #include <qc-core/core.hpp>
@@ -130,8 +131,10 @@ namespace qc::memory {
 
         template <typename T>
         T * allocate(const u64 n) {
-            if (!_chunks || !n) {
-                return nullptr;
+            if constexpr (debug) {
+                if (!_chunks || !n) {
+                    throw std::exception{};
+                }
             }
 
             const u64 allocSize{(n * sizeof(T) + 7u) >> 3};
@@ -143,7 +146,8 @@ namespace qc::memory {
                 const u64 blockSize{block[0]};
 
                 if (!blockSize) {
-                    return nullptr;
+                    // Out of memory, or no large enough contiguous block of memory available
+                    throw std::bad_alloc{};
                 }
 
                 // There's space. Must be either a perfect fit, or at least two chunks for meta
@@ -179,9 +183,11 @@ namespace qc::memory {
         }
 
         template <typename T>
-        void deallocate(T * const ptr, const u64 n) {
-            if (!_chunks || !n) {
-                return;
+        void deallocate(T * const ptr, const u64 n) noexcept(!debug) {
+            if constexpr (debug) {
+                if (!_chunks || !ptr || !n) {
+                    throw std::exception{};
+                }
             }
 
             u64 * const block{reinterpret_cast<u64 *>(ptr)};
@@ -265,7 +271,7 @@ namespace qc::memory {
             return _pool->allocate<T>(n);
         }
 
-        void deallocate(T * const ptr, const size_t n) {
+        void deallocate(T * const ptr, const size_t n) noexcept {
             return _pool->deallocate<T>(ptr, n);
         }
 

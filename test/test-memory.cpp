@@ -29,8 +29,6 @@ TEST(memory, poolAllocateDeallocate) {
     qc::memory::Pool pool{120 * 8u};
     ASSERT_EQ(120u * 8u, pool.capacity());
 
-    ASSERT_EQ(nullptr, pool.allocate<u64>(0u));
-
     u64 * const data{QcMemoryPoolFriend::getData(pool)};
     ASSERT_EQ(0, QcMemoryPoolFriend::getHead(pool) - data);
     ASSERT_EQ(120u, data[0]);
@@ -47,7 +45,7 @@ TEST(memory, poolAllocateDeallocate) {
 
     // Shouldn't be able to allocate more
 
-    ASSERT_EQ(nullptr, pool.allocate<u64>(1u));
+    ASSERT_THROW(pool.allocate<u64>(1u), std::bad_alloc);
     ASSERT_EQ(120, QcMemoryPoolFriend::getHead(pool) - data);
     ASSERT_EQ(0u, data[120]);
     ASSERT_EQ(0u, data[121]);
@@ -78,7 +76,7 @@ TEST(memory, poolAllocateDeallocate) {
 
     // Should not be able to allocate more
 
-    ASSERT_EQ(nullptr, pool.allocate<u64>(1u));
+    ASSERT_THROW(pool.allocate<u64>(1u), std::bad_alloc);
     ASSERT_EQ(120, QcMemoryPoolFriend::getHead(pool) - data);
     ASSERT_EQ(0u, data[120]);
     ASSERT_EQ(0u, data[121]);
@@ -92,7 +90,7 @@ TEST(memory, poolAllocateDeallocate) {
 
     // Try to overstuff
 
-    ASSERT_EQ(nullptr, pool.allocate<u64>(41u));
+    ASSERT_THROW(pool.allocate<u64>(41u), std::bad_alloc);
     ASSERT_EQ(40, QcMemoryPoolFriend::getHead(pool) - data);
     ASSERT_EQ(40u, data[40]);
     ASSERT_EQ(80u, data[41]);
@@ -132,7 +130,7 @@ TEST(memory, poolAllocateDeallocate) {
 
     // Try to allocate such that there is a gap of one
 
-    ASSERT_EQ(nullptr, pool.allocate<u64>(39u));
+    ASSERT_THROW(pool.allocate<u64>(39u), std::bad_alloc);
     ASSERT_EQ(0, QcMemoryPoolFriend::getHead(pool) - data);
     ASSERT_EQ(40u, data[0]);
     ASSERT_EQ(120u, data[1]);
@@ -224,20 +222,6 @@ TEST(memory, poolAllocateDeallocate) {
     // Deallocate remaining
 
     pool.deallocate(data + 10, 10u);
-    ASSERT_EQ(0, QcMemoryPoolFriend::getHead(pool) - data);
-    ASSERT_EQ(120u, data[0]);
-    ASSERT_EQ(120u, data[1]);
-
-    // Deallocate nothing
-
-    pool.deallocate(data, 0u);
-    ASSERT_EQ(0, QcMemoryPoolFriend::getHead(pool) - data);
-    ASSERT_EQ(120u, data[0]);
-    ASSERT_EQ(120u, data[1]);
-
-    // Deallocate null
-
-    pool.deallocate(static_cast<u64 *>(nullptr), 0u);
     ASSERT_EQ(0, QcMemoryPoolFriend::getHead(pool) - data);
     ASSERT_EQ(120u, data[0]);
     ASSERT_EQ(120u, data[1]);
