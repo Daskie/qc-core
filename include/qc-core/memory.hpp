@@ -5,6 +5,8 @@
 
 #include <qc-core/core.hpp>
 
+struct QcMemoryPoolFriend;
+
 namespace qc::memory {
 
     using namespace types;
@@ -74,16 +76,18 @@ namespace qc::memory {
 
     };
 
-    class MemoryPool {
+    class Pool {
 
         static_assert(std::is_same_v<size_t, u64>); // I can't be bothered to make this work with x86 rn
+
+        friend QcMemoryPoolFriend;
 
         public:
 
         static constexpr u64 minCapacity{16u};
         static constexpr u64 maxCapacity{~u64(7u) - 16u};
 
-        MemoryPool(const size_t capacity)
+        Pool(const size_t capacity)
         {
             if (capacity < minCapacity || capacity > maxCapacity) {
                 throw std::exception{};
@@ -101,24 +105,24 @@ namespace qc::memory {
             _tail[1] = 0u;
         }
 
-        MemoryPool(const MemoryPool &) = delete;
+        Pool(const Pool &) = delete;
 
-        MemoryPool(MemoryPool && other) noexcept :
+        Pool(Pool && other) noexcept :
             _chunkCapacity{std::exchange(other._chunkCapacity, 0u)},
             _chunks{std::exchange(other._chunks, nullptr)},
             _head{std::exchange(other._head, nullptr)}
         {}
 
-        MemoryPool & operator=(const MemoryPool &) = delete;
+        Pool & operator=(const Pool &) = delete;
 
-        MemoryPool & operator=(MemoryPool && other) noexcept {
+        Pool & operator=(Pool && other) noexcept {
             _chunkCapacity = std::exchange(other._chunkCapacity, 0u);
             _chunks = std::exchange(other._chunks, nullptr);
             _head = std::exchange(other._head, nullptr);
             return *this;
         }
 
-        ~MemoryPool() {
+        ~Pool() {
             if (_chunks) {
                 ::operator delete(_chunks);
             }
@@ -130,34 +134,46 @@ namespace qc::memory {
                 return nullptr;
             }
 
-            const u64 chunkCount{(n * sizeof(T) + 7u) >> 3};
+            const u64 allocSize{(n * sizeof(T) + 7u) >> 3};
 
             u64 * block{_head};
-            u64 blockSize;
-            u64 nextBlockOffset;
+            u64 * prevBlock{nullptr};
 
             while (true) {
-                blockSize = block[0];
-                nextBlockOffset = block[1];
+                const u64 blockSize{block[0]};
 
                 if (!blockSize) {
                     return nullptr;
                 }
 
                 // There's space. Must be either a perfect fit, or at least two chunks for meta
-                if ((blockSize >= chunkCount) && (blockSize - chunkCount != 1u)) {
+                if ((blockSize >= allocSize) && (blockSize - allocSize != 1u)) {
                     break;
                 }
 
-                block += nextBlockOffset;
+                prevBlock = block;
+                block += block[1];
             }
 
-            u64 * const nextBlock{block + chunkCount};
-            if (blockSize < chunkCount) {
-                nextBlock[0] = blockSize - chunkCount;
-                nextBlock[1] = nextBlockOffset - chunkCount;
+            u64 offset;
+            // Did not fill block
+            if (allocSize < block[0]) {
+                u64 * const newBlock{block + allocSize};
+                newBlock[0] = block[0] - allocSize;
+                newBlock[1] = block[1] - allocSize;
+                offset = allocSize;
             }
-            _head = nextBlock;
+            // Completely filled block
+            else {
+                offset = block[1];
+            }
+
+            if (prevBlock) {
+                prevBlock[1] += offset;
+            }
+            else {
+                _head += offset;
+            }
 
             return reinterpret_cast<T *>(block);
         }
@@ -165,7 +181,7 @@ namespace qc::memory {
         template <typename T>
         void deallocate(T * const ptr, const u64 n) {
             if (!_chunks || !n) {
-                return nullptr;
+                return;
             }
 
             u64 * const block{reinterpret_cast<u64 *>(ptr)};
@@ -203,6 +219,10 @@ namespace qc::memory {
             }
         }
 
+        u64 capacity() const noexcept {
+            return _chunkCapacity << 3;
+        }
+
         private:
 
         u64 _chunkCapacity{};
@@ -222,7 +242,9 @@ namespace qc::memory {
         using propagate_on_container_move_assignment = std::true_type;
         using propagate_on_container_swap = std::true_type;
 
-        PoolAllocator() noexcept = default;
+        PoolAllocator(Pool * const pool) noexcept :
+            _pool{pool}
+        {}
 
         PoolAllocator(const PoolAllocator &) noexcept = default;
 
@@ -244,14 +266,14 @@ namespace qc::memory {
         }
 
         void deallocate(T * const ptr, const size_t n) {
-            return _pool->deallocate(ptr, n);
+            return _pool->deallocate<T>(ptr, n);
         }
 
         bool operator==(const PoolAllocator &) const noexcept = default;
 
         private:
 
-        MemoryPool * _pool{};
+        Pool * _pool{};
 
     };
 
