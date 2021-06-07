@@ -242,8 +242,8 @@ namespace qc::memory {
         using propagate_on_container_move_assignment = std::true_type;
         using propagate_on_container_swap = std::true_type;
 
-        PoolAllocator(Pool * const pool) noexcept :
-            _pool{pool}
+        PoolAllocator(Pool & pool) noexcept :
+            _pool{&pool}
         {}
 
         PoolAllocator(const PoolAllocator &) noexcept = default;
