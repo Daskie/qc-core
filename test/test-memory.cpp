@@ -6,10 +6,6 @@ using namespace qc::types;
 
 struct QcMemoryPoolFriend {
 
-    static u64 * getData(qc::memory::Pool & pool) {
-        return pool._chunks;
-    }
-
     static u64 * getHead(qc::memory::Pool & pool) {
         return pool._head;
     }
@@ -29,7 +25,7 @@ TEST(memory, poolAllocateDeallocate) {
     qc::memory::Pool pool{120 * 8u};
     ASSERT_EQ(120u * 8u, pool.capacity());
 
-    u64 * const data{QcMemoryPoolFriend::getData(pool)};
+    u64 * const data{const_cast<u64 *>(static_cast<const u64 *>(pool.data()))};
     ASSERT_EQ(0, QcMemoryPoolFriend::getHead(pool) - data);
     ASSERT_EQ(120u, data[0]);
     ASSERT_EQ(120u, data[1]);

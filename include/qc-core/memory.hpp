@@ -229,6 +229,10 @@ namespace qc::memory {
             return _chunkCapacity << 3;
         }
 
+        const void * data() const noexcept {
+            return _chunks;
+        }
+
         private:
 
         u64 _chunkCapacity{};
