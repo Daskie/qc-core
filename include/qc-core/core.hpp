@@ -7,6 +7,12 @@
 
 namespace qc {
 
+#ifdef NDEBUG
+    constexpr bool debug{false};
+#else
+    constexpr bool debug{true};
+#endif
+
     inline namespace types {
 
         using uint = unsigned int;
