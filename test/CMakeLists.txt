@@ -4,21 +4,19 @@ find_package(GTest CONFIG REQUIRED)
 
 ### QC-CORE-TEST ###############################################################
 
-set(NAME ${PROJECT_NAME}-test)
+file(GLOB SRC_FILES *.cpp)
 
-file(GLOB ${NAME}_SRC *.cpp)
-
-add_executable(${NAME} ${${NAME}_SRC})
+add_executable(qc-core-test ${SRC_FILES})
 
 if(MSVC)
-    target_compile_options(${NAME} PRIVATE /W4 /WX)
+    target_compile_options(qc-core-test PRIVATE /W4 /WX)
 else()
     message(FATAL_ERROR "TODO")
 endif()
 
 target_link_libraries(
-    ${NAME}
+    qc-core-test
     PRIVATE
-        ${PROJECT_NAME}
+        qc-core
         GTest::gtest_main
 )

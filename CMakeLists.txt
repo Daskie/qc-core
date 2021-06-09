@@ -7,12 +7,10 @@ set(CMAKE_DEBUG_POSTFIX d)
 
 ### QC-CORE ####################################################################
 
-set(NAME ${PROJECT_NAME})
-
-add_library(${NAME} INTERFACE)
+add_library(qc-core INTERFACE)
 
 target_include_directories(
-    ${NAME}
+    qc-core
     INTERFACE
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:include>
