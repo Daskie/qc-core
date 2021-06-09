@@ -22,7 +22,7 @@ namespace qc {
             using reference = value_type &;
 
             constexpr Iterator(const Iterator & other) noexcept = default;
-            constexpr explicit Iterator(const Iterator<false> & other) noexcept requires (constant) :
+            constexpr explicit Iterator(const Iterator<false> & other) noexcept requires constant :
                 _values(other._values),
                 _currentIndex(other._currentIndex),
                 _relativeIndex(other._relativeIndex)
