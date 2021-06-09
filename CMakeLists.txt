@@ -1,26 +1,28 @@
 cmake_minimum_required(VERSION 3.17)
+
 project(qc-core)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_DEBUG_POSTFIX d)
 
-### QC-CORE ###
+### QC-CORE ####################################################################
 
-add_library(qc-core INTERFACE)
+set(NAME ${PROJECT_NAME})
+
+add_library(${NAME} INTERFACE)
 
 target_include_directories(
-    qc-core
+    ${NAME}
     INTERFACE
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:include>
 )
 
-### SUBDIRECTORIES ###
+### SUBDIRECTORIES #############################################################
 
-# qc-core-test
 add_subdirectory(test EXCLUDE_FROM_ALL)
 
-### INSTALL ###
+### INSTALL ####################################################################
 
 # General install and target setup
 install(

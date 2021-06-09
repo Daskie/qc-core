@@ -1,26 +1,24 @@
-### DEPENDENCIES ###
+### DEPENDENCIES ###############################################################
 
-# GTest
 find_package(GTest CONFIG REQUIRED)
 
-### QC-CORE-TEST ###
+### QC-CORE-TEST ###############################################################
 
-file(GLOB qc-core-test_SRC *.cpp)
+set(NAME ${PROJECT_NAME}-test)
 
-add_executable(qc-core-test ${qc-core-test_SRC})
+file(GLOB ${NAME}_SRC *.cpp)
 
-# Link executable statically
-set_property(TARGET qc-core-test PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+add_executable(${NAME} ${${NAME}_SRC})
 
 if(MSVC)
-    target_compile_options(qc-core-test PRIVATE /W4 /WX)
+    target_compile_options(${NAME} PRIVATE /W4 /WX)
 else()
-    add_compile_options(qc-core-test PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    message(FATAL_ERROR "TODO")
 endif()
 
 target_link_libraries(
-    qc-core-test
+    ${NAME}
     PRIVATE
+        ${PROJECT_NAME}
         GTest::gtest_main
-        qc-core
 )
