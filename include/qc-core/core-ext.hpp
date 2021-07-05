@@ -58,7 +58,7 @@ namespace qc {
     // ~2x faster than std::floor
     // doesn't work with extremely large or extremely small floating point values
     //
-    template <Floating T> stype<sizeof(T)> floor(T v);
+    template <Floating T> stype<T> floor(T v);
     template <Integral T> T floor(T v);
 
     //
@@ -66,7 +66,7 @@ namespace qc {
     // ~2x faster than std::ceil
     // doesn't work with extremely large or extremely small floating point values
     //
-    template <Floating T> stype<sizeof(T)> ceil(T v);
+    template <Floating T> stype<T> ceil(T v);
     template <Integral T> T ceil(T v);
 
     //
@@ -105,7 +105,7 @@ namespace qc {
     //
     // ...
     //
-    template <Floating T> std::pair<T, stype<sizeof(T)>> fract_i(T v);
+    template <Floating T> std::pair<T, stype<T>> fract_i(T v);
 
     //
     // ...
@@ -241,7 +241,7 @@ namespace qc {
     template <Numeric T>
     inline T trunc(const T v) {
         if constexpr (Floating<T>) {
-            return T(stype<sizeof(T)>(v));
+            return T(stype<T>(v));
         }
         else {
             return v;
@@ -249,8 +249,8 @@ namespace qc {
     }
 
     template <Floating T>
-    inline stype<sizeof(T)> floor(const T v) {
-        stype<sizeof(T)> i{stype<sizeof(T)>(v)};
+    inline stype<T> floor(const T v) {
+        stype<T> i{stype<T>(v)};
         return i - (v < T(i));
     }
 
@@ -260,8 +260,8 @@ namespace qc {
     }
 
     template <Floating T>
-    inline stype<sizeof(T)> ceil(const T v) {
-        stype<sizeof(T)> i{stype<sizeof(T)>(v)};
+    inline stype<T> ceil(const T v) {
+        stype<T> i{stype<T>(v)};
         return i + (v > T(i));
     }
 
@@ -339,8 +339,8 @@ namespace qc {
     }
 
     template <Floating T>
-    inline std::pair<T, stype<sizeof(T)>> fract_i(const T v) {
-        const stype<sizeof(T)> i{stype<sizeof(T)>(v)};
+    inline std::pair<T, stype<T>> fract_i(const T v) {
+        const stype<T> i{stype<T>(v)};
         return {v - T(i), i};
     }
 

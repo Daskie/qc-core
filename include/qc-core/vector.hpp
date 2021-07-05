@@ -4,12 +4,6 @@
 
 namespace qc {
 
-    inline namespace types {
-
-        template <typename T> concept NumericOrBoolean = Numeric<T> || std::is_same_v<T, bool>;
-
-    } // namespace types
-
     template <NumericOrBoolean T, int n> struct vec;
 
     inline namespace types {

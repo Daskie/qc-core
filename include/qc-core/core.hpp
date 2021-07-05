@@ -34,6 +34,7 @@ namespace qc {
         template <typename T> concept Floating = std::is_floating_point_v<T>;
         template <typename T> concept Numeric = Integral<T> || Floating<T>;
         template <typename T> concept SignedNumeric = SignedIntegral<T> || Floating<T>;
+        template <typename T> concept NumericOrBoolean = Numeric<T> || std::is_same_v<T, bool>;
 
     } // namespace types
 
@@ -42,9 +43,9 @@ namespace qc {
     template <> struct sized<2> { using stype = s16; using utype = u16; };
     template <> struct sized<4> { using stype = s32; using utype = u32; using ftype = f32; };
     template <> struct sized<8> { using stype = s64; using utype = u64; using ftype = f64; };
-    template <int size> using stype = typename sized<size>::stype;
-    template <int size> using utype = typename sized<size>::utype;
-    template <int size> using ftype = typename sized<size>::ftype;
+    template <typename T> using stype = typename sized<sizeof(T)>::stype;
+    template <typename T> using utype = typename sized<sizeof(T)>::utype;
+    template <typename T> using ftype = typename sized<sizeof(T)>::ftype;
 
     template <typename T> concept _MinMaxable = Numeric<T> || std::is_pointer_v<T>;
 

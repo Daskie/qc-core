@@ -9,7 +9,7 @@ namespace qc {
     //
     // Transforms random engine `Engine` result into some type `T`
     //
-    template <typename Engine, Numeric T> struct RandomEngineTransformer;
+    template <typename Engine, typename T> struct RandomEngineTransformer;
 
     //
     // Specialization for std::mt19937
@@ -41,6 +41,16 @@ namespace qc {
     };
 
     //
+    // ...
+    //
+    template <>
+    struct RandomEngineTransformer<std::mt19937, bool> {
+        bool operator()(const u32 result) const {
+            return result & 1u;
+        }
+    };
+
+    //
     // Specialization for std::mt19937_64
     // std::mt19937_64 produces 64 bits
     // Supports any float
@@ -66,6 +76,16 @@ namespace qc {
             else {
                 return T(result);
             }
+        }
+    };
+
+    //
+    // ...
+    //
+    template <>
+    struct RandomEngineTransformer<std::mt19937_64, bool> {
+        bool operator()(const u64 result) const {
+            return result & 1u;
         }
     };
 
@@ -111,6 +131,16 @@ namespace qc {
     };
 
     //
+    // ...
+    //
+    template <>
+    struct RandomEngineTransformer<std::minstd_rand, bool> {
+        bool operator()(const u32 result) const {
+            return result & 1u;
+        }
+    };
+
+    //
     // Random number generator using the given random engine `Engine`
     // The default engine, std::mt19937, is rather heavy (5 KB), but very fast, so construct once and use often
     // Engine must have the following:
@@ -150,7 +180,7 @@ namespace qc {
         //
         // Returns a random integer in [0, T_MAX] or a float in [0.0, 1.0).
         //
-        template <Numeric T>
+        template <NumericOrBoolean T>
         T next() noexcept {
             return RandomEngineTransformer<Engine, T>()(_engine());
         }
@@ -181,6 +211,12 @@ namespace qc {
         // Returns the seed.
         //
         Value seed() const noexcept { return _seed; }
+
+        //
+        // Returns the engine
+        //
+        Engine & engine() noexcept { return _engine; }
+        const Engine & engine() const noexcept { return _engine; }
 
         private:
 

@@ -16,16 +16,16 @@ static void compileTyping() {
     u64 u64_; u64_;
     f64 f64_; f64_;
 
-    qc::stype<1> stype_08_; stype_08_;
-    qc::stype<2> stype_16_; stype_16_;
-    qc::stype<4> stype_32_; stype_32_;
-    qc::stype<8> stype_64_; stype_64_;
-    qc::utype<1> utype_08_; utype_08_;
-    qc::utype<2> utype_16_; utype_16_;
-    qc::utype<4> utype_32_; utype_32_;
-    qc::utype<8> utype_64_; utype_64_;
-    qc::ftype<4> ftype_32_; ftype_32_;
-    qc::ftype<8> ftype_64_; ftype_64_;
+    qc::stype<u8> stype_08_; stype_08_;
+    qc::stype<u16> stype_16_; stype_16_;
+    qc::stype<u32> stype_32_; stype_32_;
+    qc::stype<u64> stype_64_; stype_64_;
+    qc::utype<s8> utype_08_; utype_08_;
+    qc::utype<s16> utype_16_; utype_16_;
+    qc::utype<s32> utype_32_; utype_32_;
+    qc::utype<s64> utype_64_; utype_64_;
+    qc::ftype<u32> ftype_32_; ftype_32_;
+    qc::ftype<u64> ftype_64_; ftype_64_;
 }
 
 template <typename T1, typename T2>

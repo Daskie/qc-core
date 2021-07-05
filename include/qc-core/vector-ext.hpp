@@ -188,19 +188,19 @@ namespace qc {
     //
     // ...
     //
-    template <Floating T, int n> vec<stype<sizeof(T)>, n> round(const vec<T, n> & v);
+    template <Floating T, int n> vec<stype<T>, n> round(const vec<T, n> & v);
     template <Integral T, int n> vec<T, n> round(const vec<T, n> & v);
 
     //
     // ...
     //
-    template <Floating T, int n> vec<stype<sizeof(T)>, n> floor(const vec<T, n> & v);
+    template <Floating T, int n> vec<stype<T>, n> floor(const vec<T, n> & v);
     template <Integral T, int n> vec<T, n> floor(const vec<T, n> & v);
 
     //
     // ...
     //
-    template <Floating T, int n> vec<stype<sizeof(T)>, n> ceil(const vec<T, n> & v);
+    template <Floating T, int n> vec<stype<T>, n> ceil(const vec<T, n> & v);
     template <Integral T, int n> vec<T, n> ceil(const vec<T, n> & v);
 
     //
@@ -607,7 +607,7 @@ namespace qc {
     }
 
     template <Floating T, int n>
-    inline vec<stype<sizeof(T)>, n> floor(const vec<T, n> & v) {
+    inline vec<stype<T>, n> floor(const vec<T, n> & v) {
         if constexpr (n == 2) return {floor(v.x), floor(v.y)};
         if constexpr (n == 3) return {floor(v.x), floor(v.y), floor(v.z)};
         if constexpr (n == 4) return {floor(v.x), floor(v.y), floor(v.z), floor(v.w)};
@@ -619,7 +619,7 @@ namespace qc {
     }
 
     template <Floating T, int n>
-    inline vec<stype<sizeof(T)>, n> ceil(const vec<T, n> & v) {
+    inline vec<stype<T>, n> ceil(const vec<T, n> & v) {
         if constexpr (n == 2) return {ceil(v.x), ceil(v.y)};
         if constexpr (n == 3) return {ceil(v.x), ceil(v.y), ceil(v.z)};
         if constexpr (n == 4) return {ceil(v.x), ceil(v.y), ceil(v.z), ceil(v.w)};
@@ -631,7 +631,7 @@ namespace qc {
     }
 
     template <Floating T, int n>
-    inline vec<stype<sizeof(T)>, n> round(const vec<T, n> & v) {
+    inline vec<stype<T>, n> round(const vec<T, n> & v) {
         if constexpr (n == 2) return {round(v.x), round(v.y)};
         if constexpr (n == 3) return {round(v.x), round(v.y), round(v.z)};
         if constexpr (n == 4) return {round(v.x), round(v.y), round(v.z), round(v.w)};

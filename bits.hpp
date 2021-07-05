@@ -61,7 +61,7 @@ namespace qc::bits {
     template <UnsignedIntegral T>
     inline T interleave(const T v) {
         if constexpr (sizeof(T) > 1u) {
-            using H = utype<sizeof(T) / 2u>;
+            using H = typename sized<sizeof(T) / 2u>::utype;
 
             const H h1{H(v >> sizeof(H) * 8u)}, h2{H(v)};
 
