@@ -96,14 +96,12 @@ namespace qc::memory {
 
     class Pool {
 
-        static_assert(std::is_same_v<size_t, u64>); // I can't be bothered to make this work with x86 rn
-
         friend QcMemoryPoolFriend;
 
         public:
 
-        static constexpr u64 minCapacity{16u};
-        static constexpr u64 maxCapacity{~u64(7u) - 16u};
+        static constexpr size_t minCapacity{2u * sizeof(size_t)};
+        static constexpr size_t maxCapacity{std::numeric_limits<size_t>::max() / sizeof(size_t) * sizeof(size_t) - 2u * sizeof(size_t)};
 
         Pool(const size_t capacity)
         {
@@ -111,8 +109,8 @@ namespace qc::memory {
                 throw std::exception{};
             }
 
-            _chunkCapacity = (capacity + 7u) >> 3;
-            _chunks = static_cast<u64 *>(::operator new((_chunkCapacity << 3) + 16u));
+            _chunkCapacity = (capacity + (sizeof(size_t) - 1u)) / sizeof(size_t);
+            _chunks = static_cast<size_t *>(::operator new((_chunkCapacity * sizeof(size_t)) + 2u * sizeof(size_t)));
 
             _head = _chunks;
             _head[0] = _chunkCapacity;
@@ -147,20 +145,20 @@ namespace qc::memory {
         }
 
         template <typename T>
-        T * allocate(const u64 n) {
+        T * allocate(const size_t n) {
             if constexpr (debug) {
                 if (!_chunks || !n) {
                     throw std::exception{};
                 }
             }
 
-            const u64 allocSize{(n * sizeof(T) + 7u) >> 3};
+            const size_t allocSize{(n * sizeof(T) + (sizeof(size_t) - 1u)) / sizeof(size_t)};
 
-            u64 * block{_head};
-            u64 * prevBlock{nullptr};
+            size_t * block{_head};
+            size_t * prevBlock{nullptr};
 
             while (true) {
-                const u64 blockSize{block[0]};
+                const size_t blockSize{block[0]};
 
                 if (!blockSize) {
                     // Out of memory, or no large enough contiguous block of memory available
@@ -176,10 +174,10 @@ namespace qc::memory {
                 block += block[1];
             }
 
-            u64 offset;
+            size_t offset;
             // Did not fill block
             if (allocSize < block[0]) {
-                u64 * const newBlock{block + allocSize};
+                size_t * const newBlock{block + allocSize};
                 newBlock[0] = block[0] - allocSize;
                 newBlock[1] = block[1] - allocSize;
                 offset = allocSize;
@@ -200,15 +198,15 @@ namespace qc::memory {
         }
 
         template <typename T>
-        void deallocate(T * const ptr, const u64 n) noexcept(!debug) {
+        void deallocate(T * const ptr, const size_t n) noexcept(!debug) {
             if constexpr (debug) {
                 if (!_chunks || !ptr || !n) {
                     throw std::exception{};
                 }
             }
 
-            u64 * const block{reinterpret_cast<u64 *>(ptr)};
-            block[0] = (n * sizeof(T) + 7u) >> 3;
+            size_t * const block{reinterpret_cast<size_t *>(ptr)};
+            block[0] = (n * sizeof(T) + (sizeof(size_t) - 1u)) / sizeof(size_t);
 
             if (block < _head) {
                 block[1] = _head - block;
@@ -219,8 +217,8 @@ namespace qc::memory {
                 _head = block;
             }
             else {
-                u64 * prevBlock{_head};
-                u64 * nextBlock{_head + _head[1]};
+                size_t * prevBlock{_head};
+                size_t * nextBlock{_head + _head[1]};
                 while (nextBlock < block) {
                     prevBlock = nextBlock;
                     nextBlock = nextBlock + nextBlock[1];
@@ -242,8 +240,8 @@ namespace qc::memory {
             }
         }
 
-        u64 capacity() const noexcept {
-            return _chunkCapacity << 3;
+        size_t capacity() const noexcept {
+            return _chunkCapacity * sizeof(size_t);
         }
 
         const void * data() const noexcept {
@@ -252,9 +250,9 @@ namespace qc::memory {
 
         private:
 
-        u64 _chunkCapacity{};
-        u64 * _chunks{};
-        u64 * _head{};
+        size_t _chunkCapacity{};
+        size_t * _chunks{};
+        size_t * _head{};
 
     };
 

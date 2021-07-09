@@ -153,24 +153,23 @@ namespace qc {
     //   - an operator() that returns a `result_type` whose bits are fully saturated
     //   - a static method `max` that returns the maximum `result_type` that may be generated
     //
-    template <typename Engine = std::conditional_t<sizeof(intptr_t) <= 4u, std::mt19937, std::mt19937_64>>
     class Random {
 
         public:
 
-        using Value = typename Engine::result_type;
+        using Engine = std::conditional_t<sizeof(size_t) <= 4u, std::mt19937, std::mt19937_64>;
 
-        explicit Random(const Value seed = Engine::default_seed) noexcept :
+        explicit Random(const size_t seed = Engine::default_seed) noexcept :
             _seed(seed),
             _engine(_seed)
         {}
 
-        Random(const Random<Engine> & other) noexcept :
+        Random(const Random & other) noexcept :
             _seed(other._seed),
             _engine(other._engine)
         {}
 
-        Random<Engine> & operator=(const Random<Engine> & other) noexcept {
+        Random & operator=(const Random & other) noexcept {
             _seed = other._seed;
             _engine = other._engine;
 
@@ -210,7 +209,7 @@ namespace qc {
         //
         // Returns the seed.
         //
-        Value seed() const noexcept { return _seed; }
+        size_t seed() const noexcept { return _seed; }
 
         //
         // Returns the engine
@@ -220,7 +219,7 @@ namespace qc {
 
         private:
 
-        Value _seed;
+        size_t _seed;
         Engine _engine;
 
     };

@@ -6,26 +6,26 @@ using namespace qc::types;
 
 struct QcMemoryPoolFriend {
 
-    static u64 * getHead(qc::memory::Pool & pool) {
+    static size_t * getHead(qc::memory::Pool & pool) {
         return pool._head;
     }
 
 };
 
 TEST(memory, poolCapacity) {
-    ASSERT_THROW(qc::memory::Pool{15u}, std::exception);
-    ASSERT_EQ(16u, qc::memory::Pool{16u}.capacity());
-    ASSERT_EQ(24u, qc::memory::Pool{17u}.capacity());
-    ASSERT_EQ(24u, qc::memory::Pool{24u}.capacity());
-    ASSERT_EQ(32u, qc::memory::Pool{25u}.capacity());
-    ASSERT_EQ(32u, qc::memory::Pool{32u}.capacity());
+    ASSERT_THROW(qc::memory::Pool{2u * sizeof(size_t) - 1u}, std::exception);
+    ASSERT_EQ(2u * sizeof(size_t), qc::memory::Pool{2u * sizeof(size_t)}.capacity());
+    ASSERT_EQ(3u * sizeof(size_t), qc::memory::Pool{2u * sizeof(size_t) + 1u}.capacity());
+    ASSERT_EQ(3u * sizeof(size_t), qc::memory::Pool{3u * sizeof(size_t)}.capacity());
+    ASSERT_EQ(4u * sizeof(size_t), qc::memory::Pool{3u * sizeof(size_t) + 1u}.capacity());
+    ASSERT_EQ(4u * sizeof(size_t), qc::memory::Pool{4u * sizeof(size_t)}.capacity());
 }
 
 TEST(memory, poolAllocateDeallocate) {
-    qc::memory::Pool pool{120 * 8u};
-    ASSERT_EQ(120u * 8u, pool.capacity());
+    qc::memory::Pool pool{120 * sizeof(size_t)};
+    ASSERT_EQ(120u * sizeof(size_t), pool.capacity());
 
-    u64 * const data{const_cast<u64 *>(static_cast<const u64 *>(pool.data()))};
+    size_t * const data{const_cast<size_t *>(static_cast<const size_t *>(pool.data()))};
     ASSERT_EQ(0, QcMemoryPoolFriend::getHead(pool) - data);
     ASSERT_EQ(120u, data[0]);
     ASSERT_EQ(120u, data[1]);
@@ -34,14 +34,14 @@ TEST(memory, poolAllocateDeallocate) {
 
     // One full allocation
 
-    ASSERT_EQ(0, pool.allocate<u64>(120u) - data);
+    ASSERT_EQ(0, pool.allocate<size_t>(120u) - data);
     ASSERT_EQ(120, QcMemoryPoolFriend::getHead(pool) - data);
     ASSERT_EQ(0u, data[120]);
     ASSERT_EQ(0u, data[121]);
 
     // Shouldn't be able to allocate more
 
-    ASSERT_THROW(pool.allocate<u64>(1u), std::bad_alloc);
+    ASSERT_THROW(pool.allocate<size_t>(1u), std::bad_alloc);
     ASSERT_EQ(120, QcMemoryPoolFriend::getHead(pool) - data);
     ASSERT_EQ(0u, data[120]);
     ASSERT_EQ(0u, data[121]);
@@ -55,24 +55,24 @@ TEST(memory, poolAllocateDeallocate) {
 
     // Allocate into three blocks
 
-    ASSERT_EQ(0, pool.allocate<u64>(40u) - data);
+    ASSERT_EQ(0, pool.allocate<size_t>(40u) - data);
     ASSERT_EQ(40, QcMemoryPoolFriend::getHead(pool) - data);
     ASSERT_EQ(80u, data[40]);
     ASSERT_EQ(80u, data[41]);
 
-    ASSERT_EQ(40, pool.allocate<u64>(40u) - data);
+    ASSERT_EQ(40, pool.allocate<size_t>(40u) - data);
     ASSERT_EQ(80, QcMemoryPoolFriend::getHead(pool) - data);
     ASSERT_EQ(40u, data[80]);
     ASSERT_EQ(40u, data[81]);
 
-    ASSERT_EQ(80, pool.allocate<u64>(40u) - data);
+    ASSERT_EQ(80, pool.allocate<size_t>(40u) - data);
     ASSERT_EQ(120, QcMemoryPoolFriend::getHead(pool) - data);
     ASSERT_EQ(0u, data[120]);
     ASSERT_EQ(0u, data[121]);
 
     // Should not be able to allocate more
 
-    ASSERT_THROW(pool.allocate<u64>(1u), std::bad_alloc);
+    ASSERT_THROW(pool.allocate<size_t>(1u), std::bad_alloc);
     ASSERT_EQ(120, QcMemoryPoolFriend::getHead(pool) - data);
     ASSERT_EQ(0u, data[120]);
     ASSERT_EQ(0u, data[121]);
@@ -86,21 +86,21 @@ TEST(memory, poolAllocateDeallocate) {
 
     // Try to overstuff
 
-    ASSERT_THROW(pool.allocate<u64>(41u), std::bad_alloc);
+    ASSERT_THROW(pool.allocate<size_t>(41u), std::bad_alloc);
     ASSERT_EQ(40, QcMemoryPoolFriend::getHead(pool) - data);
     ASSERT_EQ(40u, data[40]);
     ASSERT_EQ(80u, data[41]);
 
     // Partial middle allocation
 
-    ASSERT_EQ(40, pool.allocate<u64>(20u) - data);
+    ASSERT_EQ(40, pool.allocate<size_t>(20u) - data);
     ASSERT_EQ(60, QcMemoryPoolFriend::getHead(pool) - data);
     ASSERT_EQ(20u, data[60]);
     ASSERT_EQ(60u, data[61]);
 
     // Full middle allocation
 
-    ASSERT_EQ(60, pool.allocate<u64>(20u) - data);
+    ASSERT_EQ(60, pool.allocate<size_t>(20u) - data);
     ASSERT_EQ(120, QcMemoryPoolFriend::getHead(pool) - data);
     ASSERT_EQ(0u, data[120]);
     ASSERT_EQ(0u, data[121]);
@@ -112,7 +112,7 @@ TEST(memory, poolAllocateDeallocate) {
     ASSERT_EQ(40u, data[0]);
     ASSERT_EQ(120u, data[1]);
 
-    ASSERT_EQ(0, pool.allocate<u64>(40u) - data);
+    ASSERT_EQ(0, pool.allocate<size_t>(40u) - data);
     ASSERT_EQ(120, QcMemoryPoolFriend::getHead(pool) - data);
     ASSERT_EQ(0u, data[120]);
     ASSERT_EQ(0u, data[121]);
@@ -126,21 +126,21 @@ TEST(memory, poolAllocateDeallocate) {
 
     // Try to allocate such that there is a gap of one
 
-    ASSERT_THROW(pool.allocate<u64>(39u), std::bad_alloc);
+    ASSERT_THROW(pool.allocate<size_t>(39u), std::bad_alloc);
     ASSERT_EQ(0, QcMemoryPoolFriend::getHead(pool) - data);
     ASSERT_EQ(40u, data[0]);
     ASSERT_EQ(120u, data[1]);
 
     // Just enough room for meta
 
-    ASSERT_EQ(0, pool.allocate<u64>(38u) - data);
+    ASSERT_EQ(0, pool.allocate<size_t>(38u) - data);
     ASSERT_EQ(38, QcMemoryPoolFriend::getHead(pool) - data);
     ASSERT_EQ(2u, data[38]);
     ASSERT_EQ(82u, data[39]);
 
     // Allocate minimum size block
 
-    ASSERT_EQ(38, pool.allocate<u64>(2u) - data);
+    ASSERT_EQ(38, pool.allocate<size_t>(2u) - data);
     ASSERT_EQ(120, QcMemoryPoolFriend::getHead(pool) - data);
     ASSERT_EQ(0u, data[120]);
     ASSERT_EQ(0u, data[121]);
@@ -163,7 +163,7 @@ TEST(memory, poolAllocateDeallocate) {
 
     // Allocate larger block
 
-    ASSERT_EQ(80, pool.allocate<u64>(40u) - data);
+    ASSERT_EQ(80, pool.allocate<size_t>(40u) - data);
     ASSERT_EQ(0, QcMemoryPoolFriend::getHead(pool) - data);
     ASSERT_EQ(10u, data[0]);
     ASSERT_EQ(120u, data[1]);

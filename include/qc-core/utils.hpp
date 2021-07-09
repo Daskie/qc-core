@@ -24,12 +24,12 @@ namespace qc::utils {
 
     // Throws `std::system_error` on failure
     inline std::vector<std::byte> readFile(const std::filesystem::path & path) {
-        const size_t size{std::filesystem::file_size(path)};
-        if (size > size_t(std::numeric_limits<std::streamsize>::max())) {
+        const uintmax_t size{std::filesystem::file_size(path)};
+        if (size > qc::min(uintmax_t(std::numeric_limits<size_t>::max()), uintmax_t(std::numeric_limits<std::streamsize>::max()))) {
             throw std::system_error(std::make_error_code(std::errc::file_too_large));
         }
 
-        std::vector<std::byte> data(size); // TODO: default initializes its memory - potential performance concern for large files
+        std::vector<std::byte> data((size_t(size))); // TODO: default initializes its memory - potential performance concern for large files
 
         std::ifstream ifs(path, std::ios::binary);
         ifs.exceptions(std::ios::badbit | std::ios::failbit);
@@ -40,12 +40,12 @@ namespace qc::utils {
 
     // Throws `std::system_error` on failure
     inline std::string readAsciiFile(const std::filesystem::path & path) {
-        const size_t size{std::filesystem::file_size(path)};
-        if (size > size_t(std::numeric_limits<std::streamsize>::max())) {
+        const uintmax_t size{std::filesystem::file_size(path)};
+        if (size > qc::min(uintmax_t(std::numeric_limits<size_t>::max()), uintmax_t(std::numeric_limits<std::streamsize>::max()))) {
             throw std::system_error(std::make_error_code(std::errc::file_too_large));
         }
 
-        std::string str(size, '\0'); // TODO: explicitly initializes its memory - potential performance concern for large files
+        std::string str(size_t(size), '\0'); // TODO: explicitly initializes its memory - potential performance concern for large files
 
         std::ifstream ifs(path, std::ios::binary);
         ifs.exceptions(std::ios::badbit | std::ios::failbit);
