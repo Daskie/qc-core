@@ -224,10 +224,6 @@ static constexpr bool compileClassesConstexpr() {
 
 template <typename T1, typename T2>
 static void compileFunctionsTT() {
-    T1 v; v;
-    vec2<T1> v2; v2;
-    vec3<T1> v3; v3;
-    vec4<T1> v4; v4;
 }
 
 template <typename T>
@@ -703,18 +699,13 @@ static void compileFunctionsFT() {
 
 template <typename T>
 static void compileFunctionsIT() {
-    T v{}; v;
-    vec2<T> v2; v2;
-    vec3<T> v3; v3;
-    vec4<T> v4; v4;
 }
 
 template <typename T>
 static void compileFunctionsSIT() {
-    T v{}; v;
-    vec2<T> v2; v2;
-    vec3<T> v3; v3;
-    vec4<T> v4; v4;
+    vec2<T> v2;
+    vec3<T> v3;
+    vec4<T> v4;
 
     qc::transnorm<fvec2>(v2);
     qc::transnorm<fvec3>(v3);
@@ -726,10 +717,9 @@ static void compileFunctionsSIT() {
 
 template <typename T>
 static void compileFunctionsUIT() {
-    T v{}; v;
-    vec2<T> v2; v2;
-    vec3<T> v3; v3;
-    vec4<T> v4; v4;
+    vec2<T> v2;
+    vec3<T> v3;
+    vec4<T> v4;
 
     qc::transnorm<fvec2>(v2);
     qc::transnorm<fvec3>(v3);

@@ -4,29 +4,32 @@
 
 using namespace qc::types;
 
+#pragma warning(push)
+#pragma warning(disable: 4101)
 static void compileTyping() {
-    s8 s08_; s08_;
-    u8 u08_; u08_;
-    s16 s16_; s16_;
-    u16 u16_; u16_;
-    s32 s32_; s32_;
-    u32 u32_; u32_;
-    f32 f32_; f32_;
-    s64 s64_; s64_;
-    u64 u64_; u64_;
-    f64 f64_; f64_;
+    s8 s08_;
+    u8 u08_;
+    s16 s16_;
+    u16 u16_;
+    s32 s32_;
+    u32 u32_;
+    f32 f32_;
+    s64 s64_;
+    u64 u64_;
+    f64 f64_;
 
-    qc::stype<u8> stype_08_; stype_08_;
-    qc::stype<u16> stype_16_; stype_16_;
-    qc::stype<u32> stype_32_; stype_32_;
-    qc::stype<u64> stype_64_; stype_64_;
-    qc::utype<s8> utype_08_; utype_08_;
-    qc::utype<s16> utype_16_; utype_16_;
-    qc::utype<s32> utype_32_; utype_32_;
-    qc::utype<s64> utype_64_; utype_64_;
-    qc::ftype<u32> ftype_32_; ftype_32_;
-    qc::ftype<u64> ftype_64_; ftype_64_;
+    qc::stype<u8> stype_08_;
+    qc::stype<u16> stype_16_;
+    qc::stype<u32> stype_32_;
+    qc::stype<u64> stype_64_;
+    qc::utype<s8> utype_08_;
+    qc::utype<s16> utype_16_;
+    qc::utype<s32> utype_32_;
+    qc::utype<s64> utype_64_;
+    qc::ftype<u32> ftype_32_;
+    qc::ftype<u64> ftype_64_;
 }
+#pragma warning(pop)
 
 template <typename T1, typename T2>
 static void compileFunctionsTT() {}
