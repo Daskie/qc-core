@@ -6,8 +6,7 @@ set(CMAKE_CXX_STANDARD 20)
 
 # Retrieve common CMake stuff
 include(FetchContent)
-FetchContent_Declare(qc-cmake SOURCE_DIR C:/dev/internal/qc-cmake)
-#FetchContent_Declare(qc-cmake GIT_REPOSITORY https://github.com/Daskie/qc-cmake.git)
+FetchContent_Declare(qc-cmake GIT_REPOSITORY https://github.com/Daskie/qc-cmake.git)
 FetchContent_MakeAvailable(qc-cmake)
 
 qc_setup_general()
