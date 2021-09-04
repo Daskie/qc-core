@@ -15,7 +15,14 @@ namespace qc {
 
     inline namespace types {
 
+        using schar = signed char;
+        using uchar = unsigned char;
+        using ushort = unsigned short;
         using uint = unsigned int;
+        using ulong = unsigned long;
+        using llong = long long;
+        using ullong = unsigned long long;
+        using ldouble = long double;
 
         using s8 = int8_t;
         using u8 = uint8_t;
