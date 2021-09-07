@@ -1,10 +1,69 @@
 #pragma once
 
+///
+/// Colorspaces
+///
+/// sRGB (standard RGB):
+///   - Non-linear
+///   - Gamma 2.2
+///   - Components:
+///     - R (Red)   : [0, 1]
+///     - G (Green) : [0, 1]
+///     - B (Blue)  : [0, 1]
+///
+/// lRGB (linear RGB):
+///   - Components:
+///     -  R (red)   : [0, inf)
+///     -  G (green) : [0, inf)
+///     -  B (blue)  : [0, inf)
+///
+/// HSL:
+///   - Components:
+///     - H (Hue)        : [0, 1]
+///     - S (Saturation) : [0, 1]
+///     - L (Lightness)  : [0, 1]
+///
+/// CIE XYZ:
+///   - "foundational" linear color space
+///   - Components:
+///     - X : (-inf, inf)
+///     - Y : (-inf, inf)
+///     - Z : (-inf, inf)
+///
+/// CIE xyY:
+///   - CIE XYZ normalized to uniform brightness
+///   - Components:
+///     - x : (-inf, inf)
+///     - y : (-inf, inf)
+///     - Y : (-inf, inf)
+///
+/// CIE LAB:
+///   - Good perceptual uniformity in print and physical media
+///   - Components:
+///     - L : [0, 1]
+///     - a : (-inf, inf)
+///     - b : (-inf, inf)
+///
+/// CIE LUV:
+///   - Good perceptual uniformity for light and digital displays
+///   - Components:
+///     - L : [0, 1]
+///     - u : (-inf, inf)
+///     - v : (-inf, inf)
+///
+/// CIE LCH (UV):
+///   - Hue-chroma form of CIE LUV
+///   - Components:
+///     - L: [0, 1]
+///     - C: [0, inf)
+///     - h: [-pi, pi]
+///
+
 #include <qc-core/vector-ext.hpp>
 #include <qc-core/matrix.hpp>
 
-namespace qc::color {
-
+namespace qc::color
+{
     template <Numeric T> inline const vec3<T> black    {transnorm<vec3<T>>(dvec3{0.00, 0.00, 0.00})};
     template <Numeric T> inline const vec3<T> darkGray {transnorm<vec3<T>>(dvec3{0.25, 0.25, 0.25})};
     template <Numeric T> inline const vec3<T> gray     {transnorm<vec3<T>>(dvec3{0.50, 0.50, 0.50})};
@@ -18,14 +77,14 @@ namespace qc::color {
     template <Numeric T> inline const vec3<T> blue     {transnorm<vec3<T>>(dvec3{0.00, 0.00, 1.00})};
     template <Numeric T> inline const vec3<T> magenta  {transnorm<vec3<T>>(dvec3{1.00, 0.00, 1.00})};
 
-    //
-    // Domain:
-    //     H: [0, 1]
-    //     S: [0, 1]
-    //     L: [0, 1]
-    //
+    ///
+    /// Converts from SRGB to HSL
+    ///
+    /// @param srgb the SRGB value to convert
+    /// @return the converted HSL value
     template <Floating T>
-    inline vec3<T> srgbToHsl(const vec3<T> & srgb) noexcept {
+    inline vec3<T> srgbToHsl(const vec3<T> & srgb) noexcept
+    {
         vec3<T> hsl{};
 
         int maxI{srgb.y > srgb.x};
@@ -63,7 +122,8 @@ namespace qc::color {
     }
 
     template <Floating T>
-    inline vec3<T> _hueToSrgb(const T hue, const T minComp, const T maxComp) noexcept {
+    inline vec3<T> _hueToSrgb(const T hue, const T minComp, const T maxComp) noexcept
+    {
         const auto [fraction, whole]{fract_i(hue * T(6.0))};
         const T midOffset{(maxComp - minComp) * fraction};
         switch (whole) {
@@ -76,16 +136,29 @@ namespace qc::color {
         }
     }
 
+    ///
+    /// Get the sRGB color for a given hue
+    ///
+    /// @param hue a hue in range [0, 1]
+    /// @return the full value/saturated sRGB corresponding to `hue`
+    ///
     template <Floating T>
-    inline vec3<T> hueToSrgb(const T hue) noexcept {
+    inline vec3<T> hueToSrgb(const T hue) noexcept
+    {
         return _hueToSrgb(hue, T(0.0), T(1.0));
     }
 
-    //
-    // There is a desmos graph for this
-    //
+    ///
+    /// Converts a color from HSL to sRGB
+    ///
+    /// There is a desmos graph for this
+    ///
+    /// @param hsl the color to convert
+    /// @return the converted color
+    ///
     template <Floating T>
-    inline vec3<T> hslToSrgb(const vec3<T> & hsl) noexcept {
+    inline vec3<T> hslToSrgb(const vec3<T> & hsl) noexcept
+    {
         const T maxSpread{T(0.5) - qc::abs(hsl.z - T(0.5))};
         const T spread{maxSpread * hsl.y};
         const T minComp{hsl.z - spread};
@@ -93,13 +166,19 @@ namespace qc::color {
         return _hueToSrgb(hsl.x, minComp, maxComp);
     }
 
-    //
-    // `thermal`: [0, 1]
-    //
-    // Curve fitted to match ironbow palette. See Desmos graph
-    //
+    ///
+    /// Return a sRGB color correpsonding to a "thermal" value, in range [0, 1]
+    ///
+    /// The spectrum goes roughly black -> blue -> purple -> magenta -> orange -> yellow -> white
+    ///
+    /// Curve fitted to match ironbow palette. See Desmos graph
+    ///
+    /// @param thermal the input "temperature" in range [0, 1]
+    /// @return the gradient sRGB value
+    ///
     template <Floating T>
-    inline vec3<T> thermalToSrgb(const T thermal) noexcept {
+    inline vec3<T> thermalToSrgb(const T thermal) noexcept
+    {
         T r1{T(1.09) * (thermal - T(1.0))};
         r1 *= r1;
         constexpr T b0{T(0.885)};
@@ -114,29 +193,33 @@ namespace qc::color {
         };
     }
 
-    //
-    // Linear sRGB
-    //
-    // Domain:
-    //     r: [0, inf)
-    //     g: [0, inf)
-    //     b: [0, inf)
-    //
+    ///
+    /// Converts a color from sRGB to lRGB
+    ///
+    /// @param srgb the color to convert
+    /// @return the converted color
+    ///
     template <Floating T>
-    inline vec3<T> srgbToLrgb(const vec3<T> & srgb) noexcept {
+    inline vec3<T> srgbToLrgb(const vec3<T> & srgb) noexcept
+    {
         return pow(srgb, T(2.2));
     }
 
-    //
-    // `lrgb` must be positive
-    //
+    ///
+    /// Converts a color from lRGB to sRGB
+    ///
+    /// @param lrgb the color to convert, must be positive
+    /// @return the converted color
+    ///
     template <Floating T>
-    inline vec3<T> lrgbToSrgb(const vec3<T> & lrgb) noexcept {
+    inline vec3<T> lrgbToSrgb(const vec3<T> & lrgb) noexcept
+    {
         return pow(lrgb, T(1.0 / 2.2));
     }
 
-    // D65
-    // See: http://terathon.com/blog/rgb-xyz-conversion-matrix-accuracy/
+    ///
+    /// D65, see: http://terathon.com/blog/rgb-xyz-conversion-matrix-accuracy/
+    ///
     template <Floating T> inline constexpr mat3<T> lrgbToXyzMatrix{
         506752.0 / 1228815.0, 87098.0 / 409605.0, 7918.0 / 409605.0,
         87881.0 / 245763.0, 175762.0 / 245763.0, 87881.0 / 737289.0,
@@ -147,36 +230,44 @@ namespace qc::color {
         -329.0 / 214.0, 1648619.0 / 878810.0, -2585.0 / 12673.0,
         -1974.0 / 3959.0, 36519.0 / 878810.0, 705.0 / 667.0
     };
+
+    ///
+    /// The XYZ value of D65 white
+    ///
     template <Floating T> inline constexpr vec3<T> xyzWhitePoint{lrgbToXyzMatrix<T> * vec3<T>{T(1.0)}};
 
-    //
-    // CIE XYZ, the "foundational" linear color space
-    //
-    // Domain:
-    //     X: (-inf, inf)
-    //     Y: (-inf, inf)
-    //     Z: (-inf, inf)
-    //
+    ///
+    /// Converts a color from lRGB to XYZ
+    ///
+    /// @param lrgb the color to convert
+    /// @return the converted color
     template <Floating T>
-    inline vec3<T> lrgbToXyz(const vec3<T> & lrgb) noexcept {
+    inline vec3<T> lrgbToXyz(const vec3<T> & lrgb) noexcept
+    {
         return lrgbToXyzMatrix<T> * lrgb;
     }
 
+    ///
+    /// Converts a color from XYZ to lRGB
+    ///
+    /// @param xyz the color to convert
+    /// @return the converted color
+    ///
     template <Floating T>
-    inline vec3<T> xyzToLrgb(const vec3<T> & xyz) noexcept {
+    inline vec3<T> xyzToLrgb(const vec3<T> & xyz) noexcept
+    {
         return xyzToLrgbMatrix<T> * xyz;
     }
 
-    //
-    // CIE xyY, CIE XYZ normalized to uniform brightness
-    //
-    // Domain:
-    //     x: (-inf, inf)
-    //     y: (-inf, inf)
-    //     Y: (-inf, inf)
-    //
+    ///
+    /// Converts a color from XYZ to xyY
+    ///
+    /// @param xyz the color to convert
+    /// @return the converted color
+    ///
     template <Floating T>
-    inline vec3<T> xyzToXyy(const vec3<T> & xyz) noexcept {
+    inline vec3<T> xyzToXyy(const vec3<T> & xyz) noexcept
+    {
         const T temp{sum(xyz)};
         if (temp) {
             return {xyz.xy() / temp, xyz.y};
@@ -186,23 +277,29 @@ namespace qc::color {
         }
     }
 
+    ///
+    /// Converts a color from xyY to XYZ
+    ///
+    /// @param xyy the color to convert
+    /// @return the converted color
+    ///
     template <Floating T>
-    inline vec3<T> xyyToXyz(const vec3<T> & xyy) noexcept {
+    inline vec3<T> xyyToXyz(const vec3<T> & xyy) noexcept
+    {
         const T temp{xyy.z / xyy.y};
         return {temp * xyy.x, xyy.z, temp * (T(1.0) - xyy.x - xyy.y)};
     }
 
 
-    //
-    // CIE LAB, good perceptual uniformity in print and physical media
-    //
-    // Domain:
-    //     L: [0, 1]
-    //     a: (-inf, inf)
-    //     b: (-inf, inf)
-    //
+    ///
+    /// Converts a color from XYZ to LAB
+    ///
+    /// @param xyz the color to convert
+    /// @return the converted color
+    ///
     template <Floating T>
-    inline vec3<T> xyzToLab(const vec3<T> & xyz) noexcept {
+    inline vec3<T> xyzToLab(const vec3<T> & xyz) noexcept
+    {
         static const vec3<T> invWhitePoint{T(1.0) / xyzWhitePoint<T>};
 
         // Not doing piecewise approximation
@@ -215,8 +312,15 @@ namespace qc::color {
         };
     }
 
+    ///
+    /// Converts a color from LAB to XYZ
+    ///
+    /// @param lab the color to convert
+    /// @return the converted color
+    ///
     template <Floating T>
-    inline vec3<T> labToXyz(const vec3<T> & lab) noexcept {
+    inline vec3<T> labToXyz(const vec3<T> & lab) noexcept
+    {
         // Not doing piecewise approximation
         const vec3<T> xyz{
             lab.x + lab.y * T(0.2),
@@ -226,16 +330,15 @@ namespace qc::color {
         return xyz * xyz * xyz * xyzWhitePoint<T>;
     }
 
-    //
-    // CIE LUV, good perceptual uniformity for light and digital screens
-    //
-    // Domain:
-    //     L: [0, 1]
-    //     u: (-inf, inf)
-    //     v: (-inf, inf)
-    //
+    ///
+    /// Converts a color from XYZ to LUV
+    ///
+    /// @param xyz the color to convert
+    /// @return the converted color
+    ///
     template <Floating T>
-    inline vec3<T> xyzToLuv(const vec3<T> & xyz) noexcept {
+    inline vec3<T> xyzToLuv(const vec3<T> & xyz) noexcept
+    {
         static constexpr T u_v_nDivisor{xyzWhitePoint<T>.x + T(15.0) * xyzWhitePoint<T>.y + T(3.0) * xyzWhitePoint<T>.z};
         static constexpr T u_n{T(4.0) * xyzWhitePoint<T>.x / u_v_nDivisor};
         static constexpr T v_n{T(9.0) * xyzWhitePoint<T>.y / u_v_nDivisor};
@@ -257,8 +360,15 @@ namespace qc::color {
         }
     }
 
+    ///
+    /// Converts a color from LUV to XYZ
+    ///
+    /// @param luv the color to convert
+    /// @return the converted color
+    ///
     template <Floating T>
-    inline vec3<T> luvToXyz(const vec3<T> & luv) noexcept {
+    inline vec3<T> luvToXyz(const vec3<T> & luv) noexcept
+    {
         static constexpr T u_v_nDivisor{xyzWhitePoint<T>.x + T(15.0) * xyzWhitePoint<T>.y + T(3.0) * xyzWhitePoint<T>.z};
         static constexpr T u_n{T(4.0) * xyzWhitePoint<T>.x / u_v_nDivisor};
         static constexpr T v_n{T(9.0) * xyzWhitePoint<T>.y / u_v_nDivisor};
@@ -279,16 +389,15 @@ namespace qc::color {
         }
     }
 
-    //
-    // CIE LCH (UV), hue-chroma form of CIE LUV
-    //
-    // Domain:
-    //     L: [0, 1]
-    //     C: [0, inf)
-    //     h: [-pi, pi]
-    //
+    ///
+    /// Converts a color from LUV to LCH
+    ///
+    /// @param luv the color to convert
+    /// @return the converted color
+    ///
     template <Floating T>
-    inline vec3<T> luvToLch(const vec3<T> & luv) noexcept {
+    inline vec3<T> luvToLch(const vec3<T> & luv) noexcept
+    {
         return {
             luv.x,
             magnitude(luv.yz()),
@@ -296,8 +405,15 @@ namespace qc::color {
         };
     }
 
+    ///
+    /// Converts a color from LCH to LUV
+    ///
+    /// @param lch the color to convert
+    /// @return the converted color
+    ///
     template <Floating T>
-    inline vec3<T> lchToLuv(const vec3<T> & lch) noexcept {
+    inline vec3<T> lchToLuv(const vec3<T> & lch) noexcept
+    {
         return {
             lch.x,
             std::cos(lch.z) * lch.y,
@@ -306,12 +422,14 @@ namespace qc::color {
     }
 
     // GPU (saved for later)
-    /*vec3 hsv2rgb(vec3 c) {
+    /*vec3 hsv2rgb(vec3 c)
+    {
         vec4 K = vec4(1.0f, 2.0f / 3.0f, 1.0f / 3.0f, 3.0f);
         vec3 p = abs(fract(c.xxx + K.xyz) * 6.0f - K.www);
         return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
     }
-    vec3 hue2rgb(float h) {
+    vec3 hue2rgb(float h)
+    {
         vec3 p = abs(fract(h + vec3(1.0f, 2.0f / 3.0f, 1.0f / 3.0f)) * 6.0f - 3.0f);
         return clamp(p - 1.0f, 0.0, 1.0);
     }*/
