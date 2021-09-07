@@ -6,8 +6,8 @@
 #include <qc-core/span.hpp>
 #include <qc-core/vector-ext.hpp>
 
-namespace qc {
-
+namespace qc
+{
     //
     // ...
     //
@@ -63,15 +63,15 @@ namespace qc {
     // ...
     //
     template <Numeric T, int n> span<T, n> & joinify(span<T, n> & v1, const span<T, n> & v2);
+}
 
-} // namespace qc
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// INLINE IMPLEMENTATION ///////////////////////////////////////////////////////////////////////////////////////////////
-
-namespace qc {
-
+namespace qc
+{
     template <Numeric T, int n>
-    inline std::ostream & operator<<(std::ostream & os, const span<T, n> & s) {
+    inline std::ostream & operator<<(std::ostream & os, const span<T, n> & s)
+    {
         os << "[";
         if constexpr (n == 1) os << "[";
         os << s.min;
@@ -83,75 +83,88 @@ namespace qc {
     }
 
     template <Numeric T, int n>
-    inline span<T, n> min(const span<T, n> & v1, const T v2) {
+    inline span<T, n> min(const span<T, n> & v1, const T v2)
+    {
         return {min(v1.min, v2), min(v1.max, v2)};
     }
 
     template <Numeric T, int n>
-    inline span<T, n> min(const span<T, n> & v1, const vec<T, n> & v2) {
+    inline span<T, n> min(const span<T, n> & v1, const vec<T, n> & v2)
+    {
         return {min(v1.min, v2), min(v1.max, v2)};
     }
 
     template <Numeric T, int n>
-    inline span<T, n> max(const span<T, n> & v1, const T v2) {
+    inline span<T, n> max(const span<T, n> & v1, const T v2)
+    {
         return {max(v1.min, v2), max(v1.max, v2)};
     }
 
     template <Numeric T, int n>
-    inline span<T, n> max(const span<T, n> & v1, const vec<T, n> & v2) {
+    inline span<T, n> max(const span<T, n> & v1, const vec<T, n> & v2)
+    {
         return {max(v1.min, v2), max(v1.max, v2)};
     }
 
     template <Numeric T, int n>
-    inline span<T, n> & minify(span<T, n> & v1, const T v2) {
+    inline span<T, n> & minify(span<T, n> & v1, const T v2)
+    {
         minify(v1.min, v2);
         minify(v1.max, v2);
         return v1;
     }
 
     template <Numeric T, int n>
-    inline span<T, n> & minify(span<T, n> & v1, const vec<T, n> & v2) {
+    inline span<T, n> & minify(span<T, n> & v1, const vec<T, n> & v2)
+    {
         minify(v1.min, v2);
         minify(v1.max, v2);
         return v1;
     }
 
     template <Numeric T, int n>
-    inline span<T, n> & maxify(span<T, n> & v1, const T v2) {
+    inline span<T, n> & maxify(span<T, n> & v1, const T v2)
+    {
         maxify(v1.min, v2);
         maxify(v1.max, v2);
         return v1;
     }
 
     template <Numeric T, int n>
-    inline span<T, n> & maxify(span<T, n> & v1, const vec<T, n> & v2) {
+    inline span<T, n> & maxify(span<T, n> & v1, const vec<T, n> & v2)
+    {
         maxify(v1.min, v2);
         maxify(v1.max, v2);
         return v1;
     }
 
     template <Floating T, int n>
-    inline span<stype<T>, n> round(const span<T, n> & v) {
+    inline span<stype<T>, n> round(const span<T, n> & v)
+    {
         return {round(v.min), round(v.max)};
     }
 
     template <Integral T, int n>
-    inline span<T, n> round(const span<T, n> & v) {
+    inline span<T, n> round(const span<T, n> & v)
+    {
         return v;
     }
 
     template <Numeric T, int n>
-    inline vec<T, n> clamp(const vec<T, n> & v, const span<T, n> & span) {
+    inline vec<T, n> clamp(const vec<T, n> & v, const span<T, n> & span)
+    {
         return clamp(v, span.min, span.max);
     }
 
     template <Numeric T>
-    inline T clamp(const T v, const span1<T> & span) {
+    inline T clamp(const T v, const span1<T> & span)
+    {
         return clamp(v, span.min, span.max);
     }
 
     template <Numeric T, int n>
-    inline span<T, n> intersect(const span<T, n> & v1, const span<T, n> & v2) {
+    inline span<T, n> intersect(const span<T, n> & v1, const span<T, n> & v2)
+    {
         if constexpr (n == 1) return {
             max(v1.min, v2.min),
             min(v1.max, v2.max)
@@ -171,15 +184,16 @@ namespace qc {
     }
 
     template <Numeric T, int n>
-    inline span<T, n> join(const span<T, n> & v1, const span<T, n> & v2) {
+    inline span<T, n> join(const span<T, n> & v1, const span<T, n> & v2)
+    {
         return {min(v1.min, v2.min), max(v1.max, v2.max)};
     }
 
     template <Numeric T, int n>
-    inline span<T, n> & joinify(span<T, n> & v1, const span<T, n> & v2) {
+    inline span<T, n> & joinify(span<T, n> & v1, const span<T, n> & v2)
+    {
         minify(v1.min, v2.min);
         maxify(v1.max, v2.max);
         return v1;
     }
-
-} // namespace qc
+}

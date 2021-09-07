@@ -2,12 +2,12 @@
 
 #include <qc-core/vector.hpp>
 
-namespace qc {
-
+namespace qc
+{
     template <Numeric T, int n> struct span;
 
-    inline namespace types {
-
+    inline namespace types
+    {
         using qc::span;
 
         template <Numeric T> using span1 = span<T, 1>;
@@ -66,11 +66,10 @@ namespace qc {
         using ulspan2 = span2<u64>;
         using ulspan3 = span3<u64>;
         using ulspan4 = span4<u64>;
+    }
 
-    } // namespace types
-
-    template <Numeric T> struct span<T, 1> {
-
+    template <Numeric T> struct span<T, 1>
+    {
         T min{};
         T max{};
 
@@ -88,11 +87,10 @@ namespace qc {
         ~span() noexcept = default;
 
         constexpr T size() const noexcept;
-
     };
 
-    template <Numeric T> struct span<T, 2> {
-
+    template <Numeric T> struct span<T, 2>
+    {
         vec2<T> min;
         vec2<T> max;
 
@@ -114,11 +112,10 @@ namespace qc {
 
         constexpr span1<T> x() const noexcept;
         constexpr span1<T> y() const noexcept;
-
     };
 
-    template <Numeric T> struct span<T, 3> {
-
+    template <Numeric T> struct span<T, 3>
+    {
         vec3<T> min;
         vec3<T> max;
 
@@ -146,11 +143,10 @@ namespace qc {
 
         constexpr span2<T> xy() const noexcept;
         constexpr span2<T> yz() const noexcept;
-
     };
 
-    template <Numeric T> struct span<T, 4> {
-
+    template <Numeric T> struct span<T, 4>
+    {
         vec4<T> min;
         vec4<T> max;
 
@@ -187,7 +183,6 @@ namespace qc {
 
         constexpr span3<T> xyz() const noexcept;
         constexpr span3<T> yzw() const noexcept;
-
     };
 
     template <Numeric T, int n> constexpr span<T, n> fullSpan{Floating<T> ? -std::numeric_limits<T>::infinity() : std::numeric_limits<T>::min(), Floating<T> ? std::numeric_limits<T>::infinity() : std::numeric_limits<T>::max()};
@@ -226,13 +221,12 @@ namespace qc {
     template <typename T, int n> constexpr bool operator==(const span<T, n> & v1, const span<T, n> & v2);
 
     template <typename T, int n> constexpr bool operator!=(const span<T, n> & v1, const span<T, n> & v2);
+}
 
-} // namespace qc
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// INLINE IMPLEMENTATION ///////////////////////////////////////////////////////////////////////////////////////////////
-
-namespace qc {
-
+namespace qc
+{
     template <Numeric T>
     template <Numeric U>
     inline constexpr span<T, 1>::span(const span1<U> & v) noexcept :
@@ -254,7 +248,8 @@ namespace qc {
     {}
 
     template <Numeric T>
-    inline constexpr T span<T, 1>::size() const noexcept {
+    inline constexpr T span<T, 1>::size() const noexcept
+    {
         return max - min;
     }
 
@@ -284,17 +279,20 @@ namespace qc {
     {}
 
     template <Numeric T>
-    inline constexpr vec2<T> span<T, 2>::size() const noexcept {
+    inline constexpr vec2<T> span<T, 2>::size() const noexcept
+    {
         return max - min;
     }
 
     template <Numeric T>
-    inline constexpr span1<T> span<T, 2>::x() const noexcept {
+    inline constexpr span1<T> span<T, 2>::x() const noexcept
+    {
         return {min.x, max.x};
     }
 
     template <Numeric T>
-    inline constexpr span1<T> span<T, 2>::y() const noexcept {
+    inline constexpr span1<T> span<T, 2>::y() const noexcept
+    {
         return {min.y, max.y};
     }
 
@@ -336,32 +334,38 @@ namespace qc {
     {}
 
     template <Numeric T>
-    inline constexpr vec3<T> span<T, 3>::size() const noexcept {
+    inline constexpr vec3<T> span<T, 3>::size() const noexcept
+    {
         return max - min;
     }
 
     template <Numeric T>
-    inline constexpr span1<T> span<T, 3>::x() const noexcept {
+    inline constexpr span1<T> span<T, 3>::x() const noexcept
+    {
         return {min.x, max.x};
     }
 
     template <Numeric T>
-    inline constexpr span1<T> span<T, 3>::y() const noexcept {
+    inline constexpr span1<T> span<T, 3>::y() const noexcept
+    {
         return {min.y, max.y};
     }
 
     template <Numeric T>
-    inline constexpr span1<T> span<T, 3>::z() const noexcept {
+    inline constexpr span1<T> span<T, 3>::z() const noexcept
+    {
         return {min.z, max.z};
     }
 
     template <Numeric T>
-    inline constexpr span2<T> span<T, 3>::xy() const noexcept {
+    inline constexpr span2<T> span<T, 3>::xy() const noexcept
+    {
         return {min.xy(), max.xy()};
     }
 
     template <Numeric T>
-    inline constexpr span2<T> span<T, 3>::yz() const noexcept {
+    inline constexpr span2<T> span<T, 3>::yz() const noexcept
+    {
         return {min.yz(), max.yz()};
     }
 
@@ -427,99 +431,116 @@ namespace qc {
     {}
 
     template <Numeric T>
-    inline constexpr vec4<T> span<T, 4>::size() const noexcept {
+    inline constexpr vec4<T> span<T, 4>::size() const noexcept
+    {
         return max - min;
     }
 
     template <Numeric T>
-    inline constexpr span1<T> span<T, 4>::x() const noexcept {
+    inline constexpr span1<T> span<T, 4>::x() const noexcept
+    {
         return {min.x, max.x};
     }
 
     template <Numeric T>
-    inline constexpr span1<T> span<T, 4>::y() const noexcept {
+    inline constexpr span1<T> span<T, 4>::y() const noexcept
+    {
         return {min.y, max.y};
     }
 
     template <Numeric T>
-    inline constexpr span1<T> span<T, 4>::z() const noexcept {
+    inline constexpr span1<T> span<T, 4>::z() const noexcept
+    {
         return {min.z, max.z};
     }
 
     template <Numeric T>
-    inline constexpr span1<T> span<T, 4>::w() const noexcept {
+    inline constexpr span1<T> span<T, 4>::w() const noexcept
+    {
         return {min.w, max.w};
     }
 
     template <Numeric T>
-    inline constexpr span2<T> span<T, 4>::xy() const noexcept {
+    inline constexpr span2<T> span<T, 4>::xy() const noexcept
+    {
         return {min.xy(), max.xy()};
     }
 
     template <Numeric T>
-    inline constexpr span2<T> span<T, 4>::yz() const noexcept {
+    inline constexpr span2<T> span<T, 4>::yz() const noexcept
+    {
         return {min.yz(), max.yz()};
     }
 
     template <Numeric T>
-    inline constexpr span2<T> span<T, 4>::zw() const noexcept {
+    inline constexpr span2<T> span<T, 4>::zw() const noexcept
+    {
         return {min.zw(), max.zw()};
     }
 
     template <Numeric T>
-    inline constexpr span3<T> span<T, 4>::xyz() const noexcept {
+    inline constexpr span3<T> span<T, 4>::xyz() const noexcept
+    {
         return {min.xyz(), max.xyz()};
     }
 
     template <Numeric T>
-    inline constexpr span3<T> span<T, 4>::yzw() const noexcept {
+    inline constexpr span3<T> span<T, 4>::yzw() const noexcept
+    {
         return {min.yzw(), max.yzw()};
     }
 
     template <Numeric T, int n>
-    inline span<T, n> & operator+=(span<T, n> & v1, const T v2) {
+    inline span<T, n> & operator+=(span<T, n> & v1, const T v2)
+    {
         v1.min += v2;
         v1.max += v2;
         return v1;
     }
 
     template <Numeric T, int n>
-    inline span<T, n> & operator+=(span<T, n> & v1, const vec<T, n> & v2) {
+    inline span<T, n> & operator+=(span<T, n> & v1, const vec<T, n> & v2)
+    {
         v1.min += v2;
         v1.max += v2;
         return v1;
     }
 
     template <Numeric T, int n>
-    inline span<T, n> & operator-=(span<T, n> & v1, const T v2) {
+    inline span<T, n> & operator-=(span<T, n> & v1, const T v2)
+    {
         v1.min -= v2;
         v1.max -= v2;
         return v1;
     }
 
     template <Numeric T, int n>
-    inline span<T, n> & operator-=(span<T, n> & v1, const vec<T, n> & v2) {
+    inline span<T, n> & operator-=(span<T, n> & v1, const vec<T, n> & v2)
+    {
         v1.min -= v2;
         v1.max -= v2;
         return v1;
     }
 
     template <Numeric T, int n>
-    inline span<T, n> & operator*=(span<T, n> & v1, const T v2) {
+    inline span<T, n> & operator*=(span<T, n> & v1, const T v2)
+    {
         v1.min *= v2;
         v1.max *= v2;
         return v1;
     }
 
     template <Numeric T, int n>
-    inline span<T, n> & operator*=(span<T, n> & v1, const vec<T, n> & v2) {
+    inline span<T, n> & operator*=(span<T, n> & v1, const vec<T, n> & v2)
+    {
         v1.min *= v2;
         v1.max *= v2;
         return v1;
     }
 
     template <Numeric T, int n>
-    inline span<T, n> & operator/=(span<T, n> & v1, const T v2) {
+    inline span<T, n> & operator/=(span<T, n> & v1, const T v2)
+    {
         if constexpr (Floating<T>) {
             return v1 *= (T(1.0) / v2);
         }
@@ -531,7 +552,8 @@ namespace qc {
     }
 
     template <Numeric T, int n>
-    inline span<T, n> & operator/=(span<T, n> & v1, const vec<T, n> & v2) {
+    inline span<T, n> & operator/=(span<T, n> & v1, const vec<T, n> & v2)
+    {
         if constexpr (Floating<T>) {
             return v1 *= T(1.0) / v2;
         }
@@ -543,7 +565,8 @@ namespace qc {
     }
 
     template <Numeric T, int n>
-    inline constexpr span<T, n> operator+(const span<T, n> & v1, const T v2) {
+    inline constexpr span<T, n> operator+(const span<T, n> & v1, const T v2)
+    {
         if constexpr (n == 1) {
             return {T(v1.min + v2), T(v1.max + v2)};
         }
@@ -553,22 +576,26 @@ namespace qc {
     }
 
     template <Numeric T, int n>
-    inline constexpr span<T, n> operator+(const T v1, const span<T, n> & v2) {
+    inline constexpr span<T, n> operator+(const T v1, const span<T, n> & v2)
+    {
         return v2 + v1;
     }
 
     template <Numeric T, int n>
-    inline constexpr span<T, n> operator+(const span<T, n> & v1, const vec<T, n> & v2) {
+    inline constexpr span<T, n> operator+(const span<T, n> & v1, const vec<T, n> & v2)
+    {
         return {v1.min + v2, v1.max + v2};
     }
 
     template <Numeric T, int n>
-    inline constexpr span<T, n> operator+(const vec<T, n> & v1, const span<T, n> & v2) {
+    inline constexpr span<T, n> operator+(const vec<T, n> & v1, const span<T, n> & v2)
+    {
         return v2 + v1;
     }
 
     template <Numeric T, int n>
-    inline constexpr span<T, n> operator-(const span<T, n> & v1, const T v2) {
+    inline constexpr span<T, n> operator-(const span<T, n> & v1, const T v2)
+    {
         if constexpr (n == 1) {
             return {T(v1.min - v2), T(v1.max - v2)};
         }
@@ -578,7 +605,8 @@ namespace qc {
     }
 
     template <Numeric T, int n>
-    inline constexpr span<T, n> operator-(const T v1, const span<T, n> & v2) {
+    inline constexpr span<T, n> operator-(const T v1, const span<T, n> & v2)
+    {
         if constexpr (n == 1) {
             return {T(v1 - v2.min), T(v1 - v2.max)};
         }
@@ -588,17 +616,20 @@ namespace qc {
     }
 
     template <Numeric T, int n>
-    inline constexpr span<T, n> operator-(const span<T, n> & v1, const vec<T, n> & v2) {
+    inline constexpr span<T, n> operator-(const span<T, n> & v1, const vec<T, n> & v2)
+    {
         return {v1.min - v2, v1.max - v2};
     }
 
     template <Numeric T, int n>
-    inline constexpr span<T, n> operator-(const vec<T, n> & v1, const span<T, n> & v2) {
+    inline constexpr span<T, n> operator-(const vec<T, n> & v1, const span<T, n> & v2)
+    {
         return {v1 - v2.min, v1 - v2.max};
     }
 
     template <Numeric T, int n>
-    inline constexpr span<T, n> operator*(const span<T, n> & v1, const T v2) {
+    inline constexpr span<T, n> operator*(const span<T, n> & v1, const T v2)
+    {
         if constexpr (n == 1) {
             return {T(v1.min * v2), T(v1.max * v2)};
         }
@@ -608,7 +639,8 @@ namespace qc {
     }
 
     template <Numeric T, int n>
-    inline constexpr span<T, n> operator*(const T v1, const span<T, n> & v2) {
+    inline constexpr span<T, n> operator*(const T v1, const span<T, n> & v2)
+    {
         if constexpr (n == 1) {
             return {T(v1 * v2.min), T(v1 * v2.max)};
         }
@@ -618,17 +650,20 @@ namespace qc {
     }
 
     template <Numeric T, int n>
-    inline constexpr span<T, n> operator*(const span<T, n> & v1, const vec<T, n> & v2) {
+    inline constexpr span<T, n> operator*(const span<T, n> & v1, const vec<T, n> & v2)
+    {
         return {v1.min * v2, v1.max * v2};
     }
 
     template <Numeric T, int n>
-    inline constexpr span<T, n> operator*(const vec<T, n> & v1, const span<T, n> & v2) {
+    inline constexpr span<T, n> operator*(const vec<T, n> & v1, const span<T, n> & v2)
+    {
         return {v1 * v2.min, v1 * v2.max};
     }
 
     template <Numeric T, int n>
-    inline constexpr span<T, n> operator/(const span<T, n> & v1, const T v2) {
+    inline constexpr span<T, n> operator/(const span<T, n> & v1, const T v2)
+    {
         if constexpr (Floating<T>) {
             return v1 * (T(1.0) / v2);
         }
@@ -643,7 +678,8 @@ namespace qc {
     }
 
     template <Numeric T, int n>
-    inline constexpr span<T, n> operator/(const span<T, n> & v1, const vec<T, n> & v2) {
+    inline constexpr span<T, n> operator/(const span<T, n> & v1, const vec<T, n> & v2)
+    {
         if constexpr (Floating<T>) {
             return v1 * (T(1.0) / v2);
         }
@@ -653,13 +689,14 @@ namespace qc {
     }
 
     template <typename T, int n>
-    inline constexpr bool operator==(const span<T, n> & v1, const span<T, n> & v2) {
+    inline constexpr bool operator==(const span<T, n> & v1, const span<T, n> & v2)
+    {
         return v1.min == v2.min && v1.max == v2.max;
     }
 
     template <typename T, int n>
-    inline constexpr bool operator!=(const span<T, n> & v1, const span<T, n> & v2) {
+    inline constexpr bool operator!=(const span<T, n> & v1, const span<T, n> & v2)
+    {
         return !(v1 == v2);
     }
-
-} // namespace qc
+}

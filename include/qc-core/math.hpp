@@ -4,10 +4,11 @@
 
 #include <qc-core/matrix-ext.hpp>
 
-namespace qc {
-
+namespace qc
+{
     template <Floating T>
-    inline vec2<T> polarToCartesian(const T theta) {
+    inline vec2<T> polarToCartesian(const T theta)
+    {
         return {
             std::cos(theta),
             std::sin(theta)
@@ -15,7 +16,8 @@ namespace qc {
     }
 
     template <Floating T>
-    inline vec2<T> polarToCartesian(const T r, const T theta) {
+    inline vec2<T> polarToCartesian(const T r, const T theta)
+    {
         return r * polarToCartesian(theta);
     }
 
@@ -24,12 +26,14 @@ namespace qc {
     // `v.y` is theta
     //
     template <Floating T>
-    inline vec2<T> polarToCartesian(const vec2<T> v) {
+    inline vec2<T> polarToCartesian(const vec2<T> v)
+    {
         return polarToCartesian(v.x, v.y);
     }
 
     template <Floating T>
-    inline vec2<T> cartesianToPolar(const vec2<T> v) {
+    inline vec2<T> cartesianToPolar(const vec2<T> v)
+    {
         return {
             magnitude(v),
             std::atan2(v.y, v.x)
@@ -41,7 +45,8 @@ namespace qc {
     // `phi` is the angle from the z axis
     //
     template <Floating T>
-    inline vec3<T> sphericalToCartesian(const T theta, const T phi) {
+    inline vec3<T> sphericalToCartesian(const T theta, const T phi)
+    {
         const T sinPhi{std::sin(phi)};
         return {
             sinPhi * std::cos(theta),
@@ -56,7 +61,8 @@ namespace qc {
     // `phi` is the angle from the z axis
     //
     template <Floating T>
-    inline vec3<T> sphericalToCartesian(const T r, const T theta, const T phi) {
+    inline vec3<T> sphericalToCartesian(const T r, const T theta, const T phi)
+    {
         return r * sphericalToCartesian(theta, phi);
     }
 
@@ -66,12 +72,14 @@ namespace qc {
     // `v.z` is the angle from the z axis
     //
     template <Floating T>
-    inline vec3<T> sphericalToCartesian(const vec3<T> v) {
+    inline vec3<T> sphericalToCartesian(const vec3<T> v)
+    {
         return sphericalToCartesian(v.y, v.z) * v.r;
     }
 
     template <Floating T>
-    inline vec3<T> cartesianToSpherical(const vec3<T> v) {
+    inline vec3<T> cartesianToSpherical(const vec3<T> v)
+    {
         const T r{magnitude(v)};
         return {
             r,
@@ -81,7 +89,8 @@ namespace qc {
     }
 
     template <Floating T>
-    inline vec3<T> cylindricalToCartesian(const T r, const T theta, const T z) {
+    inline vec3<T> cylindricalToCartesian(const T r, const T theta, const T z)
+    {
         return {
             polarToCartesian(r, theta),
             z
@@ -89,12 +98,14 @@ namespace qc {
     }
 
     template <Floating T>
-    inline vec3<T> cylindricalToCartesian(const vec3<T> v) {
+    inline vec3<T> cylindricalToCartesian(const vec3<T> v)
+    {
         return cylindricalToCartesian(v.x, v.y, v.z);
     }
 
     template <Floating T>
-    inline vec3<T> cartesianToCylindrical(const vec3<T> v) {
+    inline vec3<T> cartesianToCylindrical(const vec3<T> v)
+    {
         return {
             magnitude(v),
             std::atan2(v.y, v.x),
@@ -103,14 +114,16 @@ namespace qc {
     }
 
     //a is distance from vertex A in range [0, 1] (can be outside range and outside triangle), AX, AY, and AZ define cartesian position of A
-    inline fvec2 barycentricToCartesian(const fvec3 v, const fvec2 A, const fvec2 B, const fvec2 C) {
+    inline fvec2 barycentricToCartesian(const fvec3 v, const fvec2 A, const fvec2 B, const fvec2 C)
+    {
         return fvec2(
             v.x * A.x + v.y * B.x + v.z * C.x,
             v.x * A.y + v.y * B.y + v.z * C.y
         );
     }
 
-    inline fvec3 cartesianToBarycentric(const fvec2 v, const fvec2 A, const fvec2 B, const fvec2 C) {
+    inline fvec3 cartesianToBarycentric(const fvec2 v, const fvec2 A, const fvec2 B, const fvec2 C)
+    {
         fmat2 mat(
             A.x - C.x, A.y - C.y,
             B.x - C.x, B.y - C.y
@@ -124,7 +137,8 @@ namespace qc {
     //maps a point in cartesian space to the surface of a sphere and returns cartesian coordinates
     //the point's x and y components, along with thetaPerUnit, determine the distance in radians from the origin
     //the point's z component determines the radius
-    inline fvec3 mapToSphere(const fvec3 v, const float thetaPerUnit) {
+    inline fvec3 mapToSphere(const fvec3 v, const float thetaPerUnit)
+    {
         const fvec2 perp(ortho(v.xy()));
         const float theta(magnitude(v.xy()) * thetaPerUnit);
         const fmat3 rot(rotate(fvec3(perp), theta));
@@ -134,20 +148,24 @@ namespace qc {
 
     //draw a line from v to A; gets the angle of this line w/ respect to the A bisector
     //possible angles range from -1 (along AB side) to 1 (along AC side), w/ linear-ness
-    inline float baryToAngleA(const fvec3 v) {
+    inline float baryToAngleA(const fvec3 v)
+    {
         return (v.z - v.y) / v.x;
     }
 
-    inline float baryToAngleB(const fvec3 v) {
+    inline float baryToAngleB(const fvec3 v)
+    {
         return (v.x - v.z) / v.y;
     }
 
-    inline float baryToAngleC(const fvec3 v) {
+    inline float baryToAngleC(const fvec3 v)
+    {
         return (v.y - v.x) / v.z;
     }
 
     //given a bary angle, return point along given a corresponding to angle
-    inline fvec3 baryFromAngleA(const float angle, const float a) {
+    inline fvec3 baryFromAngleA(const float angle, const float a)
+    {
         fvec3 v;
         v.x = a;
         v.z = (angle - 1.0f) * (a - 1.0f);
@@ -155,7 +173,8 @@ namespace qc {
         return v;
     }
 
-    inline fvec3 baryFromAngleB(const float angle, const float b) {
+    inline fvec3 baryFromAngleB(const float angle, const float b)
+    {
         fvec3 v;
         v.y = b;
         v.x = (angle - 1.0f) * (b - 1.0f);
@@ -163,7 +182,8 @@ namespace qc {
         return v;
     }
 
-    inline fvec3 baryFromAngleC(const float angle, const float c) {
+    inline fvec3 baryFromAngleC(const float angle, const float c)
+    {
         fvec3 v;
         v.z = c;
         v.y = (angle - 1.0f) * (c - 1.0f);
@@ -176,7 +196,8 @@ namespace qc {
     // `v` should have a linear distribution in range [0, 1].
     //
     template <Floating T>
-    inline vec2<T> discPoint(const T v) {
+    inline vec2<T> discPoint(const T v)
+    {
         return polarToCartesian((T(2.0) * std::numbers::pi_v<T>) * v);
     }
 
@@ -185,7 +206,8 @@ namespace qc {
     // `v` should have a linear distribution in range [0, 1].
     //
     template <Floating T>
-    inline vec2<T> circlePoint(const vec2<T> v) {
+    inline vec2<T> circlePoint(const vec2<T> v)
+    {
         return std::sqrt(v.x) * discPoint(v.y);
     }
 
@@ -194,7 +216,8 @@ namespace qc {
     // `v` should have a linear distribution in range [0, 1].
     //
     template <Floating T>
-    inline vec3<T> spherePoint(const vec2<T> v) {
+    inline vec3<T> spherePoint(const vec2<T> v)
+    {
         return sphericalToCartesian(
             (T(2.0) * std::numbers::pi_v<T>) * v.x,
             std::acos(T(1.0) - T(2.0) * v.y)
@@ -206,25 +229,28 @@ namespace qc {
     // `v` should have a linear distribution in range [0, 1].
     //
     template <Floating T>
-    inline vec3<T> ballPoint(const vec3<T> v) {
+    inline vec3<T> ballPoint(const vec3<T> v)
+    {
         return std::cbrt(v.x) * spherePoint(v.yz());
     }
 
     template <Floating T>
-    inline vec2<T> circlePointFibonacci(const int i, const int n) {
+    inline vec2<T> circlePointFibonacci(const int i, const int n)
+    {
         const T p{T(i + 1) / T(n + 1)};
         return circlePoint(vec2<T>(p, std::numbers::phi_v<T> * T(i)));
     }
 
     template <Floating T>
-    inline vec3<T> spherePointFibonacci(const int i, const int n) {
+    inline vec3<T> spherePointFibonacci(const int i, const int n)
+    {
         const T p{T(i + 1) / T(n + 1)};
         return spherePoint(vec2<T>(std::numbers::phi_v<T> * T(i), p));
     }
 
     template <Floating T>
-    struct Dampener {
-
+    struct Dampener
+    {
         const T angularFreq, dampingRatio, dt;
 
         Dampener(const T angularFreq, const T dampingRatio, const T dt) :
@@ -234,12 +260,11 @@ namespace qc {
         {}
 
         virtual ~Dampener() = default;
-
     };
 
     template <Floating T>
-    struct OverDampener : public Dampener<T> {
-
+    struct OverDampener : public Dampener<T>
+    {
         const T za, zb, z0, z1, z2, expTerm1, expTerm2;
 
         OverDampener(const T angularFreq, const T dampingRatio, const T dt) :
@@ -261,12 +286,11 @@ namespace qc {
             pos = targetPos + c1 * expTerm1 + c2 * expTerm2;
             vel = c1 * z1 * expTerm1 + c2 * z2 * expTerm2;
         }
-
     };
 
     template <Floating T>
-    struct CriticalDampener : public Dampener<T> {
-
+    struct CriticalDampener : public Dampener<T>
+    {
         const T expTerm;
 
         CriticalDampener(const T angularFreq, const T dt) :
@@ -282,18 +306,19 @@ namespace qc {
             pos = targetPos + c2;
             vel = c1 * expTerm - c2 * this->angularFreq;
         }
-
     };
 
     template <Floating T, typename U>
-    inline void dampen(U & r_pos, const U & targetPos, U & r_vel, const T angularFreq, const T dt) {
+    inline void dampen(U & r_pos, const U & targetPos, U & r_vel, const T angularFreq, const T dt)
+    {
         const U dist{r_pos - targetPos};
         dampen(dist, r_vel, angularFreq, dt);
         r_pos = targetPos - dist;
     }
 
     template <Floating T, typename U>
-    inline void dampen(U & r_dist, U & r_vel, const T angularFreq, const T dt) {
+    inline void dampen(U & r_dist, U & r_vel, const T angularFreq, const T dt)
+    {
         const T expTerm{std::exp(-angularFreq * dt)};
         const U c1{r_vel + angularFreq * r_dist};
         const U c2{(c1 * dt + r_dist) * expTerm};
@@ -302,8 +327,8 @@ namespace qc {
     }
 
     template <Floating T>
-    struct UnderDampener : public Dampener<T> {
-
+    struct UnderDampener : public Dampener<T>
+    {
         const T omegaZeta, alpha, expTerm, cosTerm, sinTerm;
 
         UnderDampener(const T angularFreq, const T dampingRatio, const T dt) :
@@ -316,19 +341,20 @@ namespace qc {
         {}
 
         template <Floating U>
-        void dampen(U & pos, U & vel, const U & targetPos) const {
+        void dampen(U & pos, U & vel, const U & targetPos) const
+        {
             const U dp{pos - targetPos};
             const U c{(vel + omegaZeta * dp) / alpha};
             pos = targetPos + expTerm * (dp * cosTerm + c * sinTerm);
             vel = -expTerm * ((dp * omegaZeta - c * alpha) * cosTerm + (dp * alpha + c * omegaZeta) * sinTerm);
         }
-
     };
 
     // Calculates the area of a non self-intersecting polygon
     // Points should be the vertices of the polygon given in order without duplicates
     template <Floating T>
-    inline T areaOfPoly(const size_t n, const vec2<T> * const points) {
+    inline T areaOfPoly(const size_t n, const vec2<T> * const points)
+    {
         T a{};
         for (size_t i{0u}; i < n - 1u; ++i) {
             const vec2<T> v1(points[i]), v2(points[i + 1u]);
@@ -342,7 +368,8 @@ namespace qc {
     // Calculates the centroid, or center of mass, of a non self-intersecting polygon
     // Points should be the vertices of the polygon given in order without duplicates
     template <Floating T>
-    inline vec2<T> centroidOfPoly(const size_t n, const vec2<T> * const points) {
+    inline vec2<T> centroidOfPoly(const size_t n, const vec2<T> * const points)
+    {
         T a{};
         vec2<T> c;
         for (size_t i{0u}; i < n - 1u; ++i) {
@@ -357,5 +384,4 @@ namespace qc {
         c += (v1 + v2) * temp;
         return c / (T(3.0) * a);
     }
-
-} // namespace qc
+}

@@ -7,7 +7,8 @@
 using namespace qc::types;
 
 template <typename T>
-static void compileClassesT() {
+static void compileClassesT()
+{
     T v{T(1.0)};
     vec2<T> v2;
     vec3<T> v3;
@@ -217,13 +218,15 @@ static void compileClassesT() {
     os << m4;
 }
 
-static void compileClasses() {
+static void compileClasses()
+{
     compileClassesT< float>();
     compileClassesT<double>();
 }
 
 template <typename T>
-static constexpr void compileClassesConstexprT() {
+static constexpr void compileClassesConstexprT()
+{
     constexpr T v{T(1.0)};
     constexpr vec2<T> v2;
     constexpr vec3<T> v3;
@@ -288,7 +291,8 @@ static constexpr void compileClassesConstexprT() {
 
 }
 
-static constexpr bool compileClassesConstexpr() {
+static constexpr bool compileClassesConstexpr()
+{
     compileClassesConstexprT< float>();
     compileClassesConstexprT<double>();
 
@@ -296,7 +300,8 @@ static constexpr bool compileClassesConstexpr() {
 }
 
 template <typename T>
-static void compileFunctionsT() {
+static void compileFunctionsT()
+{
     T v{1.0};
     vec2<T> v2;
     vec3<T> v3;
@@ -378,13 +383,15 @@ static void compileFunctionsT() {
     qc::view_on(v3, v3, v3, v3);
 }
 
-static void compileFunctions() {
+static void compileFunctions()
+{
     compileFunctionsT< float>();
     compileFunctionsT<double>();
 }
 
 template <typename T>
-static constexpr void compileFunctionsConstexprT() {
+static constexpr void compileFunctionsConstexprT()
+{
     constexpr T v{T(1.0)};
     constexpr vec2<T> v2(T(1.0));
     constexpr vec3<T> v3(T(1.0));
@@ -401,7 +408,8 @@ static constexpr void compileFunctionsConstexprT() {
     qc::nullMat<T, 4>();
 }
 
-static constexpr bool compileFunctionsConstexpr() {
+static constexpr bool compileFunctionsConstexpr()
+{
     compileFunctionsConstexprT< float>();
     compileFunctionsConstexprT<double>();
 
@@ -409,7 +417,8 @@ static constexpr bool compileFunctionsConstexpr() {
 }
 
 template <typename T, int n>
-static void testPropertiesTN() {
+static void testPropertiesTN()
+{
     static_assert(std::             is_standard_layout_v<mat<T, n>>);
     static_assert(std::          is_trivially_copyable_v<mat<T, n>>);
     static_assert(std::is_trivially_copy_constructible_v<mat<T, n>>);
@@ -424,36 +433,42 @@ static void testPropertiesTN() {
 }
 
 template <typename T>
-static void testPropertiesT() {
+static void testPropertiesT()
+{
     testPropertiesTN<T, 2>();
     testPropertiesTN<T, 3>();
     testPropertiesTN<T, 4>();
 }
 
-static void testProperties() {
+static void testProperties()
+{
     testPropertiesT< float>();
     testPropertiesT<double>();
 }
 
 template <typename T1, typename T2>
-static void compileCastsTT() {
+static void compileCastsTT()
+{
     static_cast<mat2<T2>>(mat2<T1>());
     static_cast<mat3<T2>>(mat3<T1>());
     static_cast<mat4<T2>>(mat4<T1>());
 }
 
 template <typename T>
-static void compileCastsT() {
+static void compileCastsT()
+{
     compileCastsTT<T,  float>();
     compileCastsTT<T, double>();
 }
 
-static void compileCasts() {
+static void compileCasts()
+{
     compileCastsT< float>();
     compileCastsT<double>();
 }
 
-TEST(matrix, compilation) {
+TEST(matrix, compilation)
+{
     compileClasses();
     static_assert(compileClassesConstexpr());
     compileFunctions();
@@ -462,7 +477,8 @@ TEST(matrix, compilation) {
     compileCasts();
 }
 
-TEST(matrix, concepts) {
+TEST(matrix, concepts)
+{
     static_assert(Matrix<fmat2>);
     static_assert(Matrix<fmat3>);
     static_assert(Matrix<fmat4>);

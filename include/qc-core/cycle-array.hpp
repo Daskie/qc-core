@@ -3,16 +3,16 @@
 #include <array>
 #include <stdexcept>
 
-namespace qc {
-
+namespace qc
+{
     template <typename T, size_t n>
-    class CycleArray {
-
+    class CycleArray
+    {
         static_assert(n > 0);
 
         template <bool constant>
-        class Iterator {
-
+        class Iterator
+        {
             public: //----------------------------------------------------------
 
             using iterator_category = std::forward_iterator_tag;
@@ -73,7 +73,6 @@ namespace qc {
             value_type * _values;
             size_t _currentIndex;
             size_t _relativeIndex;
-
         };
 
         template <bool constant> friend class Iterator;
@@ -110,14 +109,16 @@ namespace qc {
             other.startIndex = 0u;
         }
 
-        CycleArray & operator=(const CycleArray & other) noexcept {
+        CycleArray & operator=(const CycleArray & other) noexcept
+        {
             _frontIndex = other._frontIndex;
             _values = other._values;
 
             return *this;
         }
 
-        CycleArray & operator=(CycleArray && other) noexcept {
+        CycleArray & operator=(CycleArray && other) noexcept
+        {
             _frontIndex = other._frontIndex;
             _values = std::move(other._values);
 
@@ -128,61 +129,75 @@ namespace qc {
 
         ~CycleArray() noexcept = default;
 
-        constexpr void swap(CycleArray & other) noexcept {
+        constexpr void swap(CycleArray & other) noexcept
+        {
             std::swap(_values, other._values);
             std::swap(_frontIndex, other._frontIndex);
         }
 
-        void fill(const T & v) {
+        void fill(const T & v)
+        {
             _values.fill(v);
         }
 
-        T push(const T & v) {
+        T push(const T & v)
+        {
             return _push(v);
         }
 
-        T push(T && v) noexcept {
+        T push(T && v) noexcept
+        {
             return _push(std::move(v));
         }
 
-        constexpr size_t size() const noexcept {
+        constexpr size_t size() const noexcept
+        {
             return n;
         }
 
-        constexpr bool empty() const noexcept {
+        constexpr bool empty() const noexcept
+        {
             return false;
         }
 
-        constexpr value_type & front() noexcept {
+        constexpr value_type & front() noexcept
+        {
             return const_cast<value_type &>(const_cast<const CycleArray &>(*this).front());
         }
 
-        constexpr const value_type & front() const noexcept {
+        constexpr const value_type & front() const noexcept
+        {
             return _values[_frontIndex];
         }
 
-        constexpr value_type & back() noexcept {
+        constexpr value_type & back() noexcept
+        {
             return const_cast<value_type &>(const_cast<const CycleArray &>(*this).back());
         }
 
-        constexpr const value_type & back() const noexcept {
+        constexpr const value_type & back() const noexcept
+        {
             return _values[(_frontIndex == 0u ? n : _frontIndex) - 1u];
         }
 
-        constexpr value_type & operator[](const size_t i) {
+        constexpr value_type & operator[](const size_t i)
+        {
             return const_cast<value_type &>(const_cast<const CycleArray &>(*this).operator[](i));
         }
 
-        constexpr const value_type & operator[](const size_t i) const {
+        constexpr const value_type & operator[](const size_t i) const
+        {
             const size_t absoluteIndex{_frontIndex + i};
             return _values[absoluteIndex < n ? absoluteIndex : absoluteIndex - n];
         }
 
-        constexpr value_type & at(const size_t i) {
+        constexpr value_type & at(const size_t i)
+        {
             return const_cast<value_type &>(const_cast<const CycleArray &>(*this).at(i));
         }
 
-        constexpr const value_type & at(const size_t i) const {
+        constexpr const value_type & at(const size_t i) const
+        {
             if (i >= n) {
                 throw std::out_of_range("Index out of bounds");
             }
@@ -190,34 +205,41 @@ namespace qc {
             return operator[](i);
         }
 
-        constexpr iterator begin() noexcept {
+        constexpr iterator begin() noexcept
+        {
             return Iterator<false>(_values.data(), _frontIndex, 0);
         }
 
-        constexpr const_iterator begin() const noexcept {
+        constexpr const_iterator begin() const noexcept
+        {
             return Iterator<true>(_values.data(), _frontIndex, 0);
         }
 
-        constexpr const_iterator cbegin() const noexcept {
+        constexpr const_iterator cbegin() const noexcept
+        {
             return begin();
         }
 
-        constexpr iterator end() noexcept {
+        constexpr iterator end() noexcept
+        {
             return Iterator<false>(_values.data(), _frontIndex, n);
         }
 
-        constexpr const_iterator end() const noexcept {
+        constexpr const_iterator end() const noexcept
+        {
             return Iterator<true>(_values.data(), _frontIndex, n);
         }
 
-        constexpr const_iterator cend() const noexcept {
+        constexpr const_iterator cend() const noexcept
+        {
             return end();
         }
 
         private: //-------------------------------------------------------------
 
         template <typename T_>
-        T _push(T_ && v) {
+        T _push(T_ && v)
+        {
             if (_frontIndex == 0u) {
                 _frontIndex = n - 1u;
             }
@@ -237,11 +259,11 @@ namespace qc {
 
         size_t _frontIndex{0u};
         std::array<T, n> _values{};
-
     };
 
     template <typename T, size_t n>
-    bool operator==(const CycleArray<T, n> & arr1, const CycleArray<T, n> & arr2) {
+    bool operator==(const CycleArray<T, n> & arr1, const CycleArray<T, n> & arr2)
+    {
         if (&arr1 == &arr2) {
             return true;
         }
@@ -258,5 +280,4 @@ namespace qc {
 
         return true;
     }
-
-} // namespace qc
+}

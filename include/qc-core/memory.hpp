@@ -7,11 +7,10 @@
 
 #include <qc-core/core.hpp>
 
-struct QcMemoryPoolFriend;
-
-namespace qc::memory {
-
-    struct RecordAllocatorStats {
+namespace qc::memory
+{
+    struct RecordAllocatorStats
+    {
         size_t current{};
         size_t total{};
         size_t allocations{};
@@ -23,11 +22,11 @@ namespace qc::memory {
     //
     // NOT THREAD SAFE!!!
     //
-    template <typename T> class RecordAllocator {
-
+    template <typename T> class RecordAllocator
+    {
         template <typename> friend class RecordAllocator;
 
-        public:
+        public: //--------------------------------------------------------------
 
         using value_type = T;
         using propagate_on_container_copy_assignment = std::true_type;
@@ -54,14 +53,16 @@ namespace qc::memory {
 
         RecordAllocator & operator=(const RecordAllocator &) noexcept = default;
 
-        RecordAllocator & operator=(RecordAllocator && other) noexcept {
+        RecordAllocator & operator=(RecordAllocator && other) noexcept
+        {
             _listI = std::exchange(other._listI, 0u);
             return *this;
         }
 
         ~RecordAllocator() noexcept = default;
 
-        T * allocate(const size_t n) {
+        T * allocate(const size_t n)
+        {
             const size_t bytes{n * sizeof(T)};
             RecordAllocatorStats & stats{this->stats()};
             stats.current += bytes;
@@ -70,7 +71,8 @@ namespace qc::memory {
             return reinterpret_cast<T *>(::operator new(bytes));
         }
 
-        void deallocate(T * const ptr, const size_t n) {
+        void deallocate(T * const ptr, const size_t n)
+        {
             const size_t bytes{n * sizeof(T)};
             RecordAllocatorStats & stats{this->stats()};
             stats.current -= bytes;
@@ -78,27 +80,28 @@ namespace qc::memory {
             ::operator delete(ptr);
         }
 
-        RecordAllocatorStats & stats() {
+        RecordAllocatorStats & stats()
+        {
             return _recordAllocatorStatsList.at(_listI);
         }
 
-        const RecordAllocatorStats & stats() const {
+        const RecordAllocatorStats & stats() const
+        {
             return _recordAllocatorStatsList.at(_listI);
         }
 
         bool operator==(const RecordAllocator &) const noexcept = default;
 
-        private:
+        private: //-------------------------------------------------------------
 
         size_t _listI{};
-
     };
 
-    class Pool {
+    class Pool
+    {
+        friend struct _PoolFriend;
 
-        friend QcMemoryPoolFriend;
-
-        public:
+        public: //--------------------------------------------------------------
 
         static constexpr size_t minCapacity{2u * sizeof(size_t)};
         static constexpr size_t maxCapacity{std::numeric_limits<size_t>::max() / sizeof(size_t) * sizeof(size_t) - 2u * sizeof(size_t)};
@@ -131,21 +134,24 @@ namespace qc::memory {
 
         Pool & operator=(const Pool &) = delete;
 
-        Pool & operator=(Pool && other) noexcept {
+        Pool & operator=(Pool && other) noexcept
+        {
             _chunkCapacity = std::exchange(other._chunkCapacity, 0u);
             _chunks = std::exchange(other._chunks, nullptr);
             _head = std::exchange(other._head, nullptr);
             return *this;
         }
 
-        ~Pool() {
+        ~Pool()
+        {
             if (_chunks) {
                 ::operator delete(_chunks);
             }
         }
 
         template <typename T>
-        T * allocate(const size_t n) {
+        T * allocate(const size_t n)
+        {
             if constexpr (debug) {
                 if (!_chunks || !n) {
                     throw std::exception{};
@@ -198,7 +204,8 @@ namespace qc::memory {
         }
 
         template <typename T>
-        void deallocate(T * const ptr, const size_t n) noexcept(!debug) {
+        void deallocate(T * const ptr, const size_t n) noexcept(!debug)
+        {
             if constexpr (debug) {
                 if (!_chunks || !ptr || !n) {
                     throw std::exception{};
@@ -240,27 +247,28 @@ namespace qc::memory {
             }
         }
 
-        size_t capacity() const noexcept {
+        size_t capacity() const noexcept
+        {
             return _chunkCapacity * sizeof(size_t);
         }
 
-        const void * data() const noexcept {
+        const void * data() const noexcept
+        {
             return _chunks;
         }
 
-        private:
+        private: //-------------------------------------------------------------
 
         size_t _chunkCapacity{};
         size_t * _chunks{};
         size_t * _head{};
-
     };
 
-    template <typename T> class PoolAllocator {
-
+    template <typename T> class PoolAllocator
+    {
         template <typename> friend class PoolAllocator;
 
-        public:
+        public: //--------------------------------------------------------------
 
         using value_type = T;
         using propagate_on_container_copy_assignment = std::true_type;
@@ -286,20 +294,20 @@ namespace qc::memory {
 
         ~PoolAllocator() noexcept = default;
 
-        T * allocate(const size_t n) {
+        T * allocate(const size_t n)
+        {
             return _pool->allocate<T>(n);
         }
 
-        void deallocate(T * const ptr, const size_t n) noexcept {
+        void deallocate(T * const ptr, const size_t n) noexcept
+        {
             return _pool->deallocate<T>(ptr, n);
         }
 
         bool operator==(const PoolAllocator &) const noexcept = default;
 
-        private:
+        private: //-------------------------------------------------------------
 
         Pool * _pool{};
-
     };
-
-} // namespace qc::memory
+}

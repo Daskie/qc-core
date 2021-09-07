@@ -2,12 +2,12 @@
 
 #include <qc-core/core-ext.hpp>
 
-namespace qc {
-
+namespace qc
+{
     template <NumericOrBoolean T, int n> struct vec;
 
-    inline namespace types {
-
+    inline namespace types
+    {
         using qc::vec;
 
         template <typename T> using vec2 = vec<T, 2>;
@@ -72,11 +72,10 @@ namespace qc {
         template <typename T> concept Vector2 = Vector<T> && T::n == 2;
         template <typename T> concept Vector3 = Vector<T> && T::n == 3;
         template <typename T> concept Vector4 = Vector<T> && T::n == 4;
+    }
 
-    } // namespace types
-
-    template <NumericOrBoolean T> struct vec<T, 2> {
-
+    template <NumericOrBoolean T> struct vec<T, 2>
+    {
         using Type = T;
         static constexpr int n{2};
 
@@ -105,11 +104,10 @@ namespace qc {
 
         T & operator[](int i);
         T operator[](int i) const;
-
     };
 
-    template <NumericOrBoolean T> struct vec<T, 3> {
-
+    template <NumericOrBoolean T> struct vec<T, 3>
+    {
         using Type = T;
         static constexpr int n{3};
 
@@ -147,11 +145,10 @@ namespace qc {
 
         vec2<T> & yz() noexcept;
         constexpr vec2<T> yz() const noexcept;
-
     };
 
-    template <NumericOrBoolean T> struct vec<T, 4> {
-
+    template <NumericOrBoolean T> struct vec<T, 4>
+    {
         using Type = T;
         static constexpr int n{4};
 
@@ -203,7 +200,6 @@ namespace qc {
 
         vec3<T> & yzw() noexcept;
         constexpr vec3<T> yzw() const noexcept;
-
     };
 
     //
@@ -328,13 +324,12 @@ namespace qc {
     template <int n> constexpr bvec<n> operator||(bvec<n> v1, bvec<n> v2);
 
     template <int n> constexpr bvec<n> operator!(bvec<n> v1);
+}
 
-} // namespace qc
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// INLINE IMPLEMENTATION ///////////////////////////////////////////////////////////////////////////////////////////////
-
-namespace qc {
-
+namespace qc
+{
     template <NumericOrBoolean T>
     template <NumericOrBoolean U>
     inline constexpr vec<T, 2>::vec(const U v) noexcept :
@@ -365,13 +360,15 @@ namespace qc {
     {}
 
     template <NumericOrBoolean T>
-    inline constexpr vec<T, 2>::operator bool() const noexcept {
+    inline constexpr vec<T, 2>::operator bool() const noexcept
+    {
         return x || y;
     }
 
     template <NumericOrBoolean T>
     template <int i>
-    inline T & vec<T, 2>::at() noexcept {
+    inline T & vec<T, 2>::at() noexcept
+    {
         static_assert(i >= 0 && i <= 1, "Index out of bounds");
         if constexpr (i == 0) return x;
         if constexpr (i == 1) return y;
@@ -379,19 +376,22 @@ namespace qc {
 
     template <NumericOrBoolean T>
     template <int i>
-    inline constexpr T vec<T, 2>::at() const noexcept {
+    inline constexpr T vec<T, 2>::at() const noexcept
+    {
         static_assert(i >= 0 && i <= 1, "Index out of bounds");
         if constexpr (i == 0) return x;
         if constexpr (i == 1) return y;
     }
 
     template <NumericOrBoolean T>
-    inline T & vec<T, 2>::operator[](const int i) {
+    inline T & vec<T, 2>::operator[](const int i)
+    {
         return *(&x + i);
     }
 
     template <NumericOrBoolean T>
-    inline T vec<T, 2>::operator[](const int i) const {
+    inline T vec<T, 2>::operator[](const int i) const
+    {
         return *(&x + i);
     }
 
@@ -435,13 +435,15 @@ namespace qc {
     {}
 
     template <NumericOrBoolean T>
-    inline constexpr vec<T, 3>::operator bool() const noexcept {
+    inline constexpr vec<T, 3>::operator bool() const noexcept
+    {
         return x || y || z;
     }
 
     template <NumericOrBoolean T>
     template <int i>
-    inline T & vec<T, 3>::at() noexcept {
+    inline T & vec<T, 3>::at() noexcept
+    {
         static_assert(i >= 0 && i <= 2, "Index out of bounds");
         if constexpr (i == 0) return x;
         if constexpr (i == 1) return y;
@@ -450,7 +452,8 @@ namespace qc {
 
     template <NumericOrBoolean T>
     template <int i>
-    inline constexpr T vec<T, 3>::at() const noexcept {
+    inline constexpr T vec<T, 3>::at() const noexcept
+    {
         static_assert(i >= 0 && i <= 2, "Index out of bounds");
         if constexpr (i == 0) return x;
         if constexpr (i == 1) return y;
@@ -458,32 +461,38 @@ namespace qc {
     }
 
     template <NumericOrBoolean T>
-    inline T & vec<T, 3>::operator[](const int i) {
+    inline T & vec<T, 3>::operator[](const int i)
+    {
         return *(&x + i);
     }
 
     template <NumericOrBoolean T>
-    inline T vec<T, 3>::operator[](const int i) const {
+    inline T vec<T, 3>::operator[](const int i) const
+    {
         return *(&x + i);
     }
 
     template <NumericOrBoolean T>
-    inline vec2<T> & vec<T, 3>::xy() noexcept {
+    inline vec2<T> & vec<T, 3>::xy() noexcept
+    {
         return reinterpret_cast<vec2<T> &>(x);
     }
 
     template <NumericOrBoolean T>
-    inline constexpr vec2<T> vec<T, 3>::xy() const noexcept {
+    inline constexpr vec2<T> vec<T, 3>::xy() const noexcept
+    {
         return reinterpret_cast<const vec2<T> &>(x);
     }
 
     template <NumericOrBoolean T>
-    inline vec2<T> & vec<T, 3>::yz() noexcept {
+    inline vec2<T> & vec<T, 3>::yz() noexcept
+    {
         return reinterpret_cast<vec2<T> &>(y);
     }
 
     template <NumericOrBoolean T>
-    inline constexpr vec2<T> vec<T, 3>::yz() const noexcept {
+    inline constexpr vec2<T> vec<T, 3>::yz() const noexcept
+    {
         return reinterpret_cast<const vec2<T> &>(y);
     }
 
@@ -547,13 +556,15 @@ namespace qc {
     {}
 
     template <NumericOrBoolean T>
-    inline constexpr vec<T, 4>::operator bool() const noexcept {
+    inline constexpr vec<T, 4>::operator bool() const noexcept
+    {
         return x || y || z || w;
     }
 
     template <NumericOrBoolean T>
     template <int i>
-    inline T & vec<T, 4>::at() noexcept {
+    inline T & vec<T, 4>::at() noexcept
+    {
         static_assert(i >= 0 && i <= 3, "Index out of bounds");
         if constexpr (i == 0) return x;
         if constexpr (i == 1) return y;
@@ -563,7 +574,8 @@ namespace qc {
 
     template <NumericOrBoolean T>
     template <int i>
-    inline constexpr T vec<T, 4>::at() const noexcept {
+    inline constexpr T vec<T, 4>::at() const noexcept
+    {
         static_assert(i >= 0 && i <= 3, "Index out of bounds");
         if constexpr (i == 0) return x;
         if constexpr (i == 1) return y;
@@ -572,67 +584,80 @@ namespace qc {
     }
 
     template <NumericOrBoolean T>
-    inline T & vec<T, 4>::operator[](const int i) {
+    inline T & vec<T, 4>::operator[](const int i)
+    {
         return *(&x + i);
     }
 
     template <NumericOrBoolean T>
-    inline T vec<T, 4>::operator[](const int i) const {
+    inline T vec<T, 4>::operator[](const int i) const
+    {
         return *(&x + i);
     }
 
     template <NumericOrBoolean T>
-    inline vec2<T> & vec<T, 4>::xy() noexcept {
+    inline vec2<T> & vec<T, 4>::xy() noexcept
+    {
         return reinterpret_cast<vec2<T> &>(x);
     }
 
     template <NumericOrBoolean T>
-    inline constexpr vec2<T> vec<T, 4>::xy() const noexcept {
+    inline constexpr vec2<T> vec<T, 4>::xy() const noexcept
+    {
         return reinterpret_cast<const vec2<T> &>(x);
     }
 
     template <NumericOrBoolean T>
-    inline vec2<T> & vec<T, 4>::yz() noexcept {
+    inline vec2<T> & vec<T, 4>::yz() noexcept
+    {
         return reinterpret_cast<vec2<T> &>(y);
     }
 
     template <NumericOrBoolean T>
-    inline constexpr vec2<T> vec<T, 4>::yz() const noexcept {
+    inline constexpr vec2<T> vec<T, 4>::yz() const noexcept
+    {
         return reinterpret_cast<const vec2<T> &>(y);
     }
 
     template <NumericOrBoolean T>
-    inline vec2<T> & vec<T, 4>::zw() noexcept {
+    inline vec2<T> & vec<T, 4>::zw() noexcept
+    {
         return reinterpret_cast<vec2<T> &>(z);
     }
 
     template <NumericOrBoolean T>
-    inline constexpr vec2<T> vec<T, 4>::zw() const noexcept {
+    inline constexpr vec2<T> vec<T, 4>::zw() const noexcept
+    {
         return reinterpret_cast<const vec2<T> &>(z);
     }
 
     template <NumericOrBoolean T>
-    inline vec3<T> & vec<T, 4>::xyz() noexcept {
+    inline vec3<T> & vec<T, 4>::xyz() noexcept
+    {
         return reinterpret_cast<vec3<T> &>(x);
     }
 
     template <NumericOrBoolean T>
-    inline constexpr vec3<T> vec<T, 4>::xyz() const noexcept {
+    inline constexpr vec3<T> vec<T, 4>::xyz() const noexcept
+    {
         return reinterpret_cast<const vec3<T> &>(x);
     }
 
     template <NumericOrBoolean T>
-    inline vec3<T> & vec<T, 4>::yzw() noexcept {
+    inline vec3<T> & vec<T, 4>::yzw() noexcept
+    {
         return reinterpret_cast<vec3<T> &>(y);
     }
 
     template <NumericOrBoolean T>
-    inline constexpr vec3<T> vec<T, 4>::yzw() const noexcept {
+    inline constexpr vec3<T> vec<T, 4>::yzw() const noexcept
+    {
         return reinterpret_cast<const vec3<T> &>(y);
     }
 
     template <Numeric T, int n>
-    inline vec<T, n> & operator++(vec<T, n> & v) {
+    inline vec<T, n> & operator++(vec<T, n> & v)
+    {
         if constexpr (n >= 1) ++v.x;
         if constexpr (n >= 2) ++v.y;
         if constexpr (n >= 3) ++v.z;
@@ -641,14 +666,16 @@ namespace qc {
     }
 
     template <Numeric T, int n>
-    inline vec<T, n> operator++(vec<T, n> & v, int) {
+    inline vec<T, n> operator++(vec<T, n> & v, int)
+    {
         vec<T, n> temp(v);
         ++v;
         return temp;
     }
 
     template <Numeric T, int n>
-    inline vec<T, n> & operator--(vec<T, n> & v) {
+    inline vec<T, n> & operator--(vec<T, n> & v)
+    {
         if constexpr (n >= 1) --v.x;
         if constexpr (n >= 2) --v.y;
         if constexpr (n >= 3) --v.z;
@@ -657,14 +684,16 @@ namespace qc {
     }
 
     template <Numeric T, int n>
-    inline vec<T, n> operator--(vec<T, n> & v, int) {
+    inline vec<T, n> operator--(vec<T, n> & v, int)
+    {
         vec<T, n> temp(v);
         --v;
         return temp;
     }
 
     template <Numeric T, int n>
-    inline vec<T, n> & operator+=(vec<T, n> & v1, const vec<T, n> & v2) {
+    inline vec<T, n> & operator+=(vec<T, n> & v1, const vec<T, n> & v2)
+    {
         if constexpr (n >= 1) v1.x += v2.x;
         if constexpr (n >= 2) v1.y += v2.y;
         if constexpr (n >= 3) v1.z += v2.z;
@@ -673,7 +702,8 @@ namespace qc {
     }
 
     template <Numeric T, int n>
-    inline vec<T, n> & operator+=(vec<T, n> & v1, const T v2) {
+    inline vec<T, n> & operator+=(vec<T, n> & v1, const T v2)
+    {
         if constexpr (n >= 1) v1.x += v2;
         if constexpr (n >= 2) v1.y += v2;
         if constexpr (n >= 3) v1.z += v2;
@@ -682,7 +712,8 @@ namespace qc {
     }
 
     template <Numeric T, int n>
-    inline vec<T, n> & operator-=(vec<T, n> & v1, const vec<T, n> & v2) {
+    inline vec<T, n> & operator-=(vec<T, n> & v1, const vec<T, n> & v2)
+    {
         if constexpr (n >= 1) v1.x -= v2.x;
         if constexpr (n >= 2) v1.y -= v2.y;
         if constexpr (n >= 3) v1.z -= v2.z;
@@ -691,7 +722,8 @@ namespace qc {
     }
 
     template <Numeric T, int n>
-    inline vec<T, n> & operator-=(vec<T, n> & v1, const T v2) {
+    inline vec<T, n> & operator-=(vec<T, n> & v1, const T v2)
+    {
         if constexpr (n >= 1) v1.x -= v2;
         if constexpr (n >= 2) v1.y -= v2;
         if constexpr (n >= 3) v1.z -= v2;
@@ -700,7 +732,8 @@ namespace qc {
     }
 
     template <Numeric T, int n>
-    inline vec<T, n> & operator*=(vec<T, n> & v1, const vec<T, n> & v2) {
+    inline vec<T, n> & operator*=(vec<T, n> & v1, const vec<T, n> & v2)
+    {
         if constexpr (n >= 1) v1.x *= v2.x;
         if constexpr (n >= 2) v1.y *= v2.y;
         if constexpr (n >= 3) v1.z *= v2.z;
@@ -709,7 +742,8 @@ namespace qc {
     }
 
     template <Numeric T, int n>
-    inline vec<T, n> & operator*=(vec<T, n> & v1, const T v2) {
+    inline vec<T, n> & operator*=(vec<T, n> & v1, const T v2)
+    {
         if constexpr (n >= 1) v1.x *= v2;
         if constexpr (n >= 2) v1.y *= v2;
         if constexpr (n >= 3) v1.z *= v2;
@@ -718,7 +752,8 @@ namespace qc {
     }
 
     template <Numeric T, int n>
-    inline vec<T, n> & operator/=(vec<T, n> & v1, const vec<T, n> & v2) {
+    inline vec<T, n> & operator/=(vec<T, n> & v1, const vec<T, n> & v2)
+        {
         if constexpr (n >= 1) v1.x /= v2.x;
         if constexpr (n >= 2) v1.y /= v2.y;
         if constexpr (n >= 3) v1.z /= v2.z;
@@ -727,7 +762,8 @@ namespace qc {
     }
 
     template <Numeric T, int n>
-    inline vec<T, n> & operator/=(vec<T, n> & v1, const T v2) {
+    inline vec<T, n> & operator/=(vec<T, n> & v1, const T v2)
+    {
         if constexpr (Floating<T>) {
             return v1 *= T(1.0) / v2;
         }
@@ -741,7 +777,8 @@ namespace qc {
     }
 
     template <Numeric T, int n>
-    inline vec<T, n> & operator%=(vec<T, n> & v1, const vec<T, n> & v2) {
+    inline vec<T, n> & operator%=(vec<T, n> & v1, const vec<T, n> & v2)
+    {
         if constexpr (n >= 1) v1.x = mod(v1.x, v2.x);
         if constexpr (n >= 2) v1.y = mod(v1.y, v2.y);
         if constexpr (n >= 3) v1.z = mod(v1.z, v2.z);
@@ -750,7 +787,8 @@ namespace qc {
     }
 
     template <Numeric T, int n>
-    inline vec<T, n> & operator%=(vec<T, n> & v1, const T v2) {
+    inline vec<T, n> & operator%=(vec<T, n> & v1, const T v2)
+    {
         if constexpr (n >= 1) v1.x = mod(v1.x, v2);
         if constexpr (n >= 2) v1.y = mod(v1.y, v2);
         if constexpr (n >= 3) v1.z = mod(v1.z, v2);
@@ -759,12 +797,14 @@ namespace qc {
     }
 
     template <Numeric T, int n>
-    inline constexpr vec<T, n> operator+(const vec<T, n> & v) {
+    inline constexpr vec<T, n> operator+(const vec<T, n> & v)
+    {
         return v;
     }
 
     template <Numeric T, int n>
-    inline constexpr vec<T, n> operator-(const vec<T, n> & v) {
+    inline constexpr vec<T, n> operator-(const vec<T, n> & v)
+    {
         if constexpr (UnsignedIntegral<T>) {
             return v;
         }
@@ -776,75 +816,86 @@ namespace qc {
     }
 
     template <Numeric T, int n>
-    inline constexpr vec<T, n> operator+(const vec<T, n> & v1, const vec<T, n> & v2) {
+    inline constexpr vec<T, n> operator+(const vec<T, n> & v1, const vec<T, n> & v2)
+    {
         if constexpr (n == 2) return {T(v1.x + v2.x), T(v1.y + v2.y)};
         if constexpr (n == 3) return {T(v1.x + v2.x), T(v1.y + v2.y), T(v1.z + v2.z)};
         if constexpr (n == 4) return {T(v1.x + v2.x), T(v1.y + v2.y), T(v1.z + v2.z), T(v1.w + v2.w)};
     }
 
     template <Numeric T, int n>
-    inline constexpr vec<T, n> operator+(const vec<T, n> & v1, const T v2) {
+    inline constexpr vec<T, n> operator+(const vec<T, n> & v1, const T v2)
+    {
         if constexpr (n == 2) return {T(v1.x + v2), T(v1.y + v2)};
         if constexpr (n == 3) return {T(v1.x + v2), T(v1.y + v2), T(v1.z + v2)};
         if constexpr (n == 4) return {T(v1.x + v2), T(v1.y + v2), T(v1.z + v2), T(v1.w + v2)};
     }
 
     template <Numeric T, int n>
-    inline constexpr vec<T, n> operator+(const T v1, const vec<T, n> & v2) {
+    inline constexpr vec<T, n> operator+(const T v1, const vec<T, n> & v2)
+    {
         return v2 + v1;
     }
 
     template <Numeric T, int n>
-    inline constexpr vec<T, n> operator-(const vec<T, n> & v1, const vec<T, n> & v2) {
+    inline constexpr vec<T, n> operator-(const vec<T, n> & v1, const vec<T, n> & v2)
+    {
         if constexpr (n == 2) return {T(v1.x - v2.x), T(v1.y - v2.y)};
         if constexpr (n == 3) return {T(v1.x - v2.x), T(v1.y - v2.y), T(v1.z - v2.z)};
         if constexpr (n == 4) return {T(v1.x - v2.x), T(v1.y - v2.y), T(v1.z - v2.z), T(v1.w - v2.w)};
     }
 
     template <Numeric T, int n>
-    inline constexpr vec<T, n> operator-(const vec<T, n> & v1, const T v2) {
+    inline constexpr vec<T, n> operator-(const vec<T, n> & v1, const T v2)
+    {
         if constexpr (n == 2) return {T(v1.x - v2), T(v1.y - v2)};
         if constexpr (n == 3) return {T(v1.x - v2), T(v1.y - v2), T(v1.z - v2)};
         if constexpr (n == 4) return {T(v1.x - v2), T(v1.y - v2), T(v1.z - v2), T(v1.w - v2)};
     }
 
     template <Numeric T, int n>
-    inline constexpr vec<T, n> operator-(const T v1, const vec<T, n> & v2) {
+    inline constexpr vec<T, n> operator-(const T v1, const vec<T, n> & v2)
+    {
         if constexpr (n == 2) return {T(v1 - v2.x), T(v1 - v2.y)};
         if constexpr (n == 3) return {T(v1 - v2.x), T(v1 - v2.y), T(v1 - v2.z)};
         if constexpr (n == 4) return {T(v1 - v2.x), T(v1 - v2.y), T(v1 - v2.z), T(v1 - v2.w)};
     }
 
     template <Numeric T, int n>
-    inline constexpr vec<T, n> operator*(const vec<T, n> & v1, const vec<T, n> & v2) {
+    inline constexpr vec<T, n> operator*(const vec<T, n> & v1, const vec<T, n> & v2)
+    {
         if constexpr (n == 2) return {T(v1.x * v2.x), T(v1.y * v2.y)};
         if constexpr (n == 3) return {T(v1.x * v2.x), T(v1.y * v2.y), T(v1.z * v2.z)};
         if constexpr (n == 4) return {T(v1.x * v2.x), T(v1.y * v2.y), T(v1.z * v2.z), T(v1.w * v2.w)};
     }
 
     template <Numeric T, int n>
-    inline constexpr vec<T, n> operator*(const vec<T, n> & v1, const T v2) {
+    inline constexpr vec<T, n> operator*(const vec<T, n> & v1, const T v2)
+    {
         if constexpr (n == 2) return {T(v1.x * v2), T(v1.y * v2)};
         if constexpr (n == 3) return {T(v1.x * v2), T(v1.y * v2), T(v1.z * v2)};
         if constexpr (n == 4) return {T(v1.x * v2), T(v1.y * v2), T(v1.z * v2), T(v1.w * v2)};
     }
 
     template <Numeric T, int n>
-    inline constexpr vec<T, n> operator*(const T v1, const vec<T, n> & v2) {
+    inline constexpr vec<T, n> operator*(const T v1, const vec<T, n> & v2)
+    {
         if constexpr (n == 2) return {T(v1 * v2.x), T(v1 * v2.y)};
         if constexpr (n == 3) return {T(v1 * v2.x), T(v1 * v2.y), T(v1 * v2.z)};
         if constexpr (n == 4) return {T(v1 * v2.x), T(v1 * v2.y), T(v1 * v2.z), T(v1 * v2.w)};
     }
 
     template <Numeric T, int n>
-    inline constexpr vec<T, n> operator/(const vec<T, n> & v1, const vec<T, n> & v2) {
+    inline constexpr vec<T, n> operator/(const vec<T, n> & v1, const vec<T, n> & v2)
+    {
         if constexpr (n == 2) return {T(v1.x / v2.x), T(v1.y / v2.y)};
         if constexpr (n == 3) return {T(v1.x / v2.x), T(v1.y / v2.y), T(v1.z / v2.z)};
         if constexpr (n == 4) return {T(v1.x / v2.x), T(v1.y / v2.y), T(v1.z / v2.z), T(v1.w / v2.w)};
     }
 
     template <Numeric T, int n>
-    inline constexpr vec<T, n> operator/(const vec<T, n> & v1, const T v2) {
+    inline constexpr vec<T, n> operator/(const vec<T, n> & v1, const T v2)
+    {
         if constexpr (Floating<T>) {
             return v1 * (T(1.0) / v2);
         }
@@ -856,170 +907,194 @@ namespace qc {
     }
 
     template <Numeric T, int n>
-    inline constexpr vec<T, n> operator/(const T v1, const vec<T, n> & v2) {
+    inline constexpr vec<T, n> operator/(const T v1, const vec<T, n> & v2)
+    {
         if constexpr (n == 2) return {T(v1 / v2.x), T(v1 / v2.y)};
         if constexpr (n == 3) return {T(v1 / v2.x), T(v1 / v2.y), T(v1 / v2.z)};
         if constexpr (n == 4) return {T(v1 / v2.x), T(v1 / v2.y), T(v1 / v2.z), T(v1 / v2.w)};
     }
 
     template <Numeric T, int n>
-    inline constexpr vec<T, n> operator%(const vec<T, n> & v1, const vec<T, n> & v2) {
+    inline constexpr vec<T, n> operator%(const vec<T, n> & v1, const vec<T, n> & v2)
+    {
         if constexpr (n == 2) return {mod(v1.x, v2.x), mod(v1.y, v2.y)};
         if constexpr (n == 3) return {mod(v1.x, v2.x), mod(v1.y, v2.y), mod(v1.z, v2.z)};
         if constexpr (n == 4) return {mod(v1.x, v2.x), mod(v1.y, v2.y), mod(v1.z, v2.z), mod(v1.w, v2.w)};
     }
 
     template <Numeric T, int n>
-    inline constexpr vec<T, n> operator%(const vec<T, n> & v1, const T v2) {
+    inline constexpr vec<T, n> operator%(const vec<T, n> & v1, const T v2)
+    {
         if constexpr (n == 2) return {mod(v1.x, v2), mod(v1.y, v2)};
         if constexpr (n == 3) return {mod(v1.x, v2), mod(v1.y, v2), mod(v1.z, v2)};
         if constexpr (n == 4) return {mod(v1.x, v2), mod(v1.y, v2), mod(v1.z, v2), mod(v1.w, v2)};
     }
 
     template <Numeric T, int n>
-    inline constexpr vec<T, n> operator%(const T v1, const vec<T, n> & v2) {
+    inline constexpr vec<T, n> operator%(const T v1, const vec<T, n> & v2)
+    {
         if constexpr (n == 2) return {mod(v1, v2.x), mod(v1, v2.y)};
         if constexpr (n == 3) return {mod(v1, v2.x), mod(v1, v2.y), mod(v1, v2.z)};
         if constexpr (n == 4) return {mod(v1, v2.x), mod(v1, v2.y), mod(v1, v2.z), mod(v1, v2.w)};
     }
 
     template <typename T, int n>
-    inline constexpr bool operator==(const vec<T, n> & v1, const vec<T, n> & v2) {
+    inline constexpr bool operator==(const vec<T, n> & v1, const vec<T, n> & v2)
+    {
         if constexpr (n == 2) return v1.x == v2.x && v1.y == v2.y;
         if constexpr (n == 3) return v1.x == v2.x && v1.y == v2.y && v1.z == v2.z;
         if constexpr (n == 4) return v1.x == v2.x && v1.y == v2.y && v1.z == v2.z && v1.w == v2.w;
     }
 
     template <typename T, int n>
-    inline constexpr bvec<n> operator==(const vec<T, n> & v1, const T v2) {
+    inline constexpr bvec<n> operator==(const vec<T, n> & v1, const T v2)
+    {
         if constexpr (n == 2) return {v1.x == v2, v1.y == v2};
         if constexpr (n == 3) return {v1.x == v2, v1.y == v2, v1.z == v2};
         if constexpr (n == 4) return {v1.x == v2, v1.y == v2, v1.z == v2, v1.w == v2};
     }
 
     template <typename T, int n>
-    inline constexpr bvec<n> operator==(const T v1, const vec<T, n> & v2) {
+    inline constexpr bvec<n> operator==(const T v1, const vec<T, n> & v2)
+    {
         return v2 == v1;
     }
 
     template <typename T, int n>
-    inline constexpr bool operator!=(const vec<T, n> & v1, const vec<T, n> & v2) {
+    inline constexpr bool operator!=(const vec<T, n> & v1, const vec<T, n> & v2)
+    {
         return !(v1 == v2);
     }
 
     template <typename T, int n>
-    inline constexpr bvec<n> operator!=(const vec<T, n> & v1, const T v2) {
+    inline constexpr bvec<n> operator!=(const vec<T, n> & v1, const T v2)
+    {
         return !(v1 == v2);
     }
 
     template <typename T, int n>
-    inline constexpr bvec<n> operator!=(const T v1, const vec<T, n> & v2) {
+    inline constexpr bvec<n> operator!=(const T v1, const vec<T, n> & v2)
+    {
         return !(v1 == v2);
     }
 
     template <Numeric T, int n>
-    inline constexpr bvec<n> operator<(const vec<T, n> & v1, const vec<T, n> & v2) {
+    inline constexpr bvec<n> operator<(const vec<T, n> & v1, const vec<T, n> & v2)
+    {
         if constexpr (n == 2) return {v1.x < v2.x, v1.y < v2.y};
         if constexpr (n == 3) return {v1.x < v2.x, v1.y < v2.y, v1.z < v2.z};
         if constexpr (n == 4) return {v1.x < v2.x, v1.y < v2.y, v1.z < v2.z, v1.w < v2.w};
     }
 
     template <Numeric T, int n>
-    inline constexpr bvec<n> operator<(const vec<T, n> & v1, const T v2) {
+    inline constexpr bvec<n> operator<(const vec<T, n> & v1, const T v2)
+    {
         if constexpr (n == 2) return {v1.x < v2, v1.y < v2};
         if constexpr (n == 3) return {v1.x < v2, v1.y < v2, v1.z < v2};
         if constexpr (n == 4) return {v1.x < v2, v1.y < v2, v1.z < v2, v1.w < v2};
     }
 
     template <Numeric T, int n>
-    inline constexpr bvec<n> operator<(const T v1, const vec<T, n> & v2) {
+    inline constexpr bvec<n> operator<(const T v1, const vec<T, n> & v2)
+    {
         if constexpr (n == 2) return {v1 < v2.x, v1 < v2.y};
         if constexpr (n == 3) return {v1 < v2.x, v1 < v2.y, v1 < v2.z};
         if constexpr (n == 4) return {v1 < v2.x, v1 < v2.y, v1 < v2.z, v1 < v2.w};
     }
 
     template <Numeric T, int n>
-    inline constexpr bvec<n> operator>(const vec<T, n> & v1, const vec<T, n> & v2) {
+    inline constexpr bvec<n> operator>(const vec<T, n> & v1, const vec<T, n> & v2)
+    {
         if constexpr (n == 2) return {v1.x > v2.x, v1.y > v2.y};
         if constexpr (n == 3) return {v1.x > v2.x, v1.y > v2.y, v1.z > v2.z};
         if constexpr (n == 4) return {v1.x > v2.x, v1.y > v2.y, v1.z > v2.z, v1.w > v2.w};
     }
 
     template <Numeric T, int n>
-    inline constexpr bvec<n> operator>(const vec<T, n> & v1, const T v2) {
+    inline constexpr bvec<n> operator>(const vec<T, n> & v1, const T v2)
+    {
         if constexpr (n == 2) return {v1.x > v2, v1.y > v2};
         if constexpr (n == 3) return {v1.x > v2, v1.y > v2, v1.z > v2};
         if constexpr (n == 4) return {v1.x > v2, v1.y > v2, v1.z > v2, v1.w > v2};
     }
 
     template <Numeric T, int n>
-    inline constexpr bvec<n> operator>(const T v1, const vec<T, n> & v2) {
+    inline constexpr bvec<n> operator>(const T v1, const vec<T, n> & v2)
+    {
         if constexpr (n == 2) return {v1 > v2.x, v1 > v2.y};
         if constexpr (n == 3) return {v1 > v2.x, v1 > v2.y, v1 > v2.z};
         if constexpr (n == 4) return {v1 > v2.x, v1 > v2.y, v1 > v2.z, v1 > v2.w};
     }
 
     template <Numeric T, int n>
-    inline constexpr bvec<n> operator<=(const vec<T, n> & v1, const vec<T, n> & v2) {
+    inline constexpr bvec<n> operator<=(const vec<T, n> & v1, const vec<T, n> & v2)
+    {
         if constexpr (n == 2) return {v1.x <= v2.x, v1.y <= v2.y};
         if constexpr (n == 3) return {v1.x <= v2.x, v1.y <= v2.y, v1.z <= v2.z};
         if constexpr (n == 4) return {v1.x <= v2.x, v1.y <= v2.y, v1.z <= v2.z, v1.w <= v2.w};
     }
 
     template <Numeric T, int n>
-    inline constexpr bvec<n> operator<=(const vec<T, n> & v1, const T v2) {
+    inline constexpr bvec<n> operator<=(const vec<T, n> & v1, const T v2)
+    {
         if constexpr (n == 2) return {v1.x <= v2, v1.y <= v2};
         if constexpr (n == 3) return {v1.x <= v2, v1.y <= v2, v1.z <= v2};
         if constexpr (n == 4) return {v1.x <= v2, v1.y <= v2, v1.z <= v2, v1.w <= v2};
     }
 
     template <Numeric T, int n>
-    inline constexpr bvec<n> operator<=(const T v1, const vec<T, n> & v2) {
+    inline constexpr bvec<n> operator<=(const T v1, const vec<T, n> & v2)
+    {
         if constexpr (n == 2) return {v1 <= v2.x, v1 <= v2.y};
         if constexpr (n == 3) return {v1 <= v2.x, v1 <= v2.y, v1 <= v2.z};
         if constexpr (n == 4) return {v1 <= v2.x, v1 <= v2.y, v1 <= v2.z, v1 <= v2.w};
     }
 
     template <Numeric T, int n>
-    inline constexpr bvec<n> operator>=(const vec<T, n> & v1, const vec<T, n> & v2) {
+    inline constexpr bvec<n> operator>=(const vec<T, n> & v1, const vec<T, n> & v2)
+    {
         if constexpr (n == 2) return {v1.x >= v2.x, v1.y >= v2.y};
         if constexpr (n == 3) return {v1.x >= v2.x, v1.y >= v2.y, v1.z >= v2.z};
         if constexpr (n == 4) return {v1.x >= v2.x, v1.y >= v2.y, v1.z >= v2.z, v1.w >= v2.w};
     }
 
     template <Numeric T, int n>
-    inline constexpr bvec<n> operator>=(const vec<T, n> & v1, const T v2) {
+    inline constexpr bvec<n> operator>=(const vec<T, n> & v1, const T v2)
+    {
         if constexpr (n == 2) return {v1.x >= v2, v1.y >= v2};
         if constexpr (n == 3) return {v1.x >= v2, v1.y >= v2, v1.z >= v2};
         if constexpr (n == 4) return {v1.x >= v2, v1.y >= v2, v1.z >= v2, v1.w >= v2};
     }
 
     template <Numeric T, int n>
-    inline constexpr bvec<n> operator>=(const T v1, const vec<T, n> & v2) {
+    inline constexpr bvec<n> operator>=(const T v1, const vec<T, n> & v2)
+    {
         if constexpr (n == 2) return {v1 >= v2.x, v1 >= v2.y};
         if constexpr (n == 3) return {v1 >= v2.x, v1 >= v2.y, v1 >= v2.z};
         if constexpr (n == 4) return {v1 >= v2.x, v1 >= v2.y, v1 >= v2.z, v1 >= v2.w};
     }
 
     template <int n>
-    inline constexpr bvec<n> operator&&(const bvec<n> v1, const bvec<n> v2) {
+    inline constexpr bvec<n> operator&&(const bvec<n> v1, const bvec<n> v2)
+    {
         if constexpr (n == 2) return {v1.x && v2.x, v1.y && v2.y};
         if constexpr (n == 3) return {v1.x && v2.x, v1.y && v2.y, v1.z && v2.z};
         if constexpr (n == 4) return {v1.x && v2.x, v1.y && v2.y, v1.z && v2.z, v1.w && v2.w};
     }
 
     template <int n>
-    inline constexpr bvec<n> operator||(const bvec<n> v1, const bvec<n> v2) {
+    inline constexpr bvec<n> operator||(const bvec<n> v1, const bvec<n> v2)
+    {
         if constexpr (n == 2) return {v1.x || v2.x, v1.y || v2.y};
         if constexpr (n == 3) return {v1.x || v2.x, v1.y || v2.y, v1.z || v2.z};
         if constexpr (n == 4) return {v1.x || v2.x, v1.y || v2.y, v1.z || v2.z, v1.w || v2.w};
     }
 
     template <int n>
-    inline constexpr bvec<n> operator!(const bvec<n> v) {
+    inline constexpr bvec<n> operator!(const bvec<n> v)
+    {
         if constexpr (n == 2) return {!v.x, !v.y};
         if constexpr (n == 3) return {!v.x, !v.y, !v.z};
         if constexpr (n == 4) return {!v.x, !v.y, !v.z, !v.w};
     }
-
-} // namespace qc
+}

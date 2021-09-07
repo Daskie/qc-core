@@ -6,7 +6,8 @@ using namespace qc::types;
 
 #pragma warning(push)
 #pragma warning(disable: 4101)
-static void compileTyping() {
+static void compileTyping()
+{
     s8 s08_;
     u8 u08_;
     s16 s16_;
@@ -35,7 +36,8 @@ template <typename T1, typename T2>
 static void compileFunctionsTT() {}
 
 template <typename T>
-static void compileFunctionsT() {
+static void compileFunctionsT()
+{
     compileFunctionsTT<T, f32>();
     compileFunctionsTT<T, f64>();
     compileFunctionsTT<T, s8>();
@@ -109,7 +111,8 @@ static void compileFunctionsT() {
 }
 
 template <typename T>
-static void compileFunctionsFT() {
+static void compileFunctionsFT()
+{
     T v{1.0};
 
     qc::areEqual_e(v, v);
@@ -133,18 +136,21 @@ static void compileFunctionsFT() {
 }
 
 template <typename T>
-static void compileFunctionsIT() {
+static void compileFunctionsIT()
+{
 
 }
 
 template <typename T>
-static void compileFunctionsUIT() {
+static void compileFunctionsUIT()
+{
     T v{1u};
 
     qc::log2Floor(v);
 }
 
-static void compileFunctionsBT() {
+static void compileFunctionsBT()
+{
     bool v{true};
 
     qc::areEqual(v, v);
@@ -153,7 +159,8 @@ static void compileFunctionsBT() {
     qc::areEqual(v, v, v, v, v);
 }
 
-static void compileFunctions() {
+static void compileFunctions()
+{
     compileFunctionsT<f32>();
     compileFunctionsT<f64>();
     compileFunctionsT<s8>();
@@ -186,13 +193,15 @@ static void compileFunctions() {
 }
 
 template <typename T1, typename T2>
-static constexpr void compileFunctionsConstexprTT() {
+static constexpr void compileFunctionsConstexprTT()
+{
     constexpr T1 v{1};
 
 }
 
 template <typename T>
-static constexpr void compileFunctionsConstexprT() {
+static constexpr void compileFunctionsConstexprT()
+{
     compileFunctionsConstexprTT<T, f32>();
     compileFunctionsConstexprTT<T, f64>();
     compileFunctionsConstexprTT<T, s8>();
@@ -254,7 +263,8 @@ static constexpr void compileFunctionsConstexprT() {
 }
 
 template <typename T>
-static constexpr void compileFunctionsConstexprFT() {
+static constexpr void compileFunctionsConstexprFT()
+{
     constexpr T v{1.0};
 
     //qc::equal_e(v, v);
@@ -273,18 +283,21 @@ static constexpr void compileFunctionsConstexprFT() {
 }
 
 template <typename T>
-static constexpr void compileFunctionsConstexprIT() {
+static constexpr void compileFunctionsConstexprIT()
+{
 
 }
 
 template <typename T>
-static constexpr void compileFunctionsConstexprUIT() {
+static constexpr void compileFunctionsConstexprUIT()
+{
     constexpr T v{1};
 
     qc::log2Floor(v);
 }
 
-static constexpr void compileFunctionsConstexprBT() {
+static constexpr void compileFunctionsConstexprBT()
+{
     constexpr bool v{true};
 
     //qc::equal(v, v);
@@ -293,7 +306,8 @@ static constexpr void compileFunctionsConstexprBT() {
     //qc::equal(v, v, v, v, v);
 }
 
-static constexpr bool compileFunctionsConstexpr() {
+static constexpr bool compileFunctionsConstexpr()
+{
     compileFunctionsConstexprT<f32>();
     compileFunctionsConstexprT<f64>();
     compileFunctionsConstexprT<s8>();
@@ -327,7 +341,8 @@ static constexpr bool compileFunctionsConstexpr() {
     return true;
 }
 
-TEST(core, compilation) {
+TEST(core, compilation)
+{
     compileTyping();
     compileFunctions();
     static_assert(compileFunctionsConstexpr());
@@ -338,7 +353,8 @@ template <Integral T> static constexpr T quarterVal{T(halfVal<T> / 2)};
 template <Integral T> static constexpr T threeQuartersVal{T(halfVal<T> + quarterVal<T>)};
 
 template <typename From, typename To>
-void testTransnormFTFT() {
+void testTransnormFTFT()
+{
     EXPECT_EQ(To(0.0), qc::transnorm<To>(From(0.0)));
     EXPECT_EQ(To(0.25), qc::transnorm<To>(From(0.25)));
     EXPECT_EQ(To(0.5), qc::transnorm<To>(From(0.5)));
@@ -347,7 +363,8 @@ void testTransnormFTFT() {
 }
 
 template <typename From, typename To>
-void testTransnormFTST() {
+void testTransnormFTST()
+{
     const double epsilon(1.0 / std::ldexp(1.0, std::numeric_limits<To>::digits));
 
     EXPECT_EQ(To(std::numeric_limits<To>::min()), qc::transnorm<To>(From(-1.0)));
@@ -362,7 +379,8 @@ void testTransnormFTST() {
 }
 
 template <typename From, typename To>
-void testTransnormFTUT() {
+void testTransnormFTUT()
+{
     const double epsilon(1.0 / std::ldexp(1.0, std::numeric_limits<To>::digits));
 
     EXPECT_EQ(To(0u), qc::transnorm<To>(From(0.0)));
@@ -373,7 +391,8 @@ void testTransnormFTUT() {
 }
 
 template <typename From, typename To>
-void testTransnormSTFT() {
+void testTransnormSTFT()
+{
     const To epsilon{To(1.0 / std::ldexp(1.0, std::numeric_limits<From>::digits))};
 
     EXPECT_EQ(To(-1.0), qc::transnorm<To>(std::numeric_limits<From>::min()));
@@ -388,7 +407,8 @@ void testTransnormSTFT() {
 }
 
 template <typename From, typename To>
-void testTransnormUTFT() {
+void testTransnormUTFT()
+{
     const To epsilon{To(1.0 / std::ldexp(1.0, std::numeric_limits<From>::digits))};
 
     EXPECT_EQ(To(0.0), qc::transnorm<To>(From(0u)));
@@ -399,7 +419,8 @@ void testTransnormUTFT() {
 }
 
 template <typename From, typename To>
-void testTransnormUTUT() {
+void testTransnormUTUT()
+{
     const double epsilon(1.0 / std::ldexp(1.0, qc::min(std::numeric_limits<To>::digits, std::numeric_limits<From>::digits)));
 
     EXPECT_EQ(To(0u), qc::transnorm<To>(From(0u)));
@@ -410,13 +431,15 @@ void testTransnormUTUT() {
 }
 
 template <typename From>
-void testTransnormST() {
+void testTransnormST()
+{
     testTransnormSTFT<From, f32>();
     testTransnormSTFT<From, f64>();
 }
 
 template <typename From>
-void testTransnormUT() {
+void testTransnormUT()
+{
     testTransnormUTUT<From, u8>();
     testTransnormUTUT<From, u16>();
     testTransnormUTUT<From, u32>();
@@ -427,7 +450,8 @@ void testTransnormUT() {
 }
 
 template <typename From>
-void testTransnormFT() {
+void testTransnormFT()
+{
     testTransnormFTST<From, s8>();
     testTransnormFTST<From, s16>();
     testTransnormFTST<From, s32>();
@@ -442,7 +466,8 @@ void testTransnormFT() {
     testTransnormFTFT<From, f64>();
 }
 
-TEST(core, transnorm) {
+TEST(core, transnorm)
+{
     testTransnormST<s8>();
     testTransnormST<s16>();
     testTransnormST<s32>();
@@ -457,7 +482,8 @@ TEST(core, transnorm) {
     testTransnormFT<f64>();
 }
 
-TEST(core, concepts) {
+TEST(core, concepts)
+{
     static_assert(Integral<s8>);
     static_assert(Integral<s16>);
     static_assert(Integral<s32>);

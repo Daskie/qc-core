@@ -3,10 +3,10 @@
 #include <stdexcept>
 #include <utility>
 
-namespace qc {
-
-    template <typename T> class HeapArray {
-
+namespace qc
+{
+    template <typename T> class HeapArray
+    {
         public: //--------------------------------------------------------------
 
         using value_type = T;
@@ -74,17 +74,15 @@ namespace qc {
 
         size_t _size{0u};
         T * _values{nullptr};
-
     };
 
     template <typename T> bool operator==(const HeapArray<T> & arr1, const HeapArray<T> & arr2);
+}
 
-} // namespace qc
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// INLINE IMPLEMENTATION ///////////////////////////////////////////////////////////////////////////////////////////////
-
-namespace qc {
-
+namespace qc
+{
     template <typename T>
     inline HeapArray<T>::HeapArray(const size_t size) noexcept :
         _size(size),
@@ -147,7 +145,8 @@ namespace qc {
     {}
 
     template <typename T>
-    inline HeapArray<T> & HeapArray<T>::operator=(const HeapArray & other) noexcept {
+    inline HeapArray<T> & HeapArray<T>::operator=(const HeapArray & other) noexcept
+    {
         if (&other == this) {
             return *this;
         }
@@ -173,7 +172,8 @@ namespace qc {
     }
 
     template <typename T>
-    inline HeapArray<T> & HeapArray<T>::operator=(HeapArray && other) noexcept {
+    inline HeapArray<T> & HeapArray<T>::operator=(HeapArray && other) noexcept
+    {
         if (&other == this) {
             return *this;
         }
@@ -187,18 +187,21 @@ namespace qc {
     }
 
     template <typename T>
-    inline HeapArray<T>::~HeapArray() noexcept {
+    inline HeapArray<T>::~HeapArray() noexcept
+    {
         clear();
     }
 
     template <typename T>
-    inline constexpr void HeapArray<T>::swap(HeapArray & other) noexcept {
+    inline constexpr void HeapArray<T>::swap(HeapArray & other) noexcept
+    {
         std::swap(_size, other._size);
         std::swap(_values, other._values);
     }
 
     template <typename T>
-    inline void HeapArray<T>::clear() noexcept {
+    inline void HeapArray<T>::clear() noexcept
+    {
         if (_size) {
             if constexpr (!std::is_trivially_destructible_v<T>) {
                 for (size_t i{0u}; i < _size; ++i) {
@@ -213,62 +216,74 @@ namespace qc {
     }
 
     template <typename T>
-    inline constexpr size_t HeapArray<T>::size() const noexcept {
+    inline constexpr size_t HeapArray<T>::size() const noexcept
+    {
         return _size;
     }
 
     template <typename T>
-    inline constexpr bool HeapArray<T>::empty() const noexcept {
+    inline constexpr bool HeapArray<T>::empty() const noexcept
+    {
         return !_size;
     }
 
     template <typename T>
-    inline constexpr T * HeapArray<T>::data() noexcept {
+    inline constexpr T * HeapArray<T>::data() noexcept
+    {
         return _values;
     }
 
     template <typename T>
-    inline constexpr const T * HeapArray<T>::data() const noexcept {
+    inline constexpr const T * HeapArray<T>::data() const noexcept
+    {
         return _values;
     }
 
     template <typename T>
-    inline constexpr T & HeapArray<T>::front() noexcept {
+    inline constexpr T & HeapArray<T>::front() noexcept
+    {
         return *_values;
     }
 
     template <typename T>
-    inline constexpr const T & HeapArray<T>::front() const noexcept {
+    inline constexpr const T & HeapArray<T>::front() const noexcept
+    {
         return *_values;
     }
 
     template <typename T>
-    inline constexpr T & HeapArray<T>::back() noexcept {
+    inline constexpr T & HeapArray<T>::back() noexcept
+    {
         return _values[_size - 1u];
     }
 
     template <typename T>
-    inline constexpr const T & HeapArray<T>::back() const noexcept {
+    inline constexpr const T & HeapArray<T>::back() const noexcept
+    {
         return _values[_size - 1u];
     }
 
     template <typename T>
-    inline constexpr T & HeapArray<T>::operator[](const size_t i) {
+    inline constexpr T & HeapArray<T>::operator[](const size_t i)
+    {
         return _values[i];
     }
 
     template <typename T>
-    inline constexpr const T & HeapArray<T>::operator[](const size_t i) const {
+    inline constexpr const T & HeapArray<T>::operator[](const size_t i) const
+    {
         return _values[i];
     }
 
     template <typename T>
-    inline constexpr T & HeapArray<T>::at(const size_t i) {
+    inline constexpr T & HeapArray<T>::at(const size_t i)
+    {
         return const_cast<T &>(const_cast<const HeapArray &>(*this).at(i));
     }
 
     template <typename T>
-    inline constexpr const T & HeapArray<T>::at(const size_t i) const {
+    inline constexpr const T & HeapArray<T>::at(const size_t i) const
+    {
         if (i >= _size) {
             throw std::out_of_range("Index out of bounds");
         }
@@ -277,12 +292,14 @@ namespace qc {
     }
 
     template <typename T>
-    inline constexpr auto HeapArray<T>::begin() noexcept -> iterator {
+    inline constexpr auto HeapArray<T>::begin() noexcept -> iterator
+    {
         return _values;
     }
 
     template <typename T>
-    inline constexpr auto HeapArray<T>::begin() const noexcept -> const_iterator {
+    inline constexpr auto HeapArray<T>::begin() const noexcept -> const_iterator
+    {
         return _values;
     }
 
@@ -292,22 +309,26 @@ namespace qc {
     }
 
     template <typename T>
-    inline constexpr auto HeapArray<T>::end() noexcept -> iterator {
+    inline constexpr auto HeapArray<T>::end() noexcept -> iterator
+    {
         return _values + _size;
     }
 
     template <typename T>
-    inline constexpr auto HeapArray<T>::end() const noexcept -> const_iterator {
+    inline constexpr auto HeapArray<T>::end() const noexcept -> const_iterator
+    {
         return _values + _size;
     }
 
     template <typename T>
-    inline constexpr auto HeapArray<T>::cend() const noexcept -> const_iterator {
+    inline constexpr auto HeapArray<T>::cend() const noexcept -> const_iterator
+    {
         return _values + _size;
     }
 
     template <typename T>
-    inline bool operator==(const HeapArray<T> & arr1, const HeapArray<T> & arr2) {
+    inline bool operator==(const HeapArray<T> & arr1, const HeapArray<T> & arr2)
+    {
         if (&arr1 == &arr2) {
             return true;
         }
@@ -324,5 +345,4 @@ namespace qc {
 
         return true;
     }
-
-} // namespace qc
+}

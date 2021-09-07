@@ -12,10 +12,11 @@
 
 #include <qc-core/core.hpp>
 
-namespace qc::utils {
-
+namespace qc::utils
+{
     template <typename T>
-    inline T pairwiseSum(const size_t n, const T * const vals) {
+    inline T pairwiseSum(const size_t n, const T * const vals)
+    {
         if (n == 0u) return T(0);
         if (n == 1u) return vals[0];
         if (n == 2u) return vals[0] + vals[1];
@@ -23,7 +24,8 @@ namespace qc::utils {
     }
 
     // Throws `std::system_error` on failure
-    inline std::vector<std::byte> readFile(const std::filesystem::path & path) {
+    inline std::vector<std::byte> readFile(const std::filesystem::path & path)
+    {
         const uintmax_t size{std::filesystem::file_size(path)};
         if (size > qc::min(uintmax_t(std::numeric_limits<size_t>::max()), uintmax_t(std::numeric_limits<std::streamsize>::max()))) {
             throw std::system_error(std::make_error_code(std::errc::file_too_large));
@@ -39,7 +41,8 @@ namespace qc::utils {
     }
 
     // Throws `std::system_error` on failure
-    inline std::string readAsciiFile(const std::filesystem::path & path) {
+    inline std::string readAsciiFile(const std::filesystem::path & path)
+    {
         const uintmax_t size{std::filesystem::file_size(path)};
         if (size > qc::min(uintmax_t(std::numeric_limits<size_t>::max()), uintmax_t(std::numeric_limits<std::streamsize>::max()))) {
             throw std::system_error(std::make_error_code(std::errc::file_too_large));
@@ -55,14 +58,16 @@ namespace qc::utils {
     }
 
     // Throws `std::system_error` on failure
-    inline void writeFile(const std::filesystem::path & path, const void * const data, const size_t size) {
+    inline void writeFile(const std::filesystem::path & path, const void * const data, const size_t size)
+    {
         std::ofstream ofs(path, std::ios::out | std::ios::binary);
         ofs.exceptions(std::ios::badbit | std::ios::failbit);
         ofs.write(reinterpret_cast<const char *>(data), size);
     }
 
     // Throws `std::system_error` on failure
-    inline void writeAsciiFile(const std::filesystem::path & path, const std::string_view str) {
+    inline void writeAsciiFile(const std::filesystem::path & path, const std::string_view str)
+    {
         writeFile(path, str.data(), str.size());
     }
 
@@ -71,7 +76,8 @@ namespace qc::utils {
     // `stride` must be at least as large as the size of `T` and must be an even multiple of the alignment of `T`
     //
     template <typename Iter, typename T>
-    inline T interlace(const Iter first, const Iter last, T * dst, const size_t stride) {
+    inline T interlace(const Iter first, const Iter last, T * dst, const size_t stride)
+    {
         static_assert(std::is_same_v<std::decay_t<decltype(*first)>, T>);
 
         for (Iter iter(first); iter != last; ++iter) {
@@ -81,7 +87,8 @@ namespace qc::utils {
         }
     }
 
-    inline std::string timeString(double seconds) {
+    inline std::string timeString(double seconds)
+    {
         static constexpr double secondsPerMinute(60.0);
         static constexpr double secondsPerHour(60.0 * secondsPerMinute);
         static constexpr double secondsPerDay(24.0 * secondsPerHour);
@@ -100,11 +107,11 @@ namespace qc::utils {
         return ss.str();
     }
 
-    namespace print {
-
+    namespace print
+    {
         template <typename T>
-        struct _binary_s {
-
+        struct _binary_s
+        {
             alignas(T) u8 data[sizeof(T)];
             int blockSize;
 
@@ -115,7 +122,8 @@ namespace qc::utils {
                 std::copy_n(reinterpret_cast<const u8 *>(&v), sizeof(T), data);
             }
 
-            friend std::ostream & operator<<(std::ostream & os, const _binary_s & b) {
+            friend std::ostream & operator<<(std::ostream & os, const _binary_s & b)
+            {
                 const int nBlocks{sizeof(T) / b.blockSize};
 
                 for (int blockI{0}; blockI < nBlocks; ++blockI) {
@@ -131,42 +139,40 @@ namespace qc::utils {
 
                 return os;
             }
-
         };
 
         template <typename T>
-        inline _binary_s<T> binary(const T & v, const int blockSize = sizeof(T)) {
+        inline _binary_s<T> binary(const T & v, const int blockSize = sizeof(T))
+        {
             return _binary_s<T>(v, blockSize);
         }
 
-        struct repeat {
-
+        struct repeat
+        {
             std::string s;
             int n;
 
             repeat(std::string s, const int n) : s(std::move(s)), n(n) {}
 
-            friend std::ostream & operator<<(std::ostream & os, const repeat & r) {
+            friend std::ostream & operator<<(std::ostream & os, const repeat & r)
+            {
                 for (int i{0}; i < r.n; ++i) {
                     os << r.s;
                 }
                 return os;
             }
-
         };
 
-        struct line {
-
+        struct line
+        {
             int n;
 
             explicit line(const int n) : n(n) {}
 
-            friend std::ostream & operator<<(std::ostream & os, const line & l) {
+            friend std::ostream & operator<<(std::ostream & os, const line & l)
+            {
                 return os << repeat("-", l.n);
             }
-
         };
-
     }
-
-} // namespace qc::utils
+}

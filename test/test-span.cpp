@@ -5,7 +5,8 @@
 #include <qc-core/span-ext.hpp>
 
 template <typename T>
-static void compileClassesT() {
+static void compileClassesT()
+{
     T v{};
     qc::vec2<T> v2;
     qc::vec3<T> v3;
@@ -109,7 +110,8 @@ static void compileClassesT() {
     s4.yzw();
 }
 
-static void compileClasses() {
+static void compileClasses()
+{
     compileClassesT<qc::f32>();
     compileClassesT<qc::f64>();
     compileClassesT<qc::s8>();
@@ -123,7 +125,8 @@ static void compileClasses() {
 }
 
 template <typename T>
-static constexpr void compileClassesConstexprT() {
+static constexpr void compileClassesConstexprT()
+{
     constexpr T v{};
     constexpr qc::vec2<T> v2;
     constexpr qc::vec3<T> v3;
@@ -211,7 +214,8 @@ static constexpr void compileClassesConstexprT() {
     //s4.yzw();
 }
 
-static constexpr bool compileClassesConstexpr() {
+static constexpr bool compileClassesConstexpr()
+{
     compileClassesConstexprT<qc::f32>();
     compileClassesConstexprT<qc::f64>();
     compileClassesConstexprT<qc::s8>();
@@ -227,7 +231,8 @@ static constexpr bool compileClassesConstexpr() {
 }
 
 template <typename T>
-static void compileFunctionsT() {
+static void compileFunctionsT()
+{
     T v{1};
     qc::vec2<T> v2{v};
     qc::vec3<T> v3{v};
@@ -420,7 +425,8 @@ static void compileFunctionsT() {
     qc::joinify(s4, s4);
 }
 
-static void compileFunctions() {
+static void compileFunctions()
+{
     compileFunctionsT<qc::f32>();
     compileFunctionsT<qc::f64>();
     compileFunctionsT<qc::s8>();
@@ -434,7 +440,8 @@ static void compileFunctions() {
 }
 
 template <typename T>
-static constexpr void compileFunctionsConstexprT() {
+static constexpr void compileFunctionsConstexprT()
+{
     constexpr T v{1};
     constexpr qc::vec2<T> v2(v);
     constexpr qc::vec3<T> v3(v);
@@ -548,7 +555,8 @@ static constexpr void compileFunctionsConstexprT() {
     //qc::join(s4, s4);
 }
 
-static constexpr bool compileFunctionsConstexpr() {
+static constexpr bool compileFunctionsConstexpr()
+{
     compileFunctionsConstexprT<qc::f32>();
     compileFunctionsConstexprT<qc::f64>();
     compileFunctionsConstexprT<qc::s8>();
@@ -564,7 +572,8 @@ static constexpr bool compileFunctionsConstexpr() {
 }
 
 template <typename T, int n>
-static void testPropertiesTN() {
+static void testPropertiesTN()
+{
     static_assert(std::is_standard_layout_v<qc::span<T, n>>);
     static_assert(std::is_trivially_copyable_v<qc::span<T, n>>);
     static_assert(std::is_trivially_copy_constructible_v<qc::span<T, n>>);
@@ -579,14 +588,16 @@ static void testPropertiesTN() {
 }
 
 template <typename T>
-static void testPropertiesT() {
+static void testPropertiesT()
+{
     testPropertiesTN<T, 1>();
     testPropertiesTN<T, 2>();
     testPropertiesTN<T, 3>();
     testPropertiesTN<T, 4>();
 }
 
-static void testProperties() {
+static void testProperties()
+{
     testPropertiesT<qc::f32>();
     testPropertiesT<qc::f64>();
     testPropertiesT<qc::s8>();
@@ -600,7 +611,8 @@ static void testProperties() {
 }
 
 template <typename T1, typename T2, int n>
-static constexpr void compileCastsTTN() {
+static constexpr void compileCastsTTN()
+{
     qc::span1<T1> s1;
     qc::span2<T1> s2;
     qc::span3<T1> s3;
@@ -618,7 +630,8 @@ static constexpr void compileCastsTTN() {
 }
 
 template <typename T1, typename T2>
-static constexpr void compileCastsTT() {
+static constexpr void compileCastsTT()
+{
     compileCastsTTN<T1, T2, 1>();
     compileCastsTTN<T1, T2, 2>();
     compileCastsTTN<T1, T2, 3>();
@@ -626,7 +639,8 @@ static constexpr void compileCastsTT() {
 }
 
 template <typename T>
-static constexpr void compileCastsT() {
+static constexpr void compileCastsT()
+{
     compileCastsTT<T, qc::f32>();
     compileCastsTT<T, qc::f64>();
     compileCastsTT<T, qc::s8>();
@@ -639,7 +653,8 @@ static constexpr void compileCastsT() {
     compileCastsTT<T, qc::u64>();
 }
 
-static constexpr bool compileCasts() {
+static constexpr bool compileCasts()
+{
     compileCastsT<qc::f32>();
     compileCastsT<qc::f64>();
     compileCastsT<qc::s8>();
@@ -655,7 +670,8 @@ static constexpr bool compileCasts() {
 }
 
 template <typename T>
-static constexpr void compileConstantsFT() {
+static constexpr void compileConstantsFT()
+{
     constexpr qc::span1<T> is1(qc::fullSpan<T, 1>);
     constexpr qc::span2<T> is2(qc::fullSpan<T, 2>);
     constexpr qc::span3<T> is3(qc::fullSpan<T, 3>);
@@ -667,14 +683,16 @@ static constexpr void compileConstantsFT() {
     constexpr qc::span4<T> nulls4(qc::nullSpan<T, 4>);
 }
 
-static constexpr bool compileConstants() {
+static constexpr bool compileConstants()
+{
     compileConstantsFT<qc::f32>();
     compileConstantsFT<qc::f64>();
 
     return true;
 }
 
-TEST(span, compilation) {
+TEST(span, compilation)
+{
     compileClasses();
     static_assert(compileClassesConstexpr());
     compileFunctions();

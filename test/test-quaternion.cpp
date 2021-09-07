@@ -7,7 +7,8 @@
 using namespace qc::types;
 
 template <typename T>
-static void compileClassesT() {
+static void compileClassesT()
+{
     T v{1.0};
     vec3<T> v3(1.0);
     vec4<T> v4(1.0);
@@ -59,13 +60,15 @@ static void compileClassesT() {
     os << q;
 }
 
-static void compileClasses() {
+static void compileClasses()
+{
     compileClassesT< float>();
     compileClassesT<double>();
 }
 
 template <typename T>
-static constexpr void compileClassesConstexprT() {
+static constexpr void compileClassesConstexprT()
+{
     /*constexpr T v{1.0};
     constexpr vec3<T> v3(1.0f);
     constexpr vec4<T> v4(1.0f);
@@ -84,7 +87,8 @@ static constexpr void compileClassesConstexprT() {
     quat<T> q_7(v4);*/
 }
 
-static constexpr bool compileClassesConstexpr() {
+static constexpr bool compileClassesConstexpr()
+{
     compileClassesConstexprT< float>();
     compileClassesConstexprT<double>();
 
@@ -92,7 +96,8 @@ static constexpr bool compileClassesConstexpr() {
 }
 
 template <typename T>
-static void compileFunctionsT() {
+static void compileFunctionsT()
+{
     T v{1.0};
     vec3<T> v3(1.0);
     vec4<T> v4(1.0);
@@ -122,13 +127,15 @@ static void compileFunctionsT() {
     qc::slerp(q, q, v);
 }
 
-static void compileFunctions() {
+static void compileFunctions()
+{
     compileFunctionsT< float>();
     compileFunctionsT<double>();
 }
 
 template <typename T>
-static constexpr void compileFunctionsConstexprT() {
+static constexpr void compileFunctionsConstexprT()
+{
     /*constexpr T v{1.0};
     constexpr vec3<T> v3(1.0);
     constexpr vec4<T> v4(1.0);
@@ -138,7 +145,8 @@ static constexpr void compileFunctionsConstexprT() {
     //toMat(q);*/
 }
 
-static constexpr bool compileFunctionsConstexpr() {
+static constexpr bool compileFunctionsConstexpr()
+{
     compileFunctionsConstexprT< float>();
     compileFunctionsConstexprT<double>();
 
@@ -146,42 +154,48 @@ static constexpr bool compileFunctionsConstexpr() {
 }
 
 template <typename T>
-static void testPropertiesT() {
-    static_assert(std::             is_standard_layout_v<quat<T>>);
-    static_assert(std::          is_trivially_copyable_v<quat<T>>);
+static void testPropertiesT()
+{
+    static_assert(std::is_standard_layout_v<quat<T>>);
+    static_assert(std::is_trivially_copyable_v<quat<T>>);
     static_assert(std::is_trivially_copy_constructible_v<quat<T>>);
     static_assert(std::is_trivially_move_constructible_v<quat<T>>);
-    static_assert(std::   is_trivially_copy_assignable_v<quat<T>>);
-    static_assert(std::   is_trivially_move_assignable_v<quat<T>>);
-    static_assert(std::      is_trivially_destructible_v<quat<T>>);
+    static_assert(std::is_trivially_copy_assignable_v<quat<T>>);
+    static_assert(std::is_trivially_move_assignable_v<quat<T>>);
+    static_assert(std::is_trivially_destructible_v<quat<T>>);
     static_assert(sizeof(quat<T>) == 4u * sizeof(T));
     static_assert(sizeof(quat<T>[4]) == 4u * 4u * sizeof(T));
     static_assert(alignof(quat<T>) == alignof(T));
     static_assert(alignof(quat<T>[4]) == alignof(T));
 }
 
-static void testProperties() {
+static void testProperties()
+{
     testPropertiesT< float>();
     testPropertiesT<double>();
 }
 
 template <typename T1, typename T2>
-static void compileCastsTT() {
+static void compileCastsTT()
+{
     static_cast<quat<T2>>(quat<T1>());
 }
 
 template <typename T>
-static void compileCastsT() {
+static void compileCastsT()
+{
     compileCastsTT<T,  float>();
     compileCastsTT<T, double>();
 }
 
-static void compileCasts() {
+static void compileCasts()
+{
     compileCastsT< float>();
     compileCastsT<double>();
 }
 
-TEST(quaternion, compilation) {
+TEST(quaternion, compilation)
+{
     compileClasses();
     static_assert(compileClassesConstexpr());
     compileFunctions();
@@ -190,7 +204,8 @@ TEST(quaternion, compilation) {
     compileCasts();
 }
 
-TEST(quaternion, concepts) {
+TEST(quaternion, concepts)
+{
     static_assert(Quaternion<fquat>);
     static_assert(Quaternion<dquat>);
     static_assert(!Quaternion<int>);

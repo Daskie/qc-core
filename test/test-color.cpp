@@ -4,11 +4,13 @@
 
 using namespace qc::types;
 
-static fvec3 _truncate(const fvec3 & val) {
+static fvec3 _truncate(const fvec3 & val)
+{
     return fvec3{ivec3{val * 1000.0f}} * 0.001f;
 }
 
-TEST(color, srgbToHsl) {
+TEST(color, srgbToHsl)
+{
     EXPECT_EQ(_truncate(fvec3{0.0f, 0.0f, 0.0f}), _truncate(qc::color::srgbToHsl(fvec3{0.0f, 0.0f, 0.0f})));
     for (float v{0.25f}; v <= 1.0f; v += 0.25f) {
         const float l{v * 0.5f};
@@ -24,7 +26,8 @@ TEST(color, srgbToHsl) {
     EXPECT_EQ(_truncate(fvec3{0.804f, 0.932f, 0.510f}), _truncate(qc::color::srgbToHsl(fvec3{0.811f, 0.053f, 0.967f})));
 }
 
-TEST(color, hslToSrgb) {
+TEST(color, hslToSrgb)
+{
     EXPECT_EQ(_truncate(fvec3{0.0f, 0.0f, 0.0f}), _truncate(qc::color::hslToSrgb(fvec3{0.0f, 0.0f, 0.0f})));
     for (float v{0.25f}; v <= 1.0f; v += 0.25f) {
         const float l{v * 0.5f};
@@ -40,7 +43,8 @@ TEST(color, hslToSrgb) {
     EXPECT_EQ(_truncate(fvec3{0.805f, 0.053f, 0.966f}), _truncate(qc::color::hslToSrgb(fvec3{0.804f, 0.932f, 0.510f})));
 }
 
-TEST(color, rgbToHslAndBack) {
+TEST(color, rgbToHslAndBack)
+{
     for (ivec3 rgb{0, 0, 0}; rgb.z < 256; ++rgb.z) {
         for (rgb.y = 0; rgb.y < 256; ++rgb.y) {
             for (rgb.x = 0; rgb.x < 256; ++rgb.x) {

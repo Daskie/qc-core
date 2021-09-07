@@ -7,7 +7,8 @@
 using namespace qc::types;
 
 template <typename T>
-static void compileClassesT() {
+static void compileClassesT()
+{
     T v{};
     vec2<T> v2;
     vec3<T> v3;
@@ -109,7 +110,8 @@ static void compileClassesT() {
     v4.yzw();
 }
 
-static void compileClasses() {
+static void compileClasses()
+{
     compileClassesT<f32>();
     compileClassesT<f64>();
     compileClassesT<s8>();
@@ -123,7 +125,8 @@ static void compileClasses() {
 }
 
 template <typename T>
-static constexpr void compileClassesConstexprT() {
+static constexpr void compileClassesConstexprT()
+{
     constexpr T v{};
     constexpr vec2<T> v2;
     constexpr vec3<T> v3;
@@ -207,7 +210,8 @@ static constexpr void compileClassesConstexprT() {
     //v4.yzw();
 }
 
-static constexpr bool compileClassesConstexpr() {
+static constexpr bool compileClassesConstexpr()
+{
     compileClassesConstexprT<f32>();
     compileClassesConstexprT<f64>();
     compileClassesConstexprT<s8>();
@@ -223,11 +227,11 @@ static constexpr bool compileClassesConstexpr() {
 }
 
 template <typename T1, typename T2>
-static void compileFunctionsTT() {
-}
+static void compileFunctionsTT() {}
 
 template <typename T>
-static void compileFunctionsT() {
+static void compileFunctionsT()
+{
     compileFunctionsTT<T, f32>();
     compileFunctionsTT<T, f64>();
     compileFunctionsTT<T, s8>();
@@ -591,7 +595,8 @@ static void compileFunctionsT() {
 }
 
 template <typename T>
-static void compileFunctionsFT() {
+static void compileFunctionsFT()
+{
     T v{1};
     vec2<T> v2;
     vec3<T> v3;
@@ -698,11 +703,11 @@ static void compileFunctionsFT() {
 }
 
 template <typename T>
-static void compileFunctionsIT() {
-}
+static void compileFunctionsIT() {}
 
 template <typename T>
-static void compileFunctionsSIT() {
+static void compileFunctionsSIT()
+{
     vec2<T> v2;
     vec3<T> v3;
     vec4<T> v4;
@@ -716,7 +721,8 @@ static void compileFunctionsSIT() {
 }
 
 template <typename T>
-static void compileFunctionsUIT() {
+static void compileFunctionsUIT()
+{
     vec2<T> v2;
     vec3<T> v3;
     vec4<T> v4;
@@ -745,7 +751,8 @@ static void compileFunctionsUIT() {
     qc::mipmaps(v4);
 }
 
-static void compileFunctionsBT() {
+static void compileFunctionsBT()
+{
     bvec2 b2;
     bvec3 b3;
     bvec4 b4;
@@ -771,7 +778,8 @@ static void compileFunctionsBT() {
     qc::any(b4);
 }
 
-static void compileFunctions() {
+static void compileFunctions()
+{
     compileFunctionsT<f32>();
     compileFunctionsT<f64>();
     compileFunctionsT<s8>();
@@ -809,7 +817,8 @@ static void compileFunctions() {
 }
 
 template <typename T1, typename T2>
-static constexpr void compileFunctionsConstexprTT() {
+static constexpr void compileFunctionsConstexprTT()
+{
     constexpr T1 v{T1(1.0)};
     constexpr vec2<T1> v2(T1(1.0));
     constexpr vec3<T1> v3(T1(1.0));
@@ -819,7 +828,8 @@ static constexpr void compileFunctionsConstexprTT() {
 }
 
 template <typename T>
-static constexpr void compileFunctionsConstexprT() {
+static constexpr void compileFunctionsConstexprT()
+{
     compileFunctionsConstexprTT<T, f32>();
     compileFunctionsConstexprTT<T, f64>();
     compileFunctionsConstexprTT<T, s8>();
@@ -1075,7 +1085,8 @@ static constexpr void compileFunctionsConstexprT() {
 }
 
 template <typename T>
-static constexpr void compileFunctionsConstexprFT() {
+static constexpr void compileFunctionsConstexprFT()
+{
     constexpr T v{1.0};
     constexpr vec2<T> v2(T(1.0));
     constexpr vec3<T> v3(T(1.0));
@@ -1118,7 +1129,8 @@ static constexpr void compileFunctionsConstexprFT() {
 }
 
 template <typename T>
-static constexpr void compileFunctionsConstexprIT() {
+static constexpr void compileFunctionsConstexprIT()
+{
     constexpr T v{1.0};
     constexpr vec2<T> v2(T(1.0));
     constexpr vec3<T> v3(T(1.0));
@@ -1129,7 +1141,8 @@ static constexpr void compileFunctionsConstexprIT() {
     //qc::mipmaps(v4);
 }
 
-static constexpr void compileBoolFunctionsConstexpr() {
+static constexpr void compileBoolFunctionsConstexpr()
+{
     bvec2 b2;
     bvec3 b3;
     bvec4 b4;
@@ -1155,7 +1168,8 @@ static constexpr void compileBoolFunctionsConstexpr() {
     //qc::any(b4);
 }
 
-static constexpr bool compileFunctionsConstexpr() {
+static constexpr bool compileFunctionsConstexpr()
+{
     compileFunctionsConstexprT<f32>();
     compileFunctionsConstexprT<f64>();
     compileBoolFunctionsConstexpr();
@@ -1164,7 +1178,8 @@ static constexpr bool compileFunctionsConstexpr() {
 }
 
 template <typename T, int n>
-static void testPropertiesTN() {
+static void testPropertiesTN()
+{
     static_assert(std::is_standard_layout_v<vec<T, n>>);
     static_assert(std::is_trivially_copyable_v<vec<T, n>>);
     static_assert(std::is_trivially_copy_constructible_v<vec<T, n>>);
@@ -1179,13 +1194,15 @@ static void testPropertiesTN() {
 }
 
 template <typename T>
-static void testPropertiesT() {
+static void testPropertiesT()
+{
     testPropertiesTN<T, 2>();
     testPropertiesTN<T, 3>();
     testPropertiesTN<T, 4>();
 }
 
-static void testProperties() {
+static void testProperties()
+{
     testPropertiesT<f32>();
     testPropertiesT<f64>();
     testPropertiesT<s8>();
@@ -1199,7 +1216,8 @@ static void testProperties() {
 }
 
 template <typename T1, typename T2, int n>
-static constexpr void compileVecCastsTTN() {
+static constexpr void compileVecCastsTTN()
+{
     vec2<T1> v2;
     vec2<T1> v3;
     vec2<T1> v4;
@@ -1214,14 +1232,16 @@ static constexpr void compileVecCastsTTN() {
 }
 
 template <typename T1, typename T2>
-static constexpr void compileCastsTT() {
+static constexpr void compileCastsTT()
+{
     compileVecCastsTTN<T1, T2, 2>();
     compileVecCastsTTN<T1, T2, 3>();
     compileVecCastsTTN<T1, T2, 4>();
 }
 
 template <typename T>
-static constexpr void compileCastsT() {
+static constexpr void compileCastsT()
+{
     compileCastsTT<T, f32>();
     compileCastsTT<T, f64>();
     compileCastsTT<T, s8>();
@@ -1235,7 +1255,8 @@ static constexpr void compileCastsT() {
     compileCastsTT<T, bool>();
 }
 
-static constexpr bool compileCasts() {
+static constexpr bool compileCasts()
+{
     compileCastsT<f32>();
     compileCastsT<f64>();
     compileCastsT<s8>();
@@ -1252,7 +1273,8 @@ static constexpr bool compileCasts() {
 }
 
 template <typename T>
-static constexpr void compileConstantsT() {
+static constexpr void compileConstantsT()
+{
     constexpr vec2<T> px2(qc::px2<T>);
     constexpr vec3<T> px3(qc::px3<T>);
     constexpr vec4<T> px4(qc::px4<T>);
@@ -1273,7 +1295,8 @@ static constexpr void compileConstantsT() {
     constexpr vec4<T> nw4(qc::nw4<T>);
 }
 
-static constexpr bool compileConstants() {
+static constexpr bool compileConstants()
+{
     compileConstantsT<f32>();
     compileConstantsT<f64>();
     compileConstantsT<s8>();
@@ -1288,7 +1311,8 @@ static constexpr bool compileConstants() {
     return true;
 }
 
-TEST(vector, compilation) {
+TEST(vector, compilation)
+{
     compileClasses();
     static_assert(compileClassesConstexpr());
     compileFunctions();
@@ -1299,41 +1323,47 @@ TEST(vector, compilation) {
 }
 
 template <typename T>
-void testVectorConceptT() {
+void testVectorConceptT()
+{
     static_assert(Vector<vec2<T>>);
     static_assert(Vector<vec3<T>>);
     static_assert(Vector<vec4<T>>);
 }
 
 template <typename T>
-void testFloaterVectorConceptT() {
+void testFloaterVectorConceptT()
+{
     static_assert(FloatingVector<vec2<T>>);
     static_assert(FloatingVector<vec3<T>>);
     static_assert(FloatingVector<vec4<T>>);
 }
 
 template <typename T>
-void testIntegerVectorConceptT() {
+void testIntegerVectorConceptT()
+{
     static_assert(IntegralVector<vec2<T>>);
     static_assert(IntegralVector<vec3<T>>);
     static_assert(IntegralVector<vec4<T>>);
 }
 
 template <typename T>
-void testSignedIntegerVectorConceptT() {
+void testSignedIntegerVectorConceptT()
+{
     static_assert(SignedIntegralVector<vec2<T>>);
     static_assert(SignedIntegralVector<vec3<T>>);
     static_assert(SignedIntegralVector<vec4<T>>);
 }
 
 template <typename T>
-void testUnsignedIntegerVectorConceptT() {
+void testUnsignedIntegerVectorConceptT()
+{
     static_assert(UnsignedIntegralVector<vec2<T>>);
     static_assert(UnsignedIntegralVector<vec3<T>>);
     static_assert(UnsignedIntegralVector<vec4<T>>);
 }
 
-TEST(vector, concepts) {
+TEST(vector, concepts)
+{
     testVectorConceptT<s8>();
     testVectorConceptT<u8>();
     testVectorConceptT<s16>();

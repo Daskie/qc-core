@@ -7,8 +7,8 @@
 
 #include <qc-core/core.hpp>
 
-namespace qc {
-
+namespace qc
+{
     //
     // ...
     //
@@ -169,27 +169,29 @@ namespace qc {
     template <Floating To, SignedIntegral From> To transnorm(From v);
     template <Floating To, UnsignedIntegral From> To transnorm(From v);
     template <UnsignedIntegral To, UnsignedIntegral From> To transnorm(From v);
+}
 
-} // namespace qc
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// INLINE IMPLEMENTATION ///////////////////////////////////////////////////////////////////////////////////////////////
-
-namespace qc {
-
+namespace qc
+{
     template <Numeric T>
-    inline constexpr T median(T v1, T v2, T v3) {
+    inline constexpr T median(T v1, T v2, T v3)
+    {
         if (v1 > v2) std::swap(v1, v2);
         if (v2 > v3) std::swap(v2, v3);
         return max(v1, v2);
     }
 
     template <Numeric T>
-    inline constexpr T clamp(const T & v, const T & min, const T & max) {
+    inline constexpr T clamp(const T & v, const T & min, const T & max)
+    {
         return qc::min(qc::max(v, min), max);
     }
 
     template <Numeric T>
-    inline constexpr T abs(const T v) {
+    inline constexpr T abs(const T v)
+    {
         if constexpr (UnsignedIntegral<T>) {
             return v;
         }
@@ -199,7 +201,8 @@ namespace qc {
     }
 
     template <Numeric T>
-    inline bool isZero(const T v, const T e) {
+    inline bool isZero(const T v, const T e)
+    {
         if constexpr (Floating<T>) {
             return abs(v) <= e;
         }
@@ -209,7 +212,8 @@ namespace qc {
     }
 
     template <typename T>
-    inline bool areEqual(const T & v1, const T & v2) {
+    inline bool areEqual(const T & v1, const T & v2)
+    {
         if constexpr (Floating<T>) {
             return isZero(v1 - v2);
         }
@@ -219,17 +223,20 @@ namespace qc {
     }
 
     template <typename T, typename... Ts>
-    inline bool areEqual(const T & v1, const T & v2, const T & v3, const Ts &... vs) {
+    inline bool areEqual(const T & v1, const T & v2, const T & v3, const Ts &... vs)
+    {
         return areEqual(v1, v2) && areEqual(v2, v3, vs...);
     }
 
     template <Floating T>
-    inline bool areEqual_e(const T v1, const T v2, const T e) {
+    inline bool areEqual_e(const T v1, const T v2, const T e)
+    {
         return isZero(v1 - v2, e);
     }
 
     template <Numeric T>
-    inline constexpr int sign(const T v) {
+    inline constexpr int sign(const T v)
+    {
         if constexpr (UnsignedIntegral<T>) {
             return int(v > 0u);
         }
@@ -239,7 +246,8 @@ namespace qc {
     }
 
     template <Numeric T>
-    inline T trunc(const T v) {
+    inline T trunc(const T v)
+    {
         if constexpr (Floating<T>) {
             return T(stype<T>(v));
         }
@@ -249,35 +257,41 @@ namespace qc {
     }
 
     template <Floating T>
-    inline stype<T> floor(const T v) {
+    inline stype<T> floor(const T v)
+    {
         stype<T> i{stype<T>(v)};
         return i - (v < T(i));
     }
 
     template <Integral T>
-    inline T floor(const T v) {
+    inline T floor(const T v)
+    {
         return v;
     }
 
     template <Floating T>
-    inline stype<T> ceil(const T v) {
+    inline stype<T> ceil(const T v)
+    {
         stype<T> i{stype<T>(v)};
         return i + (v > T(i));
     }
 
     template <Integral T>
-    inline T ceil(const T v) {
+    inline T ceil(const T v)
+    {
         return v;
     }
 
-    inline s64 round(double v) {
+    inline s64 round(double v)
+    {
         // Right bit shift on signed integer must be arithmetic
         static_assert((s64(-1) >> 1) == s64(-1));
 
         return std::bit_cast<s64>(v + 6755399441055744.0) << 13 >> 13;
     }
 
-    inline s32 round(float v) {
+    inline s32 round(float v)
+    {
         // Right bit shift on signed integer must be arithmetic
         static_assert((s32(-1) >> 1) == s32(-1));
 
@@ -285,12 +299,14 @@ namespace qc {
     }
 
     template <Integral T>
-    inline T round(const T v) {
+    inline T round(const T v)
+    {
         return v;
     }
 
     template <Floating T>
-    inline T pow(const T v, const int e) {
+    inline T pow(const T v, const int e)
+    {
         if (e >= 0) {
             return pow(v, uint(e));
         }
@@ -300,7 +316,8 @@ namespace qc {
     }
 
     template <Floating T>
-    inline T pow(T v, uint e) {
+    inline T pow(T v, uint e)
+    {
         T r{T(1.0)};
 
         do {
@@ -313,7 +330,9 @@ namespace qc {
     }
 
     template <UnsignedIntegral T>
-    inline constexpr int log2Floor(const T v) {
+    inline constexpr int log2Floor(const T v)
+    {
+        // Old, non-std way of doing it
         //static_assert(sizeof(T) <= 8u);
         //
         //int log{0};
@@ -329,23 +348,27 @@ namespace qc {
     }
 
     template <UnsignedIntegral T>
-    inline constexpr int mipmaps(const T size) {
+    inline constexpr int mipmaps(const T size)
+    {
         return int(std::bit_width(size));
     }
 
     template <Floating T>
-    inline T fract(const T v) {
+    inline T fract(const T v)
+    {
         return v - trunc(v);
     }
 
     template <Floating T>
-    inline std::pair<T, stype<T>> fract_i(const T v) {
+    inline std::pair<T, stype<T>> fract_i(const T v)
+    {
         const stype<T> i{stype<T>(v)};
         return {v - T(i), i};
     }
 
     template <Numeric T>
-    inline constexpr T mod(const T v, const T d) {
+    inline constexpr T mod(const T v, const T d)
+    {
         if constexpr (Floating<T>) {
             return fract(v / d) * d;
         }
@@ -355,7 +378,8 @@ namespace qc {
     }
 
     template <Numeric T>
-    inline constexpr std::pair<T, T> mod_q(const T v, const T d) {
+    inline constexpr std::pair<T, T> mod_q(const T v, const T d)
+    {
         if constexpr (Floating<T>) {
             const T q{v / d};
             return {fract(q) * d, q};
@@ -367,76 +391,90 @@ namespace qc {
     }
 
     template <Floating T>
-    inline T mix(const T v1, const T v2, const T t) {
+    inline T mix(const T v1, const T v2, const T t)
+    {
         return std::lerp(v1, v2, t);
     }
 
     template <Floating T>
-    inline T unmix(const T v1, const T v2, const T v) {
+    inline T unmix(const T v1, const T v2, const T v)
+    {
         return (v - v1) / (v2 - v1);
     }
 
     template <Floating T>
-    inline T smoothstep(const T v1, const T v2, const T t) {
+    inline T smoothstep(const T v1, const T v2, const T t)
+    {
         return mix(v1, v2, t * t * (T(3.0) - T(2.0) * t));
     }
 
     template <typename T, typename... Args>
-    inline constexpr T sum(const T & v, const Args &... args) {
+    inline constexpr T sum(const T & v, const Args &... args)
+    {
         return (v + ... + args);
     }
 
     template <typename T, typename... Args>
-    inline constexpr T product(const T & v, const Args &... args) {
+    inline constexpr T product(const T & v, const Args &... args)
+    {
         return (v * ... * args);
     }
 
     template <Floating T, Floating... Args>
-    inline T average(const T v, const Args... args) {
+    inline T average(const T v, const Args... args)
+    {
         return (v + ... + args) / T(1 + sizeof...(Args));
     }
 
     template <Floating T>
-    inline T radians(const T degrees) {
+    inline T radians(const T degrees)
+    {
         return degrees * T(std::numbers::pi / 180.0);
     }
 
     template <Floating T>
-    inline T degrees(const T radians) {
+    inline T degrees(const T radians)
+    {
         return radians * T(180.0 / std::numbers::pi);
     }
 
     template <Floating To, Floating From>
-    inline To transnorm(const From v) {
+    inline To transnorm(const From v)
+    {
         return To(v);
     }
 
     template <SignedIntegral To, Floating From>
-    inline To transnorm(const From v) {
+    inline To transnorm(const From v)
+    {
         if (v <= From(-1.0)) return std::numeric_limits<To>::min();
         if (v >= From(1.0)) return std::numeric_limits<To>::max();
         return v < From(0.0) ? To(std::round(v * -From(std::numeric_limits<To>::min()))) : To(std::round(v * From(std::numeric_limits<To>::max())));
     }
 
     template <UnsignedIntegral To, Floating From>
-    inline To transnorm(const From v) {
+    inline To transnorm(const From v)
+    {
         if (v <= From(0.0)) return To(0u);
         if (v >= From(1.0)) return std::numeric_limits<To>::max();
         return To(std::round(v * From(std::numeric_limits<To>::max())));
     }
 
     template <Floating To, SignedIntegral From>
-    inline To transnorm(const From v) {
+    inline To transnorm(const From v)
+    {
         return To(v) * (v < 0 ? To(1.0) / -To(std::numeric_limits<From>::min()) : To(1.0) / To(std::numeric_limits<From>::max()));
     }
 
     template <Floating To, UnsignedIntegral From>
-    inline To transnorm(const From v) {
+    inline To transnorm(const From v)
+    {
         return To(v) * (To(1.0) / To(std::numeric_limits<From>::max()));
     }
 
     template <UnsignedIntegral To, UnsignedIntegral From>
-    inline To transnorm(const From v) {
+    inline To transnorm(const From v)
+    {
         if constexpr (sizeof(From) == sizeof(To)) {
             return v;
         }
@@ -449,5 +487,4 @@ namespace qc {
             return transnorm<To>(NextFrom(v | (OpType(v) << (8u * sizeof(From)))));
         }
     }
-
-} // namespace qc
+}
