@@ -15,8 +15,7 @@ qc_setup_general()
 
 qc_setup_target(
     qc-core
-    LIBRARY
-    INTERFACE
+    INTERFACE_LIBRARY
     INSTALLABLE
 )
 
