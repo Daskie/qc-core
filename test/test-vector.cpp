@@ -625,6 +625,10 @@ static void compileFunctionsFT()
     qc::magnitude(v3);
     qc::magnitude(v4);
 
+    qc::distance(v2, v2);
+    qc::distance(v3, v3);
+    qc::distance(v4, v4);
+
     qc::normalize(v2);
     qc::normalize(v3);
     qc::normalize(v4);
@@ -700,6 +704,18 @@ static void compileFunctionsFT()
     qc::transnorm<ulvec2>(v2);
     qc::transnorm<ulvec3>(v3);
     qc::transnorm<ulvec4>(v4);
+}
+
+template <typename T>
+static void compileFunctionsST()
+{
+    vec2<T> v2;
+    vec2<T> v3;
+    vec2<T> v4;
+
+    qc::distance2(v2, v2);
+    qc::distance2(v3, v3);
+    qc::distance2(v4, v4);
 }
 
 template <typename T>
@@ -793,6 +809,13 @@ static void compileFunctions()
 
     compileFunctionsFT<f32>();
     compileFunctionsFT<f64>();
+
+    compileFunctionsST<s8>();
+    compileFunctionsST<s16>();
+    compileFunctionsST<s32>();
+    compileFunctionsST<s64>();
+    compileFunctionsST<f32>();
+    compileFunctionsST<f64>();
 
     compileFunctionsIT<s8>();
     compileFunctionsIT<s16>();

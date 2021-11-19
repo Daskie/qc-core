@@ -95,6 +95,16 @@ namespace qc
     //
     // ...
     //
+    template <Floating T, int n> T distance(const vec<T, n> & v1, const vec<T, n> & v2);
+
+    //
+    // ...
+    //
+    template <SignedNumeric T, int n> T distance2(const vec<T, n> & v1, const vec<T, n> & v2);
+
+    //
+    // ...
+    //
     template <Floating T, int n> vec<T, n> normalize(const vec<T, n> & v);
 
     //
@@ -446,7 +456,7 @@ namespace qc
     template <Floating T, int n>
     inline T magnitude(const vec<T, n> & v)
     {
-        return T(std::sqrt(magnitude2(v)));
+        return std::sqrt(magnitude2(v));
     }
 
     template <Numeric T, int n>
@@ -455,6 +465,18 @@ namespace qc
         if constexpr (n == 2) return v.x * v.x + v.y * v.y;
         if constexpr (n == 3) return v.x * v.x + v.y * v.y + v.z * v.z;
         if constexpr (n == 4) return v.x * v.x + v.y * v.y + v.z * v.z + v.w * v.w;
+    }
+
+    template <Floating T, int n>
+    inline T distance(const vec<T, n> & v1, const vec<T, n> & v2)
+    {
+        return std::sqrt(distance2(v1, v2));
+    }
+
+    template <SignedNumeric T, int n>
+    inline T distance2(const vec<T, n> & v1, const vec<T, n> & v2)
+    {
+        return magnitude2(v2 - v1);
     }
 
     template <Floating T, int n>
