@@ -423,7 +423,7 @@ namespace qc
     template <Floating T, Floating... Args>
     inline T average(const T v, const Args... args)
     {
-        return (v + ... + args) / T(1 + sizeof...(Args));
+        return (v + ... + args) * (T(1.0) / T(1 + sizeof...(Args)));
     }
 
     template <Floating T>

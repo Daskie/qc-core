@@ -609,6 +609,10 @@ static void compileFunctionsFT()
     qc::areEqual_e(v3, v3, v);
     qc::areEqual_e(v4, v4, v);
 
+    qc::average(v2);
+    qc::average(v3);
+    qc::average(v4);
+
     qc::pow(v2, v);
     qc::pow(v3, v);
     qc::pow(v4, v);
