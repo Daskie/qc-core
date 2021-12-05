@@ -195,7 +195,7 @@ static void compileFunctions()
 template <typename T1, typename T2>
 static constexpr void compileFunctionsConstexprTT()
 {
-    constexpr T1 v{1};
+    //constexpr T1 v{1};
 
 }
 
@@ -265,7 +265,7 @@ static constexpr void compileFunctionsConstexprT()
 template <typename T>
 static constexpr void compileFunctionsConstexprFT()
 {
-    constexpr T v{1.0};
+    //constexpr T v{1.0};
 
     //qc::equal_e(v, v);
     //qc::equal_e(v, v, v);
@@ -298,7 +298,7 @@ static constexpr void compileFunctionsConstexprUIT()
 
 static constexpr void compileFunctionsConstexprBT()
 {
-    constexpr bool v{true};
+    //constexpr bool v{true};
 
     //qc::equal(v, v);
     //qc::equal(v, v, v);

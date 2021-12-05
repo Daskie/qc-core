@@ -846,10 +846,10 @@ static void compileFunctions()
 template <typename T1, typename T2>
 static constexpr void compileFunctionsConstexprTT()
 {
-    constexpr T1 v{T1(1.0)};
-    constexpr vec2<T1> v2(T1(1.0));
-    constexpr vec3<T1> v3(T1(1.0));
-    constexpr vec4<T1> v4(T1(1.0));
+    //constexpr T1 v{T1(1.0)};
+    //constexpr vec2<T1> v2(T1(1.0));
+    //constexpr vec3<T1> v3(T1(1.0));
+    //constexpr vec4<T1> v4(T1(1.0));
 
 
 }
@@ -868,10 +868,10 @@ static constexpr void compileFunctionsConstexprT()
     compileFunctionsConstexprTT<T, u32>();
     compileFunctionsConstexprTT<T, u64>();
 
-    constexpr T v{1.0};
-    constexpr vec2<T> v2(T(1.0));
-    constexpr vec3<T> v3(T(1.0));
-    constexpr vec4<T> v4(T(1.0));
+    //constexpr T v{1.0};
+    //constexpr vec2<T> v2(T(1.0));
+    //constexpr vec3<T> v3(T(1.0));
+    //constexpr vec4<T> v4(T(1.0));
 
     // arithmetic
 
