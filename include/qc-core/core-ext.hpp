@@ -79,6 +79,9 @@ namespace qc
     s32 round(float v);
     template <Integral T> T round(T v);
 
+    // Simple wrapper around std::pow
+    template <Floating T> T pow(T v, T e);
+
     //
     // ...
     // ~2.15x faster than std::pow
@@ -302,6 +305,12 @@ namespace qc
     inline T round(const T v)
     {
         return v;
+    }
+
+    template <Floating T>
+    inline T pow(const T v, const T e)
+    {
+        return std::pow(v, e);
     }
 
     template <Floating T>

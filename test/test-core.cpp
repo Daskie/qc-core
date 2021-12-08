@@ -118,6 +118,7 @@ static void compileFunctionsFT()
     qc::areEqual_e(v, v);
     qc::areEqual_e(v, v, v);
 
+    qc::pow(v, v);
     qc::pow(v, 1);
     qc::pow(v, 1u);
 
