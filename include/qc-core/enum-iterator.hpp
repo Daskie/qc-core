@@ -68,4 +68,6 @@ namespace qc
 
     // Ensure `EnumIteration<const E>` resolves to same type as `EnumIteration<E>`
     template <IterableEnum E> requires (std::is_const_v<E>) struct EnumIteration<E> : EnumIteration<std::remove_const_t<E>> {};
+
+    template <IterableEnum E> constexpr EnumIteration<E> iterateEnum{};
 }

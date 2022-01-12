@@ -46,8 +46,8 @@ TEST(enumIterator, forLoop)
 
 TEST(enumIterator, forLoopEmpty)
 {
-    EXPECT_EQ(Enum4::_n, *qc::EnumIteration<Enum4>{}.begin());
-    EXPECT_EQ(Enum4::_n, *qc::EnumIteration<Enum4>{}.end());
+    EXPECT_EQ(Enum4::_n, *qc::iterateEnum<Enum4>.begin());
+    EXPECT_EQ(Enum4::_n, *qc::iterateEnum<Enum4>.end());
 }
 
 TEST(enumIterator, forEach)
@@ -55,7 +55,7 @@ TEST(enumIterator, forEach)
     Enum3 ref{Enum3::a};
     uint count{0u};
 
-    for (const Enum3 e : qc::EnumIteration<Enum3>{}) {
+    for (const Enum3 e : qc::iterateEnum<Enum3>) {
         EXPECT_EQ(ref, e);
         ++reinterpret_cast<uint &>(ref);
         ++count;
@@ -68,7 +68,7 @@ TEST(enumIterator, forEach)
 TEST(enumIterator, forEachEmpty)
 {
     #pragma warning(suppress: 4189)
-    for (const Enum4 e : qc::EnumIteration<Enum4>{}) {
+    for (const Enum4 e : qc::iterateEnum<Enum4>) {
         FAIL();
     }
 }
