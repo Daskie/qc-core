@@ -454,11 +454,11 @@ namespace qc
     }
 
     template <SignedIntegral To, Floating From>
-    inline To transnorm(const From v)
+    inline To transnorm(From v)
     {
-        if (v <= From(-1.0)) return std::numeric_limits<To>::min();
+        if (v <= From(-1.0)) return -std::numeric_limits<To>::max();
         if (v >= From(1.0)) return std::numeric_limits<To>::max();
-        return v < From(0.0) ? To(std::round(v * -From(std::numeric_limits<To>::min()))) : To(std::round(v * From(std::numeric_limits<To>::max())));
+        return To(std::round(v * From(std::numeric_limits<To>::max())));
     }
 
     template <UnsignedIntegral To, Floating From>
@@ -472,7 +472,7 @@ namespace qc
     template <Floating To, SignedIntegral From>
     inline To transnorm(const From v)
     {
-        return To(v) * (v < 0 ? To(1.0) / -To(std::numeric_limits<From>::min()) : To(1.0) / To(std::numeric_limits<From>::max()));
+        return max(To(v) * (To(1.0) / To(std::numeric_limits<From>::max())), To(-1.0));
     }
 
     template <Floating To, UnsignedIntegral From>

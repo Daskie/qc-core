@@ -368,15 +368,18 @@ void testTransnormFTST()
 {
     const double epsilon(1.0 / std::ldexp(1.0, std::numeric_limits<To>::digits));
 
-    EXPECT_EQ(To(std::numeric_limits<To>::min()), qc::transnorm<To>(From(-1.0)));
-    EXPECT_NEAR(0.75, double(qc::transnorm<To>(From(-0.75))) / double(std::numeric_limits<To>::min()), epsilon);
-    EXPECT_NEAR(0.5, double(qc::transnorm<To>(From(-0.5))) / double(std::numeric_limits<To>::min()), epsilon);
-    EXPECT_NEAR(0.25, double(qc::transnorm<To>(From(-0.25))) / double(std::numeric_limits<To>::min()), epsilon);
+    EXPECT_EQ(To(-std::numeric_limits<To>::max()), qc::transnorm<To>(From(-1.0)));
+    EXPECT_NEAR(0.75, double(qc::transnorm<To>(From(-0.75))) / double(-std::numeric_limits<To>::max()), epsilon);
+    EXPECT_NEAR(0.5, double(qc::transnorm<To>(From(-0.5))) / double(-std::numeric_limits<To>::max()), epsilon);
+    EXPECT_NEAR(0.25, double(qc::transnorm<To>(From(-0.25))) / double(-std::numeric_limits<To>::max()), epsilon);
     EXPECT_EQ(To(0u), qc::transnorm<To>(From(0.0)));
     EXPECT_NEAR(0.25, double(qc::transnorm<To>(From(0.25))) / double(std::numeric_limits<To>::max()), epsilon);
     EXPECT_NEAR(0.5, double(qc::transnorm<To>(From(0.5))) / double(std::numeric_limits<To>::max()), epsilon);
     EXPECT_NEAR(0.75, double(qc::transnorm<To>(From(0.75))) / double(std::numeric_limits<To>::max()), epsilon);
     EXPECT_EQ(std::numeric_limits<To>::max(), qc::transnorm<To>(From(1.0)));
+
+    EXPECT_GE(qc::transnorm<To>(From(-1.0) + std::numeric_limits<From>::epsilon()), qc::transnorm<To>(From(-1.0)));
+    EXPECT_LE(qc::transnorm<To>(From(1.0) - std::numeric_limits<From>::epsilon()), qc::transnorm<To>(From(1.0)));
 }
 
 template <typename From, typename To>
@@ -389,6 +392,9 @@ void testTransnormFTUT()
     EXPECT_NEAR(0.5, double(qc::transnorm<To>(From(0.5))) / double(std::numeric_limits<To>::max()), epsilon);
     EXPECT_NEAR(0.75, double(qc::transnorm<To>(From(0.75))) / double(std::numeric_limits<To>::max()), epsilon);
     EXPECT_EQ(std::numeric_limits<To>::max(), qc::transnorm<To>(From(1.0)));
+
+    EXPECT_GE(qc::transnorm<To>(std::numeric_limits<From>::min()), qc::transnorm<To>(From(0.0)));
+    EXPECT_LE(qc::transnorm<To>(From(1.0) - std::numeric_limits<From>::epsilon()), qc::transnorm<To>(From(1.0)));
 }
 
 template <typename From, typename To>
