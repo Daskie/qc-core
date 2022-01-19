@@ -42,6 +42,7 @@ namespace qc
         template <typename T> concept Numeric = Integral<T> || Floating<T>;
         template <typename T> concept SignedNumeric = SignedIntegral<T> || Floating<T>;
         template <typename T> concept NumericOrBoolean = Numeric<T> || std::is_same_v<T, bool>;
+        template <typename T> concept Enum = std::is_enum_v<T>;
     }
 
     template <int size> struct sized;
@@ -54,6 +55,8 @@ namespace qc
     template <typename T> using ftype = typename sized<sizeof(T)>::ftype;
 
     template <typename T> concept _MinMaxable = Numeric<T> || std::is_pointer_v<T>;
+
+    template <Enum E> constexpr std::underlying_type_t<E> underlyingVal(const E e);
 
     //
     // ...
@@ -90,6 +93,12 @@ namespace qc
 
 namespace qc
 {
+    template <Enum E>
+    inline constexpr std::underlying_type_t<E> underlyingVal(const E e)
+    {
+        return std::underlying_type_t<E>(e);
+    }
+
     template <_MinMaxable T>
     inline constexpr T min(const T v1, const T v2)
     {

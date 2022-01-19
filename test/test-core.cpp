@@ -4,6 +4,8 @@
 
 using namespace qc::types;
 
+enum TestEnum { a, b, c };
+
 #pragma warning(push)
 #pragma warning(disable: 4101)
 static void compileTyping()
@@ -307,6 +309,11 @@ static constexpr void compileFunctionsConstexprBT()
     //qc::equal(v, v, v, v, v);
 }
 
+static constexpr void compileFunctionsConstexprET()
+{
+    qc::underlyingVal(TestEnum::a);
+}
+
 static constexpr bool compileFunctionsConstexpr()
 {
     compileFunctionsConstexprT<f32>();
@@ -338,6 +345,8 @@ static constexpr bool compileFunctionsConstexpr()
     compileFunctionsConstexprUIT<u64>();
 
     compileFunctionsConstexprBT();
+
+    compileFunctionsConstexprET();
 
     return true;
 }
@@ -504,6 +513,7 @@ TEST(core, concepts)
     static_assert(!Integral<bool>);
     static_assert(!Integral<char>);
     static_assert(!Integral<void *>);
+    static_assert(!Integral<TestEnum>);
 
     static_assert(SignedIntegral<s8>);
     static_assert(SignedIntegral<s16>);
@@ -518,6 +528,7 @@ TEST(core, concepts)
     static_assert(!SignedIntegral<bool>);
     static_assert(!SignedIntegral<char>);
     static_assert(!SignedIntegral<void *>);
+    static_assert(!SignedIntegral<TestEnum>);
 
     static_assert(!UnsignedIntegral<s8>);
     static_assert(!UnsignedIntegral<s16>);
@@ -532,6 +543,7 @@ TEST(core, concepts)
     static_assert(!UnsignedIntegral<bool>);
     static_assert(!UnsignedIntegral<char>);
     static_assert(!UnsignedIntegral<void *>);
+    static_assert(!UnsignedIntegral<TestEnum>);
 
     static_assert(!Floating<s8>);
     static_assert(!Floating<s16>);
@@ -546,6 +558,7 @@ TEST(core, concepts)
     static_assert(!Floating<bool>);
     static_assert(!Floating<char>);
     static_assert(!Floating<void *>);
+    static_assert(!Floating<TestEnum>);
 
     static_assert(Numeric<s8>);
     static_assert(Numeric<s16>);
@@ -560,6 +573,7 @@ TEST(core, concepts)
     static_assert(!Numeric<bool>);
     static_assert(!Numeric<char>);
     static_assert(!Numeric<void *>);
+    static_assert(!Numeric<TestEnum>);
 
     static_assert(SignedNumeric<s8>);
     static_assert(SignedNumeric<s16>);
@@ -574,4 +588,20 @@ TEST(core, concepts)
     static_assert(!SignedNumeric<bool>);
     static_assert(!SignedNumeric<char>);
     static_assert(!SignedNumeric<void *>);
+    static_assert(!SignedNumeric<TestEnum>);
+
+    static_assert(!Enum<s8>);
+    static_assert(!Enum<s16>);
+    static_assert(!Enum<s32>);
+    static_assert(!Enum<s64>);
+    static_assert(!Enum<u8>);
+    static_assert(!Enum<u16>);
+    static_assert(!Enum<u32>);
+    static_assert(!Enum<u64>);
+    static_assert(!Enum<f32>);
+    static_assert(!Enum<f64>);
+    static_assert(!Enum<bool>);
+    static_assert(!Enum<char>);
+    static_assert(!Enum<void *>);
+    static_assert(Enum<TestEnum>);
 }
