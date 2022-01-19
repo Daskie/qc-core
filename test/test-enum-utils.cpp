@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <qc-core/enum-iterator.hpp>
+#include <qc-core/enum-utils.hpp>
 
 using namespace qc::types;
 
@@ -10,6 +10,24 @@ enum class Enum2 : uint { a, b, c };
 enum class Enum3 : uint { a, b, c, _n };
 enum class Enum4 : uint { _n };
 enum class Enum5 : uint {};
+
+TEST(enumUtils, countableEnum)
+{
+    static_assert(!qc::CountableEnum<Enum0>);
+    static_assert(!qc::CountableEnum<Enum1>);
+    static_assert(!qc::CountableEnum<Enum2>);
+    static_assert(qc::CountableEnum<Enum3>);
+    static_assert(qc::CountableEnum<Enum4>);
+    static_assert(!qc::CountableEnum<Enum5>);
+}
+
+TEST(enumUtils, enumCount)
+{
+    EXPECT_EQ(3u, qc::enumCount<Enum3>);
+    EXPECT_EQ(0u, qc::enumCount<Enum4>);
+}
+
+#if 0
 
 template <typename E> concept Compiles = requires
 {
@@ -71,4 +89,12 @@ TEST(enumIterator, forEachEmpty)
     for (const Enum4 e : qc::iterateEnum<Enum4>) {
         FAIL();
     }
+}
+
+#endif
+
+TEST(enumUtils, enumArray)
+{
+    EXPECT_EQ((std::array<Enum3, 3u>{Enum3::a, Enum3::b, Enum3::c}), qc::enumArray<Enum3>);
+    EXPECT_EQ((std::array<Enum4, 0u>{}), qc::enumArray<Enum4>);
 }
