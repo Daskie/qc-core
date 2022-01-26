@@ -243,8 +243,6 @@ static void compileFunctionsT()
     qc::span4<T> s4{v, v};
     std::stringstream os;
 
-    // arithmetic assignment
-
     s1 += v;
     s2 += v;
     s3 += v;
@@ -281,7 +279,15 @@ static void compileFunctionsT()
     s3 /= v3;
     s4 /= v4;
 
-    // arithmetic
+    s1 &= s1;
+    s2 &= s2;
+    s3 &= s3;
+    s4 &= s4;
+
+    s1 |= s1;
+    s2 |= s2;
+    s3 |= s3;
+    s4 |= s4;
 
     s1 + v;
     s2 + v;
@@ -346,8 +352,6 @@ static void compileFunctionsT()
     s3 / v3;
     s4 / v4;
 
-    // comparison
-
     s1 == s1;
     s2 == s2;
     s3 == s3;
@@ -358,14 +362,20 @@ static void compileFunctionsT()
     s3 != s3;
     s4 != s4;
 
-    // other
+    s1 & s1;
+    s2 & s2;
+    s3 & s3;
+    s4 & s4;
+
+    s1 | s1;
+    s2 | s2;
+    s3 | s3;
+    s4 | s4;
 
     os << s1;
     os << s2;
     os << s3;
     os << s4;
-
-    // uncategorized
 
     qc::min(s1, v);
     qc::min(s2, v);
@@ -408,21 +418,6 @@ static void compileFunctionsT()
     qc::clamp(v2, s2);
     qc::clamp(v3, s3);
     qc::clamp(v4, s4);
-
-    qc::intersect(s1, s1);
-    qc::intersect(s2, s2);
-    qc::intersect(s3, s3);
-    qc::intersect(s4, s4);
-
-    qc::join(s1, s1);
-    qc::join(s2, s2);
-    qc::join(s3, s3);
-    qc::join(s4, s4);
-
-    qc::joinify(s1, s1);
-    qc::joinify(s2, s2);
-    qc::joinify(s3, s3);
-    qc::joinify(s4, s4);
 }
 
 static void compileFunctions()
@@ -451,108 +446,77 @@ static constexpr void compileFunctionsConstexprT()
     constexpr qc::span3<T> s3(v, v);
     constexpr qc::span4<T> s4(v, v);
 
-    // arithmetic assignment
+    s1 + v;
+    s2 + v;
+    s3 + v;
+    s4 + v;
 
-    //s1 += v;
-    //s2 += v;
-    //s3 += v;
-    //s4 += v;
+    s2 + v2;
+    s3 + v3;
+    s4 + v4;
 
-    //s2 += v2;
-    //s3 += v3;
-    //s4 += v4;
+    v + s1;
+    v + s2;
+    v + s3;
+    v + s4;
 
-    //s1 -= v;
-    //s2 -= v;
-    //s3 -= v;
-    //s4 -= v;
+    v2 + s2;
+    v3 + s3;
+    v4 + s4;
 
-    //s2 -= v2;
-    //s3 -= v3;
-    //s4 -= v4;
+    s1 - v;
+    s2 - v;
+    s3 - v;
+    s4 - v;
 
-    // arithmetic
+    s2 - v2;
+    s3 - v3;
+    s4 - v4;
 
-    //s1 + v;
-    //s2 + v;
-    //s3 + v;
-    //s4 + v;
+    v - s1;
+    v - s2;
+    v - s3;
+    v - s4;
 
-    //s2 + v2;
-    //s3 + v3;
-    //s4 + v4;
+    v2 - s2;
+    v3 - s3;
+    v4 - s4;
 
-    //v + s1;
-    //v + s2;
-    //v + s3;
-    //v + s4;
+    s1 == s1;
+    s2 == s2;
+    s3 == s3;
+    s4 == s4;
 
-    //v2 + s2;
-    //v3 + s3;
-    //v4 + s4;
+    s1 != s1;
+    s2 != s2;
+    s3 != s3;
+    s4 != s4;
 
-    //s1 - v;
-    //s2 - v;
-    //s3 - v;
-    //s4 - v;
+    s1 & s1;
+    s2 & s2;
+    s3 & s3;
+    s4 & s4;
 
-    //s2 - v2;
-    //s3 - v3;
-    //s4 - v4;
+    s1 | s1;
+    s2 | s2;
+    s3 | s3;
+    s4 | s4;
 
-    //v - s1;
-    //v - s2;
-    //v - s3;
-    //v - s4;
+    qc::min(s1, v);
+    qc::min(s2, v);
+    qc::min(s2, v2);
+    qc::min(s3, v);
+    qc::min(s3, v3);
+    qc::min(s4, v);
+    qc::min(s4, v4);
 
-    //v2 - s2;
-    //v3 - s3;
-    //v4 - s4;
-
-    // comparison
-
-    //s1 == s1;
-    //s2 == s2;
-    //s3 == s3;
-    //s4 == s4;
-
-    //s1 != s1;
-    //s2 != s2;
-    //s3 != s3;
-    //s4 != s4;
-
-    // uncategorized
-
-    //qc::min(s1, v);
-    //qc::min(s2, v);
-    //qc::min(s2, v2);
-    //qc::min(s3, v);
-    //qc::min(s3, v3);
-    //qc::min(s4, v);
-    //qc::min(s4, v4);
-    //
-    //qc::max(s1, v);
-    //qc::max(s2, v);
-    //qc::max(s2, v2);
-    //qc::max(s3, v);
-    //qc::max(s3, v3);
-    //qc::max(s4, v);
-    //qc::max(s4, v4);
-
-    //qc::clamp(v, s1);
-    //qc::clamp(v2, s2);
-    //qc::clamp(v3, s3);
-    //qc::clamp(v4, s4);
-
-    //qc::intersect(s1, s1);
-    //qc::intersect(s2, s2);
-    //qc::intersect(s3, s3);
-    //qc::intersect(s4, s4);
-
-    //qc::join(s1, s1);
-    //qc::join(s2, s2);
-    //qc::join(s3, s3);
-    //qc::join(s4, s4);
+    qc::max(s1, v);
+    qc::max(s2, v);
+    qc::max(s2, v2);
+    qc::max(s3, v);
+    qc::max(s3, v3);
+    qc::max(s4, v);
+    qc::max(s4, v4);
 }
 
 static constexpr bool compileFunctionsConstexpr()
