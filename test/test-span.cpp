@@ -634,7 +634,7 @@ static constexpr bool compileCasts()
 }
 
 template <typename T>
-static constexpr void compileConstantsFT()
+static constexpr void compileConstantsT()
 {
     constexpr qc::span1<T> is1(qc::fullSpan<T, 1>);
     constexpr qc::span2<T> is2(qc::fullSpan<T, 2>);
@@ -649,8 +649,16 @@ static constexpr void compileConstantsFT()
 
 static constexpr bool compileConstants()
 {
-    compileConstantsFT<qc::f32>();
-    compileConstantsFT<qc::f64>();
+    compileConstantsT<qc::f32>();
+    compileConstantsT<qc::f64>();
+    compileConstantsT<qc::s8>();
+    compileConstantsT<qc::s16>();
+    compileConstantsT<qc::s32>();
+    compileConstantsT<qc::s64>();
+    compileConstantsT<qc::u8>();
+    compileConstantsT<qc::u16>();
+    compileConstantsT<qc::u32>();
+    compileConstantsT<qc::u64>();
 
     return true;
 }

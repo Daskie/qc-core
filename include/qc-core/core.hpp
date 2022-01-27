@@ -43,6 +43,7 @@ namespace qc
         template <typename T> concept SignedNumeric = SignedIntegral<T> || Floating<T>;
         template <typename T> concept NumericOrBoolean = Numeric<T> || std::is_same_v<T, bool>;
         template <typename T> concept Enum = std::is_enum_v<T>;
+        template <typename T> concept MinMaxable = Numeric<T> || std::is_pointer_v<T>;
     }
 
     template <int size> struct sized;
@@ -54,38 +55,36 @@ namespace qc
     template <typename T> using utype = typename sized<sizeof(T)>::utype;
     template <typename T> using ftype = typename sized<sizeof(T)>::ftype;
 
-    template <typename T> concept _MinMaxable = Numeric<T> || std::is_pointer_v<T>;
-
     template <Enum E> constexpr std::underlying_type_t<E> underlyingVal(const E e);
 
     //
     // ...
     //
-    template <_MinMaxable T> constexpr T min(T v1, T v2);
+    template <MinMaxable T> constexpr T min(T v1, T v2);
     template <typename T1, typename T2, typename T3, typename... Ts> constexpr decltype(auto) min(T1 && v1, T2 && v2, T3 && v3, Ts &&... vs);
 
     //
     // ...
     //
-    template <_MinMaxable T> constexpr T max(T v1, T v2);
+    template <MinMaxable T> constexpr T max(T v1, T v2);
     template <typename T1, typename T2, typename T3, typename... Ts> constexpr decltype(auto) max(T1 && v1, T2 && v2, T3 && v3, Ts &&... vs);
 
     //
     // ...
     //
-    template <_MinMaxable T> T & minify(T & v1, T v2);
+    template <MinMaxable T> T & minify(T & v1, T v2);
     template <typename T, typename T1, typename T2, typename... Ts> T & minify(T & min, T1 && v1, T2 && v2, Ts &&... vs);
 
     //
     // ...
     //
-    template <_MinMaxable T> T & maxify(T & v1, T v2);
+    template <MinMaxable T> T & maxify(T & v1, T v2);
     template <typename T, typename T1, typename T2, typename... Ts> T & maxify(T & min, T1 && v1, T2 && v2, Ts &&... vs);
 
     //
     // ...
     //
-    template <_MinMaxable T> constexpr std::pair<T, T> minmax(T v1, T v2);
+    template <MinMaxable T> constexpr std::pair<T, T> minmax(T v1, T v2);
     template <typename T1, typename T2, typename T3, typename... Ts> constexpr auto minmax(T1 && v1, T2 && v2, T3 && v3, Ts &&... vs);
 }
 
@@ -99,7 +98,7 @@ namespace qc
         return std::underlying_type_t<E>(e);
     }
 
-    template <_MinMaxable T>
+    template <MinMaxable T>
     inline constexpr T min(const T v1, const T v2)
     {
         return v2 < v1 ? v2 : v1;
@@ -111,7 +110,7 @@ namespace qc
         return min(min(std::forward<T1>(v1), std::forward<T2>(v2)), std::forward<T3>(v3), std::forward<Ts>(vs)...);
     }
 
-    template <_MinMaxable T>
+    template <MinMaxable T>
     inline constexpr T max(const T v1, const T v2)
     {
         return v2 > v1 ? v2 : v1;
@@ -123,7 +122,7 @@ namespace qc
         return max(max(std::forward<T1>(v1), std::forward<T2>(v2)), std::forward<T3>(v3), std::forward<Ts>(vs)...);
     }
 
-    template <_MinMaxable T>
+    template <MinMaxable T>
     inline T & minify(T & v1, const T v2)
     {
         return v2 < v1 ? v1 = v2 : v1;
@@ -135,7 +134,7 @@ namespace qc
         return minify(minify(min, std::forward<T1>(v1)), std::forward<T2>(v2), std::forward<Ts>(vs)...);
     }
 
-    template <_MinMaxable T>
+    template <MinMaxable T>
     inline T & maxify(T & v1, const T v2)
     {
         return v2 > v1 ? v1 = v2 : v1;
@@ -147,7 +146,7 @@ namespace qc
         return maxify(maxify(min, std::forward<T1>(v1)), std::forward<T2>(v2), std::forward<Ts>(vs)...);
     }
 
-    template <_MinMaxable T>
+    template <MinMaxable T>
     inline constexpr std::pair<T, T> minmax(const T v1, const T v2)
     {
         return (v2 < v1) ? std::pair{v2, v1} : std::pair{v1, v2};
