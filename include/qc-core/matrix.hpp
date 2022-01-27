@@ -102,6 +102,7 @@ namespace qc
 
         mat & operator=(const mat & m) noexcept = default;
         mat & operator=(mat && m) noexcept = default;
+        mat & operator=(const mat2<T> & m) noexcept;
 
         ~mat() noexcept = default;
 
@@ -144,6 +145,8 @@ namespace qc
 
         mat & operator=(const mat & m) noexcept = default;
         mat & operator=(mat && m) noexcept = default;
+        mat & operator=(const mat2<T> & m) noexcept;
+        mat & operator=(const mat3<T> & m) noexcept;
 
         ~mat() noexcept = default;
 
@@ -328,6 +331,16 @@ namespace qc
     {}
 
     template <Floating T>
+    inline mat3<T> & mat<T, 3>::operator=(const mat2<T> & m) noexcept
+    {
+        c1 = m.c1;
+        c2 = m.c2;
+        c3 = {T(0), T(0), T(1)};
+
+        return *this;
+    }
+
+    template <Floating T>
     inline constexpr mat<T, 3>::operator bool() const noexcept
     {
         return *this == mat{};
@@ -414,6 +427,28 @@ namespace qc
         c3(m.c3),
         c4(m.c4)
     {}
+
+    template <Floating T>
+    inline mat4<T> & mat<T, 4>::operator=(const mat2<T> & m) noexcept
+    {
+        c1 = m.c1;
+        c2 = m.c2;
+        c3 = {T(0), T(0), T(1), T(0)};
+        c4 = {T(0), T(0), T(0), T(1)};
+
+        return *this;
+    }
+
+    template <Floating T>
+    inline mat4<T> & mat<T, 4>::operator=(const mat3<T> & m) noexcept
+    {
+        c1 = m.c1;
+        c2 = m.c2;
+        c3 = m.c3;
+        c4 = {T(0), T(0), T(0), T(1)};
+
+        return *this;
+    }
 
     template <Floating T>
     inline constexpr mat<T, 4>::operator bool() const noexcept

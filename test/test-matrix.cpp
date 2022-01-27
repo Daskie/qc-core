@@ -102,6 +102,7 @@ static void compileClassesT()
 
     m3 = m3;
     m3 = std::move(m3);
+    m3 = m2;
 
     // conversion
 
@@ -168,6 +169,8 @@ static void compileClassesT()
 
     m4 = m4;
     m4 = std::move(m4);
+    m4 = m2;
+    m4 = m3;
 
     // conversion
 
