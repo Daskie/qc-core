@@ -80,15 +80,18 @@ namespace qc
 
     #endif
 
-    template <CountableEnum E>
-    constexpr std::array<E, enumCount<E>> _makeEnumArray() noexcept
+    namespace _minutia
     {
-        std::array<E, enumCount<E>> array{};
-        for (E e{}; e != E::_n; e = E(underlyingVal(e) + 1u)) {
-            array[underlyingVal(e)] = e;
+        template <CountableEnum E>
+        constexpr std::array<E, enumCount<E>> makeEnumArray() noexcept
+        {
+            std::array<E, enumCount<E>> array{};
+            for (E e{}; e != E::_n; e = E(underlyingVal(e) + 1u)) {
+                array[underlyingVal(e)] = e;
+            }
+            return array;
         }
-        return array;
     }
 
-    template <CountableEnum E> constexpr std::array<E, enumCount<E>> enumArray{_makeEnumArray<E>()};
+    template <CountableEnum E> constexpr std::array<E, enumCount<E>> enumArray{_minutia::makeEnumArray<E>()};
 }

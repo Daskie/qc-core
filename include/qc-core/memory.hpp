@@ -17,7 +17,10 @@ namespace qc::memory
         size_t deallocations{};
     };
 
-    inline std::vector<RecordAllocatorStats> _recordAllocatorStatsList(1u);
+    namespace _minutia
+    {
+        inline std::vector<RecordAllocatorStats> recordAllocatorStatsList(1u);
+    }
 
     //
     // NOT THREAD SAFE!!!
@@ -35,9 +38,9 @@ namespace qc::memory
         using is_always_equal = std::false_type;
 
         RecordAllocator() noexcept :
-            _listI{_recordAllocatorStatsList.size()}
+            _listI{_minutia::recordAllocatorStatsList.size()}
         {
-            _recordAllocatorStatsList.emplace_back();
+            _minutia::recordAllocatorStatsList.emplace_back();
         }
 
         RecordAllocator(const RecordAllocator &) noexcept = default;
@@ -82,12 +85,12 @@ namespace qc::memory
 
         RecordAllocatorStats & stats()
         {
-            return _recordAllocatorStatsList.at(_listI);
+            return _minutia::recordAllocatorStatsList.at(_listI);
         }
 
         const RecordAllocatorStats & stats() const
         {
-            return _recordAllocatorStatsList.at(_listI);
+            return _minutia::recordAllocatorStatsList.at(_listI);
         }
 
         bool operator==(const RecordAllocator &) const noexcept = default;

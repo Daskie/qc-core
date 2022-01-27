@@ -121,18 +121,21 @@ namespace qc::color
         return hsl;
     }
 
-    template <Floating T>
-    inline vec3<T> _hueToSrgb(const T hue, const T minComp, const T maxComp) noexcept
+    namespace _minutia
     {
-        const auto [fraction, whole]{fract_i(hue * T(6.0))};
-        const T midOffset{(maxComp - minComp) * fraction};
-        switch (whole) {
-            default: return {maxComp, minComp + midOffset, minComp};
-            case  1: return {maxComp - midOffset, maxComp, minComp};
-            case  2: return {minComp, maxComp, minComp + midOffset};
-            case  3: return {minComp, maxComp - midOffset, maxComp};
-            case  4: return {minComp + midOffset, minComp, maxComp};
-            case  5: return {maxComp, minComp, maxComp - midOffset};
+        template <Floating T>
+        inline vec3<T> hueToSrgb(const T hue, const T minComp, const T maxComp) noexcept
+        {
+            const auto[fraction, whole]{fract_i(hue * T(6.0))};
+            const T midOffset{(maxComp - minComp) * fraction};
+            switch (whole) {
+                default: return {maxComp, minComp + midOffset, minComp};
+                case 1: return {maxComp - midOffset, maxComp, minComp};
+                case 2: return {minComp, maxComp, minComp + midOffset};
+                case 3: return {minComp, maxComp - midOffset, maxComp};
+                case 4: return {minComp + midOffset, minComp, maxComp};
+                case 5: return {maxComp, minComp, maxComp - midOffset};
+            }
         }
     }
 
@@ -145,7 +148,7 @@ namespace qc::color
     template <Floating T>
     inline vec3<T> hueToSrgb(const T hue) noexcept
     {
-        return _hueToSrgb(hue, T(0.0), T(1.0));
+        return _minutia::hueToSrgb(hue, T(0.0), T(1.0));
     }
 
     ///
@@ -163,7 +166,7 @@ namespace qc::color
         const T spread{maxSpread * hsl.y};
         const T minComp{hsl.z - spread};
         const T maxComp{hsl.z + spread};
-        return _hueToSrgb(hsl.x, minComp, maxComp);
+        return _minutia::hueToSrgb(hsl.x, minComp, maxComp);
     }
 
     ///
