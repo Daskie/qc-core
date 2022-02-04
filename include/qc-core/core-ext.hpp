@@ -92,12 +92,12 @@ namespace qc
     //
     // ...
     //
-    template <UnsignedIntegral T> constexpr int log2Floor(T v);
+    template <UnsignedIntegral T> constexpr T log2Floor(T v);
 
     //
     // ...
     //
-    template <UnsignedIntegral T> constexpr int mipmaps(T size);
+    template <UnsignedIntegral T> constexpr T mipmaps(T size);
 
     //
     // ...
@@ -339,7 +339,7 @@ namespace qc
     }
 
     template <UnsignedIntegral T>
-    inline constexpr int log2Floor(const T v)
+    inline constexpr T log2Floor(const T v)
     {
         // Old, non-std way of doing it
         //static_assert(sizeof(T) <= 8u);
@@ -353,13 +353,13 @@ namespace qc
         //                               if (v & 0x0000000000000002) {           log +=  1; }
         //return log;
 
-        return v == T(0) ? 0 : int(std::bit_width(v)) - 1;
+        return v ? T(std::bit_width(v) - 1u) : T(0u);
     }
 
     template <UnsignedIntegral T>
-    inline constexpr int mipmaps(const T size)
+    inline constexpr T mipmaps(const T size)
     {
-        return int(std::bit_width(size));
+        return std::bit_width(size);
     }
 
     template <Floating T>
