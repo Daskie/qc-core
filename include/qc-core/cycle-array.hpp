@@ -34,31 +34,37 @@ namespace qc
 
             ~Iterator() noexcept = default;
 
-            value_type & operator*() const noexcept {
+            value_type & operator*() const noexcept
+            {
                 return _values[_currentIndex];
             }
 
-            value_type * operator->() const noexcept {
+            value_type * operator->() const noexcept
+            {
                 return _values + _currentIndex;
             }
 
-            Iterator & operator++() noexcept {
+            Iterator & operator++() noexcept
+            {
                 ++_currentIndex;
-                if (_currentIndex == n) {
+                if (_currentIndex == n)
+                {
                     _currentIndex = 0u;
                 }
                 ++_relativeIndex;
                 return *this;
             }
 
-            Iterator operator++(int) noexcept {
+            Iterator operator++(int) noexcept
+            {
                 Iterator temp(*this);
                 operator++();
                 return temp;
             }
 
             template <bool constant_>
-            bool operator==(const Iterator<constant_> & other) const noexcept {
+            bool operator==(const Iterator<constant_> & other) const noexcept
+            {
                 return _values == other.values && _relativeIndex == other._relativeIndex;
             }
 
@@ -198,7 +204,8 @@ namespace qc
 
         constexpr const value_type & at(const size_t i) const
         {
-            if (i >= n) {
+            if (i >= n)
+            {
                 throw std::out_of_range("Index out of bounds");
             }
 
@@ -240,10 +247,12 @@ namespace qc
         template <typename T_>
         T _push(T_ && v)
         {
-            if (_frontIndex == 0u) {
+            if (_frontIndex == 0u)
+            {
                 _frontIndex = n - 1u;
             }
-            else {
+            else
+            {
                 --_frontIndex;
             }
 
@@ -264,7 +273,8 @@ namespace qc
     template <typename T, size_t n>
     bool operator==(const CycleArray<T, n> & arr1, const CycleArray<T, n> & arr2)
     {
-        if (&arr1 == &arr2) {
+        if (&arr1 == &arr2)
+        {
             return true;
         }
 
@@ -272,8 +282,10 @@ namespace qc
         auto it2(arr2.cbegin());
         const auto end1(arr1.cend());
         const auto end2(arr2.cend());
-        for (; it1 != end1 && it2 != end2; ++it1, ++it2) {
-            if (*it1 != *it2) {
+        for (; it1 != end1 && it2 != end2; ++it1, ++it2)
+        {
+            if (*it1 != *it2)
+            {
                 return false;
             }
         }

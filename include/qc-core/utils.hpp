@@ -27,7 +27,8 @@ namespace qc::utils
     inline std::vector<std::byte> readFile(const std::filesystem::path & path)
     {
         const uintmax_t size{std::filesystem::file_size(path)};
-        if (size > qc::min(uintmax_t(std::numeric_limits<size_t>::max()), uintmax_t(std::numeric_limits<std::streamsize>::max()))) {
+        if (size > qc::min(uintmax_t(std::numeric_limits<size_t>::max()), uintmax_t(std::numeric_limits<std::streamsize>::max())))
+        {
             throw std::system_error(std::make_error_code(std::errc::file_too_large));
         }
 
@@ -44,7 +45,8 @@ namespace qc::utils
     inline std::string readAsciiFile(const std::filesystem::path & path)
     {
         const uintmax_t size{std::filesystem::file_size(path)};
-        if (size > qc::min(uintmax_t(std::numeric_limits<size_t>::max()), uintmax_t(std::numeric_limits<std::streamsize>::max()))) {
+        if (size > qc::min(uintmax_t(std::numeric_limits<size_t>::max()), uintmax_t(std::numeric_limits<std::streamsize>::max())))
+        {
             throw std::system_error(std::make_error_code(std::errc::file_too_large));
         }
 
@@ -80,10 +82,11 @@ namespace qc::utils
     {
         static_assert(std::is_same_v<std::decay_t<decltype(*first)>, T>);
 
-        for (Iter iter(first); iter != last; ++iter) {
+        for (Iter iter(first); iter != last; ++iter)
+        {
             *dst = *iter;
 
-            reinterpret_cast<std::byte * &>(dst) += stride;
+            reinterpret_cast<std::byte *&>(dst) += stride;
         }
     }
 
@@ -94,9 +97,15 @@ namespace qc::utils
         static constexpr double secondsPerDay(24.0 * secondsPerHour);
 
         seconds = std::floor(seconds);
-        double days(std::floor(seconds / secondsPerDay)); seconds -= days * secondsPerDay;
-        double hours(std::floor(seconds / secondsPerHour)); seconds -= hours * secondsPerHour;
-        double minutes(std::floor(seconds / secondsPerMinute)); seconds -= minutes * secondsPerMinute;
+
+        const double days{std::floor(seconds / secondsPerDay)};
+        seconds -= days * secondsPerDay;
+
+        const double hours{std::floor(seconds / secondsPerHour)};
+        seconds -= hours * secondsPerHour;
+
+        const double minutes{std::floor(seconds / secondsPerMinute)};
+        seconds -= minutes * secondsPerMinute;
 
         std::stringstream ss;
         ss << std::setw(2) << std::setfill('0') << int(days) << ":";
@@ -126,10 +135,13 @@ namespace qc::utils
             {
                 const int nBlocks{sizeof(T) / b.blockSize};
 
-                for (int blockI{0}; blockI < nBlocks; ++blockI) {
-                    for (int byteI{b.blockSize - 1}; byteI >= 0; --byteI) {
+                for (int blockI{0}; blockI < nBlocks; ++blockI)
+                {
+                    for (int byteI{b.blockSize - 1}; byteI >= 0; --byteI)
+                    {
                         u8 byte(b.data[blockI * b.blockSize + byteI]);
-                        for (int bitI{0}; bitI < 8; ++bitI) {
+                        for (int bitI{0}; bitI < 8; ++bitI)
+                        {
                             os << ((byte & 0b10000000) ? "1" : "0");
                             byte <<= 1;
                         }
@@ -156,7 +168,8 @@ namespace qc::utils
 
             friend std::ostream & operator<<(std::ostream & os, const repeat & r)
             {
-                for (int i{0}; i < r.n; ++i) {
+                for (int i{0}; i < r.n; ++i)
+                {
                     os << r.s;
                 }
                 return os;

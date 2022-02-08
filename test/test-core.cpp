@@ -443,7 +443,7 @@ void testTransnormUTUT()
     EXPECT_NEAR(0.25, double(qc::transnorm<To>(From(quarterVal<From>))) / double(std::numeric_limits<To>::max()), epsilon);
     EXPECT_NEAR(0.5, double(qc::transnorm<To>(From(halfVal<From>))) / double(std::numeric_limits<To>::max()), epsilon);
     EXPECT_NEAR(0.75, double(qc::transnorm<To>(From(threeQuartersVal<From>))) / double(std::numeric_limits<To>::max()), epsilon);
-    EXPECT_EQ( To(std::numeric_limits<To>::max()), qc::transnorm<To>(std::numeric_limits<From>::max()));
+    EXPECT_EQ(To(std::numeric_limits<To>::max()), qc::transnorm<To>(std::numeric_limits<From>::max()));
 }
 
 template <typename From>

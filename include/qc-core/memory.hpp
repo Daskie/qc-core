@@ -111,7 +111,8 @@ namespace qc::memory
 
         Pool(const size_t capacity)
         {
-            if (capacity < minCapacity || capacity > maxCapacity) {
+            if (capacity < minCapacity || capacity > maxCapacity)
+            {
                 throw std::exception{};
             }
 
@@ -147,7 +148,8 @@ namespace qc::memory
 
         ~Pool()
         {
-            if (_chunks) {
+            if (_chunks)
+            {
                 ::operator delete(_chunks);
             }
         }
@@ -155,8 +157,10 @@ namespace qc::memory
         template <typename T>
         T * allocate(const size_t n)
         {
-            if constexpr (debug) {
-                if (!_chunks || !n) {
+            if constexpr (debug)
+            {
+                if (!_chunks || !n)
+                {
                     throw std::exception{};
                 }
             }
@@ -166,16 +170,19 @@ namespace qc::memory
             size_t * block{_head};
             size_t * prevBlock{nullptr};
 
-            while (true) {
+            while (true)
+            {
                 const size_t blockSize{block[0]};
 
-                if (!blockSize) {
+                if (!blockSize)
+                {
                     // Out of memory, or no large enough contiguous block of memory available
                     throw std::bad_alloc{};
                 }
 
                 // There's space. Must be either a perfect fit, or at least two chunks for meta
-                if ((blockSize >= allocSize) && (blockSize - allocSize != 1u)) {
+                if ((blockSize >= allocSize) && (blockSize - allocSize != 1u))
+                {
                     break;
                 }
 
@@ -185,21 +192,25 @@ namespace qc::memory
 
             size_t offset;
             // Did not fill block
-            if (allocSize < block[0]) {
+            if (allocSize < block[0])
+            {
                 size_t * const newBlock{block + allocSize};
                 newBlock[0] = block[0] - allocSize;
                 newBlock[1] = block[1] - allocSize;
                 offset = allocSize;
             }
             // Completely filled block
-            else {
+            else
+            {
                 offset = block[1];
             }
 
-            if (prevBlock) {
+            if (prevBlock)
+            {
                 prevBlock[1] += offset;
             }
-            else {
+            else
+            {
                 _head += offset;
             }
 
@@ -209,8 +220,10 @@ namespace qc::memory
         template <typename T>
         void deallocate(T * const ptr, const size_t n) noexcept(!debug)
         {
-            if constexpr (debug) {
-                if (!_chunks || !ptr || !n) {
+            if constexpr (debug)
+            {
+                if (!_chunks || !ptr || !n)
+                {
                     throw std::exception{};
                 }
             }
@@ -218,32 +231,38 @@ namespace qc::memory
             size_t * const block{reinterpret_cast<size_t *>(ptr)};
             block[0] = (n * sizeof(T) + (sizeof(size_t) - 1u)) / sizeof(size_t);
 
-            if (block < _head) {
+            if (block < _head)
+            {
                 block[1] = _head - block;
-                if (block[1] == block[0]) {
+                if (block[1] == block[0])
+                {
                     block[0] += _head[0];
                     block[1] += _head[1];
                 }
                 _head = block;
             }
-            else {
+            else
+            {
                 size_t * prevBlock{_head};
                 size_t * nextBlock{_head + _head[1]};
-                while (nextBlock < block) {
+                while (nextBlock < block)
+                {
                     prevBlock = nextBlock;
                     nextBlock = nextBlock + nextBlock[1];
                 }
 
                 // Deal with this block <-> next block
                 block[1] = nextBlock - block;
-                if (block[1] == block[0]) {
+                if (block[1] == block[0])
+                {
                     block[0] += nextBlock[0];
                     block[1] += nextBlock[1];
                 }
 
                 // Deal with prev block <-> this block
                 prevBlock[1] = block - prevBlock;
-                if (prevBlock[1] == prevBlock[0]) {
+                if (prevBlock[1] == prevBlock[0])
+                {
                     prevBlock[0] += block[0];
                     prevBlock[1] += block[1];
                 }

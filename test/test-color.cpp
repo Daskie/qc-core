@@ -12,7 +12,8 @@ static fvec3 _truncate(const fvec3 & val)
 TEST(color, srgbToHsl)
 {
     EXPECT_EQ(_truncate(fvec3{0.0f, 0.0f, 0.0f}), _truncate(qc::color::srgbToHsl(fvec3{0.0f, 0.0f, 0.0f})));
-    for (float v{0.25f}; v <= 1.0f; v += 0.25f) {
+    for (float v{0.25f}; v <= 1.0f; v += 0.25f)
+    {
         const float l{v * 0.5f};
         EXPECT_EQ(_truncate(fvec3{0.0f / 6.0f, 1.0f, l}), _truncate(qc::color::srgbToHsl(fvec3{v, 0.0f, 0.0f})));
         EXPECT_EQ(_truncate(fvec3{1.0f / 6.0f, 1.0f, l}), _truncate(qc::color::srgbToHsl(fvec3{v, v, 0.0f})));
@@ -29,14 +30,15 @@ TEST(color, srgbToHsl)
 TEST(color, hslToSrgb)
 {
     EXPECT_EQ(_truncate(fvec3{0.0f, 0.0f, 0.0f}), _truncate(qc::color::hslToSrgb(fvec3{0.0f, 0.0f, 0.0f})));
-    for (float v{0.25f}; v <= 1.0f; v += 0.25f) {
+    for (float v{0.25f}; v <= 1.0f; v += 0.25f)
+    {
         const float l{v * 0.5f};
-        EXPECT_EQ(_truncate(fvec3{   v, 0.0f, 0.0f}), _truncate(qc::color::hslToSrgb(fvec3{0.0f / 6.0f, 1.0f, l})));
-        EXPECT_EQ(_truncate(fvec3{   v,    v, 0.0f}), _truncate(qc::color::hslToSrgb(fvec3{1.0f / 6.0f, 1.0f, l})));
-        EXPECT_EQ(_truncate(fvec3{0.0f,    v, 0.0f}), _truncate(qc::color::hslToSrgb(fvec3{2.0f / 6.0f, 1.0f, l})));
-        EXPECT_EQ(_truncate(fvec3{0.0f,    v,    v}), _truncate(qc::color::hslToSrgb(fvec3{3.0f / 6.0f, 1.0f, l})));
-        EXPECT_EQ(_truncate(fvec3{0.0f, 0.0f,    v}), _truncate(qc::color::hslToSrgb(fvec3{4.0f / 6.0f, 1.0f, l})));
-        EXPECT_EQ(_truncate(fvec3{   v, 0.0f,    v}), _truncate(qc::color::hslToSrgb(fvec3{5.0f / 6.0f, 1.0f, l})));
+        EXPECT_EQ(_truncate(fvec3{v, 0.0f, 0.0f}), _truncate(qc::color::hslToSrgb(fvec3{0.0f / 6.0f, 1.0f, l})));
+        EXPECT_EQ(_truncate(fvec3{v, v, 0.0f}), _truncate(qc::color::hslToSrgb(fvec3{1.0f / 6.0f, 1.0f, l})));
+        EXPECT_EQ(_truncate(fvec3{0.0f, v, 0.0f}), _truncate(qc::color::hslToSrgb(fvec3{2.0f / 6.0f, 1.0f, l})));
+        EXPECT_EQ(_truncate(fvec3{0.0f, v, v}), _truncate(qc::color::hslToSrgb(fvec3{3.0f / 6.0f, 1.0f, l})));
+        EXPECT_EQ(_truncate(fvec3{0.0f, 0.0f, v}), _truncate(qc::color::hslToSrgb(fvec3{4.0f / 6.0f, 1.0f, l})));
+        EXPECT_EQ(_truncate(fvec3{v, 0.0f, v}), _truncate(qc::color::hslToSrgb(fvec3{5.0f / 6.0f, 1.0f, l})));
         EXPECT_EQ(_truncate(fvec3{v, v, v}), _truncate(qc::color::hslToSrgb(fvec3{0.0f, 0.0f, v})));
     }
 
@@ -45,9 +47,12 @@ TEST(color, hslToSrgb)
 
 TEST(color, rgbToHslAndBack)
 {
-    for (ivec3 rgb{0, 0, 0}; rgb.z < 256; ++rgb.z) {
-        for (rgb.y = 0; rgb.y < 256; ++rgb.y) {
-            for (rgb.x = 0; rgb.x < 256; ++rgb.x) {
+    for (ivec3 rgb{0, 0, 0}; rgb.z < 256; ++rgb.z)
+    {
+        for (rgb.y = 0; rgb.y < 256; ++rgb.y)
+        {
+            for (rgb.x = 0; rgb.x < 256; ++rgb.x)
+            {
                 const fvec3 hsl{qc::color::srgbToHsl(qc::transnorm<fvec3>(ucvec3{rgb}))};
                 const ivec3 rgbNew{qc::transnorm<ucvec3>(qc::color::hslToSrgb(hsl))};
                 EXPECT_EQ(rgb, rgbNew);

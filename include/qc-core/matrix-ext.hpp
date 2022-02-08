@@ -179,29 +179,23 @@ namespace qc
     template <typename T, int n>
     inline bool isIdentity(const mat<T, n> & m)
     {
-        if constexpr (n == 2) {
-            return
-                m.c1.x == T(1.0) && m.c2.y == T(1.0) &&
-                m.c2.x == T(0.0) &&
-                m.c1.y == T(0.0);
-        }
+        if constexpr (n == 2) return
+            m.c1.x == T(1.0) && m.c2.y == T(1.0) &&
+            m.c2.x == T(0.0) &&
+            m.c1.y == T(0.0);
 
-        if constexpr (n == 3) {
-            return
-                m.c1.x == T(1.0) && m.c2.y == T(1.0) && m.c3.z == T(1.0) &&
-                m.c3.x == T(0.0) && m.c3.y == T(0.0) &&
-                m.c1.y == T(0.0) && m.c1.z == T(0.0) &&
-                m.c2.x == T(0.0) && m.c2.z == T(0.0);
-        }
+        if constexpr (n == 3) return
+            m.c1.x == T(1.0) && m.c2.y == T(1.0) && m.c3.z == T(1.0) &&
+            m.c3.x == T(0.0) && m.c3.y == T(0.0) &&
+            m.c1.y == T(0.0) && m.c1.z == T(0.0) &&
+            m.c2.x == T(0.0) && m.c2.z == T(0.0);
 
-        if constexpr (n == 4) {
-            return
-                m.c1.x == T(1.0) && m.c2.y == T(1.0) && m.c3.z == T(1.0) && m.c4.w == T(1.0) &&
-                m.c4.x == T(0.0) && m.c4.y == T(0.0) && m.c4.z == T(0.0) &&
-                m.c1.y == T(0.0) && m.c1.z == T(0.0) && m.c1.w == T(0.0) &&
-                m.c2.x == T(0.0) && m.c2.z == T(0.0) && m.c2.w == T(0.0) &&
-                m.c3.x == T(0.0) && m.c3.y == T(0.0) && m.c3.w == T(0.0);
-        }
+        if constexpr (n == 4) return
+            m.c1.x == T(1.0) && m.c2.y == T(1.0) && m.c3.z == T(1.0) && m.c4.w == T(1.0) &&
+            m.c4.x == T(0.0) && m.c4.y == T(0.0) && m.c4.z == T(0.0) &&
+            m.c1.y == T(0.0) && m.c1.z == T(0.0) && m.c1.w == T(0.0) &&
+            m.c2.x == T(0.0) && m.c2.z == T(0.0) && m.c2.w == T(0.0) &&
+            m.c3.x == T(0.0) && m.c3.y == T(0.0) && m.c3.w == T(0.0);
     }
 
     template <typename T, int n>
@@ -226,7 +220,8 @@ namespace qc
             +(m.c1.y * m.c2.z - m.c2.y * m.c1.z), -(m.c1.x * m.c2.z - m.c2.x * m.c1.z), +(m.c1.x * m.c2.y - m.c2.x * m.c1.y)
         };
 
-        if constexpr (n == 4) {
+        if constexpr (n == 4)
+        {
             T yz12{m.c1.y * m.c2.z - m.c2.y * m.c1.z};
             T yz13{m.c1.y * m.c3.z - m.c3.y * m.c1.z};
             T yz14{m.c1.y * m.c4.z - m.c4.y * m.c1.z};
@@ -288,7 +283,8 @@ namespace qc
             + m.c1.x * (m.c2.y * m.c3.z - m.c3.y * m.c2.z)
             - m.c2.x * (m.c1.y * m.c3.z - m.c3.y * m.c1.z)
             + m.c3.x * (m.c1.y * m.c2.z - m.c2.y * m.c1.z);
-        if constexpr (n == 4) {
+        if constexpr (n == 4)
+        {
             T zw12 = m.c1.z * m.c2.w - m.c2.z * m.c1.w;
             T zw13 = m.c1.z * m.c3.w - m.c3.z * m.c1.w;
             T zw14 = m.c1.z * m.c4.w - m.c4.z * m.c1.w;
@@ -307,7 +303,8 @@ namespace qc
     inline mat<T, n> inverse(const mat<T, n> & m)
     {
         const T det{determinant(m)};
-        if (isZero(det)) {
+        if (isZero(det))
+        {
             return nullMat<T, n>();
         }
 
@@ -317,28 +314,25 @@ namespace qc
     template <typename T, int n>
     inline mat<T, n + 1> translate(const vec<T, n> & delta)
     {
-        if constexpr (n == 2) {
-            return {
-                 T(1.0),  T(0.0), T(0.0),
-                 T(0.0),  T(1.0), T(0.0),
-                delta.x, delta.y, T(1.0)
-            };
-        }
-        if constexpr (n == 3) {
-            return {
-                 T(1.0),  T(0.0),  T(0.0), T(0.0),
-                 T(0.0),  T(1.0),  T(0.0), T(0.0),
-                 T(0.0),  T(0.0),  T(1.0), T(0.0),
-                delta.x, delta.y, delta.z, T(1.0)
-            };
-        }
+        if constexpr (n == 2) return {
+             T(1.0),  T(0.0), T(0.0),
+             T(0.0),  T(1.0), T(0.0),
+            delta.x, delta.y, T(1.0)
+        };
+        if constexpr (n == 3) return {
+             T(1.0),  T(0.0),  T(0.0), T(0.0),
+             T(0.0),  T(1.0),  T(0.0), T(0.0),
+             T(0.0),  T(0.0),  T(1.0), T(0.0),
+            delta.x, delta.y, delta.z, T(1.0)
+        };
     }
 
     template <typename T, int mn, int vn>
     requires (mn == vn + 1)
     inline mat<T, mn> & translate(mat<T, mn> & m, const vec<T, vn> & delta)
     {
-        if constexpr (vn == 2 && mn == 3) {
+        if constexpr (vn == 2 && mn == 3)
+        {
             m.c1.x += delta.x * m.c1.z;
             m.c2.x += delta.x * m.c2.z;
             m.c3.x += delta.x * m.c3.z;
@@ -348,7 +342,8 @@ namespace qc
 
             return m;
         }
-        if constexpr (vn == 3 && mn == 4) {
+        if constexpr (vn == 3 && mn == 4)
+        {
             m.c1.x += delta.x * m.c1.w;
             m.c2.x += delta.x * m.c2.w;
             m.c3.x += delta.x * m.c3.w;
@@ -389,7 +384,8 @@ namespace qc
     template <typename T, int mn, int vn>
     inline mat<T, mn> & scale(mat<T, mn> & m, const vec<T, vn> & scale)
     {
-        if constexpr (vn == 2 && mn == 2) {
+        if constexpr (vn == 2 && mn == 2)
+        {
             m.c1.x *= scale.x;
             m.c2.x *= scale.x;
             m.c1.y *= scale.y;
@@ -397,7 +393,8 @@ namespace qc
 
             return m;
         }
-        if constexpr (vn == 2 && mn == 3) {
+        if constexpr (vn == 2 && mn == 3)
+        {
             m.c1.x *= scale.x;
             m.c2.x *= scale.x;
             m.c3.x *= scale.x;
@@ -407,7 +404,8 @@ namespace qc
 
             return m;
         }
-        if constexpr (vn == 3 && mn == 3) {
+        if constexpr (vn == 3 && mn == 3)
+        {
             m.c1.x *= scale.x;
             m.c2.x *= scale.x;
             m.c3.x *= scale.x;
@@ -420,7 +418,8 @@ namespace qc
 
             return m;
         }
-        if constexpr (vn == 3 && mn == 4) {
+        if constexpr (vn == 3 && mn == 4)
+        {
             m.c1.x *= scale.x;
             m.c2.x *= scale.x;
             m.c3.x *= scale.x;
@@ -492,7 +491,9 @@ namespace qc
     template <typename T>
     inline mat3<T> rotate(const vec3<T> axis, const T sinTheta, const T cosTheta)
     {
-        if (isZero(magnitude2(axis))) { //can't rotate around 0 length vector
+        // Can't rotate around 0 length vector
+        if (isZero(magnitude2(axis)))
+        {
             return {};
         }
 
@@ -563,10 +564,16 @@ namespace qc
     inline mat3<T> align_n(const vec3<T> v1, const vec3<T> v2)
     {
         const T d{dot(v1, v2)};
-        if (areEqual(d, T(1.0))) { // already aligned, and would break rotation
+
+        // Already aligned, and would break rotation
+        if (areEqual(d, T(1.0)))
+        {
             return {};
         }
-        if (areEqual(d, T(-1.0))) { // opposite direction, pick arbitrary axis to rotate around
+
+        // Opposite direction, pick arbitrary axis to rotate around
+        if (areEqual(d, T(-1.0)))
+        {
             return rotate_n(ortho(v1), std::numbers::pi_v<T>);
         }
 

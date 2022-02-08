@@ -88,8 +88,10 @@ namespace qc
         _size(size),
         _values(_size ? static_cast<T *>(::operator new(_size * sizeof(T))) : nullptr)
     {
-        if constexpr (!std::is_trivially_default_constructible_v<T>) {
-            for (size_t i{0u}; i < _size; ++i) {
+        if constexpr (!std::is_trivially_default_constructible_v<T>)
+        {
+            for (size_t i{0u}; i < _size; ++i)
+            {
                 new (_values + i) T();
             }
         }
@@ -100,7 +102,8 @@ namespace qc
         _size(size),
         _values(_size ? ::operator new(_size * sizeof(T)) : nullptr)
     {
-        for (size_t i{0u}; i < _size; ++i) {
+        for (size_t i{0u}; i < _size; ++i)
+        {
             new (_values + i) T(v);
         }
     }
@@ -111,12 +114,15 @@ namespace qc
         _size(std::distance(first, last)),
         _values(_size ? static_cast<T *>(::operator new(_size * sizeof(T))) : nullptr)
     {
-        if constexpr (std::is_trivially_copy_constructible_v<T>) {
+        if constexpr (std::is_trivially_copy_constructible_v<T>)
+        {
             std::copy_n(first, _size, _values);
         }
-        else {
+        else
+        {
             T * pos{_values};
-            for (Iter iter(first); iter != last; ++iter, ++pos) {
+            for (Iter iter(first); iter != last; ++iter, ++pos)
+            {
                 new (pos) T(*iter);
             }
         }
@@ -133,7 +139,8 @@ namespace qc
         _size(other._size),
         _values(_size ? static_cast<T *>(::operator new(_size * sizeof(T))) : nullptr)
     {
-        for (size_t i{0u}; i < _size; ++i) {
+        for (size_t i{0u}; i < _size; ++i)
+        {
             new (_values + i) T(other._values[i]);
         }
     }
@@ -147,22 +154,29 @@ namespace qc
     template <typename T>
     inline HeapArray<T> & HeapArray<T>::operator=(const HeapArray & other) noexcept
     {
-        if (&other == this) {
+        if (&other == this)
+        {
             return *this;
         }
 
-        if (_size == other._size) {
-            for (size_t i{0u}; i < _size; ++i) {
+        if (_size == other._size)
+        {
+            for (size_t i{0u}; i < _size; ++i)
+            {
                 _values[i] = other._values[i];
             }
         }
-        else {
+        else
+        {
             clear();
 
-            if (other._size) {
+            if (other._size)
+            {
                 _size = other._size;
                 _values = static_cast<T *>(::operator new(_size * sizeof(T)));
-                for (size_t i{0u}; i < _size; ++i) {
+
+                for (size_t i{0u}; i < _size; ++i)
+                {
                     new (_values + i) T(other._values[i]);
                 }
             }
@@ -174,7 +188,8 @@ namespace qc
     template <typename T>
     inline HeapArray<T> & HeapArray<T>::operator=(HeapArray && other) noexcept
     {
-        if (&other == this) {
+        if (&other == this)
+        {
             return *this;
         }
 
@@ -202,9 +217,12 @@ namespace qc
     template <typename T>
     inline void HeapArray<T>::clear() noexcept
     {
-        if (_size) {
-            if constexpr (!std::is_trivially_destructible_v<T>) {
-                for (size_t i{0u}; i < _size; ++i) {
+        if (_size)
+        {
+            if constexpr (!std::is_trivially_destructible_v<T>)
+            {
+                for (size_t i{0u}; i < _size; ++i)
+                {
                     _values[i].~T();
                 }
             }
@@ -284,7 +302,8 @@ namespace qc
     template <typename T>
     inline constexpr const T & HeapArray<T>::at(const size_t i) const
     {
-        if (i >= _size) {
+        if (i >= _size)
+        {
             throw std::out_of_range("Index out of bounds");
         }
 
@@ -304,7 +323,8 @@ namespace qc
     }
 
     template <typename T>
-    inline constexpr auto HeapArray<T>::cbegin() const noexcept -> const_iterator {
+    inline constexpr auto HeapArray<T>::cbegin() const noexcept -> const_iterator
+    {
         return _values;
     }
 
@@ -329,16 +349,20 @@ namespace qc
     template <typename T>
     inline bool operator==(const HeapArray<T> & arr1, const HeapArray<T> & arr2)
     {
-        if (&arr1 == &arr2) {
+        if (&arr1 == &arr2)
+        {
             return true;
         }
 
-        if (arr1.size() != arr2.size()) {
+        if (arr1.size() != arr2.size())
+        {
             return false;
         }
 
-        for (size_t i{0u}; i < arr1.size(); ++i) {
-            if (arr1[i] != arr2[i]) {
+        for (size_t i{0u}; i < arr1.size(); ++i)
+        {
+            if (arr1[i] != arr2[i])
+            {
                 return false;
             }
         }

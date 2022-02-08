@@ -86,7 +86,8 @@ namespace qc
         constexpr std::array<E, enumCount<E>> makeEnumArray() noexcept
         {
             std::array<E, enumCount<E>> array{};
-            for (E e{}; e != E::_n; e = E(underlyingVal(e) + 1u)) {
+            for (E e{}; e != E::_n; e = E(underlyingVal(e) + 1u))
+            {
                 array[underlyingVal(e)] = e;
             }
             return array;

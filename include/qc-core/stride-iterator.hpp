@@ -75,7 +75,8 @@ namespace qc
             return (reinterpret_cast<const std::byte *>(_ptr) - reinterpret_cast<const std::byte *>(other._ptr)) / _stride;
         }
 
-        template <typename U> requires (std::is_same_v<std::remove_const_t<U>, std::remove_const_t<T>>)
+        template <typename U>
+        requires std::is_same_v<std::remove_const_t<U>, std::remove_const_t<T>>
         constexpr bool operator==(const StrideIter<U> other) const noexcept
         {
             return _ptr == other._ptr;

@@ -199,7 +199,7 @@ namespace qc
     // Converts between normalized types.
     // Works with floats, signed, and unsigned integers.
     //
-    template <Vector ToVec, Numeric From, int n> requires(ToVec::n == n) ToVec transnorm(const vec<From, n> & v);
+    template <Vector ToVec, Numeric From, int n> requires (ToVec::n == n) ToVec transnorm(const vec<From, n> & v);
 
     //
     // ...
@@ -320,9 +320,12 @@ namespace qc
     inline vec<T, n> normalize(const vec<T, n> & v)
     {
         const T m2{magnitude2(v)};
-        if (isZero(m2)) {
+
+        if (isZero(m2))
+        {
             return {};
         }
+
         return v / std::sqrt(m2);
     }
 
@@ -330,9 +333,12 @@ namespace qc
     inline vec<T, n> & normalizeAssign(vec<T, n> & v)
     {
         const T m2{magnitude2(v)};
-        if (isZero(m2)) {
+
+        if (isZero(m2))
+        {
             return v = {};
         }
+
         return v /= std::sqrt(m2);
     }
 
@@ -380,13 +386,16 @@ namespace qc
     {
         const vec3<T> absV(abs(v));
 
-        if (absV.x < absV.y && absV.x < absV.z) {
+        if (absV.x < absV.y && absV.x < absV.z)
+        {
             return {T(0), T(-v.z), v.y}; // rotate around x
         }
-        else if (absV.y < absV.z) {
+        else if (absV.y < absV.z)
+        {
             return {v.z, T(0), T(-v.x)}; // rotate around y
         }
-        else {
+        else
+        {
             return {T(-v.y), v.x, T(0)}; // rotate around z
         }
     }
@@ -441,14 +450,17 @@ namespace qc
     template <Numeric T, int n>
     inline void sort(vec<T, n> & v)
     {
-        if constexpr (n >= 2) {
+        if constexpr (n >= 2)
+        {
             if (v.x > v.y) std::swap(v.x, v.y);
         }
-        if constexpr (n >= 3) {
+        if constexpr (n >= 3)
+        {
             if (v.y > v.z) std::swap(v.y, v.z);
             if (v.x > v.y) std::swap(v.x, v.y);
         }
-        if constexpr (n >= 4) {
+        if constexpr (n >= 4)
+        {
             if (v.z > v.w) std::swap(v.z, v.w);
             if (v.y > v.z) std::swap(v.y, v.z);
             if (v.x > v.y) std::swap(v.x, v.y);
@@ -606,7 +618,7 @@ namespace qc
     }
 
     template <Vector ToVec, Numeric From, int n>
-    requires(ToVec::n == n)
+    requires (ToVec::n == n)
     inline ToVec transnorm(const vec<From, n> & v)
     {
         using To = typename ToVec::Type;
@@ -626,22 +638,26 @@ namespace qc
     {
         vec<T, n> v;
 
-        if constexpr (n >= 1) {
+        if constexpr (n >= 1)
+        {
             if      (v1.x > T(0) && v2.x > T(0)) v.x = max(v1.x, v2.x);
             else if (v1.x < T(0) && v2.x < T(0)) v.x = min(v1.x, v2.x);
             else                                 v.x = v1.x + v2.x;
         }
-        if constexpr (n >= 2) {
+        if constexpr (n >= 2)
+        {
             if      (v1.y > T(0) && v2.y > T(0)) v.y = max(v1.y, v2.y);
             else if (v1.y < T(0) && v2.y < T(0)) v.y = min(v1.y, v2.y);
             else                                 v.y = v1.y + v2.y;
         }
-        if constexpr (n >= 3) {
+        if constexpr (n >= 3)
+        {
             if      (v1.z > T(0) && v2.z > T(0)) v.z = max(v1.z, v2.z);
             else if (v1.z < T(0) && v2.z < T(0)) v.z = min(v1.z, v2.z);
             else                                 v.z = v1.z + v2.z;
         }
-        if constexpr (n >= 4) {
+        if constexpr (n >= 4)
+        {
             if      (v1.w > T(0) && v2.w > T(0)) v.w = max(v1.w, v2.w);
             else if (v1.w < T(0) && v2.w < T(0)) v.w = min(v1.w, v2.w);
             else                                 v.w = v1.w + v2.w;

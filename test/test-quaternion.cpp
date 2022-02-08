@@ -62,7 +62,7 @@ static void compileClassesT()
 
 static void compileClasses()
 {
-    compileClassesT< float>();
+    compileClassesT<float>();
     compileClassesT<double>();
 }
 
@@ -89,7 +89,7 @@ static constexpr void compileClassesConstexprT()
 
 static constexpr bool compileClassesConstexpr()
 {
-    compileClassesConstexprT< float>();
+    compileClassesConstexprT<float>();
     compileClassesConstexprT<double>();
 
     return true;
@@ -129,7 +129,7 @@ static void compileFunctionsT()
 
 static void compileFunctions()
 {
-    compileFunctionsT< float>();
+    compileFunctionsT<float>();
     compileFunctionsT<double>();
 }
 
@@ -147,7 +147,7 @@ static constexpr void compileFunctionsConstexprT()
 
 static constexpr bool compileFunctionsConstexpr()
 {
-    compileFunctionsConstexprT< float>();
+    compileFunctionsConstexprT<float>();
     compileFunctionsConstexprT<double>();
 
     return true;
@@ -171,7 +171,7 @@ static void testPropertiesT()
 
 static void testProperties()
 {
-    testPropertiesT< float>();
+    testPropertiesT<float>();
     testPropertiesT<double>();
 }
 
@@ -184,13 +184,13 @@ static void compileCastsTT()
 template <typename T>
 static void compileCastsT()
 {
-    compileCastsTT<T,  float>();
+    compileCastsTT<T, float>();
     compileCastsTT<T, double>();
 }
 
 static void compileCasts()
 {
-    compileCastsT< float>();
+    compileCastsT<float>();
     compileCastsT<double>();
 }
 

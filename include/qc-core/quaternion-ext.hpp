@@ -128,9 +128,12 @@ namespace qc
     inline quat<T> normalize(const quat<T> & q)
     {
         const T mag2(magnitude2(q));
-        if (isZero(mag2)) {
+
+        if (isZero(mag2))
+        {
             return {};
         }
+
         const T invMag(T(1.0) / std::sqrt(mag2));
         return {q.a * invMag, q.w * invMag};
     }
@@ -157,9 +160,12 @@ namespace qc
     inline vec3<T> quatAxis_n(const quat<T> & q)
     {
         const T d2{T(1.0) - q.w * q.w};
-        if (isZero(d2)) {
+
+        if (isZero(d2))
+        {
             return {};
         }
+
         return q.a * (T(1.0) / std::sqrt(d2));
     }
 
@@ -259,13 +265,15 @@ namespace qc
         T cosHalfTheta{dot(q1, q2)};
 
         // Make sure to take the shorter route
-        if (cosHalfTheta < T(0.0)) {
+        if (cosHalfTheta < T(0.0))
+        {
             cosHalfTheta = -cosHalfTheta;
             q2 = -q2;
         }
 
         // If parallel, no interpolation necessary
-        if (areEqual(cosHalfTheta, T(1.0))) {
+        if (areEqual(cosHalfTheta, T(1.0)))
+        {
             return q1;
         }
 

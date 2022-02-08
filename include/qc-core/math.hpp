@@ -279,7 +279,8 @@ namespace qc
         {}
 
         template <Floating U>
-        void dampen(U & pos, U & vel, const U & targetPos) const {
+        void dampen(U & pos, U & vel, const U & targetPos) const
+        {
             const U dp{pos - targetPos};
             const U c1{(vel - dp * z2) * z0};
             const U c2{dp - c1};
@@ -299,7 +300,8 @@ namespace qc
         {}
 
         template <Floating U>
-        void dampen(U & pos, U & vel, const U & targetPos) const {
+        void dampen(U & pos, U & vel, const U & targetPos) const
+        {
             const U dp{pos - targetPos};
             const U c1{vel + this->angularFreq * dp};
             const U c2{(c1 * this->dt + dp) * expTerm};
@@ -356,7 +358,8 @@ namespace qc
     inline T areaOfPoly(const size_t n, const vec2<T> * const points)
     {
         T a{};
-        for (size_t i{0u}; i < n - 1u; ++i) {
+        for (size_t i{0u}; i < n - 1u; ++i)
+        {
             const vec2<T> v1(points[i]), v2(points[i + 1u]);
             a += v1.x * v2.y - v2.x * v1.y;
         }
@@ -372,7 +375,8 @@ namespace qc
     {
         T a{};
         vec2<T> c;
-        for (size_t i{0u}; i < n - 1u; ++i) {
+        for (size_t i{0u}; i < n - 1u; ++i)
+        {
             const vec2<T> v1(points[i]), v2(points[i + 1u]);
             T temp{v1.x * v2.y - v2.x * v1.y};
             a += temp;

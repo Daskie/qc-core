@@ -45,8 +45,11 @@ static void compileClassesT()
     m2.col(0);
     m2.row(0);
 
-    m2.template row<0>(); m2.template row<1>();
-    m2.template col<0>(); m2.template col<1>();
+    m2.template row<0>();
+    m2.template row<1>();
+
+    m2.template col<0>();
+    m2.template col<1>();
 
     // arithmetic assignment
 
@@ -113,8 +116,13 @@ static void compileClassesT()
     m3.col(0);
     m3.row(0);
 
-    m3.template row<0>(); m3.template row<1>(); m3.template row<2>();
-    m3.template col<0>(); m3.template col<1>(); m3.template col<2>();
+    m3.template row<0>();
+    m3.template row<1>();
+    m3.template row<2>();
+
+    m3.template col<0>();
+    m3.template col<1>();
+    m3.template col<2>();
 
     // arithmetic assignment
 
@@ -181,8 +189,15 @@ static void compileClassesT()
     m4.col(0);
     m4.row(0);
 
-    m4.template row<0>(); m4.template row<1>(); m4.template row<2>(); m4.template row<3>();
-    m4.template col<0>(); m4.template col<1>(); m4.template col<2>(); m4.template col<3>();
+    m4.template row<0>();
+    m4.template row<1>();
+    m4.template row<2>();
+    m4.template row<3>();
+
+    m4.template col<0>();
+    m4.template col<1>();
+    m4.template col<2>();
+    m4.template col<3>();
 
     // arithmetic assignment
 
@@ -223,7 +238,7 @@ static void compileClassesT()
 
 static void compileClasses()
 {
-    compileClassesT< float>();
+    compileClassesT<float>();
     compileClassesT<double>();
 }
 
@@ -253,8 +268,11 @@ static constexpr void compileClassesConstexprT()
 
     // access
 
-    m2.template col<0>(); m2.template col<1>();
-    m2.template row<0>(); m2.template row<1>();
+    m2.template col<0>();
+    m2.template col<1>();
+
+    m2.template row<0>();
+    m2.template row<1>();
 
     //--------------------------------------------------------------------------
     // Mat3
@@ -271,8 +289,13 @@ static constexpr void compileClassesConstexprT()
 
     // access
 
-    m3.template col<0>(); m3.template col<1>(); m3.template col<2>();
-    m3.template row<0>(); m3.template row<1>(); m3.template row<2>();
+    m3.template col<0>();
+    m3.template col<1>();
+    m3.template col<2>();
+
+    m3.template row<0>();
+    m3.template row<1>();
+    m3.template row<2>();
 
     //--------------------------------------------------------------------------
     // Mat4
@@ -289,14 +312,21 @@ static constexpr void compileClassesConstexprT()
 
     // access
 
-    m4.template col<0>(); m4.template col<1>(); m4.template col<2>(); m4.template col<3>();
-    m4.template row<0>(); m4.template row<1>(); m4.template row<2>(); m4.template row<3>();
+    m4.template col<0>();
+    m4.template col<1>();
+    m4.template col<2>();
+    m4.template col<3>();
+
+    m4.template row<0>();
+    m4.template row<1>();
+    m4.template row<2>();
+    m4.template row<3>();
 
 }
 
 static constexpr bool compileClassesConstexpr()
 {
-    compileClassesConstexprT< float>();
+    compileClassesConstexprT<float>();
     compileClassesConstexprT<double>();
 
     return true;
@@ -388,7 +418,7 @@ static void compileFunctionsT()
 
 static void compileFunctions()
 {
-    compileFunctionsT< float>();
+    compileFunctionsT<float>();
     compileFunctionsT<double>();
 }
 
@@ -413,7 +443,7 @@ static constexpr void compileFunctionsConstexprT()
 
 static constexpr bool compileFunctionsConstexpr()
 {
-    compileFunctionsConstexprT< float>();
+    compileFunctionsConstexprT<float>();
     compileFunctionsConstexprT<double>();
 
     return true;
@@ -422,13 +452,13 @@ static constexpr bool compileFunctionsConstexpr()
 template <typename T, int n>
 static void testPropertiesTN()
 {
-    static_assert(std::             is_standard_layout_v<mat<T, n>>);
-    static_assert(std::          is_trivially_copyable_v<mat<T, n>>);
+    static_assert(std::is_standard_layout_v<mat<T, n>>);
+    static_assert(std::is_trivially_copyable_v<mat<T, n>>);
     static_assert(std::is_trivially_copy_constructible_v<mat<T, n>>);
     static_assert(std::is_trivially_move_constructible_v<mat<T, n>>);
-    static_assert(std::   is_trivially_copy_assignable_v<mat<T, n>>);
-    static_assert(std::   is_trivially_move_assignable_v<mat<T, n>>);
-    static_assert(std::      is_trivially_destructible_v<mat<T, n>>);
+    static_assert(std::is_trivially_copy_assignable_v<mat<T, n>>);
+    static_assert(std::is_trivially_move_assignable_v<mat<T, n>>);
+    static_assert(std::is_trivially_destructible_v<mat<T, n>>);
     static_assert(sizeof(mat<T, n>) == n * n * sizeof(T));
     static_assert(sizeof(mat<T, n>[4]) == 4 * n * n * sizeof(T));
     static_assert(alignof(mat<T, n>) == alignof(T));
@@ -445,7 +475,7 @@ static void testPropertiesT()
 
 static void testProperties()
 {
-    testPropertiesT< float>();
+    testPropertiesT<float>();
     testPropertiesT<double>();
 }
 
@@ -460,13 +490,13 @@ static void compileCastsTT()
 template <typename T>
 static void compileCastsT()
 {
-    compileCastsTT<T,  float>();
+    compileCastsTT<T, float>();
     compileCastsTT<T, double>();
 }
 
 static void compileCasts()
 {
-    compileCastsT< float>();
+    compileCastsT<float>();
     compileCastsT<double>();
 }
 

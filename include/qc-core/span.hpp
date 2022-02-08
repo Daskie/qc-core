@@ -581,10 +581,12 @@ namespace qc
     template <Numeric T, int n>
     inline span<T, n> & operator/=(span<T, n> & v1, const T v2)
     {
-        if constexpr (Floating<T>) {
+        if constexpr (Floating<T>)
+        {
             return v1 *= (T(1.0) / v2);
         }
-        else {
+        else
+        {
             v1.min /= v2;
             v1.max /= v2;
             return v1;
@@ -594,10 +596,12 @@ namespace qc
     template <Numeric T, int n>
     inline span<T, n> & operator/=(span<T, n> & v1, const vec<T, n> & v2)
     {
-        if constexpr (Floating<T>) {
+        if constexpr (Floating<T>)
+        {
             return v1 *= T(1.0) / v2;
         }
-        else {
+        else
+        {
             v1.min /= v2;
             v1.max /= v2;
             return v1;
@@ -623,10 +627,12 @@ namespace qc
     template <Numeric T, int n>
     inline constexpr span<T, n> operator+(const span<T, n> & v1, const T v2)
     {
-        if constexpr (n == 1) {
+        if constexpr (n == 1)
+        {
             return {T(v1.min + v2), T(v1.max + v2)};
         }
-        else {
+        else
+        {
             return {v1.min + v2, v1.max + v2};
         }
     }
@@ -652,10 +658,12 @@ namespace qc
     template <Numeric T, int n>
     inline constexpr span<T, n> operator-(const span<T, n> & v1, const T v2)
     {
-        if constexpr (n == 1) {
+        if constexpr (n == 1)
+        {
             return {T(v1.min - v2), T(v1.max - v2)};
         }
-        else {
+        else
+        {
             return {v1.min - v2, v1.max - v2};
         }
     }
@@ -663,10 +671,12 @@ namespace qc
     template <Numeric T, int n>
     inline constexpr span<T, n> operator-(const T v1, const span<T, n> & v2)
     {
-        if constexpr (n == 1) {
+        if constexpr (n == 1)
+        {
             return {T(v1 - v2.min), T(v1 - v2.max)};
         }
-        else {
+        else
+        {
             return {v1 - v2.min, v1 - v2.max};
         }
     }
@@ -686,10 +696,12 @@ namespace qc
     template <Numeric T, int n>
     inline constexpr span<T, n> operator*(const span<T, n> & v1, const T v2)
     {
-        if constexpr (n == 1) {
+        if constexpr (n == 1)
+        {
             return {T(v1.min * v2), T(v1.max * v2)};
         }
-        else {
+        else
+        {
             return {v1.min * v2, v1.max * v2};
         }
     }
@@ -697,10 +709,12 @@ namespace qc
     template <Numeric T, int n>
     inline constexpr span<T, n> operator*(const T v1, const span<T, n> & v2)
     {
-        if constexpr (n == 1) {
+        if constexpr (n == 1)
+        {
             return {T(v1 * v2.min), T(v1 * v2.max)};
         }
-        else {
+        else
+        {
             return {v1 * v2.min, v1 * v2.max};
         }
     }
@@ -720,14 +734,18 @@ namespace qc
     template <Numeric T, int n>
     inline constexpr span<T, n> operator/(const span<T, n> & v1, const T v2)
     {
-        if constexpr (Floating<T>) {
+        if constexpr (Floating<T>)
+        {
             return v1 * (T(1.0) / v2);
         }
-        else {
-            if constexpr (n == 1) {
+        else
+        {
+            if constexpr (n == 1)
+            {
                 return {T(v1.min / v2), T(v1.max / v2)};
             }
-            else {
+            else
+            {
                 return {v1.min / v2, v1.max / v2};
             }
         }
@@ -736,10 +754,12 @@ namespace qc
     template <Numeric T, int n>
     inline constexpr span<T, n> operator/(const span<T, n> & v1, const vec<T, n> & v2)
     {
-        if constexpr (Floating<T>) {
+        if constexpr (Floating<T>)
+        {
             return v1 * (T(1.0) / v2);
         }
-        else {
+        else
+        {
             return {v1.min / v2, v1.max / v2};
         }
     }

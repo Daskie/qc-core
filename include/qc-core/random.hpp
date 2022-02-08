@@ -35,10 +35,12 @@ namespace qc
     {
         T operator()(const u32 result) const
         {
-            if constexpr (sizeof(T) < 4u || SignedIntegral<T>) {
+            if constexpr (sizeof(T) < 4u || SignedIntegral<T>)
+            {
                 return T(result & std::numeric_limits<T>::max());
             }
-            else {
+            else
+            {
                 return T(result);
             }
         }
@@ -80,10 +82,12 @@ namespace qc
     {
         T operator()(const u64 result) const
         {
-            if constexpr (sizeof(T) < 8u || SignedIntegral<T>) {
+            if constexpr (sizeof(T) < 8u || SignedIntegral<T>)
+            {
                 return T(result & std::numeric_limits<T>::max());
             }
-            else {
+            else
+            {
                 return T(result);
             }
         }
@@ -139,10 +143,12 @@ namespace qc
     {
         T operator()(const u32 result) const
         {
-            if constexpr (sizeof(T) < 4u) {
+            if constexpr (sizeof(T) < 4u)
+            {
                 return T(result & std::numeric_limits<T>::max());
             }
-            else {
+            else
+            {
                 return T(result);
             }
         }
@@ -213,10 +219,12 @@ namespace qc
         template <Numeric T>
         T next(const T max) noexcept
         {
-            if constexpr (Integral<T>) {
+            if constexpr (Integral<T>)
+            {
                 return next<T>() % max;
             }
-            else {
+            else
+            {
                 return next<T>() * max;
             }
         }

@@ -61,31 +61,31 @@ namespace qc
     // ...
     //
     template <MinMaxable T> constexpr T min(T v1, T v2);
-    template <typename T1, typename T2, typename T3, typename... Ts> constexpr decltype(auto) min(T1 && v1, T2 && v2, T3 && v3, Ts &&... vs);
+    template <typename T1, typename T2, typename T3, typename... Ts> constexpr decltype(auto) min(T1 && v1, T2 && v2, T3 && v3, Ts && ... vs);
 
     //
     // ...
     //
     template <MinMaxable T> constexpr T max(T v1, T v2);
-    template <typename T1, typename T2, typename T3, typename... Ts> constexpr decltype(auto) max(T1 && v1, T2 && v2, T3 && v3, Ts &&... vs);
+    template <typename T1, typename T2, typename T3, typename... Ts> constexpr decltype(auto) max(T1 && v1, T2 && v2, T3 && v3, Ts && ... vs);
 
     //
     // ...
     //
     template <MinMaxable T> T & minify(T & v1, T v2);
-    template <typename T, typename T1, typename T2, typename... Ts> T & minify(T & min, T1 && v1, T2 && v2, Ts &&... vs);
+    template <typename T, typename T1, typename T2, typename... Ts> T & minify(T & min, T1 && v1, T2 && v2, Ts && ... vs);
 
     //
     // ...
     //
     template <MinMaxable T> T & maxify(T & v1, T v2);
-    template <typename T, typename T1, typename T2, typename... Ts> T & maxify(T & min, T1 && v1, T2 && v2, Ts &&... vs);
+    template <typename T, typename T1, typename T2, typename... Ts> T & maxify(T & min, T1 && v1, T2 && v2, Ts && ... vs);
 
     //
     // ...
     //
     template <MinMaxable T> constexpr std::pair<T, T> minmax(T v1, T v2);
-    template <typename T1, typename T2, typename T3, typename... Ts> constexpr auto minmax(T1 && v1, T2 && v2, T3 && v3, Ts &&... vs);
+    template <typename T1, typename T2, typename T3, typename... Ts> constexpr auto minmax(T1 && v1, T2 && v2, T3 && v3, Ts && ... vs);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -105,7 +105,7 @@ namespace qc
     }
 
     template <typename T1, typename T2, typename T3, typename... Ts>
-    inline constexpr decltype(auto) min(T1 && v1, T2 && v2, T3 && v3, Ts &&... vs)
+    inline constexpr decltype(auto) min(T1 && v1, T2 && v2, T3 && v3, Ts && ... vs)
     {
         return min(min(std::forward<T1>(v1), std::forward<T2>(v2)), std::forward<T3>(v3), std::forward<Ts>(vs)...);
     }
@@ -117,7 +117,7 @@ namespace qc
     }
 
     template <typename T1, typename T2, typename T3, typename... Ts>
-    inline constexpr decltype(auto) max(T1 && v1, T2 && v2, T3 && v3, Ts &&... vs)
+    inline constexpr decltype(auto) max(T1 && v1, T2 && v2, T3 && v3, Ts && ... vs)
     {
         return max(max(std::forward<T1>(v1), std::forward<T2>(v2)), std::forward<T3>(v3), std::forward<Ts>(vs)...);
     }
@@ -129,7 +129,7 @@ namespace qc
     }
 
     template <typename T, typename T1, typename T2, typename... Ts>
-    inline T & minify(T & min, T1 && v1, T2 && v2, Ts &&... vs)
+    inline T & minify(T & min, T1 && v1, T2 && v2, Ts && ... vs)
     {
         return minify(minify(min, std::forward<T1>(v1)), std::forward<T2>(v2), std::forward<Ts>(vs)...);
     }
@@ -141,7 +141,7 @@ namespace qc
     }
 
     template <typename T, typename T1, typename T2, typename... Ts>
-    inline T & maxify(T & min, T1 && v1, T2 && v2, Ts &&... vs)
+    inline T & maxify(T & min, T1 && v1, T2 && v2, Ts && ... vs)
     {
         return maxify(maxify(min, std::forward<T1>(v1)), std::forward<T2>(v2), std::forward<Ts>(vs)...);
     }
@@ -153,13 +153,15 @@ namespace qc
     }
 
     template <typename T1, typename T2, typename T3, typename... Ts>
-    inline constexpr auto minmax(T1 && v1, T2 && v2, T3 && v3, Ts &&... vs)
+    inline constexpr auto minmax(T1 && v1, T2 && v2, T3 && v3, Ts && ... vs)
     {
-        if constexpr (!sizeof...(Ts)) {
+        if constexpr (!sizeof...(Ts))
+        {
             const auto [min1, max1]{minmax(v1, v2)};
             return std::pair{min(min1, v3), max(max1, v3)};
         }
-        else {
+        else
+        {
             const auto [min1, max1]{minmax(v1, v2)};
             const auto [min2, max2]{minmax(v3, vs...)};
             return std::pair{min(min1, min2), max(max1, max2)};

@@ -216,24 +216,24 @@ namespace qc
     template <typename T, int n> constexpr vec<T, n> nz{};
     template <typename T, int n> constexpr vec<T, n> pw{};
     template <typename T, int n> constexpr vec<T, n> nw{};
-    template <typename T> constexpr vec2<T> px<T, 2> = vec2<T>(T( 1), T( 0));
-    template <typename T> constexpr vec2<T> nx<T, 2> = vec2<T>(T(-1), T( 0));
-    template <typename T> constexpr vec3<T> px<T, 3> = vec3<T>(T( 1), T( 0), T( 0));
-    template <typename T> constexpr vec3<T> nx<T, 3> = vec3<T>(T(-1), T( 0), T( 0));
-    template <typename T> constexpr vec4<T> px<T, 4> = vec4<T>(T( 1), T( 0), T( 0), T( 0));
-    template <typename T> constexpr vec4<T> nx<T, 4> = vec4<T>(T(-1), T( 0), T( 0), T( 0));
-    template <typename T> constexpr vec2<T> py<T, 2> = vec2<T>(T( 0), T( 1));
-    template <typename T> constexpr vec2<T> ny<T, 2> = vec2<T>(T( 0), T(-1));
-    template <typename T> constexpr vec3<T> py<T, 3> = vec3<T>(T( 0), T( 1), T( 0));
-    template <typename T> constexpr vec3<T> ny<T, 3> = vec3<T>(T( 0), T(-1), T( 0));
-    template <typename T> constexpr vec4<T> py<T, 4> = vec4<T>(T( 0), T( 1), T( 0), T( 0));
-    template <typename T> constexpr vec4<T> ny<T, 4> = vec4<T>(T( 0), T(-1), T( 0), T( 0));
-    template <typename T> constexpr vec3<T> pz<T, 3> = vec3<T>(T( 0), T( 0), T( 1));
-    template <typename T> constexpr vec3<T> nz<T, 3> = vec3<T>(T( 0), T( 0), T(-1));
-    template <typename T> constexpr vec4<T> pz<T, 4> = vec4<T>(T( 0), T( 0), T( 1), T( 0));
-    template <typename T> constexpr vec4<T> nz<T, 4> = vec4<T>(T( 0), T( 0), T(-1), T( 0));
-    template <typename T> constexpr vec4<T> pw<T, 4> = vec4<T>(T( 0), T( 0), T( 0), T( 1));
-    template <typename T> constexpr vec4<T> nw<T, 4> = vec4<T>(T( 0), T( 0), T( 0), T(-1));
+    template <typename T> constexpr vec2<T> px<T, 2>{T( 1), T( 0)};
+    template <typename T> constexpr vec2<T> nx<T, 2>{T(-1), T( 0)};
+    template <typename T> constexpr vec3<T> px<T, 3>{T( 1), T( 0), T( 0)};
+    template <typename T> constexpr vec3<T> nx<T, 3>{T(-1), T( 0), T( 0)};
+    template <typename T> constexpr vec4<T> px<T, 4>{T( 1), T( 0), T( 0), T( 0)};
+    template <typename T> constexpr vec4<T> nx<T, 4>{T(-1), T( 0), T( 0), T( 0)};
+    template <typename T> constexpr vec2<T> py<T, 2>{T( 0), T( 1)};
+    template <typename T> constexpr vec2<T> ny<T, 2>{T( 0), T(-1)};
+    template <typename T> constexpr vec3<T> py<T, 3>{T( 0), T( 1), T( 0)};
+    template <typename T> constexpr vec3<T> ny<T, 3>{T( 0), T(-1), T( 0)};
+    template <typename T> constexpr vec4<T> py<T, 4>{T( 0), T( 1), T( 0), T( 0)};
+    template <typename T> constexpr vec4<T> ny<T, 4>{T( 0), T(-1), T( 0), T( 0)};
+    template <typename T> constexpr vec3<T> pz<T, 3>{T( 0), T( 0), T( 1)};
+    template <typename T> constexpr vec3<T> nz<T, 3>{T( 0), T( 0), T(-1)};
+    template <typename T> constexpr vec4<T> pz<T, 4>{T( 0), T( 0), T( 1), T( 0)};
+    template <typename T> constexpr vec4<T> nz<T, 4>{T( 0), T( 0), T(-1), T( 0)};
+    template <typename T> constexpr vec4<T> pw<T, 4>{T( 0), T( 0), T( 0), T( 1)};
+    template <typename T> constexpr vec4<T> nw<T, 4>{T( 0), T( 0), T( 0), T(-1)};
     template <typename T> constexpr vec2<T> px2 = px<T, 2>;
     template <typename T> constexpr vec2<T> nx2 = nx<T, 2>;
     template <typename T> constexpr vec3<T> px3 = px<T, 3>;
@@ -357,30 +357,35 @@ namespace qc
     template <NumericOrBoolean T>
     template <NumericOrBoolean U>
     inline constexpr vec<T, 2>::vec(const U v) noexcept :
-        x(T(v)), y(x)
+        x{T(v)},
+        y{x}
     {}
 
     template <NumericOrBoolean T>
     template <NumericOrBoolean U>
     inline constexpr vec<T, 2>::vec(const vec2<U> v) noexcept :
-        x(T(v.x)), y(T(v.y))
+        x{T(v.x)},
+        y{T(v.y)}
     {}
 
     template <NumericOrBoolean T>
     template <NumericOrBoolean U>
     inline constexpr vec<T, 2>::vec(const vec3<U> v) noexcept :
-        x(T(v.x)), y(T(v.y))
+        x{T(v.x)},
+        y{T(v.y)}
     {}
 
     template <NumericOrBoolean T>
     template <NumericOrBoolean U>
     inline constexpr vec<T, 2>::vec(const vec4<U> v) noexcept :
-        x(T(v.x)), y(T(v.y))
+        x{T(v.x)},
+        y{T(v.y)}
     {}
 
     template <NumericOrBoolean T>
     inline constexpr vec<T, 2>::vec(const T v1, const T v2) noexcept :
-        x(v1), y(v2)
+        x{v1},
+        y{v2}
     {}
 
     template <NumericOrBoolean T>
@@ -422,40 +427,54 @@ namespace qc
     template <NumericOrBoolean T>
     template <NumericOrBoolean U>
     inline constexpr vec<T, 3>::vec(const U v) noexcept :
-        x(T(v)), y(x), z(x)
+        x{T(v)},
+        y{x},
+        z{x}
     {}
 
     template <NumericOrBoolean T>
     template <NumericOrBoolean U>
     inline constexpr vec<T, 3>::vec(const vec2<U> v) noexcept :
-        x(T(v.x)), y(T(v.y)), z()
+        x{T(v.x)},
+        y{T(v.y)},
+        z{}
     {}
 
     template <NumericOrBoolean T>
     template <NumericOrBoolean U>
     inline constexpr vec<T, 3>::vec(const vec3<U> v) noexcept :
-        x(T(v.x)), y(T(v.y)), z(T(v.z))
+        x{T(v.x)},
+        y{T(v.y)},
+        z{T(v.z)}
     {}
 
     template <NumericOrBoolean T>
     template <NumericOrBoolean U>
     inline constexpr vec<T, 3>::vec(const vec4<U> v) noexcept :
-        x(T(v.x)), y(T(v.y)), z(T(v.z))
+        x{T(v.x)},
+        y{T(v.y)},
+        z{T(v.z)}
     {}
 
     template <NumericOrBoolean T>
     inline constexpr vec<T, 3>::vec(const T v1, const T v2, const T v3) noexcept :
-        x(v1), y(v2), z(v3)
+        x{v1},
+        y{v2},
+        z{v3}
     {}
 
     template <NumericOrBoolean T>
     inline constexpr vec<T, 3>::vec(const vec2<T> v1, const T v2) noexcept :
-        x(v1.x), y(v1.y), z(v2)
+        x{v1.x},
+        y{v1.y},
+        z{v2}
     {}
 
     template <NumericOrBoolean T>
     inline constexpr vec<T, 3>::vec(const T v1, const vec2<T> v2) noexcept :
-        x(v1), y(v2.x), z(v2.y)
+        x{v1},
+        y{v2.x},
+        z{v2.y}
     {}
 
     template <NumericOrBoolean T>
@@ -533,60 +552,93 @@ namespace qc
     template <NumericOrBoolean T>
     template <NumericOrBoolean U>
     inline constexpr vec<T, 4>::vec(const U v) noexcept :
-        x(T(v)), y(x), z(x), w(x)
+        x{T(v)},
+        y{x},
+        z{x},
+        w{x}
     {}
 
     template <NumericOrBoolean T>
     template <NumericOrBoolean U>
     inline constexpr vec<T, 4>::vec(const vec2<U> v) noexcept :
-        x(T(v.x)), y(T(v.y)), z(), w()
+        x{T(v.x)},
+        y{T(v.y)},
+        z{},
+        w{}
     {}
 
     template <NumericOrBoolean T>
     template <NumericOrBoolean U>
     inline constexpr vec<T, 4>::vec(const vec3<U> v) noexcept :
-        x(T(v.x)), y(T(v.y)), z(T(v.z)), w()
+        x{T(v.x)},
+        y{T(v.y)},
+        z{T(v.z)},
+        w{}
     {}
 
     template <NumericOrBoolean T>
     template <NumericOrBoolean U>
     inline constexpr vec<T, 4>::vec(const vec4<U> v) noexcept :
-        x(T(v.x)), y(T(v.y)), z(T(v.z)), w(T(v.w))
+        x{T(v.x)},
+        y{T(v.y)},
+        z{T(v.z)},
+        w{T(v.w)}
     {}
 
     template <NumericOrBoolean T>
     inline constexpr vec<T, 4>::vec(const T v1, const T v2, const T v3, const T v4) noexcept :
-        x(v1), y(v2), z(v3), w(v4)
+        x{v1},
+        y{v2},
+        z{v3},
+        w{v4}
     {}
 
     template <NumericOrBoolean T>
     inline constexpr vec<T, 4>::vec(const vec2<T> v1, const T v2, const T v3) noexcept :
-        x(v1.x), y(v1.y), z(v2), w(v3)
+        x{v1.x},
+        y{v1.y},
+        z{v2},
+        w{v3}
     {}
 
     template <NumericOrBoolean T>
     inline constexpr vec<T, 4>::vec(const T v1, const vec2<T> v2, const T v3) noexcept :
-        x(v1), y(v2.x), z(v2.y), w(v3)
+        x{v1},
+        y{v2.x},
+        z{v2.y},
+        w{v3}
     {}
 
     template <NumericOrBoolean T>
     inline constexpr vec<T, 4>::vec(const T v1, const T v2, const vec2<T> v3) noexcept :
-        x(v1), y(v2), z(v3.x), w(v3.y)
+        x{v1},
+        y{v2},
+        z{v3.x},
+        w{v3.y}
     {}
 
     template <NumericOrBoolean T>
     inline constexpr vec<T, 4>::vec(const vec2<T> v1, const vec2<T> v2) noexcept :
-        x(v1.x), y(v1.y), z(v2.x), w(v2.y)
+        x{v1.x},
+        y{v1.y},
+        z{v2.x},
+        w{v2.y}
     {}
 
     template <NumericOrBoolean T>
     inline constexpr vec<T, 4>::vec(const vec3<T> v1, const T v2) noexcept :
-        x(v1.x), y(v1.y), z(v1.z), w(v2)
-    {}
+        x{v1.x},
+        y{v1.y},
+        z{v1.z},
+        w{v2}
+        {}
 
     template <NumericOrBoolean T>
     inline constexpr vec<T, 4>::vec(const T v1, const vec3<T> v2) noexcept :
-        x(v1), y(v2.x), z(v2.y), w(v2.z)
+        x{v1},
+        y{v2.x},
+        z{v2.y},
+        w{v2.z}
     {}
 
     template <NumericOrBoolean T>
@@ -809,7 +861,7 @@ namespace qc
 
     template <Numeric T, int n>
     inline vec<T, n> & operator/=(vec<T, n> & v1, const vec<T, n> & v2)
-        {
+    {
         if constexpr (n >= 1) v1.x /= v2.x;
         if constexpr (n >= 2) v1.y /= v2.y;
         if constexpr (n >= 3) v1.z /= v2.z;
@@ -820,10 +872,12 @@ namespace qc
     template <Numeric T, int n>
     inline vec<T, n> & operator/=(vec<T, n> & v1, const T v2)
     {
-        if constexpr (Floating<T>) {
+        if constexpr (Floating<T>)
+        {
             return v1 *= T(1.0) / v2;
         }
-        else {
+        else
+        {
             if constexpr (n >= 1) v1.x /= v2;
             if constexpr (n >= 2) v1.y /= v2;
             if constexpr (n >= 3) v1.z /= v2;
@@ -861,10 +915,12 @@ namespace qc
     template <Numeric T, int n>
     inline constexpr vec<T, n> operator-(const vec<T, n> & v)
     {
-        if constexpr (UnsignedIntegral<T>) {
+        if constexpr (UnsignedIntegral<T>)
+        {
             return v;
         }
-        else {
+        else
+        {
             if constexpr (n == 2) return {T(-v.x), T(-v.y)};
             if constexpr (n == 3) return {T(-v.x), T(-v.y), T(-v.z)};
             if constexpr (n == 4) return {T(-v.x), T(-v.y), T(-v.z), T(-v.w)};
@@ -952,10 +1008,12 @@ namespace qc
     template <Numeric T, int n>
     inline constexpr vec<T, n> operator/(const vec<T, n> & v1, const T v2)
     {
-        if constexpr (Floating<T>) {
+        if constexpr (Floating<T>)
+        {
             return v1 * (T(1.0) / v2);
         }
-        else {
+        else
+        {
             if constexpr (n == 2) return {T(v1.x / v2), T(v1.y / v2)};
             if constexpr (n == 3) return {T(v1.x / v2), T(v1.y / v2), T(v1.z / v2)};
             if constexpr (n == 4) return {T(v1.x / v2), T(v1.y / v2), T(v1.z / v2), T(v1.w / v2)};
@@ -1268,19 +1326,23 @@ namespace qc
         const auto [xMin, xMax]{minmax(v1.x, v2.x)};
         const auto [yMin, yMax]{minmax(v1.y, v2.y)};
 
-        if constexpr (n > 2) {
+        if constexpr (n > 2)
+        {
             const auto [zMin, zMax]{minmax(v1.z, v2.z)};
 
-            if constexpr (n > 3) {
+            if constexpr (n > 3)
+            {
                 const auto [wMin, wMax]{minmax(v1.w, v2.w)};
 
                 return {{xMin, yMin, zMin, wMin}, {xMax, yMax, zMax, wMax}};
             }
-            else {
+            else
+            {
                 return {{xMin, yMin, zMin}, {xMax, yMax, zMax}};
             }
         }
-        else {
+        else
+        {
             return {{xMin, yMin}, {xMax, yMax}};
         }
     }

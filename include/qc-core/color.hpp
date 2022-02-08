@@ -97,18 +97,22 @@ namespace qc::color
         // Lightness
         hsl.z = (minComp + maxComp) * T(0.5);
 
-        if (hsl.z > T(0.0) && hsl.z < T(1.0)) {
+        if (hsl.z > T(0.0) && hsl.z < T(1.0))
+        {
             const T compRange{maxComp - minComp};
 
             // Saturation
-            if (hsl.z > T(0.5)) {
+            if (hsl.z > T(0.5))
+            {
                 hsl.y = compRange / (T(2.0) - (hsl.z * T(2.0)));
             }
-            else {
+            else
+            {
                 hsl.y = compRange / (hsl.z * T(2.0));
             }
 
-            if (hsl.y > T(0.0)) {
+            if (hsl.y > T(0.0))
+            {
                 // Hue
                 // TODO: Test if this is acually faster than the two `% 3`s
                 const T overflowRgb[5]{srgb.x, srgb.y, srgb.z, srgb.x, srgb.y};
@@ -128,7 +132,8 @@ namespace qc::color
         {
             const auto[fraction, whole]{fract_i(hue * T(6.0))};
             const T midOffset{(maxComp - minComp) * fraction};
-            switch (whole) {
+            switch (whole)
+            {
                 default: return {maxComp, minComp + midOffset, minComp};
                 case 1: return {maxComp - midOffset, maxComp, minComp};
                 case 2: return {minComp, maxComp, minComp + midOffset};
@@ -272,10 +277,12 @@ namespace qc::color
     inline vec3<T> xyzToXyy(const vec3<T> & xyz) noexcept
     {
         const T temp{sum(xyz)};
-        if (temp) {
+        if (temp)
+        {
             return {xyz.xy() / temp, xyz.y};
         }
-        else {
+        else
+        {
             return {T(1.0 / 3.0), T(1.0 / 3.0), 0.0f};
         }
     }
@@ -292,7 +299,6 @@ namespace qc::color
         const T temp{xyy.z / xyy.y};
         return {temp * xyy.x, xyy.z, temp * (T(1.0) - xyy.x - xyy.y)};
     }
-
 
     ///
     /// Converts a color from XYZ to LAB
@@ -348,7 +354,8 @@ namespace qc::color
         static constexpr T invYn{T(1.0) / xyzWhitePoint<T>.y};
 
         // Not doing piecewise approximation
-        if (xyz) {
+        if (xyz)
+        {
             const T l{std::cbrt(xyz.y * invYn)};
             const T _13l{T(13.0) * l};
             const T uvFactor{T(1.0) / (xyz.x + T(15.0) * xyz.y + T(3.0) * xyz.z)};
@@ -358,7 +365,8 @@ namespace qc::color
             const T v{_13l * (v_ - v_n)};
             return {l, u, v};
         }
-        else {
+        else
+        {
             return {};
         }
     }
@@ -377,7 +385,8 @@ namespace qc::color
         static constexpr T v_n{T(9.0) * xyzWhitePoint<T>.y / u_v_nDivisor};
 
         // Not doing piecewise approximation
-        if (luv.x) {
+        if (luv.x)
+        {
             const T inv13L{T(1.0) / (T(13.0) * luv.x)};
             const T u_{luv.y * inv13L + u_n};
             const T v_{luv.z * inv13L + v_n};
@@ -387,7 +396,8 @@ namespace qc::color
             const T z{y * (T(12.0) - T(3.0) * u_ - T(20.0) * v_) * inv4v_};
             return {x, y, z};
         }
-        else {
+        else
+        {
             return {};
         }
     }

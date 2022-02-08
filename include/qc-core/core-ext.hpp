@@ -33,7 +33,7 @@ namespace qc
     // ...
     //
     template <typename T> bool areEqual(const T & v1, const T & v2);
-    template <typename T, typename... Ts> bool areEqual(const T & v1, const T & v2, const T & v3, const Ts &... vs);
+    template <typename T, typename... Ts> bool areEqual(const T & v1, const T & v2, const T & v3, const Ts & ... vs);
 
     //
     // ...
@@ -141,12 +141,12 @@ namespace qc
     //
     // ...
     //
-    template <typename T, typename... Args> constexpr T sum(const T & v, const Args &... args);
+    template <typename T, typename... Args> constexpr T sum(const T & v, const Args & ... args);
 
     //
     // ...
     //
-    template <typename T, typename... Args> constexpr T product(const T & v, const Args &... args);
+    template <typename T, typename... Args> constexpr T product(const T & v, const Args & ... args);
 
     //
     // ...
@@ -195,10 +195,12 @@ namespace qc
     template <Numeric T>
     inline constexpr T abs(const T v)
     {
-        if constexpr (UnsignedIntegral<T>) {
+        if constexpr (UnsignedIntegral<T>)
+        {
             return v;
         }
-        else {
+        else
+        {
             return v < 0 ? -v : v;
         }
     }
@@ -206,10 +208,12 @@ namespace qc
     template <Numeric T>
     inline bool isZero(const T v, const T e)
     {
-        if constexpr (Floating<T>) {
+        if constexpr (Floating<T>)
+        {
             return abs(v) <= e;
         }
-        else {
+        else
+        {
             return !v;
         }
     }
@@ -217,16 +221,18 @@ namespace qc
     template <typename T>
     inline bool areEqual(const T & v1, const T & v2)
     {
-        if constexpr (Floating<T>) {
+        if constexpr (Floating<T>)
+        {
             return isZero(v1 - v2);
         }
-        else {
+        else
+        {
             return v1 == v2;
         }
     }
 
     template <typename T, typename... Ts>
-    inline bool areEqual(const T & v1, const T & v2, const T & v3, const Ts &... vs)
+    inline bool areEqual(const T & v1, const T & v2, const T & v3, const Ts & ... vs)
     {
         return areEqual(v1, v2) && areEqual(v2, v3, vs...);
     }
@@ -240,10 +246,12 @@ namespace qc
     template <Numeric T>
     inline constexpr int sign(const T v)
     {
-        if constexpr (UnsignedIntegral<T>) {
+        if constexpr (UnsignedIntegral<T>)
+        {
             return int(v > 0u);
         }
-        else {
+        else
+        {
             return int(0 < v) - int(v < 0);
         }
     }
@@ -251,10 +259,12 @@ namespace qc
     template <Numeric T>
     inline T trunc(const T v)
     {
-        if constexpr (Floating<T>) {
+        if constexpr (Floating<T>)
+        {
             return T(stype<T>(v));
         }
-        else {
+        else
+        {
             return v;
         }
     }
@@ -316,10 +326,12 @@ namespace qc
     template <Floating T>
     inline T pow(const T v, const int e)
     {
-        if (e >= 0) {
+        if (e >= 0)
+        {
             return pow(v, uint(e));
         }
-        else {
+        else
+        {
             return pow(T(1.0) / v, uint(-e));
         }
     }
@@ -329,7 +341,8 @@ namespace qc
     {
         T r{T(1.0)};
 
-        do {
+        do
+        {
             if (e & 1u) r *= v; // exponent is odd
             e >>= 1;
             v *= v;
@@ -378,10 +391,12 @@ namespace qc
     template <Numeric T>
     inline constexpr T mod(const T v, const T d)
     {
-        if constexpr (Floating<T>) {
+        if constexpr (Floating<T>)
+        {
             return fract(v / d) * d;
         }
-        else {
+        else
+        {
             return T(v % d);
         }
     }
@@ -389,11 +404,13 @@ namespace qc
     template <Numeric T>
     inline constexpr std::pair<T, T> mod_q(const T v, const T d)
     {
-        if constexpr (Floating<T>) {
+        if constexpr (Floating<T>)
+        {
             const T q{v / d};
             return {fract(q) * d, q};
         }
-        else {
+        else
+        {
             const auto q{v / d};
             return {T(v - q * d), T(q)};
         }
@@ -418,13 +435,13 @@ namespace qc
     }
 
     template <typename T, typename... Args>
-    inline constexpr T sum(const T & v, const Args &... args)
+    inline constexpr T sum(const T & v, const Args & ... args)
     {
         return (v + ... + args);
     }
 
     template <typename T, typename... Args>
-    inline constexpr T product(const T & v, const Args &... args)
+    inline constexpr T product(const T & v, const Args & ... args)
     {
         return (v * ... * args);
     }
@@ -484,13 +501,16 @@ namespace qc
     template <UnsignedIntegral To, UnsignedIntegral From>
     inline To transnorm(const From v)
     {
-        if constexpr (sizeof(From) == sizeof(To)) {
+        if constexpr (sizeof(From) == sizeof(To))
+        {
             return v;
         }
-        else if constexpr (sizeof(From) > sizeof(To)) {
+        else if constexpr (sizeof(From) > sizeof(To))
+        {
             return To(v >> (8u * (sizeof(From) - sizeof(To))));
         }
-        else {
+        else
+        {
             using NextFrom = typename sized<sizeof(From) * 2>::utype;
             using OpType = typename sized<max(sizeof(NextFrom), sizeof(decltype(v << 1)))>::utype;
             return transnorm<To>(NextFrom(v | (OpType(v) << (8u * sizeof(From)))));

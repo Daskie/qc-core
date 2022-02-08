@@ -22,7 +22,7 @@ namespace qc
         template <Floating T> using mat3 = mat<T, 3>;
         template <Floating T> using mat4 = mat<T, 4>;
 
-        template <int n> using fmat = mat< float, n>;
+        template <int n> using fmat = mat<float, n>;
         template <int n> using dmat = mat<double, n>;
 
         using fmat2 = mat<float, 2>;

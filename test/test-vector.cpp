@@ -463,7 +463,8 @@ static void compileFunctionsT()
     qc::orthogonal(v3, v3);
     qc::orthogonal(v4, v4);
 
-    if constexpr (!std::is_unsigned_v<T>) {
+    if constexpr (!std::is_unsigned_v<T>)
+    {
         qc::ortho(v2);
         qc::ortho(v3);
     }
