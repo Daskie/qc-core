@@ -160,8 +160,7 @@ namespace qc
     {
         return {
             q1.w * q2.a + q2.w * q1.a + cross(q1.a, q2.a),
-            q1.w * q2.w - dot(q1.a, q2.a)
-        };
+            q1.w * q2.w - dot(q1.a, q2.a)};
     }
 
     template <Floating T>

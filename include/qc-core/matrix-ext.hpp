@@ -211,14 +211,12 @@ namespace qc
     {
         if constexpr (n == 2) return {
             +m.c2.y, -m.c2.x,
-            -m.c1.y, +m.c1.x
-        };
+            -m.c1.y, +m.c1.x};
 
         if constexpr (n == 3) return {
             +(m.c2.y * m.c3.z - m.c3.y * m.c2.z), -(m.c2.x * m.c3.z - m.c3.x * m.c2.z), +(m.c2.x * m.c3.y - m.c3.x * m.c2.y),
             -(m.c1.y * m.c3.z - m.c3.y * m.c1.z), +(m.c1.x * m.c3.z - m.c3.x * m.c1.z), -(m.c1.x * m.c3.y - m.c3.x * m.c1.y),
-            +(m.c1.y * m.c2.z - m.c2.y * m.c1.z), -(m.c1.x * m.c2.z - m.c2.x * m.c1.z), +(m.c1.x * m.c2.y - m.c2.x * m.c1.y)
-        };
+            +(m.c1.y * m.c2.z - m.c2.y * m.c1.z), -(m.c1.x * m.c2.z - m.c2.x * m.c1.z), +(m.c1.x * m.c2.y - m.c2.x * m.c1.y)};
 
         if constexpr (n == 4)
         {
@@ -262,8 +260,7 @@ namespace qc
                  yzw234, -xzw234,  xyw234, -xyz234,
                 -yzw134,  xzw134, -xyw134,  xyz134,
                  yzw124, -xzw124,  xyw124, -xyz124,
-                -yzw123,  xzw123, -xyw123,  xyz123
-            };
+                -yzw123,  xzw123, -xyw123,  xyz123};
         }
     }
 
@@ -317,14 +314,13 @@ namespace qc
         if constexpr (n == 2) return {
              T(1.0),  T(0.0), T(0.0),
              T(0.0),  T(1.0), T(0.0),
-            delta.x, delta.y, T(1.0)
-        };
+            delta.x, delta.y, T(1.0)};
+
         if constexpr (n == 3) return {
              T(1.0),  T(0.0),  T(0.0), T(0.0),
              T(0.0),  T(1.0),  T(0.0), T(0.0),
              T(0.0),  T(0.0),  T(1.0), T(0.0),
-            delta.x, delta.y, delta.z, T(1.0)
-        };
+            delta.x, delta.y, delta.z, T(1.0)};
     }
 
     template <typename T, int mn, int vn>
@@ -366,19 +362,18 @@ namespace qc
     {
         if constexpr (n == 2) return {
             scale.x,  T(0.0),
-             T(0.0), scale.y
-        };
+             T(0.0), scale.y};
+
         if constexpr (n == 3) return {
             scale.x,  T(0.0),  T(0.0),
              T(0.0), scale.y,  T(0.0),
-             T(0.0),  T(0.0), scale.z
-        };
+             T(0.0),  T(0.0), scale.z};
+
         if constexpr (n == 4) return {
             scale.x,  T(0.0),  T(0.0),  T(0.0),
              T(0.0), scale.y,  T(0.0),  T(0.0),
              T(0.0),  T(0.0), scale.z,  T(0.0),
-             T(0.0),  T(0.0),  T(0.0), scale.w
-        };
+             T(0.0),  T(0.0),  T(0.0), scale.w};
     }
 
     template <typename T, int mn, int vn>
@@ -445,8 +440,7 @@ namespace qc
 
         return {
              c, s,
-            -s, c
-        };
+            -s, c};
     }
 
     template <typename T>
@@ -458,8 +452,7 @@ namespace qc
         return {
             T(1.0), T(0.0), T(0.0),
             T(0.0),      c,      s,
-            T(0.0),     -s,      c
-        };
+            T(0.0),     -s,      c};
     }
 
     template <typename T>
@@ -471,8 +464,7 @@ namespace qc
         return {
                  c, T(0.0),     -s,
             T(0.0), T(1.0), T(0.0),
-                 s, T(0.0),      c
-        };
+                 s, T(0.0),      c};
     }
 
     template <typename T>
@@ -484,8 +476,7 @@ namespace qc
         return {
                  c,      s, T(0.0),
                 -s,      c, T(0.0),
-            T(0.0), T(0.0), T(1.0)
-        };
+            T(0.0), T(0.0), T(1.0)};
     }
 
     template <typename T>
@@ -517,8 +508,7 @@ namespace qc
         return {
             xcm * axis.x + c, xycm + zs, zxcm - ys,
             xycm - zs, ycm * axis.y + c, yzcm + xs,
-            zxcm + ys, yzcm - xs, zcm * axis.z + c
-        };
+            zxcm + ys, yzcm - xs, zcm * axis.z + c};
     }
 
     template <typename T>
@@ -673,11 +663,10 @@ namespace qc
     {
         const T nearMinusFar{near - far};
         return {
-            T(2.0) / width, T(0.0), T(0.0), T(0.0),
-            T(0.0), T(2.0) / height, T(0.0), T(0.0),
-            T(0.0), T(0.0), (depth0To1 ? T(1.0) : T(2.0)) / nearMinusFar, T(0.0),
-            T(0.0), T(0.0), (depth0To1 ? near : far + near) / nearMinusFar, T(1.0)
-        };
+            T(2.0) / width,          T(0.0),                                           T(0.0), T(0.0),
+                    T(0.0), T(2.0) / height,                                           T(0.0), T(0.0),
+                    T(0.0),          T(0.0), (depth0To1 ? T(1.0) :     T(2.0)) / nearMinusFar, T(0.0),
+                    T(0.0),          T(0.0), (depth0To1 ?   near : far + near) / nearMinusFar, T(1.0)};
     }
 
     template <bool depth0To1, typename T>
@@ -686,11 +675,10 @@ namespace qc
         const T invTop{T(1.0) / std::tan(vfov * T(0.5))};
         const T invNearMinusFar{T(1.0) / (near - far)};
         return {
-            invTop * aspect, T(0.0), T(0.0), T(0.0),
-            T(0.0), invTop, T(0.0), T(0.0),
-            T(0.0), T(0.0), (depth0To1 ? far : far + near) * invNearMinusFar, T(-1.0),
-            T(0.0), T(0.0), (depth0To1 ? far : T(2.0) * far) * near * invNearMinusFar, T(0.0)
-        };
+            invTop * aspect, T(0.0),                                                    T(0.0), T( 0.0),
+                     T(0.0), invTop,                                                    T(0.0), T( 0.0),
+                     T(0.0), T(0.0), (depth0To1 ? far :   far + near) *        invNearMinusFar, T(-1.0),
+                     T(0.0), T(0.0), (depth0To1 ? far : T(2.0) * far) * near * invNearMinusFar, T( 0.0)};
     }
 
     template <typename T>
@@ -729,7 +717,6 @@ namespace qc
                       camU.x,           camV.x,           camW.x, T(0.0),
                       camU.y,           camV.y,           camW.y, T(0.0),
                       camU.z,           camV.z,           camW.z, T(0.0),
-            dot(camU, trans), dot(camV, trans), dot(camW, trans), T(1.0)
-        };
+            dot(camU, trans), dot(camV, trans), dot(camW, trans), T(1.0)};
     }
 }

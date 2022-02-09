@@ -51,8 +51,7 @@ namespace qc
         constexpr mat(vec2<T> c1, vec2<T> c2) noexcept;
         constexpr mat(
             T x1, T y1,
-            T x2, T y2
-        ) noexcept;
+            T x2, T y2) noexcept;
         template <Floating U> constexpr explicit mat(const mat2<U> & m) noexcept;
         template <Floating U> constexpr explicit mat(const mat3<U> & m) noexcept;
         template <Floating U> constexpr explicit mat(const mat4<U> & m) noexcept;
@@ -91,8 +90,7 @@ namespace qc
         constexpr mat(
             T x1, T y1, T z1,
             T x2, T y2, T z2,
-            T x3, T y3, T z3
-        ) noexcept;
+            T x3, T y3, T z3) noexcept;
         template <Floating U> constexpr explicit mat(const mat2<U> & m) noexcept;
         template <Floating U> constexpr explicit mat(const mat3<U> & m) noexcept;
         template <Floating U> constexpr explicit mat(const mat4<U> & m) noexcept;
@@ -134,8 +132,7 @@ namespace qc
             T x1, T y1, T z1, T w1,
             T x2, T y2, T z2, T w2,
             T x3, T y3, T z3, T w3,
-            T x4, T y4, T z4, T w4
-        ) noexcept;
+            T x4, T y4, T z4, T w4) noexcept;
         template <Floating U> constexpr explicit mat(const mat2<U> & m) noexcept;
         template <Floating U> constexpr explicit mat(const mat3<U> & m) noexcept;
         template <Floating U> constexpr explicit mat(const mat4<U> & m) noexcept;
@@ -215,8 +212,8 @@ namespace qc
 {
     template <Floating T>
     inline constexpr mat<T, 2>::mat(const vec2<T> c1, const vec2<T> c2) noexcept :
-        c1(c1),
-        c2(c2)
+        c1{c1},
+        c2{c2}
     {}
 
     template <Floating T>
@@ -224,29 +221,29 @@ namespace qc
         const T x1, const T y1,
         const T x2, const T y2
     ) noexcept :
-        c1(x1, y1),
-        c2(x2, y2)
+        c1{x1, y1},
+        c2{x2, y2}
     {}
 
     template <Floating T>
     template <Floating U>
     inline constexpr mat<T, 2>::mat(const mat2<U> & m) noexcept :
-        c1(m.c1),
-        c2(m.c2)
+        c1{m.c1},
+        c2{m.c2}
     {}
 
     template <Floating T>
     template <Floating U>
     inline constexpr mat<T, 2>::mat(const mat3<U> & m) noexcept :
-        c1(m.c1),
-        c2(m.c2)
+        c1{m.c1},
+        c2{m.c2}
     {}
 
     template <Floating T>
     template <Floating U>
     inline constexpr mat<T, 2>::mat(const mat4<U> & m) noexcept :
-        c1(m.c1),
-        c2(m.c2)
+        c1{m.c1},
+        c2{m.c2}
     {}
 
     template <Floating T>
@@ -290,9 +287,9 @@ namespace qc
 
     template <Floating T>
     inline constexpr mat<T, 3>::mat(const vec3<T> c1, const vec3<T> c2, const vec3<T> c3) noexcept :
-        c1(c1),
-        c2(c2),
-        c3(c3)
+        c1{c1},
+        c2{c2},
+        c3{c3}
     {}
 
     template <Floating T>
@@ -301,33 +298,33 @@ namespace qc
         const T x2, const T y2, const T z2,
         const T x3, const T y3, const T z3
     ) noexcept :
-        c1(x1, y1, z1),
-        c2(x2, y2, z2),
-        c3(x3, y3, z3)
+        c1{x1, y1, z1},
+        c2{x2, y2, z2},
+        c3{x3, y3, z3}
     {}
 
     template <Floating T>
     template <Floating U>
     inline constexpr mat<T, 3>::mat(const mat2<U> & m) noexcept :
-        c1(m.c1),
-        c2(m.c2),
-        c3(T(0.0), T(0.0), T(1.0))
+        c1{m.c1},
+        c2{m.c2},
+        c3{T(0.0), T(0.0), T(1.0)}
     {}
 
     template <Floating T>
     template <Floating U>
     inline constexpr mat<T, 3>::mat(const mat3<U> & m) noexcept :
-        c1(m.c1),
-        c2(m.c2),
-        c3(m.c3)
+        c1{m.c1},
+        c2{m.c2},
+        c3{m.c3}
     {}
 
     template <Floating T>
     template <Floating U>
     inline constexpr mat<T, 3>::mat(const mat4<U> & m) noexcept :
-        c1(m.c1),
-        c2(m.c2),
-        c3(m.c3)
+        c1{m.c1},
+        c2{m.c2},
+        c3{m.c3}
     {}
 
     template <Floating T>
@@ -382,10 +379,10 @@ namespace qc
 
     template <Floating T>
     inline constexpr mat<T, 4>::mat(const vec4<T> c1, const vec4<T> c2, const vec4<T> c3, const vec4<T> c4) noexcept :
-        c1(c1),
-        c2(c2),
-        c3(c3),
-        c4(c4)
+        c1{c1},
+        c2{c2},
+        c3{c3},
+        c4{c4}
     {}
 
     template <Floating T>
@@ -395,37 +392,37 @@ namespace qc
         const T x3, const T y3, const T z3, const T w3,
         const T x4, const T y4, const T z4, const T w4
     ) noexcept :
-        c1(x1, y1, z1, w1),
-        c2(x2, y2, z2, w2),
-        c3(x3, y3, z3, w3),
-        c4(x4, y4, z4, w4)
+        c1{x1, y1, z1, w1},
+        c2{x2, y2, z2, w2},
+        c3{x3, y3, z3, w3},
+        c4{x4, y4, z4, w4}
     {}
 
     template <Floating T>
     template <Floating U>
     inline constexpr mat<T, 4>::mat(const mat2<U> & m) noexcept :
-        c1(m.c1),
-        c2(m.c2),
-        c3(T(0.0), T(0.0), T(1.0), T(0.0)),
-        c4(T(0.0), T(0.0), T(0.0), T(1.0))
+        c1{m.c1},
+        c2{m.c2},
+        c3{T(0.0), T(0.0), T(1.0), T(0.0)},
+        c4{T(0.0), T(0.0), T(0.0), T(1.0)}
     {}
 
     template <Floating T>
     template <Floating U>
     inline constexpr mat<T, 4>::mat(const mat3<U> & m) noexcept :
-        c1(m.c1),
-        c2(m.c2),
-        c3(m.c3),
-        c4(T(0.0), T(0.0), T(0.0), T(1.0))
+        c1{m.c1},
+        c2{m.c2},
+        c3{m.c3},
+        c4{T(0.0), T(0.0), T(0.0), T(1.0)}
     {}
 
     template <Floating T>
     template <Floating U>
     inline constexpr mat<T, 4>::mat(const mat4<U> & m) noexcept :
-        c1(m.c1),
-        c2(m.c2),
-        c3(m.c3),
-        c4(m.c4)
+        c1{m.c1},
+        c2{m.c2},
+        c3{m.c3},
+        c4{m.c4}
     {}
 
     template <Floating T>
@@ -637,8 +634,8 @@ namespace qc
             m1.c1.y * m2.c1.x + m1.c2.y * m2.c1.y,
 
             m1.c1.x * m2.c2.x + m1.c2.x * m2.c2.y,
-            m1.c1.y * m2.c2.x + m1.c2.y * m2.c2.y
-        };
+            m1.c1.y * m2.c2.x + m1.c2.y * m2.c2.y};
+
         if constexpr (n == 3) return {
             m1.c1.x * m2.c1.x + m1.c2.x * m2.c1.y + m1.c3.x * m2.c1.z,
             m1.c1.y * m2.c1.x + m1.c2.y * m2.c1.y + m1.c3.y * m2.c1.z,
@@ -650,8 +647,8 @@ namespace qc
 
             m1.c1.x * m2.c3.x + m1.c2.x * m2.c3.y + m1.c3.x * m2.c3.z,
             m1.c1.y * m2.c3.x + m1.c2.y * m2.c3.y + m1.c3.y * m2.c3.z,
-            m1.c1.z * m2.c3.x + m1.c2.z * m2.c3.y + m1.c3.z * m2.c3.z
-        };
+            m1.c1.z * m2.c3.x + m1.c2.z * m2.c3.y + m1.c3.z * m2.c3.z};
+
         if constexpr (n == 4) return {
             m1.c1.x * m2.c1.x + m1.c2.x * m2.c1.y + m1.c3.x * m2.c1.z + m1.c4.x * m2.c1.w,
             m1.c1.y * m2.c1.x + m1.c2.y * m2.c1.y + m1.c3.y * m2.c1.z + m1.c4.y * m2.c1.w,
@@ -671,8 +668,7 @@ namespace qc
             m1.c1.x * m2.c4.x + m1.c2.x * m2.c4.y + m1.c3.x * m2.c4.z + m1.c4.x * m2.c4.w,
             m1.c1.y * m2.c4.x + m1.c2.y * m2.c4.y + m1.c3.y * m2.c4.z + m1.c4.y * m2.c4.w,
             m1.c1.z * m2.c4.x + m1.c2.z * m2.c4.y + m1.c3.z * m2.c4.z + m1.c4.z * m2.c4.w,
-            m1.c1.w * m2.c4.x + m1.c2.w * m2.c4.y + m1.c3.w * m2.c4.z + m1.c4.w * m2.c4.w
-        };
+            m1.c1.w * m2.c4.x + m1.c2.w * m2.c4.y + m1.c3.w * m2.c4.z + m1.c4.w * m2.c4.w};
     }
 
     template <Floating T, int n>
@@ -694,19 +690,18 @@ namespace qc
     {
         if constexpr (n == 2) return {
             m.c1.x * v.x + m.c2.x * v.y,
-            m.c1.y * v.x + m.c2.y * v.y
-        };
+            m.c1.y * v.x + m.c2.y * v.y};
+
         if constexpr (n == 3) return {
             m.c1.x * v.x + m.c2.x * v.y + m.c3.x * v.z,
             m.c1.y * v.x + m.c2.y * v.y + m.c3.y * v.z,
-            m.c1.z * v.x + m.c2.z * v.y + m.c3.z * v.z
-        };
+            m.c1.z * v.x + m.c2.z * v.y + m.c3.z * v.z};
+
         if constexpr (n == 4) return {
             m.c1.x * v.x + m.c2.x * v.y + m.c3.x * v.z + m.c4.x * v.w,
             m.c1.y * v.x + m.c2.y * v.y + m.c3.y * v.z + m.c4.y * v.w,
             m.c1.z * v.x + m.c2.z * v.y + m.c3.z * v.z + m.c4.z * v.w,
-            m.c1.w * v.x + m.c2.w * v.y + m.c3.w * v.z + m.c4.w * v.w
-        };
+            m.c1.w * v.x + m.c2.w * v.y + m.c3.w * v.z + m.c4.w * v.w};
     }
 
     template <Floating T, int n>

@@ -197,8 +197,7 @@ namespace qc::color
         return {
             T(1.0) - r1 * r1,
             T(1.6) * thermal - T(0.5),
-            thermal < T(0.5) ? b1 - b2 * b2 : T(6.5) * thermal - T(5.5)
-        };
+            thermal < T(0.5) ? b1 - b2 * b2 : T(6.5) * thermal - T(5.5)};
     }
 
     ///
@@ -231,13 +230,12 @@ namespace qc::color
     template <Floating T> inline constexpr mat3<T> lrgbToXyzMatrix{
         T(506752.0 / 1228815.0), T(87098.0 / 409605.0), T(7918.0 / 409605.0),
         T(87881.0 / 245763.0), T(175762.0 / 245763.0), T(87881.0 / 737289.0),
-        T(12673.0 / 70218.0), T(12673.0 / 175545.0), T(1001167.0 / 1053270.0)
-    };
+        T(12673.0 / 70218.0), T(12673.0 / 175545.0), T(1001167.0 / 1053270.0)};
+
     template <Floating T> inline constexpr mat3<T> xyzToLrgbMatrix{
         T(12831.0 / 3959.0), T(-851781.0 / 878810.0), T(705.0 / 12673.0),
         T(-329.0 / 214.0), T(1648619.0 / 878810.0), T(-2585.0 / 12673.0),
-        T(-1974.0 / 3959.0), T(36519.0 / 878810.0), T(705.0 / 667.0)
-    };
+        T(-1974.0 / 3959.0), T(36519.0 / 878810.0), T(705.0 / 667.0)};
 
     ///
     /// The XYZ value of D65 white
@@ -317,8 +315,7 @@ namespace qc::color
         return {
             cbrtNY,
             T(5.0) * (std::cbrt(normalized.x) - cbrtNY),
-            T(2.0) * (cbrtNY - std::cbrt(normalized.z))
-        };
+            T(2.0) * (cbrtNY - std::cbrt(normalized.z))};
     }
 
     ///
@@ -334,8 +331,8 @@ namespace qc::color
         const vec3<T> xyz{
             lab.x + lab.y * T(0.2),
             lab.x,
-            lab.x - lab.z * T(0.5)
-        };
+            lab.x - lab.z * T(0.5)};
+
         return xyz * xyz * xyz * xyzWhitePoint<T>;
     }
 
@@ -414,8 +411,7 @@ namespace qc::color
         return {
             luv.x,
             magnitude(luv.yz()),
-            std::atan2(luv.z, luv.y)
-        };
+            std::atan2(luv.z, luv.y)};
     }
 
     ///
@@ -430,8 +426,7 @@ namespace qc::color
         return {
             lch.x,
             std::cos(lch.z) * lch.y,
-            std::sin(lch.z) * lch.y
-        };
+            std::sin(lch.z) * lch.y};
     }
 
     // GPU (saved for later)

@@ -9,10 +9,7 @@ namespace qc
     template <Floating T>
     inline vec2<T> polarToCartesian(const T theta)
     {
-        return {
-            std::cos(theta),
-            std::sin(theta)
-        };
+        return {std::cos(theta), std::sin(theta)};
     }
 
     template <Floating T>
@@ -34,10 +31,7 @@ namespace qc
     template <Floating T>
     inline vec2<T> cartesianToPolar(const vec2<T> v)
     {
-        return {
-            magnitude(v),
-            std::atan2(v.y, v.x)
-        };
+        return {magnitude(v), std::atan2(v.y, v.x)};
     }
 
     //
@@ -48,11 +42,7 @@ namespace qc
     inline vec3<T> sphericalToCartesian(const T theta, const T phi)
     {
         const T sinPhi{std::sin(phi)};
-        return {
-            sinPhi * std::cos(theta),
-            sinPhi * std::sin(theta),
-            std::cos(phi)
-        };
+        return {sinPhi * std::cos(theta), sinPhi * std::sin(theta), std::cos(phi)};
     }
 
     //
@@ -81,20 +71,13 @@ namespace qc
     inline vec3<T> cartesianToSpherical(const vec3<T> v)
     {
         const T r{magnitude(v)};
-        return {
-            r,
-            std::atan2(v.y, v.x),
-            std::acos(v.z / r)
-        };
+        return {r, std::atan2(v.y, v.x), std::acos(v.z / r)};
     }
 
     template <Floating T>
     inline vec3<T> cylindricalToCartesian(const T r, const T theta, const T z)
     {
-        return {
-            polarToCartesian(r, theta),
-            z
-        };
+        return {polarToCartesian(r, theta), z};
     }
 
     template <Floating T>
@@ -106,28 +89,22 @@ namespace qc
     template <Floating T>
     inline vec3<T> cartesianToCylindrical(const vec3<T> v)
     {
-        return {
-            magnitude(v),
-            std::atan2(v.y, v.x),
-            v.z
-        };
+        return {magnitude(v), std::atan2(v.y, v.x), v.z};
     }
 
     //a is distance from vertex A in range [0, 1] (can be outside range and outside triangle), AX, AY, and AZ define cartesian position of A
     inline fvec2 barycentricToCartesian(const fvec3 v, const fvec2 A, const fvec2 B, const fvec2 C)
     {
-        return fvec2(
+        return fvec2{
             v.x * A.x + v.y * B.x + v.z * C.x,
-            v.x * A.y + v.y * B.y + v.z * C.y
-        );
+            v.x * A.y + v.y * B.y + v.z * C.y};
     }
 
     inline fvec3 cartesianToBarycentric(const fvec2 v, const fvec2 A, const fvec2 B, const fvec2 C)
     {
-        fmat2 mat(
+        fmat2 mat{
             A.x - C.x, A.y - C.y,
-            B.x - C.x, B.y - C.y
-        );
+            B.x - C.x, B.y - C.y};
         mat = inverse(mat);
         fvec3 bary(mat * (v - C));
         bary.z = 1.0f - bary.x - bary.y;
@@ -220,8 +197,7 @@ namespace qc
     {
         return sphericalToCartesian(
             (T(2.0) * std::numbers::pi_v<T>) * v.x,
-            std::acos(T(1.0) - T(2.0) * v.y)
-        );
+            std::acos(T(1.0) - T(2.0) * v.y));
     }
 
     //

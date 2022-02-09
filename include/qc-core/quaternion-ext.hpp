@@ -245,10 +245,9 @@ namespace qc
         const T kk{q.a.z * q.a.z};
 
         return {
-            T(1.0) - T(2.0) * (jj + kk), T(2.0) * (ij + wk), T(2.0) * (ik - wj),
-            T(2.0) * (ij - wk), T(1.0) - T(2.0) * (ii + kk), T(2.0) * (jk + wi),
-            T(2.0) * (ik + wj), T(2.0) * (jk - wi), T(1.0) - T(2.0) * (ii + jj)
-        };
+            T(1.0) - T(2.0) * (jj + kk),          T(2.0) * (ij + wk),          T(2.0) * (ik - wj),
+                     T(2.0) * (ij - wk), T(1.0) - T(2.0) * (ii + kk),          T(2.0) * (jk + wi),
+                     T(2.0) * (ik + wj),          T(2.0) * (jk - wi), T(1.0) - T(2.0) * (ii + jj)};
     }
 
     template <typename T>
