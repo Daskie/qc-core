@@ -442,4 +442,4 @@ namespace qc::color
         return clamp(p - 1.0f, 0.0, 1.0);
     }*/
 
-} // namespace qc::color
+}

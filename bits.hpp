@@ -13,7 +13,7 @@ namespace qc::bits
 
     template <UnsignedIntegral T> T scramble(T v);
 
-} // namespace qc::bits
+}
 
 // INLINE IMPLEMENTATION ///////////////////////////////////////////////////////////////////////////////////////////////
 
