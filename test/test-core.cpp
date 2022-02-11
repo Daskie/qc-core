@@ -37,6 +37,111 @@ static void compileTyping()
 template <typename T1, typename T2>
 static void compileFunctionsTT() {}
 
+template <typename T1, typename T2>
+static void compileFunctionsSITT()
+{
+    T1 v1{};
+    T2 v2{};
+
+    qc::min(v1, v2);
+    qc::min(v1, v2, v1);
+    qc::min(v1, v2, v1, v2);
+    qc::min(v1, v2, v1, v2, v1);
+
+    qc::max(v1, v2);
+    qc::max(v1, v2, v1);
+    qc::max(v1, v2, v1, v2);
+    qc::max(v1, v2, v1, v2, v1);
+
+    if constexpr (sizeof(T1) >= sizeof(T2))
+    {
+        qc::minify(v1, v2);
+        qc::minify(v1, v2, v1);
+        qc::minify(v1, v2, v1, v2);
+        qc::minify(v1, v2, v1, v2, v1);
+
+        qc::maxify(v1, v2);
+        qc::maxify(v1, v2, v1);
+        qc::maxify(v1, v2, v1, v2);
+        qc::maxify(v1, v2, v1, v2, v1);
+    }
+
+    qc::minmax(v1, v2);
+    qc::minmax(v1, v2, v1);
+    qc::minmax(v1, v2, v1, v2);
+    qc::minmax(v1, v2, v1, v2, v1);
+}
+
+template <typename T1, typename T2>
+static void compileFunctionsUITT()
+{
+    T1 v1{};
+    T2 v2{};
+
+    qc::min(v1, v2);
+    qc::min(v1, v2, v1);
+    qc::min(v1, v2, v1, v2);
+    qc::min(v1, v2, v1, v2, v1);
+
+    qc::max(v1, v2);
+    qc::max(v1, v2, v1);
+    qc::max(v1, v2, v1, v2);
+    qc::max(v1, v2, v1, v2, v1);
+
+    if constexpr (sizeof(T1) >= sizeof(T2))
+    {
+        qc::minify(v1, v2);
+        qc::minify(v1, v2, v1);
+        qc::minify(v1, v2, v1, v2);
+        qc::minify(v1, v2, v1, v2, v1);
+
+        qc::maxify(v1, v2);
+        qc::maxify(v1, v2, v1);
+        qc::maxify(v1, v2, v1, v2);
+        qc::maxify(v1, v2, v1, v2, v1);
+    }
+
+    qc::minmax(v1, v2);
+    qc::minmax(v1, v2, v1);
+    qc::minmax(v1, v2, v1, v2);
+    qc::minmax(v1, v2, v1, v2, v1);
+}
+
+template <typename T1, typename T2>
+static void compileFunctionsFTT()
+{
+    T1 v1{};
+    T2 v2{};
+
+    qc::min(v1, v2);
+    qc::min(v1, v2, v1);
+    qc::min(v1, v2, v1, v2);
+    qc::min(v1, v2, v1, v2, v1);
+
+    qc::max(v1, v2);
+    qc::max(v1, v2, v1);
+    qc::max(v1, v2, v1, v2);
+    qc::max(v1, v2, v1, v2, v1);
+
+    if constexpr (sizeof(T1) >= sizeof(T2))
+    {
+        qc::minify(v1, v2);
+        qc::minify(v1, v2, v1);
+        qc::minify(v1, v2, v1, v2);
+        qc::minify(v1, v2, v1, v2, v1);
+
+        qc::maxify(v1, v2);
+        qc::maxify(v1, v2, v1);
+        qc::maxify(v1, v2, v1, v2);
+        qc::maxify(v1, v2, v1, v2, v1);
+    }
+
+    qc::minmax(v1, v2);
+    qc::minmax(v1, v2, v1);
+    qc::minmax(v1, v2, v1, v2);
+    qc::minmax(v1, v2, v1, v2, v1);
+}
+
 template <typename T>
 static void compileFunctionsT()
 {
@@ -52,36 +157,22 @@ static void compileFunctionsT()
     compileFunctionsTT<T, u64>();
 
     T v{1};
-    T * vp{nullptr};
+    T * vp{};
 
-    qc::min(v, v);
     qc::min(vp, vp);
-    qc::min(v, v, v);
-    qc::min(v, v, v, v);
-    qc::min(v, v, v, v, v);
+    qc::min(vp, vp, vp);
 
-    qc::max(v, v);
     qc::max(vp, vp);
-    qc::max(v, v, v);
-    qc::max(v, v, v, v);
-    qc::max(v, v, v, v, v);
+    qc::max(vp, vp, vp);
 
-    qc::minify(v, v);
     qc::minify(vp, vp);
-    qc::minify(v, v, v);
-    qc::minify(v, v, v, v);
-    qc::minify(v, v, v, v, v);
+    qc::minify(vp, vp, vp);
 
-    qc::maxify(v, v);
     qc::maxify(vp, vp);
-    qc::maxify(v, v, v);
-    qc::maxify(v, v, v, v);
-    qc::maxify(v, v, v, v, v);
+    qc::maxify(vp, vp, vp);
 
-    qc::minmax(v, v);
-    qc::minmax(v, v, v);
-    qc::minmax(v, v, v, v);
-    qc::minmax(v, v, v, v, v);
+    qc::minmax(vp, vp);
+    qc::minmax(vp, vp, vp);
 
     qc::median(v, v, v);
 
@@ -113,8 +204,39 @@ static void compileFunctionsT()
 }
 
 template <typename T>
+static void compileFunctionsIT()
+{
+
+}
+
+template <typename T>
+static void compileFunctionsSIT()
+{
+    compileFunctionsSITT<T, s8>();
+    compileFunctionsSITT<T, s16>();
+    compileFunctionsSITT<T, s32>();
+    compileFunctionsSITT<T, s64>();
+}
+
+template <typename T>
+static void compileFunctionsUIT()
+{
+    compileFunctionsUITT<T, u8>();
+    compileFunctionsUITT<T, u16>();
+    compileFunctionsUITT<T, u32>();
+    compileFunctionsUITT<T, u64>();
+
+    T v{1u};
+
+    qc::log2Floor(v);
+}
+
+template <typename T>
 static void compileFunctionsFT()
 {
+    compileFunctionsFTT<T, f32>();
+    compileFunctionsFTT<T, f64>();
+
     T v{1.0};
 
     qc::areEqual_e(v, v);
@@ -136,20 +258,6 @@ static void compileFunctionsFT()
     qc::radians(v);
 
     qc::degrees(v);
-}
-
-template <typename T>
-static void compileFunctionsIT()
-{
-
-}
-
-template <typename T>
-static void compileFunctionsUIT()
-{
-    T v{1u};
-
-    qc::log2Floor(v);
 }
 
 static void compileFunctionsBT()
@@ -187,6 +295,11 @@ static void compileFunctions()
     compileFunctionsIT<s64>();
     compileFunctionsIT<u64>();
 
+    compileFunctionsSIT<s8>();
+    compileFunctionsSIT<s16>();
+    compileFunctionsSIT<s32>();
+    compileFunctionsSIT<s64>();
+
     compileFunctionsUIT<u8>();
     compileFunctionsUIT<u16>();
     compileFunctionsUIT<u32>();
@@ -195,167 +308,10 @@ static void compileFunctions()
     compileFunctionsBT();
 }
 
-template <typename T1, typename T2>
-static constexpr void compileFunctionsConstexprTT()
-{
-    //constexpr T1 v{1};
-
-}
-
-template <typename T>
-static constexpr void compileFunctionsConstexprT()
-{
-    compileFunctionsConstexprTT<T, f32>();
-    compileFunctionsConstexprTT<T, f64>();
-    compileFunctionsConstexprTT<T, s8>();
-    compileFunctionsConstexprTT<T, u8>();
-    compileFunctionsConstexprTT<T, s16>();
-    compileFunctionsConstexprTT<T, u16>();
-    compileFunctionsConstexprTT<T, s32>();
-    compileFunctionsConstexprTT<T, u32>();
-    compileFunctionsConstexprTT<T, s64>();
-    compileFunctionsConstexprTT<T, u64>();
-
-    constexpr T v{1};
-    constexpr T * vp{nullptr};
-
-    qc::min(v, v);
-    qc::min(vp, vp);
-    qc::min(v, v, v);
-    qc::min(v, v, v, v);
-    qc::min(v, v, v, v, v);
-
-    qc::max(v, v);
-    qc::max(vp, vp);
-    qc::max(v, v, v);
-    qc::max(v, v, v, v);
-    qc::max(v, v, v, v, v);
-
-    //qc::minmax(v, v);
-    //qc::minmax(v, v, v);
-    //qc::minmax(v, v, v, v);
-    //qc::minmax(v, v, v, v, v);
-
-    //qc::median(v, v, v);
-
-    //qc::clamp(v, v, v);
-
-    //qc::abs(v);
-
-    //qc::zero(v);
-    //qc::zero(v, v);
-
-    //qc::equal(v, v);
-    //qc::equal(v, v, v
-    //qc::equal(v, v, v, v);
-    //qc::equal(v, v, v, v, v);
-
-    //qc::sign(v);
-
-    //qc::round(v);
-
-    //qc::floor(v);
-
-    //qc::ceil(v);
-
-    //qc::mod(v, v);
-    //qc::mod_q(v, v);
-
-    qc::sum(v, v, v, v, v);
-    qc::product(v, v, v, v, v);
-}
-
-template <typename T>
-static constexpr void compileFunctionsConstexprFT()
-{
-    //constexpr T v{1.0};
-
-    //qc::equal_e(v, v);
-    //qc::equal_e(v, v, v);
-
-    //qc::fract(v);
-    //qc::fract_i(v);
-
-    //qc::mix(v, v, v);
-
-    //qc::average(v, v, v, v, v);
-
-    //qc::radians(v);
-
-    //qc::degrees(v);
-}
-
-template <typename T>
-static constexpr void compileFunctionsConstexprIT()
-{
-
-}
-
-template <typename T>
-static constexpr void compileFunctionsConstexprUIT()
-{
-    constexpr T v{1};
-
-    qc::log2Floor(v);
-}
-
-static constexpr void compileFunctionsConstexprBT()
-{
-    //constexpr bool v{true};
-
-    //qc::equal(v, v);
-    //qc::equal(v, v, v);
-    //qc::equal(v, v, v, v);
-    //qc::equal(v, v, v, v, v);
-}
-
-static constexpr void compileFunctionsConstexprET()
-{
-    qc::underlyingVal(TestEnum::a);
-}
-
-static constexpr bool compileFunctionsConstexpr()
-{
-    compileFunctionsConstexprT<f32>();
-    compileFunctionsConstexprT<f64>();
-    compileFunctionsConstexprT<s8>();
-    compileFunctionsConstexprT<u8>();
-    compileFunctionsConstexprT<s16>();
-    compileFunctionsConstexprT<u16>();
-    compileFunctionsConstexprT<s32>();
-    compileFunctionsConstexprT<u32>();
-    compileFunctionsConstexprT<s64>();
-    compileFunctionsConstexprT<u64>();
-
-    compileFunctionsConstexprFT<f32>();
-    compileFunctionsConstexprFT<f64>();
-
-    compileFunctionsConstexprIT<s8>();
-    compileFunctionsConstexprIT<u8>();
-    compileFunctionsConstexprIT<s16>();
-    compileFunctionsConstexprIT<u16>();
-    compileFunctionsConstexprIT<s32>();
-    compileFunctionsConstexprIT<u32>();
-    compileFunctionsConstexprIT<s64>();
-    compileFunctionsConstexprIT<u64>();
-
-    compileFunctionsConstexprUIT<u8>();
-    compileFunctionsConstexprUIT<u16>();
-    compileFunctionsConstexprUIT<u32>();
-    compileFunctionsConstexprUIT<u64>();
-
-    compileFunctionsConstexprBT();
-
-    compileFunctionsConstexprET();
-
-    return true;
-}
-
 TEST(core, compilation)
 {
     compileTyping();
     compileFunctions();
-    static_assert(compileFunctionsConstexpr());
 }
 
 template <Integral T> static constexpr T halfVal{T(std::numeric_limits<T>::max() / 2 + T(1))};
