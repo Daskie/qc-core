@@ -136,7 +136,7 @@ namespace qc
 
         while (lowI < highI)
         {
-            const size_t midI{lowI + (highI - lowI) / 2u};
+            const size_t midI{(lowI + highI) / 2u};
 
             if (_data[midI] < v)
             {
