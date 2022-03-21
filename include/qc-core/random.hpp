@@ -1,5 +1,6 @@
 #pragma once
 
+#include <chrono>
 #include <random>
 
 #include <qc-core/core.hpp>
@@ -185,7 +186,7 @@ namespace qc
 
         using Engine = std::conditional_t<sizeof(size_t) <= 4u, std::mt19937, std::mt19937_64>;
 
-        explicit Random(const size_t seed = Engine::default_seed) noexcept :
+        explicit Random(const size_t seed = std::chrono::high_resolution_clock::now().time_since_epoch().count()) noexcept :
             _seed(seed),
             _engine(_seed)
         {}
