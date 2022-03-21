@@ -193,15 +193,15 @@ namespace qc
         template <Floating T>
         struct FullSpanHelper<T>
         {
-            static constexpr T minimum{-std::numeric_limits<T>::infinity()};
-            static constexpr T maximum{+std::numeric_limits<T>::infinity()};
+            inline static constexpr T minimum{-std::numeric_limits<T>::infinity()};
+            inline static constexpr T maximum{+std::numeric_limits<T>::infinity()};
         };
 
         template <Integral T>
         struct FullSpanHelper<T>
         {
-            static constexpr T minimum{std::numeric_limits<T>::min()};
-            static constexpr T maximum{std::numeric_limits<T>::max()};
+            inline static constexpr T minimum{std::numeric_limits<T>::min()};
+            inline static constexpr T maximum{std::numeric_limits<T>::max()};
         };
     }
 

@@ -77,7 +77,7 @@ namespace qc
     template <NumericOrBoolean T> struct vec<T, 2>
     {
         using Type = T;
-        static constexpr int n{2};
+        inline static constexpr int n{2};
 
         T x{};
         T y{};
@@ -109,7 +109,7 @@ namespace qc
     template <NumericOrBoolean T> struct vec<T, 3>
     {
         using Type = T;
-        static constexpr int n{3};
+        inline static constexpr int n{3};
 
         T x{};
         T y{};
@@ -151,7 +151,7 @@ namespace qc
     template <NumericOrBoolean T> struct vec<T, 4>
     {
         using Type = T;
-        static constexpr int n{4};
+        inline static constexpr int n{4};
 
         T x{};
         T y{};

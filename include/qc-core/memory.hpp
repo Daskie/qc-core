@@ -106,8 +106,8 @@ namespace qc::memory
 
         public: //--------------------------------------------------------------
 
-        static constexpr size_t minCapacity{2u * sizeof(size_t)};
-        static constexpr size_t maxCapacity{std::numeric_limits<size_t>::max() / sizeof(size_t) * sizeof(size_t) - 2u * sizeof(size_t)};
+        inline static constexpr size_t minCapacity{2u * sizeof(size_t)};
+        inline static constexpr size_t maxCapacity{std::numeric_limits<size_t>::max() / sizeof(size_t) * sizeof(size_t) - 2u * sizeof(size_t)};
 
         Pool(const size_t capacity)
         {
