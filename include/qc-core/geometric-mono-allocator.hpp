@@ -47,6 +47,8 @@ namespace qc
 
         size_t capacity() const noexcept { return _capacity; }
 
+        size_t count() const noexcept { return _allocatedCount; }
+
         private: //-------------------------------------------------------------
 
         union _ReleaseSlot
@@ -66,6 +68,7 @@ namespace qc
         inline static _Slot * const _special{std::bit_cast<_Slot *>(~uintptr_t{0u})};
 
         size_t _capacity{defaultInitialCapacity};
+        size_t _allocatedCount{};
         size_t _memoryCount{};
         std::array<_Slot *, 32u> _memories;
         _Slot * _nextFree{};
@@ -88,6 +91,7 @@ namespace qc
     template <size_t slotSize, size_t slotAlignment>
     GeometricMonoAllocator<slotSize, slotAlignment>::GeometricMonoAllocator(GeometricMonoAllocator && other) noexcept :
         _capacity{std::exchange(other._capacity, defaultInitialCapacity)},
+        _allocatedCount{std::exchange(other._allocatedCount, 0u)},
         _memoryCount{std::exchange(other._memoryCount, 0u)},
         _nextFree{std::exchange(other._nextFree, nullptr)}
     {}
@@ -96,6 +100,7 @@ namespace qc
     GeometricMonoAllocator<slotSize, slotAlignment> & GeometricMonoAllocator<slotSize, slotAlignment>::operator=(GeometricMonoAllocator && other) noexcept
     {
         _capacity = std::exchange(other._capacity, defaultInitialCapacity);
+        _allocatedCount = std::exchange(other._allocatedCount, 0u);
         _memoryCount = std::exchange(other._memoryCount, 0u);
         _nextFree = std::exchange(other._nextFree, nullptr);
     }
@@ -103,6 +108,8 @@ namespace qc
     template <size_t slotSize, size_t slotAlignment>
     GeometricMonoAllocator<slotSize, slotAlignment>::~GeometricMonoAllocator() noexcept
     {
+        assert(_allocatedCount == 0u);
+
         for (size_t memoryI{0u}; memoryI < _memoryCount; ++memoryI)
         {
             ::operator delete(_memories[memoryI]);
@@ -111,6 +118,7 @@ namespace qc
         if constexpr (qc::debug)
         {
             _capacity = 0u;
+            _allocatedCount = 0u;
             _memoryCount = 0u;
             _nextFree = nullptr;
         }
@@ -130,7 +138,7 @@ namespace qc
         {
             slot->nextFree = _special;
         }
-
+        ++_allocatedCount;
         return slot;
     }
 
@@ -144,6 +152,7 @@ namespace qc
 
         slot->nextFree = _nextFree;
         _nextFree = slot;
+        --_allocatedCount;
     }
 
     template <size_t slotSize, size_t slotAlignment>

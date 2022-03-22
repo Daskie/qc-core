@@ -39,6 +39,8 @@ namespace qc
 
         size_t capacity() const noexcept { return _allocator.capacity(); }
 
+        size_t count() const noexcept { return _allocator.count(); }
+
         private: //-------------------------------------------------------------
 
         _Allocator _allocator{};
