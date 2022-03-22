@@ -33,9 +33,9 @@ namespace qc
 
         ~GeometricObjectPool() noexcept = default;
 
-        template <typename... Args> [[nodiscard]] T & new_(Args &&... args);
+        template <typename... Args> [[nodiscard]] T * new_(Args &&... args);
 
-        void delete_(T & v) noexcept(qc::debug);
+        void delete_(T * v) noexcept(qc::debug);
 
         size_t capacity() const noexcept { return _allocator.capacity(); }
 
@@ -56,15 +56,15 @@ namespace qc
 
     template <typename T>
     template <typename... Args>
-    T & GeometricObjectPool<T>::new_(Args &&... args)
+    T * GeometricObjectPool<T>::new_(Args &&... args)
     {
-        return *(new (_allocator.allocate()) T{std::forward<Args>(args)...});
+        return new (_allocator.allocate()) T{std::forward<Args>(args)...};
     }
 
     template <typename T>
-    void GeometricObjectPool<T>::delete_(T & v) noexcept(qc::debug)
+    void GeometricObjectPool<T>::delete_(T * const v) noexcept(qc::debug)
     {
-        v.~T();
-        _allocator.deallocate(&v);
+        v->~T();
+        _allocator.deallocate(v);
     }
 }

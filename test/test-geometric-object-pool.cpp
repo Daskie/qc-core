@@ -26,13 +26,13 @@ TEST(GeometricObjectPool, standard)
     qc::GeometricObjectPool<Val> pool{4u};
     EXPECT_EQ(4u, pool.capacity());
 
-    Val * v{&pool.new_(0)};
+    Val * v{pool.new_(0)};
     EXPECT_EQ(0, v->v);
     EXPECT_EQ(4u, pool.capacity());
     EXPECT_EQ(Val::constructionCount, 1u);
     EXPECT_EQ(Val::destructionCount, 0u);
 
-    pool.delete_(*v);
+    pool.delete_(v);
     EXPECT_EQ(4u, pool.capacity());
     EXPECT_EQ(Val::constructionCount, 1u);
     EXPECT_EQ(Val::destructionCount, 1u);
@@ -44,7 +44,7 @@ TEST(GeometricObjectPool, standard)
 
     for (int i{0}; i < 4; ++i)
     {
-        vals[i] = &pool.new_(i);
+        vals[i] = pool.new_(i);
     }
     for (int i{0}; i < 4; ++i)
     {
@@ -54,7 +54,7 @@ TEST(GeometricObjectPool, standard)
     EXPECT_EQ(Val::constructionCount, 4u);
     EXPECT_EQ(Val::destructionCount, 0u);
 
-    vals[4] = &pool.new_(4);
+    vals[4] = pool.new_(4);
     EXPECT_EQ(4, vals[4]->v);
     EXPECT_EQ(8u, pool.capacity());
     EXPECT_EQ(Val::constructionCount, 5u);
@@ -62,7 +62,7 @@ TEST(GeometricObjectPool, standard)
 
     for (int i{5}; i < 8; ++i)
     {
-        vals[i] = & pool.new_(i);
+        vals[i] = pool.new_(i);
     }
     for (int i{5}; i < 8; ++i)
     {
@@ -72,7 +72,7 @@ TEST(GeometricObjectPool, standard)
     EXPECT_EQ(Val::constructionCount, 8u);
     EXPECT_EQ(Val::destructionCount, 0u);
 
-    vals[8] = &pool.new_(8);
+    vals[8] = pool.new_(8);
     EXPECT_EQ(8, vals[8]->v);
     EXPECT_EQ(16u, pool.capacity());
     EXPECT_EQ(Val::constructionCount, 9u);
@@ -80,7 +80,7 @@ TEST(GeometricObjectPool, standard)
 
     for (int i{9}; i < 16; ++i)
     {
-        vals[i] = & pool.new_(i);
+        vals[i] = pool.new_(i);
     }
     for (int i{9}; i < 16; ++i)
     {
@@ -94,7 +94,7 @@ TEST(GeometricObjectPool, standard)
 
     for (int i{0}; i < 8; ++i)
     {
-        pool.delete_(*vals[i]);
+        pool.delete_(vals[i]);
     }
     EXPECT_EQ(16u, pool.capacity());
     EXPECT_EQ(Val::constructionCount, 16u);
@@ -102,7 +102,7 @@ TEST(GeometricObjectPool, standard)
 
     for (int i{0}; i < 8; ++i)
     {
-        vals[i] = &pool.new_(16 + i);
+        vals[i] = pool.new_(16 + i);
     }
     for (int i{0}; i < 8; ++i)
     {
@@ -116,7 +116,7 @@ TEST(GeometricObjectPool, standard)
 
     for (int i{0}; i < 16; ++i)
     {
-        pool.delete_(*vals[i]);
+        pool.delete_(vals[i]);
     }
     EXPECT_EQ(16u, pool.capacity());
     EXPECT_EQ(Val::constructionCount, 24u);
@@ -125,13 +125,13 @@ TEST(GeometricObjectPool, standard)
     Val::constructionCount = 0u;
     Val::destructionCount = 0u;
 
-    v = &pool.new_(0);
+    v = pool.new_(0);
     EXPECT_EQ(0, v->v);
     EXPECT_EQ(16u, pool.capacity());
     EXPECT_EQ(Val::constructionCount, 1u);
     EXPECT_EQ(Val::destructionCount, 0u);
 
-    pool.delete_(*v);
+    pool.delete_(v);
     EXPECT_EQ(16u, pool.capacity());
     EXPECT_EQ(Val::constructionCount, 1u);
     EXPECT_EQ(Val::destructionCount, 1u);
