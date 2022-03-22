@@ -74,7 +74,7 @@ namespace qc
         }
         else
         {
-            return _allocator.allocate();
+            return static_cast<T *>(_allocator.allocate());
         }
     }
 
