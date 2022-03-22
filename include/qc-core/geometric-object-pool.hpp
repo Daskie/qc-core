@@ -33,6 +33,8 @@ namespace qc
 
         ~GeometricObjectPool() noexcept = default;
 
+        void reserve(size_t capacity);
+
         template <typename... Args> [[nodiscard]] T * new_(Args &&... args);
 
         void delete_(T * v) noexcept(qc::debug);
@@ -55,6 +57,12 @@ namespace qc
     GeometricObjectPool<T>::GeometricObjectPool(const size_t initialCapacity) noexcept :
         _allocator{initialCapacity}
     {}
+
+    template <typename T>
+    void GeometricObjectPool<T>::reserve(const size_t capacity)
+    {
+        _allocator.reserve(capacity);
+    }
 
     template <typename T>
     template <typename... Args>

@@ -41,6 +41,8 @@ namespace qc
 
         ~GeometricMonoAllocator() noexcept;
 
+        void reserve(size_t capacity);
+
         [[nodiscard]] void * allocate();
 
         void deallocate(void * ptr) noexcept(qc::debug);
@@ -121,6 +123,22 @@ namespace qc
             _allocatedCount = 0u;
             _memoryCount = 0u;
             _nextFree = nullptr;
+        }
+    }
+
+    template <size_t slotSize, size_t slotAlignment>
+    void GeometricMonoAllocator<slotSize, slotAlignment>::reserve(const size_t capacity)
+    {
+        if (!_memoryCount)
+        {
+            qc::maxify(_capacity, std::bit_ceil(capacity));
+        }
+        else
+        {
+            while (_capacity < capacity)
+            {
+                _expand();
+            }
         }
     }
 

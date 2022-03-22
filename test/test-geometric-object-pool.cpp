@@ -23,7 +23,11 @@ TEST(GeometricObjectPool, standard)
 {
     qc::Random random{};
 
-    qc::GeometricObjectPool<Val> pool{4u};
+    qc::GeometricObjectPool<Val> pool{1u};
+    EXPECT_EQ(1u, pool.capacity());
+    EXPECT_EQ(0u, pool.count());
+
+    pool.reserve(3u);
     EXPECT_EQ(4u, pool.capacity());
     EXPECT_EQ(0u, pool.count());
 
