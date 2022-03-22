@@ -153,3 +153,50 @@ TEST(GeometricObjectPool, standard)
     EXPECT_EQ(Val::constructionCount, 1u);
     EXPECT_EQ(Val::destructionCount, 1u);
 }
+
+TEST(GeometricObjectPool, reserve)
+{
+    constexpr size_t multiple{sizeof(void *) * (qc::debug ?  2u : 1u) / sizeof(int)};
+
+    int * ptrs[16u];
+
+    qc::GeometricObjectPool<int> pool{1u};
+    EXPECT_EQ(1u, pool.capacity());
+
+    #pragma warning(suppress: 4834)
+    ptrs[0] = pool.new_();
+    EXPECT_EQ(1u, pool.capacity());
+
+    #pragma warning(suppress: 4834)
+    ptrs[1] = pool.new_();
+    EXPECT_EQ(2u, pool.capacity());
+
+    ptrs[2] = pool.new_();
+    EXPECT_EQ(4u, pool.capacity());
+
+    pool.reserve(16u);
+    EXPECT_EQ(16u, pool.capacity());
+
+    EXPECT_EQ(ptrs[2] + 1 * multiple, ptrs[3] = pool.new_());
+
+    ptrs[4] = pool.new_();
+    EXPECT_EQ(ptrs[4] + 1 * multiple, ptrs[5] = pool.new_());
+    EXPECT_EQ(ptrs[4] + 2 * multiple, ptrs[6] = pool.new_());
+    EXPECT_EQ(ptrs[4] + 3 * multiple, ptrs[7] = pool.new_());
+
+    ptrs[8] = pool.new_();
+    EXPECT_EQ(ptrs[8] + 1 * multiple, ptrs[ 9] = pool.new_());
+    EXPECT_EQ(ptrs[8] + 2 * multiple, ptrs[10] = pool.new_());
+    EXPECT_EQ(ptrs[8] + 3 * multiple, ptrs[11] = pool.new_());
+    EXPECT_EQ(ptrs[8] + 4 * multiple, ptrs[12] = pool.new_());
+    EXPECT_EQ(ptrs[8] + 5 * multiple, ptrs[13] = pool.new_());
+    EXPECT_EQ(ptrs[8] + 6 * multiple, ptrs[14] = pool.new_());
+    EXPECT_EQ(ptrs[8] + 7 * multiple, ptrs[15] = pool.new_());
+
+    EXPECT_EQ(16u, pool.capacity());
+
+    for (int * ptr : ptrs)
+    {
+        pool.delete_(ptr);
+    }
+}

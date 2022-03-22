@@ -75,7 +75,10 @@ namespace qc
         std::array<_Slot *, 32u> _memories;
         _Slot * _nextFree{};
 
-        void _expand();
+        // Takes current tail and returns next tail
+        _Slot * & _expand(_Slot * & tail);
+
+        _Slot * & _findTail() noexcept;
     };
 }
 
@@ -133,12 +136,13 @@ namespace qc
         {
             qc::maxify(_capacity, std::bit_ceil(capacity));
         }
-        else
+        else if (_capacity < capacity)
         {
-            while (_capacity < capacity)
+            _Slot * * tail{&_findTail()};
+            do
             {
-                _expand();
-            }
+                tail = &_expand(*tail);
+            } while (_capacity < capacity);
         }
     }
 
@@ -147,7 +151,7 @@ namespace qc
     {
         if (!_nextFree) [[unlikely]]
         {
-            _expand();
+            _expand(_nextFree);
         }
 
         _Slot * const slot{_nextFree};
@@ -174,7 +178,7 @@ namespace qc
     }
 
     template <size_t slotSize, size_t slotAlignment>
-    void GeometricMonoAllocator<slotSize, slotAlignment>::_expand()
+    auto GeometricMonoAllocator<slotSize, slotAlignment>::_expand(_Slot * & tail) -> _Slot * &
     {
         // `_capacity` will always be greater than zero
         const size_t newSlotsCount{_capacity};
@@ -187,13 +191,22 @@ namespace qc
         ++_memoryCount;
 
         // Establish free links
-        const size_t endI{newSlotsCount - 1};
-        for (size_t i{0u}; i < endI; ++i)
+        _Slot * const lastSlot{newSlots + newSlotsCount - 1u};
+        for (_Slot * slot{newSlots}; slot < lastSlot; ++slot)
         {
-            _Slot * const slot{newSlots + i};
             slot->nextFree = slot + 1;
         }
-        newSlots[endI].nextFree = _nextFree;
-        _nextFree = newSlots;
+        lastSlot->nextFree = _nextFree;
+        tail = newSlots;
+
+        return lastSlot->nextFree;
+    }
+
+    template <size_t slotSize, size_t slotAlignment>
+    auto GeometricMonoAllocator<slotSize, slotAlignment>::_findTail() noexcept -> _Slot * &
+    {
+        _Slot * * tail{&_nextFree};
+        while (*tail) tail = &(*tail)->nextFree;
+        return *tail;
     }
 }
