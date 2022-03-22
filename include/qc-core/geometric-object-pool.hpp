@@ -68,7 +68,14 @@ namespace qc
     template <typename... Args>
     T * GeometricObjectPool<T>::new_(Args &&... args)
     {
-        return new (_allocator.allocate()) T{std::forward<Args>(args)...};
+        if constexpr (sizeof...(Args) || !std::is_trivially_default_constructible_v<T>)
+        {
+            return new (_allocator.allocate()) T{std::forward<Args>(args)...};
+        }
+        else
+        {
+            return _allocator.allocate();
+        }
     }
 
     template <typename T>
