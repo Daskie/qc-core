@@ -110,6 +110,27 @@ static void compileClassesT()
     s4.yzw();
 }
 
+template <typename T>
+static void compileClassesPT()
+{
+    using P = T *;
+    P p{};
+    qc::span1<P> s1;
+
+    // constructors
+    qc::span<P, 1> s1_1;
+    qc::span<P, 1> s1_2(s1);
+    qc::span<P, 1> s1_3(std::move(s1));
+    qc::span<P, 1> s1_4(p, p);
+
+    // assignment operators
+    s1 = s1;
+    s1 = std::move(s1);
+
+    // other
+    s1.size();
+}
+
 static void compileClasses()
 {
     compileClassesT<qc::f32>();
@@ -122,112 +143,8 @@ static void compileClasses()
     compileClassesT<qc::u16>();
     compileClassesT<qc::u32>();
     compileClassesT<qc::u64>();
-}
 
-template <typename T>
-static constexpr void compileClassesConstexprT()
-{
-    constexpr T v{};
-    constexpr qc::vec2<T> v2;
-    constexpr qc::vec3<T> v3;
-    constexpr qc::vec4<T> v4;
-    constexpr qc::span1<T> s1;
-    constexpr qc::span2<T> s2;
-    constexpr qc::span3<T> s3;
-    constexpr qc::span4<T> s4;
-
-    //--------------------------------------------------------------------------
-    // Span1
-
-    // constructors
-    constexpr qc::span<T, 1> s1_1;
-    constexpr qc::span<T, 1> s1_2(s1);
-    constexpr qc::span<T, 1> s1_3(std::move(s1));
-    constexpr qc::span<T, 1> s1_4(v, v);
-
-    // other
-    s1.size();
-
-    //--------------------------------------------------------------------------
-    // Span2
-
-    // constructors
-    constexpr qc::span<T, 2> s2_1;
-    constexpr qc::span<T, 2> s2_2(s2);
-    constexpr qc::span<T, 2> s2_3(std::move(s2));
-    constexpr qc::span<T, 2> s2_4(v2, v2);
-    constexpr qc::span<T, 2> s2_5(v, v);
-    constexpr qc::span<T, 2> s2_6(s1, s1);
-
-    // other
-    s2.size();
-    s2.x();
-    s2.y();
-
-    //--------------------------------------------------------------------------
-    // Span3
-
-    // constructors
-    constexpr qc::span<T, 3> s3_1;
-    constexpr qc::span<T, 3> s3_2(s3);
-    constexpr qc::span<T, 3> s3_3(std::move(s3));
-    constexpr qc::span<T, 3> s3_4(v3, v3);
-    constexpr qc::span<T, 3> s3_5(v, v);
-    constexpr qc::span<T, 3> s3_6(s1, s1, s1);
-    //constexpr qc::span<T, 3> s3_7(s2, s1);
-    //constexpr qc::span<T, 3> s3_8(s1, s2);
-
-    // other
-    s3.size();
-    s3.x();
-    s3.y();
-    s3.z();
-    //s3.xy();
-    //s3.yz();
-
-    //--------------------------------------------------------------------------
-    // Span4
-
-    // constructors
-    constexpr qc::span<T, 4> s4_1;
-    constexpr qc::span<T, 4> s4_2(s4);
-    constexpr qc::span<T, 4> s4_3(std::move(s4));
-    constexpr qc::span<T, 4> s4_4(v4, v4);
-    constexpr qc::span<T, 4> s4_5(v, v);
-    constexpr qc::span<T, 4> s4_6(s1, s1, s1, s1);
-    //constexpr qc::span<T, 4> s4_7(s2, s1, s1);
-    //constexpr qc::span<T, 4> s4_8(s1, s2, s1);
-    //constexpr qc::span<T, 4> s4_9(s1, s1, s2);
-    //constexpr qc::span<T, 4> s4_10(s2, s2);
-    //constexpr qc::span<T, 4> s4_11(s3, s1);
-    //constexpr qc::span<T, 4> s4_12(s1, s3);
-
-    // other
-    s4.size();
-    s4.x();
-    s4.y();
-    s4.z();
-    s4.w();
-    //s4.xy();
-    //s4.yz();
-    //s4.xyz();
-    //s4.yzw();
-}
-
-static constexpr bool compileClassesConstexpr()
-{
-    compileClassesConstexprT<qc::f32>();
-    compileClassesConstexprT<qc::f64>();
-    compileClassesConstexprT<qc::s8>();
-    compileClassesConstexprT<qc::s16>();
-    compileClassesConstexprT<qc::s32>();
-    compileClassesConstexprT<qc::s64>();
-    compileClassesConstexprT<qc::u8>();
-    compileClassesConstexprT<qc::u16>();
-    compileClassesConstexprT<qc::u32>();
-    compileClassesConstexprT<qc::u64>();
-
-    return true;
+    compileClassesPT<std::byte>();
 }
 
 template <typename T>
@@ -420,6 +337,28 @@ static void compileFunctionsT()
     qc::clamp(v4, s4);
 }
 
+template <typename T>
+static void compileFunctionsPT()
+{
+    using P = T *;
+    P p{};
+    intptr_t v{};
+    qc::span1<P> s{p, p};
+    std::stringstream os;
+
+    s += v;
+    s -= v;
+    s + v;
+    s - v;
+    s == s;
+    s != s;
+    os << s;
+    qc::min(s, p);
+    qc::max(s, p);
+    qc::minify(s, p);
+    qc::maxify(s, p);
+}
+
 static void compileFunctions()
 {
     compileFunctionsT<qc::f32>();
@@ -432,107 +371,6 @@ static void compileFunctions()
     compileFunctionsT<qc::u16>();
     compileFunctionsT<qc::u32>();
     compileFunctionsT<qc::u64>();
-}
-
-template <typename T>
-static constexpr void compileFunctionsConstexprT()
-{
-    constexpr T v{1};
-    constexpr qc::vec2<T> v2(v);
-    constexpr qc::vec3<T> v3(v);
-    constexpr qc::vec4<T> v4(v);
-    constexpr qc::span1<T> s1(v, v);
-    constexpr qc::span2<T> s2(v, v);
-    constexpr qc::span3<T> s3(v, v);
-    constexpr qc::span4<T> s4(v, v);
-
-    s1 + v;
-    s2 + v;
-    s3 + v;
-    s4 + v;
-
-    s2 + v2;
-    s3 + v3;
-    s4 + v4;
-
-    v + s1;
-    v + s2;
-    v + s3;
-    v + s4;
-
-    v2 + s2;
-    v3 + s3;
-    v4 + s4;
-
-    s1 - v;
-    s2 - v;
-    s3 - v;
-    s4 - v;
-
-    s2 - v2;
-    s3 - v3;
-    s4 - v4;
-
-    v - s1;
-    v - s2;
-    v - s3;
-    v - s4;
-
-    v2 - s2;
-    v3 - s3;
-    v4 - s4;
-
-    s1 == s1;
-    s2 == s2;
-    s3 == s3;
-    s4 == s4;
-
-    s1 != s1;
-    s2 != s2;
-    s3 != s3;
-    s4 != s4;
-
-    s1 & s1;
-    s2 & s2;
-    s3 & s3;
-    s4 & s4;
-
-    s1 | s1;
-    s2 | s2;
-    s3 | s3;
-    s4 | s4;
-
-    qc::min(s1, v);
-    qc::min(s2, v);
-    qc::min(s2, v2);
-    qc::min(s3, v);
-    qc::min(s3, v3);
-    qc::min(s4, v);
-    qc::min(s4, v4);
-
-    qc::max(s1, v);
-    qc::max(s2, v);
-    qc::max(s2, v2);
-    qc::max(s3, v);
-    qc::max(s3, v3);
-    qc::max(s4, v);
-    qc::max(s4, v4);
-}
-
-static constexpr bool compileFunctionsConstexpr()
-{
-    compileFunctionsConstexprT<qc::f32>();
-    compileFunctionsConstexprT<qc::f64>();
-    compileFunctionsConstexprT<qc::s8>();
-    compileFunctionsConstexprT<qc::s16>();
-    compileFunctionsConstexprT<qc::s32>();
-    compileFunctionsConstexprT<qc::s64>();
-    compileFunctionsConstexprT<qc::u8>();
-    compileFunctionsConstexprT<qc::u16>();
-    compileFunctionsConstexprT<qc::u32>();
-    compileFunctionsConstexprT<qc::u64>();
-
-    return true;
 }
 
 template <typename T, int n>
@@ -575,7 +413,7 @@ static void testProperties()
 }
 
 template <typename T1, typename T2, int n>
-static constexpr void compileCastsTTN()
+static void compileCastsTTN()
 {
     qc::span1<T1> s1;
     qc::span2<T1> s2;
@@ -594,7 +432,7 @@ static constexpr void compileCastsTTN()
 }
 
 template <typename T1, typename T2>
-static constexpr void compileCastsTT()
+static void compileCastsTT()
 {
     compileCastsTTN<T1, T2, 1>();
     compileCastsTTN<T1, T2, 2>();
@@ -603,7 +441,7 @@ static constexpr void compileCastsTT()
 }
 
 template <typename T>
-static constexpr void compileCastsT()
+static void compileCastsT()
 {
     compileCastsTT<T, qc::f32>();
     compileCastsTT<T, qc::f64>();
@@ -617,7 +455,7 @@ static constexpr void compileCastsT()
     compileCastsTT<T, qc::u64>();
 }
 
-static constexpr bool compileCasts()
+static void compileCasts()
 {
     compileCastsT<qc::f32>();
     compileCastsT<qc::f64>();
@@ -629,12 +467,10 @@ static constexpr bool compileCasts()
     compileCastsT<qc::u16>();
     compileCastsT<qc::u32>();
     compileCastsT<qc::u64>();
-
-    return true;
 }
 
 template <typename T>
-static constexpr void compileConstantsT()
+static void compileConstantsT()
 {
     constexpr qc::span1<T> is1(qc::fullSpan<T, 1>);
     constexpr qc::span2<T> is2(qc::fullSpan<T, 2>);
@@ -647,7 +483,7 @@ static constexpr void compileConstantsT()
     constexpr qc::span4<T> nulls4(qc::nullSpan<T, 4>);
 }
 
-static constexpr bool compileConstants()
+static void compileConstants()
 {
     compileConstantsT<qc::f32>();
     compileConstantsT<qc::f64>();
@@ -659,17 +495,13 @@ static constexpr bool compileConstants()
     compileConstantsT<qc::u16>();
     compileConstantsT<qc::u32>();
     compileConstantsT<qc::u64>();
-
-    return true;
 }
 
 TEST(span, compilation)
 {
     compileClasses();
-    static_assert(compileClassesConstexpr());
     compileFunctions();
-    static_assert(compileFunctionsConstexpr());
     testProperties();
-    static_assert(compileCasts());
-    static_assert(compileConstants());
+    compileCasts();
+    compileConstants();
 }

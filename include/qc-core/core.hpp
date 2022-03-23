@@ -43,7 +43,8 @@ namespace qc
         template <typename T> concept SignedNumeric = SignedIntegral<T> || Floating<T>;
         template <typename T> concept NumericOrBoolean = Numeric<T> || std::is_same_v<T, bool>;
         template <typename T> concept Enum = std::is_enum_v<T>;
-        template <typename T> concept NumericOrPointer = Numeric<T> || std::is_pointer_v<T>;
+        template <typename T> concept Pointer = std::is_pointer_v<T>;
+        template <typename T> concept NumericOrPointer = Numeric<T> || Pointer<T>;
         template <typename T1, typename T2> concept SameNumericType = SignedIntegral<T1> == SignedIntegral<T2> && UnsignedIntegral<T1> == UnsignedIntegral<T2> && Floating<T1> == Floating<T2>;
     }
 
