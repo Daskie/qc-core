@@ -75,12 +75,6 @@ namespace qc
     //
     // ...
     //
-    template <typename T> mat3<T> rotate(vec3<T> axis, T sinTheta, T cosTheta);
-    template <typename T> mat3<T> rotate_n(vec3<T> axis, T sinTheta, T cosTheta);
-
-    //
-    // ...
-    //
     template <typename T> mat3<T> rotate(vec3<T> axis, T angle);
     template <typename T> mat3<T> rotate_n(vec3<T> axis, T angle);
 
@@ -480,7 +474,7 @@ namespace qc
     }
 
     template <typename T>
-    inline mat3<T> rotate(const vec3<T> axis, const T sinTheta, const T cosTheta)
+    inline mat3<T> rotate(const vec3<T> axis, const T angle)
     {
         // Can't rotate around 0 length vector
         if (isZero(magnitude2(axis)))
@@ -488,12 +482,14 @@ namespace qc
             return {};
         }
 
-        return rotate_n(normalize(axis), sinTheta, cosTheta);
+        return rotate_n(normalize(axis), angle);
     }
 
     template <typename T>
-    inline mat3<T> rotate_n(const vec3<T> axis, const T s, const T c)
+    inline mat3<T> rotate_n(const vec3<T> axis, const T angle)
     {
+        const T s{sin(angle)};
+        const T c{cos(angle)};
         const T cm{T(1.0) - c};
         const T xs{axis.x * s};
         const T ys{axis.y * s};
@@ -501,26 +497,17 @@ namespace qc
         const T xcm{axis.x * cm};
         const T ycm{axis.y * cm};
         const T zcm{axis.z * cm};
+        const T xxcm{xcm * axis.x};
         const T xycm{xcm * axis.y};
+        const T yycm{ycm * axis.y};
         const T yzcm{ycm * axis.z};
+        const T zzcm{zcm * axis.z};
         const T zxcm{zcm * axis.x};
 
         return {
-            xcm * axis.x + c, xycm + zs, zxcm - ys,
-            xycm - zs, ycm * axis.y + c, yzcm + xs,
-            zxcm + ys, yzcm - xs, zcm * axis.z + c};
-    }
-
-    template <typename T>
-    inline mat3<T> rotate(const vec3<T> axis, const T angle)
-    {
-        return rotate(axis, std::sin(angle), std::cos(angle));
-    }
-
-    template <typename T>
-    inline mat3<T> rotate_n(const vec3<T> axis, const T angle)
-    {
-        return rotate_n(axis, std::sin(angle), std::cos(angle));
+            xxcm +  c, xycm + zs, zxcm - ys,
+            xycm - zs, yycm +  c, yzcm + xs,
+            zxcm + ys, yzcm - xs, zzcm +  c};
     }
 
     template <typename T>
@@ -544,33 +531,37 @@ namespace qc
     template <typename T>
     inline mat2<T> align_n(const vec2<T> v1, const vec2<T> v2)
     {
-        T c{cross(v1, v2)};
-        T d{dot(v1, v2)};
+        const T v{cross(v1, v2)};
+        const T d{dot(v1, v2)};
 
-        return rotate(c < T(0.0) ? -std::acos(d) : std::acos(d));
+        return {
+             d, v,
+            -v, d};
     }
 
     template <typename T>
     inline mat3<T> align_n(const vec3<T> v1, const vec3<T> v2)
     {
-        const T d{dot(v1, v2)};
+        // Simplified thanks to https://iquilezles.org/articles/noacos/
 
-        // Already aligned, and would break rotation
-        if (areEqual(d, T(1.0)))
-        {
-            return {};
-        }
+        const vec3<T> v{cross(v1, v2)};
+        const T c{dot(v1, v2)};
+        const T k{T(1.0) / (T(1.0) + c)};
 
-        // Opposite direction, pick arbitrary axis to rotate around
-        if (areEqual(d, T(-1.0)))
-        {
-            return rotate_n(ortho(v1), std::numbers::pi_v<T>);
-        }
+        const T kx{k * v.x};
+        const T ky{k * v.y};
+        const T kz{k * v.z};
+        const T kxx{kx * v.x};
+        const T kxy{kx * v.y};
+        const T kyy{ky * v.y};
+        const T kyz{ky * v.z};
+        const T kzz{kz * v.z};
+        const T kzx{kz * v.x};
 
-        const vec3<T> c(cross(v1, v2));
-        const T m{magnitude(c)};
-
-        return rotate_n(c * (T(1.0) / m), m, d);
+        return {
+            kxx +   c, kxy + v.z, kzx - v.y,
+            kxy - v.z, kyy +   c, kyz + v.x,
+            kzx + v.y, kyz - v.x, kzz +   c};
     }
 
     template <typename T>

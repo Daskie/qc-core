@@ -383,8 +383,6 @@ static void compileFunctionsT()
     qc::rotateX(v);
     qc::rotateY(v);
     qc::rotateZ(v);
-    qc::rotate(v3, v, v);
-    qc::rotate_n(v3, v, v);
     qc::rotate(v3, v);
     qc::rotate_n(v3, v);
     qc::euler(v3, v3, v, v, v);
