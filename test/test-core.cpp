@@ -561,3 +561,12 @@ TEST(core, concepts)
     static_assert(!Enum<void *>);
     static_assert(Enum<TestEnum>);
 }
+
+static void _dummyFunction() {}
+
+TEST(core, scopeGuard)
+{
+    qc::ScopeGuard guard1{[]() {}};
+    qc::ScopeGuard guard2{&_dummyFunction};
+    qc::ScopeGuard guard3{std::function{_dummyFunction}};
+}
