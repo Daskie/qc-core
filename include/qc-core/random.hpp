@@ -35,6 +35,11 @@ namespace qc
         ~Random() noexcept = default;
 
         ///
+        /// @return the next random unsigned integer in [0, `UINT_MAX`]
+        ///
+        size_t next() noexcept;
+
+        ///
         /// @return the next random integer in [0, `UINT_MAX`], floater in [0.0, 1.0], or boolean
         ///
         template <NumericOrBoolean T> T next() noexcept;
@@ -75,10 +80,15 @@ namespace qc
 
 namespace qc
 {
-    template <NumericOrBoolean T>
-    T Random::next() noexcept
+    inline size_t Random::next() noexcept
     {
-        const size_t raw{_engine()};
+        return _engine();
+    }
+
+    template <NumericOrBoolean T>
+    inline T Random::next() noexcept
+    {
+        const size_t raw{next()};
 
         if constexpr (Integral<T>)
         {
@@ -108,7 +118,7 @@ namespace qc
     }
 
     template <Numeric T>
-    T Random::next(const T max) noexcept
+    inline T Random::next(const T max) noexcept
     {
         if constexpr (Integral<T>)
         {
@@ -121,7 +131,7 @@ namespace qc
     }
 
     template <Numeric T>
-    T Random::next(const T min, const T max) noexcept
+    inline T Random::next(const T min, const T max) noexcept
     {
         return next<T>(max - min) + min;
     }
