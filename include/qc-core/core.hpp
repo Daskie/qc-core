@@ -59,6 +59,19 @@ namespace qc
 
     template <Enum E> constexpr std::underlying_type_t<E> underlyingVal(const E e);
 
+    ///
+    /// Simple guard lock
+    ///
+    /// Calls the given prodecure (function pointer, lambda, std::function, etc.) when it goes out of scope
+    ///
+    template <typename Proc>
+    struct ScopeGuard
+    {
+        Proc proc;
+        ScopeGuard(Proc && proc) : proc{std::move(proc)} {};
+        ~ScopeGuard() noexcept { proc(); }
+    };
+
     //
     // ...
     //
