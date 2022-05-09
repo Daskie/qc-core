@@ -31,6 +31,7 @@ static void compileClassesT()
 
     // other
     s1.size();
+    s1.contains(v);
 
     //--------------------------------------------------------------------------
     // Span2
@@ -71,6 +72,7 @@ static void compileClassesT()
 
     // other
     s3.size();
+    s3.contains(v3);
     s3.x();
     s3.y();
     s3.z();
@@ -100,6 +102,7 @@ static void compileClassesT()
 
     // other
     s4.size();
+    s4.contains(v4);
     s4.x();
     s4.y();
     s4.z();

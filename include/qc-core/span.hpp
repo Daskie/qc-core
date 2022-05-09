@@ -87,6 +87,8 @@ namespace qc
         ~span() noexcept = default;
 
         constexpr std::conditional_t<Numeric<T>, T, intptr_t> size() const noexcept;
+
+        constexpr bool contains(T v) const noexcept;
     };
 
     template <Numeric T> struct span<T, 2>
@@ -109,6 +111,8 @@ namespace qc
         ~span() noexcept = default;
 
         constexpr vec2<T> size() const noexcept;
+
+        constexpr bool contains(const vec2<T> & v) const noexcept;
 
         constexpr span1<T> x() const noexcept;
         constexpr span1<T> y() const noexcept;
@@ -136,6 +140,8 @@ namespace qc
         ~span() noexcept = default;
 
         constexpr vec3<T> size() const noexcept;
+
+        constexpr bool contains(const vec3<T> & v) const noexcept;
 
         constexpr span1<T> x() const noexcept;
         constexpr span1<T> y() const noexcept;
@@ -171,6 +177,8 @@ namespace qc
         ~span() noexcept = default;
 
         constexpr vec4<T> size() const noexcept;
+
+        constexpr bool contains(const vec4<T> & v) const noexcept;
 
         constexpr span1<T> x() const noexcept;
         constexpr span1<T> y() const noexcept;
@@ -293,6 +301,12 @@ namespace qc
         return max - min;
     }
 
+    template <NumericOrPointer T>
+    inline constexpr bool span<T, 1>::contains(const T v) const noexcept
+    {
+        return v >= min && v < max;
+    }
+
     template <Numeric T>
     template <Numeric U, int m>
     inline constexpr span<T, 2>::span(const span<U, m> & v) noexcept :
@@ -322,6 +336,12 @@ namespace qc
     inline constexpr vec2<T> span<T, 2>::size() const noexcept
     {
         return max - min;
+    }
+
+    template <Numeric T>
+    inline constexpr bool span<T, 2>::contains(const vec2<T> & v) const noexcept
+    {
+        return v.x >= min.x && v.y >= min.y && v.x < max.x && v.y < max.y;
     }
 
     template <Numeric T>
@@ -377,6 +397,12 @@ namespace qc
     inline constexpr vec3<T> span<T, 3>::size() const noexcept
     {
         return max - min;
+    }
+
+    template <Numeric T>
+    inline constexpr bool span<T, 3>::contains(const vec3<T> & v) const noexcept
+    {
+        return v.x >= min.x && v.y >= min.y && v.z >= min.z && v.x < max.x && v.y < max.y && v.z < max.z;
     }
 
     template <Numeric T>
@@ -474,6 +500,12 @@ namespace qc
     inline constexpr vec4<T> span<T, 4>::size() const noexcept
     {
         return max - min;
+    }
+
+    template <Numeric T>
+    inline constexpr bool span<T, 4>::contains(const vec4<T> & v) const noexcept
+    {
+        return v.x >= min.x && v.y >= min.y && v.z >= min.z && v.w >= min.w && v.x < max.x && v.y < max.y && v.z < max.z && v.w < max.w;
     }
 
     template <Numeric T>
