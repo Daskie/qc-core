@@ -172,6 +172,20 @@ namespace qc
     template <Floating To, SignedIntegral From> To transnorm(From v);
     template <Floating To, UnsignedIntegral From> To transnorm(From v);
     template <UnsignedIntegral To, UnsignedIntegral From> To transnorm(From v);
+
+    ///
+    /// Branchless binary search
+    ///
+    /// @return iterator to the first element greater than or equal to `v`
+    ///
+    template <typename It, typename T> It lowerBound(It first, It last, const T & v) noexcept;
+
+    ///
+    /// Branchless binary search
+    ///
+    /// @return iterator to the first element greater than `v`
+    ///
+    template <typename It, typename T> It upperBound(It first, It last, const T & v) noexcept;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -515,5 +529,61 @@ namespace qc
             using OpType = typename sized<max(sizeof(NextFrom), sizeof(decltype(v << 1)))>::utype;
             return transnorm<To>(NextFrom(v | (OpType(v) << (8u * sizeof(From)))));
         }
+    }
+
+    template <typename It, typename T>
+    inline It lowerBound(It first, const It last, const T & v) noexcept
+    {
+        using U = std::make_unsigned_t<decltype(last - first)>;
+
+        U size{U(last - first)};
+
+        while (size)
+        {
+            const U half{size / 2u};
+            const It mid{first + half};
+            const It firstAlt{mid + (size & 1u)};
+            first = v <= *mid ? first : firstAlt;
+            size = half;
+        }
+
+        return first;
+    }
+
+    template <typename It, typename T>
+    inline It upperBound(It first, const It last, const T & v) noexcept
+    {
+        using U = std::make_unsigned_t<decltype(last - first)>;
+
+        U size{U(last - first)};
+
+        while (size)
+        {
+            const U half{size / 2u};
+            const It mid{first + half};
+            const It firstAlt{mid + (size & 1u)};
+            first = v < *mid ? first : firstAlt;
+            size = half;
+        }
+
+        return first;
+    }
+
+    template <typename It, typename T>
+    inline It lowerBound2(It first, const It last, const T & v) noexcept
+    {
+        using U = std::make_unsigned_t<decltype(last - first)>;
+
+        U size{U(last - first)};
+
+        while (size > 1u)
+        {
+            size /= 2u;
+            const It highMid{first + size};
+            const It lowMid{highMid - 1u};
+            first = v <= *lowMid ? first : highMid;
+        }
+
+        return first;
     }
 }

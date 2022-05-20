@@ -454,6 +454,144 @@ TEST(core, transnorm)
     testTransnormFT<f64>();
 }
 
+TEST(core, binarySearch)
+{
+    std::vector<int> v0{};
+    std::vector<int> v1{1};
+    std::vector<int> v2{1, 3};
+    std::vector<int> v3{1, 3, 5};
+    std::vector<int> v4{1, 3, 5, 7};
+    std::vector<int> v5{1, 3, 5, 7, 9};
+
+    std::vector<int> vv4{1, 3, 3, 5};
+    std::vector<int> vv5{1, 3, 3, 3, 5};
+
+    std::vector<int> vvv2{1, 1};
+    std::vector<int> vvv3{1, 1, 1};
+
+    ASSERT_EQ(0, qc::lowerBound(v0.begin(), v0.end(), 0) - v0.begin());
+    ASSERT_EQ(0, qc::upperBound(v0.begin(), v0.end(), 0) - v0.begin());
+
+    ASSERT_EQ(0, qc::lowerBound(v1.begin(), v1.end(), 0) - v1.begin());
+    ASSERT_EQ(0, qc::upperBound(v1.begin(), v1.end(), 0) - v1.begin());
+    ASSERT_EQ(0, qc::lowerBound(v1.begin(), v1.end(), 1) - v1.begin());
+    ASSERT_EQ(1, qc::upperBound(v1.begin(), v1.end(), 1) - v1.begin());
+    ASSERT_EQ(1, qc::lowerBound(v1.begin(), v1.end(), 2) - v1.begin());
+    ASSERT_EQ(1, qc::upperBound(v1.begin(), v1.end(), 2) - v1.begin());
+
+    ASSERT_EQ(0, qc::lowerBound(v2.begin(), v2.end(), 0) - v2.begin());
+    ASSERT_EQ(0, qc::upperBound(v2.begin(), v2.end(), 0) - v2.begin());
+    ASSERT_EQ(0, qc::lowerBound(v2.begin(), v2.end(), 1) - v2.begin());
+    ASSERT_EQ(1, qc::upperBound(v2.begin(), v2.end(), 1) - v2.begin());
+    ASSERT_EQ(1, qc::lowerBound(v2.begin(), v2.end(), 2) - v2.begin());
+    ASSERT_EQ(1, qc::upperBound(v2.begin(), v2.end(), 2) - v2.begin());
+    ASSERT_EQ(1, qc::lowerBound(v2.begin(), v2.end(), 3) - v2.begin());
+    ASSERT_EQ(2, qc::upperBound(v2.begin(), v2.end(), 3) - v2.begin());
+    ASSERT_EQ(2, qc::lowerBound(v2.begin(), v2.end(), 4) - v2.begin());
+    ASSERT_EQ(2, qc::upperBound(v2.begin(), v2.end(), 4) - v2.begin());
+
+    ASSERT_EQ(0, qc::lowerBound(v3.begin(), v3.end(), 0) - v3.begin());
+    ASSERT_EQ(0, qc::upperBound(v3.begin(), v3.end(), 0) - v3.begin());
+    ASSERT_EQ(0, qc::lowerBound(v3.begin(), v3.end(), 1) - v3.begin());
+    ASSERT_EQ(1, qc::upperBound(v3.begin(), v3.end(), 1) - v3.begin());
+    ASSERT_EQ(1, qc::lowerBound(v3.begin(), v3.end(), 2) - v3.begin());
+    ASSERT_EQ(1, qc::upperBound(v3.begin(), v3.end(), 2) - v3.begin());
+    ASSERT_EQ(1, qc::lowerBound(v3.begin(), v3.end(), 3) - v3.begin());
+    ASSERT_EQ(2, qc::upperBound(v3.begin(), v3.end(), 3) - v3.begin());
+    ASSERT_EQ(2, qc::lowerBound(v3.begin(), v3.end(), 4) - v3.begin());
+    ASSERT_EQ(2, qc::upperBound(v3.begin(), v3.end(), 4) - v3.begin());
+    ASSERT_EQ(2, qc::lowerBound(v3.begin(), v3.end(), 5) - v3.begin());
+    ASSERT_EQ(3, qc::upperBound(v3.begin(), v3.end(), 5) - v3.begin());
+    ASSERT_EQ(3, qc::lowerBound(v3.begin(), v3.end(), 6) - v3.begin());
+    ASSERT_EQ(3, qc::upperBound(v3.begin(), v3.end(), 6) - v3.begin());
+
+    ASSERT_EQ(0, qc::lowerBound(v4.begin(), v4.end(), 0) - v4.begin());
+    ASSERT_EQ(0, qc::upperBound(v4.begin(), v4.end(), 0) - v4.begin());
+    ASSERT_EQ(0, qc::lowerBound(v4.begin(), v4.end(), 1) - v4.begin());
+    ASSERT_EQ(1, qc::upperBound(v4.begin(), v4.end(), 1) - v4.begin());
+    ASSERT_EQ(1, qc::lowerBound(v4.begin(), v4.end(), 2) - v4.begin());
+    ASSERT_EQ(1, qc::upperBound(v4.begin(), v4.end(), 2) - v4.begin());
+    ASSERT_EQ(1, qc::lowerBound(v4.begin(), v4.end(), 3) - v4.begin());
+    ASSERT_EQ(2, qc::upperBound(v4.begin(), v4.end(), 3) - v4.begin());
+    ASSERT_EQ(2, qc::lowerBound(v4.begin(), v4.end(), 4) - v4.begin());
+    ASSERT_EQ(2, qc::upperBound(v4.begin(), v4.end(), 4) - v4.begin());
+    ASSERT_EQ(2, qc::lowerBound(v4.begin(), v4.end(), 5) - v4.begin());
+    ASSERT_EQ(3, qc::upperBound(v4.begin(), v4.end(), 5) - v4.begin());
+    ASSERT_EQ(3, qc::lowerBound(v4.begin(), v4.end(), 6) - v4.begin());
+    ASSERT_EQ(3, qc::upperBound(v4.begin(), v4.end(), 6) - v4.begin());
+    ASSERT_EQ(3, qc::lowerBound(v4.begin(), v4.end(), 7) - v4.begin());
+    ASSERT_EQ(4, qc::upperBound(v4.begin(), v4.end(), 7) - v4.begin());
+    ASSERT_EQ(4, qc::lowerBound(v4.begin(), v4.end(), 8) - v4.begin());
+    ASSERT_EQ(4, qc::upperBound(v4.begin(), v4.end(), 8) - v4.begin());
+
+    ASSERT_EQ(0, qc::lowerBound(v5.begin(), v5.end(),  0) - v5.begin());
+    ASSERT_EQ(0, qc::upperBound(v5.begin(), v5.end(),  0) - v5.begin());
+    ASSERT_EQ(0, qc::lowerBound(v5.begin(), v5.end(),  1) - v5.begin());
+    ASSERT_EQ(1, qc::upperBound(v5.begin(), v5.end(),  1) - v5.begin());
+    ASSERT_EQ(1, qc::lowerBound(v5.begin(), v5.end(),  2) - v5.begin());
+    ASSERT_EQ(1, qc::upperBound(v5.begin(), v5.end(),  2) - v5.begin());
+    ASSERT_EQ(1, qc::lowerBound(v5.begin(), v5.end(),  3) - v5.begin());
+    ASSERT_EQ(2, qc::upperBound(v5.begin(), v5.end(),  3) - v5.begin());
+    ASSERT_EQ(2, qc::lowerBound(v5.begin(), v5.end(),  4) - v5.begin());
+    ASSERT_EQ(2, qc::upperBound(v5.begin(), v5.end(),  4) - v5.begin());
+    ASSERT_EQ(2, qc::lowerBound(v5.begin(), v5.end(),  5) - v5.begin());
+    ASSERT_EQ(3, qc::upperBound(v5.begin(), v5.end(),  5) - v5.begin());
+    ASSERT_EQ(3, qc::lowerBound(v5.begin(), v5.end(),  6) - v5.begin());
+    ASSERT_EQ(3, qc::upperBound(v5.begin(), v5.end(),  6) - v5.begin());
+    ASSERT_EQ(3, qc::lowerBound(v5.begin(), v5.end(),  7) - v5.begin());
+    ASSERT_EQ(4, qc::upperBound(v5.begin(), v5.end(),  7) - v5.begin());
+    ASSERT_EQ(4, qc::lowerBound(v5.begin(), v5.end(),  8) - v5.begin());
+    ASSERT_EQ(4, qc::upperBound(v5.begin(), v5.end(),  8) - v5.begin());
+    ASSERT_EQ(4, qc::lowerBound(v5.begin(), v5.end(),  9) - v5.begin());
+    ASSERT_EQ(5, qc::upperBound(v5.begin(), v5.end(),  9) - v5.begin());
+    ASSERT_EQ(5, qc::lowerBound(v5.begin(), v5.end(), 10) - v5.begin());
+    ASSERT_EQ(5, qc::upperBound(v5.begin(), v5.end(), 10) - v5.begin());
+
+    ASSERT_EQ(0, qc::lowerBound(vv4.begin(), vv4.end(), 0) - vv4.begin());
+    ASSERT_EQ(0, qc::upperBound(vv4.begin(), vv4.end(), 0) - vv4.begin());
+    ASSERT_EQ(0, qc::lowerBound(vv4.begin(), vv4.end(), 1) - vv4.begin());
+    ASSERT_EQ(1, qc::upperBound(vv4.begin(), vv4.end(), 1) - vv4.begin());
+    ASSERT_EQ(1, qc::lowerBound(vv4.begin(), vv4.end(), 2) - vv4.begin());
+    ASSERT_EQ(1, qc::upperBound(vv4.begin(), vv4.end(), 2) - vv4.begin());
+    ASSERT_EQ(1, qc::lowerBound(vv4.begin(), vv4.end(), 3) - vv4.begin());
+    ASSERT_EQ(3, qc::upperBound(vv4.begin(), vv4.end(), 3) - vv4.begin());
+    ASSERT_EQ(3, qc::lowerBound(vv4.begin(), vv4.end(), 4) - vv4.begin());
+    ASSERT_EQ(3, qc::upperBound(vv4.begin(), vv4.end(), 4) - vv4.begin());
+    ASSERT_EQ(3, qc::lowerBound(vv4.begin(), vv4.end(), 5) - vv4.begin());
+    ASSERT_EQ(4, qc::upperBound(vv4.begin(), vv4.end(), 5) - vv4.begin());
+    ASSERT_EQ(4, qc::lowerBound(vv4.begin(), vv4.end(), 6) - vv4.begin());
+    ASSERT_EQ(4, qc::upperBound(vv4.begin(), vv4.end(), 6) - vv4.begin());
+
+    ASSERT_EQ(0, qc::lowerBound(vv5.begin(), vv5.end(), 0) - vv5.begin());
+    ASSERT_EQ(0, qc::upperBound(vv5.begin(), vv5.end(), 0) - vv5.begin());
+    ASSERT_EQ(0, qc::lowerBound(vv5.begin(), vv5.end(), 1) - vv5.begin());
+    ASSERT_EQ(1, qc::upperBound(vv5.begin(), vv5.end(), 1) - vv5.begin());
+    ASSERT_EQ(1, qc::lowerBound(vv5.begin(), vv5.end(), 2) - vv5.begin());
+    ASSERT_EQ(1, qc::upperBound(vv5.begin(), vv5.end(), 2) - vv5.begin());
+    ASSERT_EQ(1, qc::lowerBound(vv5.begin(), vv5.end(), 3) - vv5.begin());
+    ASSERT_EQ(4, qc::upperBound(vv5.begin(), vv5.end(), 3) - vv5.begin());
+    ASSERT_EQ(4, qc::lowerBound(vv5.begin(), vv5.end(), 4) - vv5.begin());
+    ASSERT_EQ(4, qc::upperBound(vv5.begin(), vv5.end(), 4) - vv5.begin());
+    ASSERT_EQ(4, qc::lowerBound(vv5.begin(), vv5.end(), 5) - vv5.begin());
+    ASSERT_EQ(5, qc::upperBound(vv5.begin(), vv5.end(), 5) - vv5.begin());
+    ASSERT_EQ(5, qc::lowerBound(vv5.begin(), vv5.end(), 6) - vv5.begin());
+    ASSERT_EQ(5, qc::upperBound(vv5.begin(), vv5.end(), 6) - vv5.begin());
+
+    ASSERT_EQ(0, qc::lowerBound(vvv2.begin(), vvv2.end(), 0) - vvv2.begin());
+    ASSERT_EQ(0, qc::upperBound(vvv2.begin(), vvv2.end(), 0) - vvv2.begin());
+    ASSERT_EQ(0, qc::lowerBound(vvv2.begin(), vvv2.end(), 1) - vvv2.begin());
+    ASSERT_EQ(2, qc::upperBound(vvv2.begin(), vvv2.end(), 1) - vvv2.begin());
+    ASSERT_EQ(2, qc::lowerBound(vvv2.begin(), vvv2.end(), 2) - vvv2.begin());
+    ASSERT_EQ(2, qc::upperBound(vvv2.begin(), vvv2.end(), 2) - vvv2.begin());
+
+    ASSERT_EQ(0, qc::lowerBound(vvv3.begin(), vvv3.end(), 0) - vvv3.begin());
+    ASSERT_EQ(0, qc::upperBound(vvv3.begin(), vvv3.end(), 0) - vvv3.begin());
+    ASSERT_EQ(0, qc::lowerBound(vvv3.begin(), vvv3.end(), 1) - vvv3.begin());
+    ASSERT_EQ(3, qc::upperBound(vvv3.begin(), vvv3.end(), 1) - vvv3.begin());
+    ASSERT_EQ(3, qc::lowerBound(vvv3.begin(), vvv3.end(), 2) - vvv3.begin());
+    ASSERT_EQ(3, qc::upperBound(vvv3.begin(), vvv3.end(), 2) - vvv3.begin());
+}
+
 TEST(core, concepts)
 {
     static_assert(Integral<s8>);

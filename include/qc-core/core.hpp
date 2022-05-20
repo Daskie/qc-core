@@ -45,6 +45,7 @@ namespace qc
         template <typename T> concept Enum = std::is_enum_v<T>;
         template <typename T> concept Pointer = std::is_pointer_v<T>;
         template <typename T> concept NumericOrPointer = Numeric<T> || Pointer<T>;
+        template <typename T> concept IntegralOrPointer = Integral<T> || Pointer<T>;
         template <typename T1, typename T2> concept SameNumericType = SignedIntegral<T1> == SignedIntegral<T2> && UnsignedIntegral<T1> == UnsignedIntegral<T2> && Floating<T1> == Floating<T2>;
     }
 
@@ -56,6 +57,8 @@ namespace qc
     template <typename T> using stype = typename sized<sizeof(T)>::stype;
     template <typename T> using utype = typename sized<sizeof(T)>::utype;
     template <typename T> using ftype = typename sized<sizeof(T)>::ftype;
+
+    template <typename T, typename... Ts> concept OneOf = (std::same_as<T, Ts> || ...);
 
     template <Enum E> constexpr std::underlying_type_t<E> underlyingVal(const E e);
 
