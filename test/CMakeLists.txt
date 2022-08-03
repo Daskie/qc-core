@@ -75,6 +75,16 @@ qc_setup_target(
 )
 
 qc_setup_target(
+    qc-core-test-paging
+    EXECUTABLE
+    SOURCE_FILES
+        test-paging.cpp
+    PRIVATE_LINKS
+        qc-core-platform
+        GTest::gtest_main
+)
+
+qc_setup_target(
     qc-core-test-quaternion
     EXECUTABLE
     SOURCE_FILES

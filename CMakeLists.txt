@@ -11,10 +11,21 @@ FetchContent_MakeAvailable(qc-cmake)
 
 qc_setup_target(qc-core INTERFACE_LIBRARY)
 
+### QC-CORE-PAGING #############################################################
+
+qc_setup_target(
+    qc-core-platform
+    STATIC_LIBRARY
+    SOURCE_FILES
+        source/paging.cpp
+    PUBLIC_LINKS
+        qc-core
+)
+
 ### SUBDIRECTORIES #############################################################
 
 add_subdirectory(test EXCLUDE_FROM_ALL)
 
 ### INSTALL ####################################################################
 
-qc_setup_install(TARGETS qc-core)
+qc_setup_install(TARGETS qc-core qc-core-platform)
