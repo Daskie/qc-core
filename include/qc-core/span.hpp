@@ -193,7 +193,7 @@ namespace qc
         constexpr span3<T> yzw() const noexcept;
     };
 
-    namespace _minutia
+    namespace _internal
     {
         // Prevents warnings for using a negative sign in a ternary for unsigned types
         template <typename T> struct FullSpanHelper;
@@ -213,7 +213,7 @@ namespace qc
         };
     }
 
-    template <Numeric T, int n> constexpr span<T, n> fullSpan{_minutia::FullSpanHelper<T>::minimum, _minutia::FullSpanHelper<T>::maximum};
+    template <Numeric T, int n> constexpr span<T, n> fullSpan{_internal::FullSpanHelper<T>::minimum, _internal::FullSpanHelper<T>::maximum};
     template <Numeric T, int n> constexpr span<T, n> nullSpan{fullSpan<T, n>.max, fullSpan<T, n>.min};
 
     template <NumericOrPointer T, int n> span<T, n> & operator+=(span<T, n> & v1, T v2);

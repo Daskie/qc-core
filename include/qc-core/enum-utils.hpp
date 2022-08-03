@@ -80,7 +80,7 @@ namespace qc
 
     #endif
 
-    namespace _minutia
+    namespace _internal
     {
         template <CountableEnum E>
         constexpr std::array<E, enumCount<E>> makeEnumArray() noexcept
@@ -94,5 +94,5 @@ namespace qc
         }
     }
 
-    template <CountableEnum E> constexpr std::array<E, enumCount<E>> enumArray{_minutia::makeEnumArray<E>()};
+    template <CountableEnum E> constexpr std::array<E, enumCount<E>> enumArray{_internal::makeEnumArray<E>()};
 }
