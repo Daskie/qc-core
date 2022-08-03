@@ -11,9 +11,9 @@ namespace qc
 
         using iterator_category = std::forward_iterator_tag;
         using value_type = T;
-        using difference_type = ptrdiff_t;
-        using pointer = value_type *;
         using reference = value_type &;
+        using pointer = value_type *;
+        using difference_type = ptrdiff_t;
 
         //
         // `stride` should be at least `sizeof(value_type)` and an even multiple of `alignof(value_type)`

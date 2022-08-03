@@ -10,13 +10,12 @@ namespace qc
         public: //--------------------------------------------------------------
 
         using value_type = T;
-        using size_type = size_t;
-        using difference_type = ptrdiff_t;
         using reference = T &;
-        using const_reference = const T &;
         using pointer = T *;
+        using const_reference = const T &;
         using const_pointer = const T *;
-        using iterator_category = std::random_access_iterator_tag;
+        using difference_type = ptrdiff_t;
+        using size_type = size_t;
         using iterator = typename std::vector<T>::iterator;
         using const_iterator = typename std::vector<T>::const_iterator;
         using reverse_iterator = typename std::vector<T>::reverse_iterator;

@@ -17,9 +17,9 @@ namespace qc
 
             using iterator_category = std::forward_iterator_tag;
             using value_type = std::conditional_t<constant, const T, T>;
-            using difference_type = ptrdiff_t;
-            using pointer = value_type *;
             using reference = value_type &;
+            using pointer = value_type *;
+            using difference_type = ptrdiff_t;
 
             constexpr Iterator(const Iterator & other) noexcept = default;
             constexpr explicit Iterator(const Iterator<false> & other) noexcept requires constant :
@@ -86,12 +86,12 @@ namespace qc
         public: //--------------------------------------------------------------
 
         using value_type = T;
-        using size_type = size_t;
-        using difference_type = ptrdiff_t;
         using reference = value_type &;
         using const_reference = const value_type &;
         using pointer = value_type *;
         using const_pointer = const value_type *;
+        using difference_type = ptrdiff_t;
+        using size_type = size_t;
         using iterator = Iterator<false>;
         using const_iterator = Iterator<true>;
 

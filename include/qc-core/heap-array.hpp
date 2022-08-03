@@ -10,12 +10,12 @@ namespace qc
         public: //--------------------------------------------------------------
 
         using value_type = T;
-        using size_type = size_t;
-        using difference_type = ptrdiff_t;
         using reference = T &;
         using const_reference = const T &;
         using pointer = T *;
         using const_pointer = const T *;
+        using difference_type = ptrdiff_t;
+        using size_type = size_t;
         using iterator = pointer;
         using const_iterator = const_pointer;
 
