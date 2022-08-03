@@ -176,16 +176,20 @@ namespace qc
     ///
     /// Branchless binary search
     ///
+    /// `GreaterEqual` must provide the following comparison: `*std::declval(It) >= v`
+    ///
     /// @return iterator to the first element greater than or equal to `v`
     ///
-    template <typename It, typename T> It lowerBound(It first, It last, const T & v) noexcept;
+    template <typename It, typename T, typename GreaterEqual = std::greater_equal<>> It lowerBound(It first, It last, const T & v, GreaterEqual greaterEqual = std::greater_equal<>{}) noexcept;
 
     ///
     /// Branchless binary search
     ///
+    /// `Greater` must provide the following comparison: `*std::declval(It) > v`
+    ///
     /// @return iterator to the first element greater than `v`
     ///
-    template <typename It, typename T> It upperBound(It first, It last, const T & v) noexcept;
+    template <typename It, typename T, typename Greater = std::greater<>> It upperBound(It first, It last, const T & v, Greater greater = std::greater<>{}) noexcept;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -531,8 +535,8 @@ namespace qc
         }
     }
 
-    template <typename It, typename T>
-    inline It lowerBound(It first, const It last, const T & v) noexcept
+    template <typename It, typename T, typename GreaterEqual>
+    inline It lowerBound(It first, const It last, const T & v, GreaterEqual greaterEqual) noexcept
     {
         using U = std::make_unsigned_t<decltype(last - first)>;
 
@@ -543,15 +547,15 @@ namespace qc
             const U half{size / 2u};
             const It mid{first + half};
             const It firstAlt{mid + (size & 1u)};
-            first = v <= *mid ? first : firstAlt;
+            first = greaterEqual(*mid, v) ? first : firstAlt;
             size = half;
         }
 
         return first;
     }
 
-    template <typename It, typename T>
-    inline It upperBound(It first, const It last, const T & v) noexcept
+    template <typename It, typename T, typename Greater>
+    inline It upperBound(It first, const It last, const T & v, Greater greater) noexcept
     {
         using U = std::make_unsigned_t<decltype(last - first)>;
 
@@ -562,26 +566,8 @@ namespace qc
             const U half{size / 2u};
             const It mid{first + half};
             const It firstAlt{mid + (size & 1u)};
-            first = v < *mid ? first : firstAlt;
+            first = greater(*mid, v) ? first : firstAlt;
             size = half;
-        }
-
-        return first;
-    }
-
-    template <typename It, typename T>
-    inline It lowerBound2(It first, const It last, const T & v) noexcept
-    {
-        using U = std::make_unsigned_t<decltype(last - first)>;
-
-        U size{U(last - first)};
-
-        while (size > 1u)
-        {
-            size /= 2u;
-            const It highMid{first + size};
-            const It lowMid{highMid - 1u};
-            first = v <= *lowMid ? first : highMid;
         }
 
         return first;
