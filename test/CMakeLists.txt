@@ -5,8 +5,110 @@ find_package(GTest CONFIG REQUIRED)
 ### QC-CORE-TEST ###############################################################
 
 qc_setup_target(
-    qc-core-test
+    qc-core-test-color
     EXECUTABLE
+    SOURCE_FILES
+        test-color.cpp
+    PRIVATE_LINKS
+        qc-core
+        GTest::gtest_main
+)
+
+qc_setup_target(
+    qc-core-test-core
+    EXECUTABLE
+    SOURCE_FILES
+        test-core.cpp
+    PRIVATE_LINKS
+        qc-core
+        GTest::gtest_main
+)
+
+qc_setup_target(
+    qc-core-test-enum-utils
+    EXECUTABLE
+    SOURCE_FILES
+        test-enum-utils.cpp
+    PRIVATE_LINKS
+        qc-core
+        GTest::gtest_main
+)
+
+qc_setup_target(
+    qc-core-test-kd-tree
+    EXECUTABLE
+    SOURCE_FILES
+        test-kd-tree.cpp
+    PRIVATE_LINKS
+        qc-core
+        GTest::gtest_main
+)
+
+qc_setup_target(
+    qc-core-test-matrix
+    EXECUTABLE
+    SOURCE_FILES
+        test-matrix.cpp
+    PRIVATE_LINKS
+        qc-core
+        GTest::gtest_main
+)
+
+qc_setup_target(
+    qc-core-test-memory
+    EXECUTABLE
+    SOURCE_FILES
+        test-memory.cpp
+    PRIVATE_LINKS
+        qc-core
+        GTest::gtest_main
+)
+
+qc_setup_target(
+    qc-core-test-object-slab
+    EXECUTABLE
+    SOURCE_FILES
+        test-object-slab.cpp
+    PRIVATE_LINKS
+        qc-core
+        GTest::gtest_main
+)
+
+qc_setup_target(
+    qc-core-test-quaternion
+    EXECUTABLE
+    SOURCE_FILES
+        test-quaternion.cpp
+    PRIVATE_LINKS
+        qc-core
+        GTest::gtest_main
+)
+
+qc_setup_target(
+    qc-core-test-span
+    EXECUTABLE
+    SOURCE_FILES
+        test-span.cpp
+    PRIVATE_LINKS
+        qc-core
+        GTest::gtest_main
+)
+
+qc_setup_target(
+    qc-core-test-unique-ordered-vector
+    EXECUTABLE
+    SOURCE_FILES
+        test-unique-ordered-vector.cpp
+    PRIVATE_LINKS
+        qc-core
+        GTest::gtest_main
+)
+
+qc_setup_target(
+    qc-core-test-vector
+    EXECUTABLE
+    SOURCE_FILES
+        test-vector.cpp
     PRIVATE_LINKS
         qc-core
         GTest::gtest_main
