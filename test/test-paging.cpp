@@ -14,6 +14,9 @@ TEST(Paging, pageSize)
 
 TEST(Paging, allocate)
 {
+    #pragma warning(suppress: 4834)
+    EXPECT_THROW(qc::allocatePages(0u), qc::PageError);
+
     const size_t pageCount{3u};
     size_t * const mem{static_cast<size_t *>(qc::allocatePages(pageCount))};
     ASSERT_TRUE(mem);
@@ -24,17 +27,26 @@ TEST(Paging, allocate)
         mem[i] = i;
     }
 
-    #pragma warning(suppress: 4834)
-    EXPECT_THROW(qc::allocatePages(0u), qc::PageError);
+    qc::freePages(nullptr);
+    EXPECT_THROW(qc::freePages(mem + 1), qc::PageError);
+    qc::freePages(mem);
+    EXPECT_THROW(qc::freePages(mem), qc::PageError);
 }
 
 TEST(Paging, reserveCommit)
 {
-    const size_t pageCount{3u};
-    size_t * const mem{static_cast<size_t *>(qc::reservePages(pageCount))};
+    #pragma warning(suppress: 4834)
+    EXPECT_THROW(qc::reservePages(0u), qc::PageError);
+
+    size_t * const mem{static_cast<size_t *>(qc::reservePages(3u))};
     ASSERT_TRUE(mem);
 
     EXPECT_DEATH(mem[0] = 1, "");
+
+    qc::commitPages(nullptr, 0u);
+    EXPECT_THROW(qc::commitPages(nullptr, 1u), qc::PageError);
+    qc::commitPages(mem, 0u);
+    EXPECT_THROW(qc::commitPages(mem + 1, 1u), qc::PageError);
 
     qc::commitPages(mem, 1u);
 
@@ -43,6 +55,8 @@ TEST(Paging, reserveCommit)
     {
         mem[i] = i;
     }
+
+    qc::commitPages(mem, 1u);
 
     EXPECT_DEATH(mem[n] = n, "");
 
@@ -53,11 +67,36 @@ TEST(Paging, reserveCommit)
         mem[i] = i;
     }
 
-    #pragma warning(suppress: 4834)
-    EXPECT_THROW(qc::reservePages(0u), qc::PageError);
+    EXPECT_THROW(qc::commitPages(mem + n * 3u, 1u), qc::PageError);
+    EXPECT_THROW(qc::commitPages(mem, 4u), qc::PageError);
 
-    EXPECT_THROW(qc::commitPages(nullptr, 0u), qc::PageError);
-    EXPECT_THROW(qc::commitPages(nullptr, 1u), qc::PageError);
-    EXPECT_THROW(qc::commitPages(mem, 0u), qc::PageError);
-    qc::commitPages(mem, 3u);
+    qc::decommitPages(nullptr, 0u);
+    qc::decommitPages(nullptr, 1u);
+    qc::decommitPages(mem, 0u);
+    EXPECT_THROW(qc::decommitPages(mem + 1, 1u), qc::PageError);
+
+    qc::decommitPages(mem + n, 1u);
+    mem[0] = 0u;
+    EXPECT_DEATH(mem[n] = 1u, "");
+    mem[n * 2u] = 2u;
+
+    qc::decommitPages(mem + n, 1u);
+
+    qc::commitPages(mem + n, 1u);
+    mem[n] = 1u;
+
+    EXPECT_THROW(qc::decommitPages(mem, 4u), qc::PageError);
+    mem[0] = 0u;
+    mem[n] = 1u;
+    mem[n * 2u] = 2u;
+
+    qc::decommitPages(mem, 3u);
+    EXPECT_DEATH(mem[0] = 0u, "");
+    EXPECT_DEATH(mem[n] = 1u, "");
+    EXPECT_DEATH(mem[n * 2u] = 2u, "");
+
+    qc::freePages(nullptr);
+    EXPECT_THROW(qc::freePages(mem + 1), qc::PageError);
+    qc::freePages(mem);
+    EXPECT_THROW(qc::freePages(mem), qc::PageError);
 }
