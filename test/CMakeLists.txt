@@ -68,9 +68,9 @@ qc_setup_target(
     qc-core-test-object-slab
     EXECUTABLE
     SOURCE_FILES
-        test-object-slab.cpp
+        test-slab.cpp
     PRIVATE_LINKS
-        qc-core
+        qc-core-platform
         GTest::gtest_main
 )
 
