@@ -71,13 +71,8 @@ namespace qc
 
     //
     // ...
-    // ~12x faster than std::llround
-    // Only works for "normal" values of absolute magnitude smaller than roughly one quadrillion for doubles or one million for floats
-    // Any exact 0.5 value is not guaranteed to round up - it may go either way
     //
-    s64 round(double v);
-    s32 round(float v);
-    template <Integral T> T round(T v);
+    template <Numeric T> constexpr T round(T v) noexcept;
 
     // Simple wrapper around std::pow
     template <Floating T> T pow(T v, T e);
@@ -166,12 +161,12 @@ namespace qc
     //
     // Converts between normalized types.
     //
-    template <Floating To, Floating From> To transnorm(From v);
-    template <SignedIntegral To, Floating From> To transnorm(From v);
-    template <UnsignedIntegral To, Floating From> To transnorm(From v);
-    template <Floating To, SignedIntegral From> To transnorm(From v);
-    template <Floating To, UnsignedIntegral From> To transnorm(From v);
-    template <UnsignedIntegral To, UnsignedIntegral From> To transnorm(From v);
+    template <Floating         To, Floating         From> constexpr To transnorm(From v);
+    template <SignedIntegral   To, Floating         From> constexpr To transnorm(From v);
+    template <UnsignedIntegral To, Floating         From> constexpr To transnorm(From v);
+    template <Floating         To, SignedIntegral   From> constexpr To transnorm(From v);
+    template <Floating         To, UnsignedIntegral From> constexpr To transnorm(From v);
+    template <UnsignedIntegral To, UnsignedIntegral From> constexpr To transnorm(From v);
 
     ///
     /// Branchless binary search
@@ -313,6 +308,11 @@ namespace qc
         return v;
     }
 
+    // Old bit-magic form
+    // ~12x faster than std::llround
+    // Only works for "normal" values of absolute magnitude smaller than roughly one quadrillion for doubles or one million for floats
+    // Any exact 0.5 value is not guaranteed to round up - it may go either way
+    #if 0
     inline s64 round(double v)
     {
         // Right bit shift on signed integer must be arithmetic
@@ -328,9 +328,16 @@ namespace qc
 
         return std::bit_cast<s32>(v + 12582912.0f) << 10 >> 10;
     }
+    #endif
+
+    template <Floating T>
+    inline constexpr intmax_t round(const T v) noexcept
+    {
+        return intmax_t(v + (T(v >= T(0.0)) - T(0.5)));
+    }
 
     template <Integral T>
-    inline T round(const T v)
+    inline constexpr T round(const T v) noexcept
     {
         return v;
     }
@@ -483,41 +490,41 @@ namespace qc
     }
 
     template <Floating To, Floating From>
-    inline To transnorm(const From v)
+    inline constexpr To transnorm(const From v)
     {
         return To(v);
     }
 
     template <SignedIntegral To, Floating From>
-    inline To transnorm(From v)
+    inline constexpr To transnorm(From v)
     {
         if (v <= From(-1.0)) return -std::numeric_limits<To>::max();
         if (v >= From(1.0)) return std::numeric_limits<To>::max();
-        return To(std::round(v * From(std::numeric_limits<To>::max())));
+        return To(v * From(std::numeric_limits<To>::max()) + (v >= From(0.0) ? From(0.5) : From(-0.5)));
     }
 
     template <UnsignedIntegral To, Floating From>
-    inline To transnorm(const From v)
+    inline constexpr To transnorm(const From v)
     {
         if (v <= From(0.0)) return To(0u);
         if (v >= From(1.0)) return std::numeric_limits<To>::max();
-        return To(std::round(v * From(std::numeric_limits<To>::max())));
+        return To(v * From(std::numeric_limits<To>::max()) + From(0.5));
     }
 
     template <Floating To, SignedIntegral From>
-    inline To transnorm(const From v)
+    inline constexpr To transnorm(const From v)
     {
         return max(To(v) * (To(1.0) / To(std::numeric_limits<From>::max())), To(-1.0));
     }
 
     template <Floating To, UnsignedIntegral From>
-    inline To transnorm(const From v)
+    inline constexpr To transnorm(const From v)
     {
         return To(v) * (To(1.0) / To(std::numeric_limits<From>::max()));
     }
 
     template <UnsignedIntegral To, UnsignedIntegral From>
-    inline To transnorm(const From v)
+    inline constexpr To transnorm(const From v)
     {
         if constexpr (sizeof(From) == sizeof(To))
         {

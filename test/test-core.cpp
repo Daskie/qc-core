@@ -321,7 +321,7 @@ template <Integral T> static constexpr T threeQuartersVal{T(halfVal<T> + quarter
 template <typename From, typename To>
 void testTransnormFTFT()
 {
-    EXPECT_EQ(To(0.0), qc::transnorm<To>(From(0.0)));
+    static_assert(To(0.0) == qc::transnorm<To>(From(0.0)));
     EXPECT_EQ(To(0.25), qc::transnorm<To>(From(0.25)));
     EXPECT_EQ(To(0.5), qc::transnorm<To>(From(0.5)));
     EXPECT_EQ(To(0.75), qc::transnorm<To>(From(0.75)));
@@ -333,7 +333,7 @@ void testTransnormFTST()
 {
     const double epsilon(1.0 / std::ldexp(1.0, std::numeric_limits<To>::digits));
 
-    EXPECT_EQ(To(-std::numeric_limits<To>::max()), qc::transnorm<To>(From(-1.0)));
+    static_assert(To(-std::numeric_limits<To>::max()) == qc::transnorm<To>(From(-1.0)));
     EXPECT_NEAR(0.75, double(qc::transnorm<To>(From(-0.75))) / double(-std::numeric_limits<To>::max()), epsilon);
     EXPECT_NEAR(0.5, double(qc::transnorm<To>(From(-0.5))) / double(-std::numeric_limits<To>::max()), epsilon);
     EXPECT_NEAR(0.25, double(qc::transnorm<To>(From(-0.25))) / double(-std::numeric_limits<To>::max()), epsilon);
@@ -352,7 +352,7 @@ void testTransnormFTUT()
 {
     const double epsilon(1.0 / std::ldexp(1.0, std::numeric_limits<To>::digits));
 
-    EXPECT_EQ(To(0u), qc::transnorm<To>(From(0.0)));
+    static_assert(To(0u) == qc::transnorm<To>(From(0.0)));
     EXPECT_NEAR(0.25, double(qc::transnorm<To>(From(0.25))) / double(std::numeric_limits<To>::max()), epsilon);
     EXPECT_NEAR(0.5, double(qc::transnorm<To>(From(0.5))) / double(std::numeric_limits<To>::max()), epsilon);
     EXPECT_NEAR(0.75, double(qc::transnorm<To>(From(0.75))) / double(std::numeric_limits<To>::max()), epsilon);
@@ -371,7 +371,7 @@ void testTransnormSTFT()
     EXPECT_NEAR(To(-0.75), qc::transnorm<To>(From(-threeQuartersVal<From>)), epsilon);
     EXPECT_NEAR(To(-0.5), qc::transnorm<To>(From(-halfVal<From>)), epsilon);
     EXPECT_NEAR(To(-0.25), qc::transnorm<To>(From(-quarterVal<From>)), epsilon);
-    EXPECT_EQ(To(0.0), qc::transnorm<To>(From(0)));
+    static_assert(To(0.0) == qc::transnorm<To>(From(0)));
     EXPECT_NEAR(To(0.25), qc::transnorm<To>(quarterVal<From>), epsilon);
     EXPECT_NEAR(To(0.5), qc::transnorm<To>(halfVal<From>), epsilon);
     EXPECT_NEAR(To(0.75), qc::transnorm<To>(threeQuartersVal<From>), epsilon);
@@ -383,7 +383,7 @@ void testTransnormUTFT()
 {
     const To epsilon{To(1.0 / std::ldexp(1.0, std::numeric_limits<From>::digits))};
 
-    EXPECT_EQ(To(0.0), qc::transnorm<To>(From(0u)));
+    static_assert(To(0.0) == qc::transnorm<To>(From(0u)));
     EXPECT_NEAR(To(0.25), qc::transnorm<To>(quarterVal<From>), epsilon);
     EXPECT_NEAR(To(0.5), qc::transnorm<To>(halfVal<From>), epsilon);
     EXPECT_NEAR(To(0.75), qc::transnorm<To>(threeQuartersVal<From>), epsilon);
@@ -395,7 +395,7 @@ void testTransnormUTUT()
 {
     const double epsilon(1.0 / std::ldexp(1.0, qc::min(std::numeric_limits<To>::digits, std::numeric_limits<From>::digits)));
 
-    EXPECT_EQ(To(0u), qc::transnorm<To>(From(0u)));
+    static_assert(To(0u) == qc::transnorm<To>(From(0u)));
     EXPECT_NEAR(0.25, double(qc::transnorm<To>(From(quarterVal<From>))) / double(std::numeric_limits<To>::max()), epsilon);
     EXPECT_NEAR(0.5, double(qc::transnorm<To>(From(halfVal<From>))) / double(std::numeric_limits<To>::max()), epsilon);
     EXPECT_NEAR(0.75, double(qc::transnorm<To>(From(threeQuartersVal<From>))) / double(std::numeric_limits<To>::max()), epsilon);
