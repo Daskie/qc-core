@@ -9,6 +9,36 @@ static fvec3 _truncate(const fvec3 & val)
     return fvec3{ivec3{val * 1000.0f}} * 0.001f;
 }
 
+template <Numeric T>
+static void _instantiateColors()
+{
+    constexpr vec3<T> black{qc::color::black<T>};
+    constexpr vec3<T> darkGray{qc::color::darkGray<T>};
+    constexpr vec3<T> gray{qc::color::gray<T>};
+    constexpr vec3<T> lightGray{qc::color::lightGray<T>};
+
+    constexpr vec3<T> red{qc::color::red<T>};
+    constexpr vec3<T> yellow{qc::color::yellow<T>};
+    constexpr vec3<T> green{qc::color::green<T>};
+    constexpr vec3<T> cyan{qc::color::cyan<T>};
+    constexpr vec3<T> blue{qc::color::blue<T>};
+    constexpr vec3<T> magenta{qc::color::magenta<T>};
+}
+
+TEST(color, colors)
+{
+    _instantiateColors<f32>();
+    _instantiateColors<f64>();
+    _instantiateColors<s8>();
+    _instantiateColors<s16>();
+    _instantiateColors<s32>();
+    _instantiateColors<s64>();
+    _instantiateColors<u8>();
+    _instantiateColors<u16>();
+    _instantiateColors<u32>();
+    _instantiateColors<u64>();
+}
+
 TEST(color, srgbToHsl)
 {
     EXPECT_EQ(_truncate(fvec3{0.0f, 0.0f, 0.0f}), _truncate(qc::color::srgbToHsl(fvec3{0.0f, 0.0f, 0.0f})));
