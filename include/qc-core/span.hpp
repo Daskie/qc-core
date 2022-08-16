@@ -70,8 +70,8 @@ namespace qc
 
     template <NumericOrPointer T> struct span<T, 1>
     {
-        T min{};
-        T max{};
+        T min;
+        T max;
 
         constexpr span() noexcept = default;
         template <NumericOrPointer U> constexpr explicit span(const span1<U> & v) noexcept;

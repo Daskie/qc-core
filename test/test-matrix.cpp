@@ -10,26 +10,26 @@ template <typename T>
 static void compileClassesT()
 {
     T v{T(1.0)};
-    vec2<T> v2;
-    vec3<T> v3;
-    vec4<T> v4;
-    mat2<T> m2;
-    mat3<T> m3;
-    mat4<T> m4;
-    std::stringstream os;
+    vec2<T> v2{};
+    vec3<T> v3{};
+    vec4<T> v4{};
+    mat2<T> m2{};
+    mat3<T> m3{};
+    mat4<T> m4{};
+    std::stringstream os{};
 
     //--------------------------------------------------------------------------
     // Mat2
 
     // constructors
 
-    mat2<T> m2_1;
-    mat2<T> m2_2(m2);
-    mat2<T> m2_3(std::move(m2));
-    mat2<T> m2_4(v, v, v, v);
-    mat2<T> m2_6(m3);
-    mat2<T> m2_7(m4);
-    mat2<T> m2_8(v2, v2);
+    mat2<T> m2_1{};
+    mat2<T> m2_2{m2};
+    mat2<T> m2_3{std::move(m2)};
+    mat2<T> m2_4{v, v, v, v};
+    mat2<T> m2_6{m3};
+    mat2<T> m2_7{m4};
+    mat2<T> m2_8{v2, v2};
 
     // assignment
 
@@ -93,13 +93,13 @@ static void compileClassesT()
 
     // constructors
 
-    mat3<T> m3_1;
-    mat3<T> m3_2(m3);
-    mat3<T> m3_3(std::move(m3));
-    mat3<T> m3_4(v, v, v, v, v, v, v, v, v);
-    mat3<T> m3_6(m2);
-    mat3<T> m3_7(m4);
-    mat3<T> m3_8(v3, v3, v3);
+    mat3<T> m3_1{};
+    mat3<T> m3_2{m3};
+    mat3<T> m3_3{std::move(m3)};
+    mat3<T> m3_4{v, v, v, v, v, v, v, v, v};
+    mat3<T> m3_6{m2};
+    mat3<T> m3_7{m4};
+    mat3<T> m3_8{v3, v3, v3};
 
     // assignment
 
@@ -165,13 +165,13 @@ static void compileClassesT()
 
     // constructors
 
-    mat4<T> m4_1;
-    mat4<T> m4_2(m4);
-    mat4<T> m4_3(std::move(m4));
-    mat4<T> m4_4(v, v, v, v, v, v, v, v, v, v, v, v, v, v, v, v);
-    mat4<T> m4_6(m2);
-    mat4<T> m4_7(m3);
-    mat4<T> m4_8(v4, v4, v4, v4);
+    mat4<T> m4_1{};
+    mat4<T> m4_2{m4};
+    mat4<T> m4_3{std::move(m4)};
+    mat4<T> m4_4{v, v, v, v, v, v, v, v, v, v, v, v, v, v, v, v};
+    mat4<T> m4_6{m2};
+    mat4<T> m4_7{m3};
+    mat4<T> m4_8{v4, v4, v4, v4};
 
     // assignment
 
@@ -246,25 +246,25 @@ template <typename T>
 static constexpr void compileClassesConstexprT()
 {
     constexpr T v{T(1.0)};
-    constexpr vec2<T> v2;
-    constexpr vec3<T> v3;
-    constexpr vec4<T> v4;
-    constexpr mat2<T> m2;
-    constexpr mat3<T> m3;
-    constexpr mat4<T> m4;
+    constexpr vec2<T> v2{};
+    constexpr vec3<T> v3{};
+    constexpr vec4<T> v4{};
+    constexpr mat2<T> m2{};
+    constexpr mat3<T> m3{};
+    constexpr mat4<T> m4{};
 
     //--------------------------------------------------------------------------
     // Mat2
 
     // constructors
 
-    constexpr mat2<T> m2_1;
-    constexpr mat2<T> m2_2(m2);
-    constexpr mat2<T> m2_3(std::move(m2));
-    constexpr mat2<T> m2_4(v, v, v, v);
-    constexpr mat2<T> m2_6(m3);
-    constexpr mat2<T> m2_7(m4);
-    constexpr mat2<T> m2_8(v2, v2);
+    constexpr mat2<T> m2_1{};
+    constexpr mat2<T> m2_2{m2};
+    constexpr mat2<T> m2_3{std::move(m2)};
+    constexpr mat2<T> m2_4{v, v, v, v};
+    constexpr mat2<T> m2_6{m3};
+    constexpr mat2<T> m2_7{m4};
+    constexpr mat2<T> m2_8{v2, v2};
 
     // access
 
@@ -279,13 +279,13 @@ static constexpr void compileClassesConstexprT()
 
     // constructors
 
-    constexpr mat3<T> m3_1;
-    constexpr mat3<T> m3_2(m3);
-    constexpr mat3<T> m3_3(std::move(m3));
-    constexpr mat3<T> m3_4(v, v, v, v, v, v, v, v, v);
-    constexpr mat3<T> m3_6(m2);
-    constexpr mat3<T> m3_7(m4);
-    constexpr mat3<T> m3_8(v3, v3, v3);
+    constexpr mat3<T> m3_1{};
+    constexpr mat3<T> m3_2{m3};
+    constexpr mat3<T> m3_3{std::move(m3)};
+    constexpr mat3<T> m3_4{v, v, v, v, v, v, v, v, v};
+    constexpr mat3<T> m3_6{m2};
+    constexpr mat3<T> m3_7{m4};
+    constexpr mat3<T> m3_8{v3, v3, v3};
 
     // access
 
@@ -302,13 +302,13 @@ static constexpr void compileClassesConstexprT()
 
     // constructors
 
-    constexpr mat4<T> m4_1;
-    constexpr mat4<T> m4_2(m4);
-    constexpr mat4<T> m4_3(std::move(m4));
-    constexpr mat4<T> m4_4(v, v, v, v, v, v, v, v, v, v, v, v, v, v, v, v);
-    constexpr mat4<T> m4_6(m2);
-    constexpr mat4<T> m4_7(m3);
-    constexpr mat4<T> m4_8(v4, v4, v4, v4);
+    constexpr mat4<T> m4_1{};
+    constexpr mat4<T> m4_2{m4};
+    constexpr mat4<T> m4_3{std::move(m4)};
+    constexpr mat4<T> m4_4{v, v, v, v, v, v, v, v, v, v, v, v, v, v, v, v};
+    constexpr mat4<T> m4_6{m2};
+    constexpr mat4<T> m4_7{m3};
+    constexpr mat4<T> m4_8{v4, v4, v4, v4};
 
     // access
 
@@ -336,12 +336,12 @@ template <typename T>
 static void compileFunctionsT()
 {
     T v{1.0};
-    vec2<T> v2;
-    vec3<T> v3;
-    vec4<T> v4;
-    mat2<T> m2;
-    mat3<T> m3;
-    mat4<T> m4;
+    vec2<T> v2{};
+    vec3<T> v3{};
+    vec4<T> v4{};
+    mat2<T> m2{};
+    mat3<T> m3{};
+    mat4<T> m4{};
 
     qc::isIdentity(m2);
     qc::isIdentity(m3);
@@ -424,12 +424,12 @@ template <typename T>
 static constexpr void compileFunctionsConstexprT()
 {
     constexpr T v{T(1.0)};
-    constexpr vec2<T> v2(T(1.0));
-    constexpr vec3<T> v3(T(1.0));
-    constexpr vec4<T> v4(T(1.0));
-    constexpr mat2<T> m2(v2, v2);
-    constexpr mat3<T> m3(v3, v3, v3);
-    constexpr mat4<T> m4(v4, v4, v4, v4);
+    constexpr vec2<T> v2{T(1.0)};
+    constexpr vec3<T> v3{T(1.0)};
+    constexpr vec4<T> v4{T(1.0)};
+    constexpr mat2<T> m2{v2, v2};
+    constexpr mat3<T> m3{v3, v3, v3};
+    constexpr mat4<T> m4{v4, v4, v4, v4};
 
     qc::fullMat<T, 2>(v);
     qc::fullMat<T, 3>(v);

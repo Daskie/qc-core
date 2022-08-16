@@ -65,7 +65,7 @@ qc_setup_target(
 )
 
 qc_setup_target(
-    qc-core-test-object-slab
+    qc-core-test-slab
     EXECUTABLE
     SOURCE_FILES
         test-slab.cpp

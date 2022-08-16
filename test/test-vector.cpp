@@ -10,21 +10,21 @@ template <typename T>
 static void compileClassesT()
 {
     T v{};
-    vec2<T> v2;
-    vec3<T> v3;
-    vec4<T> v4;
+    vec2<T> v2{};
+    vec3<T> v3{};
+    vec4<T> v4{};
 
     //--------------------------------------------------------------------------
     // Vec2
 
     // constructors
-    vec2<T> v2_01;
-    vec2<T> v2_02(v2);
-    vec2<T> v2_03(std::move(v2));
-    vec2<T> v2_04(v);
-    vec2<T> v2_06(v3);
-    vec2<T> v2_07(v4);
-    vec2<T> v2_08(v, v);
+    vec2<T> v2_01{};
+    vec2<T> v2_02{v2};
+    vec2<T> v2_03{std::move(v2)};
+    vec2<T> v2_04{v};
+    vec2<T> v2_06{v3};
+    vec2<T> v2_07{v4};
+    vec2<T> v2_08{v, v};
 
     // assignment
     v2 = v2;
@@ -43,15 +43,15 @@ static void compileClassesT()
     // Vec3
 
     // constructors
-    vec3<T> v3_01;
-    vec3<T> v3_02(v3);
-    vec3<T> v3_03(std::move(v3));
-    vec3<T> v3_04(v);
-    vec3<T> v3_06(v2);
-    vec3<T> v3_07(v4);
-    vec3<T> v3_08(v, v, v);
-    vec3<T> v3_16(v2, v);
-    vec3<T> v3_18(v, v2);
+    vec3<T> v3_01{};
+    vec3<T> v3_02{v3};
+    vec3<T> v3_03{std::move(v3)};
+    vec3<T> v3_04{v};
+    vec3<T> v3_06{v2};
+    vec3<T> v3_07{v4};
+    vec3<T> v3_08{v, v, v};
+    vec3<T> v3_16{v2, v};
+    vec3<T> v3_18{v, v2};
 
     // assignment
     v3 = v3;
@@ -75,19 +75,19 @@ static void compileClassesT()
     // Vec4
 
     // constructors
-    vec4<T> v4_01;
-    vec4<T> v4_02(v4);
-    vec4<T> v4_03(std::move(v4));
-    vec4<T> v4_04(v);
-    vec4<T> v4_06(v2);
-    vec4<T> v4_07(v3);
-    vec4<T> v4_08(v, v, v, v);
-    vec4<T> v4_23(v2, v, v);
-    vec4<T> v4_27(v, v2, v);
-    vec4<T> v4_31(v, v, v2);
-    vec4<T> v4_35(v2, v2);
-    vec4<T> v4_36(v3, v);
-    vec4<T> v4_38(v, v3);
+    vec4<T> v4_01{};
+    vec4<T> v4_02{v4};
+    vec4<T> v4_03{std::move(v4)};
+    vec4<T> v4_04{v};
+    vec4<T> v4_06{v2};
+    vec4<T> v4_07{v3};
+    vec4<T> v4_08{v, v, v, v};
+    vec4<T> v4_23{v2, v, v};
+    vec4<T> v4_27{v, v2, v};
+    vec4<T> v4_31{v, v, v2};
+    vec4<T> v4_35{v2, v2};
+    vec4<T> v4_36{v3, v};
+    vec4<T> v4_38{v, v3};
 
     // assignment
     v4 = v4;
@@ -131,21 +131,21 @@ template <typename T>
 static constexpr void compileClassesConstexprT()
 {
     constexpr T v{};
-    constexpr vec2<T> v2;
-    constexpr vec3<T> v3;
-    constexpr vec4<T> v4;
+    constexpr vec2<T> v2{};
+    constexpr vec3<T> v3{};
+    constexpr vec4<T> v4{};
 
     //--------------------------------------------------------------------------
     // Vec2
 
     // constructors
-    constexpr vec2<T> v2_01;
-    constexpr vec2<T> v2_02(v2);
-    constexpr vec2<T> v2_03(std::move(v2));
-    constexpr vec2<T> v2_04(v);
-    constexpr vec2<T> v2_06(v3);
-    constexpr vec2<T> v2_07(v4);
-    constexpr vec2<T> v2_08(v, v);
+    constexpr vec2<T> v2_01{};
+    constexpr vec2<T> v2_02{v2};
+    constexpr vec2<T> v2_03{std::move(v2)};
+    constexpr vec2<T> v2_04{v};
+    constexpr vec2<T> v2_06{v3};
+    constexpr vec2<T> v2_07{v4};
+    constexpr vec2<T> v2_08{v, v};
 
     // Conversion
     static_cast<bool>(v2);
@@ -158,15 +158,14 @@ static constexpr void compileClassesConstexprT()
     // Vec3
 
     // constructors
-    constexpr vec3<T> v3_01;
-    constexpr vec3<T> v3_02(v3);
-    constexpr vec3<T> v3_03(std::move(v3));
-    constexpr vec3<T> v3_04(v);
-    constexpr vec3<T> v3_06(v2);
-    constexpr vec3<T> v3_07(v4);
-    constexpr vec3<T> v3_08(v, v, v);
-    constexpr vec3<T> v3_16(v2, v);
-    //constexpr vec3<T> v3_18(v, v2);
+    constexpr vec3<T> v3_01{};
+    constexpr vec3<T> v3_02{v3};
+    constexpr vec3<T> v3_03{std::move(v3)};
+    constexpr vec3<T> v3_04{v};
+    constexpr vec3<T> v3_06{v2};
+    constexpr vec3<T> v3_07{v4};
+    constexpr vec3<T> v3_08{v, v, v};
+    constexpr vec3<T> v3_16{v2, v};
 
     // Conversion
     static_cast<bool>(v3);
@@ -183,19 +182,16 @@ static constexpr void compileClassesConstexprT()
     // Vec4
 
     // constructors
-    constexpr vec4<T> v4_01;
-    constexpr vec4<T> v4_02(v4);
-    constexpr vec4<T> v4_03(std::move(v4));
-    constexpr vec4<T> v4_04(v);
-    constexpr vec4<T> v4_06(v2);
-    constexpr vec4<T> v4_07(v3);
-    constexpr vec4<T> v4_08(v, v, v, v);
-    constexpr vec4<T> v4_23(v2, v, v);
-    //constexpr vec4<T> v4_27(v, v2, v);
-    //constexpr vec4<T> v4_31(v, v, v2);
-    constexpr vec4<T> v4_35(v2, v2);
-    constexpr vec4<T> v4_36(v3, v);
-    //constexpr vec4<T> v4_38(v, v3);
+    constexpr vec4<T> v4_01{};
+    constexpr vec4<T> v4_02{v4};
+    constexpr vec4<T> v4_03{std::move(v4)};
+    constexpr vec4<T> v4_04{v};
+    constexpr vec4<T> v4_06{v2};
+    constexpr vec4<T> v4_07{v3};
+    constexpr vec4<T> v4_08{v, v, v, v};
+    constexpr vec4<T> v4_23{v2, v, v};
+    constexpr vec4<T> v4_35{v2, v2};
+    constexpr vec4<T> v4_36{v3, v};
 
     // Conversion
     static_cast<bool>(v4);
@@ -247,10 +243,10 @@ static void compileFunctionsT()
     compileFunctionsTT<T, u64>();
 
     T v{};
-    vec2<T> v2;
-    vec3<T> v3;
-    vec4<T> v4;
-    std::stringstream os;
+    vec2<T> v2{};
+    vec3<T> v3{};
+    vec4<T> v4{};
+    std::stringstream os{};
 
     // arithmetic
 
@@ -602,9 +598,9 @@ template <typename T>
 static void compileFunctionsFT()
 {
     T v{1};
-    vec2<T> v2;
-    vec3<T> v3;
-    vec4<T> v4;
+    vec2<T> v2{};
+    vec3<T> v3{};
+    vec4<T> v4{};
 
     qc::areEqual_e(v2, v);
     qc::areEqual_e(v3, v);
@@ -717,9 +713,9 @@ static void compileFunctionsFT()
 template <typename T>
 static void compileFunctionsST()
 {
-    vec2<T> v2;
-    vec2<T> v3;
-    vec2<T> v4;
+    vec2<T> v2{};
+    vec2<T> v3{};
+    vec2<T> v4{};
 
     qc::distance2(v2, v2);
     qc::distance2(v3, v3);
@@ -732,9 +728,9 @@ static void compileFunctionsIT() {}
 template <typename T>
 static void compileFunctionsSIT()
 {
-    vec2<T> v2;
-    vec3<T> v3;
-    vec4<T> v4;
+    vec2<T> v2{};
+    vec3<T> v3{};
+    vec4<T> v4{};
 
     qc::transnorm<fvec2>(v2);
     qc::transnorm<fvec3>(v3);
@@ -747,9 +743,9 @@ static void compileFunctionsSIT()
 template <typename T>
 static void compileFunctionsUIT()
 {
-    vec2<T> v2;
-    vec3<T> v3;
-    vec4<T> v4;
+    vec2<T> v2{};
+    vec3<T> v3{};
+    vec4<T> v4{};
 
     qc::transnorm<fvec2>(v2);
     qc::transnorm<fvec3>(v3);
@@ -777,9 +773,9 @@ static void compileFunctionsUIT()
 
 static void compileFunctionsBT()
 {
-    bvec2 b2;
-    bvec3 b3;
-    bvec4 b4;
+    bvec2 b2{};
+    bvec3 b3{};
+    bvec4 b4{};
 
     b2 && b2;
     b3 && b3;
@@ -1119,9 +1115,9 @@ template <typename T>
 static constexpr void compileFunctionsConstexprFT()
 {
     constexpr T v{1.0};
-    constexpr vec2<T> v2(T(1.0));
-    constexpr vec3<T> v3(T(1.0));
-    constexpr vec4<T> v4(T(1.0));
+    constexpr vec2<T> v2{T(1.0)};
+    constexpr vec3<T> v3{T(1.0)};
+    constexpr vec4<T> v4{T(1.0)};
 
     //qc::equal_e(v2);
     //qc::equal_e(v3);
@@ -1163,47 +1159,19 @@ template <typename T>
 static constexpr void compileFunctionsConstexprIT()
 {
     constexpr T v{1.0};
-    constexpr vec2<T> v2(T(1.0));
-    constexpr vec3<T> v3(T(1.0));
-    constexpr vec4<T> v4(T(1.0));
+    constexpr vec2<T> v2{T(1.0)};
+    constexpr vec3<T> v3{T(1.0)};
+    constexpr vec4<T> v4{T(1.0)};
 
     //qc::mipmaps(v2);
     //qc::mipmaps(v3);
     //qc::mipmaps(v4);
 }
 
-static constexpr void compileBoolFunctionsConstexpr()
-{
-    bvec2 b2;
-    bvec3 b3;
-    bvec4 b4;
-
-    //b2 && b2;
-    //b3 && b3;
-    //b4 && b4;
-
-    //b2 || b2;
-    //b3 || b3;
-    //b4 || b4;
-
-    //!b2;
-    //!b3;
-    //!b4;
-
-    //qc::all(b2);
-    //qc::all(b3);
-    //qc::all(b4);
-
-    //qc::any(b2);
-    //qc::any(b3);
-    //qc::any(b4);
-}
-
 static constexpr bool compileFunctionsConstexpr()
 {
     compileFunctionsConstexprT<f32>();
     compileFunctionsConstexprT<f64>();
-    compileBoolFunctionsConstexpr();
 
     return true;
 }
@@ -1212,6 +1180,7 @@ template <typename T, int n>
 static void testPropertiesTN()
 {
     static_assert(std::is_standard_layout_v<vec<T, n>>);
+    static_assert(std::is_trivially_default_constructible_v<vec<T, n>>);
     static_assert(std::is_trivially_copyable_v<vec<T, n>>);
     static_assert(std::is_trivially_copy_constructible_v<vec<T, n>>);
     static_assert(std::is_trivially_move_constructible_v<vec<T, n>>);
@@ -1249,13 +1218,13 @@ static void testProperties()
 template <typename T1, typename T2, int n>
 static constexpr void compileVecCastsTTN()
 {
-    vec2<T1> v2;
-    vec2<T1> v3;
-    vec2<T1> v4;
+    vec2<T1> v2{};
+    vec2<T1> v3{};
+    vec2<T1> v4{};
 
-    { vec<T2, n> v(v2); }
-    { vec<T2, n> v(v3); }
-    { vec<T2, n> v(v4); }
+    { vec<T2, n> v{v2}; }
+    { vec<T2, n> v{v3}; }
+    { vec<T2, n> v{v4}; }
 
     static_cast<vec<T2, n>>(v2);
     static_cast<vec<T2, n>>(v3);
@@ -1306,24 +1275,24 @@ static constexpr bool compileCasts()
 template <typename T>
 static constexpr void compileConstantsT()
 {
-    constexpr vec2<T> px2(qc::px2<T>);
-    constexpr vec3<T> px3(qc::px3<T>);
-    constexpr vec4<T> px4(qc::px4<T>);
-    constexpr vec2<T> py2(qc::py2<T>);
-    constexpr vec3<T> py3(qc::py3<T>);
-    constexpr vec4<T> py4(qc::py4<T>);
-    constexpr vec3<T> pz3(qc::pz3<T>);
-    constexpr vec4<T> pz4(qc::pz4<T>);
-    constexpr vec4<T> pw4(qc::pw4<T>);
-    constexpr vec2<T> nx2(qc::nx2<T>);
-    constexpr vec3<T> nx3(qc::nx3<T>);
-    constexpr vec4<T> nx4(qc::nx4<T>);
-    constexpr vec2<T> ny2(qc::ny2<T>);
-    constexpr vec3<T> ny3(qc::ny3<T>);
-    constexpr vec4<T> ny4(qc::ny4<T>);
-    constexpr vec3<T> nz3(qc::nz3<T>);
-    constexpr vec4<T> nz4(qc::nz4<T>);
-    constexpr vec4<T> nw4(qc::nw4<T>);
+    constexpr vec2<T> px2{qc::px2<T>};
+    constexpr vec3<T> px3{qc::px3<T>};
+    constexpr vec4<T> px4{qc::px4<T>};
+    constexpr vec2<T> py2{qc::py2<T>};
+    constexpr vec3<T> py3{qc::py3<T>};
+    constexpr vec4<T> py4{qc::py4<T>};
+    constexpr vec3<T> pz3{qc::pz3<T>};
+    constexpr vec4<T> pz4{qc::pz4<T>};
+    constexpr vec4<T> pw4{qc::pw4<T>};
+    constexpr vec2<T> nx2{qc::nx2<T>};
+    constexpr vec3<T> nx3{qc::nx3<T>};
+    constexpr vec4<T> nx4{qc::nx4<T>};
+    constexpr vec2<T> ny2{qc::ny2<T>};
+    constexpr vec3<T> ny3{qc::ny3<T>};
+    constexpr vec4<T> ny4{qc::ny4<T>};
+    constexpr vec3<T> nz3{qc::nz3<T>};
+    constexpr vec4<T> nz4{qc::nz4<T>};
+    constexpr vec4<T> nw4{qc::nw4<T>};
 }
 
 static constexpr bool compileConstants()

@@ -8,22 +8,22 @@ template <typename T>
 static void compileClassesT()
 {
     T v{};
-    qc::vec2<T> v2;
-    qc::vec3<T> v3;
-    qc::vec4<T> v4;
-    qc::span1<T> s1;
-    qc::span2<T> s2;
-    qc::span3<T> s3;
-    qc::span4<T> s4;
+    qc::vec2<T> v2{};
+    qc::vec3<T> v3{};
+    qc::vec4<T> v4{};
+    qc::span1<T> s1{};
+    qc::span2<T> s2{};
+    qc::span3<T> s3{};
+    qc::span4<T> s4{};
 
     //--------------------------------------------------------------------------
     // Span1
 
     // constructors
-    qc::span<T, 1> s1_1;
-    qc::span<T, 1> s1_2(s1);
-    qc::span<T, 1> s1_3(std::move(s1));
-    qc::span<T, 1> s1_4(v, v);
+    qc::span<T, 1> s1_1{};
+    qc::span<T, 1> s1_2{s1};
+    qc::span<T, 1> s1_3{std::move(s1)};
+    qc::span<T, 1> s1_4{v, v};
 
     // assignment operators
     s1 = s1;
@@ -37,12 +37,12 @@ static void compileClassesT()
     // Span2
 
     // constructors
-    qc::span<T, 2> s2_1;
-    qc::span<T, 2> s2_2(s2);
-    qc::span<T, 2> s2_3(std::move(s2));
-    qc::span<T, 2> s2_4(v2, v2);
-    qc::span<T, 2> s2_5(v, v);
-    qc::span<T, 2> s2_6(s1, s1);
+    qc::span<T, 2> s2_1{};
+    qc::span<T, 2> s2_2{s2};
+    qc::span<T, 2> s2_3{std::move(s2)};
+    qc::span<T, 2> s2_4{v2, v2};
+    qc::span<T, 2> s2_5{v, v};
+    qc::span<T, 2> s2_6{s1, s1};
 
     // assignment operators
     s2 = s2;
@@ -57,14 +57,14 @@ static void compileClassesT()
     // Span3
 
     // constructors
-    qc::span<T, 3> s3_1;
-    qc::span<T, 3> s3_2(s3);
-    qc::span<T, 3> s3_3(std::move(s3));
-    qc::span<T, 3> s3_4(v3, v3);
-    qc::span<T, 3> s3_5(v, v);
-    qc::span<T, 3> s3_6(s1, s1, s1);
-    qc::span<T, 3> s3_7(s2, s1);
-    qc::span<T, 3> s3_8(s1, s2);
+    qc::span<T, 3> s3_1{};
+    qc::span<T, 3> s3_2{s3};
+    qc::span<T, 3> s3_3{std::move(s3)};
+    qc::span<T, 3> s3_4{v3, v3};
+    qc::span<T, 3> s3_5{v, v};
+    qc::span<T, 3> s3_6{s1, s1, s1};
+    qc::span<T, 3> s3_7{s2, s1};
+    qc::span<T, 3> s3_8{s1, s2};
 
     // assignment operators
     s3 = s3;
@@ -83,18 +83,18 @@ static void compileClassesT()
     // Span4
 
     // constructors
-    qc::span<T, 4> s4_1;
-    qc::span<T, 4> s4_2(s4);
-    qc::span<T, 4> s4_3(std::move(s4));
-    qc::span<T, 4> s4_4(v4, v4);
-    qc::span<T, 4> s4_5(v, v);
-    qc::span<T, 4> s4_6(s1, s1, s1, s1);
-    qc::span<T, 4> s4_7(s2, s1, s1);
-    qc::span<T, 4> s4_8(s1, s2, s1);
-    qc::span<T, 4> s4_9(s1, s1, s2);
-    qc::span<T, 4> s4_10(s2, s2);
-    qc::span<T, 4> s4_11(s3, s1);
-    qc::span<T, 4> s4_12(s1, s3);
+    qc::span<T, 4> s4_1{};
+    qc::span<T, 4> s4_2{s4};
+    qc::span<T, 4> s4_3{std::move(s4)};
+    qc::span<T, 4> s4_4{v4, v4};
+    qc::span<T, 4> s4_5{v, v};
+    qc::span<T, 4> s4_6{s1, s1, s1, s1};
+    qc::span<T, 4> s4_7{s2, s1, s1};
+    qc::span<T, 4> s4_8{s1, s2, s1};
+    qc::span<T, 4> s4_9{s1, s1, s2};
+    qc::span<T, 4> s4_10{s2, s2};
+    qc::span<T, 4> s4_11{s3, s1};
+    qc::span<T, 4> s4_12{s1, s3};
 
     // assignment operators
     s4 = s4;
@@ -118,13 +118,13 @@ static void compileClassesPT()
 {
     using P = T *;
     P p{};
-    qc::span1<P> s1;
+    qc::span1<P> s1{};
 
     // constructors
-    qc::span<P, 1> s1_1;
-    qc::span<P, 1> s1_2(s1);
-    qc::span<P, 1> s1_3(std::move(s1));
-    qc::span<P, 1> s1_4(p, p);
+    qc::span<P, 1> s1_1{};
+    qc::span<P, 1> s1_2{s1};
+    qc::span<P, 1> s1_3{std::move(s1)};
+    qc::span<P, 1> s1_4{p, p};
 
     // assignment operators
     s1 = s1;
@@ -347,7 +347,7 @@ static void compileFunctionsPT()
     P p{};
     intptr_t v{};
     qc::span1<P> s{p, p};
-    std::stringstream os;
+    std::stringstream os{};
 
     s += v;
     s -= v;
@@ -380,6 +380,7 @@ template <typename T, int n>
 static void testPropertiesTN()
 {
     static_assert(std::is_standard_layout_v<qc::span<T, n>>);
+    static_assert(std::is_trivially_default_constructible_v<qc::span<T, n>>);
     static_assert(std::is_trivially_copyable_v<qc::span<T, n>>);
     static_assert(std::is_trivially_copy_constructible_v<qc::span<T, n>>);
     static_assert(std::is_trivially_move_constructible_v<qc::span<T, n>>);
@@ -418,15 +419,15 @@ static void testProperties()
 template <typename T1, typename T2, int n>
 static void compileCastsTTN()
 {
-    qc::span1<T1> s1;
-    qc::span2<T1> s2;
-    qc::span3<T1> s3;
-    qc::span4<T1> s4;
+    qc::span1<T1> s1{};
+    qc::span2<T1> s2{};
+    qc::span3<T1> s3{};
+    qc::span4<T1> s4{};
 
-    { qc::span<T2, n> s(s1); }
-    { qc::span<T2, n> s(s2); }
-    { qc::span<T2, n> s(s3); }
-    { qc::span<T2, n> s(s4); }
+    { qc::span<T2, n> s{s1}; }
+    { qc::span<T2, n> s{s2}; }
+    { qc::span<T2, n> s{s3}; }
+    { qc::span<T2, n> s{s4}; }
 
     static_cast<qc::span<T2, n>>(s1);
     static_cast<qc::span<T2, n>>(s2);
@@ -475,15 +476,15 @@ static void compileCasts()
 template <typename T>
 static void compileConstantsT()
 {
-    constexpr qc::span1<T> is1(qc::fullSpan<T, 1>);
-    constexpr qc::span2<T> is2(qc::fullSpan<T, 2>);
-    constexpr qc::span3<T> is3(qc::fullSpan<T, 3>);
-    constexpr qc::span4<T> is4(qc::fullSpan<T, 4>);
+    constexpr qc::span1<T> is1{qc::fullSpan<T, 1>};
+    constexpr qc::span2<T> is2{qc::fullSpan<T, 2>};
+    constexpr qc::span3<T> is3{qc::fullSpan<T, 3>};
+    constexpr qc::span4<T> is4{qc::fullSpan<T, 4>};
 
-    constexpr qc::span1<T> nulls1(qc::nullSpan<T, 1>);
-    constexpr qc::span2<T> nulls2(qc::nullSpan<T, 2>);
-    constexpr qc::span3<T> nulls3(qc::nullSpan<T, 3>);
-    constexpr qc::span4<T> nulls4(qc::nullSpan<T, 4>);
+    constexpr qc::span1<T> nulls1{qc::nullSpan<T, 1>};
+    constexpr qc::span2<T> nulls2{qc::nullSpan<T, 2>};
+    constexpr qc::span3<T> nulls3{qc::nullSpan<T, 3>};
+    constexpr qc::span4<T> nulls4{qc::nullSpan<T, 4>};
 }
 
 static void compileConstants()

@@ -79,8 +79,8 @@ namespace qc
         using Type = T;
         inline static constexpr int n{2};
 
-        T x{};
-        T y{};
+        T x;
+        T y;
 
         constexpr vec() noexcept = default;
         template <NumericOrBoolean U> constexpr explicit vec(U v) noexcept;
@@ -111,9 +111,9 @@ namespace qc
         using Type = T;
         inline static constexpr int n{3};
 
-        T x{};
-        T y{};
-        T z{};
+        T x;
+        T y;
+        T z;
 
         constexpr vec() noexcept = default;
         template <NumericOrBoolean U> constexpr explicit vec(U v) noexcept;
@@ -153,10 +153,10 @@ namespace qc
         using Type = T;
         inline static constexpr int n{4};
 
-        T x{};
-        T y{};
-        T z{};
-        T w{};
+        T x;
+        T y;
+        T z;
+        T w;
 
         constexpr vec() noexcept = default;
         template <NumericOrBoolean U> constexpr explicit vec(U v) noexcept;
@@ -631,7 +631,7 @@ namespace qc
         y{v1.y},
         z{v1.z},
         w{v2}
-        {}
+    {}
 
     template <NumericOrBoolean T>
     inline constexpr vec<T, 4>::vec(const T v1, const vec3<T> v2) noexcept :

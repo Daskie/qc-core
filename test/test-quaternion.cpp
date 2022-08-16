@@ -10,22 +10,22 @@ template <typename T>
 static void compileClassesT()
 {
     T v{1.0};
-    vec3<T> v3(1.0);
-    vec4<T> v4(1.0);
-    mat3<T> m3(v3, v3, v3);
-    quat<T> q(v4);
-    std::stringstream os;
+    vec3<T> v3{1.0};
+    vec4<T> v4{1.0};
+    mat3<T> m3{v3, v3, v3};
+    quat<T> q{v4};
+    std::stringstream os{};
 
     //--------------------------------------------------------------------------
     // Quat
 
     // constructors
-    quat<T> q_1;
-    quat<T> q_2(q);
-    quat<T> q_3(std::move(q));
-    quat<T> q_4(v3, v);
-    quat<T> q_6(v3);
-    quat<T> q_7(v4);
+    quat<T> q_1{};
+    quat<T> q_2{q};
+    quat<T> q_3{std::move(q)};
+    quat<T> q_4{v3, v};
+    quat<T> q_6{v3};
+    quat<T> q_7{v4};
 
     // assignment
     q = q;
@@ -99,10 +99,10 @@ template <typename T>
 static void compileFunctionsT()
 {
     T v{1.0};
-    vec3<T> v3(1.0);
-    vec4<T> v4(1.0);
-    mat3<T> m3(v3, v3, v3);
-    quat<T> q(v4);
+    vec3<T> v3{1.0};
+    vec4<T> v4{1.0};
+    mat3<T> m3{v3, v3, v3};
+    quat<T> q{v4};
 
     qc::dot(q, q);
     qc::magnitude(q);
