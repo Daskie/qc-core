@@ -720,6 +720,9 @@ static void compileFunctionsST()
     qc::distance2(v2, v2);
     qc::distance2(v3, v3);
     qc::distance2(v4, v4);
+
+    qc::rotateCW(v2);
+    qc::rotateCCW(v2);
 }
 
 template <typename T>

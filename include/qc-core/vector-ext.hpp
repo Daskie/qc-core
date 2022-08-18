@@ -164,7 +164,7 @@ namespace qc
     //
     // ...
     //
-    template <Floating T, int n> vec<stype<T>, n> round(const vec<T, n> & v);
+    template <Floating T, int n> vec<intmax_t, n> round(const vec<T, n> & v);
     template <Integral T, int n> vec<T, n> round(const vec<T, n> & v);
 
     //
@@ -210,6 +210,12 @@ namespace qc
     // ...
     //
     template <Numeric T, int n> vec<T, n> composite(const vec<T, n> & v1, const vec<T, n> & v2);
+
+    ///
+    /// ...
+    ///
+    template <SignedNumeric T> vec2<T> rotateCW(const vec2<T> & v) noexcept;
+    template <SignedNumeric T> vec2<T> rotateCCW(const vec2<T> & v) noexcept;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -556,7 +562,7 @@ namespace qc
     }
 
     template <Floating T, int n>
-    inline vec<stype<T>, n> round(const vec<T, n> & v)
+    inline vec<intmax_t, n> round(const vec<T, n> & v)
     {
         if constexpr (n == 2) return {round(v.x), round(v.y)};
         if constexpr (n == 3) return {round(v.x), round(v.y), round(v.z)};
@@ -664,5 +670,17 @@ namespace qc
         }
 
         return v;
+    }
+
+    template <SignedNumeric T>
+    inline vec2<T> rotateCW(const vec2<T> & v) noexcept
+    {
+        return vec2<T>{T(-v.y), v.x};
+    }
+
+    template <SignedNumeric T>
+    inline vec2<T> rotateCCW(const vec2<T> & v) noexcept
+    {
+        return vec2<T>{v.y, T(-v.x)};
     }
 }
