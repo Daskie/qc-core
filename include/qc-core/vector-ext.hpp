@@ -675,12 +675,12 @@ namespace qc
     template <SignedNumeric T>
     inline vec2<T> rotateCW(const vec2<T> & v) noexcept
     {
-        return vec2<T>{T(-v.y), v.x};
+        return vec2<T>{v.y, T(-v.x)};
     }
 
     template <SignedNumeric T>
     inline vec2<T> rotateCCW(const vec2<T> & v) noexcept
     {
-        return vec2<T>{v.y, T(-v.x)};
+        return vec2<T>{T(-v.y), v.x};
     }
 }
