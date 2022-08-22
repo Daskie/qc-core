@@ -161,12 +161,12 @@ namespace qc
     template <typename T, int n>
     inline std::ostream & operator<<(std::ostream & os, const mat<T, n> & m)
     {
-        os << "[";
+        os << '[';
         if constexpr (n >= 1) { os << m.c1; }
-        if constexpr (n >= 2) { os << m.c2; }
-        if constexpr (n >= 3) { os << m.c3; }
-        if constexpr (n >= 4) { os << m.c4; }
-        os << "]";
+        if constexpr (n >= 2) { os << ", " << m.c2; }
+        if constexpr (n >= 3) { os << ", " << m.c3; }
+        if constexpr (n >= 4) { os << ", " << m.c4; }
+        os << ']';
         return os;
     }
 

@@ -103,7 +103,7 @@ namespace qc
     template <typename T>
     inline std::ostream & operator<<(std::ostream & os, const quat<T> & q)
     {
-        return os << "[ " << q.a.x << " " << q.a.y << " " << q.a.z << " | " << q.w << " ]";
+        return os << '[' << q.a.x << ", " << q.a.y << ", " << q.a.z << ", " << q.w << ']';
     }
 
     template <typename T>

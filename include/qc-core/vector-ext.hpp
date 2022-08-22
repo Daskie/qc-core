@@ -263,12 +263,12 @@ namespace qc
     template <typename T, int n>
     inline std::ostream & operator<<(std::ostream & os, const vec<T, n> & v)
     {
-        os << "[";
-        if constexpr (n >= 1) os << v.x << " ";
-        if constexpr (n >= 2) os << " " << v.y;
-        if constexpr (n >= 3) os << " " << v.z;
-        if constexpr (n >= 4) os << " " << v.w;
-        os << "]";
+        os << '[';
+        if constexpr (n >= 1) os << v.x;
+        if constexpr (n >= 2) os << ", " << v.y;
+        if constexpr (n >= 3) os << ", " << v.z;
+        if constexpr (n >= 4) os << ", " << v.w;
+        os << ']';
         return os;
     }
 
