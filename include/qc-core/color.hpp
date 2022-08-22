@@ -56,7 +56,7 @@
 ///   - Components:
 ///     - L: [0, 1]
 ///     - C: [0, inf)
-///     - h: [-pi, pi]
+///     - h: [0, 1]
 ///
 
 #include <qc-core/vector-ext.hpp>
@@ -408,10 +408,11 @@ namespace qc::color
     template <Floating T>
     inline vec3<T> luvToLch(const vec3<T> & luv) noexcept
     {
+        const T theta{std::atan2(luv.z, luv.y)};
         return {
             luv.x,
             magnitude(luv.yz()),
-            std::atan2(luv.z, luv.y)};
+            theta * (T(1.0) / std::numbers::pi_v<T>) * T(0.5) + T(0.5)};
     }
 
     ///
@@ -423,10 +424,11 @@ namespace qc::color
     template <Floating T>
     inline vec3<T> lchToLuv(const vec3<T> & lch) noexcept
     {
+        const T theta{(lch.z * T(2.0) - T(1.0)) * std::numbers::pi_v<T>};
         return {
             lch.x,
-            std::cos(lch.z) * lch.y,
-            std::sin(lch.z) * lch.y};
+            std::cos(theta) * lch.y,
+            std::sin(theta) * lch.y};
     }
 
     // GPU (saved for later)
