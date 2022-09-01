@@ -58,7 +58,7 @@ namespace qc
     // ~2x faster than std::floor
     // doesn't work with extremely large or extremely small floating point values
     //
-    template <Floating T> stype<T> floor(T v);
+    template <Floating T> intmax_t floor(T v);
     template <Integral T> T floor(T v);
 
     //
@@ -66,13 +66,14 @@ namespace qc
     // ~2x faster than std::ceil
     // doesn't work with extremely large or extremely small floating point values
     //
-    template <Floating T> stype<T> ceil(T v);
+    template <Floating T> intmax_t ceil(T v);
     template <Integral T> T ceil(T v);
 
     //
     // ...
     //
-    template <Numeric T> constexpr T round(T v) noexcept;
+    template <Floating T> constexpr intmax_t round(T v) noexcept;
+    template <Integral T> constexpr T round(T v) noexcept;
 
     // Simple wrapper around std::pow
     template <Floating T> T pow(T v, T e);
@@ -103,7 +104,7 @@ namespace qc
     //
     // ...
     //
-    template <Floating T> std::pair<T, stype<T>> fract_i(T v);
+    template <Floating T> std::pair<T, intmax_t> fract_i(T v);
 
     //
     // ...
@@ -274,7 +275,7 @@ namespace qc
     {
         if constexpr (Floating<T>)
         {
-            return T(stype<T>(v));
+            return T(intmax_t(v));
         }
         else
         {
@@ -283,9 +284,9 @@ namespace qc
     }
 
     template <Floating T>
-    inline stype<T> floor(const T v)
+    inline intmax_t floor(const T v)
     {
-        stype<T> i{stype<T>(v)};
+        const intmax_t i{intmax_t(v)};
         return i - (v < T(i));
     }
 
@@ -296,9 +297,9 @@ namespace qc
     }
 
     template <Floating T>
-    inline stype<T> ceil(const T v)
+    inline intmax_t ceil(const T v)
     {
-        stype<T> i{stype<T>(v)};
+        const intmax_t i{intmax_t(v)};
         return i + (v > T(i));
     }
 
@@ -407,9 +408,9 @@ namespace qc
     }
 
     template <Floating T>
-    inline std::pair<T, stype<T>> fract_i(const T v)
+    inline std::pair<T, intmax_t> fract_i(const T v)
     {
-        const stype<T> i{stype<T>(v)};
+        const intmax_t i{intmax_t(v)};
         return {v - T(i), i};
     }
 
