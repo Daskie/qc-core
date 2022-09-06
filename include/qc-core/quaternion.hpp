@@ -66,8 +66,6 @@ namespace qc
 
     template <Floating T> constexpr bool operator==(const quat<T> & q1, const quat<T> & q2);
 
-    template <Floating T> constexpr bool operator!=(const quat<T> & q1, const quat<T> & q2);
-
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -178,8 +176,7 @@ namespace qc
     template <Floating T>
     inline constexpr vec3<T> operator*(const quat<T> & q, const vec3<T> v)
     {
-        const vec3<T> t(T(2.0) * cross(q.a, v));
-        return v + q.w * t + cross(q.a, t);
+        return v + cross(T(2.0) * q.a, cross(q.a, v) + q.w * v);
     }
 
     template <Floating T>
@@ -192,11 +189,5 @@ namespace qc
     inline constexpr bool operator==(const quat<T> & q1, const quat<T> & q2)
     {
         return q1.a == q2.a && q1.w == q2.w;
-    }
-
-    template <Floating T>
-    inline constexpr bool operator!=(const quat<T> & q1, const quat<T> & q2)
-    {
-        return q1.a != q2.a || q1.w != q2.w;
     }
 }

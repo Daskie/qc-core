@@ -191,7 +191,8 @@ namespace qc
     template <typename T>
     inline quat<T> rotateQ_n(const vec3<T> axis, const T angle)
     {
-        return {std::sin(angle * T(0.5)) * axis, std::cos(angle * T(0.5))};
+        const T halfAngle{angle * T(0.5)};
+        return {std::sin(halfAngle) * axis, std::cos(halfAngle)};
     }
 
     template <typename T>
@@ -203,7 +204,8 @@ namespace qc
     template <typename T>
     inline quat<T> alignQ_n(const vec3<T> v1, const vec3<T> v2)
     {
-        return rotateQ(cross(v1, v2), std::acos(dot(v1, v2)));
+        // https://www.xarg.org/proof/quaternion-from-two-vectors/
+        return normalize(quat<T>{cross(v1, v2), T(1.0) + dot(v1, v2)});
     }
 
     template <typename T>
@@ -215,7 +217,7 @@ namespace qc
     template <typename T>
     inline quat<T> alignQ_n(const vec3<T> forward1, const vec3<T> up1, const vec3<T> forward2, const vec3<T> up2)
     {
-        quat<T> q(alignQ_n(forward1, forward2));
+        const quat<T> q(alignQ_n(forward1, forward2));
         return alignQ_n(q * up1, up2) * q;
     }
 
@@ -234,20 +236,24 @@ namespace qc
     template <typename T>
     inline mat3<T> toMat(const quat<T> & q)
     {
-        const T wi{q.w   * q.a.x};
-        const T wj{q.w   * q.a.y};
-        const T wk{q.w   * q.a.z};
-        const T ii{q.a.x * q.a.x};
-        const T ij{q.a.x * q.a.y};
-        const T ik{q.a.x * q.a.z};
-        const T jj{q.a.y * q.a.y};
-        const T jk{q.a.y * q.a.z};
-        const T kk{q.a.z * q.a.z};
+        const T s{T(2.0) / magnitude2(q)};
+        const T sx = s * q.a.x;
+        const T sy = s * q.a.y;
+        const T sz = s * q.a.z;
+        const T sxx = sx * q.a.x;
+        const T sxy = sx * q.a.y;
+        const T sxz = sx * q.a.z;
+        const T sxw = sx * q.w;
+        const T syy = sy * q.a.y;
+        const T syz = sy * q.a.z;
+        const T syw = sy * q.w;
+        const T szz = sz * q.a.z;
+        const T szw = sz * q.w;
 
         return {
-            T(1.0) - T(2.0) * (jj + kk),          T(2.0) * (ij + wk),          T(2.0) * (ik - wj),
-                     T(2.0) * (ij - wk), T(1.0) - T(2.0) * (ii + kk),          T(2.0) * (jk + wi),
-                     T(2.0) * (ik + wj),          T(2.0) * (jk - wi), T(1.0) - T(2.0) * (ii + jj)};
+            T(1.0) - syy - szz, sxy + szw, sxz - syw,
+            sxy - szw, T(1.0) - sxx - szz, syz + sxw,
+            sxz + syw, syz - sxw, T(1.0) - sxx - syy};
     }
 
     template <typename T>

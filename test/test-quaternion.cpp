@@ -54,7 +54,6 @@ static void compileClassesT()
 
     // comparison operators
     q == q;
-    q != q;
 
     // other
     os << q;
