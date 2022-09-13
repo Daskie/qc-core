@@ -500,3 +500,11 @@ TEST(Slab, freeUnusedPages)
     ASSERT_EQ(1u, slab.pageCount());
     ASSERT_EQ(intsPerPage * 1u, slab.size());
 }
+
+TEST(Slab, iteratorAssignability)
+{
+    static_assert(std::is_assignable_v<qc::Slab<int>::iterator, qc::Slab<int>::iterator>);
+    static_assert(std::is_assignable_v<qc::Slab<int>::const_iterator, qc::Slab<int>::iterator>);
+    static_assert(!std::is_assignable_v<qc::Slab<int>::iterator, qc::Slab<int>::const_iterator>);
+    static_assert(std::is_assignable_v<qc::Slab<int>::const_iterator, qc::Slab<int>::const_iterator>);
+}

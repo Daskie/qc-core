@@ -25,6 +25,16 @@ qc_setup_target(
 )
 
 qc_setup_target(
+    qc-core-test-deque
+    EXECUTABLE
+    SOURCE_FILES
+        test-deque.cpp
+    PRIVATE_LINKS
+        qc-core
+        GTest::gtest_main
+)
+
+qc_setup_target(
     qc-core-test-enum-utils
     EXECUTABLE
     SOURCE_FILES

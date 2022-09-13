@@ -176,7 +176,7 @@ namespace qc
     }
 
     template <typename T>
-    inline Slab<T>::~Slab<T>() noexcept
+    inline Slab<T>::~Slab() noexcept
     {
         // Destruct any in-use objects
         for (T & v : *this) v.~T();
@@ -487,9 +487,9 @@ namespace qc
     template <bool constant>
     auto Slab<T>::_Iterator<constant>::operator++(int) noexcept -> _Iterator
     {
-        _Iterator temp{*this};
+        const _Iterator tmp{*this};
         ++*this;
-        return temp;
+        return tmp;
     }
 
     template <typename T>
