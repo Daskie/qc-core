@@ -28,6 +28,14 @@ namespace qc
 
     struct DequeError {};
 
+    ///
+    /// The most significant differences between this and `std::deque`:
+    ///   1. This does not provide reference stability. References and iterators are invalidated when the capacity grows
+    ///   2. This DOES provide positional stability. That is, a `DequePos` remains valid in all cases
+    ///
+    /// Essentially, this allows you to `pop` a middle element without invalidating other elements, at the cost of
+    ///   reference stability if only working with front/back operations
+    ///
     template <typename T>
     class Deque
     {
@@ -77,8 +85,6 @@ namespace qc
 
         T & operator[](DequePos pos) noexcept;
         const T & operator[](DequePos pos) const noexcept;
-
-        DequePos getPos(const_iterator it) const noexcept;
 
         iterator getIterator(DequePos pos) noexcept;
         const_iterator getIterator(DequePos pos) const noexcept;
@@ -161,6 +167,8 @@ namespace qc
 
         _Iterator & operator++() noexcept;
         _Iterator operator++(int) noexcept;
+
+        DequePos pos() const noexcept { return DequePos{u32(_slot - _slots)}; }
 
         bool operator==(const _Iterator & other) const noexcept;
 
@@ -360,7 +368,7 @@ namespace qc
     template <typename T>
     inline void Deque<T>::pop(const iterator it)
     {
-        pop(getPos(it));
+        pop(it.pos());
     }
 
     template <typename T>
@@ -407,12 +415,6 @@ namespace qc
     inline const T & Deque<T>::operator[](const DequePos pos) const noexcept
     {
         return _slots[pos._slotI].value;
-    }
-
-    template <typename T>
-    inline DequePos Deque<T>::getPos(const const_iterator it) const noexcept
-    {
-        return DequePos{u32(it._slot - it._slots)};
     }
 
     template <typename T>
