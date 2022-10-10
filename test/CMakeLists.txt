@@ -75,6 +75,16 @@ qc_setup_target(
 )
 
 qc_setup_target(
+    qc-core-test-memory-bubble-tracker
+    EXECUTABLE
+    SOURCE_FILES
+        test-memory-bubble-tracker.cpp
+    PRIVATE_LINKS
+        qc-core
+        GTest::gtest_main
+)
+
+qc_setup_target(
     qc-core-test-slab
     EXECUTABLE
     SOURCE_FILES
