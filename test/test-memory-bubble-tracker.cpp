@@ -6,8 +6,6 @@ using namespace qc::types;
 
 TEST(MemoryBubbleTracker, empty)
 {
-    using Bubble = qc::MemoryBubbleTracker<u32>::Bubble;
-
     qc::MemoryBubbleTracker<u32> mbt{};
     ASSERT_TRUE(mbt.bubbles().empty());
 
@@ -17,8 +15,6 @@ TEST(MemoryBubbleTracker, empty)
 
 TEST(MemoryBubbleTracker, single)
 {
-    using Bubble = qc::MemoryBubbleTracker<u32>::Bubble;
-
     qc::MemoryBubbleTracker<u32> mbt{};
 
     mbt.add(0u, 1u);
@@ -34,8 +30,6 @@ TEST(MemoryBubbleTracker, single)
 
 TEST(MemoryBubbleTracker, adjacent)
 {
-    using Bubble = qc::MemoryBubbleTracker<u32>::Bubble;
-
     qc::MemoryBubbleTracker<u32> mbt{};
 
     mbt.add(1u, 1u);
@@ -54,8 +48,6 @@ TEST(MemoryBubbleTracker, adjacent)
 
 TEST(MemoryBubbleTracker, gapFill)
 {
-    using Bubble = qc::MemoryBubbleTracker<u32>::Bubble;
-
     qc::MemoryBubbleTracker<u32> mbt{};
 
     mbt.add(0u, 1u);
@@ -76,8 +68,6 @@ TEST(MemoryBubbleTracker, gapFill)
 
 TEST(MemoryBubbleTracker, separate)
 {
-    using Bubble = qc::MemoryBubbleTracker<u32>::Bubble;
-
     qc::MemoryBubbleTracker<u32> mbt{};
 
     mbt.add(0u, 1u);
@@ -116,8 +106,6 @@ TEST(MemoryBubbleTracker, separate)
 
 TEST(MemoryBubbleTracker, removeZero)
 {
-    using Bubble = qc::MemoryBubbleTracker<u32>::Bubble;
-
     qc::MemoryBubbleTracker<u32> mbt{};
 
     ASSERT_FALSE(mbt.remove(0u).first);
@@ -128,8 +116,6 @@ TEST(MemoryBubbleTracker, removeZero)
 
 TEST(MemoryBubbleTracker, removeTooLarge)
 {
-    using Bubble = qc::MemoryBubbleTracker<u32>::Bubble;
-
     qc::MemoryBubbleTracker<u32> mbt{};
 
     mbt.add(0u, 1u);
@@ -138,8 +124,6 @@ TEST(MemoryBubbleTracker, removeTooLarge)
 
 TEST(MemoryBubbleTracker, addOverlap)
 {
-    using Bubble = qc::MemoryBubbleTracker<u32>::Bubble;
-
     qc::MemoryBubbleTracker<u32> mbt{};
 
     mbt.add(2u, 1u);
@@ -173,8 +157,6 @@ TEST(MemoryBubbleTracker, addOverlap)
 
 TEST(MemoryBubbleTracker, signedInteger)
 {
-    using Bubble = qc::MemoryBubbleTracker<s32>::Bubble;
-
     qc::MemoryBubbleTracker<s32> mbt{};
 
     mbt.add(1, 1);
@@ -204,8 +186,6 @@ TEST(MemoryBubbleTracker, signedInteger)
 
 TEST(MemoryBubbleTracker, pointer)
 {
-    using Bubble = qc::MemoryBubbleTracker<int *>::Bubble;
-
     int * p{};
 
     qc::MemoryBubbleTracker<int *> mbt{};
@@ -233,4 +213,25 @@ TEST(MemoryBubbleTracker, pointer)
     ASSERT_EQ((std::pair<bool, int *>{true, p + 7}), mbt.remove(1));
     ASSERT_EQ((std::pair<bool, int *>{true, p + 0}), mbt.remove(5));
     ASSERT_TRUE(mbt.bubbles().empty());
+}
+
+TEST(MemoryBubbleTracker, tail)
+{
+    qc::MemoryBubbleTracker<u32> mbt{};
+    ASSERT_EQ(0u, mbt.tail(0u));
+    ASSERT_EQ(0u, mbt.tail(1u));
+
+    mbt.add(0u, 1u);
+    ASSERT_EQ(0u, mbt.tail(0u));
+    ASSERT_EQ(1u, mbt.tail(1u));
+    ASSERT_EQ(0u, mbt.tail(2u));
+
+    mbt.add(2u, 3u);
+    ASSERT_EQ(0u, mbt.tail(0u));
+    ASSERT_EQ(0u, mbt.tail(1u));
+    ASSERT_EQ(0u, mbt.tail(2u));
+    ASSERT_EQ(1u, mbt.tail(3u));
+    ASSERT_EQ(2u, mbt.tail(4u));
+    ASSERT_EQ(3u, mbt.tail(5u));
+    ASSERT_EQ(0u, mbt.tail(6u));
 }

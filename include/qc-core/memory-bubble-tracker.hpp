@@ -34,6 +34,13 @@ namespace qc
         ///
         std::pair<bool, P> remove(S size) noexcept;
 
+        ///
+        /// Get the size of trailing free memory
+        /// @param memorySize total size of the tracked memory
+        /// @return free tail size
+        ///
+        S tail(S memorySize) const noexcept;
+
         const std::vector<Bubble> & bubbles() const noexcept { return _bubbles; }
 
       private:
@@ -123,6 +130,20 @@ namespace qc
         else
         {
             return {};
+        }
+    }
+
+    template <IntegralOrPointer P>
+    inline auto MemoryBubbleTracker<P>::tail(const S memorySize) const noexcept -> S
+    {
+        if (_bubbles.empty())
+        {
+            return 0u;
+        }
+        else
+        {
+            const Bubble & lastBubble{_bubbles.back()};
+            return lastBubble.pos < memorySize && lastBubble.pos + lastBubble.size >= memorySize ? memorySize - lastBubble.pos : 0u;
         }
     }
 }
