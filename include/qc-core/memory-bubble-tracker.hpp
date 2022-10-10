@@ -56,6 +56,11 @@ namespace qc
     template <IntegralOrPointer P>
     inline void MemoryBubbleTracker<P>::add(const P pos, const S size) noexcept
     {
+        if (size <= S(0))
+        {
+            return;
+        }
+
         // Find position in ordered vector where this bubble would be inserted
         const auto it{qc::lowerBound(_bubbles.begin(), _bubbles.end(), pos, [](const Bubble & b, const P & p) { return b.pos >= p; })};
         const size_t i{size_t(it - _bubbles.begin())};

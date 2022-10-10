@@ -104,6 +104,17 @@ TEST(MemoryBubbleTracker, separate)
     ASSERT_TRUE(mbt.bubbles().empty());
 }
 
+TEST(MemoryBubbleTracker, addZero)
+{
+    qc::MemoryBubbleTracker<s32> mbt{};
+
+    mbt.add(0, 0);
+    ASSERT_TRUE(mbt.bubbles().empty());
+
+    mbt.add(0, -1);
+    ASSERT_TRUE(mbt.bubbles().empty());
+}
+
 TEST(MemoryBubbleTracker, removeZero)
 {
     qc::MemoryBubbleTracker<u32> mbt{};
