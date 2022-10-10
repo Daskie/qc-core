@@ -6,19 +6,18 @@
 
 namespace qc
 {
-    namespace _internal
-    {
-        class MemoryBubbleTrackerFriend;
-    }
-
     template <IntegralOrPointer P>
     class MemoryBubbleTracker
     {
-        friend class _internal::MemoryBubbleTrackerFriend;
-
         using S = decltype(std::declval<P>() - std::declval<P>());
 
       public:
+
+        struct Bubble
+        {
+            P pos;
+            S size;
+        };
 
         ///
         /// Add a bubble; may overlap with existing bubbles
@@ -26,6 +25,7 @@ namespace qc
         /// @param size size of new bubble
         ///
         void add(P pos, S size) noexcept;
+        void add(const Bubble & bubble) noexcept;
 
         ///
         /// Remove the first bubble of the given size, or a portion of the first bubble that best fits the given size
@@ -34,15 +34,11 @@ namespace qc
         ///
         std::pair<bool, P> remove(S size) noexcept;
 
+        const std::vector<Bubble> & bubbles() const noexcept { return _bubbles; }
+
       private:
 
-        struct _Bubble
-        {
-            P pos;
-            S size;
-        };
-
-        std::vector<_Bubble> _bubbles{};
+        std::vector<Bubble> _bubbles{};
     };
 }
 
@@ -54,13 +50,13 @@ namespace qc
     inline void MemoryBubbleTracker<P>::add(const P pos, const S size) noexcept
     {
         // Find position in ordered vector where this bubble would be inserted
-        const auto it{qc::lowerBound(_bubbles.begin(), _bubbles.end(), pos, [](const _Bubble & b, const P & p) { return b.pos >= p; })};
+        const auto it{qc::lowerBound(_bubbles.begin(), _bubbles.end(), pos, [](const Bubble & b, const P & p) { return b.pos >= p; })};
         const size_t i{size_t(it - _bubbles.begin())};
 
         const bool isPre{i > 0u};
         const bool isPost{i < _bubbles.size()};
-        _Bubble & postBubble{_bubbles.data()[i]};
-        _Bubble & preBubble{*(&postBubble - 1)};
+        Bubble & postBubble{_bubbles.data()[i]};
+        Bubble & preBubble{*(&postBubble - 1)};
         const bool isPreAdjacent{isPre && preBubble.pos + preBubble.size >= pos};
         const bool isPostAdjacent{isPost && postBubble.pos <= pos + size};
 
@@ -84,7 +80,7 @@ namespace qc
         // No adjacent bubbles, insert new bubble
         else
         {
-            _bubbles.insert(it, _Bubble{pos, size});
+            _bubbles.insert(it, Bubble{pos, size});
         }
     }
 
@@ -96,11 +92,11 @@ namespace qc
             return {};
         }
 
-        _Bubble * bestBubble{nullptr};
+        Bubble * bestBubble{nullptr};
 
         for (auto it{_bubbles.begin()}, endIt{_bubbles.end()}; it != endIt; ++it)
         {
-            _Bubble & bubble{*it};
+            Bubble & bubble{*it};
 
             // Check for exact fit
             if (bubble.size == size)
