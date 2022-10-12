@@ -58,7 +58,7 @@ namespace qc
 
         void pop_front();
 
-        void pop(u32 i);
+        void pop(u32 pos);
         void pop(iterator it);
 
         T & front();
@@ -67,14 +67,14 @@ namespace qc
         T & back();
         const T & back() const;
 
-        T & operator[](u32 i) noexcept;
-        const T & operator[](u32 i) const noexcept;
+        T & operator[](u32 pos) noexcept;
+        const T & operator[](u32 pos) const noexcept;
 
-        iterator getIterator(u32 i) noexcept;
-        const_iterator getIterator(u32 i) const noexcept;
+        iterator getIterator(u32 pos) noexcept;
+        const_iterator getIterator(u32 pos) const noexcept;
 
-        reverse_iterator getReverseIterator(u32 i) noexcept;
-        const_reverse_iterator getReverseIterator(u32 i) const noexcept;
+        reverse_iterator getReverseIterator(u32 pos) noexcept;
+        const_reverse_iterator getReverseIterator(u32 pos) const noexcept;
 
         u32 size() const noexcept { return _presentCount; }
 
@@ -319,9 +319,9 @@ namespace qc
     }
 
     template <typename T>
-    inline void SemiStableDeque<T>::pop(const u32 i)
+    inline void SemiStableDeque<T>::pop(const u32 pos)
     {
-        _Slot & slot{_slots[i]};
+        _Slot & slot{_slots[pos]};
         slot.value.~T();
 
         if (slot.prevI != _invalidI)
@@ -344,7 +344,7 @@ namespace qc
 
         slot.prevI = _invalidI;
         slot.nextI = _vacantHeadI;
-        _vacantHeadI = i;
+        _vacantHeadI = pos;
 
         --_presentCount;
     }
@@ -390,39 +390,39 @@ namespace qc
     }
 
     template <typename T>
-    inline T & SemiStableDeque<T>::operator[](const u32 i) noexcept
+    inline T & SemiStableDeque<T>::operator[](const u32 pos) noexcept
     {
-        return _slots[i].value;
+        return _slots[pos].value;
     }
 
     template <typename T>
-    inline const T & SemiStableDeque<T>::operator[](const u32 i) const noexcept
+    inline const T & SemiStableDeque<T>::operator[](const u32 pos) const noexcept
     {
-        return _slots[i].value;
+        return _slots[pos].value;
     }
 
     template <typename T>
-    inline auto SemiStableDeque<T>::getIterator(const u32 i) noexcept -> iterator
+    inline auto SemiStableDeque<T>::getIterator(const u32 pos) noexcept -> iterator
     {
-        return iterator{_slots, _slots + i};
+        return iterator{_slots, _slots + pos};
     }
 
     template <typename T>
-    inline auto SemiStableDeque<T>::getIterator(const u32 i) const noexcept -> const_iterator
+    inline auto SemiStableDeque<T>::getIterator(const u32 pos) const noexcept -> const_iterator
     {
-        return const_iterator{_slots, _slots + i};
+        return const_iterator{_slots, _slots + pos};
     }
 
     template <typename T>
-    inline auto SemiStableDeque<T>::getReverseIterator(const u32 i) noexcept -> reverse_iterator
+    inline auto SemiStableDeque<T>::getReverseIterator(const u32 pos) noexcept -> reverse_iterator
     {
-        return reverse_iterator{_slots, _slots + i};
+        return reverse_iterator{_slots, _slots + pos};
     }
 
     template <typename T>
-    inline auto SemiStableDeque<T>::getReverseIterator(const u32 i) const noexcept -> const_reverse_iterator
+    inline auto SemiStableDeque<T>::getReverseIterator(const u32 pos) const noexcept -> const_reverse_iterator
     {
-        return const_reverse_iterator{_slots, _slots + i};
+        return const_reverse_iterator{_slots, _slots + pos};
     }
 
     template <typename T>
