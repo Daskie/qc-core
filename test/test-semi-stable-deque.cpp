@@ -1,4 +1,4 @@
-#include <qc-core/deque.hpp>
+#include <qc-core/semi-stable-deque.hpp>
 
 #include <deque>
 #include <unordered_set>
@@ -8,23 +8,7 @@
 #include <qc-core/random.hpp>
 
 using namespace qc::types;
-using qc::Deque;
-using qc::DequePos;
-using qc::DequeError;
-
-namespace qc::_internal
-{
-    class DequeFriend
-    {
-      public:
-
-        static u32 slotI(const DequePos p) noexcept { return p._slotI; }
-
-        static DequePos pos(const u32 slotI) noexcept { return DequePos{slotI}; }
-    };
-}
-
-using qc::_internal::DequeFriend;
+template <typename T> using Deque = qc::SemiStableDeque<T>;
 
 TEST(Deque, general)
 {
@@ -34,7 +18,7 @@ TEST(Deque, general)
     ASSERT_EQ(deque.begin(), deque.end());
     ASSERT_EQ(0u, deque.capacity());
 
-    ASSERT_EQ(0u, DequeFriend::slotI(deque.push_back(1)));
+    ASSERT_EQ(0u, deque.push_back(1));
     ASSERT_EQ(1, deque.back());
     ASSERT_EQ(1u, deque.size());
     ASSERT_EQ(16u, deque.capacity());
@@ -42,7 +26,7 @@ TEST(Deque, general)
     // 1
     // 1, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _
 
-    ASSERT_EQ(1u, DequeFriend::slotI(deque.push_front(-1)));
+    ASSERT_EQ(1u, deque.push_front(-1));
     ASSERT_EQ(-1, deque.front());
     ASSERT_EQ(2u, deque.size());
     ASSERT_EQ(16u, deque.capacity());
@@ -52,12 +36,12 @@ TEST(Deque, general)
 
     for (int i{2}; i <= 8; ++i)
     {
-        ASSERT_EQ(2 * i - 2, DequeFriend::slotI(deque.push_back(i)));
+        ASSERT_EQ(2 * i - 2, deque.push_back(i));
         ASSERT_EQ(i, deque.back());
         ASSERT_EQ(2 * i - 1, deque.size());
         ASSERT_EQ(16u, deque.capacity());
 
-        ASSERT_EQ(2 * i - 1, DequeFriend::slotI(deque.push_front(-i)));
+        ASSERT_EQ(2 * i - 1, deque.push_front(-i));
         ASSERT_EQ(-i, deque.front());
         ASSERT_EQ(2 * i, deque.size());
         ASSERT_EQ(16u, deque.capacity());
@@ -77,7 +61,7 @@ TEST(Deque, general)
     expectedV = 1;
     for (u32 slotI{0u}; slotI < 16u; ++slotI)
     {
-        ASSERT_EQ(expectedV, deque[DequeFriend::pos(slotI)]);
+        ASSERT_EQ(expectedV, deque[slotI]);
         if (expectedV < 0) --expectedV;
         expectedV = -expectedV;
     }
@@ -102,7 +86,7 @@ TEST(Deque, general)
     expectedV = 1;
     for (u32 slotI{0u}; slotI < 17u; ++slotI)
     {
-        ASSERT_EQ(expectedV, deque[DequeFriend::pos(slotI)]);
+        ASSERT_EQ(expectedV, deque[slotI]);
         if (expectedV < 0) --expectedV;
         expectedV = -expectedV;
         if (expectedV == 9) expectedV = 0;
@@ -117,8 +101,8 @@ TEST(Deque, general)
 
     for (int i{1}; i <= 7; i += 2)
     {
-        deque.pop(DequeFriend::pos(2 * i - 2));
-        deque.pop(DequeFriend::pos(2 * i - 1));
+        deque.pop(2 * i - 2);
+        deque.pop(2 * i - 1);
     }
     ASSERT_EQ(8u, deque.size());
     ASSERT_EQ(32u, deque.capacity());
@@ -137,17 +121,17 @@ TEST(Deque, general)
     expectedV = 2;
     for (u32 slotI{2u}; slotI < 16u; slotI += 4)
     {
-        ASSERT_EQ(expectedV, deque[DequeFriend::pos(slotI)]);
-        ASSERT_EQ(-expectedV, deque[DequeFriend::pos(slotI + 1u)]);
+        ASSERT_EQ(expectedV, deque[slotI]);
+        ASSERT_EQ(-expectedV, deque[slotI + 1u]);
         expectedV += 2;
     }
 
     for (int i{7}; i >= 1; i -= 2)
     {
-        ASSERT_EQ(2 * i - 1, DequeFriend::slotI(deque.push_front(-i)));
+        ASSERT_EQ(2 * i - 1, deque.push_front(-i));
         ASSERT_EQ(-i, deque.front());
 
-        ASSERT_EQ(2 * i - 2, DequeFriend::slotI(deque.push_back(i)));
+        ASSERT_EQ(2 * i - 2, deque.push_back(i));
         ASSERT_EQ(i, deque.back());
     }
     ASSERT_EQ(16u, deque.size());
@@ -170,7 +154,7 @@ TEST(Deque, general)
     expectedV = 1;
     for (u32 slotI{0u}; slotI < 16u; ++slotI)
     {
-        ASSERT_EQ(expectedV, deque[DequeFriend::pos(slotI)]);
+        ASSERT_EQ(expectedV, deque[slotI]);
         if (expectedV < 0) --expectedV;
         expectedV = -expectedV;
     }
@@ -178,20 +162,20 @@ TEST(Deque, general)
 
 TEST(Deque, iteratorAssignability)
 {
-    static_assert(std::is_assignable_v<qc::Deque<int>::iterator, qc::Deque<int>::iterator>);
-    static_assert(std::is_assignable_v<qc::Deque<int>::const_iterator, qc::Deque<int>::iterator>);
-    static_assert(!std::is_assignable_v<qc::Deque<int>::iterator, qc::Deque<int>::const_iterator>);
-    static_assert(std::is_assignable_v<qc::Deque<int>::const_iterator, qc::Deque<int>::const_iterator>);
+    static_assert(std::is_assignable_v<qc::SemiStableDeque<int>::iterator, qc::SemiStableDeque<int>::iterator>);
+    static_assert(std::is_assignable_v<qc::SemiStableDeque<int>::const_iterator, qc::SemiStableDeque<int>::iterator>);
+    static_assert(!std::is_assignable_v<qc::SemiStableDeque<int>::iterator, qc::SemiStableDeque<int>::const_iterator>);
+    static_assert(std::is_assignable_v<qc::SemiStableDeque<int>::const_iterator, qc::SemiStableDeque<int>::const_iterator>);
 
-    static_assert(std::is_assignable_v<qc::Deque<int>::reverse_iterator, qc::Deque<int>::reverse_iterator>);
-    static_assert(std::is_assignable_v<qc::Deque<int>::const_reverse_iterator, qc::Deque<int>::reverse_iterator>);
-    static_assert(!std::is_assignable_v<qc::Deque<int>::reverse_iterator, qc::Deque<int>::const_reverse_iterator>);
-    static_assert(std::is_assignable_v<qc::Deque<int>::const_reverse_iterator, qc::Deque<int>::const_reverse_iterator>);
+    static_assert(std::is_assignable_v<qc::SemiStableDeque<int>::reverse_iterator, qc::SemiStableDeque<int>::reverse_iterator>);
+    static_assert(std::is_assignable_v<qc::SemiStableDeque<int>::const_reverse_iterator, qc::SemiStableDeque<int>::reverse_iterator>);
+    static_assert(!std::is_assignable_v<qc::SemiStableDeque<int>::reverse_iterator, qc::SemiStableDeque<int>::const_reverse_iterator>);
+    static_assert(std::is_assignable_v<qc::SemiStableDeque<int>::const_reverse_iterator, qc::SemiStableDeque<int>::const_reverse_iterator>);
 
-    static_assert(!std::is_assignable_v<qc::Deque<int>::iterator, qc::Deque<int>::reverse_iterator>);
-    static_assert(!std::is_assignable_v<qc::Deque<int>::const_iterator, qc::Deque<int>::reverse_iterator>);
-    static_assert(!std::is_assignable_v<qc::Deque<int>::iterator, qc::Deque<int>::const_reverse_iterator>);
-    static_assert(!std::is_assignable_v<qc::Deque<int>::const_iterator, qc::Deque<int>::const_reverse_iterator>);
+    static_assert(!std::is_assignable_v<qc::SemiStableDeque<int>::iterator, qc::SemiStableDeque<int>::reverse_iterator>);
+    static_assert(!std::is_assignable_v<qc::SemiStableDeque<int>::const_iterator, qc::SemiStableDeque<int>::reverse_iterator>);
+    static_assert(!std::is_assignable_v<qc::SemiStableDeque<int>::iterator, qc::SemiStableDeque<int>::const_reverse_iterator>);
+    static_assert(!std::is_assignable_v<qc::SemiStableDeque<int>::const_iterator, qc::SemiStableDeque<int>::const_reverse_iterator>);
 }
 
 TEST(Deque, stress)

@@ -25,16 +25,6 @@ qc_setup_target(
 )
 
 qc_setup_target(
-    qc-core-test-deque
-    EXECUTABLE
-    SOURCE_FILES
-        test-deque.cpp
-    PRIVATE_LINKS
-        qc-core
-        GTest::gtest_main
-)
-
-qc_setup_target(
     qc-core-test-enum-utils
     EXECUTABLE
     SOURCE_FILES
@@ -79,6 +69,16 @@ qc_setup_target(
     EXECUTABLE
     SOURCE_FILES
         test-memory-bubble-tracker.cpp
+    PRIVATE_LINKS
+        qc-core
+        GTest::gtest_main
+)
+
+qc_setup_target(
+    qc-core-test-semi-stable-deque
+    EXECUTABLE
+    SOURCE_FILES
+        test-semi-stable-deque.cpp
     PRIVATE_LINKS
         qc-core
         GTest::gtest_main
