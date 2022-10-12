@@ -5,6 +5,16 @@ find_package(GTest CONFIG REQUIRED)
 ### QC-CORE-TEST ###############################################################
 
 qc_setup_target(
+    qc-core-test-bubble-tracker
+    EXECUTABLE
+    SOURCE_FILES
+        test-bubble-tracker.cpp
+    PRIVATE_LINKS
+        qc-core
+        GTest::gtest_main
+)
+
+qc_setup_target(
     qc-core-test-color
     EXECUTABLE
     SOURCE_FILES
@@ -65,16 +75,6 @@ qc_setup_target(
 )
 
 qc_setup_target(
-    qc-core-test-memory-bubble-tracker
-    EXECUTABLE
-    SOURCE_FILES
-        test-memory-bubble-tracker.cpp
-    PRIVATE_LINKS
-        qc-core
-        GTest::gtest_main
-)
-
-qc_setup_target(
     qc-core-test-semi-stable-deque
     EXECUTABLE
     SOURCE_FILES
@@ -85,10 +85,10 @@ qc_setup_target(
 )
 
 qc_setup_target(
-    qc-core-test-slab
+    qc-core-test-stable-lot
     EXECUTABLE
     SOURCE_FILES
-        test-slab.cpp
+        test-stable-lot.cpp
     PRIVATE_LINKS
         qc-core-platform
         GTest::gtest_main

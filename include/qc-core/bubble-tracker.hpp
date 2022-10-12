@@ -7,9 +7,9 @@
 namespace qc
 {
     template <IntegralOrPointer P>
-    class MemoryBubbleTracker
+    class BubbleTracker
     {
-        using S = decltype(std::declval<P>() - std::declval<P>());
+        using S = std::conditional_t<Integral<P>, P, intptr_t>;
 
       public:
 
@@ -54,7 +54,7 @@ namespace qc
 namespace qc
 {
     template <IntegralOrPointer P>
-    inline void MemoryBubbleTracker<P>::add(const P pos, const S size) noexcept
+    inline void BubbleTracker<P>::add(const P pos, const S size) noexcept
     {
         if (size <= S(0))
         {
@@ -97,7 +97,7 @@ namespace qc
     }
 
     template <IntegralOrPointer P>
-    inline std::pair<bool, P> MemoryBubbleTracker<P>::remove(const S size) noexcept
+    inline std::pair<bool, P> BubbleTracker<P>::remove(const S size) noexcept
     {
         if (size <= S(0))
         {
@@ -139,7 +139,7 @@ namespace qc
     }
 
     template <IntegralOrPointer P>
-    inline auto MemoryBubbleTracker<P>::tail(const S memorySize) const noexcept -> S
+    inline auto BubbleTracker<P>::tail(const S memorySize) const noexcept -> S
     {
         if (_bubbles.empty())
         {
