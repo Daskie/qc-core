@@ -8,17 +8,17 @@
 
 namespace qc
 {
-    struct SlabError {};
-
     namespace _internal
     {
-        class SlabFriend;
+        class StableLotFriend;
     }
 
+    struct StableLotError {};
+
     template <typename T>
-    class Slab
+    class StableLot
     {
-        friend ::qc::_internal::SlabFriend;
+        friend ::qc::_internal::StableLotFriend;
 
         template <bool constant> class _Iterator;
 
@@ -32,18 +32,16 @@ namespace qc
         using iterator = _Iterator<false>;
         using const_iterator = _Iterator<true>;
 
-        using Error = SlabError;
+        StableLot() noexcept = default;
+        explicit StableLot(size_t maxSize) noexcept;
 
-        Slab() noexcept = default;
-        explicit Slab(size_t maxSize) noexcept;
+        StableLot(const StableLot &) = delete;
+        StableLot(StableLot && other) noexcept;
 
-        Slab(const Slab &) = delete;
-        Slab(Slab && other) noexcept;
+        StableLot & operator=(const StableLot &) = delete;
+        StableLot & operator=(StableLot && other) noexcept;
 
-        Slab & operator=(const Slab &) = delete;
-        Slab & operator=(Slab && other) noexcept;
-
-        ~Slab() noexcept;
+        ~StableLot() noexcept;
 
         void setMaxSize(size_t maxSize);
 
@@ -57,7 +55,7 @@ namespace qc
 
         size_t maxSize() const noexcept { return _maxSize; }
 
-        size_t size() const noexcept { return size_t(_slabRange.end - _slabRange.start); }
+        size_t size() const noexcept { return size_t(_fullRange.end - _fullRange.start); }
 
         size_t usedCount() const noexcept { return _usedCount; }
 
@@ -92,7 +90,7 @@ namespace qc
         u32 _maxPageCount{};
         u32 _pageCount{};
         size_t _maxSize{};
-        _Range _slabRange{};
+        _Range _fullRange{};
         size_t _usedCount{};
         std::vector<_Range> _freeRanges{};
 
@@ -103,9 +101,9 @@ namespace qc
 
     template <typename T>
     template <bool constant>
-    class Slab<T>::_Iterator
+    class StableLot<T>::_Iterator
     {
-        friend Slab;
+        friend StableLot;
 
         using T_ = std::conditional_t<constant, const T, T>;
         using _Range_ = std::conditional_t<constant, const _Range, _Range>;
@@ -118,9 +116,8 @@ namespace qc
         using pointer = T_ *;
         using difference_type = ptrdiff_t;
 
-        _Iterator(const _Iterator<false> &) noexcept requires constant;
-
         _Iterator(const _Iterator &) noexcept = default;
+        _Iterator(const _Iterator<false> &) noexcept requires constant;
 
         _Iterator & operator=(const _Iterator &) noexcept = default;
 
@@ -147,28 +144,28 @@ namespace qc
 namespace qc
 {
     template <typename T>
-    Slab<T>::Slab(const size_t maxSize) noexcept
+    StableLot<T>::StableLot(const size_t maxSize) noexcept
     {
         setMaxSize(maxSize);
     }
 
     template <typename T>
-    inline Slab<T>::Slab(Slab && other) noexcept :
+    inline StableLot<T>::StableLot(StableLot && other) noexcept :
         _maxPageCount{std::exchange(other._maxPageCount, 0u)},
         _pageCount{std::exchange(other._pageCount, 0u)},
         _maxSize{std::exchange(other._maxSize, 0u)},
-        _slabRange{std::exchange(other._slabRange, {})},
+        _fullRange{std::exchange(other._fullRange, {})},
         _usedCount{std::exchange(other._usedCount, 0u)},
         _freeRanges{std::move(other._freeRanges)}
     {}
 
     template <typename T>
-    inline Slab<T> & Slab<T>::operator=(Slab && other) noexcept
+    inline StableLot<T> & StableLot<T>::operator=(StableLot && other) noexcept
     {
         _maxPageCount = std::exchange(other._maxPageCount, 0u);
         _pageCount = std::exchange(other._pageCount, 0u);
         _maxSize = std::exchange(other._maxSize, 0u);
-        _slabRange = std::exchange(other._slabRange, {});
+        _fullRange = std::exchange(other._fullRange, {});
         _usedCount = std::exchange(other._usedCount, 0u);
         _freeRanges = std::move(other._freeRanges);
 
@@ -176,31 +173,31 @@ namespace qc
     }
 
     template <typename T>
-    inline Slab<T>::~Slab() noexcept
+    inline StableLot<T>::~StableLot() noexcept
     {
         // Destruct any in-use objects
         for (T & v : *this) v.~T();
 
         // Free memory
-        freePages(_slabRange.start);
+        freePages(_fullRange.start);
 
         if constexpr (debug)
         {
             _maxPageCount = 0u;
             _pageCount = 0u;
             _maxSize = 0u;
-            _slabRange = {};
+            _fullRange = {};
             _usedCount = 0u;
         }
     }
 
     template <typename T>
-    inline void Slab<T>::setMaxSize(const size_t maxSize)
+    inline void StableLot<T>::setMaxSize(const size_t maxSize)
     {
         // May only be called before memory is reserved
-        if (_slabRange.start)
+        if (_fullRange.start)
         {
-            throw Error{};
+            throw StableLotError{};
         }
 
         _maxPageCount =  u32((maxSize * sizeof(T) + pageSize - 1) / pageSize);
@@ -209,7 +206,7 @@ namespace qc
 
     template <typename T>
     template <typename... Args>
-    inline T & Slab<T>::construct(Args &&... args)
+    inline T & StableLot<T>::construct(Args &&... args)
     {
         if (_freeRanges.empty()) [[unlikely]]
         {
@@ -228,12 +225,12 @@ namespace qc
     }
 
     template <typename T>
-    inline void Slab<T>::destruct(T & v)
+    inline void StableLot<T>::destruct(T & v)
     {
-        // Ensure the slot is in the slab
+        // Ensure the slot is in the lot
         if (!contains(&v))
         {
-            throw Error{};
+            throw StableLotError{};
         }
 
         // Find the free range before or including the slot
@@ -245,7 +242,7 @@ namespace qc
         // Ensure slot is in-use, i.e. it's not in a free range
         if (isLower && &v < lowerIt->end)
         {
-            throw Error{};
+            throw StableLotError{};
         }
 
         // Destruct object
@@ -304,15 +301,15 @@ namespace qc
     }
 
     template <typename T>
-    inline bool Slab<T>::contains(const T * const v) const noexcept
+    inline bool StableLot<T>::contains(const T * const v) const noexcept
     {
-        return v >= _slabRange.start && v < _slabRange.end;
+        return v >= _fullRange.start && v < _fullRange.end;
     }
 
     template <typename T>
-    inline void Slab<T>::freeUnusedPages()
+    inline void StableLot<T>::freeUnusedPages()
     {
-        // Slab is full or unallocated
+        // Lot is full or unallocated
         if (_freeRanges.empty())
         {
             return;
@@ -321,12 +318,12 @@ namespace qc
         _Range & highRange{_freeRanges.front()};
 
         // The tail of the allocated memory is in use
-        if (highRange.end != _slabRange.end)
+        if (highRange.end != _fullRange.end)
         {
             return;
         }
 
-        const size_t necessarySize{size_t(highRange.start - _slabRange.start)};
+        const size_t necessarySize{size_t(highRange.start - _fullRange.start)};
         const u32 necessaryPageCount{u32((necessarySize * sizeof(T) + pageSize - 1u) / pageSize)};
         const u32 unnecessaryPageCount{_pageCount - necessaryPageCount};
 
@@ -337,13 +334,13 @@ namespace qc
         }
 
         // Decommit uneccessary pages
-        decommitPages(reinterpret_cast<std::byte *>(_slabRange.start) + necessaryPageCount * pageSize, unnecessaryPageCount);
+        decommitPages(reinterpret_cast<std::byte *>(_fullRange.start) + necessaryPageCount * pageSize, unnecessaryPageCount);
 
         // Update state
         _pageCount = necessaryPageCount;
         const size_t newSize{_pageCount * pageSize / sizeof(T)};
-        _slabRange.end = _slabRange.start + newSize;
-        highRange.end = _slabRange.end;
+        _fullRange.end = _fullRange.start + newSize;
+        highRange.end = _fullRange.end;
         if (highRange.end == highRange.start)
         {
             _freeRanges.erase(_freeRanges.begin());
@@ -351,29 +348,29 @@ namespace qc
     }
 
     template <typename T>
-    inline auto Slab<T>::begin() noexcept -> iterator
+    inline auto StableLot<T>::begin() noexcept -> iterator
     {
-        const const_iterator it{const_cast<const Slab *>(this)->begin()};
+        const const_iterator it{const_cast<const StableLot *>(this)->begin()};
         return reinterpret_cast<const iterator &>(it);
     }
 
     template <typename T>
-    inline auto Slab<T>::begin() const noexcept -> const_iterator
+    inline auto StableLot<T>::begin() const noexcept -> const_iterator
     {
         if (_freeRanges.empty())
         {
-            return const_iterator{_slabRange.start, &_nullRange};
+            return const_iterator{_fullRange.start, &_nullRange};
         }
         else
         {
             const _Range & lowestFreeRange{_freeRanges.back()};
 
-            // First in-use range is at the start of the slab
-            if (lowestFreeRange.start > _slabRange.start)
+            // First in-use range is at the start of the lot
+            if (lowestFreeRange.start > _fullRange.start)
             {
-                return const_iterator{_slabRange.start, &lowestFreeRange};
+                return const_iterator{_fullRange.start, &lowestFreeRange};
             }
-            // First in-use range is after the free range at the start of the slab
+            // First in-use range is after the free range at the start of the lot
             else
             {
                 return const_iterator{lowestFreeRange.end, &lowestFreeRange - 1};
@@ -382,37 +379,37 @@ namespace qc
     }
 
     template <typename T>
-    inline auto Slab<T>::end() noexcept -> iterator
+    inline auto StableLot<T>::end() noexcept -> iterator
     {
-        return iterator{_slabRange.end, nullptr};
+        return iterator{_fullRange.end, nullptr};
     }
 
     template <typename T>
-    inline auto Slab<T>::end() const noexcept -> const_iterator
+    inline auto StableLot<T>::end() const noexcept -> const_iterator
     {
-        return const_iterator{_slabRange.end, nullptr};
+        return const_iterator{_fullRange.end, nullptr};
     }
 
     template <typename T>
-    inline void Slab<T>::_expand()
+    inline void StableLot<T>::_expand()
     {
         // Reserve virtual memory if haven't done so already
-        if (!_slabRange.start)
+        if (!_fullRange.start)
         {
             // Max size must have been set by this point
             if (!_maxPageCount)
             {
-                throw Error{};
+                throw StableLotError{};
             }
 
-            _slabRange.start = static_cast<T *>(reservePages(_maxPageCount));
-            _slabRange.end = _slabRange.start;
+            _fullRange.start = static_cast<T *>(reservePages(_maxPageCount));
+            _fullRange.end = _fullRange.start;
         }
 
         // Ensure we still have more reserved pages
         if (_pageCount == _maxPageCount)
         {
-            throw Error{};
+            throw StableLotError{};
         }
 
         // Double the number of committed pages
@@ -426,51 +423,51 @@ namespace qc
         }
 
         // Commit new pages
-        std::byte * const pages{reinterpret_cast<std::byte *>(_slabRange.start)};
+        std::byte * const pages{reinterpret_cast<std::byte *>(_fullRange.start)};
         commitPages(pages + _pageCount * pageSize, newPageCount - _pageCount);
         _pageCount = newPageCount;
 
-        // Update slab range
+        // Update full range
         const size_t newSize{_pageCount * pageSize / sizeof(T)};
-        T * const currentRangeEnd{_slabRange.end};
-        _slabRange.end = _slabRange.start + newSize;
+        T * const currentRangeEnd{_fullRange.end};
+        _fullRange.end = _fullRange.start + newSize;
 
         // Update free ranges
         if (_freeRanges.empty() || _freeRanges.front().end != currentRangeEnd)
         {
             // Insert new free range
-            _freeRanges.insert(_freeRanges.begin(), _Range{currentRangeEnd, _slabRange.end}); // TODO: Switch to `emplace` once intellisense supports it
+            _freeRanges.insert(_freeRanges.begin(), _Range{currentRangeEnd, _fullRange.end}); // TODO: Switch to `emplace` once intellisense supports it
         }
         else
         {
             // Update existing free range
-            _freeRanges.front().end = _slabRange.end;
+            _freeRanges.front().end = _fullRange.end;
         }
     }
 
     template <typename T>
-    inline auto Slab<T>::_find(const T * const slot) noexcept -> typename std::vector<_Range>::iterator
+    inline auto StableLot<T>::_find(const T * const slot) noexcept -> typename std::vector<_Range>::iterator
     {
         return lowerBound(_freeRanges.begin(), _freeRanges.end(), slot, [](const _Range & range, const T * const slot) -> bool { return range.start <= slot; });
     }
 
     template <typename T>
     template <bool constant>
-    Slab<T>::_Iterator<constant>::_Iterator(const _Iterator<false> & other) noexcept requires constant :
+    StableLot<T>::_Iterator<constant>::_Iterator(const _Iterator<false> & other) noexcept requires constant :
         _slot{other._slot},
         _nextFreeRange{other._nextFreeRange}
     {}
 
     template <typename T>
     template <bool constant>
-    Slab<T>::_Iterator<constant>::_Iterator(T_ * const slot, _Range_ * const nextFreeRange) noexcept :
+    StableLot<T>::_Iterator<constant>::_Iterator(T_ * const slot, _Range_ * const nextFreeRange) noexcept :
         _slot{slot},
         _nextFreeRange{nextFreeRange}
     {}
 
     template <typename T>
     template <bool constant>
-    auto Slab<T>::_Iterator<constant>::operator++() noexcept -> _Iterator &
+    auto StableLot<T>::_Iterator<constant>::operator++() noexcept -> _Iterator &
     {
         ++_slot;
 
@@ -485,7 +482,7 @@ namespace qc
 
     template <typename T>
     template <bool constant>
-    auto Slab<T>::_Iterator<constant>::operator++(int) noexcept -> _Iterator
+    auto StableLot<T>::_Iterator<constant>::operator++(int) noexcept -> _Iterator
     {
         const _Iterator tmp{*this};
         ++*this;
@@ -494,7 +491,7 @@ namespace qc
 
     template <typename T>
     template <bool constant>
-    bool Slab<T>::_Iterator<constant>::operator==(const _Iterator & other) const noexcept
+    bool StableLot<T>::_Iterator<constant>::operator==(const _Iterator & other) const noexcept
     {
         return _slot == other._slot;
     }

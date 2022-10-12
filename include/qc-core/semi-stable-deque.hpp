@@ -7,6 +7,8 @@
 
 namespace qc
 {
+    struct SemiStableDequeError {};
+
     ///
     /// The most significant differences between this and `std::deque`:
     ///   1. This does not provide reference stability. References and iterators are invalidated when the capacity grows
@@ -26,8 +28,6 @@ namespace qc
         template <bool constant, bool reverse> class _Iterator;
 
       public:
-
-        struct Error {};
 
         using iterator = _Iterator<false, false>;
         using const_iterator = _Iterator<true, false>;
@@ -301,7 +301,7 @@ namespace qc
     {
         if (_presentTailI == _invalidI) [[unlikely]]
         {
-            throw Error{};
+            throw SemiStableDequeError{};
         }
 
         pop(_presentTailI);
@@ -312,7 +312,7 @@ namespace qc
     {
         if (_presentHeadI == _invalidI) [[unlikely]]
         {
-            throw Error{};
+            throw SemiStableDequeError{};
         }
 
         pop(_presentHeadI);
@@ -366,7 +366,7 @@ namespace qc
     {
         if (_presentHeadI == _invalidI) [[unlikely]]
         {
-            throw Error{};
+            throw SemiStableDequeError{};
         }
 
         return _slots[_presentHeadI].value;
@@ -383,7 +383,7 @@ namespace qc
     {
         if (_presentTailI == _invalidI) [[unlikely]]
         {
-            throw Error{};
+            throw SemiStableDequeError{};
         }
 
         return _slots[_presentTailI].value;
