@@ -6,12 +6,6 @@
 
 using namespace qc::types;
 
-TEST(Paging, pageSize)
-{
-    ASSERT_TRUE(std::has_single_bit(qc::pageSize));
-    ASSERT_GE(qc::pageSize, 1024u);
-}
-
 TEST(Paging, allocate)
 {
     #pragma warning(suppress: 4834)

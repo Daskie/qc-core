@@ -12,15 +12,35 @@
 
 namespace qc
 {
-    size_t _internal::getPageSize() noexcept
+    namespace
     {
-        SYSTEM_INFO sSysInfo;
-        GetSystemInfo(&sSysInfo);
-        return sSysInfo.dwPageSize;
+        std::atomic_flag _pageSizeChecked{};
+
+        size_t _getPageSize()
+        {
+            SYSTEM_INFO sSysInfo;
+            GetSystemInfo(&sSysInfo);
+            return sSysInfo.dwPageSize;
+        }
+
+        void _verifyPageSize()
+        {
+            // Only do this once
+            if (!_pageSizeChecked.test_and_set()) [[unlikely]]
+            {
+                // Compare to actual page size
+                if (pageSize != _getPageSize())
+                {
+                    throw PageError{};
+                }
+            }
+        }
     }
 
     void * allocatePages(const size_t pageCount)
     {
+        _verifyPageSize();
+
         void * const baseAddress{VirtualAlloc(
             nullptr,                  // System selects base address
             pageCount * pageSize,     // Size of allocation
@@ -37,6 +57,8 @@ namespace qc
 
     void * reservePages(const size_t pageCount)
     {
+        _verifyPageSize();
+
         void * const baseAddress{VirtualAlloc(
             nullptr,              // System selects base address
             pageCount * pageSize, // Size of allocation

@@ -4,13 +4,9 @@ namespace qc
 {
     struct PageError {};
 
-    namespace _internal
-    {
-        size_t getPageSize() noexcept;
-    }
-
-    /// Size a page in bytes; typically 4096; guaranteed to be a power of two
-    inline const size_t pageSize{_internal::getPageSize()};
+    /// Assume pages are 4096 bytes for better compile-time optimization
+    /// This is checked the first time pages are reserved, and an exception is thrown if the actual page size differs
+    constexpr size_t pageSize{4096u};
 
     ///
     /// Allocate a contiguous block of memory in page multiples
