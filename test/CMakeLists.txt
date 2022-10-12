@@ -85,6 +85,16 @@ qc_setup_target(
 )
 
 qc_setup_target(
+    qc-core-test-pool
+    EXECUTABLE
+    SOURCE_FILES
+        test-pool.cpp
+    PRIVATE_LINKS
+        qc-core-platform
+        GTest::gtest_main
+)
+
+qc_setup_target(
     qc-core-test-quaternion
     EXECUTABLE
     SOURCE_FILES

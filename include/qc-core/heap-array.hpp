@@ -86,7 +86,7 @@ namespace qc
     template <typename T>
     inline HeapArray<T>::HeapArray(const size_t size) noexcept :
         _size(size),
-        _values(_size ? static_cast<T *>(::operator new(_size * sizeof(T))) : nullptr)
+        _values(_size ? static_cast<T *>(::operator new(_size * sizeof(T), std::align_val_t{alignof(T)})) : nullptr)
     {
         if constexpr (!std::is_trivially_default_constructible_v<T>)
         {
@@ -100,7 +100,7 @@ namespace qc
     template <typename T>
     inline HeapArray<T>::HeapArray(const size_t size, const T & v) noexcept :
         _size(size),
-        _values(_size ? ::operator new(_size * sizeof(T)) : nullptr)
+        _values(_size ? ::operator new(_size * sizeof(T), std::align_val_t{alignof(T)}) : nullptr)
     {
         for (size_t i{0u}; i < _size; ++i)
         {
@@ -112,7 +112,7 @@ namespace qc
     template <typename Iter>
     inline HeapArray<T>::HeapArray(const Iter first, const Iter last) :
         _size(std::distance(first, last)),
-        _values(_size ? static_cast<T *>(::operator new(_size * sizeof(T))) : nullptr)
+        _values(_size ? static_cast<T *>(::operator new(_size * sizeof(T), std::align_val_t{alignof(T)})) : nullptr)
     {
         if constexpr (std::is_trivially_copy_constructible_v<T>)
         {
@@ -137,7 +137,7 @@ namespace qc
     template <typename T>
     inline HeapArray<T>::HeapArray(const HeapArray & other) noexcept :
         _size(other._size),
-        _values(_size ? static_cast<T *>(::operator new(_size * sizeof(T))) : nullptr)
+        _values(_size ? static_cast<T *>(::operator new(_size * sizeof(T), std::align_val_t{alignof(T)})) : nullptr)
     {
         for (size_t i{0u}; i < _size; ++i)
         {
@@ -173,7 +173,7 @@ namespace qc
             if (other._size)
             {
                 _size = other._size;
-                _values = static_cast<T *>(::operator new(_size * sizeof(T)));
+                _values = static_cast<T *>(::operator new(_size * sizeof(T), std::align_val_t{alignof(T)}));
 
                 for (size_t i{0u}; i < _size; ++i)
                 {
@@ -227,7 +227,7 @@ namespace qc
                 }
             }
 
-            ::operator delete(_values);
+            ::operator delete(_values, std::align_val_t{alignof(T)});
             _size = 0u;
             _values = nullptr;
         }

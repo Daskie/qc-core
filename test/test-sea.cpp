@@ -14,18 +14,18 @@ TEST(Sea, standard)
     // [_|_|_|_|_]
     qc::Sea<BigInt> sea{5u};
     ASSERT_EQ(3u, sea.maxPageCount());
-    ASSERT_EQ(5u, sea.maxSize());
+    ASSERT_EQ(5u, sea.maxCapacity());
     ASSERT_EQ(0u, sea.pageCount());
+    ASSERT_EQ(0u, sea.capacity());
     ASSERT_EQ(0u, sea.size());
-    ASSERT_EQ(0u, sea.usedCount());
     auto it{sea.begin()};
     ASSERT_EQ(sea.end(), it);
 
     // [0|_|_|_|_]
     BigInt & e0{sea.create(0)};
     ASSERT_EQ(1u, sea.pageCount());
+    ASSERT_EQ(1u, sea.capacity());
     ASSERT_EQ(1u, sea.size());
-    ASSERT_EQ(1u, sea.usedCount());
     it = sea.begin();
     ASSERT_EQ(0, it->x);
     ASSERT_EQ(sea.end(), ++it);
@@ -34,8 +34,8 @@ TEST(Sea, standard)
     BigInt & e1{sea.create(1)};
     ASSERT_EQ(&e0 + 1, &e1);
     ASSERT_EQ(3u, sea.pageCount());
-    ASSERT_EQ(5u, sea.size());
-    ASSERT_EQ(2u, sea.usedCount());
+    ASSERT_EQ(5u, sea.capacity());
+    ASSERT_EQ(2u, sea.size());
     it = sea.begin();
     ASSERT_EQ(0, it->x);
     ASSERT_EQ(1, (++it)->x);
@@ -44,8 +44,8 @@ TEST(Sea, standard)
     // [0|1|2|_|_]
     BigInt & e2{sea.create(2)};
     ASSERT_EQ(&e1 + 1, &e2);
-    ASSERT_EQ(5u, sea.size());
-    ASSERT_EQ(3u, sea.usedCount());
+    ASSERT_EQ(5u, sea.capacity());
+    ASSERT_EQ(3u, sea.size());
     it = sea.begin();
     ASSERT_EQ(0, it->x);
     ASSERT_EQ(1, (++it)->x);
@@ -55,8 +55,8 @@ TEST(Sea, standard)
     // [0|1|2|3|_]
     BigInt & e3{sea.create(3)};
     ASSERT_EQ(&e2 + 1, &e3);
-    ASSERT_EQ(5u, sea.size());
-    ASSERT_EQ(4u, sea.usedCount());
+    ASSERT_EQ(5u, sea.capacity());
+    ASSERT_EQ(4u, sea.size());
     it = sea.begin();
     ASSERT_EQ(0, it->x);
     ASSERT_EQ(1, (++it)->x);
@@ -67,8 +67,8 @@ TEST(Sea, standard)
     // [0|1|2|3|4]
     BigInt & e4{sea.create(4)};
     ASSERT_EQ(&e3 + 1, &e4);
+    ASSERT_EQ(5u, sea.capacity());
     ASSERT_EQ(5u, sea.size());
-    ASSERT_EQ(5u, sea.usedCount());
     it = sea.begin();
     ASSERT_EQ(0, it->x);
     ASSERT_EQ(1, (++it)->x);
@@ -83,8 +83,8 @@ TEST(Sea, standard)
 
     // [0|1|2|3|_]
     sea.destroy(e4);
-    ASSERT_EQ(5u, sea.size());
-    ASSERT_EQ(4u, sea.usedCount());
+    ASSERT_EQ(5u, sea.capacity());
+    ASSERT_EQ(4u, sea.size());
     it = sea.begin();
     ASSERT_EQ(0, it->x);
     ASSERT_EQ(1, (++it)->x);
@@ -94,8 +94,8 @@ TEST(Sea, standard)
 
     // [0|1|2|_|_]
     sea.destroy(e3);
-    ASSERT_EQ(5u, sea.size());
-    ASSERT_EQ(3u, sea.usedCount());
+    ASSERT_EQ(5u, sea.capacity());
+    ASSERT_EQ(3u, sea.size());
     it = sea.begin();
     ASSERT_EQ(0, it->x);
     ASSERT_EQ(1, (++it)->x);
@@ -107,8 +107,8 @@ TEST(Sea, standard)
     BigInt & e6{sea.create(6)};
     ASSERT_EQ(&e2 + 1, &e5);
     ASSERT_EQ(&e5 + 1, &e6);
+    ASSERT_EQ(5u, sea.capacity());
     ASSERT_EQ(5u, sea.size());
-    ASSERT_EQ(5u, sea.usedCount());
     it = sea.begin();
     ASSERT_EQ(0, it->x);
     ASSERT_EQ(1, (++it)->x);
@@ -119,8 +119,8 @@ TEST(Sea, standard)
 
     // [_|1|2|5|6]
     sea.destroy(e0);
-    ASSERT_EQ(5u, sea.size());
-    ASSERT_EQ(4u, sea.usedCount());
+    ASSERT_EQ(5u, sea.capacity());
+    ASSERT_EQ(4u, sea.size());
     it = sea.begin();
     ASSERT_EQ(1, it->x);
     ASSERT_EQ(2, (++it)->x);
@@ -130,8 +130,8 @@ TEST(Sea, standard)
 
     // [_|_|2|5|6]
     sea.destroy(e1);
-    ASSERT_EQ(5u, sea.size());
-    ASSERT_EQ(3u, sea.usedCount());
+    ASSERT_EQ(5u, sea.capacity());
+    ASSERT_EQ(3u, sea.size());
     it = sea.begin();
     ASSERT_EQ(2, it->x);
     ASSERT_EQ(5, (++it)->x);
@@ -141,8 +141,8 @@ TEST(Sea, standard)
     // [7|_|2|5|6]
     BigInt & e7{sea.create(7)};
     ASSERT_EQ(&e2 - 2, &e7);
-    ASSERT_EQ(5u, sea.size());
-    ASSERT_EQ(4u, sea.usedCount());
+    ASSERT_EQ(5u, sea.capacity());
+    ASSERT_EQ(4u, sea.size());
     it = sea.begin();
     ASSERT_EQ(7, it->x);
     ASSERT_EQ(2, (++it)->x);
@@ -152,8 +152,8 @@ TEST(Sea, standard)
 
     // [7|_|2|_|6]
     sea.destroy(e5);
-    ASSERT_EQ(5u, sea.size());
-    ASSERT_EQ(3u, sea.usedCount());
+    ASSERT_EQ(5u, sea.capacity());
+    ASSERT_EQ(3u, sea.size());
     it = sea.begin();
     ASSERT_EQ(7, it->x);
     ASSERT_EQ(2, (++it)->x);
@@ -162,8 +162,8 @@ TEST(Sea, standard)
 
     // [7|_|_|_|6]
     sea.destroy(e2);
-    ASSERT_EQ(5u, sea.size());
-    ASSERT_EQ(2u, sea.usedCount());
+    ASSERT_EQ(5u, sea.capacity());
+    ASSERT_EQ(2u, sea.size());
     it = sea.begin();
     ASSERT_EQ(7, it->x);
     ASSERT_EQ(6, (++it)->x);
@@ -176,8 +176,8 @@ TEST(Sea, standard)
     ASSERT_EQ(&e7 + 1, &e8);
     ASSERT_EQ(&e7 + 2, &e9);
     ASSERT_EQ(&e7 + 3, &e10);
+    ASSERT_EQ(5u, sea.capacity());
     ASSERT_EQ(5u, sea.size());
-    ASSERT_EQ(5u, sea.usedCount());
     it = sea.begin();
     ASSERT_EQ(7, it->x);
     ASSERT_EQ(8, (++it)->x);
@@ -190,8 +190,8 @@ TEST(Sea, standard)
     sea.destroy(e8);
     sea.destroy(e9);
     sea.destroy(e10);
-    ASSERT_EQ(5u, sea.size());
-    ASSERT_EQ(2u, sea.usedCount());
+    ASSERT_EQ(5u, sea.capacity());
+    ASSERT_EQ(2u, sea.size());
     it = sea.begin();
     ASSERT_EQ(7, it->x);
     ASSERT_EQ(6, (++it)->x);
@@ -204,8 +204,8 @@ TEST(Sea, standard)
 
     // [_|_|_|_|6]
     sea.destroy(e7);
-    ASSERT_EQ(5u, sea.size());
-    ASSERT_EQ(1u, sea.usedCount());
+    ASSERT_EQ(5u, sea.capacity());
+    ASSERT_EQ(1u, sea.size());
     it = sea.begin();
     ASSERT_EQ(6, it->x);
     ASSERT_EQ(sea.end(), ++it);
@@ -213,8 +213,8 @@ TEST(Sea, standard)
     // [11|_|_|_|6]
     BigInt & e11{sea.create(11)};
     ASSERT_EQ(&e6 - 4, &e11);
-    ASSERT_EQ(5u, sea.size());
-    ASSERT_EQ(2u, sea.usedCount());
+    ASSERT_EQ(5u, sea.capacity());
+    ASSERT_EQ(2u, sea.size());
     it = sea.begin();
     ASSERT_EQ(11, it->x);
     ASSERT_EQ(6, (++it)->x);
@@ -222,8 +222,8 @@ TEST(Sea, standard)
 
     // [11|_|_|_|_]
     sea.destroy(e6);
-    ASSERT_EQ(5u, sea.size());
-    ASSERT_EQ(1u, sea.usedCount());
+    ASSERT_EQ(5u, sea.capacity());
+    ASSERT_EQ(1u, sea.size());
     it = sea.begin();
     ASSERT_EQ(11, it->x);
     ASSERT_EQ(sea.end(), ++it);
@@ -231,8 +231,8 @@ TEST(Sea, standard)
     // [_|_|_|_|_]
     sea.destroy(e11);
     ASSERT_EQ(3u, sea.pageCount());
-    ASSERT_EQ(5u, sea.size());
-    ASSERT_EQ(0u, sea.usedCount());
+    ASSERT_EQ(5u, sea.capacity());
+    ASSERT_EQ(0u, sea.size());
     ASSERT_EQ(sea.end(), sea.begin());
 
     ASSERT_THROW(sea.destroy(e11), qc::SeaError);
@@ -243,24 +243,24 @@ TEST(Sea, single)
     qc::Sea<int> sea{1u};
     const size_t maxSize{qc::pageSize / sizeof(int)};
     ASSERT_EQ(1u, sea.maxPageCount());
-    ASSERT_EQ(maxSize, sea.maxSize());
+    ASSERT_EQ(maxSize, sea.maxCapacity());
     ASSERT_EQ(0u, sea.pageCount());
+    ASSERT_EQ(0u, sea.capacity());
     ASSERT_EQ(0u, sea.size());
-    ASSERT_EQ(0u, sea.usedCount());
     ASSERT_EQ(sea.end(), sea.begin());
 
     int & e0{sea.create(0)};
     ASSERT_EQ(1u, sea.pageCount());
-    ASSERT_EQ(maxSize, sea.size());
-    ASSERT_EQ(1u, sea.usedCount());
+    ASSERT_EQ(maxSize, sea.capacity());
+    ASSERT_EQ(1u, sea.size());
     auto it{sea.begin()};
     ASSERT_EQ(0, *it);
     ASSERT_EQ(sea.end(), ++it);
 
     sea.destroy(e0);
     ASSERT_EQ(1u, sea.pageCount());
-    ASSERT_EQ(maxSize, sea.size());
-    ASSERT_EQ(0u, sea.usedCount());
+    ASSERT_EQ(maxSize, sea.capacity());
+    ASSERT_EQ(0u, sea.size());
     ASSERT_EQ(sea.end(), sea.begin());
 }
 
@@ -272,77 +272,77 @@ TEST(Sea, growthRate)
     {
         qc::Sea<PageVal> sea{24u};
         ASSERT_EQ(24u, sea.maxPageCount());
-        ASSERT_EQ(24u, sea.maxSize());
+        ASSERT_EQ(24u, sea.maxCapacity());
         ASSERT_EQ(0u, sea.pageCount());
-        ASSERT_EQ(0u, sea.size());
+        ASSERT_EQ(0u, sea.capacity());
 
         static_cast<void>(sea.create());
         ASSERT_EQ(1u, sea.pageCount());
-        ASSERT_EQ(1u, sea.size());
+        ASSERT_EQ(1u, sea.capacity());
 
         static_cast<void>(sea.create());
         ASSERT_EQ(2u, sea.pageCount());
-        ASSERT_EQ(2u, sea.size());
+        ASSERT_EQ(2u, sea.capacity());
 
         static_cast<void>(sea.create());
         ASSERT_EQ(4u, sea.pageCount());
-        ASSERT_EQ(4u, sea.size());
+        ASSERT_EQ(4u, sea.capacity());
 
         static_cast<void>(sea.create());
         ASSERT_EQ(4u, sea.pageCount());
-        ASSERT_EQ(4u, sea.size());
+        ASSERT_EQ(4u, sea.capacity());
 
         static_cast<void>(sea.create());
         ASSERT_EQ(8u, sea.pageCount());
-        ASSERT_EQ(8u, sea.size());
+        ASSERT_EQ(8u, sea.capacity());
 
         static_cast<void>(sea.create());
         static_cast<void>(sea.create());
         static_cast<void>(sea.create());
         ASSERT_EQ(8u, sea.pageCount());
-        ASSERT_EQ(8u, sea.size());
+        ASSERT_EQ(8u, sea.capacity());
 
         static_cast<void>(sea.create());
         ASSERT_EQ(24u, sea.pageCount());
-        ASSERT_EQ(24u, sea.size());
+        ASSERT_EQ(24u, sea.capacity());
     }
 
     {
         qc::Sea<PageVal> sea{25u};
         ASSERT_EQ(25u, sea.maxPageCount());
-        ASSERT_EQ(25u, sea.maxSize());
+        ASSERT_EQ(25u, sea.maxCapacity());
         ASSERT_EQ(0u, sea.pageCount());
-        ASSERT_EQ(0u, sea.size());
+        ASSERT_EQ(0u, sea.capacity());
 
         static_cast<void>(sea.create());
         ASSERT_EQ(1u, sea.pageCount());
-        ASSERT_EQ(1u, sea.size());
+        ASSERT_EQ(1u, sea.capacity());
 
         static_cast<void>(sea.create());
         ASSERT_EQ(2u, sea.pageCount());
-        ASSERT_EQ(2u, sea.size());
+        ASSERT_EQ(2u, sea.capacity());
 
         static_cast<void>(sea.create());
         ASSERT_EQ(4u, sea.pageCount());
-        ASSERT_EQ(4u, sea.size());
+        ASSERT_EQ(4u, sea.capacity());
 
         static_cast<void>(sea.create());
         ASSERT_EQ(4u, sea.pageCount());
-        ASSERT_EQ(4u, sea.size());
+        ASSERT_EQ(4u, sea.capacity());
 
         static_cast<void>(sea.create());
         ASSERT_EQ(8u, sea.pageCount());
-        ASSERT_EQ(8u, sea.size());
+        ASSERT_EQ(8u, sea.capacity());
 
         static_cast<void>(sea.create());
         static_cast<void>(sea.create());
         static_cast<void>(sea.create());
         ASSERT_EQ(8u, sea.pageCount());
-        ASSERT_EQ(8u, sea.size());
+        ASSERT_EQ(8u, sea.capacity());
 
         static_cast<void>(sea.create());
         ASSERT_EQ(16u, sea.pageCount());
-        ASSERT_EQ(16u, sea.size());
+        ASSERT_EQ(16u, sea.capacity());
 
         static_cast<void>(sea.create());
         static_cast<void>(sea.create());
@@ -352,11 +352,11 @@ TEST(Sea, growthRate)
         static_cast<void>(sea.create());
         static_cast<void>(sea.create());
         ASSERT_EQ(16u, sea.pageCount());
-        ASSERT_EQ(16u, sea.size());
+        ASSERT_EQ(16u, sea.capacity());
 
         static_cast<void>(sea.create());
         ASSERT_EQ(25u, sea.pageCount());
-        ASSERT_EQ(25u, sea.size());
+        ASSERT_EQ(25u, sea.capacity());
     }
 }
 
@@ -367,64 +367,64 @@ TEST(Sea, biggerThanPageVal)
 
     qc::Sea<HugeVal> sea{1u};
     ASSERT_EQ(2u, sea.maxPageCount());
-    ASSERT_EQ(1u, sea.maxSize());
+    ASSERT_EQ(1u, sea.maxCapacity());
     ASSERT_EQ(0u, sea.pageCount());
-    ASSERT_EQ(0u, sea.size());
+    ASSERT_EQ(0u, sea.capacity());
 
     HugeVal & v{sea.create()};
     ASSERT_EQ(2u, sea.pageCount());
-    ASSERT_EQ(1u, sea.size());
+    ASSERT_EQ(1u, sea.capacity());
 
     ++v.data[0];
     ++v.data[sizeof(HugeVal) - 1u];
 
     sea.destroy(v);
     ASSERT_EQ(2u, sea.pageCount());
-    ASSERT_EQ(1u, sea.size());
+    ASSERT_EQ(1u, sea.capacity());
 }
 
 TEST(Sea, deferredMaxSize)
 {
     qc::Sea<int> sea{};
     ASSERT_EQ(0u, sea.maxPageCount());
-    ASSERT_EQ(0u, sea.maxSize());
+    ASSERT_EQ(0u, sea.maxCapacity());
     ASSERT_EQ(0u, sea.pageCount());
-    ASSERT_EQ(0u, sea.size());
+    ASSERT_EQ(0u, sea.capacity());
 
     EXPECT_THROW(static_cast<void>(sea.create(0)), qc::SeaError);
 
-    sea.setMaxSize(1u);
+    sea.setMaxCapacity(1u);
     ASSERT_EQ(1u, sea.maxPageCount());
-    ASSERT_EQ(qc::pageSize / sizeof(int), sea.maxSize());
+    ASSERT_EQ(qc::pageSize / sizeof(int), sea.maxCapacity());
     ASSERT_EQ(0u, sea.pageCount());
-    ASSERT_EQ(0u, sea.size());
+    ASSERT_EQ(0u, sea.capacity());
 
-    sea.setMaxSize(0u);
+    sea.setMaxCapacity(0u);
     ASSERT_EQ(0u, sea.maxPageCount());
-    ASSERT_EQ(0u, sea.maxSize());
+    ASSERT_EQ(0u, sea.maxCapacity());
     ASSERT_EQ(0u, sea.pageCount());
-    ASSERT_EQ(0u, sea.size());
+    ASSERT_EQ(0u, sea.capacity());
 
     EXPECT_THROW(static_cast<void>(sea.create(0)), qc::SeaError);
 
-    sea.setMaxSize(qc::pageSize / sizeof(int) * 2u);
+    sea.setMaxCapacity(qc::pageSize / sizeof(int) * 2u);
     ASSERT_EQ(2u, sea.maxPageCount());
-    ASSERT_EQ(qc::pageSize / sizeof(int) * 2u, sea.maxSize());
+    ASSERT_EQ(qc::pageSize / sizeof(int) * 2u, sea.maxCapacity());
     ASSERT_EQ(0u, sea.pageCount());
-    ASSERT_EQ(0u, sea.size());
+    ASSERT_EQ(0u, sea.capacity());
 
-    sea.setMaxSize(1u);
+    sea.setMaxCapacity(1u);
     ASSERT_EQ(1u, sea.maxPageCount());
-    ASSERT_EQ(qc::pageSize / sizeof(int), sea.maxSize());
+    ASSERT_EQ(qc::pageSize / sizeof(int), sea.maxCapacity());
     ASSERT_EQ(0u, sea.pageCount());
-    ASSERT_EQ(0u, sea.size());
+    ASSERT_EQ(0u, sea.capacity());
 
     [[maybe_unused]] int & v{sea.create(0)};
 
-    EXPECT_THROW(sea.setMaxSize(sea.maxSize()), qc::SeaError);
-    EXPECT_THROW(sea.setMaxSize(qc::pageSize / sizeof(int) * 3u), qc::SeaError);
-    EXPECT_THROW(sea.setMaxSize(1u), qc::SeaError);
-    EXPECT_THROW(sea.setMaxSize(0u), qc::SeaError);
+    EXPECT_THROW(sea.setMaxCapacity(sea.maxCapacity()), qc::SeaError);
+    EXPECT_THROW(sea.setMaxCapacity(qc::pageSize / sizeof(int) * 3u), qc::SeaError);
+    EXPECT_THROW(sea.setMaxCapacity(1u), qc::SeaError);
+    EXPECT_THROW(sea.setMaxCapacity(0u), qc::SeaError);
 }
 
 TEST(Sea, freeUnusedPages)
@@ -432,9 +432,9 @@ TEST(Sea, freeUnusedPages)
     const size_t intsPerPage{qc::pageSize / sizeof(int)};
     qc::Sea<int> sea{5u * intsPerPage};
     ASSERT_EQ(5u, sea.maxPageCount());
-    ASSERT_EQ(5u * intsPerPage, sea.maxSize());
+    ASSERT_EQ(5u * intsPerPage, sea.maxCapacity());
     ASSERT_EQ(0u, sea.pageCount());
-    ASSERT_EQ(0u, sea.size());
+    ASSERT_EQ(0u, sea.capacity());
 
     sea.freeUnusedPages();
 
@@ -444,61 +444,61 @@ TEST(Sea, freeUnusedPages)
         static_cast<void>(sea.create(i));
     }
     ASSERT_EQ(5u, sea.pageCount());
-    ASSERT_EQ(intsPerPage * 5u, sea.size());
+    ASSERT_EQ(intsPerPage * 5u, sea.capacity());
 
     sea.freeUnusedPages();
     ASSERT_EQ(5u, sea.pageCount());
-    ASSERT_EQ(intsPerPage * 5u, sea.size());
+    ASSERT_EQ(intsPerPage * 5u, sea.capacity());
 
     for (int i{int(intsPerPage * 4u) + 1}; i < int(intsPerPage * 5u); ++i)
     {
         sea.destroy(ints[i]);
     }
     ASSERT_EQ(5u, sea.pageCount());
-    ASSERT_EQ(intsPerPage * 5u, sea.size());
+    ASSERT_EQ(intsPerPage * 5u, sea.capacity());
 
     sea.freeUnusedPages();
     ASSERT_EQ(5u, sea.pageCount());
-    ASSERT_EQ(intsPerPage * 5u, sea.size());
+    ASSERT_EQ(intsPerPage * 5u, sea.capacity());
 
     sea.destroy(ints[intsPerPage * 4u]);
     ASSERT_EQ(5u, sea.pageCount());
-    ASSERT_EQ(intsPerPage * 5u, sea.size());
+    ASSERT_EQ(intsPerPage * 5u, sea.capacity());
 
     sea.freeUnusedPages();
     ASSERT_EQ(4u, sea.pageCount());
-    ASSERT_EQ(intsPerPage * 4u, sea.size());
+    ASSERT_EQ(intsPerPage * 4u, sea.capacity());
 
     for (int i{int(1)}; i < int(intsPerPage * 4u) - 1; ++i)
     {
         sea.destroy(ints[i]);
     }
     ASSERT_EQ(4u, sea.pageCount());
-    ASSERT_EQ(intsPerPage * 4u, sea.size());
+    ASSERT_EQ(intsPerPage * 4u, sea.capacity());
 
     sea.freeUnusedPages();
     ASSERT_EQ(4u, sea.pageCount());
-    ASSERT_EQ(intsPerPage * 4u, sea.size());
+    ASSERT_EQ(intsPerPage * 4u, sea.capacity());
 
     sea.destroy(ints[intsPerPage * 4u - 1u]);
     ASSERT_EQ(4u, sea.pageCount());
-    ASSERT_EQ(intsPerPage * 4u, sea.size());
+    ASSERT_EQ(intsPerPage * 4u, sea.capacity());
 
     sea.freeUnusedPages();
     ASSERT_EQ(1u, sea.pageCount());
-    ASSERT_EQ(intsPerPage * 1u, sea.size());
+    ASSERT_EQ(intsPerPage * 1u, sea.capacity());
 
     sea.destroy(ints[0]);
     ASSERT_EQ(1u, sea.pageCount());
-    ASSERT_EQ(intsPerPage * 1u, sea.size());
+    ASSERT_EQ(intsPerPage * 1u, sea.capacity());
 
     sea.freeUnusedPages();
     ASSERT_EQ(0u, sea.pageCount());
-    ASSERT_EQ(0u, sea.size());
+    ASSERT_EQ(0u, sea.capacity());
 
     static_cast<void>(sea.create(0));
     ASSERT_EQ(1u, sea.pageCount());
-    ASSERT_EQ(intsPerPage * 1u, sea.size());
+    ASSERT_EQ(intsPerPage * 1u, sea.capacity());
 }
 
 TEST(Sea, iteratorAssignability)

@@ -203,7 +203,7 @@ namespace qc
             }
         }
 
-        ::operator delete(_slots);
+        ::operator delete(_slots, std::align_val_t{alignof(_Slot)});
 
         if constexpr (qc::debug)
         {
@@ -483,7 +483,7 @@ namespace qc
 
         // Expand underlying array
         {
-            _Slot * const newSlots{static_cast<_Slot *>(::operator new(newCapacity * sizeof(_Slot)))};
+            _Slot * const newSlots{static_cast<_Slot *>(::operator new(newCapacity * sizeof(_Slot), std::align_val_t{alignof(_Slot)}))};
             if constexpr (std::is_trivially_copyable_v<T>)
             {
                 std::memcpy(newSlots, _slots, oldCapacity * sizeof(_Slot));
@@ -495,7 +495,7 @@ namespace qc
                     new (dst) _Slot(std::move(*src));
                 }
             }
-            ::operator delete(_slots);
+            ::operator delete(_slots, std::align_val_t{alignof(_Slot)});
             _slots = newSlots;
             _capacity = newCapacity;
         }

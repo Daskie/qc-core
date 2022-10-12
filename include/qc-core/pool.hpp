@@ -4,27 +4,26 @@
 #include <vector>
 
 #include <qc-core/core-ext.hpp>
-#include <qc-core/paging.hpp>
 #include <qc-core/pool-common.hpp>
 
 namespace qc
 {
     namespace _internal
     {
-        class SeaFriend;
+        class PoolFriend;
     }
 
-    struct SeaError {};
+    struct PoolError {};
 
     ///
-    /// Stable object pool that may grow to be extremely large, hence the name
+    /// Stable, fixed size object pool
     ///
-    /// Very similar to Pool, and should be kept mostly in sync
+    /// Very similar to Sea, and should be kept mostly in sync
     ///
     template <typename T>
-    class Sea
+    class Pool
     {
-        friend ::qc::_internal::SeaFriend;
+        friend ::qc::_internal::PoolFriend;
 
         using _Range = _pool::Range<T>;
         template <bool constant> using _Iterator = _pool::Iterator<T, constant>;
@@ -39,28 +38,24 @@ namespace qc
         using iterator = _Iterator<false>;
         using const_iterator = _Iterator<true>;
 
-        Sea() noexcept = default;
-        explicit Sea(size_t maxCapacity) noexcept;
+        Pool() noexcept = default;
+        explicit Pool(size_t capacity) noexcept;
 
-        Sea(const Sea &) = delete;
-        Sea(Sea && other) noexcept;
+        Pool(const Pool &) = delete;
+        Pool(Pool && other) noexcept;
 
-        Sea & operator=(const Sea &) = delete;
-        Sea & operator=(Sea && other) noexcept;
+        Pool & operator=(const Pool &) = delete;
+        Pool & operator=(Pool && other) noexcept;
 
-        ~Sea() noexcept;
+        ~Pool() noexcept;
 
-        void setMaxCapacity(size_t maxCapacity);
+        void setCapacity(size_t capacity);
 
         template <typename... Args> [[nodiscard]] T & create(Args &&... args);
 
         void destroy(T & v);
 
         bool contains(const T * v) const noexcept;
-
-        void freeUnusedPages();
-
-        size_t maxCapacity() const noexcept { return _maxCapacity; }
 
         size_t capacity() const noexcept { return size_t(_slotRange.end - _slotRange.start); }
 
@@ -69,10 +64,6 @@ namespace qc
         bool empty() const noexcept { return _size == 0u; }
 
         bool full() const noexcept { return _size == capacity(); }
-
-        u32 maxPageCount() const noexcept { return _maxPageCount; }
-
-        u32 pageCount() const noexcept { return _pageCount; }
 
         iterator begin() noexcept;
         const_iterator begin() const noexcept;
@@ -86,9 +77,6 @@ namespace qc
 
         inline static _Range _nullRange{};
 
-        u32 _maxPageCount{};
-        u32 _pageCount{};
-        size_t _maxCapacity{};
         _Range _slotRange{};
         size_t _size{};
         std::vector<_Range> _freeRanges{};
@@ -104,27 +92,21 @@ namespace qc
 namespace qc
 {
     template <typename T>
-    inline Sea<T>::Sea(const size_t maxCapacity) noexcept
+    inline Pool<T>::Pool(const size_t capacity) noexcept
     {
-        setMaxCapacity(maxCapacity);
+        setCapacity(capacity);
     }
 
     template <typename T>
-    inline Sea<T>::Sea(Sea && other) noexcept :
-        _maxPageCount{std::exchange(other._maxPageCount, 0u)},
-        _pageCount{std::exchange(other._pageCount, 0u)},
-        _maxCapacity{std::exchange(other._maxCapacity, 0u)},
+    inline Pool<T>::Pool(Pool && other) noexcept :
         _slotRange{std::exchange(other._slotRange, {})},
         _size{std::exchange(other._size, 0u)},
         _freeRanges{std::move(other._freeRanges)}
     {}
 
     template <typename T>
-    inline Sea<T> & Sea<T>::operator=(Sea && other) noexcept
+    inline Pool<T> & Pool<T>::operator=(Pool && other) noexcept
     {
-        _maxPageCount = std::exchange(other._maxPageCount, 0u);
-        _pageCount = std::exchange(other._pageCount, 0u);
-        _maxCapacity = std::exchange(other._maxCapacity, 0u);
         _slotRange = std::exchange(other._slotRange, {});
         _size = std::exchange(other._size, 0u);
         _freeRanges = std::move(other._freeRanges);
@@ -133,7 +115,7 @@ namespace qc
     }
 
     template <typename T>
-    inline Sea<T>::~Sea() noexcept
+    inline Pool<T>::~Pool() noexcept
     {
         if (!_slotRange.start)
         {
@@ -147,38 +129,42 @@ namespace qc
         }
 
         // Free memory
-        freePages(_slotRange.start);
+        ::operator delete(_slotRange.start, std::align_val_t{alignof(T)});
 
         if constexpr (debug)
         {
-            _maxPageCount = 0u;
-            _pageCount = 0u;
-            _maxCapacity = 0u;
             _slotRange = {};
             _size = 0u;
         }
     }
 
     template <typename T>
-    inline void Sea<T>::setMaxCapacity(size_t maxCapacity)
+    inline void Pool<T>::setCapacity(const size_t capacity)
     {
         // May only be called before memory is reserved
         if (_slotRange.start)
         {
-            throw SeaError{};
+            throw PoolError{};
         }
 
-        _maxPageCount =  u32((maxCapacity * sizeof(T) + pageSize - 1) / pageSize);
-        _maxCapacity = _maxPageCount * pageSize / sizeof(T);
+        // Ignore zero call
+        if (capacity == 0u)
+        {
+            return;
+        }
+
+        _slotRange.start = static_cast<T *>(::operator new(capacity * sizeof(T), std::align_val_t{alignof(T)}));
+        _slotRange.end = _slotRange.start + capacity;
+        _freeRanges.push_back(_slotRange);
     }
 
     template <typename T>
     template <typename... Args>
-    inline T & Sea<T>::create(Args &&... args)
+    inline T & Pool<T>::create(Args &&... args)
     {
         if (_freeRanges.empty()) [[unlikely]]
         {
-            _expand();
+            throw PoolError{};
         }
 
         _Range & lowRange{_freeRanges.back()};
@@ -193,12 +179,12 @@ namespace qc
     }
 
     template <typename T>
-    inline void Sea<T>::destroy(T & v)
+    inline void Pool<T>::destroy(T & v)
     {
-        // Ensure the slot is in the sea
+        // Ensure the slot is in the pool
         if (!contains(&v))
         {
-            throw SeaError{};
+            throw PoolError{};
         }
 
         // Find the free range before or including the slot
@@ -210,7 +196,7 @@ namespace qc
         // Ensure slot is in-use, i.e. it's not in a free range
         if (isLower && &v < lowerIt->end)
         {
-            throw SeaError{};
+            throw PoolError{};
         }
 
         // Destruct object
@@ -269,61 +255,20 @@ namespace qc
     }
 
     template <typename T>
-    inline bool Sea<T>::contains(const T * const v) const noexcept
+    inline bool Pool<T>::contains(const T * const v) const noexcept
     {
         return v >= _slotRange.start && v < _slotRange.end;
     }
 
     template <typename T>
-    inline void Sea<T>::freeUnusedPages()
+    inline auto Pool<T>::begin() noexcept -> iterator
     {
-        // Sea is full or unallocated
-        if (_freeRanges.empty())
-        {
-            return;
-        }
-
-        _Range & highRange{_freeRanges.front()};
-
-        // The tail of the allocated memory is in use
-        if (highRange.end != _slotRange.end)
-        {
-            return;
-        }
-
-        const size_t necessaryCapacity{size_t(highRange.start - _slotRange.start)};
-        const u32 necessaryPageCount{u32((necessaryCapacity * sizeof(T) + pageSize - 1u) / pageSize)};
-        const u32 unnecessaryPageCount{_pageCount - necessaryPageCount};
-
-        // Not enough free tail slots to make up a page
-        if (!unnecessaryPageCount)
-        {
-            return;
-        }
-
-        // Decommit uneccessary pages
-        decommitPages(reinterpret_cast<std::byte *>(_slotRange.start) + necessaryPageCount * pageSize, unnecessaryPageCount);
-
-        // Update state
-        _pageCount = necessaryPageCount;
-        const size_t newCapacity{_pageCount * pageSize / sizeof(T)};
-        _slotRange.end = _slotRange.start + newCapacity;
-        highRange.end = _slotRange.end;
-        if (highRange.end == highRange.start)
-        {
-            _freeRanges.erase(_freeRanges.begin());
-        }
-    }
-
-    template <typename T>
-    inline auto Sea<T>::begin() noexcept -> iterator
-    {
-        const const_iterator it{const_cast<const Sea *>(this)->begin()};
+        const const_iterator it{const_cast<const Pool *>(this)->begin()};
         return reinterpret_cast<const iterator &>(it);
     }
 
     template <typename T>
-    inline auto Sea<T>::begin() const noexcept -> const_iterator
+    inline auto Pool<T>::begin() const noexcept -> const_iterator
     {
         if (_freeRanges.empty())
         {
@@ -333,12 +278,12 @@ namespace qc
         {
             const _Range & lowestFreeRange{_freeRanges.back()};
 
-            // First in-use range is at the start of the sea
+            // First in-use range is at the start of the pool
             if (lowestFreeRange.start > _slotRange.start)
             {
                 return const_iterator{_slotRange.start, &lowestFreeRange};
             }
-            // First in-use range is after the free range at the start of the sea
+            // First in-use range is after the free range at the start of the pool
             else
             {
                 return const_iterator{lowestFreeRange.end, &lowestFreeRange - 1};
@@ -347,74 +292,19 @@ namespace qc
     }
 
     template <typename T>
-    inline auto Sea<T>::end() noexcept -> iterator
+    inline auto Pool<T>::end() noexcept -> iterator
     {
         return iterator{_slotRange.end, nullptr};
     }
 
     template <typename T>
-    inline auto Sea<T>::end() const noexcept -> const_iterator
+    inline auto Pool<T>::end() const noexcept -> const_iterator
     {
         return const_iterator{_slotRange.end, nullptr};
     }
 
     template <typename T>
-    inline void Sea<T>::_expand()
-    {
-        // Reserve virtual memory if haven't done so already
-        if (!_slotRange.start)
-        {
-            // Max capacity must have been set by this point
-            if (!_maxPageCount)
-            {
-                throw SeaError{};
-            }
-
-            _slotRange.start = static_cast<T *>(reservePages(_maxPageCount));
-            _slotRange.end = _slotRange.start;
-        }
-
-        // Ensure we still have more reserved pages
-        if (_pageCount == _maxPageCount)
-        {
-            throw SeaError{};
-        }
-
-        // Double the number of committed pages
-        const u32 minPageCount{u32((sizeof(T) + pageSize - 1u) / pageSize)};
-        u32 newPageCount{qc::max(_pageCount * 2u, minPageCount)};
-
-        // Round up and reserve all pages if within +50% of new page count
-        if (newPageCount + newPageCount / 2 >= _maxPageCount)
-        {
-            newPageCount = _maxPageCount;
-        }
-
-        // Commit new pages
-        std::byte * const pages{reinterpret_cast<std::byte *>(_slotRange.start)};
-        commitPages(pages + _pageCount * pageSize, newPageCount - _pageCount);
-        _pageCount = newPageCount;
-
-        // Update full range
-        const size_t newCapacity{_pageCount * pageSize / sizeof(T)};
-        T * const currentRangeEnd{_slotRange.end};
-        _slotRange.end = _slotRange.start + newCapacity;
-
-        // Update free ranges
-        if (_freeRanges.empty() || _freeRanges.front().end != currentRangeEnd)
-        {
-            // Insert new free range
-            _freeRanges.insert(_freeRanges.begin(), _Range{currentRangeEnd, _slotRange.end}); // TODO: Switch to `emplace` once intellisense supports it
-        }
-        else
-        {
-            // Update existing free range
-            _freeRanges.front().end = _slotRange.end;
-        }
-    }
-
-    template <typename T>
-    inline auto Sea<T>::_find(const T * const slot) noexcept -> typename std::vector<_Range>::iterator
+    inline auto Pool<T>::_find(const T * const slot) noexcept -> typename std::vector<_Range>::iterator
     {
         return lowerBound(_freeRanges.begin(), _freeRanges.end(), slot, [](const _Range & range, const T * const slot) -> bool { return range.start <= slot; });
     }
