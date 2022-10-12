@@ -10,15 +10,15 @@ namespace qc
 {
     namespace _internal
     {
-        class StableLotFriend;
+        class SeaFriend;
     }
 
-    struct StableLotError {};
+    struct SeaError {};
 
     template <typename T>
-    class StableLot
+    class Sea
     {
-        friend ::qc::_internal::StableLotFriend;
+        friend ::qc::_internal::SeaFriend;
 
         template <bool constant> class _Iterator;
 
@@ -32,16 +32,16 @@ namespace qc
         using iterator = _Iterator<false>;
         using const_iterator = _Iterator<true>;
 
-        StableLot() noexcept = default;
-        explicit StableLot(size_t maxSize) noexcept;
+        Sea() noexcept = default;
+        explicit Sea(size_t maxSize) noexcept;
 
-        StableLot(const StableLot &) = delete;
-        StableLot(StableLot && other) noexcept;
+        Sea(const Sea &) = delete;
+        Sea(Sea && other) noexcept;
 
-        StableLot & operator=(const StableLot &) = delete;
-        StableLot & operator=(StableLot && other) noexcept;
+        Sea & operator=(const Sea &) = delete;
+        Sea & operator=(Sea && other) noexcept;
 
-        ~StableLot() noexcept;
+        ~Sea() noexcept;
 
         void setMaxSize(size_t maxSize);
 
@@ -101,9 +101,9 @@ namespace qc
 
     template <typename T>
     template <bool constant>
-    class StableLot<T>::_Iterator
+    class Sea<T>::_Iterator
     {
-        friend StableLot;
+        friend Sea;
 
         using T_ = std::conditional_t<constant, const T, T>;
         using _Range_ = std::conditional_t<constant, const _Range, _Range>;
@@ -144,13 +144,13 @@ namespace qc
 namespace qc
 {
     template <typename T>
-    StableLot<T>::StableLot(const size_t maxSize) noexcept
+    Sea<T>::Sea(const size_t maxSize) noexcept
     {
         setMaxSize(maxSize);
     }
 
     template <typename T>
-    inline StableLot<T>::StableLot(StableLot && other) noexcept :
+    inline Sea<T>::Sea(Sea && other) noexcept :
         _maxPageCount{std::exchange(other._maxPageCount, 0u)},
         _pageCount{std::exchange(other._pageCount, 0u)},
         _maxSize{std::exchange(other._maxSize, 0u)},
@@ -160,7 +160,7 @@ namespace qc
     {}
 
     template <typename T>
-    inline StableLot<T> & StableLot<T>::operator=(StableLot && other) noexcept
+    inline Sea<T> & Sea<T>::operator=(Sea && other) noexcept
     {
         _maxPageCount = std::exchange(other._maxPageCount, 0u);
         _pageCount = std::exchange(other._pageCount, 0u);
@@ -173,7 +173,7 @@ namespace qc
     }
 
     template <typename T>
-    inline StableLot<T>::~StableLot() noexcept
+    inline Sea<T>::~Sea() noexcept
     {
         // Destruct any in-use objects
         for (T & v : *this) v.~T();
@@ -192,12 +192,12 @@ namespace qc
     }
 
     template <typename T>
-    inline void StableLot<T>::setMaxSize(const size_t maxSize)
+    inline void Sea<T>::setMaxSize(const size_t maxSize)
     {
         // May only be called before memory is reserved
         if (_fullRange.start)
         {
-            throw StableLotError{};
+            throw SeaError{};
         }
 
         _maxPageCount =  u32((maxSize * sizeof(T) + pageSize - 1) / pageSize);
@@ -206,7 +206,7 @@ namespace qc
 
     template <typename T>
     template <typename... Args>
-    inline T & StableLot<T>::construct(Args &&... args)
+    inline T & Sea<T>::construct(Args &&... args)
     {
         if (_freeRanges.empty()) [[unlikely]]
         {
@@ -225,12 +225,12 @@ namespace qc
     }
 
     template <typename T>
-    inline void StableLot<T>::destruct(T & v)
+    inline void Sea<T>::destruct(T & v)
     {
-        // Ensure the slot is in the lot
+        // Ensure the slot is in the sea
         if (!contains(&v))
         {
-            throw StableLotError{};
+            throw SeaError{};
         }
 
         // Find the free range before or including the slot
@@ -242,7 +242,7 @@ namespace qc
         // Ensure slot is in-use, i.e. it's not in a free range
         if (isLower && &v < lowerIt->end)
         {
-            throw StableLotError{};
+            throw SeaError{};
         }
 
         // Destruct object
@@ -301,15 +301,15 @@ namespace qc
     }
 
     template <typename T>
-    inline bool StableLot<T>::contains(const T * const v) const noexcept
+    inline bool Sea<T>::contains(const T * const v) const noexcept
     {
         return v >= _fullRange.start && v < _fullRange.end;
     }
 
     template <typename T>
-    inline void StableLot<T>::freeUnusedPages()
+    inline void Sea<T>::freeUnusedPages()
     {
-        // Lot is full or unallocated
+        // Sea is full or unallocated
         if (_freeRanges.empty())
         {
             return;
@@ -348,14 +348,14 @@ namespace qc
     }
 
     template <typename T>
-    inline auto StableLot<T>::begin() noexcept -> iterator
+    inline auto Sea<T>::begin() noexcept -> iterator
     {
-        const const_iterator it{const_cast<const StableLot *>(this)->begin()};
+        const const_iterator it{const_cast<const Sea *>(this)->begin()};
         return reinterpret_cast<const iterator &>(it);
     }
 
     template <typename T>
-    inline auto StableLot<T>::begin() const noexcept -> const_iterator
+    inline auto Sea<T>::begin() const noexcept -> const_iterator
     {
         if (_freeRanges.empty())
         {
@@ -365,12 +365,12 @@ namespace qc
         {
             const _Range & lowestFreeRange{_freeRanges.back()};
 
-            // First in-use range is at the start of the lot
+            // First in-use range is at the start of the sea
             if (lowestFreeRange.start > _fullRange.start)
             {
                 return const_iterator{_fullRange.start, &lowestFreeRange};
             }
-            // First in-use range is after the free range at the start of the lot
+            // First in-use range is after the free range at the start of the sea
             else
             {
                 return const_iterator{lowestFreeRange.end, &lowestFreeRange - 1};
@@ -379,19 +379,19 @@ namespace qc
     }
 
     template <typename T>
-    inline auto StableLot<T>::end() noexcept -> iterator
+    inline auto Sea<T>::end() noexcept -> iterator
     {
         return iterator{_fullRange.end, nullptr};
     }
 
     template <typename T>
-    inline auto StableLot<T>::end() const noexcept -> const_iterator
+    inline auto Sea<T>::end() const noexcept -> const_iterator
     {
         return const_iterator{_fullRange.end, nullptr};
     }
 
     template <typename T>
-    inline void StableLot<T>::_expand()
+    inline void Sea<T>::_expand()
     {
         // Reserve virtual memory if haven't done so already
         if (!_fullRange.start)
@@ -399,7 +399,7 @@ namespace qc
             // Max size must have been set by this point
             if (!_maxPageCount)
             {
-                throw StableLotError{};
+                throw SeaError{};
             }
 
             _fullRange.start = static_cast<T *>(reservePages(_maxPageCount));
@@ -409,7 +409,7 @@ namespace qc
         // Ensure we still have more reserved pages
         if (_pageCount == _maxPageCount)
         {
-            throw StableLotError{};
+            throw SeaError{};
         }
 
         // Double the number of committed pages
@@ -446,28 +446,28 @@ namespace qc
     }
 
     template <typename T>
-    inline auto StableLot<T>::_find(const T * const slot) noexcept -> typename std::vector<_Range>::iterator
+    inline auto Sea<T>::_find(const T * const slot) noexcept -> typename std::vector<_Range>::iterator
     {
         return lowerBound(_freeRanges.begin(), _freeRanges.end(), slot, [](const _Range & range, const T * const slot) -> bool { return range.start <= slot; });
     }
 
     template <typename T>
     template <bool constant>
-    StableLot<T>::_Iterator<constant>::_Iterator(const _Iterator<false> & other) noexcept requires constant :
+    Sea<T>::_Iterator<constant>::_Iterator(const _Iterator<false> & other) noexcept requires constant :
         _slot{other._slot},
         _nextFreeRange{other._nextFreeRange}
     {}
 
     template <typename T>
     template <bool constant>
-    StableLot<T>::_Iterator<constant>::_Iterator(T_ * const slot, _Range_ * const nextFreeRange) noexcept :
+    Sea<T>::_Iterator<constant>::_Iterator(T_ * const slot, _Range_ * const nextFreeRange) noexcept :
         _slot{slot},
         _nextFreeRange{nextFreeRange}
     {}
 
     template <typename T>
     template <bool constant>
-    auto StableLot<T>::_Iterator<constant>::operator++() noexcept -> _Iterator &
+    auto Sea<T>::_Iterator<constant>::operator++() noexcept -> _Iterator &
     {
         ++_slot;
 
@@ -482,7 +482,7 @@ namespace qc
 
     template <typename T>
     template <bool constant>
-    auto StableLot<T>::_Iterator<constant>::operator++(int) noexcept -> _Iterator
+    auto Sea<T>::_Iterator<constant>::operator++(int) noexcept -> _Iterator
     {
         const _Iterator tmp{*this};
         ++*this;
@@ -491,7 +491,7 @@ namespace qc
 
     template <typename T>
     template <bool constant>
-    bool StableLot<T>::_Iterator<constant>::operator==(const _Iterator & other) const noexcept
+    bool Sea<T>::_Iterator<constant>::operator==(const _Iterator & other) const noexcept
     {
         return _slot == other._slot;
     }

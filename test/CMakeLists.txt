@@ -75,26 +75,6 @@ qc_setup_target(
 )
 
 qc_setup_target(
-    qc-core-test-semi-stable-deque
-    EXECUTABLE
-    SOURCE_FILES
-        test-semi-stable-deque.cpp
-    PRIVATE_LINKS
-        qc-core
-        GTest::gtest_main
-)
-
-qc_setup_target(
-    qc-core-test-stable-lot
-    EXECUTABLE
-    SOURCE_FILES
-        test-stable-lot.cpp
-    PRIVATE_LINKS
-        qc-core-platform
-        GTest::gtest_main
-)
-
-qc_setup_target(
     qc-core-test-paging
     EXECUTABLE
     SOURCE_FILES
@@ -115,10 +95,30 @@ qc_setup_target(
 )
 
 qc_setup_target(
+    qc-core-test-sea
+    EXECUTABLE
+    SOURCE_FILES
+        test-sea.cpp
+    PRIVATE_LINKS
+        qc-core-platform
+        GTest::gtest_main
+)
+
+qc_setup_target(
     qc-core-test-span
     EXECUTABLE
     SOURCE_FILES
         test-span.cpp
+    PRIVATE_LINKS
+        qc-core
+        GTest::gtest_main
+)
+
+qc_setup_target(
+    qc-core-test-semi-stable-deque
+    EXECUTABLE
+    SOURCE_FILES
+        test-semi-stable-deque.cpp
     PRIVATE_LINKS
         qc-core
         GTest::gtest_main
