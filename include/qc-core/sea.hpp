@@ -15,6 +15,9 @@ namespace qc
 
     struct SeaError {};
 
+    ///
+    /// Stable object pool that may grow to be extremely large, hence the name
+    ///
     template <typename T>
     class Sea
     {
@@ -45,9 +48,9 @@ namespace qc
 
         void setMaxSize(size_t maxSize);
 
-        template <typename... Args> [[nodiscard]] T & construct(Args &&... args);
+        template <typename... Args> [[nodiscard]] T & create(Args &&... args);
 
-        void destruct(T & v);
+        void destroy(T & v);
 
         bool contains(const T * v) const noexcept;
 
@@ -206,7 +209,7 @@ namespace qc
 
     template <typename T>
     template <typename... Args>
-    inline T & Sea<T>::construct(Args &&... args)
+    inline T & Sea<T>::create(Args &&... args)
     {
         if (_freeRanges.empty()) [[unlikely]]
         {
@@ -225,7 +228,7 @@ namespace qc
     }
 
     template <typename T>
-    inline void Sea<T>::destruct(T & v)
+    inline void Sea<T>::destroy(T & v)
     {
         // Ensure the slot is in the sea
         if (!contains(&v))
