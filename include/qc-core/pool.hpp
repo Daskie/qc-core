@@ -4,27 +4,19 @@
 #include <vector>
 
 #include <qc-core/core-ext.hpp>
+#include <qc-core/paging.hpp>
 #include <qc-core/pool-common.hpp>
 
 namespace qc
 {
-    namespace _internal
-    {
-        class PoolFriend;
-    }
-
-    struct PoolError {};
-
     ///
-    /// Stable, fixed size object pool
+    /// Stable object pool that may grow to be extremely large, hence the name
     ///
-    /// Very similar to Sea, and should be kept mostly in sync
+    /// Very similar to FixedPool, and should be kept mostly in sync
     ///
     template <typename T>
     class Pool
     {
-        friend ::qc::_internal::PoolFriend;
-
         using _Range = _pool::Range<T>;
         template <bool constant> using _Iterator = _pool::Iterator<T, constant>;
 
@@ -39,7 +31,7 @@ namespace qc
         using const_iterator = _Iterator<true>;
 
         Pool() noexcept = default;
-        explicit Pool(size_t capacity) noexcept;
+        explicit Pool(size_t maxCapacity) noexcept;
 
         Pool(const Pool &) = delete;
         Pool(Pool && other) noexcept;
@@ -49,13 +41,17 @@ namespace qc
 
         ~Pool() noexcept;
 
-        void setCapacity(size_t capacity);
+        void setMaxCapacity(size_t maxCapacity);
 
         template <typename... Args> [[nodiscard]] T & create(Args &&... args);
 
         void destroy(T & v);
 
         bool contains(const T * v) const noexcept;
+
+        void freeUnusedPages();
+
+        size_t maxCapacity() const noexcept { return _maxCapacity; }
 
         size_t capacity() const noexcept { return size_t(_slotRange.end - _slotRange.start); }
 
@@ -64,6 +60,10 @@ namespace qc
         bool empty() const noexcept { return _size == 0u; }
 
         bool full() const noexcept { return _size == capacity(); }
+
+        u32 maxPageCount() const noexcept { return _maxPageCount; }
+
+        u32 pageCount() const noexcept { return _pageCount; }
 
         iterator begin() noexcept;
         const_iterator begin() const noexcept;
@@ -77,6 +77,9 @@ namespace qc
 
         inline static _Range _nullRange{};
 
+        u32 _maxPageCount{};
+        u32 _pageCount{};
+        size_t _maxCapacity{};
         _Range _slotRange{};
         size_t _size{};
         std::vector<_Range> _freeRanges{};
@@ -92,13 +95,16 @@ namespace qc
 namespace qc
 {
     template <typename T>
-    inline Pool<T>::Pool(const size_t capacity) noexcept
+    inline Pool<T>::Pool(const size_t maxCapacity) noexcept
     {
-        setCapacity(capacity);
+        setMaxCapacity(maxCapacity);
     }
 
     template <typename T>
     inline Pool<T>::Pool(Pool && other) noexcept :
+        _maxPageCount{std::exchange(other._maxPageCount, 0u)},
+        _pageCount{std::exchange(other._pageCount, 0u)},
+        _maxCapacity{std::exchange(other._maxCapacity, 0u)},
         _slotRange{std::exchange(other._slotRange, {})},
         _size{std::exchange(other._size, 0u)},
         _freeRanges{std::move(other._freeRanges)}
@@ -107,6 +113,9 @@ namespace qc
     template <typename T>
     inline Pool<T> & Pool<T>::operator=(Pool && other) noexcept
     {
+        _maxPageCount = std::exchange(other._maxPageCount, 0u);
+        _pageCount = std::exchange(other._pageCount, 0u);
+        _maxCapacity = std::exchange(other._maxCapacity, 0u);
         _slotRange = std::exchange(other._slotRange, {});
         _size = std::exchange(other._size, 0u);
         _freeRanges = std::move(other._freeRanges);
@@ -129,17 +138,20 @@ namespace qc
         }
 
         // Free memory
-        ::operator delete(_slotRange.start, std::align_val_t{alignof(T)});
+        freePages(_slotRange.start);
 
         if constexpr (debug)
         {
+            _maxPageCount = 0u;
+            _pageCount = 0u;
+            _maxCapacity = 0u;
             _slotRange = {};
             _size = 0u;
         }
     }
 
     template <typename T>
-    inline void Pool<T>::setCapacity(const size_t capacity)
+    inline void Pool<T>::setMaxCapacity(size_t maxCapacity)
     {
         // May only be called before memory is reserved
         if (_slotRange.start)
@@ -147,15 +159,8 @@ namespace qc
             throw PoolError{};
         }
 
-        // Ignore zero call
-        if (capacity == 0u)
-        {
-            return;
-        }
-
-        _slotRange.start = static_cast<T *>(::operator new(capacity * sizeof(T), std::align_val_t{alignof(T)}));
-        _slotRange.end = _slotRange.start + capacity;
-        _freeRanges.push_back(_slotRange);
+        _maxPageCount =  u32((maxCapacity * sizeof(T) + pageSize - 1) / pageSize);
+        _maxCapacity = _maxPageCount * pageSize / sizeof(T);
     }
 
     template <typename T>
@@ -164,7 +169,7 @@ namespace qc
     {
         if (_freeRanges.empty()) [[unlikely]]
         {
-            throw PoolError{};
+            _expand();
         }
 
         _Range & lowRange{_freeRanges.back()};
@@ -261,6 +266,47 @@ namespace qc
     }
 
     template <typename T>
+    inline void Pool<T>::freeUnusedPages()
+    {
+        // Pool is full or unallocated
+        if (_freeRanges.empty())
+        {
+            return;
+        }
+
+        _Range & highRange{_freeRanges.front()};
+
+        // The tail of the allocated memory is in use
+        if (highRange.end != _slotRange.end)
+        {
+            return;
+        }
+
+        const size_t necessaryCapacity{size_t(highRange.start - _slotRange.start)};
+        const u32 necessaryPageCount{u32((necessaryCapacity * sizeof(T) + pageSize - 1u) / pageSize)};
+        const u32 unnecessaryPageCount{_pageCount - necessaryPageCount};
+
+        // Not enough free tail slots to make up a page
+        if (!unnecessaryPageCount)
+        {
+            return;
+        }
+
+        // Decommit uneccessary pages
+        decommitPages(reinterpret_cast<std::byte *>(_slotRange.start) + necessaryPageCount * pageSize, unnecessaryPageCount);
+
+        // Update state
+        _pageCount = necessaryPageCount;
+        const size_t newCapacity{_pageCount * pageSize / sizeof(T)};
+        _slotRange.end = _slotRange.start + newCapacity;
+        highRange.end = _slotRange.end;
+        if (highRange.end == highRange.start)
+        {
+            _freeRanges.erase(_freeRanges.begin());
+        }
+    }
+
+    template <typename T>
     inline auto Pool<T>::begin() noexcept -> iterator
     {
         const const_iterator it{const_cast<const Pool *>(this)->begin()};
@@ -301,6 +347,61 @@ namespace qc
     inline auto Pool<T>::end() const noexcept -> const_iterator
     {
         return const_iterator{_slotRange.end, nullptr};
+    }
+
+    template <typename T>
+    inline void Pool<T>::_expand()
+    {
+        // Reserve virtual memory if haven't done so already
+        if (!_slotRange.start)
+        {
+            // Max capacity must have been set by this point
+            if (!_maxPageCount)
+            {
+                throw PoolError{};
+            }
+
+            _slotRange.start = static_cast<T *>(reservePages(_maxPageCount));
+            _slotRange.end = _slotRange.start;
+        }
+
+        // Ensure we still have more reserved pages
+        if (_pageCount == _maxPageCount)
+        {
+            throw PoolError{};
+        }
+
+        // Double the number of committed pages
+        const u32 minPageCount{u32((sizeof(T) + pageSize - 1u) / pageSize)};
+        u32 newPageCount{qc::max(_pageCount * 2u, minPageCount)};
+
+        // Round up and reserve all pages if within +50% of new page count
+        if (newPageCount + newPageCount / 2 >= _maxPageCount)
+        {
+            newPageCount = _maxPageCount;
+        }
+
+        // Commit new pages
+        std::byte * const pages{reinterpret_cast<std::byte *>(_slotRange.start)};
+        commitPages(pages + _pageCount * pageSize, newPageCount - _pageCount);
+        _pageCount = newPageCount;
+
+        // Update full range
+        const size_t newCapacity{_pageCount * pageSize / sizeof(T)};
+        T * const currentRangeEnd{_slotRange.end};
+        _slotRange.end = _slotRange.start + newCapacity;
+
+        // Update free ranges
+        if (_freeRanges.empty() || _freeRanges.front().end != currentRangeEnd)
+        {
+            // Insert new free range
+            _freeRanges.insert(_freeRanges.begin(), _Range{currentRangeEnd, _slotRange.end}); // TODO: Switch to `emplace` once intellisense supports it
+        }
+        else
+        {
+            // Update existing free range
+            _freeRanges.front().end = _slotRange.end;
+        }
     }
 
     template <typename T>

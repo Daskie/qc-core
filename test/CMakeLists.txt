@@ -45,6 +45,16 @@ qc_setup_target(
 )
 
 qc_setup_target(
+    qc-core-test-fixed-pool
+    EXECUTABLE
+    SOURCE_FILES
+        test-fixed-pool.cpp
+    PRIVATE_LINKS
+        qc-core-platform
+        GTest::gtest_main
+)
+
+qc_setup_target(
     qc-core-test-kd-tree
     EXECUTABLE
     SOURCE_FILES
@@ -59,16 +69,6 @@ qc_setup_target(
     EXECUTABLE
     SOURCE_FILES
         test-matrix.cpp
-    PRIVATE_LINKS
-        qc-core
-        GTest::gtest_main
-)
-
-qc_setup_target(
-    qc-core-test-memory
-    EXECUTABLE
-    SOURCE_FILES
-        test-memory.cpp
     PRIVATE_LINKS
         qc-core
         GTest::gtest_main
@@ -101,16 +101,6 @@ qc_setup_target(
         test-quaternion.cpp
     PRIVATE_LINKS
         qc-core
-        GTest::gtest_main
-)
-
-qc_setup_target(
-    qc-core-test-sea
-    EXECUTABLE
-    SOURCE_FILES
-        test-sea.cpp
-    PRIVATE_LINKS
-        qc-core-platform
         GTest::gtest_main
 )
 

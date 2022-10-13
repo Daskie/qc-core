@@ -4,57 +4,59 @@
 
 namespace qc
 {
+    template <typename T> class FixedPool;
     template <typename T> class Pool;
-    template <typename T> class Sea;
-}
 
-namespace qc::_pool
-{
-    template <typename T>
-    struct Range
+    struct PoolError {};
+
+    namespace _pool
     {
-        T * start;
-        T * end;
-    };
+        template <typename T>
+        struct Range
+        {
+            T * start;
+            T * end;
+        };
 
-    template <typename T, bool constant>
-    class Iterator
-    {
-        friend class Pool<T>;
-        friend class Sea<T>;
+        template <typename T, bool constant>
+        class Iterator
+        {
+            friend class FixedPool<T>;
+            friend class Pool<T>;
 
-        using T_ = std::conditional_t<constant, const T, T>;
-        using Range_ = std::conditional_t<constant, const Range<T>, Range<T>>;
+            using T_ = std::conditional_t<constant, const T, T>;
+            using Range_ = std::conditional_t<constant, const Range<T>, Range<T>>;
 
-      public:
+          public:
 
-        using iterator_category = std::forward_iterator_tag;
-        using value_type = T_;
-        using reference = T_ &;
-        using pointer = T_ *;
-        using difference_type = ptrdiff_t;
+            using iterator_category = std::forward_iterator_tag;
+            using value_type = T_;
+            using reference = T_ &;
+            using pointer = T_ *;
+            using difference_type = ptrdiff_t;
 
-        Iterator(const Iterator &) noexcept = default;
-        Iterator(const Iterator<T, false> &) noexcept requires constant;
+            Iterator(const Iterator &) noexcept = default;
+            Iterator(const Iterator<T, false> &) noexcept requires constant;
 
-        Iterator & operator=(const Iterator &) noexcept = default;
+            Iterator & operator=(const Iterator &) noexcept = default;
 
-        reference operator*() const noexcept { return *_slot; }
+            reference operator*() const noexcept { return *_slot; }
 
-        pointer operator->() const noexcept { return _slot; }
+            pointer operator->() const noexcept { return _slot; }
 
-        Iterator & operator++() noexcept;
-        Iterator operator++(int) noexcept;
+            Iterator & operator++() noexcept;
+            Iterator operator++(int) noexcept;
 
-        bool operator==(const Iterator & other) const noexcept;
+            bool operator==(const Iterator & other) const noexcept;
 
-      private:
+          private:
 
-        T_ * _slot{};
-        Range_ * _nextFreeRange{};
+            T_ * _slot{};
+            Range_ * _nextFreeRange{};
 
-        Iterator(T_ * slot, Range_ * nextFreeRange) noexcept;
-    };
+            Iterator(T_ * slot, Range_ * nextFreeRange) noexcept;
+        };
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
