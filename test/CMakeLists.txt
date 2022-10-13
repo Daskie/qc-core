@@ -5,6 +5,16 @@ find_package(GTest CONFIG REQUIRED)
 ### QC-CORE-TEST ###############################################################
 
 qc_setup_target(
+    qc-core-test-bank
+    EXECUTABLE
+    SOURCE_FILES
+        test-bank.cpp
+    PRIVATE_LINKS
+        qc-core-platform
+        GTest::gtest_main
+)
+
+qc_setup_target(
     qc-core-test-bubble-tracker
     EXECUTABLE
     SOURCE_FILES
@@ -41,16 +51,6 @@ qc_setup_target(
         test-enum-utils.cpp
     PRIVATE_LINKS
         qc-core
-        GTest::gtest_main
-)
-
-qc_setup_target(
-    qc-core-test-fixed-pool
-    EXECUTABLE
-    SOURCE_FILES
-        test-fixed-pool.cpp
-    PRIVATE_LINKS
-        qc-core-platform
         GTest::gtest_main
 )
 
