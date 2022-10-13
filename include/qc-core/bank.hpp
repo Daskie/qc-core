@@ -26,7 +26,9 @@ namespace qc
 
         void reserve(u32 capacity);
 
-        template <typename... Args> u32 create(Args && ... args);
+        struct NewElement { T & v; u32 i; };
+
+        template <typename... Args> NewElement create(Args && ... args);
 
         void destroy(u32 i);
 
@@ -48,6 +50,8 @@ namespace qc
 
             ~_Slot() noexcept = delete;
         };
+
+        static_assert(sizeof(_Slot) == sizeof(T)); // Necessary for backing array values to be contiguous
 
         inline constexpr static u32 _minCapacity{16u}; // Must be power of two
         inline constexpr static u32 _invalidI{~u32(0u)};
@@ -134,7 +138,7 @@ namespace qc
 
     template <typename T>
     template <typename... Args>
-    inline u32 Bank<T>::create(Args &&... args)
+    inline auto Bank<T>::create(Args &&... args) -> NewElement
     {
         if (_headFreeI == _invalidI) [[unlikely]]
         {
@@ -147,7 +151,7 @@ namespace qc
         new (&slot.value) T{std::forward<Args>(args)...};
         ++_size;
 
-        return i;
+        return {slot.value, i};
     }
 
     template <typename T>

@@ -42,15 +42,17 @@ namespace qc
 
         ~SemiStableDeque() noexcept;
 
-        u32 push_back(const T & v);
-        u32 push_back(T && v);
+        struct NewElement { T & v; u32 i; };
 
-        u32 push_front(const T & v);
-        u32 push_front(T && v);
+        NewElement push_back(const T & v);
+        NewElement push_back(T && v);
 
-        template <typename... Args> u32 emplace_back(Args &&... args);
+        NewElement push_front(const T & v);
+        NewElement push_front(T && v);
 
-        template <typename... Args> u32 emplace_front(Args &&... args);
+        template <typename... Args> NewElement emplace_back(Args &&... args);
+
+        template <typename... Args> NewElement emplace_front(Args &&... args);
 
         void pop_back();
 
@@ -158,8 +160,8 @@ namespace qc
 
       private:
 
-        _Element * _elements;
-        _Element * _element;
+        _Element * _elements{};
+        _Element * _element{};
 
         _Iterator(_Element * elements, _Element * element) noexcept;
     };
@@ -197,55 +199,55 @@ namespace qc
     }
 
     template <typename T>
-    inline u32 SemiStableDeque<T>::push_back(const T & v)
+    inline auto SemiStableDeque<T>::push_back(const T & v) -> NewElement
     {
         return emplace_back(v);
     }
 
     template <typename T>
-    inline u32 SemiStableDeque<T>::push_back(T && v)
+    inline auto SemiStableDeque<T>::push_back(T && v) -> NewElement
     {
         return emplace_back(std::move(v));
     }
 
     template <typename T>
-    inline u32 SemiStableDeque<T>::push_front(const T & v)
+    inline auto SemiStableDeque<T>::push_front(const T & v) -> NewElement
     {
         return emplace_front(v);
     }
 
     template <typename T>
-    inline u32 SemiStableDeque<T>::push_front(T && v)
+    inline auto SemiStableDeque<T>::push_front(T && v) -> NewElement
     {
         return emplace_front(std::move(v));
     }
 
     template <typename T>
     template <typename... Args>
-    inline u32 SemiStableDeque<T>::emplace_back(Args &&... args)
+    inline auto SemiStableDeque<T>::emplace_back(Args &&... args) -> NewElement
     {
-        const u32 pos{_elements.create(_tailI, _invalidI, std::forward<Args>(args)...)};
+        const auto [element, elementI]{_elements.create(_tailI, _invalidI, std::forward<Args>(args)...)};
 
-        if (_tailI != _invalidI) _elements[_tailI].nextI = pos;
-        _tailI = pos;
+        if (_tailI != _invalidI) _elements[_tailI].nextI = elementI;
+        _tailI = elementI;
 
-        if (_headI == _invalidI) _headI = pos;
+        if (_headI == _invalidI) _headI = elementI;
 
-        return pos;
+        return {element.value, elementI};
     }
 
     template <typename T>
     template <typename... Args>
-    inline u32 SemiStableDeque<T>::emplace_front(Args &&... args)
+    inline auto SemiStableDeque<T>::emplace_front(Args &&... args) -> NewElement
     {
-        const u32 pos{_elements.create(_invalidI, _headI, std::forward<Args>(args)...)};
+        const auto [element, elementI]{_elements.create(_invalidI, _headI, std::forward<Args>(args)...)};
 
-        if (_headI != _invalidI) _elements[_headI].prevI = pos;
-        _headI = pos;
+        if (_headI != _invalidI) _elements[_headI].prevI = elementI;
+        _headI = elementI;
 
-        if (_tailI == _invalidI) _tailI = pos;
+        if (_tailI == _invalidI) _tailI = elementI;
 
-        return pos;
+        return {element.value, elementI};
     }
 
     template <typename T>

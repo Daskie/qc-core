@@ -10,7 +10,7 @@
 using namespace qc::types;
 template <typename T> using Deque = qc::SemiStableDeque<T>;
 
-TEST(Deque, general)
+TEST(SemiStableDeque, general)
 {
     Deque<int> deque{};
     ASSERT_EQ(0u, deque.size());
@@ -18,7 +18,7 @@ TEST(Deque, general)
     ASSERT_EQ(deque.begin(), deque.end());
     ASSERT_EQ(0u, deque.capacity());
 
-    ASSERT_EQ(0u, deque.push_back(1));
+    ASSERT_EQ(0u, deque.push_back(1).i);
     ASSERT_EQ(1, deque.back());
     ASSERT_EQ(1u, deque.size());
     ASSERT_EQ(16u, deque.capacity());
@@ -26,7 +26,7 @@ TEST(Deque, general)
     // 1
     // 1, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _
 
-    ASSERT_EQ(1u, deque.push_front(-1));
+    ASSERT_EQ(1u, deque.push_front(-1).i);
     ASSERT_EQ(-1, deque.front());
     ASSERT_EQ(2u, deque.size());
     ASSERT_EQ(16u, deque.capacity());
@@ -36,12 +36,12 @@ TEST(Deque, general)
 
     for (int i{2}; i <= 8; ++i)
     {
-        ASSERT_EQ(2 * i - 2, deque.push_back(i));
+        ASSERT_EQ(2 * i - 2, deque.push_back(i).i);
         ASSERT_EQ(i, deque.back());
         ASSERT_EQ(2 * i - 1, deque.size());
         ASSERT_EQ(16u, deque.capacity());
 
-        ASSERT_EQ(2 * i - 1, deque.push_front(-i));
+        ASSERT_EQ(2 * i - 1, deque.push_front(-i).i);
         ASSERT_EQ(-i, deque.front());
         ASSERT_EQ(2 * i, deque.size());
         ASSERT_EQ(16u, deque.capacity());
@@ -128,10 +128,10 @@ TEST(Deque, general)
 
     for (int i{7}; i >= 1; i -= 2)
     {
-        ASSERT_EQ(2 * i - 1, deque.push_front(-i));
+        ASSERT_EQ(2 * i - 1, deque.push_front(-i).i);
         ASSERT_EQ(-i, deque.front());
 
-        ASSERT_EQ(2 * i - 2, deque.push_back(i));
+        ASSERT_EQ(2 * i - 2, deque.push_back(i).i);
         ASSERT_EQ(i, deque.back());
     }
     ASSERT_EQ(16u, deque.size());
@@ -160,7 +160,7 @@ TEST(Deque, general)
     }
 }
 
-TEST(Deque, iteratorAssignability)
+TEST(SemiStableDeque, iteratorAssignability)
 {
     static_assert(std::is_assignable_v<qc::SemiStableDeque<int>::iterator, qc::SemiStableDeque<int>::iterator>);
     static_assert(std::is_assignable_v<qc::SemiStableDeque<int>::const_iterator, qc::SemiStableDeque<int>::iterator>);
@@ -178,7 +178,7 @@ TEST(Deque, iteratorAssignability)
     static_assert(!std::is_assignable_v<qc::SemiStableDeque<int>::const_iterator, qc::SemiStableDeque<int>::const_reverse_iterator>);
 }
 
-TEST(Deque, stress)
+TEST(SemiStableDeque, stress)
 {
     const u32 iterations{250u};
     const u32 minSize{100u};
