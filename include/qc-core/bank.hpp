@@ -28,10 +28,10 @@ namespace qc
 
         template <typename... Args> u32 create(Args && ... args);
 
-        void destroy(u32 pos);
+        void destroy(u32 i);
 
-        T & operator[](u32 pos) noexcept;
-        const T & operator[](u32 pos) const noexcept;
+        T & operator[](u32 i) noexcept;
+        const T & operator[](u32 i) const noexcept;
 
         u32 size() const noexcept { return _size; }
 
@@ -141,35 +141,35 @@ namespace qc
             _expand(qc::max(_capacity * 2u, _minCapacity));
         }
 
-        const u32 slotI{_headFreeI};
-        _Slot & slot{_slots[slotI]};
+        const u32 i{_headFreeI};
+        _Slot & slot{_slots[i]};
         _headFreeI = slot.nextFreeI;
         new (&slot.value) T{std::forward<Args>(args)...};
         ++_size;
 
-        return slotI;
+        return i;
     }
 
     template <typename T>
-    inline void Bank<T>::destroy(const u32 pos)
+    inline void Bank<T>::destroy(const u32 i)
     {
-        _Slot & slot{_slots[pos]};
+        _Slot & slot{_slots[i]};
         slot.value.~T();
         slot.nextFreeI = _headFreeI;
-        _headFreeI = pos;
+        _headFreeI = i;
         --_size;
     }
 
     template <typename T>
-    inline T & Bank<T>::operator[](const u32 pos) noexcept
+    inline T & Bank<T>::operator[](const u32 i) noexcept
     {
-        return _slots[pos].value;
+        return _slots[i].value;
     }
 
     template <typename T>
-    inline const T & Bank<T>::operator[](const u32 pos) const noexcept
+    inline const T & Bank<T>::operator[](const u32 i) const noexcept
     {
-        return _slots[pos].value;
+        return _slots[i].value;
     }
 
     template <typename T>

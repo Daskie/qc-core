@@ -1,9 +1,8 @@
 #pragma once
 
 #include <iterator>
-#include <utility>
 
-#include <qc-core/core.hpp>
+#include <qc-core/bank.hpp>
 
 namespace qc
 {
@@ -20,7 +19,6 @@ namespace qc
     template <typename T>
     class SemiStableDeque
     {
-        static_assert(std::is_nothrow_default_constructible_v<T>);
         static_assert(std::is_nothrow_move_constructible_v<T>);
         static_assert(std::is_nothrow_move_assignable_v<T>);
         static_assert(std::is_nothrow_destructible_v<T>);
@@ -76,11 +74,11 @@ namespace qc
         reverse_iterator getReverseIterator(u32 pos) noexcept;
         const_reverse_iterator getReverseIterator(u32 pos) const noexcept;
 
-        u32 size() const noexcept { return _presentCount; }
+        u32 size() const noexcept { return _elements.size(); }
 
-        bool empty() const noexcept { return !_presentCount; }
+        bool empty() const noexcept { return _elements.empty(); }
 
-        u32 capacity() const noexcept { return _capacity; }
+        u32 capacity() const noexcept { return _elements.capacity(); }
 
         iterator begin() noexcept;
         const_iterator begin() const noexcept;
@@ -100,24 +98,26 @@ namespace qc
 
       private:
 
-        struct _Slot
+        struct _Element
         {
+            T value;
             u32 prevI;
             u32 nextI;
-            T value;
+
+            template <typename... Args> _Element(u32 prevI, u32 nextI, Args &&... args);
+
+            _Element(const _Element &) = delete;
+            _Element(_Element && other) noexcept = default;
+
+            _Element & operator=(const _Element &) = delete;
+            _Element & operator=(_Element && other) noexcept = default;
         };
 
-        inline constexpr static u32 _minCapacity{16u};
         inline constexpr static u32 _invalidI{~u32(0u)};
 
-        _Slot * _slots{};
-        u32 _capacity{};
-        u32 _presentCount{};
-        u32 _presentHeadI{_invalidI};
-        u32 _presentTailI{_invalidI};
-        u32 _vacantHeadI{_invalidI};
-
-        void _expand();
+        Bank<_Element> _elements{};
+        u32 _headI{_invalidI};
+        u32 _tailI{_invalidI};
     };
 
     template <typename T>
@@ -126,13 +126,13 @@ namespace qc
     {
         friend SemiStableDeque;
 
-        using T_ = std::conditional_t<constant, const T, T>;
-        using _Slot_ = std::conditional_t<constant, const _Slot, _Slot>;
+        using _T = std::conditional_t<constant, const T, T>;
+        using _Element = std::conditional_t<constant, const _Element, _Element>;
 
       public:
 
         using iterator_category = std::forward_iterator_tag;
-        using value_type = T_;
+        using value_type = _T;
         using reference = value_type &;
         using pointer = value_type *;
         using difference_type = ptrdiff_t;
@@ -145,23 +145,23 @@ namespace qc
 
         _Iterator & operator=(const _Iterator &) noexcept = default;
 
-        reference operator*() const noexcept { return _slot->value; }
+        reference operator*() const noexcept { return _element->value; }
 
-        pointer operator->() const noexcept { return &_slot->value; }
+        pointer operator->() const noexcept { return &_element->value; }
 
         _Iterator & operator++() noexcept;
         _Iterator operator++(int) noexcept;
 
-        u32 index() const noexcept { return u32(_slot - _slots); }
+        u32 pos() const noexcept { return u32(_element - _elements); }
 
         bool operator==(const _Iterator & other) const noexcept;
 
       private:
 
-        _Slot_ * _slots{};
-        _Slot_ * _slot{};
+        _Element * _elements;
+        _Element * _element;
 
-        _Iterator(_Slot_ * slots, _Slot_ * slot) noexcept;
+        _Iterator(_Element * elements, _Element * element) noexcept;
     };
 }
 
@@ -171,23 +171,17 @@ namespace qc
 {
     template <typename T>
     inline SemiStableDeque<T>::SemiStableDeque(SemiStableDeque && other) noexcept :
-        _slots{std::exchange(other._slots, nullptr)},
-        _capacity{std::exchange(other._capacity, 0u)},
-        _presentCount{std::exchange(other._presentCount, 0u)},
-        _presentHeadI{std::exchange(other._presentHeadI, _invalidI)},
-        _presentTailI{std::exchange(other._presentTailI, _invalidI)},
-        _vacantHeadI{std::exchange(other._vacantHeadI, _invalidI)}
+        _elements{std::move(other._elements)},
+        _headI{std::exchange(other._headI, _invalidI)},
+        _tailI{std::exchange(other._tailI, _invalidI)}
     {}
 
     template <typename T>
     inline SemiStableDeque<T> & SemiStableDeque<T>::operator=(SemiStableDeque && other) noexcept
     {
-        _slots = std::exchange(other._slots, nullptr);
-        _capacity = std::exchange(other._capacity, 0u);
-        _presentCount = std::exchange(other._presentCount, 0u);
-        _presentHeadI = std::exchange(other._presentHeadI, _invalidI);
-        _presentTailI = std::exchange(other._presentTailI, _invalidI);
-        _vacantHeadI = std::exchange(other._vacantHeadI, _invalidI);
+        _elements = std::move(other._elements);
+        _headI = std::exchange(other._headI, _invalidI);
+        _tailI = std::exchange(other._tailI, _invalidI);
 
         return *this;
     }
@@ -195,24 +189,10 @@ namespace qc
     template <typename T>
     inline SemiStableDeque<T>::~SemiStableDeque() noexcept
     {
-        if constexpr (!std::is_trivially_destructible_v<T>)
-        {
-            for (T & v : *this)
-            {
-                v.~T();
-            }
-        }
-
-        ::operator delete(_slots, std::align_val_t{alignof(_Slot)});
-
         if constexpr (qc::debug)
         {
-            _slots = nullptr;
-            _capacity = 0u;
-            _presentCount = 0u;
-            _presentHeadI = _invalidI;
-            _presentTailI = _invalidI;
-            _vacantHeadI = _invalidI;
+            _headI = _invalidI;
+            _tailI = _invalidI;
         }
     }
 
@@ -244,115 +224,82 @@ namespace qc
     template <typename... Args>
     inline u32 SemiStableDeque<T>::emplace_back(Args &&... args)
     {
-        if (_vacantHeadI == _invalidI) [[unlikely]]
-        {
-            _expand();
-        }
+        const u32 pos{_elements.create(_tailI, _invalidI, std::forward<Args>(args)...)};
 
-        const u32 slotI{_vacantHeadI};
-        _Slot & slot{_slots[slotI]};
-        new (&slot.value) T{std::forward<Args>(args)...};
+        if (_tailI != _invalidI) _elements[_tailI].nextI = pos;
+        _tailI = pos;
 
-        _vacantHeadI = slot.nextI;
+        if (_headI == _invalidI) _headI = pos;
 
-        slot.prevI = _presentTailI;
-        slot.nextI = _invalidI;
-
-        if (_presentTailI != _invalidI) _slots[_presentTailI].nextI = slotI;
-        _presentTailI = slotI;
-
-        if (_presentHeadI == _invalidI) _presentHeadI = slotI;
-
-        ++_presentCount;
-
-        return slotI;
+        return pos;
     }
 
     template <typename T>
     template <typename... Args>
     inline u32 SemiStableDeque<T>::emplace_front(Args &&... args)
     {
-        if (_vacantHeadI == _invalidI) [[unlikely]]
-        {
-            _expand();
-        }
+        const u32 pos{_elements.create(_invalidI, _headI, std::forward<Args>(args)...)};
 
-        const u32 slotI{_vacantHeadI};
-        _Slot & slot{_slots[slotI]};
-        new (&slot.value) T{std::forward<Args>(args)...};
+        if (_headI != _invalidI) _elements[_headI].prevI = pos;
+        _headI = pos;
 
-        _vacantHeadI = slot.nextI;
+        if (_tailI == _invalidI) _tailI = pos;
 
-        slot.prevI = _invalidI;
-        slot.nextI = _presentHeadI;
-
-        if (_presentHeadI != _invalidI) _slots[_presentHeadI].prevI = slotI;
-        _presentHeadI = slotI;
-
-        if (_presentTailI == _invalidI) _presentTailI = slotI;
-
-        ++_presentCount;
-
-        return slotI;
+        return pos;
     }
 
     template <typename T>
     inline void SemiStableDeque<T>::pop_back()
     {
-        if (_presentTailI == _invalidI) [[unlikely]]
+        if (_tailI == _invalidI) [[unlikely]]
         {
             throw SemiStableDequeError{};
         }
 
-        pop(_presentTailI);
+        pop(_tailI);
     }
 
     template <typename T>
     inline void SemiStableDeque<T>::pop_front()
     {
-        if (_presentHeadI == _invalidI) [[unlikely]]
+        if (_headI == _invalidI) [[unlikely]]
         {
             throw SemiStableDequeError{};
         }
 
-        pop(_presentHeadI);
+        pop(_headI);
     }
 
     template <typename T>
     inline void SemiStableDeque<T>::pop(const u32 pos)
     {
-        _Slot & slot{_slots[pos]};
-        slot.value.~T();
+        _Element & element{_elements[pos]};
 
-        if (slot.prevI != _invalidI)
+        if (element.prevI != _invalidI)
         {
-            _slots[slot.prevI].nextI = slot.nextI;
+            _elements[element.prevI].nextI = element.nextI;
         }
         else
         {
-            _presentHeadI = slot.nextI;
+            _headI = element.nextI;
         }
 
-        if (slot.nextI != _invalidI)
+        if (element.nextI != _invalidI)
         {
-            _slots[slot.nextI].prevI = slot.prevI;
+            _elements[element.nextI].prevI = element.prevI;
         }
         else
         {
-            _presentTailI = slot.prevI;
+            _tailI = element.prevI;
         }
 
-        slot.prevI = _invalidI;
-        slot.nextI = _vacantHeadI;
-        _vacantHeadI = pos;
-
-        --_presentCount;
+        _elements.destroy(pos);
     }
 
     template <typename T>
     inline void SemiStableDeque<T>::pop(const iterator it)
     {
-        pop(it.index());
+        pop(it.pos());
     }
 
     template <typename T>
@@ -364,12 +311,12 @@ namespace qc
     template <typename T>
     inline const T & SemiStableDeque<T>::front() const
     {
-        if (_presentHeadI == _invalidI) [[unlikely]]
+        if (_headI == _invalidI) [[unlikely]]
         {
             throw SemiStableDequeError{};
         }
 
-        return _slots[_presentHeadI].value;
+        return _elements[_headI].value;
     }
 
     template <typename T>
@@ -381,48 +328,48 @@ namespace qc
     template <typename T>
     inline const T & SemiStableDeque<T>::back() const
     {
-        if (_presentTailI == _invalidI) [[unlikely]]
+        if (_tailI == _invalidI) [[unlikely]]
         {
             throw SemiStableDequeError{};
         }
 
-        return _slots[_presentTailI].value;
+        return _elements[_tailI].value;
     }
 
     template <typename T>
     inline T & SemiStableDeque<T>::operator[](const u32 pos) noexcept
     {
-        return _slots[pos].value;
+        return _elements[pos].value;
     }
 
     template <typename T>
     inline const T & SemiStableDeque<T>::operator[](const u32 pos) const noexcept
     {
-        return _slots[pos].value;
+        return _elements[pos].value;
     }
 
     template <typename T>
     inline auto SemiStableDeque<T>::getIterator(const u32 pos) noexcept -> iterator
     {
-        return iterator{_slots, _slots + pos};
+        return iterator{&_elements[0u], &_elements[pos]};
     }
 
     template <typename T>
     inline auto SemiStableDeque<T>::getIterator(const u32 pos) const noexcept -> const_iterator
     {
-        return const_iterator{_slots, _slots + pos};
+        return const_iterator{&_elements[0u], &_elements[pos]};
     }
 
     template <typename T>
     inline auto SemiStableDeque<T>::getReverseIterator(const u32 pos) noexcept -> reverse_iterator
     {
-        return reverse_iterator{_slots, _slots + pos};
+        return reverse_iterator{&_elements[0u], &_elements[pos]};
     }
 
     template <typename T>
     inline auto SemiStableDeque<T>::getReverseIterator(const u32 pos) const noexcept -> const_reverse_iterator
     {
-        return const_reverse_iterator{_slots, _slots + pos};
+        return const_reverse_iterator{&_elements[0u], &_elements[pos]};
     }
 
     template <typename T>
@@ -435,7 +382,7 @@ namespace qc
     template <typename T>
     inline auto SemiStableDeque<T>::begin() const noexcept -> const_iterator
     {
-        return _presentHeadI != _invalidI ? const_iterator{_slots, _slots + _presentHeadI} : const_iterator{};
+        return _headI != _invalidI ? const_iterator{&_elements[0u], &_elements[_headI]} : const_iterator{};
     }
 
     template <typename T>
@@ -460,7 +407,7 @@ namespace qc
     template <typename T>
     inline auto SemiStableDeque<T>::rbegin() const noexcept -> const_reverse_iterator
     {
-        return _presentTailI != _invalidI ? const_reverse_iterator{_slots, _slots + _presentTailI} : const_reverse_iterator{};
+        return _tailI != _invalidI ? const_reverse_iterator{&_elements[0u], &_elements[_tailI]} : const_reverse_iterator{};
     }
 
     template <typename T>
@@ -476,67 +423,25 @@ namespace qc
     }
 
     template <typename T>
-    inline void SemiStableDeque<T>::_expand()
-    {
-        const u32 oldCapacity{_capacity};
-        const u32 newCapacity{qc::max(oldCapacity * 2u, _minCapacity)};
-
-        // Expand underlying array
-        {
-            _Slot * const newSlots{static_cast<_Slot *>(::operator new(newCapacity * sizeof(_Slot), std::align_val_t{alignof(_Slot)}))};
-            if constexpr (std::is_trivially_copyable_v<T>)
-            {
-                std::memcpy(newSlots, _slots, oldCapacity * sizeof(_Slot));
-            }
-            else
-            {
-                for (_Slot * src{_slots}, * dst{newSlots}, * srcEnd{_slots + oldCapacity}; src != srcEnd; ++src, ++dst)
-                {
-                    new (dst) _Slot(std::move(*src));
-                }
-            }
-            ::operator delete(_slots, std::align_val_t{alignof(_Slot)});
-            _slots = newSlots;
-            _capacity = newCapacity;
-        }
-
-        // Link first new slot
-        {
-            _Slot & slot{_slots[oldCapacity]};
-            slot.prevI = _invalidI;
-            slot.nextI = oldCapacity + 1u;
-        }
-
-        // Link middle new slots
-        for (u32 slotI{oldCapacity + 1u}; slotI < newCapacity - 1u; ++slotI)
-        {
-            _Slot & slot{_slots[slotI]};
-            slot.prevI = slotI - 1;
-            slot.nextI = slotI + 1;
-        }
-
-        // Link last new slot
-        {
-            _Slot & slot{_slots[newCapacity - 1u]};
-            slot.prevI = newCapacity - 2u;
-            slot.nextI = _invalidI;
-        }
-
-        _vacantHeadI = oldCapacity;
-    }
-
-    template <typename T>
-    template <bool constant, bool reverse>
-    SemiStableDeque<T>::_Iterator<constant, reverse>::_Iterator(const _Iterator<false, reverse> & other) noexcept requires constant :
-        _slots{other._slots},
-        _slot{other._slot}
+    template <typename... Args>
+    inline SemiStableDeque<T>::_Element::_Element(const u32 prevI, const u32 nextI, Args &&... args) :
+        value{std::forward<Args>(args)...},
+        prevI{prevI},
+        nextI{nextI}
     {}
 
     template <typename T>
     template <bool constant, bool reverse>
-    SemiStableDeque<T>::_Iterator<constant, reverse>::_Iterator(_Slot_ * const slots, _Slot_ * const slot) noexcept :
-        _slots{slots},
-        _slot{slot}
+    SemiStableDeque<T>::_Iterator<constant, reverse>::_Iterator(const _Iterator<false, reverse> & other) noexcept requires constant :
+        _elements{other._elements},
+        _element{other._element}
+    {}
+
+    template <typename T>
+    template <bool constant, bool reverse>
+    SemiStableDeque<T>::_Iterator<constant, reverse>::_Iterator(_Element * const elements, _Element * const element) noexcept :
+        _elements{elements},
+        _element{element}
     {}
 
     template <typename T>
@@ -545,11 +450,11 @@ namespace qc
     {
         if constexpr (!reverse)
         {
-            _slot = _slot->nextI != _invalidI ? _slots + _slot->nextI : nullptr;
+            _element = _element->nextI != _invalidI ? _elements + _element->nextI : nullptr;
         }
         else
         {
-            _slot = _slot->prevI != _invalidI ? _slots + _slot->prevI : nullptr;
+            _element = _element->prevI != _invalidI ? _elements + _element->prevI : nullptr;
         }
 
         return *this;
@@ -568,6 +473,6 @@ namespace qc
     template <bool constant, bool reverse>
     bool SemiStableDeque<T>::_Iterator<constant, reverse>::operator==(const _Iterator & other) const noexcept
     {
-        return _slot == other._slot;
+        return _element == other._element;
     }
 }
