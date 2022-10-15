@@ -178,3 +178,86 @@ TEST(Bank, freeOrder)
     ASSERT_EQ(32u, bank.size());
     ASSERT_EQ(32u, bank.capacity());
 }
+
+TEST(Bank, clear)
+{
+    qc::Bank<int> bank{};
+
+    bank.clear();
+    ASSERT_TRUE(bank.empty());
+    ASSERT_EQ(0u, bank.capacity());
+
+    auto [e0, i0]{bank.create(0)};
+    ASSERT_EQ(0, e0);
+    ASSERT_EQ(0u, i0);
+    ASSERT_EQ(1u, bank.size());
+    ASSERT_EQ(16u, bank.capacity());
+
+    bank.clear();
+    ASSERT_TRUE(bank.empty());
+    ASSERT_EQ(16u, bank.capacity());
+
+    auto [e1, i1]{bank.create(1)};
+    ASSERT_EQ(1, e1);
+    ASSERT_EQ(0u, i1);
+    auto [e2, i2]{bank.create(2)};
+    ASSERT_EQ(2, e2);
+    ASSERT_EQ(1u, i2);
+    auto [e3, i3]{bank.create(3)};
+    ASSERT_EQ(3, e3);
+    ASSERT_EQ(2u, i3);
+    ASSERT_EQ(16u, bank.capacity());
+
+    bank.clear();
+    ASSERT_TRUE(bank.empty());
+    ASSERT_EQ(16u, bank.capacity());
+
+    auto [e4, i4]{bank.create(4)};
+    ASSERT_EQ(4, e4);
+    ASSERT_EQ(0u, i4);
+    auto [e5, i5]{bank.create(5)};
+    ASSERT_EQ(5, e5);
+    ASSERT_EQ(1u, i5);
+    auto [e6, i6]{bank.create(6)};
+    ASSERT_EQ(6, e6);
+    ASSERT_EQ(2u, i6);
+    ASSERT_EQ(16u, bank.capacity());
+
+    bank.clear();
+    ASSERT_TRUE(bank.empty());
+    ASSERT_EQ(16u, bank.capacity());
+}
+
+TEST(Bank, clearNontrivial)
+{
+    qc::Bank<std::unique_ptr<int>> bank{};
+
+    bank.clear();
+    ASSERT_TRUE(bank.empty());
+    ASSERT_EQ(0u, bank.capacity());
+
+    auto [e0, i0]{bank.create(new int{0})};
+    ASSERT_EQ(0, *e0);
+    ASSERT_EQ(0u, i0);
+    ASSERT_EQ(1u, bank.size());
+    ASSERT_EQ(16u, bank.capacity());
+
+    bank.clear();
+    ASSERT_TRUE(bank.empty());
+    ASSERT_EQ(16u, bank.capacity());
+
+    auto [e1, i1]{bank.create(new int{1})};
+    ASSERT_EQ(1, *e1);
+    ASSERT_EQ(0u, i1);
+    auto [e2, i2]{bank.create(new int{2})};
+    ASSERT_EQ(2, *e2);
+    ASSERT_EQ(1u, i2);
+    auto [e3, i3]{bank.create(new int{3})};
+    ASSERT_EQ(3, *e3);
+    ASSERT_EQ(2u, i3);
+    ASSERT_EQ(16u, bank.capacity());
+
+    bank.clear();
+    ASSERT_TRUE(bank.empty());
+    ASSERT_EQ(16u, bank.capacity());
+}

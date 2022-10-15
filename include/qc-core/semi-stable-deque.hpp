@@ -76,6 +76,8 @@ namespace qc
         reverse_iterator getReverseIterator(u32 pos) noexcept;
         const_reverse_iterator getReverseIterator(u32 pos) const noexcept;
 
+        void clear();
+
         u32 size() const noexcept { return _elements.size(); }
 
         bool empty() const noexcept { return _elements.empty(); }
@@ -372,6 +374,14 @@ namespace qc
     inline auto SemiStableDeque<T>::getReverseIterator(const u32 pos) const noexcept -> const_reverse_iterator
     {
         return const_reverse_iterator{&_elements[0u], &_elements[pos]};
+    }
+
+    template <typename T>
+    inline void SemiStableDeque<T>::clear()
+    {
+        _elements.clear();
+        _headI = _invalidI;
+        _tailI = _invalidI;
     }
 
     template <typename T>

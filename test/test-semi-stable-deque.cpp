@@ -1,7 +1,6 @@
 #include <qc-core/semi-stable-deque.hpp>
 
 #include <deque>
-#include <unordered_set>
 
 #include <gtest/gtest.h>
 
@@ -158,24 +157,41 @@ TEST(SemiStableDeque, general)
         if (expectedV < 0) --expectedV;
         expectedV = -expectedV;
     }
+
+    deque.clear();
+    ASSERT_EQ(0u, deque.size());
+    ASSERT_EQ(32u, deque.capacity());
+
+    for (int i{0}; i < int(deque.capacity()); ++i)
+    {
+        const auto [newV, newI]{deque.push_back(i)};
+        ASSERT_EQ(newV, i);
+        ASSERT_EQ(newI, i);
+    }
+    ASSERT_EQ(32u, deque.size());
+    ASSERT_EQ(32u, deque.capacity());
+
+    deque.clear();
+    ASSERT_EQ(0u, deque.size());
+    ASSERT_EQ(32u, deque.capacity());
 }
 
 TEST(SemiStableDeque, iteratorAssignability)
 {
-    static_assert(std::is_assignable_v<qc::SemiStableDeque<int>::iterator, qc::SemiStableDeque<int>::iterator>);
-    static_assert(std::is_assignable_v<qc::SemiStableDeque<int>::const_iterator, qc::SemiStableDeque<int>::iterator>);
-    static_assert(!std::is_assignable_v<qc::SemiStableDeque<int>::iterator, qc::SemiStableDeque<int>::const_iterator>);
-    static_assert(std::is_assignable_v<qc::SemiStableDeque<int>::const_iterator, qc::SemiStableDeque<int>::const_iterator>);
+    static_assert(std::is_assignable_v<Deque<int>::iterator, Deque<int>::iterator>);
+    static_assert(std::is_assignable_v<Deque<int>::const_iterator, Deque<int>::iterator>);
+    static_assert(!std::is_assignable_v<Deque<int>::iterator, Deque<int>::const_iterator>);
+    static_assert(std::is_assignable_v<Deque<int>::const_iterator, Deque<int>::const_iterator>);
 
-    static_assert(std::is_assignable_v<qc::SemiStableDeque<int>::reverse_iterator, qc::SemiStableDeque<int>::reverse_iterator>);
-    static_assert(std::is_assignable_v<qc::SemiStableDeque<int>::const_reverse_iterator, qc::SemiStableDeque<int>::reverse_iterator>);
-    static_assert(!std::is_assignable_v<qc::SemiStableDeque<int>::reverse_iterator, qc::SemiStableDeque<int>::const_reverse_iterator>);
-    static_assert(std::is_assignable_v<qc::SemiStableDeque<int>::const_reverse_iterator, qc::SemiStableDeque<int>::const_reverse_iterator>);
+    static_assert(std::is_assignable_v<Deque<int>::reverse_iterator, Deque<int>::reverse_iterator>);
+    static_assert(std::is_assignable_v<Deque<int>::const_reverse_iterator, Deque<int>::reverse_iterator>);
+    static_assert(!std::is_assignable_v<Deque<int>::reverse_iterator, Deque<int>::const_reverse_iterator>);
+    static_assert(std::is_assignable_v<Deque<int>::const_reverse_iterator, Deque<int>::const_reverse_iterator>);
 
-    static_assert(!std::is_assignable_v<qc::SemiStableDeque<int>::iterator, qc::SemiStableDeque<int>::reverse_iterator>);
-    static_assert(!std::is_assignable_v<qc::SemiStableDeque<int>::const_iterator, qc::SemiStableDeque<int>::reverse_iterator>);
-    static_assert(!std::is_assignable_v<qc::SemiStableDeque<int>::iterator, qc::SemiStableDeque<int>::const_reverse_iterator>);
-    static_assert(!std::is_assignable_v<qc::SemiStableDeque<int>::const_iterator, qc::SemiStableDeque<int>::const_reverse_iterator>);
+    static_assert(!std::is_assignable_v<Deque<int>::iterator, Deque<int>::reverse_iterator>);
+    static_assert(!std::is_assignable_v<Deque<int>::const_iterator, Deque<int>::reverse_iterator>);
+    static_assert(!std::is_assignable_v<Deque<int>::iterator, Deque<int>::const_reverse_iterator>);
+    static_assert(!std::is_assignable_v<Deque<int>::const_iterator, Deque<int>::const_reverse_iterator>);
 }
 
 TEST(SemiStableDeque, stress)

@@ -30,10 +30,12 @@ namespace qc
 
         template <typename... Args> NewElement create(Args && ... args);
 
-        void destroy(u32 i);
-
         T & operator[](u32 i) noexcept;
         const T & operator[](u32 i) const noexcept;
+
+        void destroy(u32 i);
+
+        void clear();
 
         u32 size() const noexcept { return _size; }
 
@@ -93,27 +95,14 @@ namespace qc
     template <typename T>
     inline Bank<T>::~Bank() noexcept
     {
-        // Destruct existing elements
-        if constexpr (!std::is_trivially_destructible_v<T>)
-        {
-            if (_size)
-            {
-                const std::vector<bool> freeMap{_makeFreeMap()};
-
-                for (u32 i{0u}; _size; ++i)
-                {
-                    if (!freeMap[i])
-                    {
-                        _slots[i].value.~T();
-                        --_size;
-                    }
-                }
-            }
-        }
-
-        // Free memory
+        // Destroy elements and free memory
         if (_slots)
         {
+            if constexpr (!std::is_trivially_destructible_v<T>)
+            {
+                clear();
+            }
+
             ::operator delete(_slots, std::align_val_t{alignof(_Slot)});
         }
 
@@ -155,6 +144,18 @@ namespace qc
     }
 
     template <typename T>
+    inline T & Bank<T>::operator[](const u32 i) noexcept
+    {
+        return _slots[i].value;
+    }
+
+    template <typename T>
+    inline const T & Bank<T>::operator[](const u32 i) const noexcept
+    {
+        return _slots[i].value;
+    }
+
+    template <typename T>
     inline void Bank<T>::destroy(const u32 i)
     {
         _Slot & slot{_slots[i]};
@@ -165,15 +166,21 @@ namespace qc
     }
 
     template <typename T>
-    inline T & Bank<T>::operator[](const u32 i) noexcept
+    inline void Bank<T>::clear()
     {
-        return _slots[i].value;
-    }
+        if (_size)
+        {
+            const std::vector<bool> freeMap{_makeFreeMap()};
 
-    template <typename T>
-    inline const T & Bank<T>::operator[](const u32 i) const noexcept
-    {
-        return _slots[i].value;
+            // Iterate from back to front to try to keep the free chain linked forwards
+            for (u32 i{_capacity - 1u}; _size; --i)
+            {
+                if (!freeMap[i])
+                {
+                    destroy(i);
+                }
+            }
+        }
     }
 
     template <typename T>
@@ -243,6 +250,7 @@ namespace qc
     template <typename T>
     inline std::vector<bool> Bank<T>::_makeFreeMap() const
     {
+        // TODO: Use own bit-field implementation to more efficiently iterate over set bits
         std::vector<bool> freeMap(_capacity);
         for (u32 freeI{_headFreeI}; freeI != _invalidI; freeI = _slots[freeI].nextFreeI)
         {
