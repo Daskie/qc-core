@@ -105,6 +105,16 @@ qc_setup_target(
 )
 
 qc_setup_target(
+    qc-core-test-ring-deque
+    EXECUTABLE
+    SOURCE_FILES
+        test-ring-deque.cpp
+    PRIVATE_LINKS
+        qc-core
+        GTest::gtest_main
+)
+
+qc_setup_target(
     qc-core-test-span
     EXECUTABLE
     SOURCE_FILES
