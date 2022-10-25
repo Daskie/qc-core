@@ -158,6 +158,11 @@ namespace qc
     template <typename T>
     AvlTree<T> & AvlTree<T>::operator=(AvlTree && other) noexcept
     {
+        if (&other == this)
+        {
+            return *this;
+        }
+
         _root = std::exchange(other._root, nullptr);
         _size = std::exchange(other._size, 0u);
 

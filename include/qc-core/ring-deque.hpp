@@ -149,6 +149,11 @@ namespace qc
     template <typename T>
     inline RingDeque<T> & RingDeque<T>::operator=(RingDeque && other) noexcept
     {
+        if (&other == this)
+        {
+            return *this;
+        }
+
         _slots = std::exchange(other._slots, nullptr);
         _capacity = std::exchange(other._capacity, 0u);
         _size = std::exchange(other._size, 0u);

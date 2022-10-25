@@ -183,6 +183,11 @@ namespace qc
     template <typename T>
     inline SemiStableDeque<T> & SemiStableDeque<T>::operator=(SemiStableDeque && other) noexcept
     {
+        if (&other == this)
+        {
+            return *this;
+        }
+
         _elements = std::move(other._elements);
         _headI = std::exchange(other._headI, _invalidI);
         _tailI = std::exchange(other._tailI, _invalidI);

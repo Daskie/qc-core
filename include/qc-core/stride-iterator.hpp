@@ -38,8 +38,15 @@ namespace qc
         template <typename U> requires (std::is_same_v<std::remove_const_t<U>, std::remove_const_t<T>> && std::is_const_v<T>)
         StrideIter & operator=(const StrideIter<U> & other) noexcept
         {
+            if (&other == this)
+            {
+                return *this;
+            }
+
             _ptr = other._ptr;
             _stride = other._stride;
+
+            return *this;
         }
 
         StrideIter & operator=(StrideIter && other) noexcept = default;

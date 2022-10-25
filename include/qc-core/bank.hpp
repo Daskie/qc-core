@@ -84,6 +84,11 @@ namespace qc
     template <typename T>
     inline Bank<T> & Bank<T>::operator=(Bank && other) noexcept
     {
+        if (&other == this)
+        {
+            return *this;
+        }
+
         _slots = std::exchange(other._slots, nullptr);
         _capacity = std::exchange(other._capacity, 0u);
         _size = std::exchange(other._size, 0u);

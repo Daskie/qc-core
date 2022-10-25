@@ -190,6 +190,11 @@ namespace qc
     template <typename T, bool fixed>
     inline auto Pool<T, fixed>::operator=(Pool && other) noexcept -> Pool &
     {
+        if (&other == this)
+        {
+            return *this;
+        }
+
         static_cast<_Extra &>(*this) = std::exchange(static_cast<_Extra &>(other), {});
         _slotRange = std::exchange(other._slotRange, {});
         _size = std::exchange(other._size, 0u);

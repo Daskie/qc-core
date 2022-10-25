@@ -58,6 +58,11 @@ namespace qc::memory
 
         RecordAllocator & operator=(RecordAllocator && other) noexcept
         {
+            if (&other == this)
+            {
+                return *this;
+            }
+
             _listI = std::exchange(other._listI, 0u);
             return *this;
         }
