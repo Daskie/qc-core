@@ -668,7 +668,7 @@ TEST(FixedPool, setCapacity)
     EXPECT_THROW(pool.setCapacity(0u), qc::PoolError);
 }
 
-TEST(Pool, freeUnusedPages)
+TEST(Pool, shrinkToFit)
 {
     const size_t intsPerPage{qc::pageSize / sizeof(int)};
     qc::Pool<int> pool{5u * intsPerPage};
@@ -676,7 +676,7 @@ TEST(Pool, freeUnusedPages)
     ASSERT_EQ(5u * intsPerPage, pool.capacity());
     ASSERT_EQ(0u, pool.pageCount());
 
-    pool.freeUnusedPages();
+    pool.shrinkToFit();
 
     int * const ints{&pool.create(0)};
     for (int i{1}; i < int(intsPerPage * 5u); ++i)
@@ -685,7 +685,7 @@ TEST(Pool, freeUnusedPages)
     }
     ASSERT_EQ(5u, pool.pageCount());
 
-    pool.freeUnusedPages();
+    pool.shrinkToFit();
     ASSERT_EQ(5u, pool.pageCount());
 
     for (int i{int(intsPerPage * 4u) + 1}; i < int(intsPerPage * 5u); ++i)
@@ -694,13 +694,13 @@ TEST(Pool, freeUnusedPages)
     }
     ASSERT_EQ(5u, pool.pageCount());
 
-    pool.freeUnusedPages();
+    pool.shrinkToFit();
     ASSERT_EQ(5u, pool.pageCount());
 
     pool.destroy(ints[intsPerPage * 4u]);
     ASSERT_EQ(5u, pool.pageCount());
 
-    pool.freeUnusedPages();
+    pool.shrinkToFit();
     ASSERT_EQ(4u, pool.pageCount());
 
     for (int i{int(1)}; i < int(intsPerPage * 4u) - 1; ++i)
@@ -709,19 +709,19 @@ TEST(Pool, freeUnusedPages)
     }
     ASSERT_EQ(4u, pool.pageCount());
 
-    pool.freeUnusedPages();
+    pool.shrinkToFit();
     ASSERT_EQ(4u, pool.pageCount());
 
     pool.destroy(ints[intsPerPage * 4u - 1u]);
     ASSERT_EQ(4u, pool.pageCount());
 
-    pool.freeUnusedPages();
+    pool.shrinkToFit();
     ASSERT_EQ(1u, pool.pageCount());
 
     pool.destroy(ints[0]);
     ASSERT_EQ(1u, pool.pageCount());
 
-    pool.freeUnusedPages();
+    pool.shrinkToFit();
     ASSERT_EQ(0u, pool.pageCount());
 
     static_cast<void>(pool.create(0));

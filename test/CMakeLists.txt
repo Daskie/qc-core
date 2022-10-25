@@ -5,7 +5,17 @@ find_package(GTest CONFIG REQUIRED)
 ### QC-CORE-TEST ###############################################################
 
 qc_setup_target(
-    qc-core-test-avl-tree
+    test-arena
+    EXECUTABLE
+    SOURCE_FILES
+        test-arena.cpp
+    PRIVATE_LINKS
+        qc-core-platform
+        GTest::gtest_main
+)
+
+qc_setup_target(
+    test-avl-tree
     EXECUTABLE
     SOURCE_FILES
         test-avl-tree.cpp
@@ -15,7 +25,7 @@ qc_setup_target(
 )
 
 qc_setup_target(
-    qc-core-test-bank
+    test-bank
     EXECUTABLE
     SOURCE_FILES
         test-bank.cpp
@@ -25,7 +35,7 @@ qc_setup_target(
 )
 
 qc_setup_target(
-    qc-core-test-bubble-tracker
+    test-bubble-tracker
     EXECUTABLE
     SOURCE_FILES
         test-bubble-tracker.cpp
@@ -35,7 +45,7 @@ qc_setup_target(
 )
 
 qc_setup_target(
-    qc-core-test-color
+    test-color
     EXECUTABLE
     SOURCE_FILES
         test-color.cpp
@@ -45,7 +55,7 @@ qc_setup_target(
 )
 
 qc_setup_target(
-    qc-core-test-core
+    test-core
     EXECUTABLE
     SOURCE_FILES
         test-core.cpp
@@ -55,7 +65,7 @@ qc_setup_target(
 )
 
 qc_setup_target(
-    qc-core-test-enum-utils
+    test-enum-utils
     EXECUTABLE
     SOURCE_FILES
         test-enum-utils.cpp
@@ -65,7 +75,7 @@ qc_setup_target(
 )
 
 qc_setup_target(
-    qc-core-test-kd-tree
+    test-kd-tree
     EXECUTABLE
     SOURCE_FILES
         test-kd-tree.cpp
@@ -75,7 +85,7 @@ qc_setup_target(
 )
 
 qc_setup_target(
-    qc-core-test-matrix
+    test-matrix
     EXECUTABLE
     SOURCE_FILES
         test-matrix.cpp
@@ -85,7 +95,7 @@ qc_setup_target(
 )
 
 qc_setup_target(
-    qc-core-test-paging
+    test-paging
     EXECUTABLE
     SOURCE_FILES
         test-paging.cpp
@@ -95,7 +105,7 @@ qc_setup_target(
 )
 
 qc_setup_target(
-    qc-core-test-pool
+    test-pool
     EXECUTABLE
     SOURCE_FILES
         test-pool.cpp
@@ -105,7 +115,7 @@ qc_setup_target(
 )
 
 qc_setup_target(
-    qc-core-test-quaternion
+    test-quaternion
     EXECUTABLE
     SOURCE_FILES
         test-quaternion.cpp
@@ -115,7 +125,7 @@ qc_setup_target(
 )
 
 qc_setup_target(
-    qc-core-test-ring-deque
+    test-ring-deque
     EXECUTABLE
     SOURCE_FILES
         test-ring-deque.cpp
@@ -125,7 +135,7 @@ qc_setup_target(
 )
 
 qc_setup_target(
-    qc-core-test-span
+    test-span
     EXECUTABLE
     SOURCE_FILES
         test-span.cpp
@@ -135,7 +145,7 @@ qc_setup_target(
 )
 
 qc_setup_target(
-    qc-core-test-semi-stable-deque
+    test-semi-stable-deque
     EXECUTABLE
     SOURCE_FILES
         test-semi-stable-deque.cpp
@@ -145,7 +155,7 @@ qc_setup_target(
 )
 
 qc_setup_target(
-    qc-core-test-unique-ordered-vector
+    test-unique-ordered-vector
     EXECUTABLE
     SOURCE_FILES
         test-unique-ordered-vector.cpp
@@ -155,7 +165,7 @@ qc_setup_target(
 )
 
 qc_setup_target(
-    qc-core-test-vector
+    test-vector
     EXECUTABLE
     SOURCE_FILES
         test-vector.cpp

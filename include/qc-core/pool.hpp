@@ -32,7 +32,7 @@ namespace qc
 
       public:
 
-        void freeUnusedPages();
+        void shrinkToFit();
 
         u32 maxPageCount() const noexcept { return _maxPageCount; }
 
@@ -119,7 +119,7 @@ namespace qc
 
         void _expand() requires (!fixed);
 
-        void _freeUnusedPages() requires (!fixed);
+        void _shrinkToFit() requires (!fixed);
     };
 
     template <typename T, bool fixed>
@@ -167,10 +167,10 @@ namespace qc
 namespace qc
 {
     template <typename T>
-    inline void _PoolExtra<T, false>::freeUnusedPages()
+    inline void _PoolExtra<T, false>::shrinkToFit()
     {
-        // Doing this weird little redirect so `freeUnusedPages` doesn't show up in `FixedPool`'s intellisense
-        static_cast<Pool<T, false> &>(*this)._freeUnusedPages();
+        // Doing this weird little redirect so `shrinkToFit` doesn't show up in `FixedPool`'s intellisense
+        static_cast<Pool<T, false> &>(*this)._shrinkToFit();
     }
 
     template <typename T, bool fixed>
@@ -483,7 +483,7 @@ namespace qc
     }
 
     template <typename T, bool fixed>
-    inline void Pool<T, fixed>::_freeUnusedPages() requires (!fixed)
+    inline void Pool<T, fixed>::_shrinkToFit() requires (!fixed)
     {
         // Pool is full or unallocated
         if (_freeRanges.empty())

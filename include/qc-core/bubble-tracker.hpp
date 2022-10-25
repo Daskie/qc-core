@@ -36,10 +36,15 @@ namespace qc
 
         ///
         /// Get the size of trailing free memory
-        /// @param memorySize total size of the tracked memory
+        /// @param memoryEnd one past the last memory position
         /// @return free tail size
         ///
-        S tail(S memorySize) const noexcept;
+        S tail(P memoryEnd) const noexcept;
+
+        ///
+        /// Clear all bubbles
+        ///
+        void clear() noexcept;
 
         const std::vector<Bubble> & bubbles() const noexcept { return _bubbles; }
 
@@ -139,7 +144,7 @@ namespace qc
     }
 
     template <IntegralOrPointer P>
-    inline auto BubbleTracker<P>::tail(const S memorySize) const noexcept -> S
+    inline auto BubbleTracker<P>::tail(const P memoryEnd) const noexcept -> S
     {
         if (_bubbles.empty())
         {
@@ -148,7 +153,13 @@ namespace qc
         else
         {
             const Bubble & lastBubble{_bubbles.back()};
-            return lastBubble.pos < memorySize && lastBubble.pos + lastBubble.size >= memorySize ? memorySize - lastBubble.pos : 0u;
+            return lastBubble.pos < memoryEnd && lastBubble.pos + lastBubble.size >= memoryEnd ? memoryEnd - lastBubble.pos : 0u;
         }
+    }
+
+    template <IntegralOrPointer P>
+    inline void BubbleTracker<P>::clear() noexcept
+    {
+        _bubbles.clear();
     }
 }
