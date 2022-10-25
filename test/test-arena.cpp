@@ -275,6 +275,13 @@ TEST(Arena, shared)
     {
         qc::Shr<Obj> o3{o1};
         ASSERT_EQ(3, v1);
+    }
+
+    ASSERT_EQ(3, v1);
+
+    {
+        qc::Shr<Obj> o3{o1};
+        ASSERT_EQ(3, v1);
 
         o1 = {};
         ASSERT_EQ(3, v1);

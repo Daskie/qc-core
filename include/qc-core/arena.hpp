@@ -153,12 +153,12 @@ namespace qc
             u32 refCount;
         };
 
-        Header & header(void * ptr)
+        inline Header & header(void * ptr)
         {
             return static_cast<Header *>(ptr)[-1];
         }
 
-        const Header & header(const void * ptr)
+        inline const Header & header(const void * ptr)
         {
             return static_cast<const Header *>(ptr)[-1];
         }
@@ -290,7 +290,10 @@ namespace qc
     {
         if (_ptr)
         {
-            Arena::_destroy(*_ptr);
+            if (!--_arena_internal::header(_ptr).refCount)
+            {
+                Arena::_destroy(*_ptr);
+            }
         }
 
         if constexpr (debug)
