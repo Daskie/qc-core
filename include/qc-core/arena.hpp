@@ -28,6 +28,8 @@ namespace qc
 
         ~Unq() noexcept;
 
+        explicit operator bool() const noexcept { return _ptr; }
+
         T & operator*() noexcept { return *_ptr; }
 
         const T & operator*() const noexcept { return *_ptr; }
@@ -66,6 +68,8 @@ namespace qc
         Shr & operator=(Shr && other) noexcept;
 
         ~Shr() noexcept;
+
+        explicit operator bool() const noexcept { return _ptr; }
 
         T & operator*() noexcept { return *_ptr; }
 

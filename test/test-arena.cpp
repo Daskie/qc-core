@@ -211,6 +211,7 @@ TEST(Arena, unique)
     ASSERT_EQ(1, (*o1).v);
     ASSERT_EQ(1, o1->v);
     ASSERT_EQ(&*o1, o1.get());
+    ASSERT_TRUE(o1);
 
     int & v1{o1->v};
     qc::Unq<Obj> o2{std::move(o1)};
@@ -221,6 +222,7 @@ TEST(Arena, unique)
 
     o1 = {};
     ASSERT_EQ(-1, v1);
+    ASSERT_FALSE(o1);
 
     {
         qc::Unq<Obj> o3{arena.createUnique<Obj>(2)};
@@ -240,6 +242,7 @@ TEST(Arena, shared)
     ASSERT_EQ(1, (*o1).v);
     ASSERT_EQ(1, o1->v);
     ASSERT_EQ(&*o1, o1.get());
+    ASSERT_TRUE(o1);
 
     int & v1{o1->v};
     ASSERT_EQ(1, v1);
@@ -252,6 +255,7 @@ TEST(Arena, shared)
 
     o1 = {};
     ASSERT_EQ(-1, v1);
+    ASSERT_FALSE(o1);
 
     o1 = arena.createShared<Obj>(2);
     ASSERT_EQ(2, v1);
