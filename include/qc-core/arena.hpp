@@ -12,6 +12,7 @@ namespace qc
     template <typename T>
     class Unq
     {
+        template <typename T_> friend class Unq;
         friend class Arena;
 
       public:
@@ -20,6 +21,7 @@ namespace qc
 
         Unq(const Unq &) = delete;
         Unq(Unq && other) noexcept;
+        template <typename T_> requires std::derived_from<T_, T> Unq(Unq<T_> && other) noexcept;
 
         Unq & operator=(const Unq &) = delete;
         Unq & operator=(Unq && other) noexcept;
@@ -41,14 +43,14 @@ namespace qc
       private:
 
         T * _ptr{};
-        Arena * _arena{};
 
-        Unq(T * ptr, Arena * arena) noexcept;
+        explicit Unq(T * ptr) noexcept;
     };
 
     template <typename T>
     class Shr
     {
+        template <typename T_> friend class Shr;
         friend class Arena;
 
       public:
@@ -56,47 +58,32 @@ namespace qc
         Shr() noexcept = default;
 
         Shr(const Shr & other) noexcept;
+        template <typename T_> requires std::derived_from<T_, T> Shr(const Shr<T_> & other) noexcept;
         Shr(Shr && other) noexcept;
+        template <typename T_> requires std::derived_from<T_, T> Shr(Shr<T_> && other) noexcept;
 
         Shr & operator=(const Shr & other) noexcept;
         Shr & operator=(Shr && other) noexcept;
 
         ~Shr() noexcept;
 
-        T & operator*() noexcept { return _ptr->val; }
+        T & operator*() noexcept { return *_ptr; }
 
-        const T & operator*() const noexcept { return _ptr->val; }
+        const T & operator*() const noexcept { return *_ptr; }
 
-        T * operator->() noexcept { return &_ptr->val; }
+        T * operator->() noexcept { return _ptr; }
 
-        const T * operator->() const noexcept { return &_ptr->val; }
+        const T * operator->() const noexcept { return _ptr; }
 
-        T * get() noexcept { return &_ptr->val; }
+        T * get() noexcept { return _ptr; }
 
-        const T * get() const noexcept { return &_ptr->val; }
+        const T * get() const noexcept { return _ptr; }
 
       private:
 
-        struct _Element
-        {
-            T val;
-            u32 refCount;
+        T * _ptr{};
 
-            _Element() = delete;
-            template <typename... Args> explicit _Element(Args &&... args);
-
-            _Element(const _Element &) = delete;
-            _Element(_Element &&) noexcept = delete;
-
-            _Element & operator=(const _Element &) = delete;
-            _Element & operator=(_Element &&) noexcept = delete;
-        };
-
-        _Element * _ptr{};
-
-        Shr(_Element * ptr) noexcept;
-
-        void _destroy() noexcept (!debug);
+        explicit Shr(T * ptr) noexcept;
     };
 
     class Arena
@@ -139,6 +126,8 @@ namespace qc
 
         inline static std::vector<Arena *> _arenas{};
 
+        template <typename T> static void _destroy(T & v);
+
         size_t _capacity{};
         size_t _size{};
         u64 * _memory{};
@@ -152,22 +141,50 @@ namespace qc
 
 namespace qc
 {
+    namespace _arena_internal
+    {
+        struct alignas(8) Header
+        {
+            u32 size;
+            u32 refCount;
+        };
+
+        Header & header(void * ptr)
+        {
+            return static_cast<Header *>(ptr)[-1];
+        }
+
+        const Header & header(const void * ptr)
+        {
+            return static_cast<const Header *>(ptr)[-1];
+        }
+    }
+
     template <typename T>
     inline Unq<T>::Unq(Unq && other) noexcept :
-        _ptr{std::exchange(other._ptr, nullptr)},
-        _arena{std::exchange(other._arena, nullptr)}
+        _ptr{std::exchange(other._ptr, nullptr)}
+    {}
+
+    template <typename T>
+    template <typename T_> requires std::derived_from<T_, T>
+    inline Unq<T>::Unq(Unq<T_> && other) noexcept :
+        _ptr{std::exchange(other._ptr, nullptr)}
     {}
 
     template <typename T>
     inline Unq<T> & Unq<T>::operator=(Unq && other) noexcept
     {
+        if (&other == this)
+        {
+            return *this;
+        }
+
         if (_ptr)
         {
-            _arena->destroy(*_ptr);
+            Arena::_destroy(*_ptr);
         }
 
         _ptr = std::exchange(other._ptr, nullptr);
-        _arena = std::exchange(other._arena, nullptr);
 
         return *this;
     }
@@ -177,27 +194,33 @@ namespace qc
     {
         if (_ptr)
         {
-            _arena->destroy(*_ptr);
+            Arena::_destroy(*_ptr);
         }
 
         if constexpr (debug)
         {
             _ptr = nullptr;
-            _arena = nullptr;
         }
     }
 
     template <typename T>
-    inline Unq<T>::Unq(T * const ptr, Arena * const arena) noexcept :
-        _ptr{ptr},
-        _arena{arena}
+    inline Unq<T>::Unq(T * const ptr) noexcept :
+        _ptr{ptr}
     {}
 
     template <typename T>
     inline Shr<T>::Shr(const Shr & other) noexcept :
         _ptr{other._ptr}
     {
-        ++_ptr->refCount;
+        ++_arena_internal::header(_ptr).refCount;
+    }
+
+    template <typename T>
+    template <typename T_> requires std::derived_from<T_, T>
+    inline Shr<T>::Shr(const Shr<T_> & other) noexcept :
+        _ptr{other._ptr}
+    {
+        ++_arena_internal::header(_ptr).refCount;
     }
 
     template <typename T>
@@ -206,13 +229,24 @@ namespace qc
     {}
 
     template <typename T>
+    template <typename T_> requires std::derived_from<T_, T>
+    inline Shr<T>::Shr(Shr<T_> && other) noexcept :
+        _ptr{std::exchange(other._ptr, nullptr)}
+    {}
+
+    template <typename T>
     inline Shr<T> & Shr<T>::operator=(const Shr & other) noexcept
     {
+        if (&other == this)
+        {
+            return *this;
+        }
+
         if (_ptr)
         {
-            if (!--_ptr->refCount)
+            if (!--_arena_internal::header(_ptr).refCount)
             {
-                _destroy();
+                Arena::_destroy(*_ptr);
             }
         }
 
@@ -220,7 +254,7 @@ namespace qc
 
         if (_ptr)
         {
-            ++_ptr->refCount;
+            ++_arena_internal::header(_ptr).refCount;
         }
 
         return *this;
@@ -229,11 +263,16 @@ namespace qc
     template <typename T>
     inline Shr<T> & Shr<T>::operator=(Shr && other) noexcept
     {
+        if (&other == this)
+        {
+            return *this;
+        }
+
         if (_ptr)
         {
-            if (!--_ptr->refCount)
+            if (!--_arena_internal::header(_ptr).refCount)
             {
-                _destroy();
+                Arena::_destroy(*_ptr);
             }
         }
 
@@ -247,7 +286,7 @@ namespace qc
     {
         if (_ptr)
         {
-            _destroy();
+            Arena::_destroy(*_ptr);
         }
 
         if constexpr (debug)
@@ -257,38 +296,10 @@ namespace qc
     }
 
     template <typename T>
-    inline Shr<T>::Shr(_Element * const ptr) noexcept :
+    inline Shr<T>::Shr(T * const ptr) noexcept :
         _ptr{ptr}
-    {}
-
-    template <typename T>
-    template <typename... Args>
-    inline Shr<T>::_Element::_Element(Args &&... args) :
-        val{std::forward<Args>(args)...},
-        refCount{1u}
-    {}
-
-    template <typename T>
-    inline void Shr<T>::_destroy() noexcept (!debug)
     {
-        // Find arena
-        const auto comp{[](Arena * const arena, const T & val)
-        {
-            const std::byte * const arenaEnd{reinterpret_cast<const std::byte *>(arena->_memory) + arena->_capacity};
-            return arenaEnd > reinterpret_cast<const std::byte *>(&val);
-        }};
-
-        const auto it{upperBound(Arena::_arenas.cbegin(), Arena::_arenas.cend(), _ptr->val, comp)};
-
-        if (it != Arena::_arenas.cend())
-        {
-            Arena & arena{**it};
-            arena.destroy(*_ptr);
-        }
-        else if constexpr (debug)
-        {
-            throw ArenaError{};
-        }
+        ++_arena_internal::header(_ptr).refCount;
     }
 
     inline Arena::Arena(const size_t capacity)
@@ -305,6 +316,11 @@ namespace qc
 
     inline auto Arena::operator=(Arena && other) noexcept -> Arena &
     {
+        if (&other == this)
+        {
+            return *this;
+        }
+
         _capacity = std::exchange(other._capacity, 0u);
         _size = std::exchange(other._size, 0u);
         _memory = std::exchange(other._memory, nullptr);
@@ -372,7 +388,7 @@ namespace qc
     {
         static_assert(alignof(T) <= 8u);
 
-        const size_t wordCount{(sizeof(T) + 7u) / 8u};
+        const size_t wordCount{1u + (sizeof(T) + 7u) / 8u};
         const auto [wasSpace, ptr]{_bubbles.remove(intptr_t(wordCount))};
 
         // Arena is full
@@ -381,25 +397,28 @@ namespace qc
             throw ArenaError{};
         }
 
-        const size_t requiredSize{size_t(ptr - _memory) * 8u + sizeof(T)};
+        const size_t requiredSize{(size_t(ptr - _memory) + wordCount) * 8u};
         if (requiredSize > _size)
         {
             _expand(requiredSize);
         }
 
-        return *(new (ptr) T{std::forward<Args>(args)...});
+        _arena_internal::Header * const header{reinterpret_cast<_arena_internal::Header *>(ptr)};
+        header->size = sizeof(T);
+        header->refCount = 0u;
+        return *(new (header + 1u) T{std::forward<Args>(args)...});
     }
 
     template <typename T, typename... Args>
     inline Unq<T> Arena::createUnique(Args &&... args)
     {
-        return Unq<T>{&create<T>(std::forward<Args>(args)...), this};
+        return Unq<T>{&create<T>(std::forward<Args>(args)...)};
     }
 
     template <typename T, typename... Args>
     inline Shr<T> Arena::createShared(Args &&... args)
     {
-        return Shr<T>{&create<typename Shr<T>::_Element>(std::forward<Args>(args)...)};
+        return Shr<T>{&create<T>(std::forward<Args>(args)...)};
     }
 
     template <typename T>
@@ -407,8 +426,8 @@ namespace qc
     {
         v.~T();
 
-        const size_t wordCount{(sizeof(T) + 7u) / 8u};
-        _bubbles.add(reinterpret_cast<u64 *>(&v), wordCount);
+        const size_t wordCount{1u + (_arena_internal::header(&v).size + 7u) / 8u};
+        _bubbles.add(reinterpret_cast<u64 *>(&v) - 1u, wordCount);
     }
 
     inline void Arena::shrinkToFit()
@@ -436,6 +455,29 @@ namespace qc
         decommitPages(reinterpret_cast<std::byte *>(_memory) + necessaryPageCount * pageSize, unnecessaryPageCount);
 
         _size = necessaryPageCount * pageSize;
+    }
+
+    template <typename T>
+    inline void Arena::_destroy(T & v)
+    {
+        static const auto comp{[](Arena * const arena, const T & val)
+        {
+            const std::byte * const arenaEnd{reinterpret_cast<const std::byte *>(arena->_memory) + arena->_capacity};
+            return arenaEnd > reinterpret_cast<const std::byte *>(&val);
+        }};
+
+        // Find arena
+        const auto it{upperBound(Arena::_arenas.cbegin(), Arena::_arenas.cend(), v, comp)};
+
+        if (it != Arena::_arenas.cend())
+        {
+            Arena & arena{**it};
+            arena.destroy(v);
+        }
+        else if constexpr (debug)
+        {
+            throw ArenaError{};
+        }
     }
 
     inline void Arena::_expand(size_t newSize)

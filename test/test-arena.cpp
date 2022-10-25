@@ -32,7 +32,7 @@ TEST(Arena, setCapacity)
 
 TEST(Arena, growth)
 {
-    struct Page { std::byte bytes[qc::pageSize]; };
+    struct Page { std::byte bytes[qc::pageSize - 8u]; };
 
     qc::Arena arena{qc::pageSize * 8u};
     EXPECT_EQ(qc::pageSize * 8u, arena.capacity());
@@ -75,7 +75,7 @@ TEST(Arena, growth)
 
 TEST(Arena, shrinkToFit)
 {
-    struct Page { std::byte bytes[qc::pageSize]; };
+    struct Page { std::byte bytes[qc::pageSize - 8u]; };
 
     qc::Arena arena{qc::pageSize * 8u};
     EXPECT_EQ(qc::pageSize * 8u, arena.capacity());
@@ -180,7 +180,7 @@ TEST(Arena, alignment)
 
 TEST(Arena, largeValue)
 {
-    struct Large { std::byte bytes[qc::pageSize + qc::pageSize / 2u]; };
+    struct Large { std::byte bytes[qc::pageSize + qc::pageSize / 2u - 8u]; };
 
     qc::Arena arena{qc::pageSize * 4u};
 
@@ -277,4 +277,151 @@ TEST(Arena, shared)
     }
 
     ASSERT_EQ(-1, v1);
+}
+
+TEST(Arena, polymorphism)
+{
+    struct A { int x{0}; virtual ~A() { x -= 1; } };
+    struct B : A { int y{0}; ~B() override { x -= 2; } };
+
+    qc::Arena arena{100};
+
+    {
+        A & a{arena.create<A>()};
+        int & x{a.x};
+        EXPECT_EQ(0, x);
+
+        arena.destroy(a);
+        EXPECT_EQ(-1, x);
+    }
+
+    {
+        B & b{arena.create<B>()};
+        int & x{b.x};
+        EXPECT_EQ(0, x);
+
+        arena.destroy(b);
+        EXPECT_EQ(-3, x);
+    }
+
+    {
+        A & a{arena.create<B>()};
+        int & x{a.x};
+        EXPECT_EQ(0, x);
+
+        arena.destroy(a);
+        EXPECT_EQ(-3, x);
+    }
+}
+
+TEST(Arena, polymorphismUnique)
+{
+    struct A { int x{0}; virtual ~A() { x -= 1; } };
+    struct B : A { int y{0}; ~B() override { x -= 2; } };
+
+    qc::Arena arena{100};
+
+    {
+        qc::Unq<A> a{arena.createUnique<A>()};
+        int & x{a->x};
+        EXPECT_EQ(0, x);
+
+        a = {};
+        EXPECT_EQ(-1, x);
+
+        a = arena.createUnique<A>();
+        EXPECT_EQ(0, x);
+
+        a = {};
+        EXPECT_EQ(-1, x);
+    }
+
+    {
+        qc::Unq<B> b{arena.createUnique<B>()};
+        int & x{b->x};
+        EXPECT_EQ(0, x);
+
+        b = {};
+        EXPECT_EQ(-3, x);
+
+        b = arena.createUnique<B>();
+        EXPECT_EQ(0, x);
+
+        b = {};
+        EXPECT_EQ(-3, x);
+    }
+
+    {
+        qc::Unq<A> a{arena.createUnique<B>()};
+        int & x{a->x};
+        EXPECT_EQ(0, x);
+
+        a = {};
+        EXPECT_EQ(-3, x);
+
+        a = arena.createUnique<B>();
+        EXPECT_EQ(0, x);
+
+        a = {};
+        EXPECT_EQ(-3, x);
+    }
+}
+
+TEST(Arena, polymorphismShared)
+{
+    struct A { int x{0}; virtual ~A() { x -= 1; } };
+    struct B : A { int y{0}; ~B() override { x -= 2; } };
+
+    qc::Arena arena{100};
+
+    {
+        qc::Shr<A> a{arena.createShared<A>()};
+        int & x{a->x};
+        EXPECT_EQ(0, x);
+
+        a = {};
+        EXPECT_EQ(-1, x);
+
+        a = arena.createShared<A>();
+        EXPECT_EQ(0, x);
+
+        a = {};
+        EXPECT_EQ(-1, x);
+    }
+
+    {
+        qc::Shr<B> b{arena.createShared<B>()};
+        int & x{b->x};
+        EXPECT_EQ(0, x);
+
+        b = {};
+        EXPECT_EQ(-3, x);
+
+        b = arena.createShared<B>();
+        EXPECT_EQ(0, x);
+
+        b = {};
+        EXPECT_EQ(-3, x);
+    }
+
+    {
+        qc::Shr<A> a{arena.createShared<B>()};
+        int & x{a->x};
+        EXPECT_EQ(0, x);
+
+        a = {};
+        EXPECT_EQ(-3, x);
+
+        a = arena.createShared<B>();
+        EXPECT_EQ(0, x);
+
+        a = {};
+        EXPECT_EQ(-3, x);
+    }
+
+    {
+        qc::Shr<A> a{arena.createShared<A>()};
+        qc::Shr<B> b{arena.createShared<B>()};
+        a = b;
+    }
 }
