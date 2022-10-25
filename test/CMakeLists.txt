@@ -5,6 +5,16 @@ find_package(GTest CONFIG REQUIRED)
 ### QC-CORE-TEST ###############################################################
 
 qc_setup_target(
+    qc-core-test-avl-tree
+    EXECUTABLE
+    SOURCE_FILES
+        test-avl-tree.cpp
+    PRIVATE_LINKS
+        qc-core-platform
+        GTest::gtest_main
+)
+
+qc_setup_target(
     qc-core-test-bank
     EXECUTABLE
     SOURCE_FILES

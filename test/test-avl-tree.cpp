@@ -1,6 +1,7 @@
 #include <qc-core/avl-tree.hpp>
 
 #include <set>
+#include <string_view>
 #include <vector>
 
 #include <gtest/gtest.h>
@@ -8,6 +9,7 @@
 #include <qc-core/random.hpp>
 
 using namespace std::string_literals;
+using namespace std::string_view_literals;
 using namespace qc::types;
 
 class qc::_internal::AvlTreeFriend
@@ -61,7 +63,7 @@ class qc::_internal::AvlTreeFriend
         int start{0};
         while (!std::isdigit(line[start])) ++start;
         int end{start + 1};
-        while (end < line.size() && std::isdigit(line[end])) ++end;
+        while (end < int(line.size()) && std::isdigit(line[end])) ++end;
         return start + (end - start - side) / 2;
     }
 
@@ -110,7 +112,7 @@ class qc::_internal::AvlTreeFriend
         if (isLeft && isRight)
         {
             int minGap{std::numeric_limits<int>::max()};
-            for (int i{0}; i < leftLines.size() && i < rightLines.size(); ++i)
+            for (int i{0}; i < int(leftLines.size()) && i < int(rightLines.size()); ++i)
             {
                 qc::minify(minGap, leftBlockWidth - int(leftLines[i].size()) + int(rightLines[i].find_first_not_of(' ')));
             }
@@ -170,7 +172,7 @@ class qc::_internal::AvlTreeFriend
         int rightLineI{0};
 
         // Add lines for both left and right
-        for (; leftLineI < leftLines.size() && rightLineI < rightLines.size(); ++leftLineI, ++rightLineI)
+        for (; leftLineI < int(leftLines.size()) && rightLineI < int(rightLines.size()); ++leftLineI, ++rightLineI)
         {
             lines.push_back(std::move(leftLines[leftLineI]));
             std::string & line{lines.back()};
@@ -236,30 +238,412 @@ class qc::_internal::AvlTreeFriend
     }
 };
 
-using _TreeFriend = qc::_internal::AvlTreeFriend;
-
-#pragma warning(disable: 4189) // NOCOMMIT
-TEST(AvlTree, standard)
+namespace
 {
-    using Node = typename qc::AvlTree<uint>::_Node;
-    qc::AvlTree<uint> tree{};
-    Node * n{tree._root = new Node{.v = 111}};
-    Node * n0{n->left = new Node{.v = 222222}};
-    Node * n1{n->right = new Node{.v = 4}};
-    Node * n00{n0->left = new Node{.v = 33}};
-    Node * n10{n1->left = new Node{.v = 555}};
-    Node * n000{n00->left = new Node{.v = 6}};
-    Node * n100{n10->left = new Node{.v = 7}};
-    Node * n0000{n000->left = new Node{.v = 8888888}};
-    Node * n1000{n100->left = new Node{.v = 9}};
+    using _TreeFriend = qc::_internal::AvlTreeFriend;
 
-
-    std::cout << "hi: " << _TreeFriend::genString(tree) << std::endl;
-
-    // NOCOMMIT
-    tree._root = nullptr;
+    template <UnsignedIntegral T> bool _treeMatches(const qc::AvlTree<T> & tree, const std::string_view expectedStr)
+    {
+        const std::string treeStr{_TreeFriend::genString(tree)};
+        if (treeStr != expectedStr)
+        {
+            std::cout << "Tree mismatch!\nExpected:" << expectedStr << "Got:" << treeStr << std::endl;
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
 }
 
+#pragma warning(disable: 4189) // NOCOMMIT
+TEST(AvlTree, rotateRight)
+{
+    qc::AvlTree<u32> tree{};
+    ASSERT_EQ(tree.size(), 0u);
+
+    tree.insert(10u);
+    ASSERT_EQ(tree.size(), 1u);
+    std::string_view expected{R"(
+10
+)"sv};
+    ASSERT_TRUE(_treeMatches(tree, expected));
+
+    tree.insert(9u);
+    ASSERT_EQ(tree.size(), 2u);
+    expected = R"(
+  10
+ /
+9
+)"sv;
+    ASSERT_TRUE(_treeMatches(tree, expected));
+
+    tree.insert(8u);
+    ASSERT_EQ(tree.size(), 3u);
+    expected = R"(
+  9
+ / \
+8   10
+)"sv;
+    ASSERT_TRUE(_treeMatches(tree, expected));
+
+    tree.insert(7u);
+    ASSERT_EQ(tree.size(), 4u);
+    expected = R"(
+    9
+   / \
+  8   10
+ /
+7
+)"sv;
+    ASSERT_TRUE(_treeMatches(tree, expected));
+
+    tree.insert(6u);
+    ASSERT_EQ(tree.size(), 5u);
+    expected = R"(
+    9
+   / \
+  7   10
+ / \
+6   8
+)"sv;
+    ASSERT_TRUE(_treeMatches(tree, expected));
+
+    tree.insert(5u);
+    ASSERT_EQ(tree.size(), 6u);
+    expected = R"(
+    7
+   / \
+  6   9
+ /   / \
+5   8   10
+)"sv;
+    ASSERT_TRUE(_treeMatches(tree, expected));
+
+    tree.insert(4u);
+    ASSERT_EQ(tree.size(), 7u);
+    expected = R"(
+    _ 7 _
+   /     \
+  5       9
+ / \     / \
+4   6   8   10
+)"sv;
+    ASSERT_TRUE(_treeMatches(tree, expected));
+}
+
+#pragma warning(disable: 4189) // NOCOMMIT
+TEST(AvlTree, rotateLeft)
+{
+    qc::AvlTree<u32> tree{};
+    ASSERT_EQ(tree.size(), 0u);
+
+    tree.insert(10u);
+    ASSERT_EQ(tree.size(), 1u);
+    std::string_view expected{R"(
+10
+)"sv};
+    ASSERT_TRUE(_treeMatches(tree, expected));
+
+    tree.insert(11u);
+    ASSERT_EQ(tree.size(), 2u);
+    expected = R"(
+10
+  \
+   11
+)"sv;
+    ASSERT_TRUE(_treeMatches(tree, expected));
+
+    tree.insert(12u);
+    ASSERT_EQ(tree.size(), 3u);
+    expected = R"(
+   11
+  /  \
+10    12
+)"sv;
+    ASSERT_TRUE(_treeMatches(tree, expected));
+
+    tree.insert(13u);
+    ASSERT_EQ(tree.size(), 4u);
+    expected = R"(
+   11
+  /  \
+10    12
+        \
+         13
+)"sv;
+    ASSERT_TRUE(_treeMatches(tree, expected));
+
+    tree.insert(14u);
+    ASSERT_EQ(tree.size(), 5u);
+    expected = R"(
+   11
+  /  \
+10    13
+     /  \
+   12    14
+)"sv;
+    ASSERT_TRUE(_treeMatches(tree, expected));
+
+    tree.insert(15u);
+    ASSERT_EQ(tree.size(), 6u);
+    expected = R"(
+      13
+     /  \
+   11    14
+  /  \     \
+10    12    15
+)"sv;
+    ASSERT_TRUE(_treeMatches(tree, expected));
+
+    tree.insert(16u);
+    ASSERT_EQ(tree.size(), 7u);
+    expected = R"(
+      __ 13 __
+     /        \
+   11          15
+  /  \        /  \
+10    12    14    16
+)"sv;
+    ASSERT_TRUE(_treeMatches(tree, expected));
+}
+
+#pragma warning(disable: 4189) // NOCOMMIT
+TEST(AvlTree, rotateLeftRight)
+{
+    qc::AvlTree<u32> tree{};
+    ASSERT_EQ(tree.size(), 0u);
+
+    tree.insert(10u);
+    ASSERT_EQ(tree.size(), 1u);
+    std::string_view expected{R"(
+10
+)"sv};
+    ASSERT_TRUE(_treeMatches(tree, expected));
+
+    tree.insert(2u);
+    ASSERT_EQ(tree.size(), 2u);
+    expected = R"(
+  10
+ /
+2
+)"sv;
+    ASSERT_TRUE(_treeMatches(tree, expected));
+
+    tree.insert(9u);
+    ASSERT_EQ(tree.size(), 3u);
+    expected = R"(
+  9
+ / \
+2   10
+)"sv;
+    ASSERT_TRUE(_treeMatches(tree, expected));
+
+    tree.insert(8u);
+    ASSERT_EQ(tree.size(), 4u);
+    expected = R"(
+  9
+ / \
+2   10
+ \
+  8
+)"sv;
+    ASSERT_TRUE(_treeMatches(tree, expected));
+
+    tree.insert(5u);
+    ASSERT_EQ(tree.size(), 5u);
+    expected = R"(
+    9
+   / \
+  5   10
+ / \
+2   8
+)"sv;
+    ASSERT_TRUE(_treeMatches(tree, expected));
+
+    tree.insert(6u);
+    ASSERT_EQ(tree.size(), 6u);
+    expected = R"(
+    8
+   / \
+  5   9
+ / \   \
+2   6   10
+)"sv;
+    ASSERT_TRUE(_treeMatches(tree, expected));
+
+    tree.insert(3u);
+    ASSERT_EQ(tree.size(), 7u);
+    expected = R"(
+    8
+   / \
+  5   9
+ / \   \
+2   6   10
+ \
+  3
+)"sv;
+    ASSERT_TRUE(_treeMatches(tree, expected));
+
+    tree.insert(1u);
+    ASSERT_EQ(tree.size(), 8u);
+    expected = R"(
+      8
+     / \
+    5   9
+   / \   \
+  2   6   10
+ / \
+1   3
+)"sv;
+    ASSERT_TRUE(_treeMatches(tree, expected));
+
+    tree.insert(4u);
+    ASSERT_EQ(tree.size(), 9u);
+    expected = R"(
+      8
+     / \
+    3   9
+   / \   \
+  2   5   10
+ /   / \
+1   4   6
+)"sv;
+    ASSERT_TRUE(_treeMatches(tree, expected));
+
+    tree.insert(7u);
+    ASSERT_EQ(tree.size(), 10u);
+    expected = R"(
+      _ 5 _
+     /     \
+    3       8
+   / \     / \
+  2   4   6   9
+ /         \   \
+1           7   10
+)"sv;
+    ASSERT_TRUE(_treeMatches(tree, expected));
+}
+
+#pragma warning(disable: 4189) // NOCOMMIT
+TEST(AvlTree, rotateRightLeft)
+{
+    qc::AvlTree<u32> tree{};
+    ASSERT_EQ(tree.size(), 0u);
+
+    tree.insert(10u);
+    ASSERT_EQ(tree.size(), 1u);
+    std::string_view expected{R"(
+10
+)"sv};
+    ASSERT_TRUE(_treeMatches(tree, expected));
+
+    tree.insert(18u);
+    ASSERT_EQ(tree.size(), 2u);
+    expected = R"(
+10
+  \
+   18
+)"sv;
+    ASSERT_TRUE(_treeMatches(tree, expected));
+
+    tree.insert(11u);
+    ASSERT_EQ(tree.size(), 3u);
+    expected = R"(
+   11
+  /  \
+10    18
+)"sv;
+    ASSERT_TRUE(_treeMatches(tree, expected));
+
+    tree.insert(12u);
+    ASSERT_EQ(tree.size(), 4u);
+    expected = R"(
+   11
+  /  \
+10    18
+     /
+   12
+)"sv;
+    ASSERT_TRUE(_treeMatches(tree, expected));
+
+    tree.insert(15u);
+    ASSERT_EQ(tree.size(), 5u);
+    expected = R"(
+   11
+  /  \
+10    15
+     /  \
+   12    18
+)"sv;
+    ASSERT_TRUE(_treeMatches(tree, expected));
+
+    tree.insert(14u);
+    ASSERT_EQ(tree.size(), 6u);
+    expected = R"(
+      12
+     /  \
+   11    15
+  /     /  \
+10    14    18
+)"sv;
+    ASSERT_TRUE(_treeMatches(tree, expected));
+
+    tree.insert(17u);
+    ASSERT_EQ(tree.size(), 7u);
+    expected = R"(
+      12
+     /  \
+   11    15
+  /     /  \
+10    14    18
+           /
+         17
+)"sv;
+    ASSERT_TRUE(_treeMatches(tree, expected));
+
+    tree.insert(19u);
+    ASSERT_EQ(tree.size(), 8u);
+    expected = R"(
+      12
+     /  \
+   11    15
+  /     /  \
+10    14    18
+           /  \
+         17    19
+)"sv;
+    ASSERT_TRUE(_treeMatches(tree, expected));
+
+    tree.insert(16u);
+    ASSERT_EQ(tree.size(), 9u);
+    expected = R"(
+      12
+     /  \
+   11    17
+  /     /  \
+10    15    18
+     /  \     \
+   14    16    19
+)"sv;
+    ASSERT_TRUE(_treeMatches(tree, expected));
+
+    tree.insert(13u);
+    ASSERT_EQ(tree.size(), 10u);
+    expected = R"(
+         __ 15 __
+        /        \
+      12          17
+     /  \        /  \
+   11    14    16    18
+  /     /              \
+10    13                19
+)"sv;
+    ASSERT_TRUE(_treeMatches(tree, expected));
+}
+
+/*
 TEST(AvlTree, stress)
 {
     qc::AvlTree<u32> qcTree{};
@@ -336,3 +720,4 @@ TEST(AvlTree, stress)
         }
     }
 }
+ */
