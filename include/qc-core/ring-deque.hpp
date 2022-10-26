@@ -18,6 +18,8 @@ namespace qc
         static_assert(std::is_nothrow_move_assignable_v<T>);
         static_assert(std::is_nothrow_destructible_v<T>);
 
+        static_assert(alignof(T) <= 8u); // TODO: Use std::align_val_t once supported by intellisense
+
         template <bool constant> class Iterator;
 
       public:
@@ -169,7 +171,7 @@ namespace qc
         if (_slots)
         {
             clear();
-            ::operator delete(_slots, std::align_val_t{alignof(T)});
+            ::operator delete(_slots);
         }
     }
 
@@ -382,7 +384,7 @@ namespace qc
     template <typename T>
     inline void RingDeque<T>::_expand(const size_t newCapacity)
     {
-        T * const newSlots{static_cast<T *>(::operator new(newCapacity * sizeof(T), std::align_val_t{alignof(T)}))};
+        T * const newSlots{static_cast<T *>(::operator new(newCapacity * sizeof(T)))};
 
         // Move elements over
         if constexpr (std::is_trivially_move_constructible_v<T> && std::is_trivially_destructible_v<T>)
@@ -409,7 +411,7 @@ namespace qc
             }
         }
 
-        ::operator delete(_slots, std::align_val_t{alignof(T)});
+        ::operator delete(_slots);
         _slots = newSlots;
         _capacity = newCapacity;
         _front = _slots;

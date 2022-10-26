@@ -50,6 +50,8 @@ namespace qc
     template <typename T, bool fixed>
     class Pool : public _PoolExtra<T, fixed>
     {
+        static_assert(alignof(T) <= 8u); // TODO: Use std::align_val_t once supported by intellisense
+
         friend class _PoolExtra<T, fixed>;
 
         using _Extra = _PoolExtra<T, fixed>;
@@ -217,7 +219,7 @@ namespace qc
             // Free memory
             if constexpr (fixed)
             {
-                ::operator delete(_slotRange.start, std::align_val_t{alignof(T)});
+                ::operator delete(_slotRange.start);
             }
             else
             {
@@ -250,7 +252,7 @@ namespace qc
                 return;
             }
 
-            _slotRange.start = static_cast<T *>(::operator new(capacity * sizeof(T), std::align_val_t{alignof(T)}));
+            _slotRange.start = static_cast<T *>(::operator new(capacity * sizeof(T)));
             _slotRange.end = _slotRange.start + capacity;
             _freeRanges.push_back(_slotRange);
         }

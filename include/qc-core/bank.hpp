@@ -12,6 +12,8 @@ namespace qc
         static_assert(std::is_nothrow_move_constructible_v<T>);
         static_assert(std::is_nothrow_destructible_v<T>);
 
+        static_assert(alignof(T) <= 8u); // TODO: Use std::align_val_t once supported by intellisense
+
       public:
 
         Bank() noexcept = default;
@@ -108,7 +110,7 @@ namespace qc
                 clear();
             }
 
-            ::operator delete(_slots, std::align_val_t{alignof(_Slot)});
+            ::operator delete(_slots);
         }
 
         // Reset state
@@ -194,7 +196,7 @@ namespace qc
         const u32 oldCapacity{_capacity};
 
         // Allocate new slots
-        _Slot * const newSlots{static_cast<_Slot *>(::operator new(newCapacity * sizeof(_Slot), std::align_val_t{alignof(_Slot)}))};
+        _Slot * const newSlots{static_cast<_Slot *>(::operator new(newCapacity * sizeof(_Slot)))};
 
         // Copy over existing slots
         // Simply memcpy if the type is trivially move constructible and destructible
@@ -237,7 +239,7 @@ namespace qc
         }
 
         // Free old slots
-        ::operator delete(_slots, std::align_val_t{alignof(_Slot)});
+        ::operator delete(_slots);
 
         // Update state
         _slots = newSlots;
