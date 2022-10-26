@@ -52,27 +52,9 @@ namespace qc
 
       public:
 
-        struct Entry
-        {
-            static_assert(alignof(T) <= 8); // Ensure consistent value offset in case of inheritence
-
-            u64 refCount;
-            T val;
-
-            Entry() = delete;
-            template <typename... Args> Entry(Args &&... args);
-
-            Entry(const Entry &) = delete;
-            Entry(Entry &&) = delete;
-
-            Entry & operator=(const Entry &) = delete;
-            Entry & operator=(Entry &&) = delete;
-
-            ~Entry() noexcept = default;
-        };
-
         Shr() noexcept = default;
-        Shr(Entry * entry, Deleter deleter) noexcept;
+        /// `ptr` MUST BE ALIGNED ON A 8 BYTE BOUNDARY AND THERE MUST BE A ZERO U32 IMMEDIATELY BEFORE `ptr` USED FOR REFERENCE COUNTING
+        Shr(T * ptr, Deleter deleter) noexcept;
 
         Shr(const Shr & other) noexcept;
         template <typename T_> requires std::derived_from<T_, T> Shr(const Shr<T_> & other) noexcept;
@@ -84,24 +66,26 @@ namespace qc
 
         ~Shr() noexcept;
 
-        explicit operator bool() const noexcept { return _entry; }
+        explicit operator bool() const noexcept { return _ptr; }
 
-        T & operator*() noexcept { return _entry->val; }
+        T & operator*() noexcept { return *_ptr; }
 
-        const T & operator*() const noexcept { return _entry->val; }
+        const T & operator*() const noexcept { return *_ptr; }
 
-        T * operator->() noexcept { return &_entry->val; }
+        T * operator->() noexcept { return _ptr; }
 
-        const T * operator->() const noexcept { return &_entry->val; }
+        const T * operator->() const noexcept { return _ptr; }
 
-        T * get() noexcept { return _entry ? &_entry->val : nullptr; }
+        T * get() noexcept { return _ptr; }
 
-        const T * get() const noexcept { return _entry ? &_entry->val : nullptr; }
+        const T * get() const noexcept { return _ptr; }
 
       private:
 
-        Entry * _entry{};
+        T * _ptr{};
         Deleter _deleter{};
+
+        u32 & _refCount() const noexcept;
     };
 
     template <typename T, typename... Args> Unq<T> makeUnique(Args &&... args);
@@ -167,47 +151,40 @@ namespace qc
     }
 
     template <typename T>
-    template <typename... Args>
-    inline Shr<T>::Entry::Entry(Args &&... args) :
-        refCount{0u},
-        val{std::forward<Args>(args)...}
-    {}
-
-    template <typename T>
-    inline Shr<T>::Shr(Entry * const entry, const Deleter deleter) noexcept :
-        _entry{entry},
+    inline Shr<T>::Shr(T * const ptr, const Deleter deleter) noexcept :
+        _ptr{ptr},
         _deleter{deleter}
     {
-        ++_entry->refCount;
+        ++_refCount();
     }
 
     template <typename T>
     inline Shr<T>::Shr(const Shr & other) noexcept :
-        _entry{other._entry},
+        _ptr{other._ptr},
         _deleter{other._deleter}
     {
-        ++_entry->refCount;
+        ++_refCount();
     }
 
     template <typename T>
     template <typename T_> requires std::derived_from<T_, T>
     inline Shr<T>::Shr(const Shr<T_> & other) noexcept :
-        _entry{reinterpret_cast<Entry *>(other._entry)},
+        _ptr{other._ptr},
         _deleter{other._deleter}
     {
-        ++_entry->refCount;
+        ++_refCount();
     }
 
     template <typename T>
     inline Shr<T>::Shr(Shr && other) noexcept :
-        _entry{std::exchange(other._entry, nullptr)},
+        _ptr{std::exchange(other._ptr, nullptr)},
         _deleter{std::exchange(other._deleter, nullptr)}
     {}
 
     template <typename T>
     template <typename T_> requires std::derived_from<T_, T>
     inline Shr<T>::Shr(Shr<T_> && other) noexcept :
-        _entry{reinterpret_cast<Entry *>(std::exchange(other._entry, nullptr))},
+        _ptr{std::exchange(other._ptr, nullptr)},
         _deleter{std::exchange(other._deleter, nullptr)}
     {}
 
@@ -219,20 +196,20 @@ namespace qc
             return *this;
         }
 
-        if (_entry)
+        if (_ptr)
         {
-            if (!--_entry->refCount)
+            if (!--_refCount())
             {
-                _deleter(_entry);
+                _deleter(_ptr);
             }
         }
 
-        _entry = other._entry;
+        _ptr = other._ptr;
         _deleter = other._deleter;
 
-        if (_entry)
+        if (_ptr)
         {
-            ++_entry->refCount;
+            ++_refCount();
         }
 
         return *this;
@@ -246,15 +223,15 @@ namespace qc
             return *this;
         }
 
-        if (_entry)
+        if (_ptr)
         {
-            if (!--_entry->refCount)
+            if (!--_refCount())
             {
-                _deleter(_entry);
+                _deleter(_ptr);
             }
         }
 
-        _entry = std::exchange(other._entry, nullptr);
+        _ptr = std::exchange(other._ptr, nullptr);
         _deleter = std::exchange(other._deleter, nullptr);
 
         return *this;
@@ -263,19 +240,25 @@ namespace qc
     template <typename T>
     inline Shr<T>::~Shr() noexcept
     {
-        if (_entry)
+        if (_ptr)
         {
-            if (!--_entry->refCount)
+            if (!--_refCount())
             {
-                _deleter(_entry);
+                _deleter(_ptr);
             }
         }
 
         if constexpr (debug)
         {
-            _entry = nullptr;
+            _ptr = nullptr;
             _deleter = nullptr;
         }
+    }
+
+    template <typename T>
+    inline u32 & Shr<T>::_refCount() const noexcept
+    {
+        return reinterpret_cast<u32 *>(_ptr)[-1];
     }
 
     template <typename T, typename... Args>
@@ -287,6 +270,17 @@ namespace qc
     template <typename T, typename... Args>
     inline Shr<T> makeShared(Args &&... args)
     {
-        return Shr<T>{new typename Shr<T>::Entry{std::forward<Args>(args)...}, [](void * ptr) { delete static_cast<typename Shr<T>::Entry *>(ptr); }};
+        static_assert(alignof(T) <= 8u);
+
+        static const auto deleter{[](void * const ptr)
+        {
+            static_cast<T *>(ptr)->~T();
+            ::operator delete(static_cast<u32 *>(ptr) - 2u);
+        }};
+
+        u32 * const ptr{static_cast<u32 *>(::operator new(8u + sizeof(T))) + 2u};
+        ptr[-1] = 0u;
+
+        return Shr<T>{new (ptr) T{std::forward<Args>(args)...}, deleter};
     }
 }
