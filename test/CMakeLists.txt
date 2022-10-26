@@ -135,6 +135,16 @@ qc_setup_target(
 )
 
 qc_setup_target(
+    test-smart-pointer
+    EXECUTABLE
+    SOURCE_FILES
+        test-smart-pointer.cpp
+    PRIVATE_LINKS
+        qc-core-platform
+        GTest::gtest_main
+)
+
+qc_setup_target(
     test-span
     EXECUTABLE
     SOURCE_FILES
