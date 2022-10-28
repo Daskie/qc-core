@@ -58,6 +58,16 @@ namespace qc
     template <typename T> using utype = typename sized<sizeof(T)>::utype;
     template <typename T> using ftype = typename sized<sizeof(T)>::ftype;
 
+    inline namespace numbers
+    {
+        template <Floating T> inline constexpr T pi{T(3.141592653589793)};
+        template <Floating T> inline constexpr T e{T(2.718281828459045)};
+        template <Floating T> inline constexpr T phi{T(1.618033988749895)};
+        template <Floating T> inline constexpr T sqrt2{T(1.414213562373095)};
+        template <Floating T> inline constexpr T sqrt3{T(0.5773502691896257)};
+        template <Floating T> inline constexpr T sqrt5{T(0.4472135954999579)};
+    }
+
     template <typename T, typename... Ts> concept OneOf = (std::same_as<T, Ts> || ...);
 
     template <Enum E> constexpr std::underlying_type_t<E> underlyingVal(const E e);

@@ -175,7 +175,7 @@ namespace qc
     template <Floating T>
     inline vec2<T> discPoint(const T v)
     {
-        return polarToCartesian((T(2.0) * std::numbers::pi_v<T>) * v);
+        return polarToCartesian((T(2.0) * pi<T>) * v);
     }
 
     //
@@ -196,7 +196,7 @@ namespace qc
     inline vec3<T> spherePoint(const vec2<T> v)
     {
         return sphericalToCartesian(
-            (T(2.0) * std::numbers::pi_v<T>) * v.x,
+            (T(2.0) * pi<T>) * v.x,
             std::acos(T(1.0) - T(2.0) * v.y));
     }
 
@@ -214,14 +214,14 @@ namespace qc
     inline vec2<T> circlePointFibonacci(const int i, const int n)
     {
         const T p{T(i + 1) / T(n + 1)};
-        return circlePoint(vec2<T>(p, std::numbers::phi_v<T> * T(i)));
+        return circlePoint(vec2<T>(p, phi<T> * T(i)));
     }
 
     template <Floating T>
     inline vec3<T> spherePointFibonacci(const int i, const int n)
     {
         const T p{T(i + 1) / T(n + 1)};
-        return spherePoint(vec2<T>(std::numbers::phi_v<T> * T(i), p));
+        return spherePoint(vec2<T>(phi<T> * T(i), p));
     }
 
     template <Floating T>

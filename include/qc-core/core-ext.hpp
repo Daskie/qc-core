@@ -3,7 +3,6 @@
 #include <cmath>
 
 #include <bit>
-#include <numbers>
 
 #include <qc-core/core.hpp>
 
@@ -481,13 +480,13 @@ namespace qc
     template <Floating T>
     inline T radians(const T degrees)
     {
-        return degrees * T(std::numbers::pi / 180.0);
+        return degrees * T(pi<T> / 180.0);
     }
 
     template <Floating T>
     inline T degrees(const T radians)
     {
-        return radians * T(180.0 / std::numbers::pi);
+        return radians * T(180.0 / pi<T>);
     }
 
     template <Floating To, Floating From>
