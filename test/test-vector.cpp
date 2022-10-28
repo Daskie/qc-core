@@ -27,6 +27,7 @@ static void compileClassesT()
     vec2<T> v2_08{v, v};
 
     // assignment
+    v2 = v;
     v2 = v2;
     v2 = std::move(v2);
 
@@ -54,6 +55,7 @@ static void compileClassesT()
     vec3<T> v3_18{v, v2};
 
     // assignment
+    v3 = v;
     v3 = v3;
     v3 = std::move(v3);
     v3 = v2;
@@ -90,6 +92,7 @@ static void compileClassesT()
     vec4<T> v4_38{v, v3};
 
     // assignment
+    v4 = v;
     v4 = v4;
     v4 = std::move(v4);
     v4 = v2;
