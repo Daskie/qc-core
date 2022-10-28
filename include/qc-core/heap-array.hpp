@@ -5,7 +5,8 @@
 
 namespace qc
 {
-    template <typename T> class HeapArray
+    template <typename T>
+    class HeapArray
     {
         static_assert(alignof(T) <= 8u); // TODO: Use std::align_val_t once supported by intellisense
 

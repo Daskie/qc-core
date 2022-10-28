@@ -25,7 +25,8 @@ namespace qc::memory
     //
     // NOT THREAD SAFE!!!
     //
-    template <typename T> class RecordAllocator
+    template <typename T>
+    class RecordAllocator
     {
         template <typename> friend class RecordAllocator;
 

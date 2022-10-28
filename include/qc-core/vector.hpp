@@ -74,7 +74,8 @@ namespace qc
         template <typename T> concept Vector4 = Vector<T> && T::n == 4;
     }
 
-    template <NumericOrBoolean T> struct vec<T, 2>
+    template <NumericOrBoolean T>
+    struct vec<T, 2>
     {
         using Type = T;
         inline static constexpr int n{2};
@@ -106,7 +107,8 @@ namespace qc
         T operator[](int i) const;
     };
 
-    template <NumericOrBoolean T> struct vec<T, 3>
+    template <NumericOrBoolean T>
+    struct vec<T, 3>
     {
         using Type = T;
         inline static constexpr int n{3};
@@ -148,7 +150,8 @@ namespace qc
         constexpr vec2<T> yz() const noexcept;
     };
 
-    template <NumericOrBoolean T> struct vec<T, 4>
+    template <NumericOrBoolean T>
+    struct vec<T, 4>
     {
         using Type = T;
         inline static constexpr int n{4};

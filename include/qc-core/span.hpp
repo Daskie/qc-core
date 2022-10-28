@@ -68,7 +68,8 @@ namespace qc
         using ulspan4 = span4<u64>;
     }
 
-    template <NumericOrPointer T> struct span<T, 1>
+    template <NumericOrPointer T>
+    struct span<T, 1>
     {
         T min;
         T max;
@@ -91,7 +92,8 @@ namespace qc
         constexpr bool contains(T v) const noexcept;
     };
 
-    template <Numeric T> struct span<T, 2>
+    template <Numeric T>
+    struct span<T, 2>
     {
         vec2<T> min;
         vec2<T> max;
@@ -118,7 +120,8 @@ namespace qc
         constexpr span1<T> y() const noexcept;
     };
 
-    template <Numeric T> struct span<T, 3>
+    template <Numeric T>
+    struct span<T, 3>
     {
         vec3<T> min;
         vec3<T> max;
@@ -151,7 +154,8 @@ namespace qc
         constexpr span2<T> yz() const noexcept;
     };
 
-    template <Numeric T> struct span<T, 4>
+    template <Numeric T>
+    struct span<T, 4>
     {
         vec4<T> min;
         vec4<T> max;

@@ -16,7 +16,8 @@ namespace qc
         template <typename T> concept Quaternion = std::is_same_v<T, quat<typename T::Type>>;
     }
 
-    template <Floating T> struct quat
+    template <Floating T>
+    struct quat
     {
         using Type = T;
 

@@ -39,7 +39,8 @@ namespace qc
         template <typename T> concept Matrix4 = Matrix<T> && T::n == 4;
     }
 
-    template <Floating T> struct mat<T, 2>
+    template <Floating T>
+    struct mat<T, 2>
     {
         using Type = T;
         inline static constexpr int n{2};
@@ -76,7 +77,8 @@ namespace qc
         template <int i> constexpr vec2<T> col() const noexcept;
     };
 
-    template <Floating T> struct mat<T, 3>
+    template <Floating T>
+    struct mat<T, 3>
     {
         using Type = T;
         inline static constexpr int n{3};
@@ -116,7 +118,8 @@ namespace qc
         template <int i> constexpr vec3<T> col() const noexcept;
     };
 
-    template <Floating T> struct mat<T, 4>
+    template <Floating T>
+    struct mat<T, 4>
     {
         using Type = T;
         inline static constexpr int n{4};
