@@ -273,6 +273,16 @@ namespace qc
 
     template <NumericOrPointer T, int n> span<T, n> & maxify(span<T, n> & v1, T v2);
     template <Numeric          T, int n> span<T, n> & maxify(span<T, n> & v1, const vec<T, n> & v2);
+
+    template <Numeric T, int n> constexpr span<T, n> clamp(const span<T, n> & s, T min, T max);
+    template <Numeric T, int n> constexpr span<T, n> clamp(const span<T, n> & s, const vec<T, n> & min, const vec<T, n> & max);
+    template <Numeric T> constexpr T clamp(T v, const span1<T> & span);
+    template <Numeric T, int n> constexpr vec<T, n> clamp(const vec<T, n> & v, const span<T, n> & s);
+
+    template <Numeric T, int n> span<T, n> & clampify(span<T, n> & s, T min, T max);
+    template <Numeric T, int n> span<T, n> & clampify(span<T, n> & s, const vec<T, n> & min, const vec<T, n> & max);
+    template <Numeric T> T & clampify(T & v, const span1<T> & span);
+    template <Numeric T, int n> vec<T, n> & clampify(vec<T, n> & v, const span<T, n> & s);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -878,5 +888,57 @@ namespace qc
         maxify(v1.min, v2);
         maxify(v1.max, v2);
         return v1;
+    }
+
+    template <Numeric T, int n>
+    inline constexpr span<T, n> clamp(const span<T, n> & s, const T min, const T max)
+    {
+        return {clamp(s.min, min, max), clamp(s.max, min, max)};
+    }
+
+    template <Numeric T, int n>
+    inline constexpr span<T, n> clamp(const span<T, n> & s, const vec<T, n> & min, const vec<T, n> & max)
+    {
+        return {clamp(s.min, min, max), clamp(s.max, min, max)};
+    }
+
+    template <Numeric T>
+    inline constexpr T clamp(const T v, const span1<T> & s)
+    {
+        return clamp(v, s.min, s.max);
+    }
+
+    template <Numeric T, int n>
+    inline constexpr vec<T, n> clamp(const vec<T, n> & v, const span<T, n> & s)
+    {
+        return clamp(v, s.min, s.max);
+    }
+
+    template <Numeric T, int n>
+    inline span<T, n> & clampify(span<T, n> & s, const T min, const T max)
+    {
+        clampify(s.min, min, max);
+        clampify(s.max, min, max);
+        return s;
+    }
+
+    template <Numeric T, int n>
+    inline span<T, n> & clampify(span<T, n> & s, const vec<T, n> & min, const vec<T, n> & max)
+    {
+        clampify(s.min, min, max);
+        clampify(s.max, min, max);
+        return s;
+    }
+
+    template <Numeric T>
+    inline T & clampify(T & v, const span1<T> & s)
+    {
+        return clampify(v, s.min, s.max);
+    }
+
+    template <Numeric T, int n>
+    inline vec<T, n> & clampify(vec<T, n> & v, const span<T, n> & s)
+    {
+        return clampify(v, s.min, s.max);
     }
 }

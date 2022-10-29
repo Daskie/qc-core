@@ -180,6 +180,8 @@ static void compileFunctionsT()
 
     qc::clamp(v, v, v);
 
+    qc::clampify(v, v, v);
+
     qc::isZero(v);
     qc::isZero(v, v);
 

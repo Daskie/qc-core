@@ -16,11 +16,6 @@ namespace qc
     //
     // ...
     //
-    template <Numeric T> constexpr T clamp(const T & v, const T & min, const T & max);
-
-    //
-    // ...
-    //
     template <Numeric T> constexpr T abs(T v);
 
     //
@@ -197,12 +192,6 @@ namespace qc
         if (v1 > v2) std::swap(v1, v2);
         if (v2 > v3) std::swap(v2, v3);
         return max(v1, v2);
-    }
-
-    template <Numeric T>
-    inline constexpr T clamp(const T & v, const T & min, const T & max)
-    {
-        return qc::min(qc::max(v, min), max);
     }
 
     template <Numeric T>

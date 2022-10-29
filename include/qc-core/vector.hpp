@@ -357,6 +357,12 @@ namespace qc
     template <Numeric T, int n> constexpr std::pair<vec<T, n>, vec<T, n>> minmax(const vec<T, n> & v1, const vec<T, n> & v2);
 
     template <Numeric T> constexpr T median(vec3<T> v);
+
+    template <Numeric T, int n> constexpr vec<T, n> clamp(const vec<T, n> & v, T min, T max);
+    template <Numeric T, int n> constexpr vec<T, n> clamp(const vec<T, n> & v, const vec<T, n> & min, const vec<T, n> & max);
+
+    template <Numeric T, int n> vec<T, n> & clampify(vec<T, n> & v, T min, T max);
+    template <Numeric T, int n> vec<T, n> & clampify(vec<T, n> & v, const vec<T, n> & min, const vec<T, n> & max);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1390,5 +1396,41 @@ namespace qc
     inline constexpr T median(const vec3<T> v)
     {
         return median(v.x, v.y, v.z);
+    }
+
+    template <Numeric T, int n>
+    inline constexpr vec<T, n> clamp(const vec<T, n> & v, const T min, const T max)
+    {
+        if constexpr (n == 2) return {clamp(v.x, min, max), clamp(v.y, min, max)};
+        if constexpr (n == 3) return {clamp(v.x, min, max), clamp(v.y, min, max), clamp(v.z, min, max)};
+        if constexpr (n == 4) return {clamp(v.x, min, max), clamp(v.y, min, max), clamp(v.z, min, max), clamp(v.w, min, max)};
+    }
+
+    template <Numeric T, int n>
+    inline constexpr vec<T, n> clamp(const vec<T, n> & v, const vec<T, n> & min, const vec<T, n> & max)
+    {
+        if constexpr (n == 2) return {clamp(v.x, min.x, max.x), clamp(v.y, min.y, max.y)};
+        if constexpr (n == 3) return {clamp(v.x, min.x, max.x), clamp(v.y, min.y, max.y), clamp(v.z, min.z, max.z)};
+        if constexpr (n == 4) return {clamp(v.x, min.x, max.x), clamp(v.y, min.y, max.y), clamp(v.z, min.z, max.z), clamp(v.w, min.w, max.w)};
+    }
+
+    template <Numeric T, int n>
+    inline vec<T, n> & clampify(vec<T, n> & v, const T min, const T max)
+    {
+        clampify(v.x, min, max);
+        if constexpr (n == 2) clampify(v.y, min, max);
+        if constexpr (n == 3) clampify(v.z, min, max);
+        if constexpr (n == 4) clampify(v.w, min, max);
+        return v;
+    }
+
+    template <Numeric T, int n>
+    inline vec<T, n> & clampify(vec<T, n> & v, const vec<T, n> & min, const vec<T, n> & max)
+    {
+        clampify(v.x, min.x, max.x);
+        if constexpr (n == 2) clampify(v.y, min.y, max.y);
+        if constexpr (n == 3) clampify(v.z, min.z, max.z);
+        if constexpr (n == 4) clampify(v.w, min.w, max.w);
+        return v;
     }
 }

@@ -114,6 +114,16 @@ namespace qc
     //
     template <NumericOrPointer T1, NumericOrPointer T2> requires SameNumericType<T1, T2> constexpr auto minmax(T1 v1, T2 v2);
     template <typename T1, typename T2, typename T3, typename... Ts> constexpr auto minmax(T1 && v1, T2 && v2, T3 && v3, Ts && ... vs);
+
+    //
+    // ...
+    //
+    template <Numeric T> constexpr T clamp(T v, T min, T max);
+
+    //
+    // ...
+    //
+    template <Numeric T> T & clampify(T & v, T min, T max);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -205,5 +215,17 @@ namespace qc
             const auto [min2, max2]{minmax(v3, vs...)};
             return std::pair{min(min1, min2), max(max1, max2)};
         }
+    }
+
+    template <Numeric T>
+    inline constexpr T clamp(const T v, const T min, const T max)
+    {
+        return qc::min(qc::max(v, min), max);
+    }
+
+    template <Numeric T>
+    inline T & clampify(T & v, const T min, const T max)
+    {
+        return qc::minify(qc::maxify(v, min), max);
     }
 }

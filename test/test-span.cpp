@@ -334,10 +334,29 @@ static void compileFunctionsT()
     qc::round(s3);
     qc::round(s4);
 
+    qc::clamp(s1, v, v);
+    qc::clamp(s2, v, v);
+    qc::clamp(s3, v, v);
+    qc::clamp(s4, v, v);
+    qc::clamp(s2, v2, v2);
+    qc::clamp(s3, v3, v3);
+    qc::clamp(s4, v4, v4);
     qc::clamp(v, s1);
     qc::clamp(v2, s2);
     qc::clamp(v3, s3);
     qc::clamp(v4, s4);
+
+    qc::clampify(s1, v, v);
+    qc::clampify(s2, v, v);
+    qc::clampify(s3, v, v);
+    qc::clampify(s4, v, v);
+    qc::clampify(s2, v2, v2);
+    qc::clampify(s3, v3, v3);
+    qc::clampify(s4, v4, v4);
+    qc::clampify(v, s1);
+    qc::clampify(v2, s2);
+    qc::clampify(v3, s3);
+    qc::clampify(v4, s4);
 }
 
 template <typename T>

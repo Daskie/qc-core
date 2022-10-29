@@ -132,12 +132,6 @@ namespace qc
     //
     // ...
     //
-    template <Numeric T, int n> constexpr vec<T, n> clamp(const vec<T, n> & v, T min, T max);
-    template <Numeric T, int n> constexpr vec<T, n> clamp(const vec<T, n> & v, const vec<T, n> & min, const vec<T, n> & max);
-
-    //
-    // ...
-    //
     template <Numeric T, int n> constexpr vec<T, n> abs(const vec<T, n> & v);
 
     //
@@ -471,22 +465,6 @@ namespace qc
             if (v.y > v.z) std::swap(v.y, v.z);
             if (v.x > v.y) std::swap(v.x, v.y);
         }
-    }
-
-    template <Numeric T, int n>
-    inline constexpr vec<T, n> clamp(const vec<T, n> & v, const T min, const T max)
-    {
-        if constexpr (n == 2) return {clamp(v.x, min, max), clamp(v.y, min, max)};
-        if constexpr (n == 3) return {clamp(v.x, min, max), clamp(v.y, min, max), clamp(v.z, min, max)};
-        if constexpr (n == 4) return {clamp(v.x, min, max), clamp(v.y, min, max), clamp(v.z, min, max), clamp(v.w, min, max)};
-    }
-
-    template <Numeric T, int n>
-    inline constexpr vec<T, n> clamp(const vec<T, n> & v, const vec<T, n> & min, const vec<T, n> & max)
-    {
-        if constexpr (n == 2) return {clamp(v.x, min.x, max.x), clamp(v.y, min.y, max.y)};
-        if constexpr (n == 3) return {clamp(v.x, min.x, max.x), clamp(v.y, min.y, max.y), clamp(v.z, min.z, max.z)};
-        if constexpr (n == 4) return {clamp(v.x, min.x, max.x), clamp(v.y, min.y, max.y), clamp(v.z, min.z, max.z), clamp(v.w, min.w, max.w)};
     }
 
     template <Numeric T, int n>
