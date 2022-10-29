@@ -170,7 +170,7 @@ namespace qc
 
     template <typename T, int n> mat<T, n> & operator*=(mat<T, n> & m, T v);
     template <typename T, int n> mat<T, n> & operator*=(mat<T, n> & m1, const mat<T, n> & m2); // THIS IS EQUIVALENT TO m1 = m2 * m1 !!!
-    template <typename T, int n> vec<T, n> & operator*=(vec<T, n> & v, const mat<T, n> & m);
+    template <typename T, int n> vec<T, n> & operator*=(vec<T, n> & v, const mat<T, n> & m); // THIS IS EQUIVALENT TO v = m * v !!!
 
     template <typename T, int n> mat<T, n> & operator/=(mat<T, n> & m, T v);
 

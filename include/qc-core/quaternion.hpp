@@ -47,6 +47,7 @@ namespace qc
 
     template <Floating T> quat<T> & operator*=(quat<T> & q1, const quat<T> & q2);
     template <Floating T> quat<T> & operator*=(quat<T> & q, T v);
+    template <Floating T> vec3<T> & operator*=(vec3<T> & v, const quat<T> & q); // THIS IS EQUIVALENT TO v = q * v !!!
 
     template <Floating T> quat<T> & operator/=(quat<T> & q1, const quat<T> & q2);
 
@@ -122,6 +123,12 @@ namespace qc
     inline quat<T> & operator*=(quat<T> & q, const T v)
     {
         return q = q * v;
+    }
+
+    template <Floating T>
+    inline vec3<T> & operator*=(vec3<T> & v, const quat<T> & q)
+    {
+        return v = q * v;
     }
 
     template <Floating T>

@@ -39,6 +39,7 @@ static void compileClassesT()
     q -= q;
     q *= q;
     q *= v;
+    v3 *= q;
     q /= q;
 
     // arithmetic operators
