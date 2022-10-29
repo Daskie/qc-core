@@ -64,8 +64,8 @@ namespace qc
         template <Floating T> inline constexpr T e{T(2.718281828459045)};
         template <Floating T> inline constexpr T phi{T(1.618033988749895)};
         template <Floating T> inline constexpr T sqrt2{T(1.414213562373095)};
-        template <Floating T> inline constexpr T sqrt3{T(0.5773502691896257)};
-        template <Floating T> inline constexpr T sqrt5{T(0.4472135954999579)};
+        template <Floating T> inline constexpr T sqrt3{T(1.732050807568877)};
+        template <Floating T> inline constexpr T sqrt5{T(2.236067977499790)};
     }
 
     template <typename T, typename... Ts> concept OneOf = (std::same_as<T, Ts> || ...);
