@@ -153,7 +153,7 @@ namespace qc
         static_assert(alignof(T) <= 8u);
 
         const size_t wordCount{1u + (sizeof(T) + 7u) / 8u};
-        const auto [wasSpace, ptr]{_bubbles.remove(intptr_t(wordCount))};
+        const auto [wasSpace, ptr]{_bubbles.remove(ptrdiff_t(wordCount))};
 
         // Arena is full
         while (!wasSpace)

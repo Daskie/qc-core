@@ -16,8 +16,8 @@ namespace qc
     //
     // ...
     //
-    template <Floating T, int n> span<intmax_t, n> round(const span<T, n> & v);
-    template <Integral T, int n> span<T, n> round(const span<T, n> & v);
+    template <Floating T, int n> span<intmax_t, n> round(const span<T, n> & s);
+    template <Integral T, int n> span<T, n> round(const span<T, n> & s);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -38,14 +38,14 @@ namespace qc
     }
 
     template <Floating T, int n>
-    inline span<intmax_t, n> round(const span<T, n> & v)
+    inline span<intmax_t, n> round(const span<T, n> & s)
     {
-        return {round(v.min), round(v.max)};
+        return {round(s.min), round(s.max)};
     }
 
     template <Integral T, int n>
-    inline span<T, n> round(const span<T, n> & v)
+    inline span<T, n> round(const span<T, n> & s)
     {
-        return v;
+        return s;
     }
 }

@@ -9,7 +9,7 @@ namespace qc
     template <IntegralOrPointer P>
     class BubbleTracker
     {
-        using S = std::conditional_t<Integral<P>, P, intptr_t>;
+        using S = std::conditional_t<Integral<P>, P, ptrdiff_t>;
 
       public:
 
