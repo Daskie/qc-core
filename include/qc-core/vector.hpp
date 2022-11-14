@@ -292,6 +292,10 @@ namespace qc
     template <UnsignedIntegral T, int n> vec<T, n> & operator^=(vec<T, n> & v1, const vec<T, n> & v2);
     template <UnsignedIntegral T, int n> vec<T, n> & operator^=(vec<T, n> & v1, T v2);
 
+    template <UnsignedIntegral T, int n> vec<T, n> & operator<<=(vec<T, n> & v1, int v2);
+
+    template <UnsignedIntegral T, int n> vec<T, n> & operator>>=(vec<T, n> & v1, int v2);
+
     template <Numeric T, int n> constexpr vec<T, n> operator+(const vec<T, n> & v);
 
     template <Numeric T, int n> constexpr vec<T, n> operator-(const vec<T, n> & v);
@@ -329,6 +333,10 @@ namespace qc
     template <UnsignedIntegral T, int n> constexpr vec<T, n> operator^(const vec<T, n> & v1, const vec<T, n> & v2);
     template <UnsignedIntegral T, int n> constexpr vec<T, n> operator^(const vec<T, n> & v1, T v2);
     template <UnsignedIntegral T, int n> constexpr vec<T, n> operator^(T v1, const vec<T, n> & v2);
+
+    template <UnsignedIntegral T, int n> constexpr vec<T, n> operator<<(const vec<T, n> & v1, int v2);
+
+    template <UnsignedIntegral T, int n> constexpr vec<T, n> operator>>(const vec<T, n> & v1, int v2);
 
     template <typename T, int n> constexpr    bool operator==(const vec<T, n> & v1, const vec<T, n> & v2);
     template <typename T, int n> constexpr bvec<n> operator==(const vec<T, n> & v1, T v2);
@@ -1034,6 +1042,26 @@ namespace qc
         return v1;
     }
 
+    template <UnsignedIntegral T, int n>
+    inline vec<T, n> & operator<<=(vec<T, n> & v1, const int v2)
+    {
+        if constexpr (n >= 1) v1.x <<= v2;
+        if constexpr (n >= 2) v1.y <<= v2;
+        if constexpr (n >= 3) v1.z <<= v2;
+        if constexpr (n >= 4) v1.w <<= v2;
+        return v1;
+    }
+
+    template <UnsignedIntegral T, int n>
+    inline vec<T, n> & operator>>=(vec<T, n> & v1, const int v2)
+    {
+        if constexpr (n >= 1) v1.x >>= v2;
+        if constexpr (n >= 2) v1.y >>= v2;
+        if constexpr (n >= 3) v1.z >>= v2;
+        if constexpr (n >= 4) v1.w >>= v2;
+        return v1;
+    }
+
     template <Numeric T, int n>
     inline constexpr vec<T, n> operator+(const vec<T, n> & v)
     {
@@ -1258,6 +1286,22 @@ namespace qc
         if constexpr (n == 2) return {T(v1 ^ v2.x), T(v1 ^ v2.y)};
         if constexpr (n == 3) return {T(v1 ^ v2.x), T(v1 ^ v2.y), T(v1 ^ v2.z)};
         if constexpr (n == 4) return {T(v1 ^ v2.x), T(v1 ^ v2.y), T(v1 ^ v2.z), T(v1 ^ v2.w)};
+    }
+
+    template <UnsignedIntegral T, int n>
+    inline constexpr vec<T, n> operator<<(const vec<T, n> & v1, const int v2)
+    {
+        if constexpr (n == 2) return {T(v1.x << v2), T(v1.y << v2)};
+        if constexpr (n == 3) return {T(v1.x << v2), T(v1.y << v2), T(v1.z << v2)};
+        if constexpr (n == 4) return {T(v1.x << v2), T(v1.y << v2), T(v1.z << v2), T(v1.w << v2)};
+    }
+
+    template <UnsignedIntegral T, int n>
+    inline constexpr vec<T, n> operator>>(const vec<T, n> & v1, const int v2)
+    {
+        if constexpr (n == 2) return {T(v1.x >> v2), T(v1.y >> v2)};
+        if constexpr (n == 3) return {T(v1.x >> v2), T(v1.y >> v2), T(v1.z >> v2)};
+        if constexpr (n == 4) return {T(v1.x >> v2), T(v1.y >> v2), T(v1.z >> v2), T(v1.w >> v2)};
     }
 
     template <typename T, int n>

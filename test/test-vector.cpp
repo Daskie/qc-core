@@ -683,6 +683,14 @@ static void compileFunctionsUIT()
     v3 ^= v;
     v4 ^= v;
 
+    v2 >>= 1;
+    v3 >>= 1;
+    v4 >>= 1;
+
+    v2 <<= 1;
+    v3 <<= 1;
+    v4 <<= 1;
+
     ~v2;
     ~v3;
     ~v4;
@@ -716,6 +724,14 @@ static void compileFunctionsUIT()
     v ^ v2;
     v ^ v3;
     v ^ v4;
+
+    v2 >> 1;
+    v3 >> 1;
+    v4 >> 1;
+
+    v2 << 1;
+    v3 << 1;
+    v4 << 1;
 
     qc::transnorm<fvec2>(v2);
     qc::transnorm<fvec3>(v3);
