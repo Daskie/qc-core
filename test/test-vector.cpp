@@ -657,9 +657,65 @@ static void compileFunctionsSIT()
 template <typename T>
 static void compileFunctionsUIT()
 {
+    T v{};
     vec2<T> v2{};
     vec3<T> v3{};
     vec4<T> v4{};
+
+    v2 &= v2;
+    v3 &= v3;
+    v4 &= v4;
+    v2 &= v;
+    v3 &= v;
+    v4 &= v;
+
+    v2 |= v2;
+    v3 |= v3;
+    v4 |= v4;
+    v2 |= v;
+    v3 |= v;
+    v4 |= v;
+
+    v2 ^= v2;
+    v3 ^= v3;
+    v4 ^= v4;
+    v2 ^= v;
+    v3 ^= v;
+    v4 ^= v;
+
+    ~v2;
+    ~v3;
+    ~v4;
+
+    v2 & v2;
+    v3 & v3;
+    v4 & v4;
+    v2 & v;
+    v3 & v;
+    v4 & v;
+    v & v2;
+    v & v3;
+    v & v4;
+
+    v2 | v2;
+    v3 | v3;
+    v4 | v4;
+    v2 | v;
+    v3 | v;
+    v4 | v;
+    v | v2;
+    v | v3;
+    v | v4;
+
+    v2 ^ v2;
+    v3 ^ v3;
+    v4 ^ v4;
+    v2 ^ v;
+    v3 ^ v;
+    v4 ^ v;
+    v ^ v2;
+    v ^ v3;
+    v ^ v4;
 
     qc::transnorm<fvec2>(v2);
     qc::transnorm<fvec3>(v3);
