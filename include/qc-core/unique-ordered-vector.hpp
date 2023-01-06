@@ -2,6 +2,8 @@
 
 #include <vector>
 
+#include <qc-core/core-ext.hpp>
+
 namespace qc
 {
     template <typename T>
@@ -15,7 +17,7 @@ namespace qc
         using const_reference = const T &;
         using const_pointer = const T *;
         using difference_type = ptrdiff_t;
-        using size_type = size_t;
+        using size_type = unat;
         using iterator = typename std::vector<T>::iterator;
         using const_iterator = typename std::vector<T>::const_iterator;
         using reverse_iterator = typename std::vector<T>::reverse_iterator;
@@ -28,7 +30,7 @@ namespace qc
 
         ~UniqueOrderedVector() noexcept = default;
 
-        void reserve(size_t capacty);
+        void reserve(unat capacty);
 
         std::pair<iterator, bool> insert(const T & v);
         std::pair<iterator, bool> insert(T && v);
@@ -38,8 +40,8 @@ namespace qc
         iterator find(const T & v) noexcept;
         const_iterator find(const T & v) const noexcept;
 
-        iterator findFirstGreaterThanOrEqualTo(const T & v) noexcept;
-        const_iterator findFirstGreaterThanOrEqualTo(const T & v) const noexcept;
+        iterator lowerBound(const T & v) noexcept;
+        const_iterator lowerBound(const T & v) const noexcept;
 
         bool contains(const T & v) noexcept;
 
@@ -48,7 +50,7 @@ namespace qc
 
         void clear() noexcept;
 
-        size_t size() const noexcept { return _data.size(); }
+        unat size() const noexcept { return _data.size(); }
 
         bool empty() const noexcept { return _data.empty(); }
 
@@ -81,7 +83,7 @@ namespace qc
 namespace qc
 {
     template <typename T>
-    void UniqueOrderedVector<T>::reserve(const size_t capacity)
+    void UniqueOrderedVector<T>::reserve(const unat capacity)
     {
         _data.reserve(capacity);
     }
@@ -109,46 +111,27 @@ namespace qc
     auto UniqueOrderedVector<T>::find(const T & v) noexcept -> iterator
     {
         const const_iterator pos{static_cast<const UniqueOrderedVector *>(this)->find(v)};
+        #pragma warning(suppress: 4946)
         return reinterpret_cast<const iterator &>(pos);
     }
 
     template <typename T>
     auto UniqueOrderedVector<T>::find(const T & v) const noexcept -> const_iterator
     {
-        const const_iterator pos{findFirstGreaterThanOrEqualTo(v)};
+        const const_iterator pos{lowerBound(v)};
         return (pos == _data.cend() || *pos == v) ? pos : _data.cend();
     }
 
     template <typename T>
-    auto UniqueOrderedVector<T>::findFirstGreaterThanOrEqualTo(const T & v) noexcept -> iterator
+    auto UniqueOrderedVector<T>::lowerBound(const T & v) noexcept -> iterator
     {
-        const const_iterator pos{static_cast<const UniqueOrderedVector *>(this)->findFirstGreaterThanOrEqualTo(v)};
-        return reinterpret_cast<const iterator &>(pos);
+        return qc::lowerBound(_data.begin(), _data.end(), v);
     }
 
     template <typename T>
-    auto UniqueOrderedVector<T>::findFirstGreaterThanOrEqualTo(const T & v) const noexcept -> const_iterator
+    auto UniqueOrderedVector<T>::lowerBound(const T & v) const noexcept -> const_iterator
     {
-        //--- Binary search ---
-
-        size_t lowI{0u};
-        size_t highI{_data.size()};
-
-        while (lowI < highI)
-        {
-            const size_t midI{(lowI + highI) / 2u};
-
-            if (_data[midI] < v)
-            {
-                lowI = midI + 1u;
-            }
-            else
-            {
-                highI = midI;
-            }
-        }
-
-        return _data.cbegin() + lowI;
+        return qc::lowerBound(_data.cbegin(), _data.cend(), v);
     }
 
     template <typename T>
@@ -189,7 +172,7 @@ namespace qc
     template <typename T_>
     auto UniqueOrderedVector<T>::_insert(T_ && v) -> std::pair<iterator, bool>
     {
-        const iterator pos{findFirstGreaterThanOrEqualTo(v)};
+        const iterator pos{lowerBound(v)};
 
         if (pos != _data.end() && *pos == v)
         {

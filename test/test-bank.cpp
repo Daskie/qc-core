@@ -20,7 +20,7 @@ TEST(Bank, general)
     for (int i{1}; i < 16; ++i)
     {
         ASSERT_EQ(i, bank.create(i).i);
-        ASSERT_EQ(i, bank[i]);
+        ASSERT_EQ(i, bank[uint(i)]);
         ASSERT_EQ(16u, bank.capacity());
         ASSERT_EQ(i + 1, bank.size());
     }
@@ -31,7 +31,7 @@ TEST(Bank, general)
 
     for (int i{0}; i < 16; ++i)
     {
-        bank.destroy(i);
+        bank.destroy(uint(i));
         ASSERT_EQ(32u, bank.capacity());
         ASSERT_EQ(16 - i, bank.size());
     }
@@ -63,7 +63,7 @@ TEST(Bank, generalNontrivial)
     for (int i{1}; i < 16; ++i)
     {
         ASSERT_EQ(i, bank.create(new int{i}).i);
-        ASSERT_EQ(i, *bank[i]);
+        ASSERT_EQ(i, *bank[uint(i)]);
         ASSERT_EQ(16u, bank.capacity());
         ASSERT_EQ(i + 1, bank.size());
     }
@@ -74,7 +74,7 @@ TEST(Bank, generalNontrivial)
 
     for (int i{0}; i < 16; ++i)
     {
-        bank.destroy(i);
+        bank.destroy(uint(i));
         ASSERT_EQ(32u, bank.capacity());
         ASSERT_EQ(16 - i, bank.size());
     }
@@ -164,7 +164,7 @@ TEST(Bank, freeOrder)
 
     for (int i{0}; i < 32; ++i)
     {
-        bank.destroy(31 - i);
+        bank.destroy(uint(31 - i));
     }
 
     ASSERT_EQ(0u, bank.size());
@@ -172,7 +172,7 @@ TEST(Bank, freeOrder)
     for (int i{0}; i < 32; ++i)
     {
         ASSERT_EQ(u32(i), bank.create(100 + i).i);
-        ASSERT_EQ(100 + i, bank[i]);
+        ASSERT_EQ(100 + i, bank[uint(i)]);
     }
 
     ASSERT_EQ(32u, bank.size());

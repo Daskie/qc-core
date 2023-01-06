@@ -13,8 +13,14 @@ namespace qc
     constexpr bool debug{true};
 #endif
 
+    static_assert(sizeof(uintptr_t) <= 8u);
+    static_assert(std::is_same_v<uintptr_t, size_t>);
+
     inline namespace types
     {
+        using nat = intptr_t;
+        using unat = uintptr_t;
+
         using schar = signed char;
         using uchar = unsigned char;
         using ushort = unsigned short;

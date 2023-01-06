@@ -1,12 +1,14 @@
 #pragma once
 
+#include <qc-core/core.hpp>
+
 namespace qc
 {
     struct PageError {};
 
     /// Assume pages are 4096 bytes for better compile-time optimization
     /// This is checked the first time pages are reserved, and an exception is thrown if the actual page size differs
-    constexpr size_t pageSize{4096u};
+    constexpr unat pageSize{4096u};
 
     ///
     /// Allocate a contiguous block of memory in page multiples
@@ -17,7 +19,7 @@ namespace qc
     /// @return the start of the allocated memory
     /// @throw PageError if `pageCount` is 0 or the allocation fails
     ///
-    [[nodiscard]] void * allocatePages(size_t pageCount);
+    [[nodiscard]] void * allocatePages(unat pageCount);
 
     ///
     /// Reserve a contiguous block of virtual memory without actually allocating any physical memory
@@ -28,7 +30,7 @@ namespace qc
     /// @return the base of the reserved memory
     /// @throw PageError if `pageCount` is 0 or the reservation fails
     ///
-    [[nodiscard]] void * reservePages(size_t pageCount);
+    [[nodiscard]] void * reservePages(unat pageCount);
 
     ///
     /// Commit a range of previously reserved pages to physical memory, allowing them to be used
@@ -39,7 +41,7 @@ namespace qc
     /// @param pageCount the number of pages to commit; no-op if zero
     /// @throw PageError if the commit fails
     ///
-    void commitPages(void * pageStart, size_t pageCount);
+    void commitPages(void * pageStart, unat pageCount);
 
     ///
     /// Decommit a range of previously committed pages, freeing the associated physical memory back to the system
@@ -50,7 +52,7 @@ namespace qc
     /// @param pageCount the number of pages to decommit; no-op if zero
     /// @throw PageError if the decommit fails
     ///
-    void decommitPages(void * pageStart, size_t pageCount);
+    void decommitPages(void * pageStart, unat pageCount);
 
     ///
     /// Frees a previously allocated/reserved memory block both physically and virtually

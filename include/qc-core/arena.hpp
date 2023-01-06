@@ -19,7 +19,7 @@ namespace qc
       public:
 
         Arena() noexcept = default;
-        explicit Arena(size_t capacity);
+        explicit Arena(unat capacity);
 
         Arena(const Arena &) = delete;
         Arena(Arena && other) noexcept;
@@ -29,7 +29,7 @@ namespace qc
 
         ~Arena() noexcept (!debug);
 
-        void setCapacity(size_t capacity);
+        void setCapacity(unat capacity);
 
         template <typename T, typename... Args> [[nodiscard]] T & create(Args && ... args);
 
@@ -41,9 +41,9 @@ namespace qc
 
         void shrinkToFit();
 
-        size_t capacity() const noexcept { return _capacity; }
+        unat capacity() const noexcept { return _capacity; }
 
-        size_t size() const noexcept { return _size; }
+        unat size() const noexcept { return _size; }
 
         bool empty() const noexcept { return !_size; }
 
@@ -53,12 +53,12 @@ namespace qc
 
         template <typename T> static void _destroy(T & v);
 
-        size_t _capacity{};
-        size_t _size{};
+        unat _capacity{};
+        unat _size{};
         u64 * _memory{};
         BubbleTracker<u64 *> _bubbles{};
 
-        void _expand(size_t newSize);
+        void _expand(unat newSize);
     };
 }
 
@@ -66,7 +66,7 @@ namespace qc
 
 namespace qc
 {
-    inline Arena::Arena(const size_t capacity)
+    inline Arena::Arena(const unat capacity)
     {
         setCapacity(capacity);
     }
@@ -106,7 +106,7 @@ namespace qc
                 }
 
                 const auto & bubble{_bubbles.bubbles().front()};
-                if (bubble.pos != _memory || size_t(bubble.size) * 8u != _capacity)
+                if (bubble.pos != _memory || unat(bubble.size) * 8u != _capacity)
                 {
                     throw ArenaError{};
                 }
@@ -128,7 +128,7 @@ namespace qc
         }
     }
 
-    inline void Arena::setCapacity(const size_t capacity)
+    inline void Arena::setCapacity(const unat capacity)
     {
         // May only be called before memory is reserved
         if (_memory)
@@ -136,10 +136,10 @@ namespace qc
             throw ArenaError{};
         }
 
-        const size_t pageCount{std::bit_ceil((capacity + (pageSize - 1u)) / pageSize)};
+        const unat pageCount{std::bit_ceil((capacity + (pageSize - 1u)) / pageSize)};
         _capacity = pageCount * pageSize;
         _memory = static_cast<u64 *>(reservePages(pageCount));
-        _bubbles.add(_memory, _capacity / 8u);
+        _bubbles.add(_memory, nat(_capacity / 8u));
 
         // Insert self into sorted arena list
         auto it{_arenas.begin()};
@@ -152,7 +152,7 @@ namespace qc
     {
         static_assert(alignof(T) <= 8u);
 
-        const size_t wordCount{1u + (sizeof(T) + 7u) / 8u};
+        const unat wordCount{1u + (sizeof(T) + 7u) / 8u};
         const auto [wasSpace, ptr]{_bubbles.remove(ptrdiff_t(wordCount))};
 
         // Arena is full
@@ -161,7 +161,7 @@ namespace qc
             throw ArenaError{};
         }
 
-        const size_t requiredSize{(size_t(ptr - _memory) + wordCount) * 8u};
+        const unat requiredSize{(unat(ptr - _memory) + wordCount) * 8u};
         if (requiredSize > _size)
         {
             _expand(requiredSize);
@@ -193,14 +193,14 @@ namespace qc
         v.~T();
 
         u64 * const ptr{reinterpret_cast<u64 *>(&v) - 1};
-        const u64 valSize{*ptr & 0xFFFFFFFFu};
-        const size_t wordCount{1u + (valSize + 7u) / 8u};
-        _bubbles.add(ptr, wordCount);
+        const u32 valSize{u32(*ptr & 0xFFFFFFFFu)};
+        const unat wordCount{1u + (valSize + 7u) / 8u};
+        _bubbles.add(ptr, nat(wordCount));
     }
 
     inline void Arena::shrinkToFit()
     {
-        const size_t freeTailSize{size_t(_bubbles.tail(_memory + _capacity / 8u)) * 8u};
+        const unat freeTailSize{unat(_bubbles.tail(_memory + _capacity / 8u)) * 8u};
 
         // Arena is unallocated or full
         if (!freeTailSize)
@@ -208,10 +208,10 @@ namespace qc
             return;
         }
 
-        size_t necessaryPageCount{(_capacity - freeTailSize + (pageSize - 1u)) / pageSize};
+        unat necessaryPageCount{(_capacity - freeTailSize + (pageSize - 1u)) / pageSize};
         if (necessaryPageCount) necessaryPageCount = std::bit_ceil(necessaryPageCount);
-        const size_t currentPageCount{(_size + (pageSize - 1u)) / pageSize};
-        const size_t unnecessaryPageCount{currentPageCount - necessaryPageCount};
+        const unat currentPageCount{(_size + (pageSize - 1u)) / pageSize};
+        const unat unnecessaryPageCount{currentPageCount - necessaryPageCount};
 
         // Free tail is smaller than hald the current size
         if (!unnecessaryPageCount)
@@ -248,9 +248,9 @@ namespace qc
         }
     }
 
-    inline void Arena::_expand(size_t newSize)
+    inline void Arena::_expand(unat newSize)
     {
-        const size_t newPageCount{std::bit_ceil((newSize + (pageSize - 1u)) / pageSize)};
+        const unat newPageCount{std::bit_ceil((newSize + (pageSize - 1u)) / pageSize)};
         newSize = newPageCount * pageSize;
 
         // Ensure we have sufficient reserved memory

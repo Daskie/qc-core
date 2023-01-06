@@ -11,10 +11,10 @@ namespace qc::memory
 {
     struct RecordAllocatorStats
     {
-        size_t current{};
-        size_t total{};
-        size_t allocations{};
-        size_t deallocations{};
+        unat current{};
+        unat total{};
+        unat allocations{};
+        unat deallocations{};
     };
 
     namespace _minutia
@@ -70,9 +70,9 @@ namespace qc::memory
 
         ~RecordAllocator() noexcept = default;
 
-        T * allocate(const size_t n)
+        T * allocate(const unat n)
         {
-            const size_t bytes{n * sizeof(T)};
+            const unat bytes{n * sizeof(T)};
             RecordAllocatorStats & stats{this->stats()};
             stats.current += bytes;
             stats.total += bytes;
@@ -80,9 +80,9 @@ namespace qc::memory
             return reinterpret_cast<T *>(::operator new(bytes));
         }
 
-        void deallocate(T * const ptr, const size_t n)
+        void deallocate(T * const ptr, const unat n)
         {
-            const size_t bytes{n * sizeof(T)};
+            const unat bytes{n * sizeof(T)};
             RecordAllocatorStats & stats{this->stats()};
             stats.current -= bytes;
             ++stats.deallocations;
@@ -103,6 +103,6 @@ namespace qc::memory
 
         private: //-------------------------------------------------------------
 
-        size_t _listI{};
+        unat _listI{};
     };
 }

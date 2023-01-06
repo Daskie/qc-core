@@ -68,7 +68,7 @@ namespace qc
 
         // Find position in ordered vector where this bubble would be inserted
         const auto it{qc::lowerBound(_bubbles.begin(), _bubbles.end(), pos, [](const Bubble & b, const P & p) { return b.pos >= p; })};
-        const size_t i{size_t(it - _bubbles.begin())};
+        const unat i{unat(it - _bubbles.begin())};
 
         const bool isPre{i > 0u};
         const bool isPost{i < _bubbles.size()};
@@ -153,7 +153,7 @@ namespace qc
         else
         {
             const Bubble & lastBubble{_bubbles.back()};
-            return lastBubble.pos < memoryEnd && lastBubble.pos + lastBubble.size >= memoryEnd ? memoryEnd - lastBubble.pos : 0u;
+            return lastBubble.pos < memoryEnd && lastBubble.pos + lastBubble.size >= memoryEnd ? memoryEnd - lastBubble.pos : S(0);
         }
     }
 

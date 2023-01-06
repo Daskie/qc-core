@@ -3,9 +3,12 @@
 #include <atomic>
 
 #ifdef WIN32
+    #pragma warning(push)
+    #pragma warning(disable: 5039)
     #define WIN32_LEAN_AND_MEAN
     #define NOMINMAX
     #include <windows.h>
+    #pragma warning(pop)
 #else
     #error "Platform not yet supported"
 #endif
@@ -16,7 +19,7 @@ namespace qc
     {
         std::atomic_flag _pageSizeChecked{};
 
-        size_t _getPageSize()
+        unat _getPageSize()
         {
             SYSTEM_INFO sSysInfo;
             GetSystemInfo(&sSysInfo);
@@ -37,7 +40,7 @@ namespace qc
         }
     }
 
-    void * allocatePages(const size_t pageCount)
+    void * allocatePages(const unat pageCount)
     {
         _verifyPageSize();
 
@@ -55,7 +58,7 @@ namespace qc
         return baseAddress;
     }
 
-    void * reservePages(const size_t pageCount)
+    void * reservePages(const unat pageCount)
     {
         _verifyPageSize();
 
@@ -73,7 +76,7 @@ namespace qc
         return baseAddress;
     }
 
-    void commitPages(void * const pageStart, const size_t pageCount)
+    void commitPages(void * const pageStart, const unat pageCount)
     {
         if (!pageCount)
         {
@@ -81,7 +84,7 @@ namespace qc
         }
 
         // Ensure pointer is on page boundary
-        if (!pageStart || reinterpret_cast<size_t>(pageStart) & (pageSize - 1u))
+        if (!pageStart || reinterpret_cast<unat>(pageStart) & (pageSize - 1u))
         {
             throw PageError{};
         }

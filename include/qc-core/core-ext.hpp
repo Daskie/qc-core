@@ -52,7 +52,7 @@ namespace qc
     // ~2x faster than std::floor
     // doesn't work with extremely large or extremely small floating point values
     //
-    template <Floating T> intmax_t floor(T v);
+    template <Floating T> nat floor(T v);
     template <Integral T> T floor(T v);
 
     //
@@ -60,13 +60,13 @@ namespace qc
     // ~2x faster than std::ceil
     // doesn't work with extremely large or extremely small floating point values
     //
-    template <Floating T> intmax_t ceil(T v);
+    template <Floating T> nat ceil(T v);
     template <Integral T> T ceil(T v);
 
     //
     // ...
     //
-    template <Floating T> constexpr intmax_t round(T v) noexcept;
+    template <Floating T> constexpr nat round(T v) noexcept;
     template <Integral T> constexpr T round(T v) noexcept;
 
     // Simple wrapper around std::pow
@@ -98,7 +98,7 @@ namespace qc
     //
     // ...
     //
-    template <Floating T> std::pair<T, intmax_t> fract_i(T v);
+    template <Floating T> std::pair<T, nat> fract_i(T v);
 
     //
     // ...
@@ -263,7 +263,7 @@ namespace qc
     {
         if constexpr (Floating<T>)
         {
-            return T(intmax_t(v));
+            return T(nat(v));
         }
         else
         {
@@ -272,9 +272,9 @@ namespace qc
     }
 
     template <Floating T>
-    inline intmax_t floor(const T v)
+    inline nat floor(const T v)
     {
-        const intmax_t i{intmax_t(v)};
+        const nat i{nat(v)};
         return i - (v < T(i));
     }
 
@@ -285,9 +285,9 @@ namespace qc
     }
 
     template <Floating T>
-    inline intmax_t ceil(const T v)
+    inline nat ceil(const T v)
     {
-        const intmax_t i{intmax_t(v)};
+        const nat i{nat(v)};
         return i + (v > T(i));
     }
 
@@ -320,9 +320,9 @@ namespace qc
     #endif
 
     template <Floating T>
-    inline constexpr intmax_t round(const T v) noexcept
+    inline constexpr nat round(const T v) noexcept
     {
-        return intmax_t(v + (T(v >= T(0.0)) - T(0.5)));
+        return nat(v + (T(v >= T(0.0)) - T(0.5)));
     }
 
     template <Integral T>
@@ -396,9 +396,9 @@ namespace qc
     }
 
     template <Floating T>
-    inline std::pair<T, intmax_t> fract_i(const T v)
+    inline std::pair<T, nat> fract_i(const T v)
     {
-        const intmax_t i{intmax_t(v)};
+        const nat i{nat(v)};
         return {v - T(i), i};
     }
 
@@ -534,15 +534,13 @@ namespace qc
     template <typename It, typename T, typename GreaterEqual>
     inline It lowerBound(It first, const It last, const T & v, GreaterEqual greaterEqual) noexcept
     {
-        using U = std::make_unsigned_t<decltype(last - first)>;
-
-        U size{U(last - first)};
+        unat size{unat(last - first)};
 
         while (size)
         {
-            const U half{size / 2u};
-            const It mid{first + half};
-            const It firstAlt{mid + (size & 1u)};
+            const unat half{size / 2u};
+            const It mid{first + nat(half)};
+            const It firstAlt{mid + nat(size & 1u)};
             first = greaterEqual(*mid, v) ? first : firstAlt;
             size = half;
         }
@@ -553,15 +551,13 @@ namespace qc
     template <typename It, typename T, typename Greater>
     inline It upperBound(It first, const It last, const T & v, Greater greater) noexcept
     {
-        using U = std::make_unsigned_t<decltype(last - first)>;
-
-        U size{U(last - first)};
+        unat size{unat(last - first)};
 
         while (size)
         {
-            const U half{size / 2u};
-            const It mid{first + half};
-            const It firstAlt{mid + (size & 1u)};
+            const unat half{size / 2u};
+            const It mid{first + nat(half)};
+            const It firstAlt{mid + nat(size & 1u)};
             first = greater(*mid, v) ? first : firstAlt;
             size = half;
         }

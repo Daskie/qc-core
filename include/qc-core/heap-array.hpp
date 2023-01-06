@@ -18,7 +18,7 @@ namespace qc
         using pointer = T *;
         using const_pointer = const T *;
         using difference_type = ptrdiff_t;
-        using size_type = size_t;
+        using size_type = unat;
         using iterator = pointer;
         using const_iterator = const_pointer;
 

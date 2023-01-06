@@ -158,19 +158,19 @@ namespace qc
     //
     // ...
     //
-    template <Floating T, int n> vec<intmax_t, n> round(const vec<T, n> & v);
+    template <Floating T, int n> vec<nat, n> round(const vec<T, n> & v);
     template <Integral T, int n> vec<T, n> round(const vec<T, n> & v);
 
     //
     // ...
     //
-    template <Floating T, int n> vec<intmax_t, n> floor(const vec<T, n> & v);
+    template <Floating T, int n> vec<nat, n> floor(const vec<T, n> & v);
     template <Integral T, int n> vec<T, n> floor(const vec<T, n> & v);
 
     //
     // ...
     //
-    template <Floating T, int n> vec<intmax_t, n> ceil(const vec<T, n> & v);
+    template <Floating T, int n> vec<nat, n> ceil(const vec<T, n> & v);
     template <Integral T, int n> vec<T, n> ceil(const vec<T, n> & v);
 
     //
@@ -219,17 +219,17 @@ namespace qc
     template <Numeric T, int n>
     inline constexpr T sum(const vec<T, n> & v)
     {
-        if constexpr (n == 2) return v.x + v.y;
-        if constexpr (n == 3) return v.x + v.y + v.z;
-        if constexpr (n == 4) return v.x + v.y + v.z + v.w;
+        if constexpr (n == 2) return T(v.x + v.y);
+        if constexpr (n == 3) return T(v.x + v.y + v.z);
+        if constexpr (n == 4) return T(v.x + v.y + v.z + v.w);
     }
 
     template <Numeric T, int n>
     inline constexpr T product(const vec<T, n> & v)
     {
-        if constexpr (n == 2) return v.x * v.y;
-        if constexpr (n == 3) return v.x * v.y * v.z;
-        if constexpr (n == 4) return v.x * v.y * v.z * v.w;
+        if constexpr (n == 2) return T(v.x * v.y);
+        if constexpr (n == 3) return T(v.x * v.y * v.z);
+        if constexpr (n == 4) return T(v.x * v.y * v.z * v.w);
     }
 
     template <Floating T, int n>
@@ -299,9 +299,9 @@ namespace qc
     template <Numeric T, int n>
     inline T magnitude2(const vec<T, n> & v)
     {
-        if constexpr (n == 2) return v.x * v.x + v.y * v.y;
-        if constexpr (n == 3) return v.x * v.x + v.y * v.y + v.z * v.z;
-        if constexpr (n == 4) return v.x * v.x + v.y * v.y + v.z * v.z + v.w * v.w;
+        if constexpr (n == 2) return T(v.x * v.x + v.y * v.y);
+        if constexpr (n == 3) return T(v.x * v.x + v.y * v.y + v.z * v.z);
+        if constexpr (n == 4) return T(v.x * v.x + v.y * v.y + v.z * v.z + v.w * v.w);
     }
 
     template <Floating T, int n>
@@ -345,15 +345,15 @@ namespace qc
     template <Numeric T, int n>
     inline T dot(const vec<T, n> & v1, const vec<T, n> & v2)
     {
-        if constexpr (n == 2) return v1.x * v2.x + v1.y * v2.y;
-        if constexpr (n == 3) return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
-        if constexpr (n == 4) return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z + v1.w * v2.w;
+        if constexpr (n == 2) return T(v1.x * v2.x + v1.y * v2.y);
+        if constexpr (n == 3) return T(v1.x * v2.x + v1.y * v2.y + v1.z * v2.z);
+        if constexpr (n == 4) return T(v1.x * v2.x + v1.y * v2.y + v1.z * v2.z + v1.w * v2.w);
     }
 
     template <Numeric T>
     inline T cross(const vec2<T> v1, const vec2<T> v2)
     {
-        return v1.x * v2.y - v1.y * v2.x;
+        return T(v1.x * v2.y - v1.y * v2.x);
     }
 
     template <Numeric T>
@@ -512,7 +512,7 @@ namespace qc
     }
 
     template <Floating T, int n>
-    inline vec<intmax_t, n> floor(const vec<T, n> & v)
+    inline vec<nat, n> floor(const vec<T, n> & v)
     {
         if constexpr (n == 2) return {floor(v.x), floor(v.y)};
         if constexpr (n == 3) return {floor(v.x), floor(v.y), floor(v.z)};
@@ -526,7 +526,7 @@ namespace qc
     }
 
     template <Floating T, int n>
-    inline vec<intmax_t, n> ceil(const vec<T, n> & v)
+    inline vec<nat, n> ceil(const vec<T, n> & v)
     {
         if constexpr (n == 2) return {ceil(v.x), ceil(v.y)};
         if constexpr (n == 3) return {ceil(v.x), ceil(v.y), ceil(v.z)};
@@ -540,7 +540,7 @@ namespace qc
     }
 
     template <Floating T, int n>
-    inline vec<intmax_t, n> round(const vec<T, n> & v)
+    inline vec<nat, n> round(const vec<T, n> & v)
     {
         if constexpr (n == 2) return {round(v.x), round(v.y)};
         if constexpr (n == 3) return {round(v.x), round(v.y), round(v.z)};
@@ -626,25 +626,25 @@ namespace qc
         {
             if      (v1.x > T(0) && v2.x > T(0)) v.x = max(v1.x, v2.x);
             else if (v1.x < T(0) && v2.x < T(0)) v.x = min(v1.x, v2.x);
-            else                                 v.x = v1.x + v2.x;
+            else                                 v.x = T(v1.x + v2.x);
         }
         if constexpr (n >= 2)
         {
             if      (v1.y > T(0) && v2.y > T(0)) v.y = max(v1.y, v2.y);
             else if (v1.y < T(0) && v2.y < T(0)) v.y = min(v1.y, v2.y);
-            else                                 v.y = v1.y + v2.y;
+            else                                 v.y = T(v1.y + v2.y);
         }
         if constexpr (n >= 3)
         {
             if      (v1.z > T(0) && v2.z > T(0)) v.z = max(v1.z, v2.z);
             else if (v1.z < T(0) && v2.z < T(0)) v.z = min(v1.z, v2.z);
-            else                                 v.z = v1.z + v2.z;
+            else                                 v.z = T(v1.z + v2.z);
         }
         if constexpr (n >= 4)
         {
             if      (v1.w > T(0) && v2.w > T(0)) v.w = max(v1.w, v2.w);
             else if (v1.w < T(0) && v2.w < T(0)) v.w = min(v1.w, v2.w);
-            else                                 v.w = v1.w + v2.w;
+            else                                 v.w = T(v1.w + v2.w);
         }
 
         return v;

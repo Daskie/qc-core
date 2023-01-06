@@ -100,8 +100,8 @@ TEST(SemiStableDeque, general)
 
     for (int i{1}; i <= 7; i += 2)
     {
-        deque.pop(2 * i - 2);
-        deque.pop(2 * i - 1);
+        deque.pop(uint(2 * i - 2));
+        deque.pop(uint(2 * i - 1));
     }
     ASSERT_EQ(8u, deque.size());
     ASSERT_EQ(32u, deque.capacity());
@@ -228,7 +228,7 @@ TEST(SemiStableDeque, stress)
             else
             {
                 const u32 eraseI{random.next<u32>(u32(stdDeque.size()))};
-                stdDeque.erase(stdDeque.begin() + eraseI);
+                stdDeque.erase(stdDeque.begin() + nat(eraseI));
                 auto it{deque.begin()};
                 for (u32 i{0u}; i < eraseI; ++i, ++it);
                 deque.pop(it);
@@ -258,13 +258,13 @@ TEST(SemiStableDeque, stress)
         while (!stdDeque.empty())
         {
             const u32 eraseI{random.next<u32>(u32(stdDeque.size()))};
-            const auto stdIt{stdDeque.begin() + eraseI};
+            const auto stdIt{stdDeque.begin() + nat(eraseI)};
             auto it{deque.begin()};
             for (u32 i{0u}; i < eraseI; ++i, ++it);
 
             ASSERT_EQ(*stdIt, *it);
 
-            stdDeque.erase(stdDeque.begin() + eraseI);
+            stdDeque.erase(stdDeque.begin() + nat(eraseI));
             deque.pop(it);
 
             ASSERT_EQ(stdDeque.size(), deque.size());

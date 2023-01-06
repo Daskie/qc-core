@@ -9,7 +9,7 @@
 using namespace qc::types;
 template <typename T> using Deque = qc::RingDeque<T>;
 
-TEST(SemiStableDeque, general)
+TEST(RingDeque, general)
 {
     Deque<int> deque{};
     ASSERT_EQ(0u, deque.size());
@@ -100,7 +100,7 @@ TEST(SemiStableDeque, general)
     ASSERT_EQ(32u, deque.capacity());
 }
 
-TEST(SemiStableDeque, iteratorAssignability)
+TEST(RingDeque, iteratorAssignability)
 {
     static_assert(std::is_assignable_v<Deque<int>::iterator, Deque<int>::iterator>);
     static_assert(std::is_assignable_v<Deque<int>::const_iterator, Deque<int>::iterator>);
@@ -108,7 +108,7 @@ TEST(SemiStableDeque, iteratorAssignability)
     static_assert(std::is_assignable_v<Deque<int>::const_iterator, Deque<int>::const_iterator>);
 }
 
-TEST(SemiStableDeque, stress)
+TEST(RingDeque, stress)
 {
     const u32 iterations{250u};
     const u32 minSize{100u};

@@ -11,12 +11,12 @@ TEST(Paging, allocate)
     #pragma warning(suppress: 4834)
     EXPECT_THROW(qc::allocatePages(0u), qc::PageError);
 
-    const size_t pageCount{3u};
-    size_t * const mem{static_cast<size_t *>(qc::allocatePages(pageCount))};
+    const unat pageCount{3u};
+    unat * const mem{static_cast<unat *>(qc::allocatePages(pageCount))};
     ASSERT_TRUE(mem);
 
-    const size_t n{pageCount * qc::pageSize / sizeof(size_t)};
-    for (size_t i{0u}; i < n; ++i)
+    const unat n{pageCount * qc::pageSize / sizeof(unat)};
+    for (unat i{0u}; i < n; ++i)
     {
         mem[i] = i;
     }
@@ -32,7 +32,7 @@ TEST(Paging, reserveCommit)
     #pragma warning(suppress: 4834)
     EXPECT_THROW(qc::reservePages(0u), qc::PageError);
 
-    size_t * const mem{static_cast<size_t *>(qc::reservePages(3u))};
+    unat * const mem{static_cast<size_t *>(qc::reservePages(3u))};
     ASSERT_TRUE(mem);
 
     EXPECT_DEATH(mem[0] = 1, "");

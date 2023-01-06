@@ -27,7 +27,7 @@ namespace qc
         using reference = T &;
         using const_reference = const T &;
         using difference_type = ptrdiff_t;
-        using size_type = size_t;
+        using size_type = unat;
         using iterator = _Iterator<false>;
         using const_iterator = _Iterator<true>;
 
@@ -48,13 +48,13 @@ namespace qc
 
         //iterator erase(iterator pos) noexcept;
         //iterator erase(iterator start, iterator end) noexcept;
-        //size_t erase(const T & v) noexcept;
+        //unat erase(const T & v) noexcept;
 
         void clear() noexcept;
 
         bool contains(const T & v) const noexcept;
 
-        size_t count(const T & v) const noexcept;
+        unat count(const T & v) const noexcept;
 
         iterator find(const T & v) noexcept;
         const_iterator find(const T & v) const noexcept;
@@ -68,7 +68,7 @@ namespace qc
         std::pair<iterator, iterator> equal_range(const T & v) noexcept;
         std::pair<const_iterator, const_iterator> equal_range(const T & v) const noexcept;
 
-        size_t size() const noexcept { return _size; }
+        unat size() const noexcept { return _size; }
 
         bool empty() const noexcept { return !_size; }
 
@@ -99,7 +99,7 @@ namespace qc
         //static void _balanceShrink(_Node * node, bool side) noexcept;
 
         _Node * _root{};
-        size_t _size{};
+        unat _size{};
 
         struct _InsertRet { iterator it; bool grew; };
         template <typename T_> iterator _insert(T_ && v);
@@ -230,7 +230,7 @@ namespace qc
     }
 
     template <typename T>
-    size_t AvlTree<T>::erase(const T & v) noexcept
+    unat AvlTree<T>::erase(const T & v) noexcept
     {
         erase(lower_bound(v), upper_bound(v));
     }
@@ -254,7 +254,7 @@ namespace qc
     }
 
     template <typename T>
-    size_t AvlTree<T>::count(const T & v) const noexcept
+    unat AvlTree<T>::count(const T & v) const noexcept
     {
         return std::distance(lower_bound(v), upper_bound(v));
     }

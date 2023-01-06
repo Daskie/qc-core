@@ -15,7 +15,7 @@
 namespace qc::utils
 {
     template <typename T>
-    inline T pairwiseSum(const size_t n, const T * const vals)
+    inline T pairwiseSum(const unat n, const T * const vals)
     {
         if (n == 0u) return T(0);
         if (n == 1u) return vals[0];
@@ -27,12 +27,12 @@ namespace qc::utils
     inline std::vector<std::byte> readFile(const std::filesystem::path & path)
     {
         const uintmax_t size{std::filesystem::file_size(path)};
-        if (size > qc::min(uintmax_t(std::numeric_limits<size_t>::max()), uintmax_t(std::numeric_limits<std::streamsize>::max())))
+        if (size > qc::min(uintmax_t(std::numeric_limits<unat>::max()), uintmax_t(std::numeric_limits<std::streamsize>::max())))
         {
             throw std::system_error(std::make_error_code(std::errc::file_too_large));
         }
 
-        std::vector<std::byte> data((size_t(size))); // TODO: default initializes its memory - potential performance concern for large files
+        std::vector<std::byte> data((unat(size))); // TODO: default initializes its memory - potential performance concern for large files
 
         std::ifstream ifs(path, std::ios::binary);
         ifs.exceptions(std::ios::badbit | std::ios::failbit);
@@ -45,12 +45,12 @@ namespace qc::utils
     inline std::string readAsciiFile(const std::filesystem::path & path)
     {
         const uintmax_t size{std::filesystem::file_size(path)};
-        if (size > qc::min(uintmax_t(std::numeric_limits<size_t>::max()), uintmax_t(std::numeric_limits<std::streamsize>::max())))
+        if (size > qc::min(uintmax_t(std::numeric_limits<unat>::max()), uintmax_t(std::numeric_limits<std::streamsize>::max())))
         {
             throw std::system_error(std::make_error_code(std::errc::file_too_large));
         }
 
-        std::string str(size_t(size), '\0'); // TODO: explicitly initializes its memory - potential performance concern for large files
+        std::string str(unat(size), '\0'); // TODO: explicitly initializes its memory - potential performance concern for large files
 
         std::ifstream ifs(path, std::ios::binary);
         ifs.exceptions(std::ios::badbit | std::ios::failbit);
@@ -60,7 +60,7 @@ namespace qc::utils
     }
 
     // Throws `std::system_error` on failure
-    inline void writeFile(const std::filesystem::path & path, const void * const data, const size_t size)
+    inline void writeFile(const std::filesystem::path & path, const void * const data, const unat size)
     {
         std::ofstream ofs(path, std::ios::out | std::ios::binary);
         ofs.exceptions(std::ios::badbit | std::ios::failbit);

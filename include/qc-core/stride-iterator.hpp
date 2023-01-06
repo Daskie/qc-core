@@ -18,7 +18,7 @@ namespace qc
         //
         // `stride` should be at least `sizeof(value_type)` and an even multiple of `alignof(value_type)`
         //
-        constexpr StrideIter(value_type * ptr, const size_t stride) noexcept :
+        constexpr StrideIter(value_type * ptr, const unat stride) noexcept :
             _ptr(ptr),
             _stride(stride)
         {}
@@ -92,6 +92,6 @@ namespace qc
         private: //-------------------------------------------------------------
 
         value_type * _ptr;
-        size_t _stride;
+        unat _stride;
     };
 }

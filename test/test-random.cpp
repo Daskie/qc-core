@@ -6,12 +6,12 @@ using namespace qc::types;
 
 namespace
 {
-    constexpr size_t n{1000u};
+    constexpr unat n{1000u};
 
     template <typename T>
     void testUnsigned(qc::Random & random)
     {
-        for (size_t i{0u}; i < n; ++i)
+        for (unat i{0u}; i < n; ++i)
         {
             {
                 #pragma warning(suppress: 4189)
@@ -59,7 +59,7 @@ namespace
     template <typename T>
     void testSigned(qc::Random & random)
     {
-        for (size_t i{0u}; i < n; ++i)
+        for (unat i{0u}; i < n; ++i)
         {
             {
                 #pragma warning(suppress: 4189)
@@ -111,7 +111,7 @@ namespace
     template <typename T>
     void testFloating(qc::Random & random)
     {
-        for (size_t i{0u}; i < n; ++i)
+        for (unat i{0u}; i < n; ++i)
         {
             {
                 const T v{random.next<T>()};

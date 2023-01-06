@@ -42,7 +42,7 @@ namespace qc
 
         u32 _maxPageCount{};
         u32 _pageCount{};
-        size_t _maxCapacity{};
+        unat _maxCapacity{};
 
         _PoolExtra() noexcept = default;
     };
@@ -64,12 +64,12 @@ namespace qc
         using reference = T &;
         using const_reference = const T &;
         using difference_type = ptrdiff_t;
-        using size_type = size_t;
+        using size_type = unat;
         using iterator = _Iterator<false>;
         using const_iterator = _Iterator<true>;
 
         Pool() noexcept = default;
-        explicit Pool(size_t capacity);
+        explicit Pool(unat capacity);
 
         Pool(const Pool &) = delete;
         Pool(Pool && other) noexcept;
@@ -79,7 +79,7 @@ namespace qc
 
         ~Pool() noexcept;
 
-        void setCapacity(size_t capacity);
+        void setCapacity(unat capacity);
 
         template <typename... Args> [[nodiscard]] T & create(Args &&... args);
 
@@ -87,9 +87,9 @@ namespace qc
 
         bool contains(const T * v) const noexcept;
 
-        size_t capacity() const noexcept;
+        unat capacity() const noexcept;
 
-        size_t size() const noexcept { return _size; }
+        unat size() const noexcept { return _size; }
 
         bool empty() const noexcept { return _size == 0u; }
 
@@ -114,7 +114,7 @@ namespace qc
         inline static _Range _nullRange{};
 
         _Range _slotRange{};
-        size_t _size{};
+        unat _size{};
         std::vector<_Range> _freeRanges{};
 
         typename std::vector<_Range>::iterator _find(const T * slot) noexcept;
@@ -176,7 +176,7 @@ namespace qc
     }
 
     template <typename T, bool fixed>
-    inline Pool<T, fixed>::Pool(const size_t capacity)
+    inline Pool<T, fixed>::Pool(const unat capacity)
     {
         setCapacity(capacity);
     }
@@ -236,7 +236,7 @@ namespace qc
     }
 
     template <typename T, bool fixed>
-    inline void Pool<T, fixed>::setCapacity(const size_t capacity)
+    inline void Pool<T, fixed>::setCapacity(const unat capacity)
     {
         // May only be called before memory is reserved
         if (_slotRange.start)
@@ -373,7 +373,7 @@ namespace qc
     }
 
     template <typename T, bool fixed>
-    inline size_t Pool<T, fixed>::capacity() const noexcept
+    inline unat Pool<T, fixed>::capacity() const noexcept
     {
         if constexpr (fixed)
         {

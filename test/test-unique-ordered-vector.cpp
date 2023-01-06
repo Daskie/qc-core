@@ -57,13 +57,13 @@ TEST(UniqueOrderedVector, standard)
         EXPECT_EQ(vals.rend(), it);
     }
 
-    EXPECT_EQ(vals.begin(), vals.findFirstGreaterThanOrEqualTo(0));
-    EXPECT_EQ(vals.begin(), vals.findFirstGreaterThanOrEqualTo(1));
-    EXPECT_EQ(vals.begin() + 1, vals.findFirstGreaterThanOrEqualTo(2));
-    EXPECT_EQ(vals.begin() + 1, vals.findFirstGreaterThanOrEqualTo(3));
-    EXPECT_EQ(vals.begin() + 2, vals.findFirstGreaterThanOrEqualTo(4));
-    EXPECT_EQ(vals.begin() + 2, vals.findFirstGreaterThanOrEqualTo(5));
-    EXPECT_EQ(vals.end(), vals.findFirstGreaterThanOrEqualTo(6));
+    EXPECT_EQ(vals.begin(), vals.lowerBound(0));
+    EXPECT_EQ(vals.begin(), vals.lowerBound(1));
+    EXPECT_EQ(vals.begin() + 1, vals.lowerBound(2));
+    EXPECT_EQ(vals.begin() + 1, vals.lowerBound(3));
+    EXPECT_EQ(vals.begin() + 2, vals.lowerBound(4));
+    EXPECT_EQ(vals.begin() + 2, vals.lowerBound(5));
+    EXPECT_EQ(vals.end(), vals.lowerBound(6));
 
     EXPECT_TRUE(vals.erase(3));
     EXPECT_FALSE(vals.contains(3));

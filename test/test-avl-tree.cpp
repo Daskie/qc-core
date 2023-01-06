@@ -23,7 +23,7 @@ class qc::_internal::AvlTreeFriend
     static std::string genString(const AvlTree<T> & tree)
     {
         const std::vector<std::string> lines{_genString<T>(tree._root)};
-        size_t totalLength{!lines.empty()};
+        unat totalLength{!lines.empty()};
         for (const std::string & line : lines)
         {
             totalLength += line.length() + 1;
@@ -52,7 +52,7 @@ class qc::_internal::AvlTreeFriend
     template <UnsignedIntegral T>
     static bool validateBalance(const AvlTree<T> & tree)
     {
-        size_t rootHeight{0u};
+        unat rootHeight{0u};
         return !tree._root || _validateBalance<T>(tree._root, rootHeight);
     }
 
@@ -177,11 +177,11 @@ class qc::_internal::AvlTreeFriend
             lines.push_back(std::move(leftLines[leftLineI]));
             std::string & line{lines.back()};
             const std::string & rightLine{rightLines[rightLineI]};
-            const size_t lineLength{rightBlockPos + rightLine.size()};
+            const unat lineLength{rightBlockPos + rightLine.size()};
             line.reserve(lineLength);
             line.insert(line.begin(), leftBlockPos, ' ');
             line.resize(lineLength, ' ');
-            const size_t rightContentOffset{rightLine.find_first_not_of(' ')};
+            const unat rightContentOffset{rightLine.find_first_not_of(' ')};
             std::copy(rightLine.cbegin() + rightContentOffset, rightLine.cend(), line.begin() + rightBlockPos + rightContentOffset);
         }
 

@@ -279,7 +279,7 @@ namespace qc
             throw RingDequeError{};
         }
 
-        return _back[_back == _slots ? intptr_t(_capacity) - 1 : -1];
+        return _back[_back == _slots ? nat(_capacity) - 1 : -1];
     }
 
     template <typename T>

@@ -23,7 +23,7 @@ namespace qc
         ///
         /// @param seed the seed to initialize the engine with, defaults to the current time
         ///
-        explicit Random(const size_t seed = std::chrono::high_resolution_clock::now().time_since_epoch().count()) noexcept :
+        explicit Random(const unat seed = std::chrono::high_resolution_clock::now().time_since_epoch().count()) noexcept :
             _seed{seed},
             _engine{_seed}
         {}
@@ -37,7 +37,7 @@ namespace qc
         ///
         /// @return the next random unsigned integer in [0, `UINT_MAX`]
         ///
-        size_t next() noexcept;
+        unat next() noexcept;
 
         ///
         /// @return the next random integer in [0, `UINT_MAX`], floater in [0.0, 1.0], or boolean
@@ -61,7 +61,7 @@ namespace qc
         ///
         /// @return the seed
         ///
-        size_t seed() const noexcept { return _seed; }
+        unat seed() const noexcept { return _seed; }
 
         ///
         /// @return the engine
@@ -71,7 +71,7 @@ namespace qc
 
       private:
 
-        size_t _seed{};
+        unat _seed{};
         Engine _engine{};
     };
 }
@@ -80,7 +80,7 @@ namespace qc
 
 namespace qc
 {
-    inline size_t Random::next() noexcept
+    inline unat Random::next() noexcept
     {
         return _engine();
     }
@@ -90,13 +90,13 @@ namespace qc
     {
         if constexpr (Integral<T>)
         {
-            if constexpr (sizeof(T) == sizeof(size_t))
+            if constexpr (sizeof(T) == sizeof(unat))
             {
                 return T(next());
             }
-            else if constexpr (sizeof(T) < sizeof(size_t))
+            else if constexpr (sizeof(T) < sizeof(unat))
             {
-                return T(std::make_unsigned_t<T>(next() >> (std::numeric_limits<size_t>::digits - std::numeric_limits<T>::digits)));
+                return T(std::make_unsigned_t<T>(next() >> (std::numeric_limits<unat>::digits - std::numeric_limits<T>::digits)));
             }
             else
             {
@@ -124,7 +124,7 @@ namespace qc
         }
         else
         {
-            return next() >> (std::numeric_limits<size_t>::digits - 1);
+            return next() >> (std::numeric_limits<unat>::digits - 1);
         }
     }
 
