@@ -125,6 +125,16 @@ qc_setup_target(
 )
 
 qc_setup_target(
+    test-random
+    EXECUTABLE
+    SOURCE_FILES
+        test-random.cpp
+    PRIVATE_LINKS
+        qc-core
+        GTest::gtest_main
+)
+
+qc_setup_target(
     test-ring-deque
     EXECUTABLE
     SOURCE_FILES

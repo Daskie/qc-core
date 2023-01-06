@@ -88,32 +88,43 @@ namespace qc
     template <NumericOrBoolean T>
     inline T Random::next() noexcept
     {
-        const size_t raw{next()};
-
         if constexpr (Integral<T>)
         {
-            static_assert(sizeof(T) <= sizeof(size_t));
-
-            if constexpr (std::is_signed_v<T>)
+            if constexpr (sizeof(T) == sizeof(size_t))
             {
-                // Separated out for better debug performance
-                static constexpr size_t mask{size_t(std::numeric_limits<T>::max())};
-                return T(std::make_unsigned_t<T>(raw & mask));
+                return T(next());
+            }
+            else if constexpr (sizeof(T) < sizeof(size_t))
+            {
+                return T(std::make_unsigned_t<T>(next() >> (std::numeric_limits<size_t>::digits - std::numeric_limits<T>::digits)));
             }
             else
             {
-                return T(raw);
+                using U = std::make_unsigned_t<T>;
+                using H = typename sized<sizeof(U) / 2u>::utype;
+                const H h1{next<H>()};
+                const H h2{next<H>()};
+                return T(U(h1) | (U(h2) << std::numeric_limits<H>::digits));
             }
         }
         else if constexpr (Floating<T>)
         {
-            // Separated out for better debug performance
-            static constexpr T scaleFactor{T(1.0) / T(Engine::max())};
-            return T(raw) * scaleFactor;
+            if constexpr (sizeof(T) == 4u)
+            {
+                return T(float(next<u32>() >> 8) * 0x1.0p-24f);
+            }
+            else if constexpr (sizeof(T) == 8u)
+            {
+                return T(double(next<u64>() >> 11) * 0x1.0p-53);
+            }
+            else
+            {
+                static_assert(!sizeof(T));
+            }
         }
-        else if (std::is_same_v<T, bool>)
+        else
         {
-            return raw & 1u;
+            return next() >> (std::numeric_limits<size_t>::digits - 1);
         }
     }
 
@@ -122,7 +133,25 @@ namespace qc
     {
         if constexpr (Integral<T>)
         {
-            return next<T>() % max;
+            if (max <= T(1))
+            {
+                return T(0);
+            }
+
+            using U = std::make_unsigned_t<T>;
+
+            const U umax{U(max)};
+            const int shift{std::countl_zero(U(umax - 1u))};
+
+            // Sampling nearest larger power of two to avoid bias, retry if too large
+            U v;
+            do
+            {
+                v = U(next<U>() >> shift);
+            }
+            while (v >= umax);
+
+            return T(v);
         }
         else
         {
@@ -133,6 +162,6 @@ namespace qc
     template <Numeric T>
     inline T Random::next(const T min, const T max) noexcept
     {
-        return next<T>(max - min) + min;
+        return T(next<T>(T(max - min)) + min);
     }
 }
