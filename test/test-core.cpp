@@ -194,9 +194,9 @@ static void compileFunctionsT()
 
     qc::round(v);
 
-    qc::floor(v);
+    qc::floor<T>(v);
 
-    qc::ceil(v);
+    qc::ceil<T>(v);
 
     qc::mod(v, v);
     qc::mod_q(v, v);

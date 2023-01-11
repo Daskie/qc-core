@@ -158,20 +158,17 @@ namespace qc
     //
     // ...
     //
-    template <Numeric T, int n> vec<T, n> round(const vec<T, n> & v);
-    template <SignedIntegral R, Floating T, int n> vec<R, n> round(const vec<T, n> & v);
+    template <Numeric R, Numeric T, int n> vec<R, n> round(const vec<T, n> & v);
 
     //
     // ...
     //
-    template <Numeric T, int n> vec<T, n> floor(const vec<T, n> & v);
-    template <SignedIntegral R, Floating T, int n> vec<R, n> floor(const vec<T, n> & v);
+    template <Numeric R, Numeric T, int n> vec<R, n> floor(const vec<T, n> & v);
 
     //
     // ...
     //
-    template <Numeric T, int n> vec<T, n> ceil(const vec<T, n> & v);
-    template <SignedIntegral R, Floating T, int n> vec<R, n> ceil(const vec<T, n> & v);
+    template <Numeric R, Numeric T, int n> vec<R, n> ceil(const vec<T, n> & v);
 
     //
     // ...
@@ -511,73 +508,70 @@ namespace qc
         if constexpr (n == 4) return {sign(v.x), sign(v.y), sign(v.z), sign(v.w)};
     }
 
-    template <Numeric T, int n>
-    inline vec<T, n> round(const vec<T, n> & v)
-    {
-        if constexpr (Floating<T>)
-        {
-            if constexpr (n == 2) return {round(v.x), round(v.y)};
-            if constexpr (n == 3) return {round(v.x), round(v.y), round(v.z)};
-            if constexpr (n == 4) return {round(v.x), round(v.y), round(v.z), round(v.w)};
-        }
-        else
-        {
-            return v;
-        }
-    }
-
-    template <SignedIntegral R, Floating T, int n>
+    template <Numeric R, Numeric T, int n>
     inline vec<R, n> round(const vec<T, n> & v)
     {
-        if constexpr (n == 2) return {round<R>(v.x), round<R>(v.y)};
-        if constexpr (n == 3) return {round<R>(v.x), round<R>(v.y), round<R>(v.z)};
-        if constexpr (n == 4) return {round<R>(v.x), round<R>(v.y), round<R>(v.z), round<R>(v.w)};
-    }
-
-    template <Numeric T, int n>
-    inline vec<T, n> floor(const vec<T, n> & v)
-    {
-        if constexpr (Floating<T>)
+        if constexpr (Integral<T>)
         {
-            if constexpr (n == 2) return {floor(v.x), floor(v.y)};
-            if constexpr (n == 3) return {floor(v.x), floor(v.y), floor(v.z)};
-            if constexpr (n == 4) return {floor(v.x), floor(v.y), floor(v.z), floor(v.w)};
+            if constexpr (std::is_same_v<T, R>)
+            {
+                return v;
+            }
+            else
+            {
+                return vec<R, n>(v);
+            }
         }
         else
         {
-            return v;
+            if constexpr (n == 2) return {round<R>(v.x), round<R>(v.y)};
+            if constexpr (n == 3) return {round<R>(v.x), round<R>(v.y), round<R>(v.z)};
+            if constexpr (n == 4) return {round<R>(v.x), round<R>(v.y), round<R>(v.z), round<R>(v.w)};
         }
     }
 
-    template <SignedIntegral R, Floating T, int n>
+    template <Numeric R, Numeric T, int n>
     inline vec<R, n> floor(const vec<T, n> & v)
     {
-        if constexpr (n == 2) return {floor<R>(v.x), floor<R>(v.y)};
-        if constexpr (n == 3) return {floor<R>(v.x), floor<R>(v.y), floor<R>(v.z)};
-        if constexpr (n == 4) return {floor<R>(v.x), floor<R>(v.y), floor<R>(v.z), floor<R>(v.w)};
-    }
-
-    template <Numeric T, int n>
-    inline vec<T, n> ceil(const vec<T, n> & v)
-    {
-        if constexpr (Floating<T>)
+        if constexpr (Integral<T>)
         {
-            if constexpr (n == 2) return {ceil(v.x), ceil(v.y)};
-            if constexpr (n == 3) return {ceil(v.x), ceil(v.y), ceil(v.z)};
-            if constexpr (n == 4) return {ceil(v.x), ceil(v.y), ceil(v.z), ceil(v.w)};
+            if constexpr (std::is_same_v<T, R>)
+            {
+                return v;
+            }
+            else
+            {
+                return vec<R, n>(v);
+            }
         }
         else
         {
-            return v;
+            if constexpr (n == 2) return {floor<R>(v.x), floor<R>(v.y)};
+            if constexpr (n == 3) return {floor<R>(v.x), floor<R>(v.y), floor<R>(v.z)};
+            if constexpr (n == 4) return {floor<R>(v.x), floor<R>(v.y), floor<R>(v.z), floor<R>(v.w)};
         }
     }
 
-    template <SignedIntegral R, Floating T, int n>
+    template <Numeric R, Numeric T, int n>
     inline vec<R, n> ceil(const vec<T, n> & v)
     {
-        if constexpr (n == 2) return {ceil<R>(v.x), ceil<R>(v.y)};
-        if constexpr (n == 3) return {ceil<R>(v.x), ceil<R>(v.y), ceil<R>(v.z)};
-        if constexpr (n == 4) return {ceil<R>(v.x), ceil<R>(v.y), ceil<R>(v.z), ceil<R>(v.w)};
+        if constexpr (Integral<T>)
+        {
+            if constexpr (std::is_same_v<T, R>)
+            {
+                return v;
+            }
+            else
+            {
+                return vec<R, n>(v);
+            }
+        }
+        else
+        {
+            if constexpr (n == 2) return {ceil<R>(v.x), ceil<R>(v.y)};
+            if constexpr (n == 3) return {ceil<R>(v.x), ceil<R>(v.y), ceil<R>(v.z)};
+            if constexpr (n == 4) return {ceil<R>(v.x), ceil<R>(v.y), ceil<R>(v.z), ceil<R>(v.w)};
+        }
     }
 
     template <Floating T, int n>

@@ -24,7 +24,7 @@ qc_setup_target(
 
 ### SUBDIRECTORIES #############################################################
 
-add_subdirectory(test EXCLUDE_FROM_ALL)
+add_subdirectory(test)
 
 ### INSTALL ####################################################################
 

@@ -11,8 +11,7 @@ namespace qc
     //
     // ...
     //
-    template <Numeric T, int n> span<T, n> round(const span<T, n> & s);
-    template <SignedIntegral R, Floating T, int n> span<R, n> round(const span<T, n> & s);
+    template <Numeric R, Numeric T, int n> span<R, n> round(const span<T, n> & s);
 
     //
     // ...
@@ -24,23 +23,24 @@ namespace qc
 
 namespace qc
 {
-    template <Numeric T, int n>
-    inline span<T, n> round(const span<T, n> & s)
+    template <Numeric R, Numeric T, int n>
+    inline span<R, n> round(const span<T, n> & s)
     {
-        if constexpr (Floating<T>)
+        if constexpr (Integral<T>)
         {
-            return {round(s.min), round(s.max)};
+            if constexpr (std::is_same_v<T, R>)
+            {
+                return s;
+            }
+            else
+            {
+                return span<R, n>(s);
+            }
         }
         else
         {
-            return s;
+            return {round<R>(s.min), round<R>(s.max)};
         }
-    }
-
-    template <SignedIntegral R, Floating T, int n>
-    inline span<R, n> round(const span<T, n> & s)
-    {
-        return {round<R>(s.min), round<R>(s.max)};
     }
 
     template <NumericOrPointer T, int n>

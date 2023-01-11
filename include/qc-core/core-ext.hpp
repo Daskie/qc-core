@@ -51,20 +51,17 @@ namespace qc
     // Fast round for "normal" values of absolute magnitude smaller than roughly one quadrillion
     // .5 values rounds to even, not up
     //
-    template <Numeric T> constexpr T round(T v) noexcept;
-    template <SignedIntegral R, Floating T> constexpr R round(T v) noexcept;
+    template <Numeric R, Numeric T> constexpr R round(T v) noexcept;
 
     //
     // Fast floor for "normal" values of absolute magnitude smaller than roughly 500 trillion
     //
-    template <Numeric T> constexpr T floor(T v) noexcept;
-    template <SignedIntegral R, Floating T> constexpr R floor(T v) noexcept;
+    template <Numeric R, Numeric T> constexpr R floor(T v) noexcept;
 
     //
     // Fast ceil for "normal" values of absolute magnitude smaller than roughly 500 trillion
     //
-    template <Numeric T> constexpr T ceil(T v) noexcept;
-    template <SignedIntegral R, Floating T> constexpr R ceil(T v) noexcept;
+    template <Numeric R, Numeric T> constexpr R ceil(T v) noexcept;
 
     // Simple wrapper around std::pow
     template <Floating T> T pow(T v, T e) noexcept;
@@ -322,60 +319,86 @@ namespace qc
         }
     }
 
-    template <SignedIntegral R, Floating T>
+    template <Numeric R, Numeric T>
     inline constexpr R round(const T v) noexcept
     {
-        if constexpr (sizeof(R) >= 8u)
+        // Integral -> Anything
+        if constexpr (Integral<T>)
         {
-            // Right bit shift on signed integer must be arithmetic
-            static_assert((-1 >> 1) == -1);
-
-            return std::bit_cast<s64>(v + 0x1.8p52) << 13 >> 13;
+            return R(v);
         }
         else
         {
-            return R(std::bit_cast<s64>(v + 0x1.8p52));
+            // Floating -> Floating
+            if constexpr (Floating<R>)
+            {
+                // Can't find any faster option than this ATM
+                return R(std::nearbyint(v));
+            }
+            // Floating -> Integral
+            else
+            {
+                if constexpr (sizeof(R) >= 8u)
+                {
+                    // Right bit shift on signed integer must be arithmetic
+                    static_assert((-1 >> 1) == -1);
+
+                    return std::bit_cast<s64>(v + 0x1.8p52) << 13 >> 13;
+                }
+                else
+                {
+                    return R(std::bit_cast<s64>(v + 0x1.8p52));
+                }
+            }
         }
     }
 
-    template <Numeric T>
-    inline constexpr T floor(const T v) noexcept
-    {
-        if constexpr (Floating<T>)
-        {
-            // Can't find any faster option than this ATM
-            return std::floor(v);
-        }
-        else
-        {
-            return v;
-        }
-    }
-
-    template <SignedIntegral R, Floating T>
+    template <Numeric R, Numeric T>
     inline constexpr R floor(const T v) noexcept
     {
-        return R(s64(v + double(s64(1) << 50)) - (s64(1) << 50));
-    }
-
-    template <Numeric T>
-    inline constexpr T ceil(const T v) noexcept
-    {
-        if constexpr (Floating<T>)
+        // Integral -> Anything
+        if constexpr (Integral<T>)
         {
-            // Can't find any faster option than this ATM
-            return std::ceil(v);
+            return R(v);
         }
         else
         {
-            return v;
+            // Floating -> Floating
+            if constexpr (Floating<R>)
+            {
+                // Can't find any faster option than this ATM
+                return R(std::floor(v));
+            }
+            // Floating -> Integral
+            else
+            {
+                return R(s64(v + double(s64(1) << 50)) - (s64(1) << 50));
+            }
         }
     }
 
-    template <SignedIntegral R, Floating T>
+    template <Numeric R, Numeric T>
     inline constexpr R ceil(const T v) noexcept
     {
-        return -floor<R>(-v);
+        // Integral -> Anything
+        if constexpr (Integral<T>)
+        {
+            return R(v);
+        }
+        else
+        {
+            // Floating -> Floating
+            if constexpr (Floating<R>)
+            {
+                // Can't find any faster option than this ATM
+                return R(std::ceil(v));
+            }
+            // Floating -> Integral
+            else
+            {
+                return -floor<R>(-v);
+            }
+        }
     }
 
     template <Floating T>

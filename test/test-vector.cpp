@@ -488,17 +488,17 @@ static void compileFunctionsT()
     qc::sign(v3);
     qc::sign(v3);
 
-    qc::round(v2);
-    qc::round(v3);
-    qc::round(v4);
+    qc::round<T>(v2);
+    qc::round<T>(v3);
+    qc::round<T>(v4);
 
-    qc::floor(v2);
-    qc::floor(v3);
-    qc::floor(v4);
+    qc::floor<T>(v2);
+    qc::floor<T>(v3);
+    qc::floor<T>(v4);
 
-    qc::ceil(v2);
-    qc::ceil(v3);
-    qc::ceil(v4);
+    qc::ceil<T>(v2);
+    qc::ceil<T>(v3);
+    qc::ceil<T>(v4);
 
     qc::composite(v2, v2);
     qc::composite(v3, v3);

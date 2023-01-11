@@ -61,9 +61,9 @@ class qc::_internal::AvlTreeFriend
     static int _detLineAnchor(const std::string & line, const bool side)
     {
         int start{0};
-        while (!std::isdigit(line[start])) ++start;
+        while (!std::isdigit(line[unat(start)])) ++start;
         int end{start + 1};
-        while (end < int(line.size()) && std::isdigit(line[end])) ++end;
+        while (end < int(line.size()) && std::isdigit(line[unat(end)])) ++end;
         return start + (end - start - side) / 2;
     }
 
@@ -71,7 +71,7 @@ class qc::_internal::AvlTreeFriend
     {
         for (std::string & line : lines)
         {
-            line.insert(0u, n, ' ');
+            line.insert(0u, unat(n), ' ');
         }
     }
 
@@ -114,7 +114,7 @@ class qc::_internal::AvlTreeFriend
             int minGap{std::numeric_limits<int>::max()};
             for (int i{0}; i < int(leftLines.size()) && i < int(rightLines.size()); ++i)
             {
-                qc::minify(minGap, leftBlockWidth - int(leftLines[i].size()) + int(rightLines[i].find_first_not_of(' ')));
+                qc::minify(minGap, leftBlockWidth - int(leftLines[unat(i)].size()) + int(rightLines[unat(i)].find_first_not_of(' ')));
             }
             rightBlockPos = leftBlockWidth - minGap + 3;
 
@@ -154,16 +154,16 @@ class qc::_internal::AvlTreeFriend
         const int leftDashCount{qc::max(valPos - leftHeadPos - 3, 0)};
         const int rightDashCount{qc::max(rightHeadPos - (valPos + valStrLength) - 2, 0)};
         const int valLineLength{valPos + valStrLength + bool(rightDashCount) + rightDashCount};
-        std::string & valLine{lines.emplace_back(valLineLength, ' ')};
-        if (leftDashCount) std::fill_n(valLine.begin() + valPos - 1 - leftDashCount, leftDashCount, '_');
+        std::string & valLine{lines.emplace_back(unat(valLineLength), ' ')};
+        if (leftDashCount) std::fill_n(valLine.begin() + valPos - 1 - leftDashCount, unat(leftDashCount), '_');
         std::copy(valStr.cbegin(), valStr.cend(), valLine.begin() + valPos);
-        if (rightDashCount) std::fill_n(valLine.begin() + valPos + valStrLength + 1, rightDashCount, '_');
+        if (rightDashCount) std::fill_n(valLine.begin() + valPos + valStrLength + 1, unat(rightDashCount), '_');
 
         //--- Add slash line ---
 
         const int slashLineLength{isRight ? rightHeadPos : leftHeadPos + 2};
-        std::string & slashLine{lines.emplace_back(slashLineLength, ' ')};
-        if (isLeft) slashLine[leftHeadPos + 1] = '/';
+        std::string & slashLine{lines.emplace_back(unat(slashLineLength), ' ')};
+        if (isLeft) slashLine[unat(leftHeadPos + 1)] = '/';
         if (isRight) slashLine.back() = '\\';
 
         //--- Add combined left/right lines ---
@@ -174,31 +174,31 @@ class qc::_internal::AvlTreeFriend
         // Add lines for both left and right
         for (; leftLineI < int(leftLines.size()) && rightLineI < int(rightLines.size()); ++leftLineI, ++rightLineI)
         {
-            lines.push_back(std::move(leftLines[leftLineI]));
+            lines.push_back(std::move(leftLines[unat(leftLineI)]));
             std::string & line{lines.back()};
-            const std::string & rightLine{rightLines[rightLineI]};
-            const unat lineLength{rightBlockPos + rightLine.size()};
+            const std::string & rightLine{rightLines[unat(rightLineI)]};
+            const unat lineLength{unat(rightBlockPos) + rightLine.size()};
             line.reserve(lineLength);
-            line.insert(line.begin(), leftBlockPos, ' ');
+            line.insert(line.begin(), unat(leftBlockPos), ' ');
             line.resize(lineLength, ' ');
             const unat rightContentOffset{rightLine.find_first_not_of(' ')};
-            std::copy(rightLine.cbegin() + rightContentOffset, rightLine.cend(), line.begin() + rightBlockPos + rightContentOffset);
+            std::copy(rightLine.cbegin() + nat(rightContentOffset), rightLine.cend(), line.begin() + rightBlockPos + nat(rightContentOffset));
         }
 
         // Add leftover left lines
-        for (; leftLineI < leftLines.size(); ++leftLineI)
+        for (; leftLineI < int(leftLines.size()); ++leftLineI)
         {
-            lines.push_back(std::move(leftLines[leftLineI]));
+            lines.push_back(std::move(leftLines[unat(leftLineI)]));
             std::string & line{lines.back()};
-            line.insert(line.begin(), leftBlockPos, ' ');
+            line.insert(line.begin(), unat(leftBlockPos), ' ');
         }
 
         // Add leftover right lines
-        for (; rightLineI < rightLines.size(); ++rightLineI)
+        for (; rightLineI < int(rightLines.size()); ++rightLineI)
         {
-            lines.push_back(std::move(rightLines[rightLineI]));
+            lines.push_back(std::move(rightLines[unat(rightLineI)]));
             std::string & line{lines.back()};
-            line.insert(line.begin(), rightBlockPos, ' ');
+            line.insert(line.begin(), unat(rightBlockPos), ' ');
         }
 
         return lines;
