@@ -11,17 +11,17 @@ namespace qc
     //
     // ...
     //
-    template <Numeric T> constexpr T median(T v1, T v2, T v3);
+    template <Numeric T> constexpr T median(T v1, T v2, T v3) noexcept;
 
     //
     // ...
     //
-    template <Numeric T> constexpr T abs(T v);
+    template <Numeric T> constexpr T abs(T v) noexcept;
 
     //
     // ...
     //
-    template <Numeric T> bool isZero(T v, T e = std::numeric_limits<T>::epsilon());
+    template <Numeric T> constexpr bool isZero(T v, T e = std::numeric_limits<T>::epsilon()) noexcept;
 
     //
     // ...
@@ -32,12 +32,12 @@ namespace qc
     //
     // ...
     //
-    template <Floating T> bool areEqual_e(T v1, T v2, T e = std::numeric_limits<T>::epsilon());
+    template <Floating T> constexpr bool areEqual_e(T v1, T v2, T e = std::numeric_limits<T>::epsilon()) noexcept;
 
     //
     // ...
     //
-    template <Numeric T> constexpr int sign(T v);
+    template <Numeric T> constexpr int sign(T v) noexcept;
 
     //
     // Returns `v` stripped of any fractional part.
@@ -45,88 +45,85 @@ namespace qc
     // If `T` is a double, only works for values that can fit in a `s64`.
     // If `T` is integral, simply returns `v`.
     //
-    template <Numeric T> T trunc(T v);
+    template <Numeric T> constexpr T trunc(T v) noexcept;
 
     //
-    // ...
-    // ~2x faster than std::floor
-    // doesn't work with extremely large or extremely small floating point values
+    // Fast round for "normal" values of absolute magnitude smaller than roughly one quadrillion
+    // .5 values rounds to even, not up
     //
-    template <Floating T> nat floor(T v);
-    template <Integral T> T floor(T v);
+    template <Numeric T> constexpr T round(T v) noexcept;
+    template <SignedIntegral R, Floating T> constexpr R round(T v) noexcept;
 
     //
-    // ...
-    // ~2x faster than std::ceil
-    // doesn't work with extremely large or extremely small floating point values
+    // Fast floor for "normal" values of absolute magnitude smaller than roughly 500 trillion
     //
-    template <Floating T> nat ceil(T v);
-    template <Integral T> T ceil(T v);
+    template <Numeric T> constexpr T floor(T v) noexcept;
+    template <SignedIntegral R, Floating T> constexpr R floor(T v) noexcept;
 
     //
-    // ...
+    // Fast ceil for "normal" values of absolute magnitude smaller than roughly 500 trillion
     //
-    template <Floating T> constexpr nat round(T v) noexcept;
-    template <Integral T> constexpr T round(T v) noexcept;
+    template <Numeric T> constexpr T ceil(T v) noexcept;
+    template <SignedIntegral R, Floating T> constexpr R ceil(T v) noexcept;
 
     // Simple wrapper around std::pow
-    template <Floating T> T pow(T v, T e);
+    template <Floating T> T pow(T v, T e) noexcept;
 
     //
     // ...
     // ~2.15x faster than std::pow
     //
-    template <Floating T> T pow(T v, int e);
-    template <Floating T> T pow(T v, uint e);
+    template <Floating T> T pow(T v, int e) noexcept;
+    template <Floating T> T pow(T v, uint e) noexcept;
 
     //
     // ...
     //
-    template <UnsignedIntegral T> constexpr T log2Floor(T v);
+    template <UnsignedIntegral T> constexpr T log2Floor(T v) noexcept;
 
     //
     // ...
     //
-    template <UnsignedIntegral T> constexpr T mipmaps(T size);
+    template <UnsignedIntegral T> constexpr T mipmaps(T size) noexcept;
 
     //
     // ...
     // ~3.3x faster than std::modf
     //
-    template <Floating T> T fract(T v);
+    template <Floating T> constexpr T fract(T v) noexcept;
 
     //
     // ...
     //
-    template <Floating T> std::pair<T, nat> fract_i(T v);
+    template <SignedIntegral R, Floating T> constexpr std::pair<T, R> fract_i(T v) noexcept;
 
     //
     // ...
     // ~2.5x faster than std::fmod
     // `d` must be > 0
     //
-    template <Numeric T> constexpr T mod(T v, T d);
+    template <Numeric T> constexpr T mod(T v, T d) noexcept;
 
     //
     // ...
     // `d` must be > 0
     //
-    template <Numeric T> constexpr std::pair<T, T> mod_q(T v, T d);
+    template <Numeric T> constexpr std::pair<T, T> mod_q(T v, T d) noexcept;
 
     //
     // ...
     //
-    template <Floating T> T mix(T v1, T v2, T t);
+    template <Floating T> constexpr T mix(T v1, T v2, T t) noexcept;
 
     //
     // ...
     //
-    template <Floating T> T unmix(T v1, T v2, T v);
+    template <Floating T> constexpr T unmix(T v1, T v2, T v) noexcept;
 
     //
     // ...
     //
-    template <Floating T> T smoothstep(T v1, T v2, T t);
+    template <Floating T> constexpr T smoothstep(T v1, T v2, T t) noexcept;
 
     //
     // ...
@@ -141,27 +138,27 @@ namespace qc
     //
     // ...
     //
-    template <Floating T, Floating... Args> T average(T v, Args... args);
+    template <Floating T, Floating... Args> constexpr T average(T v, Args... args) noexcept;
 
     //
     // ...
     //
-    template <Floating T> T radians(T degrees);
+    template <Floating T> constexpr T radians(T degrees) noexcept;
 
     //
     // ...
     //
-    template <Floating T> T degrees(T radians);
+    template <Floating T> constexpr T degrees(T radians) noexcept;
 
     //
     // Converts between normalized types.
     //
-    template <Floating         To, Floating         From> constexpr To transnorm(From v);
-    template <SignedIntegral   To, Floating         From> constexpr To transnorm(From v);
-    template <UnsignedIntegral To, Floating         From> constexpr To transnorm(From v);
-    template <Floating         To, SignedIntegral   From> constexpr To transnorm(From v);
-    template <Floating         To, UnsignedIntegral From> constexpr To transnorm(From v);
-    template <UnsignedIntegral To, UnsignedIntegral From> constexpr To transnorm(From v);
+    template <Floating         To, Floating         From> constexpr To transnorm(From v) noexcept;
+    template <SignedIntegral   To, Floating         From> constexpr To transnorm(From v) noexcept;
+    template <UnsignedIntegral To, Floating         From> constexpr To transnorm(From v) noexcept;
+    template <Floating         To, SignedIntegral   From> constexpr To transnorm(From v) noexcept;
+    template <Floating         To, UnsignedIntegral From> constexpr To transnorm(From v) noexcept;
+    template <UnsignedIntegral To, UnsignedIntegral From> constexpr To transnorm(From v) noexcept;
 
     ///
     /// Branchless binary search
@@ -187,7 +184,7 @@ namespace qc
 namespace qc
 {
     template <Numeric T>
-    inline constexpr T median(T v1, T v2, T v3)
+    inline constexpr T median(T v1, T v2, T v3) noexcept
     {
         if (v1 > v2) std::swap(v1, v2);
         if (v2 > v3) std::swap(v2, v3);
@@ -195,7 +192,7 @@ namespace qc
     }
 
     template <Numeric T>
-    inline constexpr T abs(const T v)
+    inline constexpr T abs(const T v) noexcept
     {
         if constexpr (UnsignedIntegral<T>)
         {
@@ -208,7 +205,7 @@ namespace qc
     }
 
     template <Numeric T>
-    inline bool isZero(const T v, const T e)
+    inline constexpr bool isZero(const T v, const T e) noexcept
     {
         if constexpr (Floating<T>)
         {
@@ -240,13 +237,13 @@ namespace qc
     }
 
     template <Floating T>
-    inline bool areEqual_e(const T v1, const T v2, const T e)
+    inline constexpr bool areEqual_e(const T v1, const T v2, const T e) noexcept
     {
         return isZero(v1 - v2, e);
     }
 
     template <Numeric T>
-    inline constexpr int sign(const T v)
+    inline constexpr int sign(const T v) noexcept
     {
         if constexpr (UnsignedIntegral<T>)
         {
@@ -259,11 +256,11 @@ namespace qc
     }
 
     template <Numeric T>
-    inline T trunc(const T v)
+    inline constexpr T trunc(const T v) noexcept
     {
         if constexpr (Floating<T>)
         {
-            return T(nat(v));
+            return T(intmax_t(v));
         }
         else
         {
@@ -272,73 +269,123 @@ namespace qc
     }
 
     template <Floating T>
-    inline nat floor(const T v)
+    inline constexpr T fract(const T v) noexcept
     {
-        const nat i{nat(v)};
-        return i - (v < T(i));
+        return v - trunc(v);
     }
 
-    template <Integral T>
-    inline T floor(const T v)
+    template <SignedIntegral R, Floating T>
+    inline constexpr std::pair<T, R> fract_i(const T v) noexcept
     {
-        return v;
+        const intmax_t i{intmax_t(v)};
+        return {v - T(i), R(i)};
     }
 
-    template <Floating T>
-    inline nat ceil(const T v)
+    template <Numeric T>
+    inline constexpr T mod(const T v, const T d) noexcept
     {
-        const nat i{nat(v)};
-        return i + (v > T(i));
+        if constexpr (Floating<T>)
+        {
+            return fract(v / d) * d;
+        }
+        else
+        {
+            return T(v % d);
+        }
     }
 
-    template <Integral T>
-    inline T ceil(const T v)
+    template <Numeric T>
+    inline constexpr std::pair<T, T> mod_q(const T v, const T d) noexcept
     {
-        return v;
+        if constexpr (Floating<T>)
+        {
+            const T q{v / d};
+            return {fract(q) * d, q};
+        }
+        else
+        {
+            const auto q{v / d};
+            return {T(v - q * d), T(q)};
+        }
     }
 
-    // Old bit-magic form
-    // ~12x faster than std::llround
-    // Only works for "normal" values of absolute magnitude smaller than roughly one quadrillion for doubles or one million for floats
-    // Any exact 0.5 value is not guaranteed to round up - it may go either way
-    #if 0
-    inline s64 round(double v)
-    {
-        // Right bit shift on signed integer must be arithmetic
-        static_assert((s64(-1) >> 1) == s64(-1));
-
-        return std::bit_cast<s64>(v + 6755399441055744.0) << 13 >> 13;
-    }
-
-    inline s32 round(float v)
-    {
-        // Right bit shift on signed integer must be arithmetic
-        static_assert((s32(-1) >> 1) == s32(-1));
-
-        return std::bit_cast<s32>(v + 12582912.0f) << 10 >> 10;
-    }
-    #endif
-
-    template <Floating T>
-    inline constexpr nat round(const T v) noexcept
-    {
-        return nat(v + (T(v >= T(0.0)) - T(0.5)));
-    }
-
-    template <Integral T>
+    template <Numeric T>
     inline constexpr T round(const T v) noexcept
     {
-        return v;
+        if constexpr (Floating<T>)
+        {
+            return std::nearbyint(v);
+        }
+        else
+        {
+            return v;
+        }
+    }
+
+    template <SignedIntegral R, Floating T>
+    inline constexpr R round(const T v) noexcept
+    {
+        if constexpr (sizeof(R) >= 8u)
+        {
+            // Right bit shift on signed integer must be arithmetic
+            static_assert((-1 >> 1) == -1);
+
+            return std::bit_cast<s64>(v + 0x1.8p52) << 13 >> 13;
+        }
+        else
+        {
+            return R(std::bit_cast<s64>(v + 0x1.8p52));
+        }
+    }
+
+    template <Numeric T>
+    inline constexpr T floor(const T v) noexcept
+    {
+        if constexpr (Floating<T>)
+        {
+            // Can't find any faster option than this ATM
+            return std::floor(v);
+        }
+        else
+        {
+            return v;
+        }
+    }
+
+    template <SignedIntegral R, Floating T>
+    inline constexpr R floor(const T v) noexcept
+    {
+        return R(s64(v + double(s64(1) << 50)) - (s64(1) << 50));
+    }
+
+    template <Numeric T>
+    inline constexpr T ceil(const T v) noexcept
+    {
+        if constexpr (Floating<T>)
+        {
+            // Can't find any faster option than this ATM
+            return std::ceil(v);
+        }
+        else
+        {
+            return v;
+        }
+    }
+
+    template <SignedIntegral R, Floating T>
+    inline constexpr R ceil(const T v) noexcept
+    {
+        return -floor<R>(-v);
     }
 
     template <Floating T>
-    inline T pow(const T v, const T e)
+    inline T pow(const T v, const T e) noexcept
     {
         return std::pow(v, e);
     }
 
     template <Floating T>
-    inline T pow(const T v, const int e)
+    inline T pow(const T v, const int e) noexcept
     {
         if (e >= 0)
         {
@@ -351,7 +398,7 @@ namespace qc
     }
 
     template <Floating T>
-    inline T pow(T v, uint e)
+    inline T pow(T v, uint e) noexcept
     {
         T r{T(1.0)};
 
@@ -366,7 +413,7 @@ namespace qc
     }
 
     template <UnsignedIntegral T>
-    inline constexpr T log2Floor(const T v)
+    inline constexpr T log2Floor(const T v) noexcept
     {
         // Old, non-std way of doing it
         //static_assert(sizeof(T) <= 8u);
@@ -384,66 +431,25 @@ namespace qc
     }
 
     template <UnsignedIntegral T>
-    inline constexpr T mipmaps(const T size)
+    inline constexpr T mipmaps(const T size) noexcept
     {
         return std::bit_width(size);
     }
 
     template <Floating T>
-    inline T fract(const T v)
-    {
-        return v - trunc(v);
-    }
-
-    template <Floating T>
-    inline std::pair<T, nat> fract_i(const T v)
-    {
-        const nat i{nat(v)};
-        return {v - T(i), i};
-    }
-
-    template <Numeric T>
-    inline constexpr T mod(const T v, const T d)
-    {
-        if constexpr (Floating<T>)
-        {
-            return fract(v / d) * d;
-        }
-        else
-        {
-            return T(v % d);
-        }
-    }
-
-    template <Numeric T>
-    inline constexpr std::pair<T, T> mod_q(const T v, const T d)
-    {
-        if constexpr (Floating<T>)
-        {
-            const T q{v / d};
-            return {fract(q) * d, q};
-        }
-        else
-        {
-            const auto q{v / d};
-            return {T(v - q * d), T(q)};
-        }
-    }
-
-    template <Floating T>
-    inline T mix(const T v1, const T v2, const T t)
+    inline constexpr T mix(const T v1, const T v2, const T t) noexcept
     {
         return std::lerp(v1, v2, t);
     }
 
     template <Floating T>
-    inline T unmix(const T v1, const T v2, const T v)
+    inline constexpr T unmix(const T v1, const T v2, const T v) noexcept
     {
         return (v - v1) / (v2 - v1);
     }
 
     template <Floating T>
-    inline T smoothstep(const T v1, const T v2, const T t)
+    inline constexpr T smoothstep(const T v1, const T v2, const T t) noexcept
     {
         return mix(v1, v2, t * t * (T(3.0) - T(2.0) * t));
     }
@@ -451,41 +457,41 @@ namespace qc
     template <typename T, typename... Args>
     inline constexpr T sum(const T & v, const Args & ... args)
     {
-        return (v + ... + args);
+        return T((v + ... + args));
     }
 
     template <typename T, typename... Args>
     inline constexpr T product(const T & v, const Args & ... args)
     {
-        return (v * ... * args);
+        return T((v * ... * args));
     }
 
     template <Floating T, Floating... Args>
-    inline T average(const T v, const Args... args)
+    inline constexpr T average(const T v, const Args... args) noexcept
     {
         return (v + ... + args) * (T(1.0) / T(1 + sizeof...(Args)));
     }
 
     template <Floating T>
-    inline T radians(const T degrees)
+    inline constexpr T radians(const T degrees) noexcept
     {
         return degrees * T(pi<T> / 180.0);
     }
 
     template <Floating T>
-    inline T degrees(const T radians)
+    inline constexpr T degrees(const T radians) noexcept
     {
         return radians * T(180.0 / pi<T>);
     }
 
     template <Floating To, Floating From>
-    inline constexpr To transnorm(const From v)
+    inline constexpr To transnorm(const From v) noexcept
     {
         return To(v);
     }
 
     template <SignedIntegral To, Floating From>
-    inline constexpr To transnorm(From v)
+    inline constexpr To transnorm(From v) noexcept
     {
         if (v <= From(-1.0)) return -std::numeric_limits<To>::max();
         if (v >= From(1.0)) return std::numeric_limits<To>::max();
@@ -493,7 +499,7 @@ namespace qc
     }
 
     template <UnsignedIntegral To, Floating From>
-    inline constexpr To transnorm(const From v)
+    inline constexpr To transnorm(const From v) noexcept
     {
         if (v <= From(0.0)) return To(0u);
         if (v >= From(1.0)) return std::numeric_limits<To>::max();
@@ -501,19 +507,19 @@ namespace qc
     }
 
     template <Floating To, SignedIntegral From>
-    inline constexpr To transnorm(const From v)
+    inline constexpr To transnorm(const From v) noexcept
     {
         return max(To(v) * (To(1.0) / To(std::numeric_limits<From>::max())), To(-1.0));
     }
 
     template <Floating To, UnsignedIntegral From>
-    inline constexpr To transnorm(const From v)
+    inline constexpr To transnorm(const From v) noexcept
     {
         return To(v) * (To(1.0) / To(std::numeric_limits<From>::max()));
     }
 
     template <UnsignedIntegral To, UnsignedIntegral From>
-    inline constexpr To transnorm(const From v)
+    inline constexpr To transnorm(const From v) noexcept
     {
         if constexpr (sizeof(From) == sizeof(To))
         {

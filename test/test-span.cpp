@@ -362,6 +362,32 @@ static void compileFunctionsT()
 }
 
 template <typename T>
+static void compileFunctionsFT()
+{
+    span1<T> s1{};
+    span2<T> s2{};
+    span3<T> s3{};
+    span4<T> s4{};
+
+    qc::round<s8>(s1);
+    qc::round<s16>(s1);
+    qc::round<s32>(s1);
+    qc::round<s64>(s1);
+    qc::round<s8>(s2);
+    qc::round<s16>(s2);
+    qc::round<s32>(s2);
+    qc::round<s64>(s2);
+    qc::round<s8>(s3);
+    qc::round<s16>(s3);
+    qc::round<s32>(s3);
+    qc::round<s64>(s3);
+    qc::round<s8>(s4);
+    qc::round<s16>(s4);
+    qc::round<s32>(s4);
+    qc::round<s64>(s4);
+}
+
+template <typename T>
 static void compileFunctionsPT()
 {
     using P = T *;
@@ -395,6 +421,11 @@ static void compileFunctions()
     compileFunctionsT<u16>();
     compileFunctionsT<u32>();
     compileFunctionsT<u64>();
+
+    compileFunctionsFT<f32>();
+    compileFunctionsFT<f64>();
+
+    compileFunctionsPT<int>();
 }
 
 template <typename T, int n>

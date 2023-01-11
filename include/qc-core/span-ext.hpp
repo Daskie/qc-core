@@ -11,13 +11,13 @@ namespace qc
     //
     // ...
     //
-    template <Numeric T, int n> std::ostream & operator<<(std::ostream & os, const span<T, n> & s);
+    template <Numeric T, int n> span<T, n> round(const span<T, n> & s);
+    template <SignedIntegral R, Floating T, int n> span<R, n> round(const span<T, n> & s);
 
     //
     // ...
     //
-    template <Floating T, int n> span<nat, n> round(const span<T, n> & s);
-    template <Integral T, int n> span<T, n> round(const span<T, n> & s);
+    template <NumericOrPointer T, int n> std::ostream & operator<<(std::ostream & os, const span<T, n> & s);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -25,6 +25,25 @@ namespace qc
 namespace qc
 {
     template <Numeric T, int n>
+    inline span<T, n> round(const span<T, n> & s)
+    {
+        if constexpr (Floating<T>)
+        {
+            return {round(s.min), round(s.max)};
+        }
+        else
+        {
+            return s;
+        }
+    }
+
+    template <SignedIntegral R, Floating T, int n>
+    inline span<R, n> round(const span<T, n> & s)
+    {
+        return {round<R>(s.min), round<R>(s.max)};
+    }
+
+    template <NumericOrPointer T, int n>
     inline std::ostream & operator<<(std::ostream & os, const span<T, n> & s)
     {
         os << "[";
@@ -35,17 +54,5 @@ namespace qc
         if constexpr (n == 1) os << "]";
         os << "]";
         return os;
-    }
-
-    template <Floating T, int n>
-    inline span<nat, n> round(const span<T, n> & s)
-    {
-        return {round(s.min), round(s.max)};
-    }
-
-    template <Integral T, int n>
-    inline span<T, n> round(const span<T, n> & s)
-    {
-        return s;
     }
 }

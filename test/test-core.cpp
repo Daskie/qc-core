@@ -244,12 +244,30 @@ static void compileFunctionsFT()
     qc::areEqual_e(v, v);
     qc::areEqual_e(v, v, v);
 
+    qc::round<s8>(v);
+    qc::round<s16>(v);
+    qc::round<s32>(v);
+    qc::round<s64>(v);
+
+    qc::floor<s8>(v);
+    qc::floor<s16>(v);
+    qc::floor<s32>(v);
+    qc::floor<s64>(v);
+
+    qc::ceil<s8>(v);
+    qc::ceil<s16>(v);
+    qc::ceil<s32>(v);
+    qc::ceil<s64>(v);
+
     qc::pow(v, v);
     qc::pow(v, 1);
     qc::pow(v, 1u);
 
     qc::fract(v);
-    qc::fract_i(v);
+    qc::fract_i<s8>(v);
+    qc::fract_i<s16>(v);
+    qc::fract_i<s32>(v);
+    qc::fract_i<s64>(v);
 
     qc::mix(v, v, v);
 
@@ -440,7 +458,7 @@ void testTransnormFT()
     testTransnormFTFT<From, f64>();
 }
 
-TEST(core, transnorm)
+TEST(Core, transnorm)
 {
     testTransnormST<s8>();
     testTransnormST<s16>();
@@ -456,7 +474,7 @@ TEST(core, transnorm)
     testTransnormFT<f64>();
 }
 
-TEST(core, binarySearch)
+TEST(Core, binarySearch)
 {
     std::vector<int> v0{};
     std::vector<int> v1{1};
@@ -594,7 +612,7 @@ TEST(core, binarySearch)
     ASSERT_EQ(3, qc::upperBound(vvv3.begin(), vvv3.end(), 2) - vvv3.begin());
 }
 
-TEST(core, concepts)
+TEST(Core, concepts)
 {
     static_assert(Integral<s8>);
     static_assert(Integral<s16>);
@@ -704,9 +722,214 @@ TEST(core, concepts)
 
 static void _dummyFunction() {}
 
-TEST(core, scopeGuard)
+TEST(Core, scopeGuard)
 {
     qc::ScopeGuard guard1{[]() {}};
     qc::ScopeGuard guard2{&_dummyFunction};
     qc::ScopeGuard guard3{std::function{_dummyFunction}};
+}
+
+template <Floating F, SignedIntegral I>
+static void testRound(const I v)
+{
+    ASSERT_EQ(qc::round<I>(F(v)), v);
+    ASSERT_EQ(qc::round<I>(F(v) + F(0.25)), v);
+    ASSERT_EQ(qc::round<I>(F(v) - F(0.25f)), v);
+    ASSERT_EQ(qc::round<I>(F(v) + F(0.5)), (v + (v > 0)) / 2 * 2);
+    ASSERT_EQ(qc::round<I>(F(v) - F(0.5)), (v - (v < 0)) / 2 * 2);
+}
+
+template <Floating F, SignedIntegral I>
+static void testRoundTT()
+{
+    testRound<F, I>(0);
+    testRound<F, I>(1);
+    testRound<F, I>(-1);
+    testRound<F, I>(10);
+    testRound<F, I>(-10);
+    testRound<F, I>(100);
+    testRound<F, I>(-100);
+}
+
+template <Floating F>
+static void testRoundT()
+{
+    testRoundTT<F, s8>();
+    testRoundTT<F, s16>();
+    testRoundTT<F, s32>();
+    testRoundTT<F, s64>();
+}
+
+TEST(Core, round)
+{
+    testRoundT<float>();
+    testRoundT<double>();
+
+    ASSERT_EQ(qc::round<s8>(float(std::numeric_limits<s8>::max())), std::numeric_limits<s8>::max());
+    ASSERT_EQ(qc::round<s8>(float(std::numeric_limits<s8>::min())), std::numeric_limits<s8>::min());
+    testRound<float, s8>(std::numeric_limits<s8>::max() - 1);
+    testRound<float, s8>(std::numeric_limits<s8>::min() + 1);
+
+    ASSERT_EQ(qc::round<s16>(float(std::numeric_limits<s16>::max())), std::numeric_limits<s16>::max());
+    ASSERT_EQ(qc::round<s16>(float(std::numeric_limits<s16>::min())), std::numeric_limits<s16>::min());
+    testRound<float, s16>(std::numeric_limits<s16>::max() - 1);
+    testRound<float, s16>(std::numeric_limits<s16>::min() + 1);
+
+    ASSERT_EQ(qc::round<s32>(float(1 << 30)), 1 << 30);
+    ASSERT_EQ(qc::round<s32>(float(-(1 << 30))), -(1 << 30));
+
+    ASSERT_EQ(qc::round<s32>(float((1 << 24) - 1)), (1 << 24) - 1);
+    ASSERT_EQ(qc::round<s32>(float(-((1 << 24) - 1))), -((1 << 24) - 1));
+
+    ASSERT_EQ(qc::round<s8>(double(std::numeric_limits<s8>::max())), std::numeric_limits<s8>::max());
+    ASSERT_EQ(qc::round<s8>(double(std::numeric_limits<s8>::min())), std::numeric_limits<s8>::min());
+    testRound<double, s8>(std::numeric_limits<s8>::max() - 1);
+    testRound<double, s8>(std::numeric_limits<s8>::min() + 1);
+
+    ASSERT_EQ(qc::round<s16>(double(std::numeric_limits<s16>::max())), std::numeric_limits<s16>::max());
+    ASSERT_EQ(qc::round<s16>(double(std::numeric_limits<s16>::min())), std::numeric_limits<s16>::min());
+    testRound<double, s16>(std::numeric_limits<s16>::max() - 1);
+    testRound<double, s16>(std::numeric_limits<s16>::min() + 1);
+
+    ASSERT_EQ(qc::round<s32>(double(std::numeric_limits<s32>::max())), std::numeric_limits<s32>::max());
+    ASSERT_EQ(qc::round<s32>(double(std::numeric_limits<s32>::min())), std::numeric_limits<s32>::min());
+    testRound<double, s32>(std::numeric_limits<s32>::max() - 1);
+    testRound<double, s32>(std::numeric_limits<s32>::min() + 1);
+
+    testRound<double, s64>((s64(1) << 50) - 2);
+    testRound<double, s64>(-((s64(1) << 50) - 2));
+}
+
+template <Floating F, SignedIntegral I>
+static void testFloor(const I v)
+{
+    ASSERT_EQ(qc::floor<I>(F(v) - 1.0), v - 1);
+    ASSERT_EQ(qc::floor<I>(F(v) - 0.75), v - 1);
+    ASSERT_EQ(qc::floor<I>(F(v) - 0.5), v - 1);
+    ASSERT_EQ(qc::floor<I>(F(v) - 0.25), v - 1);
+    ASSERT_EQ(qc::floor<I>(F(v)), v);
+    ASSERT_EQ(qc::floor<I>(F(v) + 0.25), v);
+    ASSERT_EQ(qc::floor<I>(F(v) + 0.5), v);
+    ASSERT_EQ(qc::floor<I>(F(v) + 0.75), v);
+    ASSERT_EQ(qc::floor<I>(F(v) + 1.0), v + 1);
+}
+
+template <Floating F, SignedIntegral I>
+static void testFloorTT()
+{
+    testFloor<float, I>(0);
+    testFloor<float, I>(1);
+    testFloor<float, I>(-1);
+    testFloor<float, I>(100);
+    testFloor<float, I>(-100);
+}
+
+template <Floating F>
+static void testFloorT()
+{
+    testFloorTT<F, s8>();
+    testFloorTT<F, s16>();
+    testFloorTT<F, s32>();
+    testFloorTT<F, s64>();
+}
+
+TEST(Core, floor)
+{
+    testFloorT<float>();
+    testFloorT<double>();
+
+    ASSERT_EQ(qc::floor<s8>(float(std::numeric_limits<s8>::max())), std::numeric_limits<s8>::max());
+    ASSERT_EQ(qc::floor<s8>(float(std::numeric_limits<s8>::min())), std::numeric_limits<s8>::min());
+    testFloor<float, s8>(std::numeric_limits<s8>::max() - 1);
+    testFloor<float, s8>(std::numeric_limits<s8>::min() + 1);
+
+    ASSERT_EQ(qc::floor<s16>(float(std::numeric_limits<s16>::max())), std::numeric_limits<s16>::max());
+    ASSERT_EQ(qc::floor<s16>(float(std::numeric_limits<s16>::min())), std::numeric_limits<s16>::min());
+    testFloor<float, s16>(std::numeric_limits<s16>::max() - 1);
+    testFloor<float, s16>(std::numeric_limits<s16>::min() + 1);
+
+    ASSERT_EQ(qc::floor<s8>(double(std::numeric_limits<s8>::max())), std::numeric_limits<s8>::max());
+    ASSERT_EQ(qc::floor<s8>(double(std::numeric_limits<s8>::min())), std::numeric_limits<s8>::min());
+    testFloor<double, s8>(std::numeric_limits<s8>::max() - 1);
+    testFloor<double, s8>(std::numeric_limits<s8>::min() + 1);
+
+    ASSERT_EQ(qc::floor<s16>(double(std::numeric_limits<s16>::max())), std::numeric_limits<s16>::max());
+    ASSERT_EQ(qc::floor<s16>(double(std::numeric_limits<s16>::min())), std::numeric_limits<s16>::min());
+    testFloor<double, s16>(std::numeric_limits<s16>::max() - 1);
+    testFloor<double, s16>(std::numeric_limits<s16>::min() + 1);
+
+    ASSERT_EQ(qc::floor<s32>(double(std::numeric_limits<s32>::max())), std::numeric_limits<s32>::max());
+    ASSERT_EQ(qc::floor<s32>(double(std::numeric_limits<s32>::min())), std::numeric_limits<s32>::min());
+    testFloor<double, s32>(std::numeric_limits<s32>::max() - 1);
+    testFloor<double, s32>(std::numeric_limits<s32>::min() + 1);
+
+    testFloor<double, s64>(s64(1) << 49);
+    testFloor<double, s64>(-(s64(1) << 49));
+}
+
+template <Floating F, SignedIntegral I>
+static void testCeil(const I v)
+{
+    ASSERT_EQ(qc::ceil<I>(F(v) - 1.0), v - 1);
+    ASSERT_EQ(qc::ceil<I>(F(v) - 0.75), v);
+    ASSERT_EQ(qc::ceil<I>(F(v) - 0.5), v);
+    ASSERT_EQ(qc::ceil<I>(F(v) - 0.25), v);
+    ASSERT_EQ(qc::ceil<I>(F(v)), v);
+    ASSERT_EQ(qc::ceil<I>(F(v) + 0.25), v + 1);
+    ASSERT_EQ(qc::ceil<I>(F(v) + 0.5), v + 1);
+    ASSERT_EQ(qc::ceil<I>(F(v) + 0.75), v + 1);
+    ASSERT_EQ(qc::ceil<I>(F(v) + 1.0), v + 1);
+}
+
+template <Floating F, SignedIntegral I>
+static void testCeilTT()
+{
+    testCeil<float, I>(0);
+    testCeil<float, I>(1);
+    testCeil<float, I>(-1);
+    testCeil<float, I>(100);
+    testCeil<float, I>(-100);
+}
+
+template <Floating F>
+static void testCeilT()
+{
+    testCeilTT<F, s8>();
+    testCeilTT<F, s16>();
+    testCeilTT<F, s32>();
+    testCeilTT<F, s64>();
+}
+
+TEST(Core, ceil)
+{
+    testCeilT<float>();
+    testCeilT<double>();
+
+    ASSERT_EQ(qc::ceil<s8>(float(std::numeric_limits<s8>::max())), std::numeric_limits<s8>::max());
+    ASSERT_EQ(qc::ceil<s8>(float(std::numeric_limits<s8>::min())), std::numeric_limits<s8>::min());
+    testCeil<float, s8>(std::numeric_limits<s8>::max() - 1);
+    testCeil<float, s8>(std::numeric_limits<s8>::min() + 1);
+
+    ASSERT_EQ(qc::ceil<s16>(float(std::numeric_limits<s16>::max())), std::numeric_limits<s16>::max());
+    ASSERT_EQ(qc::ceil<s16>(float(std::numeric_limits<s16>::min())), std::numeric_limits<s16>::min());
+    testCeil<float, s16>(std::numeric_limits<s16>::max() - 1);
+    testCeil<float, s16>(std::numeric_limits<s16>::min() + 1);
+
+    ASSERT_EQ(qc::ceil<s8>(double(std::numeric_limits<s8>::max())), std::numeric_limits<s8>::max());
+    ASSERT_EQ(qc::ceil<s8>(double(std::numeric_limits<s8>::min())), std::numeric_limits<s8>::min());
+    testCeil<double, s8>(std::numeric_limits<s8>::max() - 1);
+    testCeil<double, s8>(std::numeric_limits<s8>::min() + 1);
+
+    ASSERT_EQ(qc::ceil<s16>(double(std::numeric_limits<s16>::max())), std::numeric_limits<s16>::max());
+    ASSERT_EQ(qc::ceil<s16>(double(std::numeric_limits<s16>::min())), std::numeric_limits<s16>::min());
+    testCeil<double, s16>(std::numeric_limits<s16>::max() - 1);
+    testCeil<double, s16>(std::numeric_limits<s16>::min() + 1);
+
+    ASSERT_EQ(qc::ceil<s32>(double(std::numeric_limits<s32>::max())), std::numeric_limits<s32>::max());
+    ASSERT_EQ(qc::ceil<s32>(double(std::numeric_limits<s32>::min())), std::numeric_limits<s32>::min());
+    testCeil<double, s32>(std::numeric_limits<s32>::max() - 1);
+    testCeil<double, s32>(std::numeric_limits<s32>::min() + 1);
+
+    testCeil<double, s64>(s64(1) << 49);
+    testCeil<double, s64>(-(s64(1) << 49));
 }

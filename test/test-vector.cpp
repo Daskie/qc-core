@@ -520,6 +520,45 @@ static void compileFunctionsFT()
     qc::areEqual_e(v3, v3, v);
     qc::areEqual_e(v4, v4, v);
 
+    qc::round<s8>(v2);
+    qc::round<s8>(v3);
+    qc::round<s8>(v4);
+    qc::round<s16>(v2);
+    qc::round<s16>(v3);
+    qc::round<s16>(v4);
+    qc::round<s32>(v2);
+    qc::round<s32>(v3);
+    qc::round<s32>(v4);
+    qc::round<s64>(v2);
+    qc::round<s64>(v3);
+    qc::round<s64>(v4);
+
+    qc::floor<s8>(v2);
+    qc::floor<s8>(v3);
+    qc::floor<s8>(v4);
+    qc::floor<s16>(v2);
+    qc::floor<s16>(v3);
+    qc::floor<s16>(v4);
+    qc::floor<s32>(v2);
+    qc::floor<s32>(v3);
+    qc::floor<s32>(v4);
+    qc::floor<s64>(v2);
+    qc::floor<s64>(v3);
+    qc::floor<s64>(v4);
+
+    qc::ceil<s8>(v2);
+    qc::ceil<s8>(v3);
+    qc::ceil<s8>(v4);
+    qc::ceil<s16>(v2);
+    qc::ceil<s16>(v3);
+    qc::ceil<s16>(v4);
+    qc::ceil<s32>(v2);
+    qc::ceil<s32>(v3);
+    qc::ceil<s32>(v4);
+    qc::ceil<s64>(v2);
+    qc::ceil<s64>(v3);
+    qc::ceil<s64>(v4);
+
     qc::average(v2);
     qc::average(v3);
     qc::average(v4);
