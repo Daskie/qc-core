@@ -34,6 +34,22 @@ static void compileTyping()
 }
 #pragma warning(pop)
 
+#pragma warning(push)
+#pragma warning(disable: 4555)
+template <Floating T>
+static void compileNumbersT()
+{
+    qc::infinity<T>;
+    qc::nan<T>;
+    qc::pi<T>;
+    qc::e<T>;
+    qc::phi<T>;
+    qc::sqrt2<T>;
+    qc::sqrt3<T>;
+    qc::sqrt5<T>;
+}
+#pragma warning(pop)
+
 template <typename T1, typename T2>
 static void compileFunctionsTT() {}
 
@@ -331,6 +347,8 @@ static void compileFunctions()
 TEST(core, compilation)
 {
     compileTyping();
+    compileNumbersT<float>();
+    compileNumbersT<double>();
     compileFunctions();
 }
 

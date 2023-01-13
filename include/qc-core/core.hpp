@@ -66,6 +66,8 @@ namespace qc
 
     inline namespace numbers
     {
+        template <Floating T> inline constexpr T infinity{std::numeric_limits<T>::infinity()};
+        template <Floating T> inline constexpr T nan{std::numeric_limits<T>::quiet_NaN()};
         template <Floating T> inline constexpr T pi{T(3.141592653589793)};
         template <Floating T> inline constexpr T e{T(2.718281828459045)};
         template <Floating T> inline constexpr T phi{T(1.618033988749895)};
