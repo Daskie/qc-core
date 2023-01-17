@@ -456,7 +456,7 @@ namespace qc
     template <UnsignedIntegral T>
     inline constexpr T mipmaps(const T size) noexcept
     {
-        return std::bit_width(size);
+        return T(std::bit_width(size));
     }
 
     template <Floating T>
