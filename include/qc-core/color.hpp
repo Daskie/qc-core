@@ -79,9 +79,8 @@ namespace qc::color
 
     ///
     /// Converts a color from sRGB to lRGB
-    ///
-    /// @param srgb the color to convert
-    /// @return the converted color
+    /// @param srgb color to convert
+    /// @return converted color
     ///
     template <Floating T>
     inline vec3<T> srgbToLrgb(const vec3<T> & srgb) noexcept
@@ -91,9 +90,8 @@ namespace qc::color
 
     ///
     /// Converts a color from lRGB to sRGB
-    ///
-    /// @param lrgb the color to convert, must be positive
-    /// @return the converted color
+    /// @param lrgb color to convert, must be positive
+    /// @return converted color
     ///
     template <Floating T>
     inline vec3<T> lrgbToSrgb(const vec3<T> & lrgb) noexcept
@@ -102,10 +100,9 @@ namespace qc::color
     }
 
     ///
-    /// Converts from SRGB to HSL
-    ///
-    /// @param srgb the SRGB value to convert
-    /// @return the converted HSL value
+    /// Converts from sRGB to HSL
+    /// @param srgb sRGB value to convert
+    /// @return converted HSL value
     template <Floating T>
     inline vec3<T> srgbToHsl(const vec3<T> & srgb) noexcept
     {
@@ -170,9 +167,8 @@ namespace qc::color
 
     ///
     /// Get the sRGB color for a given hue
-    ///
-    /// @param hue a hue in range [0, 1]
-    /// @return the full value/saturated sRGB corresponding to `hue`
+    /// @param hue hue in range [0, 1]
+    /// @return full value/saturated sRGB corresponding to `hue`
     ///
     template <Floating T>
     inline vec3<T> hueToSrgb(const T hue) noexcept
@@ -182,11 +178,9 @@ namespace qc::color
 
     ///
     /// Converts a color from HSL to sRGB
-    ///
     /// There is a desmos graph for this
-    ///
-    /// @param hsl the color to convert
-    /// @return the converted color
+    /// @param hsl color to convert
+    /// @return converted color
     ///
     template <Floating T>
     inline vec3<T> hslToSrgb(const vec3<T> & hsl) noexcept
@@ -202,8 +196,8 @@ namespace qc::color
     /// Return a sRGB color correpsonding to a "thermal" value, in range [0, 1]
     /// The spectrum goes roughly black -> blue -> purple -> magenta -> red -> orange -> yellow -> white
     /// Using interpolation of ironbow palette
-    /// @param v the input "temperature" in range [0, 1]
-    /// @return the gradient sRGB value
+    /// @param v input "temperature" in range [0, 1]
+    /// @return gradient sRGB value
     ///
     template <Floating T>
     inline vec3<T> thermalToSrgb(const T v) noexcept
@@ -246,9 +240,8 @@ namespace qc::color
 
     ///
     /// Converts a color from lRGB to XYZ
-    ///
-    /// @param lrgb the color to convert
-    /// @return the converted color
+    /// @param lrgb color to convert
+    /// @return converted color
     template <Floating T>
     inline vec3<T> lrgbToXyz(const vec3<T> & lrgb) noexcept
     {
@@ -257,9 +250,8 @@ namespace qc::color
 
     ///
     /// Converts a color from XYZ to lRGB
-    ///
-    /// @param xyz the color to convert
-    /// @return the converted color
+    /// @param xyz color to convert
+    /// @return converted color
     ///
     template <Floating T>
     inline vec3<T> xyzToLrgb(const vec3<T> & xyz) noexcept
@@ -269,9 +261,8 @@ namespace qc::color
 
     ///
     /// Converts a color from XYZ to xyY
-    ///
-    /// @param xyz the color to convert
-    /// @return the converted color
+    /// @param xyz color to convert
+    /// @return converted color
     ///
     template <Floating T>
     inline vec3<T> xyzToXyy(const vec3<T> & xyz) noexcept
@@ -289,9 +280,8 @@ namespace qc::color
 
     ///
     /// Converts a color from xyY to XYZ
-    ///
-    /// @param xyy the color to convert
-    /// @return the converted color
+    /// @param xyy color to convert
+    /// @return converted color
     ///
     template <Floating T>
     inline vec3<T> xyyToXyz(const vec3<T> & xyy) noexcept
@@ -302,9 +292,8 @@ namespace qc::color
 
     ///
     /// Converts a color from XYZ to LAB
-    ///
-    /// @param xyz the color to convert
-    /// @return the converted color
+    /// @param xyz color to convert
+    /// @return converted color
     ///
     template <Floating T>
     inline vec3<T> xyzToLab(const vec3<T> & xyz) noexcept
@@ -322,9 +311,8 @@ namespace qc::color
 
     ///
     /// Converts a color from LAB to XYZ
-    ///
-    /// @param lab the color to convert
-    /// @return the converted color
+    /// @param lab color to convert
+    /// @return converted color
     ///
     template <Floating T>
     inline vec3<T> labToXyz(const vec3<T> & lab) noexcept
@@ -340,9 +328,8 @@ namespace qc::color
 
     ///
     /// Converts a color from XYZ to LUV
-    ///
-    /// @param xyz the color to convert
-    /// @return the converted color
+    /// @param xyz color to convert
+    /// @return converted color
     ///
     template <Floating T>
     inline vec3<T> xyzToLuv(const vec3<T> & xyz) noexcept
@@ -372,9 +359,8 @@ namespace qc::color
 
     ///
     /// Converts a color from LUV to XYZ
-    ///
-    /// @param luv the color to convert
-    /// @return the converted color
+    /// @param luv color to convert
+    /// @return converted color
     ///
     template <Floating T>
     inline vec3<T> luvToXyz(const vec3<T> & luv) noexcept
@@ -403,9 +389,8 @@ namespace qc::color
 
     ///
     /// Converts a color from LUV to LCH
-    ///
-    /// @param luv the color to convert
-    /// @return the converted color
+    /// @param luv color to convert
+    /// @return converted color
     ///
     template <Floating T>
     inline vec3<T> luvToLch(const vec3<T> & luv) noexcept
@@ -419,9 +404,8 @@ namespace qc::color
 
     ///
     /// Converts a color from LCH to LUV
-    ///
-    /// @param lch the color to convert
-    /// @return the converted color
+    /// @param lch color to convert
+    /// @return converted color
     ///
     template <Floating T>
     inline vec3<T> lchToLuv(const vec3<T> & lch) noexcept
