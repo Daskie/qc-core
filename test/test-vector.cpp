@@ -628,36 +628,36 @@ static void compileFunctionsFT()
     qc::smoothstep(v3, v3, v);
     qc::smoothstep(v4, v4, v);
 
-    qc::transnorm<fvec2>(v2);
-    qc::transnorm<fvec3>(v3);
-    qc::transnorm<fvec4>(v4);
-    qc::transnorm<dvec2>(v2);
-    qc::transnorm<dvec3>(v3);
-    qc::transnorm<dvec4>(v4);
-    qc::transnorm<cvec2>(v2);
-    qc::transnorm<cvec3>(v3);
-    qc::transnorm<cvec4>(v4);
-    qc::transnorm<svec2>(v2);
-    qc::transnorm<svec3>(v3);
-    qc::transnorm<svec4>(v4);
-    qc::transnorm<ivec2>(v2);
-    qc::transnorm<ivec3>(v3);
-    qc::transnorm<ivec4>(v4);
-    qc::transnorm<lvec2>(v2);
-    qc::transnorm<lvec3>(v3);
-    qc::transnorm<lvec4>(v4);
-    qc::transnorm<ucvec2>(v2);
-    qc::transnorm<ucvec3>(v3);
-    qc::transnorm<ucvec4>(v4);
-    qc::transnorm<usvec2>(v2);
-    qc::transnorm<usvec3>(v3);
-    qc::transnorm<usvec4>(v4);
-    qc::transnorm<uivec2>(v2);
-    qc::transnorm<uivec3>(v3);
-    qc::transnorm<uivec4>(v4);
-    qc::transnorm<ulvec2>(v2);
-    qc::transnorm<ulvec3>(v3);
-    qc::transnorm<ulvec4>(v4);
+    qc::transnorm<f32>(v2);
+    qc::transnorm<f32>(v3);
+    qc::transnorm<f32>(v4);
+    qc::transnorm<f64>(v2);
+    qc::transnorm<f64>(v3);
+    qc::transnorm<f64>(v4);
+    qc::transnorm<s8>(v2);
+    qc::transnorm<s8>(v3);
+    qc::transnorm<s8>(v4);
+    qc::transnorm<s16>(v2);
+    qc::transnorm<s16>(v3);
+    qc::transnorm<s16>(v4);
+    qc::transnorm<s32>(v2);
+    qc::transnorm<s32>(v3);
+    qc::transnorm<s32>(v4);
+    qc::transnorm<s64>(v2);
+    qc::transnorm<s64>(v3);
+    qc::transnorm<s64>(v4);
+    qc::transnorm<u8>(v2);
+    qc::transnorm<u8>(v3);
+    qc::transnorm<u8>(v4);
+    qc::transnorm<u16>(v2);
+    qc::transnorm<u16>(v3);
+    qc::transnorm<u16>(v4);
+    qc::transnorm<u32>(v2);
+    qc::transnorm<u32>(v3);
+    qc::transnorm<u32>(v4);
+    qc::transnorm<u64>(v2);
+    qc::transnorm<u64>(v3);
+    qc::transnorm<u64>(v4);
 }
 
 template <typename T>
@@ -685,12 +685,12 @@ static void compileFunctionsSIT()
     vec3<T> v3{};
     vec4<T> v4{};
 
-    qc::transnorm<fvec2>(v2);
-    qc::transnorm<fvec3>(v3);
-    qc::transnorm<fvec4>(v4);
-    qc::transnorm<dvec2>(v2);
-    qc::transnorm<dvec3>(v3);
-    qc::transnorm<dvec4>(v4);
+    qc::transnorm<f32>(v2);
+    qc::transnorm<f32>(v3);
+    qc::transnorm<f32>(v4);
+    qc::transnorm<f64>(v2);
+    qc::transnorm<f64>(v3);
+    qc::transnorm<f64>(v4);
 }
 
 template <typename T>
@@ -772,24 +772,24 @@ static void compileFunctionsUIT()
     v3 << 1;
     v4 << 1;
 
-    qc::transnorm<fvec2>(v2);
-    qc::transnorm<fvec3>(v3);
-    qc::transnorm<fvec4>(v4);
-    qc::transnorm<dvec2>(v2);
-    qc::transnorm<dvec3>(v3);
-    qc::transnorm<dvec4>(v4);
-    qc::transnorm<ucvec2>(v2);
-    qc::transnorm<ucvec3>(v3);
-    qc::transnorm<ucvec4>(v4);
-    qc::transnorm<usvec2>(v2);
-    qc::transnorm<usvec3>(v3);
-    qc::transnorm<usvec4>(v4);
-    qc::transnorm<uivec2>(v2);
-    qc::transnorm<uivec3>(v3);
-    qc::transnorm<uivec4>(v4);
-    qc::transnorm<ulvec2>(v2);
-    qc::transnorm<ulvec3>(v3);
-    qc::transnorm<ulvec4>(v4);
+    qc::transnorm<f32>(v2);
+    qc::transnorm<f32>(v3);
+    qc::transnorm<f32>(v4);
+    qc::transnorm<f64>(v2);
+    qc::transnorm<f64>(v3);
+    qc::transnorm<f64>(v4);
+    qc::transnorm<u8>(v2);
+    qc::transnorm<u8>(v3);
+    qc::transnorm<u8>(v4);
+    qc::transnorm<u16>(v2);
+    qc::transnorm<u16>(v3);
+    qc::transnorm<u16>(v4);
+    qc::transnorm<u32>(v2);
+    qc::transnorm<u32>(v3);
+    qc::transnorm<u32>(v4);
+    qc::transnorm<u64>(v2);
+    qc::transnorm<u64>(v3);
+    qc::transnorm<u64>(v4);
 
     qc::mipmaps(v2);
     qc::mipmaps(v3);

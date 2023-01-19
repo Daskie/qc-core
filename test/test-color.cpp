@@ -83,8 +83,8 @@ TEST(color, rgbToHslAndBack)
         {
             for (rgb.x = 0; rgb.x < 256; ++rgb.x)
             {
-                const fvec3 hsl{qc::color::srgbToHsl(qc::transnorm<fvec3>(ucvec3{rgb}))};
-                const ivec3 rgbNew{qc::transnorm<ucvec3>(qc::color::hslToSrgb(hsl))};
+                const fvec3 hsl{qc::color::srgbToHsl(qc::transnorm<float>(ucvec3{rgb}))};
+                const ivec3 rgbNew{qc::transnorm<u8>(qc::color::hslToSrgb(hsl))};
                 EXPECT_EQ(rgb, rgbNew);
             }
         }

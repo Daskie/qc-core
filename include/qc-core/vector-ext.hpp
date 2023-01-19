@@ -190,7 +190,7 @@ namespace qc
     // Converts between normalized types.
     // Works with floats, signed, and unsigned integers.
     //
-    template <Vector ToVec, Numeric From, int n> requires (ToVec::n == n) constexpr ToVec transnorm(const vec<From, n> & v);
+    template <Numeric To, Numeric From, int n> constexpr vec<To, n> transnorm(const vec<From, n> & v);
 
     //
     // ...
@@ -622,11 +622,9 @@ namespace qc
         return mix(v1, v2, t * t * (T(3.0) - T(2.0) * t));
     }
 
-    template <Vector ToVec, Numeric From, int n>
-    requires (ToVec::n == n)
-    inline constexpr ToVec transnorm(const vec<From, n> & v)
+    template <Numeric To, Numeric From, int n>
+    inline constexpr vec<To, n> transnorm(const vec<From, n> & v)
     {
-        using To = typename ToVec::Type;
         if constexpr (n == 2) return {transnorm<To>(v.x), transnorm<To>(v.y)};
         if constexpr (n == 3) return {transnorm<To>(v.x), transnorm<To>(v.y), transnorm<To>(v.z)};
         if constexpr (n == 4) return {transnorm<To>(v.x), transnorm<To>(v.y), transnorm<To>(v.z), transnorm<To>(v.w)};
