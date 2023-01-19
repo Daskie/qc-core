@@ -64,18 +64,42 @@
 
 namespace qc::color
 {
-    template <Numeric T> constexpr vec3<T> black    {transnorm<vec3<T>>(dvec3{0.00, 0.00, 0.00})};
-    template <Numeric T> constexpr vec3<T> darkGray {transnorm<vec3<T>>(dvec3{0.25, 0.25, 0.25})};
-    template <Numeric T> constexpr vec3<T> gray     {transnorm<vec3<T>>(dvec3{0.50, 0.50, 0.50})};
-    template <Numeric T> constexpr vec3<T> lightGray{transnorm<vec3<T>>(dvec3{0.75, 0.75, 0.75})};
-    template <Numeric T> constexpr vec3<T> white    {transnorm<vec3<T>>(dvec3{1.00, 1.00, 1.00})};
+    template <Numeric T> constexpr vec3<T> black    {transnorm<T>(dvec3{0.00, 0.00, 0.00})};
+    template <Numeric T> constexpr vec3<T> darkGray {transnorm<T>(dvec3{0.25, 0.25, 0.25})};
+    template <Numeric T> constexpr vec3<T> gray     {transnorm<T>(dvec3{0.50, 0.50, 0.50})};
+    template <Numeric T> constexpr vec3<T> lightGray{transnorm<T>(dvec3{0.75, 0.75, 0.75})};
+    template <Numeric T> constexpr vec3<T> white    {transnorm<T>(dvec3{1.00, 1.00, 1.00})};
 
-    template <Numeric T> constexpr vec3<T> red      {transnorm<vec3<T>>(dvec3{1.00, 0.00, 0.00})};
-    template <Numeric T> constexpr vec3<T> yellow   {transnorm<vec3<T>>(dvec3{1.00, 1.00, 0.00})};
-    template <Numeric T> constexpr vec3<T> green    {transnorm<vec3<T>>(dvec3{0.00, 1.00, 0.00})};
-    template <Numeric T> constexpr vec3<T> cyan     {transnorm<vec3<T>>(dvec3{0.00, 1.00, 1.00})};
-    template <Numeric T> constexpr vec3<T> blue     {transnorm<vec3<T>>(dvec3{0.00, 0.00, 1.00})};
-    template <Numeric T> constexpr vec3<T> magenta  {transnorm<vec3<T>>(dvec3{1.00, 0.00, 1.00})};
+    template <Numeric T> constexpr vec3<T> red      {transnorm<T>(dvec3{1.00, 0.00, 0.00})};
+    template <Numeric T> constexpr vec3<T> yellow   {transnorm<T>(dvec3{1.00, 1.00, 0.00})};
+    template <Numeric T> constexpr vec3<T> green    {transnorm<T>(dvec3{0.00, 1.00, 0.00})};
+    template <Numeric T> constexpr vec3<T> cyan     {transnorm<T>(dvec3{0.00, 1.00, 1.00})};
+    template <Numeric T> constexpr vec3<T> blue     {transnorm<T>(dvec3{0.00, 0.00, 1.00})};
+    template <Numeric T> constexpr vec3<T> magenta  {transnorm<T>(dvec3{1.00, 0.00, 1.00})};
+
+    ///
+    /// Converts a color from sRGB to lRGB
+    ///
+    /// @param srgb the color to convert
+    /// @return the converted color
+    ///
+    template <Floating T>
+    inline vec3<T> srgbToLrgb(const vec3<T> & srgb) noexcept
+    {
+        return pow(srgb, T(2.2));
+    }
+
+    ///
+    /// Converts a color from lRGB to sRGB
+    ///
+    /// @param lrgb the color to convert, must be positive
+    /// @return the converted color
+    ///
+    template <Floating T>
+    inline vec3<T> lrgbToSrgb(const vec3<T> & lrgb) noexcept
+    {
+        return pow(lrgb, T(1.0 / 2.2));
+    }
 
     ///
     /// Converts from SRGB to HSL
@@ -176,52 +200,30 @@ namespace qc::color
 
     ///
     /// Return a sRGB color correpsonding to a "thermal" value, in range [0, 1]
-    ///
-    /// The spectrum goes roughly black -> blue -> purple -> magenta -> orange -> yellow -> white
-    ///
-    /// Curve fitted to match ironbow palette. See Desmos graph
-    ///
-    /// @param thermal the input "temperature" in range [0, 1]
+    /// The spectrum goes roughly black -> blue -> purple -> magenta -> red -> orange -> yellow -> white
+    /// Using interpolation of ironbow palette
+    /// @param v the input "temperature" in range [0, 1]
     /// @return the gradient sRGB value
     ///
     template <Floating T>
-    inline vec3<T> thermalToSrgb(const T thermal) noexcept
+    inline vec3<T> thermalToSrgb(const T v) noexcept
     {
-        T r1{T(1.09) * (thermal - T(1.0))};
-        r1 *= r1;
-        constexpr T b0{T(0.885)};
-        constexpr T b1{b0 * b0 * b0 * b0};
-        T b2{T(3.7) * thermal - b0};
-        b2 *= b2;
+        static constexpr vec3<T> palette[12u]{
+            transnorm<T>(ucvec3{0u, 0u, 0u}),
+            transnorm<T>(ucvec3{33u, 0u, 133u}),
+            transnorm<T>(ucvec3{110u, 0u, 156u}),
+            transnorm<T>(ucvec3{175u, 1u, 152u}),
+            transnorm<T>(ucvec3{208u, 26u, 121u}),
+            transnorm<T>(ucvec3{231u, 72u, 20u}),
+            transnorm<T>(ucvec3{243u, 113u, 1u}),
+            transnorm<T>(ucvec3{252u, 159u, 0u}),
+            transnorm<T>(ucvec3{254u, 205u, 2u}),
+            transnorm<T>(ucvec3{255u, 239u, 102u}),
+            transnorm<T>(ucvec3{255u, 255u, 255u}),
+            transnorm<T>(ucvec3{255u, 255u, 255u})};
 
-        return {
-            T(1.0) - r1 * r1,
-            T(1.6) * thermal - T(0.5),
-            thermal < T(0.5) ? b1 - b2 * b2 : T(6.5) * thermal - T(5.5)};
-    }
-
-    ///
-    /// Converts a color from sRGB to lRGB
-    ///
-    /// @param srgb the color to convert
-    /// @return the converted color
-    ///
-    template <Floating T>
-    inline vec3<T> srgbToLrgb(const vec3<T> & srgb) noexcept
-    {
-        return pow(srgb, T(2.2));
-    }
-
-    ///
-    /// Converts a color from lRGB to sRGB
-    ///
-    /// @param lrgb the color to convert, must be positive
-    /// @return the converted color
-    ///
-    template <Floating T>
-    inline vec3<T> lrgbToSrgb(const vec3<T> & lrgb) noexcept
-    {
-        return pow(lrgb, T(1.0 / 2.2));
+        const auto [t, i]{qc::fract_i<int>(v * T(10.0))};
+        return mix(palette[i], palette[i + 1u], t);
     }
 
     ///
