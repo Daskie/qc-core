@@ -129,7 +129,7 @@ namespace qc
     {
         const T mag2(magnitude2(q));
 
-        if (isZero(mag2))
+        if (zeroish(mag2))
         {
             return {};
         }
@@ -161,7 +161,7 @@ namespace qc
     {
         const T d2{T(1.0) - q.w * q.w};
 
-        if (isZero(d2))
+        if (zeroish(d2))
         {
             return {};
         }
@@ -277,7 +277,7 @@ namespace qc
         }
 
         // If parallel, no interpolation necessary
-        if (areEqual(cosHalfTheta, T(1.0)))
+        if (equalish(cosHalfTheta, T(1.0)))
         {
             return q1;
         }

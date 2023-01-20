@@ -294,7 +294,7 @@ namespace qc
     inline mat<T, n> inverse(const mat<T, n> & m)
     {
         const T det{determinant(m)};
-        if (isZero(det))
+        if (zeroish(det))
         {
             return nullMat<T, n>();
         }
@@ -477,7 +477,7 @@ namespace qc
     inline mat3<T> rotate(const vec3<T> axis, const T angle)
     {
         // Can't rotate around 0 length vector
-        if (isZero(magnitude2(axis)))
+        if (zeroish(magnitude2(axis)))
         {
             return {};
         }

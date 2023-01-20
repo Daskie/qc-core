@@ -472,17 +472,25 @@ static void compileFunctionsT()
     qc::abs(v3);
     qc::abs(v4);
 
-    qc::isZero(v2);
-    qc::isZero(v3);
-    qc::isZero(v4);
+    qc::zeroish(v2);
+    qc::zeroish(v3);
+    qc::zeroish(v4);
 
-    qc::areEqual(v2, v2, v2, v2, v2);
-    qc::areEqual(v3, v3, v3, v3, v3);
-    qc::areEqual(v4, v4, v4, v4, v4);
+    qc::equalish(v2, v2);
+    qc::equalish(v3, v3);
+    qc::equalish(v4, v4);
 
-    qc::areEqual(v2);
-    qc::areEqual(v3);
-    qc::areEqual(v4);
+    qc::equalish(v2, v2, v);
+    qc::equalish(v3, v3, v);
+    qc::equalish(v4, v4, v);
+
+    qc::equalish(v2, v);
+    qc::equalish(v3, v);
+    qc::equalish(v4, v);
+
+    qc::equalish(v2, v, v);
+    qc::equalish(v3, v, v);
+    qc::equalish(v4, v, v);
 
     qc::sign(v2);
     qc::sign(v3);
@@ -512,13 +520,6 @@ static void compileFunctionsFT()
     vec2<T> v2{};
     vec3<T> v3{};
     vec4<T> v4{};
-
-    qc::areEqual_e(v2, v);
-    qc::areEqual_e(v3, v);
-    qc::areEqual_e(v4, v);
-    qc::areEqual_e(v2, v2, v);
-    qc::areEqual_e(v3, v3, v);
-    qc::areEqual_e(v4, v4, v);
 
     qc::round<s8>(v2);
     qc::round<s8>(v3);

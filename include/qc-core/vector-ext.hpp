@@ -137,18 +137,13 @@ namespace qc
     //
     // ...
     //
-    template <Numeric T, int n> bool isZero(const vec<T, n> & v, T e = std::numeric_limits<T>::epsilon());
+    template <Numeric T, int n> bool zeroish(const vec<T, n> & v, T e = std::numeric_limits<T>::epsilon());
 
     //
     // ...
     //
-    template <Numeric T, int n> bool areEqual(const vec<T, n> & v);
-
-    //
-    // ...
-    //
-    template <Floating T, int n> bool areEqual_e(const vec<T, n> & v1, const vec<T, n> & v2, T e = std::numeric_limits<T>::epsilon());
-    template <Floating T, int n> bool areEqual_e(const vec<T, n> & v, T e = std::numeric_limits<T>::epsilon());
+    template <Numeric T, int n> bool equalish(const vec<T, n> & v1, const vec<T, n> & v2, T e = std::numeric_limits<T>::epsilon());
+    template <Numeric T, int n> bool equalish(const vec<T, n> & v1, const T v2, T e = std::numeric_limits<T>::epsilon());
 
     //
     // ...
@@ -318,7 +313,7 @@ namespace qc
     {
         const T m2{magnitude2(v)};
 
-        if (isZero(m2))
+        if (zeroish(m2))
         {
             return {};
         }
@@ -331,7 +326,7 @@ namespace qc
     {
         const T m2{magnitude2(v)};
 
-        if (isZero(m2))
+        if (zeroish(m2))
         {
             return v = {};
         }
@@ -363,13 +358,13 @@ namespace qc
     inline bool parallel(const vec<T, n> & v1, const vec<T, n> & v2)
     {
         const T d{dot(v1, v2)};
-        return areEqual(d * d, magnitude2(v1) * magnitude2(v2));
+        return equalish(d * d, magnitude2(v1) * magnitude2(v2));
     }
 
     template <Numeric T, int n>
     inline bool orthogonal(const vec<T, n> & v1, const vec<T, n> & v2)
     {
-        return isZero(dot(v1, v2));
+        return zeroish(dot(v1, v2));
     }
 
     template <SignedNumeric T>
@@ -473,31 +468,23 @@ namespace qc
     }
 
     template <Numeric T, int n>
-    inline bool isZero(const vec<T, n> & v, T e)
+    inline bool zeroish(const vec<T, n> & v, T e)
     {
-        if constexpr (n == 2) return isZero(v.x, e) && isZero(v.y, e);
-        if constexpr (n == 3) return isZero(v.x, e) && isZero(v.y, e) && isZero(v.z, e);
-        if constexpr (n == 4) return isZero(v.x, e) && isZero(v.y, e) && isZero(v.z, e) && isZero(v.w, e);
+        if constexpr (n == 2) return zeroish(v.x, e) && zeroish(v.y, e);
+        if constexpr (n == 3) return zeroish(v.x, e) && zeroish(v.y, e) && zeroish(v.z, e);
+        if constexpr (n == 4) return zeroish(v.x, e) && zeroish(v.y, e) && zeroish(v.z, e) && zeroish(v.w, e);
     }
 
     template <Numeric T, int n>
-    inline bool areEqual(const vec<T, n> & v)
+    inline bool equalish(const vec<T, n> & v1, const vec<T, n> & v2, const T e)
     {
-        if constexpr (n == 2) return v.x == v.y;
-        if constexpr (n == 3) return v.x == v.y && v.x == v.z;
-        if constexpr (n == 4) return v.x == v.y && v.x == v.z && v.x == v.w;
+        return zeroish(v1 - v2, e);
     }
 
-    template <Floating T, int n>
-    inline bool areEqual_e(const vec<T, n> & v1, const vec<T, n> & v2, const T e)
+    template <Numeric T, int n>
+    inline bool equalish(const vec<T, n> & v1, const T v2, const T e)
     {
-        return isZero(v1 - v2, e);
-    }
-
-    template <Floating T, int n>
-    inline bool areEqual_e(const vec<T, n> & v, const T e)
-    {
-        return isZero(v - v.x, e);
+        return zeroish(v1 - v2, e);
     }
 
     template <Numeric T, int n>

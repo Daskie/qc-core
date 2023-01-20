@@ -198,13 +198,11 @@ static void compileFunctionsT()
 
     qc::clampify(v, v, v);
 
-    qc::isZero(v);
-    qc::isZero(v, v);
+    qc::zeroish(v);
+    qc::zeroish(v, v);
 
-    qc::areEqual(v, v);
-    qc::areEqual(v, v, v);
-    qc::areEqual(v, v, v, v);
-    qc::areEqual(v, v, v, v, v);
+    qc::equalish(v, v);
+    qc::equalish(v, v, v);
 
     qc::sign(v);
 
@@ -257,8 +255,8 @@ static void compileFunctionsFT()
 
     T v{1.0};
 
-    qc::areEqual_e(v, v);
-    qc::areEqual_e(v, v, v);
+    qc::equalish(v, v);
+    qc::equalish(v, v, v);
 
     qc::round<s8>(v);
     qc::round<s16>(v);
@@ -296,16 +294,6 @@ static void compileFunctionsFT()
     qc::degrees(v);
 }
 
-static void compileFunctionsBT()
-{
-    bool v{true};
-
-    qc::areEqual(v, v);
-    qc::areEqual(v, v, v);
-    qc::areEqual(v, v, v, v);
-    qc::areEqual(v, v, v, v, v);
-}
-
 static void compileFunctions()
 {
     compileFunctionsT<f32>();
@@ -340,8 +328,6 @@ static void compileFunctions()
     compileFunctionsUIT<u16>();
     compileFunctionsUIT<u32>();
     compileFunctionsUIT<u64>();
-
-    compileFunctionsBT();
 }
 
 TEST(core, compilation)

@@ -21,18 +21,12 @@ namespace qc
     //
     // ...
     //
-    template <Numeric T> constexpr bool isZero(T v, T e = std::numeric_limits<T>::epsilon()) noexcept;
+    template <Numeric T> constexpr bool zeroish(T v, T e = std::numeric_limits<T>::epsilon()) noexcept;
 
     //
     // ...
     //
-    template <typename T> bool areEqual(const T & v1, const T & v2);
-    template <typename T, typename... Ts> bool areEqual(const T & v1, const T & v2, const T & v3, const Ts & ... vs);
-
-    //
-    // ...
-    //
-    template <Floating T> constexpr bool areEqual_e(T v1, T v2, T e = std::numeric_limits<T>::epsilon()) noexcept;
+    template <Numeric T> bool equalish(const T v1, const T v2, T e = std::numeric_limits<T>::epsilon());
 
     //
     // ...
@@ -202,41 +196,29 @@ namespace qc
     }
 
     template <Numeric T>
-    inline constexpr bool isZero(const T v, const T e) noexcept
+    inline constexpr bool zeroish(const T v, const T e) noexcept
     {
         if constexpr (Floating<T>)
         {
-            return abs(v) <= e;
+            return v < e && v > -e;
         }
         else
         {
-            return !v;
+            return v == T(0);
         }
     }
 
-    template <typename T>
-    inline bool areEqual(const T & v1, const T & v2)
+    template <Numeric T>
+    inline bool equalish(const T v1, const T v2, const T e)
     {
         if constexpr (Floating<T>)
         {
-            return isZero(v1 - v2);
+            return zeroish(v1 - v2, e);
         }
         else
         {
             return v1 == v2;
         }
-    }
-
-    template <typename T, typename... Ts>
-    inline bool areEqual(const T & v1, const T & v2, const T & v3, const Ts & ... vs)
-    {
-        return areEqual(v1, v2) && areEqual(v2, v3, vs...);
-    }
-
-    template <Floating T>
-    inline constexpr bool areEqual_e(const T v1, const T v2, const T e) noexcept
-    {
-        return isZero(v1 - v2, e);
     }
 
     template <Numeric T>
