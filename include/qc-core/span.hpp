@@ -332,7 +332,14 @@ namespace qc
     template <NumericOrPointer T>
     inline constexpr bool span<T, 1>::contains(const T v) const noexcept
     {
-        return v >= min && v < max;
+        if constexpr (Integral<T>)
+        {
+            return v >= min && v < max;
+        }
+        else
+        {
+            return v >= min && v <= max;
+        }
     }
 
     template <Numeric T>
@@ -369,7 +376,16 @@ namespace qc
     template <Numeric T>
     inline constexpr bool span<T, 2>::contains(const vec2<T> & v) const noexcept
     {
-        return v.x >= min.x && v.y >= min.y && v.x < max.x && v.y < max.y;
+        const bool inMin{v.x >= min.x && v.y >= min.y};
+
+        if constexpr (Integral<T>)
+        {
+            return inMin && v.x < max.x && v.y < max.y;
+        }
+        else
+        {
+            return inMin && v.x <= max.x && v.y <= max.y;
+        }
     }
 
     template <Numeric T>
@@ -430,7 +446,16 @@ namespace qc
     template <Numeric T>
     inline constexpr bool span<T, 3>::contains(const vec3<T> & v) const noexcept
     {
-        return v.x >= min.x && v.y >= min.y && v.z >= min.z && v.x < max.x && v.y < max.y && v.z < max.z;
+        const bool inMin{v.x >= min.x && v.y >= min.y && v.z >= min.z};
+
+        if constexpr (Integral<T>)
+        {
+            return inMin && v.x < max.x && v.y < max.y && v.z < max.z;
+        }
+        else
+        {
+            return inMin && v.x <= max.x && v.y <= max.y && v.z <= max.z;
+        }
     }
 
     template <Numeric T>
@@ -533,7 +558,16 @@ namespace qc
     template <Numeric T>
     inline constexpr bool span<T, 4>::contains(const vec4<T> & v) const noexcept
     {
-        return v.x >= min.x && v.y >= min.y && v.z >= min.z && v.w >= min.w && v.x < max.x && v.y < max.y && v.z < max.z && v.w < max.w;
+        const bool inMin{v.x >= min.x && v.y >= min.y && v.z >= min.z && v.w >= min.w};
+
+        if constexpr (Integral<T>)
+        {
+            return inMin && v.x < max.x && v.y < max.y && v.z < max.z && v.w < max.w;
+        }
+        else
+        {
+            return inMin && v.x <= max.x && v.y <= max.y && v.z <= max.z && v.w <= max.w;
+        }
     }
 
     template <Numeric T>
