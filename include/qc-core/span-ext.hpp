@@ -28,7 +28,7 @@ namespace qc
     {
         if constexpr (Integral<T>)
         {
-            if constexpr (std::is_same_v<T, R>)
+            if constexpr (Same<T, R>)
             {
                 return s;
             }

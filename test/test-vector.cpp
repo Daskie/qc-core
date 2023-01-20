@@ -438,16 +438,6 @@ static void compileFunctionsT()
     qc::maxify(v3, v);
     qc::maxify(v4, v);
 
-    qc::minmax(v2);
-    qc::minmax(v3);
-    qc::minmax(v4);
-    qc::minmax(v2, v2);
-    qc::minmax(v3, v3);
-    qc::minmax(v4, v4);
-    qc::minmax(v2, v2, v2, v2, v2);
-    qc::minmax(v3, v3, v3, v3, v3);
-    qc::minmax(v4, v4, v4, v4, v4);
-
     qc::median(v3);
 
     qc::sort(v2);

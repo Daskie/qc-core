@@ -41,18 +41,20 @@ namespace qc
         using u64 = uint64_t;
         using f64 = double;
 
-        template <typename T> concept Integral = std::is_integral_v<T> && !std::is_same_v<T, bool> && !std::is_same_v<T, char>;
+        template <typename T1, typename T2> concept Same = std::is_same_v<std::remove_cv_t<T1>, std::remove_cv_t<T2>>;
+        template <typename T> concept Integral = std::is_integral_v<T> && !Same<T, bool> && !Same<T, char>;
         template <typename T> concept SignedIntegral = Integral<T> && std::is_signed_v<T>;
         template <typename T> concept UnsignedIntegral = Integral<T> && std::is_unsigned_v<T>;
         template <typename T> concept Floating = std::is_floating_point_v<T>;
         template <typename T> concept Numeric = Integral<T> || Floating<T>;
         template <typename T> concept SignedNumeric = SignedIntegral<T> || Floating<T>;
-        template <typename T> concept NumericOrBoolean = Numeric<T> || std::is_same_v<T, bool>;
+        template <typename T> concept NumericOrBoolean = Numeric<T> || Same<T, bool>;
         template <typename T> concept Enum = std::is_enum_v<T>;
         template <typename T> concept Pointer = std::is_pointer_v<T>;
         template <typename T> concept NumericOrPointer = Numeric<T> || Pointer<T>;
         template <typename T> concept IntegralOrPointer = Integral<T> || Pointer<T>;
         template <typename T1, typename T2> concept SameNumericType = SignedIntegral<T1> == SignedIntegral<T2> && UnsignedIntegral<T1> == UnsignedIntegral<T2> && Floating<T1> == Floating<T2>;
+        template <typename T1, typename T2> concept Sameish = std::is_same_v<std::decay_t<T1>, std::decay_t<T2>> || (Numeric<T1> && Numeric<T2> && SameNumericType<T1, T2>);
     }
 
     template <int size> struct sized;
@@ -63,6 +65,8 @@ namespace qc
     template <typename T> using stype = typename sized<sizeof(T)>::stype;
     template <typename T> using utype = typename sized<sizeof(T)>::utype;
     template <typename T> using ftype = typename sized<sizeof(T)>::ftype;
+
+    template <typename T1, typename T2> using Larger = std::conditional_t<sizeof(T1) >= sizeof(T2), T1, T2>;
 
     inline namespace numbers
     {
@@ -80,6 +84,9 @@ namespace qc
 
     template <Enum E> constexpr std::underlying_type_t<E> underlyingVal(const E e);
 
+    template <typename T> struct Duo { T a, b; };
+    template <typename T> struct Trio { T a, b, c; };
+
     ///
     /// Simple guard lock
     ///
@@ -96,32 +103,26 @@ namespace qc
     //
     // ...
     //
-    template <NumericOrPointer T1, NumericOrPointer T2> requires SameNumericType<T1, T2> constexpr auto min(T1 v1, T2 v2);
-    template <typename T1, typename T2, typename T3, typename... Ts> constexpr decltype(auto) min(T1 && v1, T2 && v2, T3 && v3, Ts && ... vs);
+    template <NumericOrPointer T1, NumericOrPointer T2> requires Sameish<T1, T2> constexpr auto min(T1 v1, T2 v2);
+    template <NumericOrPointer T1, NumericOrPointer T2, NumericOrPointer T3, typename... Ts> constexpr auto min(T1 v1, T2 v2, T3 v3, Ts... vs);
 
     //
     // ...
     //
-    template <NumericOrPointer T1, NumericOrPointer T2> requires SameNumericType<T1, T2> constexpr auto max(T1 v1, T2 v2);
-    template <typename T1, typename T2, typename T3, typename... Ts> constexpr decltype(auto) max(T1 && v1, T2 && v2, T3 && v3, Ts && ... vs);
+    template <NumericOrPointer T1, NumericOrPointer T2> requires Sameish<T1, T2> constexpr auto max(T1 v1, T2 v2);
+    template <NumericOrPointer T1, NumericOrPointer T2, NumericOrPointer T3, typename... Ts> constexpr auto max(T1 v1, T2 v2, T3 v3, Ts... vs);
 
     //
     // ...
     //
-    template <NumericOrPointer T1, NumericOrPointer T2> requires (SameNumericType<T1, T2> && sizeof(T1) >= sizeof(T2)) T1 & minify(T1 & v1, T2 v2);
-    template <typename T, typename T1, typename T2, typename... Ts> T & minify(T & min, T1 && v1, T2 && v2, Ts && ... vs);
+    template <NumericOrPointer T1, NumericOrPointer T2> requires (Sameish<T1, T2> && sizeof(T1) >= sizeof(T2)) T1 & minify(T1 & v1, T2 v2);
+    template <NumericOrPointer T, NumericOrPointer T1, NumericOrPointer T2, typename... Ts> T & minify(T & min, T1 v1, T2 v2, Ts... vs);
 
     //
     // ...
     //
-    template <NumericOrPointer T1, NumericOrPointer T2> requires (SameNumericType<T1, T2> && sizeof(T1) >= sizeof(T2)) T1 & maxify(T1 & v1, T2 v2);
-    template <typename T, typename T1, typename T2, typename... Ts> T & maxify(T & min, T1 && v1, T2 && v2, Ts && ... vs);
-
-    //
-    // ...
-    //
-    template <NumericOrPointer T1, NumericOrPointer T2> requires SameNumericType<T1, T2> constexpr auto minmax(T1 v1, T2 v2);
-    template <typename T1, typename T2, typename T3, typename... Ts> constexpr auto minmax(T1 && v1, T2 && v2, T3 && v3, Ts && ... vs);
+    template <NumericOrPointer T1, NumericOrPointer T2> requires (Sameish<T1, T2> && sizeof(T1) >= sizeof(T2)) T1 & maxify(T1 & v1, T2 v2);
+    template <NumericOrPointer T, NumericOrPointer T1, NumericOrPointer T2, typename... Ts> T & maxify(T & min, T1 v1, T2 v2, Ts... vs);
 
     //
     // ...
@@ -145,7 +146,7 @@ namespace qc
     }
 
     template <NumericOrPointer T1, NumericOrPointer T2>
-    requires SameNumericType<T1, T2>
+    requires Sameish<T1, T2>
     inline constexpr auto min(const T1 v1, const T2 v2)
     {
         using U = std::conditional_t<sizeof(T1) >= sizeof(T2), T1, T2>;
@@ -153,14 +154,14 @@ namespace qc
         return v2 < v1 ? U(v2) : U(v1);
     }
 
-    template <typename T1, typename T2, typename T3, typename... Ts>
-    inline constexpr decltype(auto) min(T1 && v1, T2 && v2, T3 && v3, Ts && ... vs)
+    template <NumericOrPointer T1, NumericOrPointer T2, NumericOrPointer T3, NumericOrPointer... Ts>
+    inline constexpr auto min(const T1 v1, const T2 v2, const T3 v3, const Ts... vs)
     {
-        return min(min(std::forward<T1>(v1), std::forward<T2>(v2)), std::forward<T3>(v3), std::forward<Ts>(vs)...);
+        return min(min(v1, v2), v3, vs...);
     }
 
     template <NumericOrPointer T1, NumericOrPointer T2>
-    requires SameNumericType<T1, T2>
+    requires Sameish<T1, T2>
     inline constexpr auto max(const T1 v1, const T2 v2)
     {
         using U = std::conditional_t<sizeof(T1) >= sizeof(T2), T1, T2>;
@@ -168,61 +169,36 @@ namespace qc
         return v2 > v1 ? U(v2) : U(v1);
     }
 
-    template <typename T1, typename T2, typename T3, typename... Ts>
-    inline constexpr decltype(auto) max(T1 && v1, T2 && v2, T3 && v3, Ts && ... vs)
+    template <NumericOrPointer T1, NumericOrPointer T2, NumericOrPointer T3, NumericOrPointer... Ts>
+    inline constexpr auto max(const T1 v1, const T2 v2, const T3 v3, const Ts... vs)
     {
-        return max(max(std::forward<T1>(v1), std::forward<T2>(v2)), std::forward<T3>(v3), std::forward<Ts>(vs)...);
+        return max(max(v1, v2), v3, vs...);
     }
 
     template <NumericOrPointer T1, NumericOrPointer T2>
-    requires (SameNumericType<T1, T2> && sizeof(T1) >= sizeof(T2))
+    requires (Sameish<T1, T2> && sizeof(T1) >= sizeof(T2))
     inline T1 & minify(T1 & v1, const T2 v2)
     {
         return v2 < v1 ? v1 = v2 : v1;
     }
 
-    template <typename T, typename T1, typename T2, typename... Ts>
-    inline T & minify(T & min, T1 && v1, T2 && v2, Ts && ... vs)
+    template <NumericOrPointer T, NumericOrPointer T1, NumericOrPointer T2, NumericOrPointer... Ts>
+    inline T & minify(T & min, const T1 v1, const T2 v2, const Ts... vs)
     {
-        return minify(minify(min, std::forward<T1>(v1)), std::forward<T2>(v2), std::forward<Ts>(vs)...);
+        return minify(minify(min, v1), v2, vs...);
     }
 
     template <NumericOrPointer T1, NumericOrPointer T2>
-    requires (SameNumericType<T1, T2> && sizeof(T1) >= sizeof(T2))
+    requires (Sameish<T1, T2> && sizeof(T1) >= sizeof(T2))
     inline T1 & maxify(T1 & v1, const T2 v2)
     {
         return v2 > v1 ? v1 = v2 : v1;
     }
 
-    template <typename T, typename T1, typename T2, typename... Ts>
-    inline T & maxify(T & min, T1 && v1, T2 && v2, Ts && ... vs)
+    template <NumericOrPointer T, NumericOrPointer T1, NumericOrPointer T2, NumericOrPointer... Ts>
+    inline T & maxify(T & min, const T1 v1, const T2 v2, const Ts... vs)
     {
-        return maxify(maxify(min, std::forward<T1>(v1)), std::forward<T2>(v2), std::forward<Ts>(vs)...);
-    }
-
-    template <NumericOrPointer T1, NumericOrPointer T2>
-    requires SameNumericType<T1, T2>
-    inline constexpr auto minmax(const T1 v1, const T2 v2)
-    {
-        using U = std::conditional_t<sizeof(T1) >= sizeof(T2), T1, T2>;
-
-        return (v2 < v1) ? std::pair<U, U>{v2, v1} : std::pair<U, U>{v1, v2};
-    }
-
-    template <typename T1, typename T2, typename T3, typename... Ts>
-    inline constexpr auto minmax(T1 && v1, T2 && v2, T3 && v3, Ts && ... vs)
-    {
-        if constexpr (!sizeof...(Ts))
-        {
-            const auto [min1, max1]{minmax(v1, v2)};
-            return std::pair{min(min1, v3), max(max1, v3)};
-        }
-        else
-        {
-            const auto [min1, max1]{minmax(v1, v2)};
-            const auto [min2, max2]{minmax(v3, vs...)};
-            return std::pair{min(min1, min2), max(max1, max2)};
-        }
+        return maxify(maxify(min, v1), v2, vs...);
     }
 
     template <Numeric T>

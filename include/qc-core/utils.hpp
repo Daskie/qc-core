@@ -73,23 +73,6 @@ namespace qc::utils
         writeFile(path, str.data(), str.size());
     }
 
-    //
-    // Copies one set of data into another with some stride.
-    // `stride` must be at least as large as the size of `T` and must be an even multiple of the alignment of `T`
-    //
-    template <typename Iter, typename T>
-    inline T interlace(const Iter first, const Iter last, T * dst, const size_t stride)
-    {
-        static_assert(std::is_same_v<std::decay_t<decltype(*first)>, T>);
-
-        for (Iter iter(first); iter != last; ++iter)
-        {
-            *dst = *iter;
-
-            reinterpret_cast<std::byte *&>(dst) += stride;
-        }
-    }
-
     inline std::string timeString(double seconds)
     {
         static constexpr double secondsPerMinute(60.0);

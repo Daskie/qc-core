@@ -68,14 +68,14 @@ namespace qc
         using unvec3 = vec<unat, 3>;
         using unvec4 = vec<unat, 4>;
 
-        template <typename T> concept Vector = std::is_same_v<T, vec<typename T::Type, T::n>>;
+        template <typename T> concept Vector = Same<T, vec<typename T::Type, T::n>>;
 
         template <typename T> concept NumericVector = Vector<T> && Numeric<typename T::Type>;
         template <typename T> concept FloatingVector = Vector<T> && Floating<typename T::Type>;
         template <typename T> concept IntegralVector = Vector<T> && Integral<typename T::Type>;
         template <typename T> concept SignedIntegralVector = Vector<T> && SignedIntegral<typename T::Type>;
         template <typename T> concept UnsignedIntegralVector = Vector<T> && UnsignedIntegral<typename T::Type>;
-        template <typename T> concept BooleanVector = Vector<T> && std::is_same_v<typename T::Type, bool>;
+        template <typename T> concept BooleanVector = Vector<T> && Same<typename T::Type, bool>;
 
         template <typename T> concept Vector2 = Vector<T> && T::n == 2;
         template <typename T> concept Vector3 = Vector<T> && T::n == 3;
@@ -377,23 +377,20 @@ namespace qc
     template <int n> constexpr bvec<n> operator!(bvec<n> v1);
 
     template <Numeric T, int n> constexpr T min(const vec<T, n> & v);
-    template <Numeric T, int n> constexpr vec<T, n> min(const vec<T, n> & v1, const vec<T, n> & v2);
-    template <Numeric T, int n> constexpr vec<T, n> min(const vec<T, n> & v1, T v2);
-    template <Numeric T, int n> constexpr vec<T, n> min(T v1, const vec<T, n> & v2);
+    template <Numeric T, int n, typename... Extra> constexpr vec<T, n> min(const vec<T, n> & v1, const vec<T, n> & v2, Extra &&... extra);
+    template <Numeric T, int n, typename... Extra> constexpr vec<T, n> min(const vec<T, n> & v1, T v2, Extra &&... extra);
+    template <Numeric T, int n, typename... Extra> constexpr vec<T, n> min(T v1, const vec<T, n> & v2, Extra &&... extra);
 
     template <Numeric T, int n> constexpr T max(const vec<T, n> & v);
-    template <Numeric T, int n> constexpr vec<T, n> max(const vec<T, n> & v1, const vec<T, n> & v2);
-    template <Numeric T, int n> constexpr vec<T, n> max(const vec<T, n> & v1, T v2);
-    template <Numeric T, int n> constexpr vec<T, n> max(T v1, const vec<T, n> & v2);
+    template <Numeric T, int n, typename... Extra> constexpr vec<T, n> max(const vec<T, n> & v1, const vec<T, n> & v2, Extra &&... extra);
+    template <Numeric T, int n, typename... Extra> constexpr vec<T, n> max(const vec<T, n> & v1, T v2, Extra &&... extra);
+    template <Numeric T, int n, typename... Extra> constexpr vec<T, n> max(T v1, const vec<T, n> & v2, Extra &&... extra);
 
-    template <Numeric T, int n> vec<T, n> & minify(vec<T, n> & v1, const vec<T, n> & v2);
-    template <Numeric T, int n> vec<T, n> & minify(vec<T, n> & v1, T v2);
+    template <Numeric T, int n, typename... Extra> vec<T, n> & minify(vec<T, n> & v1, const vec<T, n> & v2, Extra &&... extra);
+    template <Numeric T, int n, typename... Extra> vec<T, n> & minify(vec<T, n> & v1, T v2, Extra &&... extra);
 
-    template <Numeric T, int n> vec<T, n> & maxify(vec<T, n> & v1, const vec<T, n> & v2);
-    template <Numeric T, int n> vec<T, n> & maxify(vec<T, n> & v1, T v2);
-
-    template <Numeric T, int n> constexpr std::pair<T, T> minmax(const vec<T, n> & v);
-    template <Numeric T, int n> constexpr std::pair<vec<T, n>, vec<T, n>> minmax(const vec<T, n> & v1, const vec<T, n> & v2);
+    template <Numeric T, int n, typename... Extra> vec<T, n> & maxify(vec<T, n> & v1, const vec<T, n> & v2, Extra &&... extra);
+    template <Numeric T, int n, typename... Extra> vec<T, n> & maxify(vec<T, n> & v1, T v2, Extra &&... extra);
 
     template <Numeric T> constexpr T median(vec3<T> v);
 
@@ -1480,26 +1477,35 @@ namespace qc
         if constexpr (n == 4) return min(v.x, v.y, v.z, v.w);
     }
 
-    template <Numeric T, int n>
-    inline constexpr vec<T, n> min(const vec<T, n> & v1, const vec<T, n> & v2)
+    template <Numeric T, int n, typename... Extra>
+    inline constexpr vec<T, n> min(const vec<T, n> & v1, const vec<T, n> & v2, Extra &&... extras)
     {
-        if constexpr (n == 2) return {min(v1.x, v2.x), min(v1.y, v2.y)};
-        if constexpr (n == 3) return {min(v1.x, v2.x), min(v1.y, v2.y), min(v1.z, v2.z)};
-        if constexpr (n == 4) return {min(v1.x, v2.x), min(v1.y, v2.y), min(v1.z, v2.z), min(v1.w, v2.w)};
+        if constexpr (sizeof...(Extra))
+        {
+            return min(min(v1, v2), std::forward<Extra>(extras)...);
+        }
+        else
+        {
+            if constexpr (n == 2) return {min(v1.x, v2.x), min(v1.y, v2.y)};
+            if constexpr (n == 3) return {min(v1.x, v2.x), min(v1.y, v2.y), min(v1.z, v2.z)};
+            if constexpr (n == 4) return {min(v1.x, v2.x), min(v1.y, v2.y), min(v1.z, v2.z), min(v1.w, v2.w)};
+        }
     }
 
-    template <Numeric T, int n>
-    inline constexpr vec<T, n> min(const vec<T, n> & v1, const T v2)
+    template <Numeric T, int n, typename... Extra>
+    inline constexpr vec<T, n> min(const vec<T, n> & v1, const T v2, Extra &&... extras)
     {
+        if constexpr (sizeof...(Extra)) return min(min(v1, v2), std::forward<Extra>(extras)...);
+
         if constexpr (n == 2) return {min(v1.x, v2), min(v1.y, v2)};
         if constexpr (n == 3) return {min(v1.x, v2), min(v1.y, v2), min(v1.z, v2)};
         if constexpr (n == 4) return {min(v1.x, v2), min(v1.y, v2), min(v1.z, v2), min(v1.w, v2)};
     }
 
-    template <Numeric T, int n>
-    inline constexpr vec<T, n> min(const T v1, const vec<T, n> & v2)
+    template <Numeric T, int n, typename... Extra>
+    inline constexpr vec<T, n> min(const T v1, const vec<T, n> & v2, Extra &&... extras)
     {
-        return min(v2, v1);
+        return min(v2, v1, std::forward<Extra>(extras)...);
     }
 
     template <Numeric T, int n>
@@ -1510,100 +1516,108 @@ namespace qc
         if constexpr (n == 4) return max(v.x, v.y, v.z, v.w);
     }
 
-    template <Numeric T, int n>
-    inline constexpr vec<T, n> max(const vec<T, n> & v1, const vec<T, n> & v2)
+    template <Numeric T, int n, typename... Extra>
+    inline constexpr vec<T, n> max(const vec<T, n> & v1, const vec<T, n> & v2, Extra &&... extras)
     {
-        if constexpr (n == 2) return {max(v1.x, v2.x), max(v1.y, v2.y)};
-        if constexpr (n == 3) return {max(v1.x, v2.x), max(v1.y, v2.y), max(v1.z, v2.z)};
-        if constexpr (n == 4) return {max(v1.x, v2.x), max(v1.y, v2.y), max(v1.z, v2.z), max(v1.w, v2.w)};
-    }
-
-    template <Numeric T, int n>
-    inline constexpr vec<T, n> max(const vec<T, n> & v1, const T v2)
-    {
-        if constexpr (n == 2) return {max(v1.x, v2), max(v1.y, v2)};
-        if constexpr (n == 3) return {max(v1.x, v2), max(v1.y, v2), max(v1.z, v2)};
-        if constexpr (n == 4) return {max(v1.x, v2), max(v1.y, v2), max(v1.z, v2), max(v1.w, v2)};
-    }
-
-    template <Numeric T, int n>
-    inline constexpr vec<T, n> max(const T v1, const vec<T, n> & v2)
-    {
-        return max(v2, v1);
-    }
-
-    template <Numeric T, int n>
-    inline vec<T, n> & minify(vec<T, n> & v1, const vec<T, n> & v2)
-    {
-        if constexpr (n >= 1) minify(v1.x, v2.x);
-        if constexpr (n >= 2) minify(v1.y, v2.y);
-        if constexpr (n >= 3) minify(v1.z, v2.z);
-        if constexpr (n >= 4) minify(v1.w, v2.w);
-        return v1;
-    }
-
-    template <Numeric T, int n>
-    inline vec<T, n> & minify(vec<T, n> & v1, const T v2)
-    {
-        if constexpr (n >= 1) minify(v1.x, v2);
-        if constexpr (n >= 2) minify(v1.y, v2);
-        if constexpr (n >= 3) minify(v1.z, v2);
-        if constexpr (n >= 4) minify(v1.w, v2);
-        return v1;
-    }
-
-    template <Numeric T, int n>
-    inline vec<T, n> & maxify(vec<T, n> & v1, const vec<T, n> & v2)
-    {
-        if constexpr (n >= 1) maxify(v1.x, v2.x);
-        if constexpr (n >= 2) maxify(v1.y, v2.y);
-        if constexpr (n >= 3) maxify(v1.z, v2.z);
-        if constexpr (n >= 4) maxify(v1.w, v2.w);
-        return v1;
-    }
-
-    template <Numeric T, int n>
-    inline vec<T, n> & maxify(vec<T, n> & v1, const T v2)
-    {
-        if constexpr (n >= 1) maxify(v1.x, v2);
-        if constexpr (n >= 2) maxify(v1.y, v2);
-        if constexpr (n >= 3) maxify(v1.z, v2);
-        if constexpr (n >= 4) maxify(v1.w, v2);
-        return v1;
-    }
-
-    template <Numeric T, int n>
-    inline constexpr std::pair<T, T> minmax(const vec<T, n> & v)
-    {
-        if constexpr (n == 2) return minmax(v.x, v.y);
-        if constexpr (n == 3) return minmax(v.x, v.y, v.z);
-        if constexpr (n == 4) return minmax(v.x, v.y, v.z, v.w);
-    }
-
-    template <Numeric T, int n>
-    inline constexpr std::pair<vec<T, n>, vec<T, n>> minmax(const vec<T, n> & v1, const vec<T, n> & v2)
-    {
-        const auto [xMin, xMax]{minmax(v1.x, v2.x)};
-        const auto [yMin, yMax]{minmax(v1.y, v2.y)};
-
-        if constexpr (n > 2)
+        if constexpr (sizeof...(Extra))
         {
-            const auto [zMin, zMax]{minmax(v1.z, v2.z)};
-
-            if constexpr (n > 3)
-            {
-                const auto [wMin, wMax]{minmax(v1.w, v2.w)};
-
-                return {{xMin, yMin, zMin, wMin}, {xMax, yMax, zMax, wMax}};
-            }
-            else
-            {
-                return {{xMin, yMin, zMin}, {xMax, yMax, zMax}};
-            }
+            return max(max(v1, v2), std::forward<Extra>(extras)...);
         }
         else
         {
-            return {{xMin, yMin}, {xMax, yMax}};
+            if constexpr (n == 2) return {max(v1.x, v2.x), max(v1.y, v2.y)};
+            if constexpr (n == 3) return {max(v1.x, v2.x), max(v1.y, v2.y), max(v1.z, v2.z)};
+            if constexpr (n == 4) return {max(v1.x, v2.x), max(v1.y, v2.y), max(v1.z, v2.z), max(v1.w, v2.w)};
+        }
+    }
+
+    template <Numeric T, int n, typename... Extra>
+    inline constexpr vec<T, n> max(const vec<T, n> & v1, const T v2, Extra &&... extras)
+    {
+        if constexpr (sizeof...(Extra))
+        {
+            return max(max(v1, v2), std::forward<Extra>(extras)...);
+        }
+
+        else
+        {
+            if constexpr (n == 2) return {max(v1.x, v2), max(v1.y, v2)};
+            if constexpr (n == 3) return {max(v1.x, v2), max(v1.y, v2), max(v1.z, v2)};
+            if constexpr (n == 4) return {max(v1.x, v2), max(v1.y, v2), max(v1.z, v2), max(v1.w, v2)};
+        }
+    }
+
+    template <Numeric T, int n, typename... Extra>
+    inline constexpr vec<T, n> max(const T v1, const vec<T, n> & v2, Extra &&... extras)
+    {
+        return max(v2, v1, std::forward<Extra>(extras)...);
+    }
+
+    template <Numeric T, int n, typename... Extra>
+    inline vec<T, n> & minify(vec<T, n> & v1, const vec<T, n> & v2, Extra &&... extras)
+    {
+        if constexpr (sizeof...(Extra))
+        {
+            return minify(minify(v1, v2), std::forward<Extra>(extras)...);
+        }
+        else
+        {
+            if constexpr (n >= 1) minify(v1.x, v2.x);
+            if constexpr (n >= 2) minify(v1.y, v2.y);
+            if constexpr (n >= 3) minify(v1.z, v2.z);
+            if constexpr (n >= 4) minify(v1.w, v2.w);
+            return v1;
+        }
+    }
+
+    template <Numeric T, int n, typename... Extra>
+    inline vec<T, n> & minify(vec<T, n> & v1, const T v2, Extra &&... extras)
+    {
+        if constexpr (sizeof...(Extra))
+        {
+            return minify(minify(v1, v2), std::forward<Extra>(extras)...);
+        }
+        else
+        {
+            if constexpr (n >= 1) minify(v1.x, v2);
+            if constexpr (n >= 2) minify(v1.y, v2);
+            if constexpr (n >= 3) minify(v1.z, v2);
+            if constexpr (n >= 4) minify(v1.w, v2);
+            return v1;
+        }
+    }
+
+    template <Numeric T, int n, typename... Extra>
+    inline vec<T, n> & maxify(vec<T, n> & v1, const vec<T, n> & v2, Extra &&... extras)
+    {
+        if constexpr (sizeof...(Extra))
+        {
+            return maxify(maxify(v1, v2), std::forward<Extra>(extras)...);
+        }
+        else
+        {
+            if constexpr (n >= 1) maxify(v1.x, v2.x);
+            if constexpr (n >= 2) maxify(v1.y, v2.y);
+            if constexpr (n >= 3) maxify(v1.z, v2.z);
+            if constexpr (n >= 4) maxify(v1.w, v2.w);
+            return v1;
+        }
+    }
+
+    template <Numeric T, int n, typename... Extra>
+    inline vec<T, n> & maxify(vec<T, n> & v1, const T v2, Extra &&... extras)
+    {
+        if constexpr (sizeof...(Extra))
+        {
+            return maxify(maxify(v1, v2), std::forward<Extra>(extras)...);
+        }
+        else
+        {
+            if constexpr (n >= 1) maxify(v1.x, v2);
+            if constexpr (n >= 2) maxify(v1.y, v2);
+            if constexpr (n >= 3) maxify(v1.z, v2);
+            if constexpr (n >= 4) maxify(v1.w, v2);
+            return v1;
         }
     }
 

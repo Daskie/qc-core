@@ -32,7 +32,7 @@ namespace qc
         using dmat3 = mat<double, 3>;
         using dmat4 = mat<double, 4>;
 
-        template <typename T> concept Matrix = std::is_same_v<T, mat<typename T::Type, T::n>>;
+        template <typename T> concept Matrix = Same<T, mat<typename T::Type, T::n>>;
 
         template <typename T> concept Matrix2 = Matrix<T> && T::n == 2;
         template <typename T> concept Matrix3 = Matrix<T> && T::n == 3;

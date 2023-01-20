@@ -118,7 +118,7 @@ namespace qc
                 return T(double(next<u64>() >> 11) * 0x1.0p-53);
             }
         }
-        else if constexpr (std::is_same_v<T, bool>)
+        else if constexpr (Same<T, bool>)
         {
             return next() >> (std::numeric_limits<G>::digits - 1);
         }

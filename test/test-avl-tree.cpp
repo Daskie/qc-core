@@ -227,7 +227,8 @@ class qc::_internal::AvlTreeFriend
             return false;
         }
 
-        const auto [minHeight, maxHeight]{qc::minmax(leftHeight, rightHeight)};
+        const size_t minHeight{qc::min(leftHeight, rightHeight)};
+        const size_t maxHeight{qc::max(leftHeight, rightHeight)};
         if (maxHeight - minHeight > 1u)
         {
             return false;

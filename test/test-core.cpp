@@ -81,11 +81,6 @@ static void compileFunctionsSITT()
         qc::maxify(v1, v2, v1, v2);
         qc::maxify(v1, v2, v1, v2, v1);
     }
-
-    qc::minmax(v1, v2);
-    qc::minmax(v1, v2, v1);
-    qc::minmax(v1, v2, v1, v2);
-    qc::minmax(v1, v2, v1, v2, v1);
 }
 
 template <typename T1, typename T2>
@@ -116,11 +111,6 @@ static void compileFunctionsUITT()
         qc::maxify(v1, v2, v1, v2);
         qc::maxify(v1, v2, v1, v2, v1);
     }
-
-    qc::minmax(v1, v2);
-    qc::minmax(v1, v2, v1);
-    qc::minmax(v1, v2, v1, v2);
-    qc::minmax(v1, v2, v1, v2, v1);
 }
 
 template <typename T1, typename T2>
@@ -151,11 +141,6 @@ static void compileFunctionsFTT()
         qc::maxify(v1, v2, v1, v2);
         qc::maxify(v1, v2, v1, v2, v1);
     }
-
-    qc::minmax(v1, v2);
-    qc::minmax(v1, v2, v1);
-    qc::minmax(v1, v2, v1, v2);
-    qc::minmax(v1, v2, v1, v2, v1);
 }
 
 template <typename T>
@@ -186,9 +171,6 @@ static void compileFunctionsT()
 
     qc::maxify(vp, vp);
     qc::maxify(vp, vp, vp);
-
-    qc::minmax(vp, vp);
-    qc::minmax(vp, vp, vp);
 
     qc::median(v, v, v);
 
@@ -618,6 +600,33 @@ TEST(Core, binarySearch)
 
 TEST(Core, concepts)
 {
+    struct Dummy {};
+
+    static_assert(Same<Dummy, Dummy>);
+    static_assert(Same<Dummy, const Dummy>);
+    static_assert(Same<Dummy &, Dummy &>);
+    static_assert(Same<Dummy *, Dummy *>);
+    static_assert(Same<Dummy &&, Dummy &&>);
+    static_assert(!Same<Dummy, Dummy &>);
+    static_assert(!Same<Dummy, Dummy *>);
+    static_assert(!Same<Dummy &, Dummy &&>);
+    static_assert(!Same<Dummy &, const Dummy &>);
+    static_assert(!Same<Dummy *, const Dummy *>);
+    static_assert(!Same<Dummy &&, const Dummy &&>);
+
+    static_assert(Sameish<Dummy, Dummy>);
+    static_assert(Sameish<Dummy, const Dummy>);
+    static_assert(Sameish<Dummy, Dummy &>);
+    static_assert(Sameish<Dummy, Dummy &&>);
+    static_assert(!Sameish<Dummy, Dummy *>);
+    static_assert(!Sameish<Dummy *, const Dummy *>);
+    static_assert(Sameish<s32, s64>);
+    static_assert(Sameish<u32, u64>);
+    static_assert(Sameish<f32, f64>);
+    static_assert(!Sameish<s32, u32>);
+    static_assert(!Sameish<u32, f32>);
+    static_assert(!Sameish<f32, s32>);
+
     static_assert(Integral<s8>);
     static_assert(Integral<s16>);
     static_assert(Integral<s32>);
@@ -722,6 +731,17 @@ TEST(Core, concepts)
     static_assert(!Enum<char>);
     static_assert(!Enum<void *>);
     static_assert(Enum<TestEnum>);
+
+    static_assert(SameNumericType<s32, s32>);
+    static_assert(SameNumericType<u32, u32>);
+    static_assert(SameNumericType<f32, f32>);
+    static_assert(SameNumericType<bool, bool>);
+    static_assert(SameNumericType<char, char>);
+    static_assert(SameNumericType<Dummy, Dummy>);
+    static_assert(!SameNumericType<s32, u32>);
+    static_assert(!SameNumericType<u32, f32>);
+    static_assert(!SameNumericType<f32, s32>);
+    static_assert(!SameNumericType<int, Dummy>);
 }
 
 static void _dummyFunction() {}

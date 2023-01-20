@@ -7,6 +7,8 @@
 
 namespace qc
 {
+    template <Numeric T, int n> vec<T, n> & sort(vec<T, n> & v);
+
     //
     // ...
     //
@@ -208,6 +210,46 @@ namespace qc
 
 namespace qc
 {
+    template <Numeric T, int n>
+    inline vec<T, n> & sort(vec<T, n> & v)
+    {
+        if (v.x < v.y)
+        {
+            std::swap(v.x, v.y);
+        }
+        if constexpr (n >= 3)
+        {
+            if (v.y < v.z)
+            {
+                std::swap(v.y, v.z);
+
+                if (v.x < v.y)
+                {
+                    std::swap(v.x, v.y);
+                }
+            }
+        }
+        if constexpr (n >= 4)
+        {
+            if (v.z < v.w)
+            {
+                std::swap(v.z, v.w);
+
+                if (v.y < v.z)
+                {
+                    std::swap(v.y, v.z);
+
+                    if (v.x < v.y)
+                    {
+                        std::swap(v.x, v.y);
+                    }
+                }
+            }
+        }
+
+        return v;
+    }
+
     template <Numeric T, int n>
     inline constexpr T sum(const vec<T, n> & v)
     {
@@ -440,26 +482,6 @@ namespace qc
     }
 
     template <Numeric T, int n>
-    inline void sort(vec<T, n> & v)
-    {
-        if constexpr (n >= 2)
-        {
-            if (v.x > v.y) std::swap(v.x, v.y);
-        }
-        if constexpr (n >= 3)
-        {
-            if (v.y > v.z) std::swap(v.y, v.z);
-            if (v.x > v.y) std::swap(v.x, v.y);
-        }
-        if constexpr (n >= 4)
-        {
-            if (v.z > v.w) std::swap(v.z, v.w);
-            if (v.y > v.z) std::swap(v.y, v.z);
-            if (v.x > v.y) std::swap(v.x, v.y);
-        }
-    }
-
-    template <Numeric T, int n>
     inline constexpr vec<T, n> abs(const vec<T, n> & v)
     {
         if constexpr (n == 2) return {abs(v.x), abs(v.y)};
@@ -500,7 +522,7 @@ namespace qc
     {
         if constexpr (Integral<T>)
         {
-            if constexpr (std::is_same_v<T, R>)
+            if constexpr (Same<T, R>)
             {
                 return v;
             }
@@ -522,7 +544,7 @@ namespace qc
     {
         if constexpr (Integral<T>)
         {
-            if constexpr (std::is_same_v<T, R>)
+            if constexpr (Same<T, R>)
             {
                 return v;
             }
@@ -544,7 +566,7 @@ namespace qc
     {
         if constexpr (Integral<T>)
         {
-            if constexpr (std::is_same_v<T, R>)
+            if constexpr (Same<T, R>)
             {
                 return v;
             }
