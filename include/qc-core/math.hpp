@@ -225,6 +225,36 @@ namespace qc
     }
 
     template <Floating T>
+    inline Duo<T> quadraticRoots(const T a, const T b, const T c)
+    {
+        const float h{b * b - T(4.0) * a * c};
+
+        if (h > T(0.0) && !zeroish(a))
+        {
+            const float g{std::sqrt(abs(h))};
+            const float f{T(0.5) / a};
+            return {(g - b) * f, (-g - b) * f};
+        }
+        else if (!zeroish(b))
+        {
+            return {-c / b, nan<T>};
+        }
+        else
+        {
+            return {nan<T>, nan<T>};
+        }
+    }
+
+    template <Floating T, int n>
+    inline float distance2ToLine(const vec<T, n> & p1, const vec<T, n> & p2, const vec<T, n> & p)
+    {
+        const vec<T, n> a{p2 - p1};
+        const vec<T, n> b{p - p1};
+        const T t{clamp(dot(a, b) / magnitude2(a), T(0.0), T(1.0))};
+        return distance2(b, t * a);
+    }
+
+    template <Floating T>
     struct Dampener
     {
         const T angularFreq, dampingRatio, dt;
