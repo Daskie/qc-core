@@ -84,8 +84,8 @@ namespace qc
 
     template <Enum E> constexpr std::underlying_type_t<E> underlyingVal(const E e);
 
-    template <typename T> struct Duo { T a, b; };
-    template <typename T> struct Trio { T a, b, c; };
+    template <typename T1, typename T2 = T1> struct Duo { T1 a; T2 b; };
+    template <typename T1, typename T2 = T1, typename T3 = T2> struct Trio { T1 a; T2 b; T2 c; };
 
     ///
     /// Simple guard lock

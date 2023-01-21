@@ -50,6 +50,32 @@ static void compileNumbersT()
 }
 #pragma warning(pop)
 
+static void compileClasses()
+{
+    qc::Duo<int> d1;
+    d1.a;
+    d1.b;
+
+    qc::Duo<int, std::string> d2;
+    d2.a;
+    d2.b;
+
+    qc::Trio<int> t1;
+    t1.a;
+    t1.b;
+    t1.c;
+
+    qc::Trio<int, std::string> t2;
+    t2.a;
+    t2.b;
+    t2.b;
+
+    qc::Trio<int, std::string, TestEnum> t3;
+    t3.a;
+    t3.b;
+    t3.b;
+}
+
 template <typename T1, typename T2>
 static void compileFunctionsTT() {}
 
@@ -317,6 +343,7 @@ TEST(core, compilation)
     compileTyping();
     compileNumbersT<float>();
     compileNumbersT<double>();
+    compileClasses();
     compileFunctions();
 }
 
