@@ -84,8 +84,32 @@ namespace qc
 
     template <Enum E> constexpr std::underlying_type_t<E> underlyingVal(const E e);
 
-    template <typename T1, typename T2 = T1> struct Duo { T1 a; T2 b; };
-    template <typename T1, typename T2 = T1, typename T3 = T2> struct Trio { T1 a; T2 b; T2 c; };
+    template <typename T1, typename T2 = T1>
+    struct Duo
+    {
+        T1 a;
+        T2 b;
+
+        T1 * begin() noexcept requires (Same<T1, T2>) { return &a; };
+        T1 * begin() const noexcept requires (Same<T1, T2>) { return &a; };
+
+        T1 * end() noexcept requires (Same<T1, T2>) { return &b + 1; };
+        T1 * end() const noexcept requires (Same<T1, T2>) { return &b + 1; };
+    };
+
+    template <typename T1, typename T2 = T1, typename T3 = T2>
+    struct Trio
+    {
+        T1 a;
+        T2 b;
+        T2 c;
+
+        T1 * begin() noexcept requires (Same<T1, T2> && Same<T1, T3>) { return &a; };
+        T1 * begin() const noexcept requires (Same<T1, T2> && Same<T1, T3>) { return &a; };
+
+        T1 * end() noexcept requires (Same<T1, T2> && Same<T1, T3>) { return &c + 1; };
+        T1 * end() const noexcept requires (Same<T1, T2> && Same<T1, T3>) { return &c + 1; };
+    };
 
     ///
     /// Simple guard lock

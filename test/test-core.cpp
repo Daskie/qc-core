@@ -55,6 +55,8 @@ static void compileClasses()
     qc::Duo<int> d1;
     d1.a;
     d1.b;
+    #pragma warning(suppress: 4189)
+    for (int & v : d1);
 
     qc::Duo<int, std::string> d2;
     d2.a;
@@ -64,6 +66,8 @@ static void compileClasses()
     t1.a;
     t1.b;
     t1.c;
+    #pragma warning(suppress: 4189)
+    for (int & v : t1);
 
     qc::Trio<int, std::string> t2;
     t2.a;
