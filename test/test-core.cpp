@@ -8,7 +8,7 @@ enum TestEnum { a, b, c };
 
 #pragma warning(push)
 #pragma warning(disable: 4101)
-static void compileTyping()
+TEST(Core, types)
 {
     s8 s08_;
     u8 u08_;
@@ -50,13 +50,20 @@ static void compileNumbersT()
 }
 #pragma warning(pop)
 
-static void compileClasses()
+TEST(Core, numbers)
+{
+    compileNumbersT<float>();
+    compileNumbersT<double>();
+}
+
+TEST(Core, classes)
 {
     qc::Duo<int> d1;
     d1.a;
     d1.b;
     #pragma warning(suppress: 4189)
     for (int & v : d1);
+    ASSERT_EQ(std::distance(d1.begin(), d1.end()), 2);
 
     qc::Duo<int, std::string> d2;
     d2.a;
@@ -68,6 +75,7 @@ static void compileClasses()
     t1.c;
     #pragma warning(suppress: 4189)
     for (int & v : t1);
+    ASSERT_EQ(std::distance(t1.begin(), t1.end()), 3);
 
     qc::Trio<int, std::string> t2;
     t2.a;
@@ -306,7 +314,7 @@ static void compileFunctionsFT()
     qc::degrees(v);
 }
 
-static void compileFunctions()
+TEST(Core, functions)
 {
     compileFunctionsT<f32>();
     compileFunctionsT<f64>();
@@ -340,15 +348,6 @@ static void compileFunctions()
     compileFunctionsUIT<u16>();
     compileFunctionsUIT<u32>();
     compileFunctionsUIT<u64>();
-}
-
-TEST(core, compilation)
-{
-    compileTyping();
-    compileNumbersT<float>();
-    compileNumbersT<double>();
-    compileClasses();
-    compileFunctions();
 }
 
 template <Integral T> static constexpr T halfVal{T(std::numeric_limits<T>::max() / 2 + T(1))};
