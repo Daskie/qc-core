@@ -91,10 +91,10 @@ namespace qc
         T2 b;
 
         T1 * begin() noexcept requires (Same<T1, T2>) { return &a; };
-        T1 * begin() const noexcept requires (Same<T1, T2>) { return &a; };
+        const T1 * begin() const noexcept requires (Same<T1, T2>) { return &a; };
 
         T1 * end() noexcept requires (Same<T1, T2>) { return &b + 1; };
-        T1 * end() const noexcept requires (Same<T1, T2>) { return &b + 1; };
+        const T1 * end() const noexcept requires (Same<T1, T2>) { return &b + 1; };
     };
 
     template <typename T1, typename T2 = T1, typename T3 = T2>
