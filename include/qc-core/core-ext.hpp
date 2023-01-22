@@ -288,19 +288,6 @@ namespace qc
         }
     }
 
-    template <Numeric T>
-    inline constexpr T round(const T v) noexcept
-    {
-        if constexpr (Floating<T>)
-        {
-            return std::nearbyint(v);
-        }
-        else
-        {
-            return v;
-        }
-    }
-
     template <Numeric R, Numeric T>
     inline constexpr R round(const T v) noexcept
     {
@@ -354,7 +341,8 @@ namespace qc
             // Floating -> Integral
             else
             {
-                return R(s64(v + double(s64(1) << 50)) - (s64(1) << 50));
+                const intmax_t i{intmax_t(v)};
+                return R(i - (v < T(i)));
             }
         }
     }
@@ -378,7 +366,8 @@ namespace qc
             // Floating -> Integral
             else
             {
-                return -floor<R>(-v);
+                const intmax_t i{intmax_t(v)};
+                return R(i + (v > T(i)));
             }
         }
     }

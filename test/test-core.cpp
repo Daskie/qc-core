@@ -226,7 +226,7 @@ static void compileFunctionsT()
 
     qc::sign(v);
 
-    qc::round(v);
+    qc::round<T>(v);
 
     qc::floor<T>(v);
 
@@ -787,8 +787,8 @@ template <Floating F, SignedIntegral I>
 static void testRound(const I v)
 {
     ASSERT_EQ(qc::round<I>(F(v)), v);
-    ASSERT_EQ(qc::round<I>(F(v) + F(0.25)), v);
-    ASSERT_EQ(qc::round<I>(F(v) - F(0.25f)), v);
+    ASSERT_EQ(qc::round<I>(F(v) + F(0.1)), v);
+    ASSERT_EQ(qc::round<I>(F(v) - F(0.1)), v);
     ASSERT_EQ(qc::round<I>(F(v) + F(0.5)), (v + (v > 0)) / 2 * 2);
     ASSERT_EQ(qc::round<I>(F(v) - F(0.5)), (v - (v < 0)) / 2 * 2);
 }
@@ -858,13 +858,13 @@ template <Floating F, SignedIntegral I>
 static void testFloor(const I v)
 {
     ASSERT_EQ(qc::floor<I>(F(v) - 1.0), v - 1);
-    ASSERT_EQ(qc::floor<I>(F(v) - 0.75), v - 1);
+    ASSERT_EQ(qc::floor<I>(F(v) - 0.9), v - 1);
     ASSERT_EQ(qc::floor<I>(F(v) - 0.5), v - 1);
-    ASSERT_EQ(qc::floor<I>(F(v) - 0.25), v - 1);
+    ASSERT_EQ(qc::floor<I>(F(v) - 0.1), v - 1);
     ASSERT_EQ(qc::floor<I>(F(v)), v);
-    ASSERT_EQ(qc::floor<I>(F(v) + 0.25), v);
+    ASSERT_EQ(qc::floor<I>(F(v) + 0.1), v);
     ASSERT_EQ(qc::floor<I>(F(v) + 0.5), v);
-    ASSERT_EQ(qc::floor<I>(F(v) + 0.75), v);
+    ASSERT_EQ(qc::floor<I>(F(v) + 0.9), v);
     ASSERT_EQ(qc::floor<I>(F(v) + 1.0), v + 1);
 }
 
@@ -925,13 +925,13 @@ template <Floating F, SignedIntegral I>
 static void testCeil(const I v)
 {
     ASSERT_EQ(qc::ceil<I>(F(v) - 1.0), v - 1);
-    ASSERT_EQ(qc::ceil<I>(F(v) - 0.75), v);
+    ASSERT_EQ(qc::ceil<I>(F(v) - 0.9), v);
     ASSERT_EQ(qc::ceil<I>(F(v) - 0.5), v);
-    ASSERT_EQ(qc::ceil<I>(F(v) - 0.25), v);
+    ASSERT_EQ(qc::ceil<I>(F(v) - 0.1), v);
     ASSERT_EQ(qc::ceil<I>(F(v)), v);
-    ASSERT_EQ(qc::ceil<I>(F(v) + 0.25), v + 1);
+    ASSERT_EQ(qc::ceil<I>(F(v) + 0.1), v + 1);
     ASSERT_EQ(qc::ceil<I>(F(v) + 0.5), v + 1);
-    ASSERT_EQ(qc::ceil<I>(F(v) + 0.75), v + 1);
+    ASSERT_EQ(qc::ceil<I>(F(v) + 0.9), v + 1);
     ASSERT_EQ(qc::ceil<I>(F(v) + 1.0), v + 1);
 }
 
