@@ -86,7 +86,7 @@ namespace qc
     //
     // ...
     //
-    template <SignedIntegral R, Floating T> constexpr std::pair<T, R> fract_i(T v) noexcept;
+    template <SignedIntegral R, Floating T> constexpr Duo<T, R> fract_i(T v) noexcept;
 
     //
     // ...
@@ -99,7 +99,7 @@ namespace qc
     // ...
     // `d` must be > 0
     //
-    template <Numeric T> constexpr std::pair<T, T> mod_q(T v, T d) noexcept;
+    template <Numeric T> constexpr Duo<T, T> mod_q(T v, T d) noexcept;
 
     //
     // ...
@@ -254,7 +254,7 @@ namespace qc
     }
 
     template <SignedIntegral R, Floating T>
-    inline constexpr std::pair<T, R> fract_i(const T v) noexcept
+    inline constexpr Duo<T, R> fract_i(const T v) noexcept
     {
         const intmax_t i{intmax_t(v)};
         return {v - T(i), R(i)};
@@ -274,7 +274,7 @@ namespace qc
     }
 
     template <Numeric T>
-    inline constexpr std::pair<T, T> mod_q(const T v, const T d) noexcept
+    inline constexpr Duo<T, T> mod_q(const T v, const T d) noexcept
     {
         if constexpr (Floating<T>)
         {
