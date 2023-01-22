@@ -31,7 +31,7 @@ namespace qc
     //
     // ...
     //
-    template <Numeric T> constexpr int sign(T v) noexcept;
+    template <Numeric T> constexpr T sign(T v) noexcept;
 
     //
     // Returns `v` stripped of any fractional part.
@@ -222,15 +222,20 @@ namespace qc
     }
 
     template <Numeric T>
-    inline constexpr int sign(const T v) noexcept
+    inline constexpr T sign(const T v) noexcept
     {
         if constexpr (UnsignedIntegral<T>)
         {
-            return int(v > 0u);
+            return T(v > 0u);
+        }
+        else if constexpr (SignedIntegral<T>)
+        {
+            return T(T(0 < v) - T(v < 0));
         }
         else
         {
-            return int(0 < v) - int(v < 0);
+            // Correctly propagates NaN
+            return v > T(0.0) ? T(1.0) : (v < T(0.0) ? T(-1.0) : v);
         }
     }
 

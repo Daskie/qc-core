@@ -150,7 +150,7 @@ namespace qc
     //
     // ...
     //
-    template <Numeric T, int n> constexpr ivec<n> sign(const vec<T, n> & v);
+    template <Numeric T, int n> constexpr vec<T, n> sign(const vec<T, n> & v);
 
     //
     // ...
@@ -510,7 +510,7 @@ namespace qc
     }
 
     template <Numeric T, int n>
-    inline constexpr ivec<n> sign(const vec<T, n> & v)
+    inline constexpr vec<T, n> sign(const vec<T, n> & v)
     {
         if constexpr (n == 2) return {sign(v.x), sign(v.y)};
         if constexpr (n == 3) return {sign(v.x), sign(v.y), sign(v.z)};

@@ -224,16 +224,24 @@ namespace qc
         return spherePoint(vec2<T>(phi<T> * T(i), p));
     }
 
+    // This correctly avoids numeric stability issues when a is very small but not zero
+    // See https://math.stackexchange.com/questions/4000135/quadratic-formula-fails-numerically-at-small-a-coefficients/4000145#4000145
     template <Floating T>
     inline Duo<T> quadraticRoots(const T a, const T b, const T c)
     {
-        const T h{b * b - T(4.0) * a * c};
-
-        if (h > T(0.0) && !zeroish(a))
+        if (!zeroish(a))
         {
-            const T g{std::sqrt(abs(h))};
-            const T f{T(0.5) / a};
-            return {(g - b) * f, (-g - b) * f};
+            const T h{b * b - T(4.0) * a * c};
+
+            if (h >= T(0.0))
+            {
+                const T u{-b - sign(b) * std::sqrt(h)};
+                return {u / (T(2.0) * a), T(2.0) * c / u};
+            }
+            else
+            {
+                return {nan<T>, nan<T>};
+            }
         }
         else if (!zeroish(b))
         {
