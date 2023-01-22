@@ -48,12 +48,12 @@ namespace qc
     template <Numeric R, Numeric T> constexpr R round(T v) noexcept;
 
     //
-    // Fast floor for "normal" values of absolute magnitude smaller than roughly 500 trillion
+    // Fast floor for "normal" values whose truncated form can fit in an intmax_t
     //
     template <Numeric R, Numeric T> constexpr R floor(T v) noexcept;
 
     //
-    // Fast ceil for "normal" values of absolute magnitude smaller than roughly 500 trillion
+    // Fast ceil for "normal" values whose truncated form can fit in an intmax_t
     //
     template <Numeric R, Numeric T> constexpr R ceil(T v) noexcept;
 
