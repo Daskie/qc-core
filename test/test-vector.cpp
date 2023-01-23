@@ -33,6 +33,8 @@ static void compileClassesT()
 
     // Conversion
     static_cast<bool>(v2);
+    auto f2{[](const vec2<T>) {}};
+    f2(v);
 
     // access
     v2[0];
@@ -62,6 +64,8 @@ static void compileClassesT()
 
     // Conversion
     static_cast<bool>(v3);
+    auto f3{[](const vec3<T>) {}};
+    f3(v);
 
     // access
     v3[0];
@@ -100,6 +104,8 @@ static void compileClassesT()
 
     // Conversion
     static_cast<bool>(v4);
+    auto f4{[](const vec4<T>) {}};
+    f4(v);
 
     // access
     v4[0];

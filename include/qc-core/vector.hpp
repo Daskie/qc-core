@@ -92,7 +92,7 @@ namespace qc
         T y;
 
         constexpr vec() noexcept = default;
-        template <NumericOrBoolean U> constexpr explicit vec(U v) noexcept;
+        constexpr vec(T v) noexcept;
         template <NumericOrBoolean U> constexpr explicit vec(vec2<U> v) noexcept;
         template <NumericOrBoolean U> constexpr explicit vec(vec3<U> v) noexcept;
         template <NumericOrBoolean U> constexpr explicit vec(vec4<U> v) noexcept;
@@ -128,7 +128,7 @@ namespace qc
         T z;
 
         constexpr vec() noexcept = default;
-        template <NumericOrBoolean U> constexpr explicit vec(U v) noexcept;
+        constexpr vec(T v) noexcept;
         template <NumericOrBoolean U> constexpr explicit vec(vec2<U> v) noexcept;
         template <NumericOrBoolean U> constexpr explicit vec(vec3<U> v) noexcept;
         template <NumericOrBoolean U> constexpr explicit vec(vec4<U> v) noexcept;
@@ -174,7 +174,7 @@ namespace qc
         T w;
 
         constexpr vec() noexcept = default;
-        template <NumericOrBoolean U> constexpr explicit vec(U v) noexcept;
+        constexpr vec(T v) noexcept;
         template <NumericOrBoolean U> constexpr explicit vec(vec2<U> v) noexcept;
         template <NumericOrBoolean U> constexpr explicit vec(vec3<U> v) noexcept;
         template <NumericOrBoolean U> constexpr explicit vec(vec4<U> v) noexcept;
@@ -406,10 +406,9 @@ namespace qc
 namespace qc
 {
     template <NumericOrBoolean T>
-    template <NumericOrBoolean U>
-    inline constexpr vec<T, 2>::vec(const U v) noexcept :
-        x{T(v)},
-        y{x}
+    inline constexpr vec<T, 2>::vec(const T v) noexcept :
+        x{v},
+        y{v}
     {}
 
     template <NumericOrBoolean T>
@@ -485,11 +484,10 @@ namespace qc
     }
 
     template <NumericOrBoolean T>
-    template <NumericOrBoolean U>
-    inline constexpr vec<T, 3>::vec(const U v) noexcept :
-        x{T(v)},
-        y{x},
-        z{x}
+    inline constexpr vec<T, 3>::vec(const T v) noexcept :
+        x{v},
+        y{v},
+        z{v}
     {}
 
     template <NumericOrBoolean T>
@@ -620,12 +618,11 @@ namespace qc
     }
 
     template <NumericOrBoolean T>
-    template <NumericOrBoolean U>
-    inline constexpr vec<T, 4>::vec(const U v) noexcept :
-        x{T(v)},
-        y{x},
-        z{x},
-        w{x}
+    inline constexpr vec<T, 4>::vec(const T v) noexcept :
+        x{v},
+        y{v},
+        z{v},
+        w{v}
     {}
 
     template <NumericOrBoolean T>

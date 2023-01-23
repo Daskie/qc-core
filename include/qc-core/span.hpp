@@ -110,6 +110,7 @@ namespace qc
 
         constexpr span() noexcept = default;
         template <Numeric U, int m> constexpr explicit span(const span<U, m> & s) noexcept;
+        template <Numeric U> constexpr explicit span(const span1<U> & s) noexcept;
         constexpr span(T v1, T v2) noexcept;
         constexpr span(vec2<T> v1, vec2<T> v2) noexcept;
         constexpr span(const span1<T> & s1, const span1<T> & s2) noexcept;
@@ -138,6 +139,7 @@ namespace qc
 
         constexpr span() noexcept = default;
         template <Numeric U, int m> constexpr explicit span(const span<U, m> & s) noexcept;
+        template <Numeric U> constexpr explicit span(const span1<U> & s) noexcept;
         constexpr span(T v1, T v2) noexcept;
         constexpr span(vec3<T> v1, vec3<T> v2) noexcept;
         constexpr span(const span1<T> & s1, const span1<T> & s2, const span1<T> & s3) noexcept;
@@ -172,6 +174,7 @@ namespace qc
 
         constexpr span() noexcept = default;
         template <Numeric U, int m> constexpr explicit span(const span<U, m> & s) noexcept;
+        template <Numeric U> constexpr explicit span(const span1<U> & s) noexcept;
         constexpr span(T v1, T v2) noexcept;
         constexpr span(vec4<T> v1, vec4<T> v2) noexcept;
         constexpr span(const span1<T> & s1, const span1<T> & s2, const span1<T> & s3, const span1<T> & s4) noexcept;
@@ -306,21 +309,21 @@ namespace qc
     template <NumericOrPointer T>
     template <NumericOrPointer U>
     inline constexpr span<T, 1>::span(const span1<U> & s) noexcept :
-        min(T(s.min)),
-        max(T(s.max))
+        min{T(s.min)},
+        max{T(s.max)}
     {}
 
     template <NumericOrPointer T>
     template <Numeric U, int m>
     inline constexpr span<T, 1>::span(const span<U, m> & s) noexcept :
-        min(T(s.min.x)),
-        max(T(s.max.x))
+        min{T(s.min.x)},
+        max{T(s.max.x)}
     {}
 
     template <NumericOrPointer T>
     inline constexpr span<T, 1>::span(const T v1, const T v2) noexcept :
-        min(v1),
-        max(v2)
+        min{v1},
+        max{v2}
     {}
 
     template <NumericOrPointer T>
@@ -345,26 +348,33 @@ namespace qc
     template <Numeric T>
     template <Numeric U, int m>
     inline constexpr span<T, 2>::span(const span<U, m> & s) noexcept :
-        min(s.min),
-        max(s.max)
+        min{s.min},
+        max{s.max}
+    {}
+
+    template <Numeric T>
+    template <Numeric U>
+    inline constexpr span<T, 2>::span(const span1<U> & s) noexcept :
+        min{T(s.min)},
+        max{T(s.max)}
     {}
 
     template <Numeric T>
     inline constexpr span<T, 2>::span(const T v1, const T v2) noexcept :
-        min(v1),
-        max(v2)
+        min{v1},
+        max{v2}
     {}
 
     template <Numeric T>
     inline constexpr span<T, 2>::span(const vec2<T> v1, const vec2<T> v2) noexcept :
-        min(v1),
-        max(v2)
+        min{v1},
+        max{v2}
     {}
 
     template <Numeric T>
     inline constexpr span<T, 2>::span(const span1<T> & s1, const span1<T> & s2) noexcept :
-        min(s1.min, s2.min),
-        max(s1.max, s2.max)
+        min{s1.min, s2.min},
+        max{s1.max, s2.max}
     {}
 
     template <Numeric T>
@@ -403,20 +413,27 @@ namespace qc
     template <Numeric T>
     template <Numeric U, int m>
     inline constexpr span<T, 3>::span(const span<U, m> & s) noexcept :
-        min(s.min),
-        max(s.max)
+        min{s.min},
+        max{s.max}
+    {}
+
+    template <Numeric T>
+    template <Numeric U>
+    inline constexpr span<T, 3>::span(const span1<U> & s) noexcept :
+        min{T(s.min)},
+        max{T(s.max)}
     {}
 
     template <Numeric T>
     inline constexpr span<T, 3>::span(const T v1, const T v2) noexcept :
-        min(v1),
-        max(v2)
+        min{v1},
+        max{v2}
     {}
 
     template <Numeric T>
     inline constexpr span<T, 3>::span(const vec3<T> v1, const vec3<T> v2) noexcept :
-        min(v1),
-        max(v2)
+        min{v1},
+        max{v2}
     {}
 
     template <Numeric T>
@@ -491,62 +508,69 @@ namespace qc
     template <Numeric T>
     template <Numeric U, int m>
     inline constexpr span<T, 4>::span(const span<U, m> & s) noexcept :
-        min(s.min),
-        max(s.max)
+        min{s.min},
+        max{s.max}
+    {}
+
+    template <Numeric T>
+    template <Numeric U>
+    inline constexpr span<T, 4>::span(const span1<U> & s) noexcept :
+        min{T(s.min)},
+        max{T(s.max)}
     {}
 
     template <Numeric T>
     inline constexpr span<T, 4>::span(const T v1, const T v2) noexcept :
-        min(v1),
-        max(v2)
+        min{v1},
+        max{v2}
     {}
 
     template <Numeric T>
     inline constexpr span<T, 4>::span(const vec4<T> v1, const vec4<T> v2) noexcept :
-        min(v1),
-        max(v2)
+        min{v1},
+        max{v2}
     {}
 
     template <Numeric T>
     inline constexpr span<T, 4>::span(const span1<T> & s1, const span1<T> & s2, const span1<T> & s3, const span1<T> & s4) noexcept :
-        min(s1.min, s2.min, s3.min, s4.min),
-        max(s1.max, s2.max, s3.max, s4.max)
+        min{s1.min, s2.min, s3.min, s4.min},
+        max{s1.max, s2.max, s3.max, s4.max}
     {}
 
     template <Numeric T>
     inline constexpr span<T, 4>::span(const span2<T> & s1, const span1<T> & s2, const span1<T> & s3) noexcept :
-        min(s1.min, s2.min, s3.min),
-        max(s1.max, s2.max, s3.max)
+        min{s1.min, s2.min, s3.min},
+        max{s1.max, s2.max, s3.max}
     {}
 
     template <Numeric T>
     inline constexpr span<T, 4>::span(const span1<T> & s1, const span2<T> & s2, const span1<T> & s3) noexcept :
-        min(s1.min, s2.min, s3.min),
-        max(s1.max, s2.max, s3.max)
+        min{s1.min, s2.min, s3.min},
+        max{s1.max, s2.max, s3.max}
     {}
 
     template <Numeric T>
     inline constexpr span<T, 4>::span(const span1<T> & s1, const span1<T> & s2, const span2<T> & s3) noexcept :
-        min(s1.min, s2.min, s3.min),
-        max(s1.max, s2.max, s3.max)
+        min{s1.min, s2.min, s3.min},
+        max{s1.max, s2.max, s3.max}
     {}
 
     template <Numeric T>
     inline constexpr span<T, 4>::span(const span2<T> & s1, const span2<T> & s2) noexcept :
-        min(s1.min, s2.min),
-        max(s1.max, s2.max)
+        min{s1.min, s2.min},
+        max{s1.max, s2.max}
     {}
 
     template <Numeric T>
     inline constexpr span<T, 4>::span(const span3<T> & s1, const span1<T> & s2) noexcept :
-        min(s1.min, s2.min),
-        max(s1.max, s2.max)
+        min{s1.min, s2.min},
+        max{s1.max, s2.max}
     {}
 
     template <Numeric T>
     inline constexpr span<T, 4>::span(const span1<T> & s1, const span3<T> & s2) noexcept :
-        min(s1.min, s2.min),
-        max(s1.max, s2.max)
+        min{s1.min, s2.min},
+        max{s1.max, s2.max}
     {}
 
     template <Numeric T>
