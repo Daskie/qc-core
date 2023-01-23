@@ -229,21 +229,29 @@ namespace qc
     template <Floating T>
     inline Duo<T> quadraticRoots(const T a, const T b, const T c)
     {
-        if (!zeroish(a))
+        if (a != T(0.0))
         {
             const T h{b * b - T(4.0) * a * c};
 
             if (h >= T(0.0))
             {
-                const T u{-b - sign(b) * std::sqrt(h)};
-                return {u / (T(2.0) * a), T(2.0) * c / u};
+                const T s{std::sqrt(h)};
+                const T u{0.5f * (-b - (b > T(0.0) ? s : -s))};
+                if (u == T(0.0))
+                {
+                    return {T(0.0), T(0.0)};
+                }
+                else
+                {
+                    return {u / a, c / u};
+                }
             }
             else
             {
                 return {nan<T>, nan<T>};
             }
         }
-        else if (!zeroish(b))
+        else if (b != T(0.0))
         {
             return {-c / b, nan<T>};
         }
