@@ -47,7 +47,8 @@ namespace qc
         template <typename T> concept UnsignedIntegral = Integral<T> && std::is_unsigned_v<T>;
         template <typename T> concept Floating = std::is_floating_point_v<T>;
         template <typename T> concept Numeric = Integral<T> || Floating<T>;
-        template <typename T> concept SignedNumeric = SignedIntegral<T> || Floating<T>;
+        template <typename T> concept Signed = SignedIntegral<T> || Floating<T>;
+        template <typename T> concept Unsigned = UnsignedIntegral<T>;
         template <typename T> concept NumericOrBoolean = Numeric<T> || Same<T, bool>;
         template <typename T> concept Enum = std::is_enum_v<T>;
         template <typename T> concept Pointer = std::is_pointer_v<T>;

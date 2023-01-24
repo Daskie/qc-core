@@ -21,6 +21,11 @@ namespace qc
     //
     // ...
     //
+    template <Numeric T> T & absify(T & v) noexcept;
+
+    //
+    // ...
+    //
     template <Numeric T> constexpr bool zeroish(T v, T e = std::numeric_limits<T>::epsilon()) noexcept;
 
     //
@@ -185,14 +190,27 @@ namespace qc
     template <Numeric T>
     inline constexpr T abs(const T v) noexcept
     {
-        if constexpr (UnsignedIntegral<T>)
+        if constexpr (Signed<T>)
         {
-            return v;
+            // std::abs is fast (generates minimal assembly)
+            return T(std::abs(v));
         }
         else
         {
-            return v < 0 ? -v : v;
+            return v;
         }
+    }
+
+    template <Numeric T>
+    inline T & absify(T & v) noexcept
+    {
+        if constexpr (Signed<T>)
+        {
+            // std::abs is fast (generates minimal assembly)
+            v = T(std::abs(v));
+        }
+
+        return v;
     }
 
     template <Numeric T>

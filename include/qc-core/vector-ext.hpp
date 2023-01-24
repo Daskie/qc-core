@@ -68,7 +68,7 @@ namespace qc
     //
     // ...
     //
-    template <SignedNumeric T, int n> T distance2(const vec<T, n> & v1, const vec<T, n> & v2);
+    template <Signed T, int n> T distance2(const vec<T, n> & v1, const vec<T, n> & v2);
 
     //
     // ...
@@ -104,8 +104,8 @@ namespace qc
     //
     // ...
     //
-    template <SignedNumeric T> vec2<T> ortho(const vec2<T> & v);
-    template <SignedNumeric T> vec3<T> ortho(const vec3<T> & v);
+    template <Signed T> vec2<T> ortho(const vec2<T> & v);
+    template <Signed T> vec3<T> ortho(const vec3<T> & v);
 
     //
     // ...
@@ -135,6 +135,11 @@ namespace qc
     // ...
     //
     template <Numeric T, int n> constexpr vec<T, n> abs(const vec<T, n> & v);
+
+    //
+    // ...
+    //
+    template <Numeric T, int n> vec<T, n> & absify(vec<T, n> & v);
 
     //
     // ...
@@ -202,8 +207,8 @@ namespace qc
     ///
     /// ...
     ///
-    template <SignedNumeric T> vec2<T> rotateCW(const vec2<T> & v) noexcept;
-    template <SignedNumeric T> vec2<T> rotateCCW(const vec2<T> & v) noexcept;
+    template <Signed T> vec2<T> rotateCW(const vec2<T> & v) noexcept;
+    template <Signed T> vec2<T> rotateCCW(const vec2<T> & v) noexcept;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -344,7 +349,7 @@ namespace qc
         return std::sqrt(distance2(v1, v2));
     }
 
-    template <SignedNumeric T, int n>
+    template <Signed T, int n>
     inline T distance2(const vec<T, n> & v1, const vec<T, n> & v2)
     {
         return magnitude2(v2 - v1);
@@ -409,13 +414,13 @@ namespace qc
         return zeroish(dot(v1, v2));
     }
 
-    template <SignedNumeric T>
+    template <Signed T>
     inline vec2<T> ortho(const vec2<T> & v)
     {
         return {T(-v.y), v.x};
     }
 
-    template <SignedNumeric T>
+    template <Signed T>
     inline vec3<T> ortho(const vec3<T> & v)
     {
         const vec3<T> absV(abs(v));
@@ -487,6 +492,16 @@ namespace qc
         if constexpr (n == 2) return {abs(v.x), abs(v.y)};
         if constexpr (n == 3) return {abs(v.x), abs(v.y), abs(v.z)};
         if constexpr (n == 4) return {abs(v.x), abs(v.y), abs(v.z), abs(v.w)};
+    }
+
+    template <Numeric T, int n>
+    inline vec<T, n> & absify(vec<T, n> & v)
+    {
+        if constexpr (n >= 1) absify(v.x);
+        if constexpr (n >= 2) absify(v.y);
+        if constexpr (n >= 3) absify(v.z);
+        if constexpr (n >= 4) absify(v.w);
+        return v;
     }
 
     template <Numeric T, int n>
@@ -678,13 +693,13 @@ namespace qc
         return v;
     }
 
-    template <SignedNumeric T>
+    template <Signed T>
     inline vec2<T> rotateCW(const vec2<T> & v) noexcept
     {
         return vec2<T>{v.y, T(-v.x)};
     }
 
-    template <SignedNumeric T>
+    template <Signed T>
     inline vec2<T> rotateCCW(const vec2<T> & v) noexcept
     {
         return vec2<T>{T(-v.y), v.x};

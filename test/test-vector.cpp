@@ -468,6 +468,10 @@ static void compileFunctionsT()
     qc::abs(v3);
     qc::abs(v4);
 
+    qc::absify(v2);
+    qc::absify(v3);
+    qc::absify(v4);
+
     qc::zeroish(v2);
     qc::zeroish(v3);
     qc::zeroish(v4);

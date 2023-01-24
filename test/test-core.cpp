@@ -213,6 +213,7 @@ static void compileFunctionsT()
     qc::median(v, v, v);
 
     qc::abs(v);
+    qc::absify(v);
 
     qc::clamp(v, v, v);
 
@@ -732,20 +733,35 @@ TEST(Core, concepts)
     static_assert(!Numeric<void *>);
     static_assert(!Numeric<TestEnum>);
 
-    static_assert(SignedNumeric<s8>);
-    static_assert(SignedNumeric<s16>);
-    static_assert(SignedNumeric<s32>);
-    static_assert(SignedNumeric<s64>);
-    static_assert(!SignedNumeric<u8>);
-    static_assert(!SignedNumeric<u16>);
-    static_assert(!SignedNumeric<u32>);
-    static_assert(!SignedNumeric<u64>);
-    static_assert(SignedNumeric<f32>);
-    static_assert(SignedNumeric<f64>);
-    static_assert(!SignedNumeric<bool>);
-    static_assert(!SignedNumeric<char>);
-    static_assert(!SignedNumeric<void *>);
-    static_assert(!SignedNumeric<TestEnum>);
+    static_assert(Signed<s8>);
+    static_assert(Signed<s16>);
+    static_assert(Signed<s32>);
+    static_assert(Signed<s64>);
+    static_assert(!Signed<u8>);
+    static_assert(!Signed<u16>);
+    static_assert(!Signed<u32>);
+    static_assert(!Signed<u64>);
+    static_assert(Signed<f32>);
+    static_assert(Signed<f64>);
+    static_assert(!Signed<bool>);
+    static_assert(!Signed<char>);
+    static_assert(!Signed<void *>);
+    static_assert(!Signed<TestEnum>);
+
+    static_assert(!Unsigned<s8>);
+    static_assert(!Unsigned<s16>);
+    static_assert(!Unsigned<s32>);
+    static_assert(!Unsigned<s64>);
+    static_assert(Unsigned<u8>);
+    static_assert(Unsigned<u16>);
+    static_assert(Unsigned<u32>);
+    static_assert(Unsigned<u64>);
+    static_assert(!Unsigned<f32>);
+    static_assert(!Unsigned<f64>);
+    static_assert(!Unsigned<bool>);
+    static_assert(!Unsigned<char>);
+    static_assert(!Unsigned<void *>);
+    static_assert(!Unsigned<TestEnum>);
 
     static_assert(!Enum<s8>);
     static_assert(!Enum<s16>);
