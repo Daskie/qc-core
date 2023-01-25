@@ -65,8 +65,8 @@ namespace qc
 
         void pop() noexcept;
 
-        //T * erase(T * pos) noexcept;
-        //T * erase(T * first, T * last) noexcept;
+        T * erase(T * pos) noexcept;
+        T * erase(T * first, T * last) noexcept;
 
         T & operator[](const unat i) noexcept { return _data[i]; };
         const T & operator[](const unat i) const noexcept { return _data[i]; };
@@ -105,8 +105,7 @@ namespace qc
         unat _size{};
         T * _data{};
 
-        void _newMemory(unat capacity);
-        //void _newMemory(unat capacity, unat gapI, unat gapN);
+        void _newMemory(unat capacity, unat gapI, unat gapN);
 
         //T * _shiftElements(T * & pos, unat n);
     };
@@ -209,7 +208,7 @@ namespace qc
     {
         if (capacity > _capacity)
         {
-            _newMemory(capacity);
+            _newMemory(capacity, 0u, 0u);
         }
     }
 
@@ -275,7 +274,7 @@ namespace qc
         {
             if (_size)
             {
-                _newMemory(_size);
+                _newMemory(_size, 0u, 0u);
             }
             else
             {
@@ -304,7 +303,7 @@ namespace qc
     {
         if (_size == _capacity) [[unlikely]]
         {
-            _newMemory(max(_capacity * 2u, _defaultMinCapacity));
+            _newMemory(max(_capacity * 2u, _defaultMinCapacity), 0u, 0u);
         }
 
         T * const pos{_data + _size};
@@ -321,7 +320,7 @@ namespace qc
     {
         if (_size == _capacity) [[unlikely]]
         {
-            _newMemory(max(_capacity * 2u, _defaultMinCapacity));
+            _newMemory(max(_capacity * 2u, _defaultMinCapacity), 0u, 0u);
         }
 
         return _data[_size++];
@@ -332,7 +331,7 @@ namespace qc
     {
         if (_size + n > _capacity) [[unlikely]]
         {
-            _newMemory(max(_capacity + max(_capacity, n), _defaultMinCapacity));
+            _newMemory(max(_capacity + max(_capacity, n), _defaultMinCapacity), 0u, 0u);
         }
 
         T * pos{_data + _size};
@@ -418,7 +417,6 @@ namespace qc
         }
     }
 
-    /*
     template <typename T>
     inline T * List<T>::erase(T * const pos) noexcept
     {
@@ -428,9 +426,14 @@ namespace qc
     template <typename T>
     inline T * List<T>::erase(T * const first, T * const last) noexcept
     {
+        if (first >= last)
+        {
+            return first;
+        }
+
         if constexpr (std::is_trivially_copyable_v<T> && std::is_trivially_destructible_v<T>)
         {
-            std::memmove(first, last, _data + _size - last);
+            std::memmove(first, last, unat(_data + _size - last) * sizeof(T));
         }
         else
         {
@@ -449,7 +452,6 @@ namespace qc
         _size -= last - first;
         return first;
     }
-     */
 
     template <typename T>
     inline bool List<T>::operator==(const List & other) const noexcept
@@ -501,34 +503,6 @@ namespace qc
     }
 
     template <typename T>
-    inline void List<T>::_newMemory(const unat newCapacity)
-    {
-        T * const newData{static_cast<T *>(::operator new (newCapacity * sizeof(T), std::align_val_t{alignof(T)}))};
-
-        // Move over the head
-        if constexpr (std::is_trivially_copyable_v<T> && std::is_trivially_destructible_v<T>)
-        {
-            std::memcpy(newData, _data, _size * sizeof(T));
-        }
-        else
-        {
-            T * dst{newData};
-            for (T & src : *this)
-            {
-                new (dst) T{std::move(src)};
-                src.~T();
-                ++dst;
-            }
-        }
-
-        ::operator delete(_data, std::align_val_t{alignof(T)});
-
-        _capacity = newCapacity;
-        _data = newData;
-    }
-
-    /*
-    template <typename T>
     inline void List<T>::_newMemory(const unat newCapacity, const unat gapI, const unat gapN)
     {
         T * const newData{static_cast<T *>(::operator new (newCapacity * sizeof(T), std::align_val_t{alignof(T)}))};
@@ -563,7 +537,7 @@ namespace qc
         }
         else
         {
-            for (T * src{_data + headN}, srcEnd{_data + _size}; src < srcEnd; ++src, ++dst)
+            for (T * src{_data + headN}, * srcEnd{_data + _size}; src < srcEnd; ++src, ++dst)
             {
                 new (dst) T{std::move(*src)};
                 src->~T();
@@ -576,7 +550,6 @@ namespace qc
         _size += gapN;
         _data = newData;
     }
-     */
 
     /*
     template <typename T>

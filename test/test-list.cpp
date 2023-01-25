@@ -20,8 +20,8 @@ struct NonTrivial
     NonTrivial(const int v) : v{v} { ++contructions; }
     NonTrivial(const NonTrivial & other) : v{other.v} { ++contructions; ++copies; }
     NonTrivial(NonTrivial && other) : v{other.v} { ++contructions; ++moves; }
-    NonTrivial & operator=(const NonTrivial & other) { v = other.v; ++assignments; ++copies; }
-    NonTrivial & operator=(NonTrivial && other) { v = other.v; ++assignments; ++moves; }
+    NonTrivial & operator=(const NonTrivial & other) { v = other.v; ++assignments; ++copies; return *this; }
+    NonTrivial & operator=(NonTrivial && other) { v = other.v; ++assignments; ++moves; return *this; }
     ~NonTrivial() { ++destructions; }
     bool operator==(const NonTrivial & other) const { return v == other.v; }
 };
@@ -351,74 +351,61 @@ TEST(List, resize)
         ASSERT_EQ(list.size(), 0u);
     }
     {
-        IL<NonTrivial> expected5{0, 5, 5, 5, 5};
-        IL<NonTrivial> expected3{0, 5, 5};
-
         qc::List<NonTrivial> list{};
         ASSERT_EQ(list.capacity(), 0u);
         ASSERT_EQ(list.size(), 0u);
 
         NonTrivial::reset();
-
         list.resize(3u);
-        ASSERT_EQ(list.capacity(), 3u);
-        ASSERT_EQ(list.size(), 3u);
-
         ASSERT_EQ(NonTrivial::contructions, 3);
         ASSERT_EQ(NonTrivial::assignments, 0);
         ASSERT_EQ(NonTrivial::copies, 0);
         ASSERT_EQ(NonTrivial::moves, 0);
         ASSERT_EQ(NonTrivial::destructions, 0);
+        ASSERT_EQ(list.capacity(), 3u);
+        ASSERT_EQ(list.size(), 3u);
 
         NonTrivial::reset();
-
         list.resize(1u);
-        ASSERT_EQ(list.capacity(), 3u);
-        ASSERT_EQ(list.size(), 1u);
-
         ASSERT_EQ(NonTrivial::contructions, 0);
         ASSERT_EQ(NonTrivial::assignments, 0);
         ASSERT_EQ(NonTrivial::copies, 0);
         ASSERT_EQ(NonTrivial::moves, 0);
         ASSERT_EQ(NonTrivial::destructions, 2);
+        ASSERT_EQ(list.capacity(), 3u);
+        ASSERT_EQ(list.size(), 1u);
 
         NonTrivial::reset();
-
         list.resize(5u, 5);
-        ASSERT_EQ(list.capacity(), 5u);
-        ASSERT_EQ(list.size(), 5u);
-        ASSERT_EQ(list, expected5);
-
         ASSERT_EQ(NonTrivial::contructions, 6);
         ASSERT_EQ(NonTrivial::assignments, 0);
         ASSERT_EQ(NonTrivial::copies, 4);
         ASSERT_EQ(NonTrivial::moves, 1);
         ASSERT_EQ(NonTrivial::destructions, 2);
+        ASSERT_EQ(list.capacity(), 5u);
+        ASSERT_EQ(list.size(), 5u);
+        ASSERT_EQ(list, (IL<NonTrivial>{0, 5, 5, 5, 5}));
 
         NonTrivial::reset();
-
         list.resize(3u, 3);
-        ASSERT_EQ(list.capacity(), 5u);
-        ASSERT_EQ(list.size(), 3u);
-        ASSERT_EQ(list, expected3);
-
         ASSERT_EQ(NonTrivial::contructions, 1);
         ASSERT_EQ(NonTrivial::assignments, 0);
         ASSERT_EQ(NonTrivial::copies, 0);
         ASSERT_EQ(NonTrivial::moves, 0);
         ASSERT_EQ(NonTrivial::destructions, 3);
+        ASSERT_EQ(list.capacity(), 5u);
+        ASSERT_EQ(list.size(), 3u);
+        ASSERT_EQ(list, (IL<NonTrivial>{0, 5, 5}));
 
         NonTrivial::reset();
-
         list.resize(0u);
-        ASSERT_EQ(list.capacity(), 5u);
-        ASSERT_EQ(list.size(), 0u);
-
         ASSERT_EQ(NonTrivial::contructions, 0);
         ASSERT_EQ(NonTrivial::assignments, 0);
         ASSERT_EQ(NonTrivial::copies, 0);
         ASSERT_EQ(NonTrivial::moves, 0);
         ASSERT_EQ(NonTrivial::destructions, 3);
+        ASSERT_EQ(list.capacity(), 5u);
+        ASSERT_EQ(list.size(), 0u);
     }
 }
 
@@ -562,16 +549,14 @@ TEST(List, push)
         ASSERT_EQ(list.size(), 9u);
 
         NonTrivial::reset();
-
         list.push();
-        ASSERT_EQ(list.capacity(), 18u);
-        ASSERT_EQ(list.size(), 10u);
-
         ASSERT_EQ(NonTrivial::contructions, 10);
         ASSERT_EQ(NonTrivial::assignments, 0);
         ASSERT_EQ(NonTrivial::copies, 0);
         ASSERT_EQ(NonTrivial::moves, 9);
         ASSERT_EQ(NonTrivial::destructions, 9);
+        ASSERT_EQ(list.capacity(), 18u);
+        ASSERT_EQ(list.size(), 10u);
     }
 }
 
@@ -641,14 +626,232 @@ TEST(List, pop)
         qc::List<NonTrivial> list{1, 2, 3};
 
         NonTrivial::reset();
-
         list.pop();
-
         ASSERT_EQ(NonTrivial::contructions, 0);
         ASSERT_EQ(NonTrivial::assignments, 0);
         ASSERT_EQ(NonTrivial::copies, 0);
         ASSERT_EQ(NonTrivial::moves, 0);
         ASSERT_EQ(NonTrivial::destructions, 1);
+    }
+}
+
+TEST(List, erase)
+{
+    {
+        qc::List<int> list{1, 2, 3, 4, 5};
+        ASSERT_EQ(list.capacity(), 5u);
+        ASSERT_EQ(list.size(), 5u);
+        ASSERT_EQ(list, (IL<int>{1, 2, 3, 4, 5}));
+
+        int * it{list.erase(list.end() - 1)};
+        ASSERT_EQ(it, list.end());
+        ASSERT_EQ(list.capacity(), 5u);
+        ASSERT_EQ(list.size(), 4u);
+        ASSERT_EQ(list, (IL<int>{1, 2, 3, 4}));
+
+        ASSERT_EQ(*list.erase(list.begin() + 2), 4);
+        ASSERT_EQ(list.capacity(), 5u);
+        ASSERT_EQ(list.size(), 3u);
+        ASSERT_EQ(list, (IL<int>{1, 2, 4}));
+
+        ASSERT_EQ(*list.erase(list.begin()), 2);
+        ASSERT_EQ(list.capacity(), 5u);
+        ASSERT_EQ(list.size(), 2u);
+        ASSERT_EQ(list, (IL<int>{2, 4}));
+
+        ASSERT_EQ(*list.erase(list.begin()), 4);
+        ASSERT_EQ(list.capacity(), 5u);
+        ASSERT_EQ(list.size(), 1u);
+        ASSERT_EQ(list, (IL<int>{4}));
+
+        it = list.erase(list.begin());
+        ASSERT_EQ(it, list.end());
+        ASSERT_EQ(list.capacity(), 5u);
+        ASSERT_EQ(list.size(), 0u);
+    }
+    {
+        qc::List<NonTrivial> list{1, 2, 3, 4, 5};
+        ASSERT_EQ(list.capacity(), 5u);
+        ASSERT_EQ(list.size(), 5u);
+        ASSERT_EQ(list, (IL<NonTrivial>{1, 2, 3, 4, 5}));
+
+        NonTrivial::reset();
+        NonTrivial * it{list.erase(list.end() - 1)};
+        ASSERT_EQ(NonTrivial::contructions, 0);
+        ASSERT_EQ(NonTrivial::assignments, 0);
+        ASSERT_EQ(NonTrivial::copies, 0);
+        ASSERT_EQ(NonTrivial::moves, 0);
+        ASSERT_EQ(NonTrivial::destructions, 1);
+        ASSERT_EQ(it, list.end());
+        ASSERT_EQ(list.capacity(), 5u);
+        ASSERT_EQ(list.size(), 4u);
+        ASSERT_EQ(list, (IL<NonTrivial>{1, 2, 3, 4}));
+
+        NonTrivial::reset();
+        ASSERT_EQ(list.erase(list.begin() + 2)->v, 4);
+        ASSERT_EQ(NonTrivial::contructions, 0);
+        ASSERT_EQ(NonTrivial::assignments, 1);
+        ASSERT_EQ(NonTrivial::copies, 0);
+        ASSERT_EQ(NonTrivial::moves, 1);
+        ASSERT_EQ(NonTrivial::destructions, 1);
+        ASSERT_EQ(list.capacity(), 5u);
+        ASSERT_EQ(list.size(), 3u);
+        ASSERT_EQ(list, (IL<NonTrivial>{1, 2, 4}));
+
+        NonTrivial::reset();
+        ASSERT_EQ(list.erase(list.begin())->v, 2);
+        ASSERT_EQ(NonTrivial::contructions, 0);
+        ASSERT_EQ(NonTrivial::assignments, 2);
+        ASSERT_EQ(NonTrivial::copies, 0);
+        ASSERT_EQ(NonTrivial::moves, 2);
+        ASSERT_EQ(NonTrivial::destructions, 1);
+        ASSERT_EQ(list.capacity(), 5u);
+        ASSERT_EQ(list.size(), 2u);
+        ASSERT_EQ(list, (IL<NonTrivial>{2, 4}));
+
+        NonTrivial::reset();
+        ASSERT_EQ(list.erase(list.begin())->v, 4);
+        ASSERT_EQ(NonTrivial::contructions, 0);
+        ASSERT_EQ(NonTrivial::assignments, 1);
+        ASSERT_EQ(NonTrivial::copies, 0);
+        ASSERT_EQ(NonTrivial::moves, 1);
+        ASSERT_EQ(NonTrivial::destructions, 1);
+        ASSERT_EQ(list.capacity(), 5u);
+        ASSERT_EQ(list.size(), 1u);
+        ASSERT_EQ(list, (IL<NonTrivial>{4}));
+
+        NonTrivial::reset();
+        it = list.erase(list.begin());
+        ASSERT_EQ(NonTrivial::contructions, 0);
+        ASSERT_EQ(NonTrivial::assignments, 0);
+        ASSERT_EQ(NonTrivial::copies, 0);
+        ASSERT_EQ(NonTrivial::moves, 0);
+        ASSERT_EQ(NonTrivial::destructions, 1);
+        ASSERT_EQ(it, list.end());
+        ASSERT_EQ(list.capacity(), 5u);
+        ASSERT_EQ(list.size(), 0u);
+    }
+    {
+        qc::List<int> list{1, 2, 3, 4, 5};
+        ASSERT_EQ(list.capacity(), 5u);
+        ASSERT_EQ(list.size(), 5u);
+        ASSERT_EQ(list, (IL<int>{1, 2, 3, 4, 5}));
+
+        ASSERT_EQ(list.erase(list.begin(), list.begin()), list.begin());
+        ASSERT_EQ(list.capacity(), 5u);
+        ASSERT_EQ(list.size(), 5u);
+        ASSERT_EQ(list, (IL<int>{1, 2, 3, 4, 5}));
+
+        ASSERT_EQ(list.erase(list.end(), list.end()), list.end());
+        ASSERT_EQ(list.capacity(), 5u);
+        ASSERT_EQ(list.size(), 5u);
+        ASSERT_EQ(list, (IL<int>{1, 2, 3, 4, 5}));
+
+        int * it{list.erase(list.begin(), list.end())};
+        ASSERT_EQ(it, list.end());
+        ASSERT_EQ(list.capacity(), 5u);
+        ASSERT_EQ(list.size(), 0u);
+    }
+    {
+        qc::List<NonTrivial> list{1, 2, 3, 4, 5};
+        ASSERT_EQ(list.capacity(), 5u);
+        ASSERT_EQ(list.size(), 5u);
+        ASSERT_EQ(list, (IL<NonTrivial>{1, 2, 3, 4, 5}));
+
+        NonTrivial::reset();
+        ASSERT_EQ(list.erase(list.begin(), list.begin()), list.begin());
+        ASSERT_EQ(NonTrivial::contructions, 0);
+        ASSERT_EQ(NonTrivial::assignments, 0);
+        ASSERT_EQ(NonTrivial::copies, 0);
+        ASSERT_EQ(NonTrivial::moves, 0);
+        ASSERT_EQ(NonTrivial::destructions, 0);
+        ASSERT_EQ(list.capacity(), 5u);
+        ASSERT_EQ(list.size(), 5u);
+        ASSERT_EQ(list, (IL<NonTrivial>{1, 2, 3, 4, 5}));
+
+        NonTrivial::reset();
+        ASSERT_EQ(list.erase(list.end(), list.end()), list.end());
+        ASSERT_EQ(NonTrivial::contructions, 0);
+        ASSERT_EQ(NonTrivial::assignments, 0);
+        ASSERT_EQ(NonTrivial::copies, 0);
+        ASSERT_EQ(NonTrivial::moves, 0);
+        ASSERT_EQ(NonTrivial::destructions, 0);
+        ASSERT_EQ(list.capacity(), 5u);
+        ASSERT_EQ(list.size(), 5u);
+        ASSERT_EQ(list, (IL<NonTrivial>{1, 2, 3, 4, 5}));
+
+        NonTrivial::reset();
+        NonTrivial * it{list.erase(list.begin(), list.end())};
+        ASSERT_EQ(NonTrivial::contructions, 0);
+        ASSERT_EQ(NonTrivial::assignments, 0);
+        ASSERT_EQ(NonTrivial::copies, 0);
+        ASSERT_EQ(NonTrivial::moves, 0);
+        ASSERT_EQ(NonTrivial::destructions, 5);
+        ASSERT_EQ(it, list.end());
+        ASSERT_EQ(list.capacity(), 5u);
+        ASSERT_EQ(list.size(), 0u);
+    }
+    {
+        qc::List<int> list{1, 2, 3, 4, 5, 6, 7, 8};
+        ASSERT_EQ(list.capacity(), 8u);
+        ASSERT_EQ(list.size(), 8u);
+        ASSERT_EQ(list, (IL<int>{1, 2, 3, 4, 5, 6, 7, 8}));
+
+        ASSERT_EQ(*list.erase(list.begin(), list.begin() + 1), 2);
+        ASSERT_EQ(list.capacity(), 8u);
+        ASSERT_EQ(list.size(), 7u);
+        ASSERT_EQ(list, (IL<int>{2, 3, 4, 5, 6, 7, 8}));
+
+        int * it{list.erase(list.end() - 1, list.end())};
+        ASSERT_EQ(it, list.end());
+        ASSERT_EQ(list.capacity(), 8u);
+        ASSERT_EQ(list.size(), 6u);
+        ASSERT_EQ(list, (IL<int>{2, 3, 4, 5, 6, 7}));
+
+        ASSERT_EQ(*list.erase(list.begin() + 1, list.end() - 1), 7);
+        ASSERT_EQ(list.capacity(), 8u);
+        ASSERT_EQ(list.size(), 2u);
+        ASSERT_EQ(list, (IL<int>{2, 7}));
+    }
+    {
+        qc::List<NonTrivial> list{1, 2, 3, 4, 5, 6, 7, 8};
+        ASSERT_EQ(list.capacity(), 8u);
+        ASSERT_EQ(list.size(), 8u);
+        ASSERT_EQ(list, (IL<NonTrivial>{1, 2, 3, 4, 5, 6, 7, 8}));
+
+        NonTrivial::reset();
+        ASSERT_EQ(list.erase(list.begin(), list.begin() + 1)->v, 2);
+        ASSERT_EQ(NonTrivial::contructions, 0);
+        ASSERT_EQ(NonTrivial::assignments, 7);
+        ASSERT_EQ(NonTrivial::copies, 0);
+        ASSERT_EQ(NonTrivial::moves, 7);
+        ASSERT_EQ(NonTrivial::destructions, 1);
+        ASSERT_EQ(list.capacity(), 8u);
+        ASSERT_EQ(list.size(), 7u);
+        ASSERT_EQ(list, (IL<NonTrivial>{2, 3, 4, 5, 6, 7, 8}));
+
+        NonTrivial::reset();
+        NonTrivial * it{list.erase(list.end() - 1, list.end())};
+        ASSERT_EQ(NonTrivial::contructions, 0);
+        ASSERT_EQ(NonTrivial::assignments, 0);
+        ASSERT_EQ(NonTrivial::copies, 0);
+        ASSERT_EQ(NonTrivial::moves, 0);
+        ASSERT_EQ(NonTrivial::destructions, 1);
+        ASSERT_EQ(it, list.end());
+        ASSERT_EQ(list.capacity(), 8u);
+        ASSERT_EQ(list.size(), 6u);
+        ASSERT_EQ(list, (IL<NonTrivial>{2, 3, 4, 5, 6, 7}));
+
+        NonTrivial::reset();
+        ASSERT_EQ(list.erase(list.begin() + 1, list.end() - 1)->v, 7);
+        ASSERT_EQ(NonTrivial::contructions, 0);
+        ASSERT_EQ(NonTrivial::assignments, 1);
+        ASSERT_EQ(NonTrivial::copies, 0);
+        ASSERT_EQ(NonTrivial::moves, 1);
+        ASSERT_EQ(NonTrivial::destructions, 4);
+        ASSERT_EQ(list.capacity(), 8u);
+        ASSERT_EQ(list.size(), 2u);
+        ASSERT_EQ(list, (IL<NonTrivial>{2, 7}));
     }
 }
 
