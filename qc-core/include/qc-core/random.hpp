@@ -19,11 +19,35 @@ namespace qc
       public:
 
         ///
+        /// The underlying unsigned type
+        /// Required to qualify as a standard UniformRandomBitGenerator
+        ///
+        using result_type = G;
+
+        ///
+        /// Required to qualify as a standard UniformRandomBitGenerator
+        /// @return the minimum possible generated value
+        ///
+        static constexpr G min() noexcept { return std::numeric_limits<G>::min(); }
+
+        ///
+        /// Required to qualify as a standard UniformRandomBitGenerator
+        /// @return the maximum possible generated value
+        ///
+        static constexpr G max() noexcept { return std::numeric_limits<G>::max(); }
+
+        ///
         /// Constructs a new random generater seeded with the given seed
         /// @param seed the seed to initialize the engine with
         ///
         Random() noexcept;
         explicit Random(const G seed) noexcept;
+
+        ///
+        /// Required to qualify as a standard UniformRandomBitGenerator
+        /// @return the next random `G`
+        ///
+        G operator()() noexcept;
 
         ///
         /// @return the next random integer in [0, 2^T_bits), floater in [0.0, 1.0), or boolean
@@ -76,7 +100,18 @@ namespace qc
         _state{.a = _seed, .b = _seed, .c = _seed, .d = 1}
     {
         // Warm up generator
-        for (int i{0}; i < 12; ++i) next();
+        for (int i{0}; i < 12; ++i) (*this)();
+    }
+
+    template <UnsignedIntegral G>
+    inline G Random<G>::operator()() noexcept
+    {
+        const G tmp{G(_state.a + _state.b + _state.d)};
+        ++_state.d;
+        _state.a = G(_state.b ^ G(_state.b >> _constants.q));
+        _state.b = G(_state.c + G(_state.c << _constants.r));
+        _state.c = G(std::rotl(_state.c, _constants.p) + tmp);
+        return tmp;
     }
 
     template <UnsignedIntegral G>
@@ -87,16 +122,11 @@ namespace qc
         {
             if constexpr (sizeof(T) == sizeof(G))
             {
-                const G tmp{G(_state.a + _state.b + _state.d)};
-                ++_state.d;
-                _state.a = G(_state.b ^ G(_state.b >> _constants.q));
-                _state.b = G(_state.c + G(_state.c << _constants.r));
-                _state.c = G(std::rotl(_state.c, _constants.p) + tmp);
-                return T(tmp);
+                return T((*this)());
             }
             else if constexpr (sizeof(T) < sizeof(G))
             {
-                return T(std::make_unsigned_t<T>(next() >> (std::numeric_limits<G>::digits - std::numeric_limits<T>::digits)));
+                return T(std::make_unsigned_t<T>((*this)() >> (std::numeric_limits<G>::digits - std::numeric_limits<T>::digits)));
             }
             else if constexpr (sizeof(T) > sizeof(G))
             {
@@ -120,7 +150,7 @@ namespace qc
         }
         else if constexpr (Same<T, bool>)
         {
-            return next() >> (std::numeric_limits<G>::digits - 1);
+            return (*this)() >> (std::numeric_limits<G>::digits - 1);
         }
     }
 

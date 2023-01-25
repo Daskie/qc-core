@@ -6,6 +6,42 @@ using namespace qc::types;
 
 namespace
 {
+    template <typename G, typename T>
+    void compileNext()
+    {
+        qc::Random<G> r{};
+        r.next<T>();
+        r.next<T>(T{});
+        r.next<T>(T{}, T{});
+    }
+
+    template <typename G>
+    void compile()
+    {
+        static_assert(std::is_same_v<typename qc::Random<G>::result_type, G>);
+        qc::Random<G>::min();
+        qc::Random<G>::max();
+
+        qc::Random<G> r1{};
+        qc::Random<G> r2{G{}};
+        qc::Random<G> r3{r2};
+        r1 = r2;
+        r1();
+        r1.next();
+        r1.seed();
+
+        compileNext<G, u8>();
+        compileNext<G, u16>();
+        compileNext<G, u32>();
+        compileNext<G, u64>();
+        compileNext<G, s8>();
+        compileNext<G, s16>();
+        compileNext<G, s32>();
+        compileNext<G, s64>();
+        compileNext<G, f32>();
+        compileNext<G, f64>();
+    }
+
     constexpr unat n{1000u};
 
     template <typename T, typename G>
@@ -184,6 +220,14 @@ namespace
         testFloating<f32>(random);
         testFloating<f64>(random);
     }
+}
+
+TEST(Random, compile)
+{
+    compile<u8>();
+    compile<u16>();
+    compile<u32>();
+    compile<u64>();
 }
 
 TEST(Random, types)

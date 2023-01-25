@@ -85,6 +85,16 @@ qc_setup_target(
 )
 
 qc_setup_target(
+    test-list
+    EXECUTABLE
+    SOURCE_FILES
+        test-list.cpp
+    PRIVATE_LINKS
+        qc-core
+        GTest::gtest_main
+)
+
+qc_setup_target(
     test-lock
     EXECUTABLE
     SOURCE_FILES
