@@ -89,22 +89,22 @@ namespace qc
 
 namespace qc
 {
-    void Lock::lock() noexcept
+    inline void Lock::lock() noexcept
     {
         _semaphore.acquire();
     }
 
-    bool Lock::tryLock() noexcept
+    inline bool Lock::tryLock() noexcept
     {
         return _semaphore.try_acquire();
     }
 
-    void Lock::unlock() noexcept
+    inline void Lock::unlock() noexcept
     {
         _semaphore.release();
     }
 
-    void SpinLock::lock() noexcept
+    inline void SpinLock::lock() noexcept
     {
         while (true)
         {
@@ -119,27 +119,27 @@ namespace qc
         }
     }
 
-    bool SpinLock::tryLock() noexcept
+    inline bool SpinLock::tryLock() noexcept
     {
         // First do a relaxed load to check if lock is free in order to prevent
         //   unnecessary cache misses if someone does while (!try_lock())
         return !_flag.test(std::memory_order_relaxed) && !_flag.test_and_set(std::memory_order_acquire);
     }
 
-    void SpinLock::unlock() noexcept
+    inline void SpinLock::unlock() noexcept
     {
         _flag.clear(std::memory_order_release);
     }
 
     template <typename L>
-    LockGuardT<L>::LockGuardT(L & lock) noexcept :
+    inline LockGuardT<L>::LockGuardT(L & lock) noexcept :
         _lock{lock}
     {
         _lock.lock();
     }
 
     template <typename L>
-    LockGuardT<L>::~LockGuardT() noexcept
+    inline LockGuardT<L>::~LockGuardT() noexcept
     {
         _lock.unlock();
     }
