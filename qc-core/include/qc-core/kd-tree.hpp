@@ -4,8 +4,8 @@
 
 #include <algorithm>
 #include <span>
-#include <vector>
 
+#include <qc-core/list.hpp>
 #include <qc-core/vector.hpp>
 
 namespace qc
@@ -14,16 +14,24 @@ namespace qc
     {
         friend class _KdTreeTester;
 
-        public: //------------------------------------------------------------------
+      public:
 
         KdTree() noexcept = default;
         explicit KdTree(std::span<const fvec2> points) noexcept;
+
+        KdTree(const KdTree &) = delete;
+        KdTree(KdTree &&) noexcept = default;
+
+        KdTree & operator=(const KdTree &) = delete;
+        KdTree & operator=(KdTree &&) noexcept = default;
+
+        ~KdTree() noexcept = default;
 
         fvec2 nearest(fvec2 point) const noexcept;
 
         unat size() const noexcept { return _nodes.size(); }
 
-        private: //-----------------------------------------------------------------
+      private:
 
         struct _Node
         {
@@ -32,7 +40,7 @@ namespace qc
             u32 upperOffset{};
         };
 
-        std::vector<_Node> _nodes{};
+        List<_Node> _nodes{};
 
         template <int axis> void _constructRecursive(const fvec2 * points, std::span<u32> orderedA, std::span<u32> orderedB, std::span<u32> scratch, _Node * node) noexcept;
 
@@ -55,9 +63,9 @@ namespace qc
         }
 
         // Fill two arrays with increasing indices [0, 1, 2, ... , N]
-        std::vector<u32> orderedX(points.size());
+        List<u32> orderedX(points.size());
         for (u32 i{0u}; i < orderedX.size(); ++i) orderedX[i] = i;
-        std::vector<u32> orderedY(orderedX);
+        List<u32> orderedY(orderedX.begin(), orderedX.end());
 
         // Sort by axes
         // We sort along the secondary axis as well to improve spatial coherency

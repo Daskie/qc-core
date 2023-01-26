@@ -1,9 +1,9 @@
 #pragma once
 
 #include <utility>
-#include <vector>
 
 #include <qc-core/core-ext.hpp>
+#include <qc-core/list.hpp>
 #include <qc-core/paging.hpp>
 
 namespace qc
@@ -115,9 +115,9 @@ namespace qc
 
         _Range _slotRange{};
         unat _size{};
-        std::vector<_Range> _freeRanges{};
+        List<_Range> _freeRanges{};
 
-        typename std::vector<_Range>::iterator _find(const T * slot) noexcept;
+        _Range * _find(const T * slot) noexcept;
 
         void _expand() requires (!fixed);
 
@@ -254,7 +254,7 @@ namespace qc
 
             _slotRange.start = static_cast<T *>(::operator new(capacity * sizeof(T)));
             _slotRange.end = _slotRange.start + capacity;
-            _freeRanges.push_back(_slotRange);
+            _freeRanges.push(_slotRange);
         }
         else
         {
@@ -284,7 +284,7 @@ namespace qc
         ++lowRange.start;
         if (lowRange.start == lowRange.end)
         {
-            _freeRanges.pop_back();
+            _freeRanges.pop();
         }
         ++_size;
         return *(new (lowSlot) T{std::forward<Args>(args)...});
@@ -429,7 +429,7 @@ namespace qc
     }
 
     template <typename T, bool fixed>
-    inline auto Pool<T, fixed>::_find(const T * const slot) noexcept -> typename std::vector<_Range>::iterator
+    inline auto Pool<T, fixed>::_find(const T * const slot) noexcept -> _Range *
     {
         return lowerBound(_freeRanges.begin(), _freeRanges.end(), slot, [](const _Range & range, const T * const slot) -> bool { return range.start <= slot; });
     }

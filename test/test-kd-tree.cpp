@@ -11,11 +11,9 @@ TEST(kdTree, compiles)
     const qc::fvec2 points[]{{0.0f, 1.0f}, {2.0f, 3.0f}};
     qc::KdTree tree1{points};
 
-    qc::KdTree tree2{tree0};
-    qc::KdTree tree3{std::move(tree0)};
+    qc::KdTree tree3{std::move(tree1)};
 
-    tree2 = tree3;
-    tree3 = std::move(tree2);
+    tree1 = std::move(tree3);
 
     tree1.size();
 

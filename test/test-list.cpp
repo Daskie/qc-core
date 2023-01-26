@@ -1789,3 +1789,15 @@ TEST(List, equality)
         ASSERT_EQ(l4, l4);
     }
 }
+
+TEST(List, typeWithInitializerListConstructor)
+{
+    {
+        qc::List<std::vector<size_t>> list{};
+        list.push(4u, 5u);
+        ASSERT_EQ(list.front(), (std::vector<size_t>{5u, 5u, 5u, 5u}));
+
+        list.emplace(list.end(), 2u, 3u);
+        ASSERT_EQ(list.back(), (std::vector<size_t>{3u, 3u}));
+    }
+}

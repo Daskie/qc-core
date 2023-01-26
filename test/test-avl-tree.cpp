@@ -1,11 +1,10 @@
 #include <qc-core/avl-tree.hpp>
 
-#include <set>
 #include <string_view>
-#include <vector>
 
 #include <gtest/gtest.h>
 
+#include <qc-core/list.hpp>
 #include <qc-core/random.hpp>
 
 using namespace std::string_literals;
@@ -22,7 +21,7 @@ class qc::_internal::AvlTreeFriend
     template <UnsignedIntegral T>
     static std::string genString(const AvlTree<T> & tree)
     {
-        const std::vector<std::string> lines{_genString<T>(tree._root)};
+        const qc::List<std::string> lines{_genString<T>(tree._root)};
         unat totalLength{!lines.empty()};
         for (const std::string & line : lines)
         {
@@ -67,7 +66,7 @@ class qc::_internal::AvlTreeFriend
         return start + (end - start - side) / 2;
     }
 
-    static void _shiftLinesRight(std::vector<std::string> & lines, const int n)
+    static void _shiftLinesRight(qc::List<std::string> & lines, const int n)
     {
         for (std::string & line : lines)
         {
@@ -76,7 +75,7 @@ class qc::_internal::AvlTreeFriend
     }
 
     template <UnsignedIntegral T>
-    static std::vector<std::string> _genString(const _Node<T> * const node)
+    static qc::List<std::string> _genString(const _Node<T> * const node)
     {
         if (!node)
         {
@@ -90,8 +89,8 @@ class qc::_internal::AvlTreeFriend
 
         const std::string valStr{std::to_string(node->v)};
         const int valStrLength{int(valStr.length())};
-        std::vector<std::string> leftLines{_genString<T>(node->left)};
-        std::vector<std::string> rightLines{_genString<T>(node->right)};
+        qc::List<std::string> leftLines{_genString<T>(node->left)};
+        qc::List<std::string> rightLines{_genString<T>(node->right)};
         const bool isLeft{!leftLines.empty()};
         const bool isRight{!rightLines.empty()};
         int leftBlockWidth{0};
@@ -146,7 +145,7 @@ class qc::_internal::AvlTreeFriend
             valPos = 0;
         }
 
-        std::vector<std::string> lines{};
+        qc::List<std::string> lines{};
         lines.reserve(2u + qc::max(leftLines.size(), rightLines.size()));
 
         //--- Add value line ---
@@ -154,7 +153,7 @@ class qc::_internal::AvlTreeFriend
         const int leftDashCount{qc::max(valPos - leftHeadPos - 3, 0)};
         const int rightDashCount{qc::max(rightHeadPos - (valPos + valStrLength) - 2, 0)};
         const int valLineLength{valPos + valStrLength + bool(rightDashCount) + rightDashCount};
-        std::string & valLine{lines.emplace_back(unat(valLineLength), ' ')};
+        std::string & valLine{lines.push(unat(valLineLength), ' ')};
         if (leftDashCount) std::fill_n(valLine.begin() + valPos - 1 - leftDashCount, unat(leftDashCount), '_');
         std::copy(valStr.cbegin(), valStr.cend(), valLine.begin() + valPos);
         if (rightDashCount) std::fill_n(valLine.begin() + valPos + valStrLength + 1, unat(rightDashCount), '_');
@@ -162,7 +161,7 @@ class qc::_internal::AvlTreeFriend
         //--- Add slash line ---
 
         const int slashLineLength{isRight ? rightHeadPos : leftHeadPos + 2};
-        std::string & slashLine{lines.emplace_back(unat(slashLineLength), ' ')};
+        std::string & slashLine{lines.push(unat(slashLineLength), ' ')};
         if (isLeft) slashLine[unat(leftHeadPos + 1)] = '/';
         if (isRight) slashLine.back() = '\\';
 
@@ -174,7 +173,7 @@ class qc::_internal::AvlTreeFriend
         // Add lines for both left and right
         for (; leftLineI < int(leftLines.size()) && rightLineI < int(rightLines.size()); ++leftLineI, ++rightLineI)
         {
-            lines.push_back(std::move(leftLines[unat(leftLineI)]));
+            lines.push(std::move(leftLines[unat(leftLineI)]));
             std::string & line{lines.back()};
             const std::string & rightLine{rightLines[unat(rightLineI)]};
             const unat lineLength{unat(rightBlockPos) + rightLine.size()};
@@ -188,7 +187,7 @@ class qc::_internal::AvlTreeFriend
         // Add leftover left lines
         for (; leftLineI < int(leftLines.size()); ++leftLineI)
         {
-            lines.push_back(std::move(leftLines[unat(leftLineI)]));
+            lines.push(std::move(leftLines[unat(leftLineI)]));
             std::string & line{lines.back()};
             line.insert(line.begin(), unat(leftBlockPos), ' ');
         }
@@ -196,7 +195,7 @@ class qc::_internal::AvlTreeFriend
         // Add leftover right lines
         for (; rightLineI < int(rightLines.size()); ++rightLineI)
         {
-            lines.push_back(std::move(rightLines[unat(rightLineI)]));
+            lines.push(std::move(rightLines[unat(rightLineI)]));
             std::string & line{lines.back()};
             line.insert(line.begin(), unat(rightBlockPos), ' ');
         }

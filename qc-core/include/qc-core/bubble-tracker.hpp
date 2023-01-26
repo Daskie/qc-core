@@ -1,8 +1,7 @@
 #pragma once
 
-#include <vector>
-
 #include <qc-core/core-ext.hpp>
+#include <qc-core/list.hpp>
 
 namespace qc
 {
@@ -46,11 +45,11 @@ namespace qc
         ///
         void clear() noexcept;
 
-        const std::vector<Bubble> & bubbles() const noexcept { return _bubbles; }
+        const List<Bubble> & bubbles() const noexcept { return _bubbles; }
 
       private:
 
-        std::vector<Bubble> _bubbles{};
+        List<Bubble> _bubbles{};
     };
 }
 
@@ -66,7 +65,7 @@ namespace qc
             return;
         }
 
-        // Find position in ordered vector where this bubble would be inserted
+        // Find position in ordered list where this bubble would be inserted
         const auto it{qc::lowerBound(_bubbles.begin(), _bubbles.end(), pos, [](const Bubble & b, const P & p) { return b.pos >= p; })};
         const unat i{unat(it - _bubbles.begin())};
 

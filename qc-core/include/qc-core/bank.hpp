@@ -1,8 +1,7 @@
 #pragma once
 
-#include <vector>
-
 #include <qc-core/core.hpp>
+#include <qc-core/list.hpp>
 
 namespace qc
 {
@@ -67,7 +66,8 @@ namespace qc
 
         void _expand(u32 newCapacity);
 
-        std::vector<bool> _makeFreeMap() const;
+        // TODO: Dynamic bit field
+        List<bool> _makeFreeMap() const;
     };
 }
 
@@ -177,7 +177,7 @@ namespace qc
     {
         if (_size)
         {
-            const std::vector<bool> freeMap{_makeFreeMap()};
+            const List<bool> freeMap{_makeFreeMap()};
 
             // Iterate from back to front to try to keep the free chain linked forwards
             for (u32 i{_capacity - 1u}; _size; --i)
@@ -221,7 +221,7 @@ namespace qc
             // Otherwise we need to figure out which slots actually have elements and only move/destruct those
             else
             {
-                const std::vector<bool> freeMap{_makeFreeMap()};
+                const List<bool> freeMap{_makeFreeMap()};
                 for (u32 i{0u}; i < _capacity; ++i)
                 {
                     if (freeMap[i])
@@ -255,10 +255,10 @@ namespace qc
     }
 
     template <typename T>
-    inline std::vector<bool> Bank<T>::_makeFreeMap() const
+    inline List<bool> Bank<T>::_makeFreeMap() const
     {
         // TODO: Use own bit-field implementation to more efficiently iterate over set bits
-        std::vector<bool> freeMap(_capacity);
+        List<bool> freeMap(_capacity, false);
         for (u32 freeI{_headFreeI}; freeI != _invalidI; freeI = _slots[freeI].nextFreeI)
         {
             freeMap[freeI] = true;

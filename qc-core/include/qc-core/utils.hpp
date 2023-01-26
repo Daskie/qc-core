@@ -8,9 +8,9 @@
 #include <sstream>
 #include <iomanip>
 #include <filesystem>
-#include <vector>
 
 #include <qc-core/core.hpp>
+#include <qc-core/list.hpp>
 
 namespace qc::utils
 {
@@ -24,7 +24,7 @@ namespace qc::utils
     }
 
     // Throws `std::system_error` on failure
-    inline std::vector<std::byte> readFile(const std::filesystem::path & path)
+    inline List<std::byte> readFile(const std::filesystem::path & path)
     {
         const uintmax_t size{std::filesystem::file_size(path)};
         if (size > qc::min(uintmax_t(std::numeric_limits<unat>::max()), uintmax_t(std::numeric_limits<std::streamsize>::max())))
@@ -32,7 +32,7 @@ namespace qc::utils
             throw std::system_error(std::make_error_code(std::errc::file_too_large));
         }
 
-        std::vector<std::byte> data((unat(size))); // TODO: default initializes its memory - potential performance concern for large files
+        List<std::byte> data((unat(size)));
 
         std::ifstream ifs(path, std::ios::binary);
         ifs.exceptions(std::ios::badbit | std::ios::failbit);

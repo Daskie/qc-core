@@ -3,9 +3,9 @@
 #include <exception>
 #include <new>
 #include <utility>
-#include <vector>
 
 #include <qc-core/core.hpp>
+#include <qc-core/list.hpp>
 
 namespace qc::memory
 {
@@ -19,7 +19,7 @@ namespace qc::memory
 
     namespace _minutia
     {
-        inline std::vector<RecordAllocatorStats> recordAllocatorStatsList(1u);
+        inline List<RecordAllocatorStats> recordAllocatorStatsList(1u);
     }
 
     //

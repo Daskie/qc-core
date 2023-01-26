@@ -1,6 +1,7 @@
 #pragma once
 
 #include <qc-core/bubble-tracker.hpp>
+#include <qc-core/list.hpp>
 #include <qc-core/paging.hpp>
 #include <qc-core/smart-pointer.hpp>
 
@@ -49,7 +50,7 @@ namespace qc
 
       private:
 
-        inline static std::vector<Arena *> _arenas{};
+        inline static List<Arena *> _arenas{};
 
         template <typename T> static void _destroy(T & v);
 

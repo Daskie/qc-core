@@ -111,6 +111,8 @@ namespace qc
         void _shift(T * & pos);
         T * _shift(T * & pos, unat n);
     };
+
+    template <typename T> concept ConstructableByInitializerList = std::is_constructible_v<T, std::initializer_list<typename T::value_type>>;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -311,7 +313,15 @@ namespace qc
         T * const pos{_data + _size};
         if constexpr (sizeof...(Args) || !std::is_trivially_default_constructible_v<T>)
         {
-            new (pos) T{std::forward<Args>(args)...};
+            // Prefer brace initialization, unless the type has an initializer list constructor
+            if constexpr (!ConstructableByInitializerList<T>)
+            {
+                new (pos) T{std::forward<Args>(args)...};
+            }
+            else
+            {
+                new (pos) T(std::forward<Args>(args)...);
+            }
         }
         ++_size;
         return *pos;
@@ -392,7 +402,18 @@ namespace qc
     inline T * List<T>::emplace(T * pos, Args &&... args)
     {
         _shift(pos);
-        return new (pos) T{std::forward<Args>(args)...};
+
+        // Prefer brace initialization, unless the type has an initializer list constructor
+        if constexpr (!ConstructableByInitializerList<T>)
+        {
+            new (pos) T{std::forward<Args>(args)...};
+        }
+        else
+        {
+            new (pos) T(std::forward<Args>(args)...);
+        }
+
+        return pos;
     }
 
     template <typename T>

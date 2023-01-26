@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include <qc-core/core-ext.hpp>
+#include <qc-core/list.hpp>
 
 using namespace qc::types;
 
@@ -493,18 +494,18 @@ TEST(Core, transnorm)
 
 TEST(Core, binarySearch)
 {
-    std::vector<int> v0{};
-    std::vector<int> v1{1};
-    std::vector<int> v2{1, 3};
-    std::vector<int> v3{1, 3, 5};
-    std::vector<int> v4{1, 3, 5, 7};
-    std::vector<int> v5{1, 3, 5, 7, 9};
+    qc::List<int> v0{};
+    qc::List<int> v1{1};
+    qc::List<int> v2{1, 3};
+    qc::List<int> v3{1, 3, 5};
+    qc::List<int> v4{1, 3, 5, 7};
+    qc::List<int> v5{1, 3, 5, 7, 9};
 
-    std::vector<int> vv4{1, 3, 3, 5};
-    std::vector<int> vv5{1, 3, 3, 3, 5};
+    qc::List<int> vv4{1, 3, 3, 5};
+    qc::List<int> vv5{1, 3, 3, 3, 5};
 
-    std::vector<int> vvv2{1, 1};
-    std::vector<int> vvv3{1, 1, 1};
+    qc::List<int> vvv2{1, 1};
+    qc::List<int> vvv3{1, 1, 1};
 
     ASSERT_EQ(0, qc::lowerBound(v0.begin(), v0.end(), 0) - v0.begin());
     ASSERT_EQ(0, qc::upperBound(v0.begin(), v0.end(), 0) - v0.begin());
