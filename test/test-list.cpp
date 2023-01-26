@@ -1862,6 +1862,17 @@ TEST(List, subscript)
     }
 }
 
+TEST(List, at)
+{
+    {
+        qc::List<int> list{1, 2, 3};
+        ASSERT_EQ(1, list.at(0));
+        ASSERT_EQ(2, list.at(1));
+        ASSERT_EQ(3, list.at(2));
+        ASSERT_THROW(list.at(3u), std::out_of_range);
+    }
+}
+
 TEST(List, front)
 {
     {

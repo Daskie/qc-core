@@ -4,6 +4,7 @@
 
 #include <iterator>
 #include <span>
+#include <stdexcept>
 
 #include <qc-core/core.hpp>
 
@@ -81,6 +82,9 @@ namespace qc
 
         T & operator[](const unat i) noexcept { return _data[i]; };
         const T & operator[](const unat i) const noexcept { return _data[i]; };
+
+        T & at(unat i);
+        const T & at(unat i) const;
 
         T & front() noexcept { return *_data; }
         const T & front() const noexcept { return *_data; }
@@ -577,6 +581,23 @@ namespace qc
         const unat n{unat(end - dst)};
         pop(n);
         return n;
+    }
+
+    template <typename T>
+    inline T & List<T>::at(const unat i)
+    {
+        return const_cast<T &>(static_cast<const List *>(this)->at(i));
+    }
+
+    template <typename T>
+    inline const T & List<T>::at(const unat i) const
+    {
+        if (i >= _size) [[unlikely]]
+        {
+            throw std::out_of_range{"Index out of bounds"};
+        }
+
+        return _data[i];
     }
 
     template <typename T>
