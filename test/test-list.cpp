@@ -199,37 +199,59 @@ TEST(List, assignment)
         ASSERT_EQ(l2, (IL<int>{1, 2, 3}));
         ASSERT_EQ(l1.size(), 0u);
         ASSERT_EQ(l1.capacity(), 0u);
+
+        l1 = l2;
+        ASSERT_EQ(l1.size(), 3u);
+        ASSERT_EQ(l1.capacity(), 3u);
+        ASSERT_EQ(l1, (IL<int>{1, 2, 3}));
+        ASSERT_EQ(l2.size(), 3u);
+        ASSERT_EQ(l2.capacity(), 3u);
+        ASSERT_EQ(l2, (IL<int>{1, 2, 3}));
     }
     {
-        IL<NonTrivial> expected{1, 2, 3};
+        qc::List<int> list{9, 8, 7};
+
+        list = {1, 2, 3, 4};
+        ASSERT_EQ(list, (IL<int>{1, 2, 3, 4}));
+
+        std::vector<int> vs{3, 2, 1};
+        list = std::span<int>{vs.data(), vs.size()};
+        ASSERT_EQ(list, (IL<int>{3, 2, 1}));
+    }
+    {
+        qc::List<NonTrivial> l1{1, 2, 3};
+        ASSERT_EQ(l1.size(), 3u);
+        ASSERT_EQ(l1.capacity(), 3u);
+
+        qc::List<NonTrivial> l2{};
+        ASSERT_TRUE(l2.empty());
+
         NonTrivial::reset();
-        {
-            qc::List<NonTrivial> l1{1, 2, 3};
-            ASSERT_EQ(l1.size(), 3u);
-            ASSERT_EQ(l1.capacity(), 3u);
-
-            qc::List<NonTrivial> l2{};
-            ASSERT_TRUE(l2.empty());
-
-            ASSERT_EQ(NonTrivial::contructions, 6);
-            ASSERT_EQ(NonTrivial::assignments, 0);
-            ASSERT_EQ(NonTrivial::copies, 3);
-            ASSERT_EQ(NonTrivial::moves, 0);
-            ASSERT_EQ(NonTrivial::destructions, 3);
-            NonTrivial::reset();
-
-            l2 = std::move(l1);
-            ASSERT_EQ(l2.size(), 3u);
-            ASSERT_EQ(l2.capacity(), 3u);
-            ASSERT_EQ(l2, expected);
-            ASSERT_EQ(l1.size(), 0u);
-            ASSERT_EQ(l1.capacity(), 0u);
-        }
+        l2 = std::move(l1);
         ASSERT_EQ(NonTrivial::contructions, 0);
         ASSERT_EQ(NonTrivial::assignments, 0);
         ASSERT_EQ(NonTrivial::copies, 0);
         ASSERT_EQ(NonTrivial::moves, 0);
-        ASSERT_EQ(NonTrivial::destructions, 3);
+        ASSERT_EQ(NonTrivial::destructions, 0);
+        ASSERT_EQ(l2.size(), 3u);
+        ASSERT_EQ(l2.capacity(), 3u);
+        ASSERT_EQ(l2, (IL<NonTrivial>{1, 2, 3}));
+        ASSERT_EQ(l1.size(), 0u);
+        ASSERT_EQ(l1.capacity(), 0u);
+
+        NonTrivial::reset();
+        l1 = l2;
+        ASSERT_EQ(NonTrivial::contructions, 3);
+        ASSERT_EQ(NonTrivial::assignments, 0);
+        ASSERT_EQ(NonTrivial::copies, 3);
+        ASSERT_EQ(NonTrivial::moves, 0);
+        ASSERT_EQ(NonTrivial::destructions, 0);
+        ASSERT_EQ(l1.size(), 3u);
+        ASSERT_EQ(l1.capacity(), 3u);
+        ASSERT_EQ(l1, (IL<NonTrivial>{1, 2, 3}));
+        ASSERT_EQ(l2.size(), 3u);
+        ASSERT_EQ(l2.capacity(), 3u);
+        ASSERT_EQ(l2, (IL<NonTrivial>{1, 2, 3}));
     }
     {
         qc::List<NonTrivial> list{9, 8, 7};
@@ -263,26 +285,6 @@ TEST(List, assignment)
         list = std::span<const NonTrivial>{vs.cbegin(), vs.cend()};
         ASSERT_EQ(list, (IL<NonTrivial>{2, 2, 2, 2}));
     }
-}
-
-TEST(List, assign)
-{
-    {
-        qc::List<int> list{9, 8, 7};
-
-        list.assign(6u, 3);
-        ASSERT_EQ(list, (IL<int>{3, 3, 3, 3, 3, 3}));
-
-        std::vector<int> vs{3, 2, 1};
-        list.assign(vs.cbegin(), vs.cend());
-        ASSERT_EQ(list, (IL<int>{3, 2, 1}));
-
-        list.assign({1, 2, 3, 4});
-        ASSERT_EQ(list, (IL<int>{1, 2, 3, 4}));
-
-        list.assign(std::span<int>{vs.data(), vs.size()});
-        ASSERT_EQ(list, (IL<int>{3, 2, 1}));
-    }
     {
         qc::List<NonTrivial> list{9, 8, 7};
 
@@ -306,7 +308,7 @@ TEST(List, assign)
         ASSERT_EQ(list, (IL<NonTrivial>{3, 2, 1}));
 
         NonTrivial::reset();
-        list.assign({1, 2, 3, 4});
+        list = {1, 2, 3, 4};
         ASSERT_EQ(NonTrivial::contructions, 8);
         ASSERT_EQ(NonTrivial::assignments, 0);
         ASSERT_EQ(NonTrivial::copies, 4);
@@ -315,12 +317,48 @@ TEST(List, assign)
         ASSERT_EQ(list, (IL<NonTrivial>{1, 2, 3, 4}));
 
         NonTrivial::reset();
-        list.assign(std::span<NonTrivial>{vs.data(), vs.size()});
+        list = std::span<NonTrivial>{vs.data(), vs.size()};
         ASSERT_EQ(NonTrivial::contructions, 3);
         ASSERT_EQ(NonTrivial::assignments, 0);
         ASSERT_EQ(NonTrivial::copies, 3);
         ASSERT_EQ(NonTrivial::moves, 0);
         ASSERT_EQ(NonTrivial::destructions, 4);
+        ASSERT_EQ(list, (IL<NonTrivial>{3, 2, 1}));
+    }
+}
+
+TEST(List, assign)
+{
+    {
+        qc::List<int> list{9, 8, 7};
+
+        list.assign(6u, 3);
+        ASSERT_EQ(list, (IL<int>{3, 3, 3, 3, 3, 3}));
+
+        std::vector<int> vs{3, 2, 1};
+        list.assign(vs.cbegin(), vs.cend());
+        ASSERT_EQ(list, (IL<int>{3, 2, 1}));
+    }
+    {
+        qc::List<NonTrivial> list{9, 8, 7};
+
+        NonTrivial::reset();
+        list.assign(6u, 3);
+        ASSERT_EQ(NonTrivial::contructions, 7);
+        ASSERT_EQ(NonTrivial::assignments, 0);
+        ASSERT_EQ(NonTrivial::copies, 6);
+        ASSERT_EQ(NonTrivial::moves, 0);
+        ASSERT_EQ(NonTrivial::destructions, 4);
+        ASSERT_EQ(list, (IL<NonTrivial>{3, 3, 3, 3, 3, 3}));
+
+        std::vector<NonTrivial> vs{3, 2, 1};
+        NonTrivial::reset();
+        list.assign(vs.cbegin(), vs.cend());
+        ASSERT_EQ(NonTrivial::contructions, 3);
+        ASSERT_EQ(NonTrivial::assignments, 0);
+        ASSERT_EQ(NonTrivial::copies, 3);
+        ASSERT_EQ(NonTrivial::moves, 0);
+        ASSERT_EQ(NonTrivial::destructions, 6);
         ASSERT_EQ(list, (IL<NonTrivial>{3, 2, 1}));
     }
 }

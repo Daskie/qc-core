@@ -37,7 +37,7 @@ namespace qc
         List(const List &) = delete;
         List(List && other) noexcept;
 
-        List & operator=(const List &) = delete;
+        List & operator=(const List & other);
         List & operator=(List && other) noexcept;
 
         List & operator=(std::initializer_list<T> vs) noexcept;
@@ -47,8 +47,6 @@ namespace qc
 
         void assign(unat n, const T & v);
         template <typename It> void assign(It first, It last);
-        void assign(std::initializer_list<T> vs);
-        void assign(std::span<const T> vs);
 
         void reserve(unat capacity);
 
@@ -100,6 +98,11 @@ namespace qc
 
         T * data() noexcept { return _data; }
         const T * data() const noexcept { return _data; }
+
+        std::span<T> span() noexcept { return {_data, _size}; }
+        std::span<const T> span() const noexcept { return {_data, _size}; }
+        std::span<T> span(const unat i, const unat n) noexcept { return {_data + i, n}; }
+        std::span<const T> span(const unat i, const unat n) const noexcept { return {_data + i, n}; }
 
         T * begin() noexcept { return _data; }
         const T * begin() const noexcept { return _data; }
@@ -155,13 +158,13 @@ namespace qc
     template <typename T>
     inline List<T>::List(const std::initializer_list<T> vs)
     {
-        assign(vs);
+        *this = vs;
     }
 
     template <typename T>
     inline List<T>::List(const std::span<const T> vs)
     {
-        assign(vs);
+        *this = vs;
     }
 
     template <typename T>
@@ -170,6 +173,12 @@ namespace qc
         _size{std::exchange(other._size, 0u)},
         _data{std::exchange(other._data, nullptr)}
     {}
+
+    template <typename T>
+    inline List<T> & List<T>::operator=(const List<T> & other)
+    {
+        return *this = other.span();
+    }
 
     template <typename T>
     inline List<T> & List<T>::operator=(List<T> && other) noexcept
@@ -184,15 +193,26 @@ namespace qc
     template <typename T>
     inline List<T> & List<T>::operator=(const std::initializer_list<T> vs) noexcept
     {
-        assign(vs);
-
-        return *this;
+        return *this = std::span<const T>{std::data(vs), vs.size()};
     }
 
     template <typename T>
     inline List<T> & List<T>::operator=(const std::span<const T> vs) noexcept
     {
-        assign(vs);
+        if constexpr (std::is_trivially_copyable_v<T>)
+        {
+            clear();
+
+            reserve(vs.size());
+
+            std::memcpy(_data, vs.data(), vs.size() * sizeof(T));
+
+            _size = vs.size();
+        }
+        else
+        {
+            assign(vs.begin(), vs.end());
+        }
 
         return *this;
     }
@@ -242,42 +262,6 @@ namespace qc
         }
 
         _size = count;
-    }
-
-    template <typename T>
-    inline void List<T>::assign(const std::initializer_list<T> vs)
-    {
-        clear();
-
-        reserve(vs.size());
-
-        T * dst{_data};
-        for (const T & v: vs)
-        {
-            new (dst) T{v};
-            ++dst;
-        }
-
-        _size = vs.size();
-    }
-
-    template <typename T>
-    inline void List<T>::assign(const std::span<const T> vs)
-    {
-        if constexpr (std::is_trivially_copyable_v<T>)
-        {
-            clear();
-
-            reserve(vs.size());
-
-            std::memcpy(_data, vs.data(), vs.size() * sizeof(T));
-
-            _size = vs.size();
-        }
-        else
-        {
-            assign(vs.begin(), vs.end());
-        }
     }
 
     template <typename T>
