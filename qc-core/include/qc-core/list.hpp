@@ -3,6 +3,7 @@
 #include <cstring>
 
 #include <iterator>
+#include <span>
 
 #include <qc-core/core.hpp>
 
@@ -53,15 +54,15 @@ namespace qc
         template <typename... Args> T & push(Args &&... args);
 
         T & bump() requires std::is_trivially_default_constructible_v<T>;
-        T * bump(unat n) requires std::is_trivially_default_constructible_v<T>;
+        std::span<T> bump(unat n) requires std::is_trivially_default_constructible_v<T>;
 
-        //T * insert(T * pos, const T & v);
-        //T * insert(T * pos, T && v);
+        T * insert(T * pos, const T & v);
+        T * insert(T * pos, T && v);
         //T * insert(T * pos, unat n, const T & v);
         //template <typename It> T * insert(T * pos, It first, It last);
         //T * insert(T * pos, std::initializer_list<T> vs);
 
-        //template <typename... Args> T * emplace(T * pos, Args &&... args);
+        template <typename... Args> T * emplace(T * pos, Args &&... args);
 
         void pop() noexcept;
 
@@ -327,7 +328,7 @@ namespace qc
     }
 
     template <typename T>
-    inline T * List<T>::bump(const unat n) requires std::is_trivially_default_constructible_v<T>
+    inline std::span<T> List<T>::bump(const unat n) requires std::is_trivially_default_constructible_v<T>
     {
         if (_size + n > _capacity) [[unlikely]]
         {
@@ -336,10 +337,9 @@ namespace qc
 
         T * pos{_data + _size};
         _size += n;
-        return pos;
+        return {pos, n};
     }
 
-    /*
     template <typename T>
     inline T * List<T>::insert(T * const pos, const T & v)
     {
@@ -352,6 +352,7 @@ namespace qc
         return emplace(pos, std::move(v));
     }
 
+    /*
     template <typename T>
     inline T * List<T>::insert(T * pos, const unat n, const T & v)
     {
@@ -398,15 +399,45 @@ namespace qc
     {
         return insert(pos, vs.begin(), vs.end());
     }
+     */
 
     template <typename T>
     template <typename... Args>
-    inline T * List<T>::emplace(T * const pos, Args && ... args)
+    inline T * List<T>::emplace(T * pos, Args &&... args)
     {
-        _shiftElements(pos, 1u);
+        if (_size == _capacity) [[unlikely]]
+        {
+            const unat i{unat(pos - _data)};
+            _newMemory(max(_capacity * 2u, _defaultMinCapacity), i, 1u);
+            pos = _data + i;
+        }
+        else
+        {
+            if constexpr (std::is_trivially_copyable_v<T>)
+            {
+                std::memmove(pos + 1, pos, unat(_data + _size - pos) * sizeof(T));
+            }
+            else
+            {
+                T * dst{_data + _size};
+                T * src{dst - 1};
+                if (src >= pos)
+                {
+                    new (dst) T{std::move(*src)};
+                    --src;
+                    --dst;
+                    for (; src >= pos; --src, --dst)
+                    {
+                        *dst = std::move(*src);
+                    }
+                    pos->~T();
+                }
+            }
+        }
+
+        ++_size;
         return new (pos) T{std::forward<Args>(args)...};
     }
-     */
 
     template <typename T>
     inline void List<T>::pop() noexcept
@@ -547,32 +578,31 @@ namespace qc
         ::operator delete(_data, std::align_val_t{alignof(T)});
 
         _capacity = newCapacity;
-        _size += gapN;
         _data = newData;
     }
 
     /*
     template <typename T>
-    inline T * List<T>::_shiftElements(T * & p, const unat n)
+    inline T * List<T>::_shiftElements(T * & pos, const unat n)
     {
         if (n == 0u)
         {
-            return p;
+            return pos;
         }
 
         const unat newSize{_size + n};
 
         if (newSize > _capacity) [[unlikely]]
         {
-            const unat i{p - _data};
+            const unat i{pos - _data};
             _newMemory(max(_capacity + max(_capacity, n), _defaultMinCapacity), i, n);
-            p = _data + i;
-            return p;
+            pos = _data + i;
+            return pos;
         }
         else
         {
             T * const oldTailEnd{_data + _size};
-            T * const newTailStart{p + n};
+            T * const newTailStart{pos + n};
             T * src{oldTailEnd - 1};
             T * dst{src + n};
 
