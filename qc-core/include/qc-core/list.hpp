@@ -34,7 +34,7 @@ namespace qc
         List(std::initializer_list<T> vs);
         List(std::span<const T> vs);
 
-        List(const List &) = delete;
+        List(const List & other);
         List(List && other) noexcept;
 
         List & operator=(const List & other);
@@ -168,6 +168,12 @@ namespace qc
     }
 
     template <typename T>
+    inline List<T>::List(const List & other)
+    {
+        *this = other;
+    }
+
+    template <typename T>
     inline List<T>::List(List && other) noexcept :
         _capacity{std::exchange(other._capacity, 0u)},
         _size{std::exchange(other._size, 0u)},
@@ -258,7 +264,7 @@ namespace qc
 
         for (T * dst{_data}; first != last; ++first, ++dst)
         {
-            new(dst) T{*first};
+            new (dst) T{*first};
         }
 
         _size = count;
