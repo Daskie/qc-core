@@ -10,7 +10,7 @@ TEST(Lock, compile)
     lock.tryLock();
     lock.unlock();
 
-    qc::ScopeLock scopeLock{lock};
+    qc::LockGuard guard{lock};
 }
 
 TEST(SpinLock, compile)
@@ -21,5 +21,5 @@ TEST(SpinLock, compile)
     lock.tryLock();
     lock.unlock();
 
-    qc::ScopeSpinLock scopeLock{lock};
+    qc::SpinLockGuard guard{lock};
 }

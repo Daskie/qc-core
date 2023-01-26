@@ -9,10 +9,10 @@ namespace qc
 {
     class Lock;
     class SpinLock;
-    template <typename L> class ScopeLockT;
+    template <typename L> class LockGuardT;
 
-    using ScopeLock = ScopeLockT<Lock>;
-    using ScopeSpinLock = ScopeLockT<SpinLock>;
+    using LockGuard = LockGuardT<Lock>;
+    using SpinLockGuard = LockGuardT<SpinLock>;
 
     class Lock
     {
@@ -65,19 +65,19 @@ namespace qc
     };
 
     template <typename L>
-    class ScopeLockT
+    class LockGuardT
     {
       public:
 
-        ScopeLockT(L & lock) noexcept;
+        LockGuardT(L & lock) noexcept;
 
-        ScopeLockT(const ScopeLockT &) = delete;
-        ScopeLockT(ScopeLockT &&) = delete;
+        LockGuardT(const LockGuardT &) = delete;
+        LockGuardT(LockGuardT &&) = delete;
 
-        ScopeLockT & operator=(const ScopeLockT &) = delete;
-        ScopeLockT & operator=(ScopeLockT &&) = delete;
+        LockGuardT & operator=(const LockGuardT &) = delete;
+        LockGuardT & operator=(LockGuardT &&) = delete;
 
-        ~ScopeLockT() noexcept;
+        ~LockGuardT() noexcept;
 
       private:
 
@@ -132,14 +132,14 @@ namespace qc
     }
 
     template <typename L>
-    ScopeLockT<L>::ScopeLockT(L & lock) noexcept :
+    LockGuardT<L>::LockGuardT(L & lock) noexcept :
         _lock{lock}
     {
         _lock.lock();
     }
 
     template <typename L>
-    ScopeLockT<L>::~ScopeLockT() noexcept
+    LockGuardT<L>::~LockGuardT() noexcept
     {
         _lock.unlock();
     }
