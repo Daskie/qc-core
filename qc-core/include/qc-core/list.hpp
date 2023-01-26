@@ -58,9 +58,9 @@ namespace qc
 
         T * insert(T * pos, const T & v);
         T * insert(T * pos, T && v);
-        //T * insert(T * pos, unat n, const T & v);
-        //template <typename It> T * insert(T * pos, It first, It last);
-        //T * insert(T * pos, std::initializer_list<T> vs);
+        T * insert(T * pos, unat n, const T & v);
+        template <typename It> T * insert(T * pos, It first, It last);
+        T * insert(T * pos, std::initializer_list<T> vs);
 
         template <typename... Args> T * emplace(T * pos, Args &&... args);
 
@@ -108,7 +108,8 @@ namespace qc
 
         void _newMemory(unat capacity, unat gapI, unat gapN);
 
-        //T * _shiftElements(T * & pos, unat n);
+        void _shift(T * & pos);
+        T * _shift(T * & pos, unat n);
     };
 }
 
@@ -352,44 +353,30 @@ namespace qc
         return emplace(pos, std::move(v));
     }
 
-    /*
     template <typename T>
     inline T * List<T>::insert(T * pos, const unat n, const T & v)
     {
-        T * const endPresentP{_shiftElements(pos, n)};
-        const T * endP{pos + n};
+        T * const constructedEnd{_shift(pos, n)};
+        T * const unconstructedEnd{pos + n};
 
-        for (; pos < endPresentP; ++pos)
-        {
-            *pos = v;
-        }
-
-        for (; pos < endP; ++pos)
-        {
-            new (pos) T{v};
-        }
+        T * dst{pos};
+        for (; dst < constructedEnd; ++dst) *dst = v;
+        for (; dst < unconstructedEnd; ++dst) new (dst) T{v};
 
         return pos;
     }
 
     template <typename T>
     template <typename It>
-    inline T * List<T>::insert(T * pos, const It first, const It last)
+    inline T * List<T>::insert(T * pos, It first, const It last)
     {
-        const unat n{std::distance(first, last)};
-        T * const endPresentP{_shiftElements(pos, n)};
-        const T * endP{pos + n};
-        It src{first};
+        const unat n{unat(std::distance(first, last))};
+        T * const constructedEnd{_shift(pos, n)};
+        T * const unconstructedEnd{pos + n};
 
-        for (; pos < endPresentP; ++pos, ++src)
-        {
-            *pos = *src;
-        }
-
-        for (; pos < endP; ++pos, ++src)
-        {
-            new (pos) T{*src};
-        }
+        T * dst{pos};
+        for (; dst < constructedEnd; ++dst, ++first) *dst = *first;
+        for (; dst < unconstructedEnd; ++dst, ++first) new (dst) T{*first};
 
         return pos;
     }
@@ -399,43 +386,12 @@ namespace qc
     {
         return insert(pos, vs.begin(), vs.end());
     }
-     */
 
     template <typename T>
     template <typename... Args>
     inline T * List<T>::emplace(T * pos, Args &&... args)
     {
-        if (_size == _capacity) [[unlikely]]
-        {
-            const unat i{unat(pos - _data)};
-            _newMemory(max(_capacity * 2u, _defaultMinCapacity), i, 1u);
-            pos = _data + i;
-        }
-        else
-        {
-            if constexpr (std::is_trivially_copyable_v<T>)
-            {
-                std::memmove(pos + 1, pos, unat(_data + _size - pos) * sizeof(T));
-            }
-            else
-            {
-                T * dst{_data + _size};
-                T * src{dst - 1};
-                if (src >= pos)
-                {
-                    new (dst) T{std::move(*src)};
-                    --src;
-                    --dst;
-                    for (; src >= pos; --src, --dst)
-                    {
-                        *dst = std::move(*src);
-                    }
-                    pos->~T();
-                }
-            }
-        }
-
-        ++_size;
+        _shift(pos);
         return new (pos) T{std::forward<Args>(args)...};
     }
 
@@ -581,23 +537,63 @@ namespace qc
         _data = newData;
     }
 
-    /*
     template <typename T>
-    inline T * List<T>::_shiftElements(T * & pos, const unat n)
+    inline void List<T>::_shift(T * & pos)
+    {
+        if (_size == _capacity) [[unlikely]]
+        {
+            const unat i{unat(pos - _data)};
+            _newMemory(max(_capacity * 2u, _defaultMinCapacity), i, 1u);
+            pos = _data + i;
+        }
+        else
+        {
+            T * const end{_data + _size};
+
+            if (pos < end)
+            {
+                if constexpr (std::is_trivially_copyable_v<T>)
+                {
+                    std::memmove(pos + 1, pos, unat(end - pos) * sizeof(T));
+                }
+                else
+                {
+                    T * dst{end};
+                    T * src{dst - 1};
+                    new (dst) T{std::move(*src)};
+                    --src;
+                    --dst;
+
+                    for (; src >= pos; --src, --dst)
+                    {
+                        *dst = std::move(*src);
+                    }
+                }
+
+                pos->~T();
+            }
+        }
+
+        ++_size;
+    }
+
+    template <typename T>
+    inline T * List<T>::_shift(T * & pos, const unat n)
     {
         if (n == 0u)
         {
             return pos;
         }
 
-        const unat newSize{_size + n};
+        // The end of the range of slots that already have constructed elements
+        T * constructedEnd;
 
-        if (newSize > _capacity) [[unlikely]]
+        if (_size + n > _capacity) [[unlikely]]
         {
-            const unat i{pos - _data};
+            const unat i{unat(pos - _data)};
             _newMemory(max(_capacity + max(_capacity, n), _defaultMinCapacity), i, n);
             pos = _data + i;
-            return pos;
+            constructedEnd = pos;
         }
         else
         {
@@ -609,7 +605,7 @@ namespace qc
             // A portion of the elements will be freshly constructed in new slots
             for (T * firstConstructP{max(newTailStart, oldTailEnd)}; dst >= firstConstructP; --src, --dst)
             {
-                new (*dst) T{std::move(*src)};
+                new (dst) T{std::move(*src)};
             }
 
             // The remainder of the elements will be move assigned
@@ -618,10 +614,10 @@ namespace qc
                 *dst = std::move(*src);
             }
 
-            _size = newSize;
-
-            return min(newTailStart, oldTailEnd);
+            constructedEnd = min(newTailStart, oldTailEnd);
         }
+
+        _size += n;
+        return constructedEnd;
     }
-     */
 }
