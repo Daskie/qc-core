@@ -2,6 +2,7 @@
 
 #include <qc-core/enum-utils.hpp>
 
+using namespace qc::concepts;
 using namespace qc::types;
 
 enum class Enum0 : int { a, b, c };

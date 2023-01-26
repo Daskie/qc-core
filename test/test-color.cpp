@@ -2,6 +2,7 @@
 
 #include <qc-core/color.hpp>
 
+using namespace qc::concepts;
 using namespace qc::types;
 
 static fvec3 _truncate(const fvec3 & val)

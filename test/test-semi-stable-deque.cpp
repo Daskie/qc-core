@@ -6,7 +6,9 @@
 
 #include <qc-core/random.hpp>
 
+using namespace qc::concepts;
 using namespace qc::types;
+
 template <typename T> using Deque = qc::SemiStableDeque<T>;
 
 TEST(SemiStableDeque, general)

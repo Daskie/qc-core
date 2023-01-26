@@ -4,6 +4,7 @@
 
 #include <qc-core/vector-ext.hpp>
 
+using namespace qc::concepts;
 using namespace qc::types;
 
 template <typename T>
@@ -559,10 +560,6 @@ static void compileFunctionsFT()
     qc::ceil<s64>(v2);
     qc::ceil<s64>(v3);
     qc::ceil<s64>(v4);
-
-    qc::average(v2);
-    qc::average(v3);
-    qc::average(v4);
 
     qc::pow(v2, v);
     qc::pow(v3, v);

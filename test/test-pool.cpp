@@ -2,6 +2,7 @@
 
 #include <gtest/gtest.h>
 
+using namespace qc::concepts;
 using namespace qc::types;
 
 TEST(Pool, standard)

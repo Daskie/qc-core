@@ -4,6 +4,7 @@
 
 #include <qc-core/core.hpp>
 
+using namespace qc::concepts;
 using namespace qc::types;
 
 TEST(Paging, allocate)

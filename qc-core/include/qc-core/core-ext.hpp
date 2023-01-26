@@ -134,11 +134,6 @@ namespace qc
     //
     // ...
     //
-    template <Floating T, Floating... Args> constexpr T average(T v, Args... args) noexcept;
-
-    //
-    // ...
-    //
     template <Floating T> constexpr T radians(T degrees) noexcept;
 
     //
@@ -481,12 +476,6 @@ namespace qc
     inline constexpr T product(const T & v, const Args & ... args)
     {
         return T((v * ... * args));
-    }
-
-    template <Floating T, Floating... Args>
-    inline constexpr T average(const T v, const Args... args) noexcept
-    {
-        return (v + ... + args) * (T(1.0) / T(1 + sizeof...(Args)));
     }
 
     template <Floating T>

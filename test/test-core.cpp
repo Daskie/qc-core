@@ -3,6 +3,7 @@
 #include <qc-core/core-ext.hpp>
 #include <qc-core/list.hpp>
 
+using namespace qc::concepts;
 using namespace qc::types;
 
 enum TestEnum { a, b, c };
@@ -308,8 +309,6 @@ static void compileFunctionsFT()
     qc::mix(v, v, v);
 
     qc::unmix(v, v, v);
-
-    qc::average(v, v, v, v, v);
 
     qc::radians(v);
 

@@ -4,6 +4,7 @@
 
 #include <qc-core/matrix-ext.hpp>
 
+using namespace qc::concepts;
 using namespace qc::types;
 
 template <typename T>

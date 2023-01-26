@@ -22,11 +22,6 @@ namespace qc
     //
     // ...
     //
-    template <Floating T, int n> constexpr T average(const vec<T, n> & v);
-
-    //
-    // ...
-    //
     template <int n> constexpr bool any(bvec<n> v);
 
     //
@@ -269,14 +264,6 @@ namespace qc
         if constexpr (n == 2) return T(v.x * v.y);
         if constexpr (n == 3) return T(v.x * v.y * v.z);
         if constexpr (n == 4) return T(v.x * v.y * v.z * v.w);
-    }
-
-    template <Floating T, int n>
-    inline constexpr T average(const vec<T, n> & v)
-    {
-        if constexpr (n == 2) return (v.x + v.y) * T(0.5);
-        if constexpr (n == 3) return (v.x + v.y + v.z) * T(1.0 / 3.0);
-        if constexpr (n == 4) return (v.x + v.y + v.z + v.w) * T(0.25);
     }
 
     template <int n>

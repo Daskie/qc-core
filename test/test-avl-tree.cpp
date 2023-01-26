@@ -9,6 +9,7 @@
 
 using namespace std::string_literals;
 using namespace std::string_view_literals;
+using namespace qc::concepts;
 using namespace qc::types;
 
 class qc::_internal::AvlTreeFriend

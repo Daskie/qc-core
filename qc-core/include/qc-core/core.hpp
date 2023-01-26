@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cassert>
 #include <cstdint>
 
 #include <limits>
@@ -40,7 +41,10 @@ namespace qc
         using s64 = int64_t;
         using u64 = uint64_t;
         using f64 = double;
+    }
 
+    inline namespace concepts
+    {
         template <typename T1, typename T2> concept Same = std::is_same_v<std::remove_cv_t<T1>, std::remove_cv_t<T2>>;
         template <typename T> concept Integral = std::is_integral_v<T> && !Same<T, bool> && !Same<T, char>;
         template <typename T> concept SignedIntegral = Integral<T> && std::is_signed_v<T>;
@@ -58,17 +62,6 @@ namespace qc
         template <typename T1, typename T2> concept Sameish = std::is_same_v<std::decay_t<T1>, std::decay_t<T2>> || (Numeric<T1> && Numeric<T2> && SameNumericType<T1, T2>);
     }
 
-    template <int size> struct sized;
-    template <> struct sized<1> { using stype =  s8; using utype =  u8; };
-    template <> struct sized<2> { using stype = s16; using utype = u16; };
-    template <> struct sized<4> { using stype = s32; using utype = u32; using ftype = f32; };
-    template <> struct sized<8> { using stype = s64; using utype = u64; using ftype = f64; };
-    template <typename T> using stype = typename sized<sizeof(T)>::stype;
-    template <typename T> using utype = typename sized<sizeof(T)>::utype;
-    template <typename T> using ftype = typename sized<sizeof(T)>::ftype;
-
-    template <typename T1, typename T2> using Larger = std::conditional_t<sizeof(T1) >= sizeof(T2), T1, T2>;
-
     inline namespace numbers
     {
         template <Floating T> inline constexpr T infinity{std::numeric_limits<T>::infinity()};
@@ -81,9 +74,18 @@ namespace qc
         template <Floating T> inline constexpr T sqrt5{T(2.236067977499790)};
     }
 
+    template <int size> struct sized;
+    template <> struct sized<1> { using stype =  s8; using utype =  u8; };
+    template <> struct sized<2> { using stype = s16; using utype = u16; };
+    template <> struct sized<4> { using stype = s32; using utype = u32; using ftype = f32; };
+    template <> struct sized<8> { using stype = s64; using utype = u64; using ftype = f64; };
+    template <typename T> using stype = typename sized<sizeof(T)>::stype;
+    template <typename T> using utype = typename sized<sizeof(T)>::utype;
+    template <typename T> using ftype = typename sized<sizeof(T)>::ftype;
+
     template <typename T, typename... Ts> concept OneOf = (std::same_as<T, Ts> || ...);
 
-    template <Enum E> constexpr std::underlying_type_t<E> underlyingVal(const E e);
+    template <Enum E> constexpr std::underlying_type_t<E> underlyingVal(const E e) noexcept { return std::underlying_type_t<E>(e); }
 
     template <typename T1, typename T2 = T1>
     struct Duo
@@ -164,12 +166,6 @@ namespace qc
 
 namespace qc
 {
-    template <Enum E>
-    inline constexpr std::underlying_type_t<E> underlyingVal(const E e)
-    {
-        return std::underlying_type_t<E>(e);
-    }
-
     template <NumericOrPointer T1, NumericOrPointer T2>
     requires Sameish<T1, T2>
     inline constexpr auto min(const T1 v1, const T2 v2)
