@@ -26,13 +26,12 @@ namespace qc
         using reverse_iterator = T *;
         using const_reverse_iterator = const T *;
 
-        template <typename T_> friend void swap(List<T_> & l1, List<T_> & l2) noexcept;
-
         List() noexcept = default;
-        List(unat size);
-        List(unat size, const T & v);
+        List(unat n);
+        List(unat n, const T & v);
         template <typename It> List(It first, It last);
         List(std::initializer_list<T> vs);
+        List(std::span<const T> vs);
 
         List(const List &) = delete;
         List(List && other) noexcept;
@@ -40,12 +39,20 @@ namespace qc
         List & operator=(const List &) = delete;
         List & operator=(List && other) noexcept;
 
+        List & operator=(std::initializer_list<T> vs) noexcept;
+        List & operator=(std::span<const T> vs) noexcept;
+
         ~List() noexcept;
+
+        void assign(unat n, const T & v);
+        template <typename It> void assign(It first, It last);
+        void assign(std::initializer_list<T> vs);
+        void assign(std::span<const T> vs);
 
         void reserve(unat capacity);
 
-        void resize(unat size);
-        void resize(unat size, const T & v);
+        void resize(unat n);
+        void resize(unat n, const T & v);
 
         void shrink();
 
@@ -65,9 +72,12 @@ namespace qc
         template <typename... Args> T * emplace(T * pos, Args &&... args);
 
         void pop() noexcept;
+        void pop(unat n) noexcept;
 
         T * erase(T * pos) noexcept;
         T * erase(T * first, T * last) noexcept;
+
+        template <typename Pred> unat eraseIf(Pred && pred) noexcept;
 
         T & operator[](const unat i) noexcept { return _data[i]; };
         const T & operator[](const unat i) const noexcept { return _data[i]; };
@@ -120,61 +130,42 @@ namespace qc
 namespace qc
 {
     template <typename T>
-    inline void swap(List<T> & l1, List<T> & l2) noexcept
+    inline List<T>::List(const unat n)
     {
-        std::swap(l1._capacity, l2._capacity);
-        std::swap(l1._size, l2._size);
-        std::swap(l1._data, l2._data);
+        resize(n);
     }
 
     template <typename T>
-    inline List<T>::List(const unat size)
+    inline List<T>::List(const unat n, const T & v)
     {
-        resize(size);
-    }
-
-    template <typename T>
-    inline List<T>::List(const unat size, const T & v)
-    {
-        resize(size, v);
+        assign(n, v);
     }
 
     template <typename T>
     template <typename It>
     inline List<T>::List(It first, const It last)
     {
-        const unat count{unat(std::distance(first, last))};
-
-        reserve(count);
-
-        for (T * dst{_data}; first != last; ++first, ++dst)
-        {
-            new (dst) T{*first};
-        }
-
-        _size = count;
+        assign(first, last);
     }
 
     template <typename T>
     inline List<T>::List(const std::initializer_list<T> vs)
     {
-        reserve(vs.size());
+        assign(vs);
+    }
 
-        T * dst{_data};
-        for (const T & v: vs)
-        {
-            new (dst) T{v};
-            ++dst;
-        }
-
-        _size = vs.size();
+    template <typename T>
+    inline List<T>::List(const std::span<const T> vs)
+    {
+        assign(vs);
     }
 
     template <typename T>
     inline List<T>::List(List && other) noexcept :
         _capacity{std::exchange(other._capacity, 0u)},
         _size{std::exchange(other._size, 0u)},
-        _data{std::exchange(other._data, nullptr)} {}
+        _data{std::exchange(other._data, nullptr)}
+    {}
 
     template <typename T>
     inline List<T> & List<T>::operator=(List<T> && other) noexcept
@@ -182,6 +173,22 @@ namespace qc
         _capacity = std::exchange(other._capacity, 0u);
         _size = std::exchange(other._size, 0u);
         _data = std::exchange(other._data, nullptr);
+
+        return *this;
+    }
+
+    template <typename T>
+    inline List<T> & List<T>::operator=(const std::initializer_list<T> vs) noexcept
+    {
+        assign(vs);
+
+        return *this;
+    }
+
+    template <typename T>
+    inline List<T> & List<T>::operator=(const std::span<const T> vs) noexcept
+    {
+        assign(vs);
 
         return *this;
     }
@@ -208,6 +215,68 @@ namespace qc
     }
 
     template <typename T>
+    inline void List<T>::assign(const unat n, const T & v)
+    {
+        clear();
+
+        resize(n, v);
+    }
+
+    template <typename T>
+    template <typename It>
+    inline void List<T>::assign(It first, const It last)
+    {
+        clear();
+
+        const unat count{unat(std::distance(first, last))};
+
+        reserve(count);
+
+        for (T * dst{_data}; first != last; ++first, ++dst)
+        {
+            new(dst) T{*first};
+        }
+
+        _size = count;
+    }
+
+    template <typename T>
+    inline void List<T>::assign(const std::initializer_list<T> vs)
+    {
+        clear();
+
+        reserve(vs.size());
+
+        T * dst{_data};
+        for (const T & v: vs)
+        {
+            new (dst) T{v};
+            ++dst;
+        }
+
+        _size = vs.size();
+    }
+
+    template <typename T>
+    inline void List<T>::assign(const std::span<const T> vs)
+    {
+        if constexpr (std::is_trivially_copyable_v<T>)
+        {
+            clear();
+
+            reserve(vs.size());
+
+            std::memcpy(_data, vs.data(), vs.size() * sizeof(T));
+
+            _size = vs.size();
+        }
+        else
+        {
+            assign(vs.begin(), vs.end());
+        }
+    }
+
+    template <typename T>
     inline void List<T>::reserve(const unat capacity)
     {
         if (capacity > _capacity)
@@ -217,11 +286,11 @@ namespace qc
     }
 
     template <typename T>
-    inline void List<T>::resize(const unat size)
+    inline void List<T>::resize(const unat n)
     {
-        if (size > _size)
+        if (n > _size)
         {
-            reserve(size);
+            reserve(n);
 
             if constexpr (!std::is_trivially_default_constructible_v<T>)
             {
@@ -235,22 +304,22 @@ namespace qc
         {
             if constexpr (!std::is_trivially_destructible_v<T>)
             {
-                for (T * p{_data + size}, * end{_data + _size}; p < end; ++p)
+                for (T * p{_data + n}, * end{_data + _size}; p < end; ++p)
                 {
                     p->~T();
                 }
             }
         }
 
-        _size = size;
+        _size = n;
     }
 
     template <typename T>
-    inline void List<T>::resize(const unat size, const T & v)
+    inline void List<T>::resize(const unat n, const T & v)
     {
-        if (size > _size)
+        if (n > _size)
         {
-            reserve(size);
+            reserve(n);
 
             for (T * p{_data + _size}, * end{_data + _capacity}; p < end; ++p)
             {
@@ -261,14 +330,14 @@ namespace qc
         {
             if constexpr (!std::is_trivially_destructible_v<T>)
             {
-                for (T * p{_data + size}, * end{_data + _size}; p < end; ++p)
+                for (T * p{_data + n}, * end{_data + _size}; p < end; ++p)
                 {
                     p->~T();
                 }
             }
         }
 
-        _size = size;
+        _size = n;
     }
 
     template <typename T>
@@ -366,6 +435,8 @@ namespace qc
     template <typename T>
     inline T * List<T>::insert(T * pos, const unat n, const T & v)
     {
+        assert(unat(pos - _data) <= _size);
+
         T * const constructedEnd{_shift(pos, n)};
         T * const unconstructedEnd{pos + n};
 
@@ -380,6 +451,8 @@ namespace qc
     template <typename It>
     inline T * List<T>::insert(T * pos, It first, const It last)
     {
+        assert(unat(pos - _data) <= _size);
+
         const unat n{unat(std::distance(first, last))};
         T * const constructedEnd{_shift(pos, n)};
         T * const unconstructedEnd{pos + n};
@@ -401,6 +474,8 @@ namespace qc
     template <typename... Args>
     inline T * List<T>::emplace(T * pos, Args &&... args)
     {
+        assert(unat(pos - _data) <= _size);
+
         _shift(pos);
 
         // Prefer brace initialization, unless the type has an initializer list constructor
@@ -419,10 +494,25 @@ namespace qc
     template <typename T>
     inline void List<T>::pop() noexcept
     {
-        if (_size)
+        assert(_size);
+
+        _data[--_size].~T();
+    }
+
+    template <typename T>
+    inline void List<T>::pop(const unat n) noexcept
+    {
+        assert(_size >= n);
+
+        if constexpr (!std::is_trivially_destructible_v<T>)
         {
-            _data[--_size].~T();
+            for (T * end{_data + _size}, * pos{end - n}; pos < end; ++pos)
+            {
+                pos->~T();
+            }
         }
+
+        _size -= n;
     }
 
     template <typename T>
@@ -438,6 +528,8 @@ namespace qc
         {
             return first;
         }
+
+        assert(first >= _data && last <= _data + _size);
 
         if constexpr (std::is_trivially_copyable_v<T> && std::is_trivially_destructible_v<T>)
         {
@@ -459,6 +551,32 @@ namespace qc
 
         _size -= last - first;
         return first;
+    }
+
+    template <typename T>
+    template <typename Pred>
+    inline unat List<T>::eraseIf(Pred && pred) noexcept
+    {
+        T * const end{_data + _size};
+        T * dst{_data};
+
+        while (dst < end && !pred(*dst)) ++dst;
+
+        for (T * src{dst + 1}; ; ++dst, ++src)
+        {
+            while (src < end && pred(*src)) ++src;
+
+            if (src >= end)
+            {
+                break;
+            }
+
+            *dst = std::move(*src);
+        }
+
+        const unat n{unat(end - dst)};
+        pop(n);
+        return n;
     }
 
     template <typename T>
