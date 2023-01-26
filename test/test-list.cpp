@@ -2068,3 +2068,26 @@ TEST(List, typeWithInitializerListConstructor)
         ASSERT_EQ(list.back(), (std::vector<size_t>{3u, 3u}));
     }
 }
+
+TEST(List, pushIterator)
+{
+    qc::List<std::string> list{};
+    ASSERT_EQ(list.size(), 0u);
+
+    qc::PushIterator<std::string> it{list.pushIterator()};
+
+    *it = std::string{"a"};
+    ASSERT_EQ(list.size(), 1u);
+    ASSERT_EQ(list, (IL<std::string>{"a"}));
+
+    const std::string bStr{"b"};
+    *it = bStr;
+    ASSERT_EQ(list.size(), 2u);
+    ASSERT_EQ(list, (IL<std::string>{"a", "b"}));
+
+    std::string cStr{"c"};
+    *it = std::move(cStr);
+    ASSERT_EQ(list.size(), 3u);
+    ASSERT_EQ(list, (IL<std::string>{"a", "b", "c"}));
+    ASSERT_TRUE(cStr.empty());
+}

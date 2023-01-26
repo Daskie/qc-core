@@ -10,6 +10,28 @@
 
 namespace qc
 {
+    template <typename T> class List;
+
+    template <typename T>
+    class PushIterator
+    {
+      public:
+
+        PushIterator(List<T> & list) noexcept : _list{&list} {}
+
+        PushIterator & operator=(const T & v);
+        PushIterator & operator=(T && v);
+
+        PushIterator & operator*() noexcept { return *this; };
+
+        PushIterator & operator++() noexcept { return *this; };
+        PushIterator & operator++(int) noexcept { return *this; };
+
+      private:
+
+        List<T> * _list;
+    };
+
     template <typename T>
     class List
     {
@@ -112,6 +134,8 @@ namespace qc
         const T * end() const noexcept { return _data + _size; }
         const T * cend() const noexcept { return _data + _size; }
 
+        PushIterator<T> pushIterator() noexcept { return PushIterator<T>{*this}; }
+
         bool operator==(const List & other) const noexcept;
         bool operator==(std::initializer_list<T> other) const noexcept;
 
@@ -136,6 +160,21 @@ namespace qc
 
 namespace qc
 {
+    template <typename T>
+    inline PushIterator<T> & PushIterator<T>::operator=(const T & v)
+    {
+        _list->push(v);
+
+        return *this;
+    }
+    template <typename T>
+    inline PushIterator<T> & PushIterator<T>::operator=(T && v)
+    {
+        _list->push(std::move(v));
+
+        return *this;
+    }
+
     template <typename T>
     inline List<T>::List(const unat n)
     {
