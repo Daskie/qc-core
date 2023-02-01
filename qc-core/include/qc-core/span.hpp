@@ -97,6 +97,8 @@ namespace qc
 
         ~span() noexcept = default;
 
+        constexpr explicit operator bool() const noexcept;
+
         constexpr auto size() const noexcept;
 
         constexpr bool contains(T v) const noexcept;
@@ -122,6 +124,8 @@ namespace qc
         span & operator=(span && s) noexcept = default;
 
         ~span() noexcept = default;
+
+        constexpr explicit operator bool() const noexcept;
 
         constexpr vec2<T> size() const noexcept;
 
@@ -153,6 +157,8 @@ namespace qc
         span & operator=(span && s) noexcept = default;
 
         ~span() noexcept = default;
+
+        constexpr explicit operator bool() const noexcept;
 
         constexpr vec3<T> size() const noexcept;
 
@@ -192,6 +198,8 @@ namespace qc
         span & operator=(span && s) noexcept = default;
 
         ~span() noexcept = default;
+
+        constexpr explicit operator bool() const noexcept;
 
         constexpr vec4<T> size() const noexcept;
 
@@ -327,6 +335,12 @@ namespace qc
     {}
 
     template <NumericOrPointer T>
+    inline constexpr span<T, 1>::operator bool() const noexcept
+    {
+        return min || max;
+    }
+
+    template <NumericOrPointer T>
     inline constexpr auto span<T, 1>::size() const noexcept
     {
         return max - min;
@@ -376,6 +390,12 @@ namespace qc
         min{s1.min, s2.min},
         max{s1.max, s2.max}
     {}
+
+    template <Numeric T>
+    inline constexpr span<T, 2>::operator bool() const noexcept
+    {
+        return min || max;
+    }
 
     template <Numeric T>
     inline constexpr vec2<T> span<T, 2>::size() const noexcept
@@ -453,6 +473,12 @@ namespace qc
         min(s1.min, s2.min),
         max(s1.max, s2.max)
     {}
+
+    template <Numeric T>
+    inline constexpr span<T, 3>::operator bool() const noexcept
+    {
+        return min || max;
+    }
 
     template <Numeric T>
     inline constexpr vec3<T> span<T, 3>::size() const noexcept
@@ -572,6 +598,12 @@ namespace qc
         min{s1.min, s2.min},
         max{s1.max, s2.max}
     {}
+
+    template <Numeric T>
+    inline constexpr span<T, 4>::operator bool() const noexcept
+    {
+        return min || max;
+    }
 
     template <Numeric T>
     inline constexpr vec4<T> span<T, 4>::size() const noexcept

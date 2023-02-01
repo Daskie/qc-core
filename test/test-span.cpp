@@ -486,6 +486,11 @@ static void compileCastsTTN()
     static_cast<span<T2, n>>(s2);
     static_cast<span<T2, n>>(s3);
     static_cast<span<T2, n>>(s4);
+
+    static_cast<bool>(s1);
+    static_cast<bool>(s2);
+    static_cast<bool>(s3);
+    static_cast<bool>(s4);
 }
 
 template <typename T1, typename T2>
