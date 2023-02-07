@@ -3,4 +3,5 @@ qc_setup_target(
     STATIC_LIBRARY
     PUBLIC_LINKS
         qc-core
+    NO_AVX
 )

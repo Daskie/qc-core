@@ -45,6 +45,16 @@ qc_setup_target(
 )
 
 qc_setup_target(
+    test-cpu
+    EXECUTABLE
+    SOURCE_FILES
+        test-cpu.cpp
+    PRIVATE_LINKS
+        qc-core-platform
+        GTest::gtest_main
+)
+
+qc_setup_target(
     test-color
     EXECUTABLE
     SOURCE_FILES
@@ -170,7 +180,7 @@ qc_setup_target(
     SOURCE_FILES
         test-smart-pointer.cpp
     PRIVATE_LINKS
-        qc-core-platform
+        qc-core
         GTest::gtest_main
 )
 
