@@ -20,7 +20,7 @@ namespace qc
 
         ~EBox();
 
-        [[nodiscard]] explicit operator bool() const { return _error == E{}; }
+        [[nodiscard]] operator bool() const { return _error == E{}; }
 
         [[nodiscard]] operator E() const { return _error; }
 
