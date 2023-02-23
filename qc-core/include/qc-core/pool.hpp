@@ -8,8 +8,6 @@
 
 namespace qc
 {
-    struct PoolError {};
-
     template <typename T, bool fixed = false> class Pool;
     template <typename T> using FixedPool = Pool<T, true>;
 
@@ -22,7 +20,7 @@ namespace qc
 
       protected:
 
-        _PoolExtra() noexcept = default;
+        _PoolExtra() = default;
     };
 
     template <typename T>
@@ -34,9 +32,9 @@ namespace qc
 
         void shrinkToFit();
 
-        u32 maxPageCount() const noexcept { return _maxPageCount; }
+        u32 maxPageCount() const { return _maxPageCount; }
 
-        u32 pageCount() const noexcept { return _pageCount; }
+        u32 pageCount() const { return _pageCount; }
 
       protected:
 
@@ -44,7 +42,7 @@ namespace qc
         u32 _pageCount{};
         unat _maxCapacity{};
 
-        _PoolExtra() noexcept = default;
+        _PoolExtra() = default;
     };
 
     template <typename T, bool fixed>
@@ -68,16 +66,16 @@ namespace qc
         using iterator = _Iterator<false>;
         using const_iterator = _Iterator<true>;
 
-        Pool() noexcept = default;
+        Pool() = default;
         explicit Pool(unat capacity);
 
         Pool(const Pool &) = delete;
-        Pool(Pool && other) noexcept;
+        Pool(Pool && other);
 
         Pool & operator=(const Pool &) = delete;
-        Pool & operator=(Pool && other) noexcept;
+        Pool & operator=(Pool && other);
 
-        ~Pool() noexcept;
+        ~Pool();
 
         void setCapacity(unat capacity);
 
@@ -85,23 +83,23 @@ namespace qc
 
         void destroy(T & v);
 
-        bool contains(const T * v) const noexcept;
+        bool contains(const T * v) const;
 
-        unat capacity() const noexcept;
+        unat capacity() const;
 
-        unat size() const noexcept { return _size; }
+        unat size() const { return _size; }
 
-        bool empty() const noexcept { return _size == 0u; }
+        bool empty() const { return _size == 0u; }
 
-        bool full() const noexcept { return _size >= capacity(); }
+        bool full() const { return _size >= capacity(); }
 
-        iterator begin() noexcept;
-        const_iterator begin() const noexcept;
-        const_iterator cbegin() const noexcept { return begin(); };
+        iterator begin();
+        const_iterator begin() const;
+        const_iterator cbegin() const { return begin(); };
 
-        iterator end() noexcept;
-        const_iterator end() const noexcept;
-        const_iterator cend() const noexcept { return end(); };
+        iterator end();
+        const_iterator end() const;
+        const_iterator cend() const { return end(); };
 
       private:
 
@@ -117,7 +115,7 @@ namespace qc
         unat _size{};
         List<_Range> _freeRanges{};
 
-        _Range * _find(const T * slot) noexcept;
+        _Range * _find(const T * slot);
 
         void _expand() requires (!fixed);
 
@@ -141,26 +139,26 @@ namespace qc
         using pointer = _T *;
         using difference_type = ptrdiff_t;
 
-        _Iterator(const _Iterator &) noexcept = default;
-        _Iterator(const _Iterator<false> &) noexcept requires constant;
+        _Iterator(const _Iterator &) = default;
+        _Iterator(const _Iterator<false> &) requires constant;
 
-        _Iterator & operator=(const _Iterator &) noexcept = default;
+        _Iterator & operator=(const _Iterator &) = default;
 
-        reference operator*() const noexcept { return *_slot; }
+        reference operator*() const { return *_slot; }
 
-        pointer operator->() const noexcept { return _slot; }
+        pointer operator->() const { return _slot; }
 
-        _Iterator & operator++() noexcept;
-        _Iterator operator++(int) noexcept;
+        _Iterator & operator++();
+        _Iterator operator++(int);
 
-        bool operator==(const _Iterator & other) const noexcept;
+        bool operator==(const _Iterator & other) const;
 
       private:
 
         _T * _slot{};
         _Range * _nextFreeRange{};
 
-        _Iterator(_T * slot, _Range * nextFreeRange) noexcept;
+        _Iterator(_T * slot, _Range * nextFreeRange);
     };
 }
 
@@ -182,7 +180,7 @@ namespace qc
     }
 
     template <typename T, bool fixed>
-    inline Pool<T, fixed>::Pool(Pool && other) noexcept :
+    inline Pool<T, fixed>::Pool(Pool && other) :
         _PoolExtra<T, fixed>{std::exchange(static_cast<_Extra &>(other), {})},
         _slotRange{std::exchange(other._slotRange, {})},
         _size{std::exchange(other._size, 0u)},
@@ -190,7 +188,7 @@ namespace qc
     {}
 
     template <typename T, bool fixed>
-    inline auto Pool<T, fixed>::operator=(Pool && other) noexcept -> Pool &
+    inline auto Pool<T, fixed>::operator=(Pool && other) -> Pool &
     {
         if (&other == this)
         {
@@ -206,7 +204,7 @@ namespace qc
     }
 
     template <typename T, bool fixed>
-    inline Pool<T, fixed>::~Pool() noexcept
+    inline Pool<T, fixed>::~Pool()
     {
         if (_slotRange.start)
         {
@@ -241,7 +239,8 @@ namespace qc
         // May only be called before memory is reserved
         if (_slotRange.start)
         {
-            throw PoolError{};
+            assert(false);
+            return;
         }
 
         if constexpr (fixed)
@@ -271,7 +270,7 @@ namespace qc
         {
             if constexpr (fixed)
             {
-                throw PoolError{};
+                abort();
             }
             else
             {
@@ -296,7 +295,8 @@ namespace qc
         // Ensure the slot is in the pool
         if (!contains(&v))
         {
-            throw PoolError{};
+            assert(false);
+            return;
         }
 
         // Find the free range before or including the slot
@@ -308,7 +308,8 @@ namespace qc
         // Ensure slot is in-use, i.e. it's not in a free range
         if (isLower && &v < lowerIt->end)
         {
-            throw PoolError{};
+            assert(false);
+            return;
         }
 
         // Destruct object
@@ -367,13 +368,13 @@ namespace qc
     }
 
     template <typename T, bool fixed>
-    inline bool Pool<T, fixed>::contains(const T * const v) const noexcept
+    inline bool Pool<T, fixed>::contains(const T * const v) const
     {
         return v >= _slotRange.start && v < _slotRange.end;
     }
 
     template <typename T, bool fixed>
-    inline unat Pool<T, fixed>::capacity() const noexcept
+    inline unat Pool<T, fixed>::capacity() const
     {
         if constexpr (fixed)
         {
@@ -386,14 +387,14 @@ namespace qc
     }
 
     template <typename T, bool fixed>
-    inline auto Pool<T, fixed>::begin() noexcept -> iterator
+    inline auto Pool<T, fixed>::begin() -> iterator
     {
         const const_iterator it{const_cast<const Pool *>(this)->begin()};
         return reinterpret_cast<const iterator &>(it);
     }
 
     template <typename T, bool fixed>
-    inline auto Pool<T, fixed>::begin() const noexcept -> const_iterator
+    inline auto Pool<T, fixed>::begin() const -> const_iterator
     {
         if (_freeRanges.empty())
         {
@@ -417,19 +418,19 @@ namespace qc
     }
 
     template <typename T, bool fixed>
-    inline auto Pool<T, fixed>::end() noexcept -> iterator
+    inline auto Pool<T, fixed>::end() -> iterator
     {
         return iterator{_slotRange.end, nullptr};
     }
 
     template <typename T, bool fixed>
-    inline auto Pool<T, fixed>::end() const noexcept -> const_iterator
+    inline auto Pool<T, fixed>::end() const -> const_iterator
     {
         return const_iterator{_slotRange.end, nullptr};
     }
 
     template <typename T, bool fixed>
-    inline auto Pool<T, fixed>::_find(const T * const slot) noexcept -> _Range *
+    inline auto Pool<T, fixed>::_find(const T * const slot) -> _Range *
     {
         return lowerBound(_freeRanges.begin(), _freeRanges.end(), slot, [](const _Range & range, const T * const slot) -> bool { return range.start <= slot; });
     }
@@ -441,20 +442,14 @@ namespace qc
         if (!_slotRange.start)
         {
             // Max capacity must have been set by this point
-            if (!this->_maxPageCount)
-            {
-                throw PoolError{};
-            }
+            ABORT_IF(!this->_maxPageCount);
 
             _slotRange.start = static_cast<T *>(reservePages(this->_maxPageCount));
             _slotRange.end = _slotRange.start;
         }
 
         // Ensure we still have more reserved pages
-        if (this->_pageCount == this->_maxPageCount)
-        {
-            throw PoolError{};
-        }
+        ABORT_IF(this->_pageCount >= this->_maxPageCount);
 
         // Double the number of committed pages
         const u32 minPageCount{u32((sizeof(T) + pageSize - 1u) / pageSize)};
@@ -532,21 +527,21 @@ namespace qc
 
     template <typename T, bool fixed>
     template <bool constant>
-    inline Pool<T, fixed>::_Iterator<constant>::_Iterator(const _Iterator<false> & other) noexcept requires constant :
+    inline Pool<T, fixed>::_Iterator<constant>::_Iterator(const _Iterator<false> & other) requires constant :
         _slot{other._slot},
         _nextFreeRange{other._nextFreeRange}
     {}
 
     template <typename T, bool fixed>
     template <bool constant>
-    inline Pool<T, fixed>::_Iterator<constant>::_Iterator(_T * const slot, _Range * const nextFreeRange) noexcept :
+    inline Pool<T, fixed>::_Iterator<constant>::_Iterator(_T * const slot, _Range * const nextFreeRange) :
         _slot{slot},
         _nextFreeRange{nextFreeRange}
     {}
 
     template <typename T, bool fixed>
     template <bool constant>
-    inline auto Pool<T, fixed>::_Iterator<constant>::operator++() noexcept -> _Iterator &
+    inline auto Pool<T, fixed>::_Iterator<constant>::operator++() -> _Iterator &
     {
         ++_slot;
 
@@ -561,7 +556,7 @@ namespace qc
 
     template <typename T, bool fixed>
     template <bool constant>
-    inline auto Pool<T, fixed>::_Iterator<constant>::operator++(int) noexcept -> _Iterator
+    inline auto Pool<T, fixed>::_Iterator<constant>::operator++(int) -> _Iterator
     {
         const _Iterator tmp{*this};
         ++*this;
@@ -570,7 +565,7 @@ namespace qc
 
     template <typename T, bool fixed>
     template <bool constant>
-    inline bool Pool<T, fixed>::_Iterator<constant>::operator==(const _Iterator & other) const noexcept
+    inline bool Pool<T, fixed>::_Iterator<constant>::operator==(const _Iterator & other) const
     {
         return _slot == other._slot;
     }

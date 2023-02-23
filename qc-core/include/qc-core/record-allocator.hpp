@@ -1,6 +1,5 @@
 #pragma once
 
-#include <exception>
 #include <new>
 #include <utility>
 
@@ -38,26 +37,26 @@ namespace qc::memory
         using propagate_on_container_swap = std::true_type;
         using is_always_equal = std::false_type;
 
-        RecordAllocator() noexcept :
+        RecordAllocator() :
             _listI{_minutia::recordAllocatorStatsList.size()}
         {
-            _minutia::recordAllocatorStatsList.emplace_back();
+            _minutia::recordAllocatorStatsList.push();
         }
 
-        RecordAllocator(const RecordAllocator &) noexcept = default;
+        RecordAllocator(const RecordAllocator &) = default;
 
         template <typename U>
-        RecordAllocator(const RecordAllocator<U> & other) noexcept :
+        RecordAllocator(const RecordAllocator<U> & other) :
             _listI{other._listI}
         {}
 
-        RecordAllocator(RecordAllocator && other) noexcept :
+        RecordAllocator(RecordAllocator && other) :
             _listI{std::exchange(other._listI, 0u)}
         {}
 
-        RecordAllocator & operator=(const RecordAllocator &) noexcept = default;
+        RecordAllocator & operator=(const RecordAllocator &) = default;
 
-        RecordAllocator & operator=(RecordAllocator && other) noexcept
+        RecordAllocator & operator=(RecordAllocator && other)
         {
             if (&other == this)
             {
@@ -68,7 +67,7 @@ namespace qc::memory
             return *this;
         }
 
-        ~RecordAllocator() noexcept = default;
+        ~RecordAllocator() = default;
 
         T * allocate(const unat n)
         {
@@ -91,15 +90,15 @@ namespace qc::memory
 
         RecordAllocatorStats & stats()
         {
-            return _minutia::recordAllocatorStatsList.at(_listI);
+            return _minutia::recordAllocatorStatsList[_listI];
         }
 
         const RecordAllocatorStats & stats() const
         {
-            return _minutia::recordAllocatorStatsList.at(_listI);
+            return _minutia::recordAllocatorStatsList[_listI];
         }
 
-        bool operator==(const RecordAllocator &) const noexcept = default;
+        bool operator==(const RecordAllocator &) const = default;
 
         private: //-------------------------------------------------------------
 

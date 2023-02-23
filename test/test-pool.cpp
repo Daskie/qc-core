@@ -77,7 +77,7 @@ TEST(Pool, standard)
 
     // [0|1|2|3|4]
     #pragma warning(suppress: 4834)
-    EXPECT_THROW(pool.create(5), qc::PoolError);
+    ASSERT_DEATH(pool.create(5), "");
 
     // [0|1|2|3|_]
     pool.destroy(e4);
@@ -196,9 +196,9 @@ TEST(Pool, standard)
     ASSERT_EQ(pool.end(), ++it);
 
     // [7|_|_|_|6]
-    ASSERT_THROW(pool.destroy(e8), qc::PoolError);
-    ASSERT_THROW(pool.destroy(e9), qc::PoolError);
-    ASSERT_THROW(pool.destroy(e10), qc::PoolError);
+    ASSERT_DEBUG_DEATH(pool.destroy(e8), "");
+    ASSERT_DEBUG_DEATH(pool.destroy(e9), "");
+    ASSERT_DEBUG_DEATH(pool.destroy(e10), "");
 
     // [_|_|_|_|6]
     pool.destroy(e7);
@@ -232,7 +232,7 @@ TEST(Pool, standard)
     ASSERT_EQ(0u, pool.size());
     ASSERT_EQ(pool.end(), pool.begin());
 
-    ASSERT_THROW(pool.destroy(e11), qc::PoolError);
+    ASSERT_DEBUG_DEATH(pool.destroy(e11), "");
 }
 
 TEST(FixedPool, standard)
@@ -300,7 +300,7 @@ TEST(FixedPool, standard)
 
     // [0|1|2|3|4]
     #pragma warning(suppress: 4834)
-    EXPECT_THROW(pool.create(5), qc::PoolError);
+    ASSERT_DEATH(pool.create(5), "");
 
     // [0|1|2|3|_]
     pool.destroy(e4);
@@ -419,9 +419,9 @@ TEST(FixedPool, standard)
     ASSERT_EQ(pool.end(), ++it);
 
     // [7|_|_|_|6]
-    ASSERT_THROW(pool.destroy(e8), qc::PoolError);
-    ASSERT_THROW(pool.destroy(e9), qc::PoolError);
-    ASSERT_THROW(pool.destroy(e10), qc::PoolError);
+    ASSERT_DEBUG_DEATH(pool.destroy(e8), "");
+    ASSERT_DEBUG_DEATH(pool.destroy(e9), "");
+    ASSERT_DEBUG_DEATH(pool.destroy(e10), "");
 
     // [_|_|_|_|6]
     pool.destroy(e7);
@@ -455,7 +455,7 @@ TEST(FixedPool, standard)
     ASSERT_EQ(0u, pool.size());
     ASSERT_EQ(pool.end(), pool.begin());
 
-    ASSERT_THROW(pool.destroy(e11), qc::PoolError);
+    ASSERT_DEBUG_DEATH(pool.destroy(e11), "");
 }
 
 TEST(Pool, single)
@@ -623,7 +623,7 @@ TEST(Pool, setCapacity)
     ASSERT_EQ(0u, pool.capacity());
     ASSERT_EQ(0u, pool.pageCount());
 
-    EXPECT_THROW(static_cast<void>(pool.create(0)), qc::PoolError);
+    ASSERT_DEATH(static_cast<void>(pool.create(0)), "");
 
     pool.setCapacity(1u);
     ASSERT_EQ(1u, pool.maxPageCount());
@@ -635,7 +635,7 @@ TEST(Pool, setCapacity)
     ASSERT_EQ(0u, pool.capacity());
     ASSERT_EQ(0u, pool.pageCount());
 
-    EXPECT_THROW(static_cast<void>(pool.create(0)), qc::PoolError);
+    ASSERT_DEATH(static_cast<void>(pool.create(0)), "");
 
     pool.setCapacity(qc::pageSize / sizeof(int) * 2u);
     ASSERT_EQ(2u, pool.maxPageCount());
@@ -649,10 +649,10 @@ TEST(Pool, setCapacity)
 
     [[maybe_unused]] int & v{pool.create(0)};
 
-    EXPECT_THROW(pool.setCapacity(pool.capacity()), qc::PoolError);
-    EXPECT_THROW(pool.setCapacity(qc::pageSize / sizeof(int) * 3u), qc::PoolError);
-    EXPECT_THROW(pool.setCapacity(1u), qc::PoolError);
-    EXPECT_THROW(pool.setCapacity(0u), qc::PoolError);
+    ASSERT_DEBUG_DEATH(pool.setCapacity(pool.capacity()), "");
+    ASSERT_DEBUG_DEATH(pool.setCapacity(qc::pageSize / sizeof(int) * 3u), "");
+    ASSERT_DEBUG_DEATH(pool.setCapacity(1u), "");
+    ASSERT_DEBUG_DEATH(pool.setCapacity(0u), "");
 }
 
 TEST(FixedPool, setCapacity)
@@ -660,13 +660,13 @@ TEST(FixedPool, setCapacity)
     qc::FixedPool<int> pool{};
     ASSERT_EQ(0u, pool.capacity());
 
-    EXPECT_THROW(static_cast<void>(pool.create(0)), qc::PoolError);
+    ASSERT_DEATH(static_cast<void>(pool.create(0)), "");
 
     pool.setCapacity(1u);
     ASSERT_EQ(1u, pool.capacity());
 
-    EXPECT_THROW(pool.setCapacity(2u), qc::PoolError);
-    EXPECT_THROW(pool.setCapacity(0u), qc::PoolError);
+    ASSERT_DEBUG_DEATH(pool.setCapacity(2u), "");
+    ASSERT_DEBUG_DEATH(pool.setCapacity(0u), "");
 }
 
 TEST(Pool, shrinkToFit)

@@ -31,54 +31,54 @@ namespace qc
         using iterator = _Iterator<false>;
         using const_iterator = _Iterator<true>;
 
-        AvlTree() noexcept = default;
+        AvlTree() = default;
 
         AvlTree(const AvlTree &) = delete;
-        AvlTree(AvlTree && other) noexcept;
+        AvlTree(AvlTree && other);
 
         AvlTree & operator=(const AvlTree &) = delete;
-        AvlTree & operator=(AvlTree && other) noexcept;
+        AvlTree & operator=(AvlTree && other);
 
-        ~AvlTree() noexcept;
+        ~AvlTree();
 
         iterator insert(const T & v) { return _insert(v); }
         iterator insert(T && v) { return _insert(std::move(v)); };
 
         template <typename... Args> iterator emplace(Args &&... args) { return _insert(T{std::forward<Args>(args)...}); }
 
-        //iterator erase(iterator pos) noexcept;
-        //iterator erase(iterator start, iterator end) noexcept;
-        //unat erase(const T & v) noexcept;
+        //iterator erase(iterator pos);
+        //iterator erase(iterator start, iterator end);
+        //unat erase(const T & v);
 
-        void clear() noexcept;
+        void clear();
 
-        bool contains(const T & v) const noexcept;
+        bool contains(const T & v) const;
 
-        unat count(const T & v) const noexcept;
+        unat count(const T & v) const;
 
-        iterator find(const T & v) noexcept;
-        const_iterator find(const T & v) const noexcept;
+        iterator find(const T & v);
+        const_iterator find(const T & v) const;
 
-        iterator lower_bound(const T & v) noexcept;
-        const_iterator lower_bound(const T & v) const noexcept;
+        iterator lower_bound(const T & v);
+        const_iterator lower_bound(const T & v) const;
 
-        iterator upper_bound(const T & v) noexcept;
-        const_iterator upper_bound(const T & v) const noexcept;
+        iterator upper_bound(const T & v);
+        const_iterator upper_bound(const T & v) const;
 
-        std::pair<iterator, iterator> equal_range(const T & v) noexcept;
-        std::pair<const_iterator, const_iterator> equal_range(const T & v) const noexcept;
+        std::pair<iterator, iterator> equal_range(const T & v);
+        std::pair<const_iterator, const_iterator> equal_range(const T & v) const;
 
-        unat size() const noexcept { return _size; }
+        unat size() const { return _size; }
 
-        bool empty() const noexcept { return !_size; }
+        bool empty() const { return !_size; }
 
-        iterator begin() noexcept { return const_cast<_Node *>(static_cast<const AvlTree *>(this)->begin()._node); }
-        const_iterator begin() const noexcept;
-        const_iterator cbegin() const noexcept { return begin(); }
+        iterator begin() { return const_cast<_Node *>(static_cast<const AvlTree *>(this)->begin()._node); }
+        const_iterator begin() const;
+        const_iterator cbegin() const { return begin(); }
 
-        iterator end() noexcept { return nullptr; }
-        const_iterator end() const noexcept { return nullptr; }
-        const_iterator cend() const noexcept { return nullptr; };
+        iterator end() { return nullptr; }
+        const_iterator end() const { return nullptr; }
+        const_iterator cend() const { return nullptr; };
 
       public: // NOCOMMIT
 
@@ -91,12 +91,12 @@ namespace qc
             int balance; // NOCOMMIT
         };
 
-        static void _rotateLeft(_Node * & node) noexcept;
-        static void _rotateRight(_Node * & node) noexcept;
-        static void _rotateLeftRight(_Node * & node) noexcept;
-        static void _rotateRightLeft(_Node * & node) noexcept;
+        static void _rotateLeft(_Node * & node);
+        static void _rotateRight(_Node * & node);
+        static void _rotateLeftRight(_Node * & node);
+        static void _rotateRightLeft(_Node * & node);
 
-        //static void _balanceShrink(_Node * node, bool side) noexcept;
+        //static void _balanceShrink(_Node * node, bool side);
 
         _Node * _root{};
         unat _size{};
@@ -125,23 +125,23 @@ namespace qc
         using pointer = _T *;
         using difference_type = ptrdiff_t;
 
-        _Iterator() noexcept = default;
+        _Iterator() = default;
 
-        reference operator*() const noexcept { return _node->v; }
+        reference operator*() const { return _node->v; }
 
-        pointer operator->() const noexcept { return &_node->v; }
+        pointer operator->() const { return &_node->v; }
 
-        _Iterator & operator++() noexcept;
-        _Iterator operator++(int) noexcept;
+        _Iterator & operator++();
+        _Iterator operator++(int);
 
-        _Iterator & operator--() noexcept;
-        _Iterator operator--(int) noexcept;
+        _Iterator & operator--();
+        _Iterator operator--(int);
 
       private:
 
         _Node * _node{};
 
-        _Iterator(_Node * node) noexcept;
+        _Iterator(_Node * node);
     };
 }
 
@@ -150,13 +150,13 @@ namespace qc
 namespace qc
 {
     template <typename T>
-    AvlTree<T>::AvlTree(AvlTree && other) noexcept :
+    AvlTree<T>::AvlTree(AvlTree && other) :
         _root{std::exchange(other._root, nullptr)},
         _size{std::exchange(other._size, 0u)}
     {}
 
     template <typename T>
-    AvlTree<T> & AvlTree<T>::operator=(AvlTree && other) noexcept
+    AvlTree<T> & AvlTree<T>::operator=(AvlTree && other)
     {
         if (&other == this)
         {
@@ -170,14 +170,14 @@ namespace qc
     }
 
     template <typename T>
-    AvlTree<T>::~AvlTree<T>() noexcept
+    AvlTree<T>::~AvlTree<T>()
     {
         clear();
     }
 
     /*
     template <typename T>
-    auto AvlTree<T>::erase(iterator pos) noexcept -> iterator
+    auto AvlTree<T>::erase(iterator pos) -> iterator
     {
         _Node * const eraseNode{pos._node};
         const iterator nextIt{++pos};
@@ -224,20 +224,20 @@ namespace qc
     }
 
     template <typename T>
-    auto AvlTree<T>::erase(const iterator start, const iterator end) noexcept -> iterator
+    auto AvlTree<T>::erase(const iterator start, const iterator end) -> iterator
     {
         // NOCOMMIT
     }
 
     template <typename T>
-    unat AvlTree<T>::erase(const T & v) noexcept
+    unat AvlTree<T>::erase(const T & v)
     {
         erase(lower_bound(v), upper_bound(v));
     }
      */
 
     template <typename T>
-    void AvlTree<T>::clear() noexcept
+    void AvlTree<T>::clear()
     {
         if (_root)
         {
@@ -248,38 +248,38 @@ namespace qc
     }
 
     template <typename T>
-    bool AvlTree<T>::contains(const T & v) const noexcept
+    bool AvlTree<T>::contains(const T & v) const
     {
         return find(v)._node;
     }
 
     template <typename T>
-    unat AvlTree<T>::count(const T & v) const noexcept
+    unat AvlTree<T>::count(const T & v) const
     {
         return std::distance(lower_bound(v), upper_bound(v));
     }
 
     template <typename T>
-    auto AvlTree<T>::find(const T & v) noexcept -> iterator
+    auto AvlTree<T>::find(const T & v) -> iterator
     {
         return const_cast<_Node *>(static_cast<const AvlTree *>(this)->find(v)._node);
     }
 
     template <typename T>
-    auto AvlTree<T>::find(const T & v) const noexcept -> const_iterator
+    auto AvlTree<T>::find(const T & v) const -> const_iterator
     {
         const iterator it{lower_bound(v)};
         return !it._node || v < it._node->v ? nullptr : it;
     }
 
     template <typename T>
-    auto AvlTree<T>::lower_bound(const T & v) noexcept -> iterator
+    auto AvlTree<T>::lower_bound(const T & v) -> iterator
     {
         return const_cast<_Node *>(static_cast<const AvlTree *>(this)->lower_bound(v)._node);
     }
 
     template <typename T>
-    auto AvlTree<T>::lower_bound(const T & v) const noexcept -> const_iterator
+    auto AvlTree<T>::lower_bound(const T & v) const -> const_iterator
     {
         _Node * node{_root};
         _Node * lowerBound{};
@@ -301,13 +301,13 @@ namespace qc
     }
 
     template <typename T>
-    auto AvlTree<T>::upper_bound(const T & v) noexcept -> iterator
+    auto AvlTree<T>::upper_bound(const T & v) -> iterator
     {
         return const_cast<_Node *>(static_cast<const AvlTree *>(this)->upper_bound(v)._node);
     }
 
     template <typename T>
-    auto AvlTree<T>::upper_bound(const T & v) const noexcept -> const_iterator
+    auto AvlTree<T>::upper_bound(const T & v) const -> const_iterator
     {
         _Node * node{_root};
         _Node * upperBound{};
@@ -329,19 +329,19 @@ namespace qc
     }
 
     template <typename T>
-    auto AvlTree<T>::equal_range(const T & v) noexcept -> std::pair<iterator, iterator>
+    auto AvlTree<T>::equal_range(const T & v) -> std::pair<iterator, iterator>
     {
         return {lower_bound(v), upper_bound(v)};
     }
 
     template <typename T>
-    auto AvlTree<T>::equal_range(const T & v) const noexcept -> std::pair<const_iterator, const_iterator>
+    auto AvlTree<T>::equal_range(const T & v) const -> std::pair<const_iterator, const_iterator>
     {
         return {lower_bound(v), upper_bound(v)};
     }
 
     template <typename T>
-    auto AvlTree<T>::begin() const noexcept -> const_iterator
+    auto AvlTree<T>::begin() const -> const_iterator
     {
         _Node * node{_root};
         while (node && node->left) node = node->left;
@@ -349,7 +349,7 @@ namespace qc
     }
 
     template <typename T>
-    void AvlTree<T>::_rotateLeft(_Node * & node) noexcept
+    void AvlTree<T>::_rotateLeft(_Node * & node)
     {
         _Node * const alpha{node};
         _Node * const beta{alpha->right};
@@ -367,7 +367,7 @@ namespace qc
     }
 
     template <typename T>
-    void AvlTree<T>::_rotateRight(_Node * & node) noexcept
+    void AvlTree<T>::_rotateRight(_Node * & node)
     {
         _Node * const alpha{node};
         _Node * const beta{alpha->left};
@@ -385,7 +385,7 @@ namespace qc
     }
 
     template <typename T>
-    void AvlTree<T>::_rotateLeftRight(_Node * & node) noexcept
+    void AvlTree<T>::_rotateLeftRight(_Node * & node)
     {
         _Node * const alpha{node};
         _Node * const beta{alpha->left};
@@ -408,7 +408,7 @@ namespace qc
     }
 
     template <typename T>
-    void AvlTree<T>::_rotateRightLeft(_Node * & node) noexcept
+    void AvlTree<T>::_rotateRightLeft(_Node * & node)
     {
         _Node * const alpha{node};
         _Node * const beta{alpha->right};
@@ -432,7 +432,7 @@ namespace qc
 
     /*
     template <typename T>
-    void AvlTree<T>::_balanceShrink(_Node * const node, const bool side) noexcept
+    void AvlTree<T>::_balanceShrink(_Node * const node, const bool side)
     {
         if (side)
         {
@@ -630,13 +630,13 @@ namespace qc
 
     template <typename T>
     template <bool constant>
-    AvlTree<T>::_Iterator<constant>::_Iterator(_Node * const node) noexcept :
+    AvlTree<T>::_Iterator<constant>::_Iterator(_Node * const node) :
         _node{node}
     {}
 
     template <typename T>
     template <bool constant>
-    auto AvlTree<T>::_Iterator<constant>::operator++() noexcept -> _Iterator &
+    auto AvlTree<T>::_Iterator<constant>::operator++() -> _Iterator &
     {
         if (_node->right)
         {
@@ -657,7 +657,7 @@ namespace qc
 
     template <typename T>
     template <bool constant>
-    auto AvlTree<T>::_Iterator<constant>::operator++(int) noexcept -> _Iterator
+    auto AvlTree<T>::_Iterator<constant>::operator++(int) -> _Iterator
     {
         const _Iterator temp{*this};
         ++*this;
@@ -666,7 +666,7 @@ namespace qc
 
     template <typename T>
     template <bool constant>
-    auto AvlTree<T>::_Iterator<constant>::operator--() noexcept -> _Iterator &
+    auto AvlTree<T>::_Iterator<constant>::operator--() -> _Iterator &
     {
         if (_node->left)
         {
@@ -688,7 +688,7 @@ namespace qc
 
     template <typename T>
     template <bool constant>
-    auto AvlTree<T>::_Iterator<constant>::operator--(int) noexcept -> _Iterator
+    auto AvlTree<T>::_Iterator<constant>::operator--(int) -> _Iterator
     {
         const _Iterator temp{*this};
         --*this;

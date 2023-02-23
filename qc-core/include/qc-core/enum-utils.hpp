@@ -30,30 +30,30 @@ namespace qc
 
         E current{};
 
-        constexpr reference operator*() const noexcept
+        constexpr reference operator*() const
         {
             return current;
         }
 
-        constexpr pointer operator->() const noexcept
+        constexpr pointer operator->() const
         {
             return &current;
         }
 
-        constexpr EnumIterator & operator++() noexcept
+        constexpr EnumIterator & operator++()
         {
             current = E(underlyingVal(current) + 1u);
             return *this;
         };
 
-        constexpr EnumIterator operator++(int) noexcept
+        constexpr EnumIterator operator++(int)
         {
             EnumIterator temp{*this};
             ++*this;
             return temp;
         }
 
-        constexpr bool operator==(const EnumIterator &) const noexcept = default;
+        constexpr bool operator==(const EnumIterator &) const = default;
     };
 
     // Ensure `EnumIterator<const E>` resolves to same type as `EnumIterator<E>`
@@ -62,12 +62,12 @@ namespace qc
     template <CountableEnum E>
     struct EnumIteration
     {
-        constexpr EnumIterator<E> begin() const noexcept
+        constexpr EnumIterator<E> begin() const
         {
             return {};
         }
 
-        constexpr EnumIterator<E> end() const noexcept
+        constexpr EnumIterator<E> end() const
         {
             return {E::_n};
         }
@@ -83,7 +83,7 @@ namespace qc
     namespace _internal
     {
         template <CountableEnum E>
-        constexpr std::array<E, enumCount<E>> makeEnumArray() noexcept
+        constexpr std::array<E, enumCount<E>> makeEnumArray()
         {
             std::array<E, enumCount<E>> array{};
             for (E v{}; v != E::_n; v = E(underlyingVal(v) + 1u))

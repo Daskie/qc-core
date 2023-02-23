@@ -83,7 +83,7 @@ namespace qc::color
     /// @return converted color
     ///
     template <Floating T>
-    inline vec3<T> srgbToLrgb(const vec3<T> & srgb) noexcept
+    inline vec3<T> srgbToLrgb(const vec3<T> & srgb)
     {
         return pow(srgb, T(2.2));
     }
@@ -94,7 +94,7 @@ namespace qc::color
     /// @return converted color
     ///
     template <Floating T>
-    inline vec3<T> lrgbToSrgb(const vec3<T> & lrgb) noexcept
+    inline vec3<T> lrgbToSrgb(const vec3<T> & lrgb)
     {
         return pow(lrgb, T(1.0 / 2.2));
     }
@@ -104,7 +104,7 @@ namespace qc::color
     /// @param srgb sRGB value to convert
     /// @return converted HSL value
     template <Floating T>
-    inline vec3<T> srgbToHsl(const vec3<T> & srgb) noexcept
+    inline vec3<T> srgbToHsl(const vec3<T> & srgb)
     {
         vec3<T> hsl{};
 
@@ -149,7 +149,7 @@ namespace qc::color
     namespace _minutia
     {
         template <Floating T>
-        inline vec3<T> hueToSrgb(const T hue, const T minComp, const T maxComp) noexcept
+        inline vec3<T> hueToSrgb(const T hue, const T minComp, const T maxComp)
         {
             const auto[fraction, whole]{fract_i<nat>(hue * T(6.0))};
             const T midOffset{(maxComp - minComp) * fraction};
@@ -171,7 +171,7 @@ namespace qc::color
     /// @return full value/saturated sRGB corresponding to `hue`
     ///
     template <Floating T>
-    inline vec3<T> hueToSrgb(const T hue) noexcept
+    inline vec3<T> hueToSrgb(const T hue)
     {
         return _minutia::hueToSrgb(hue, T(0.0), T(1.0));
     }
@@ -183,7 +183,7 @@ namespace qc::color
     /// @return converted color
     ///
     template <Floating T>
-    inline vec3<T> hslToSrgb(const vec3<T> & hsl) noexcept
+    inline vec3<T> hslToSrgb(const vec3<T> & hsl)
     {
         const T maxSpread{T(0.5) - qc::abs(hsl.z - T(0.5))};
         const T spread{maxSpread * hsl.y};
@@ -200,7 +200,7 @@ namespace qc::color
     /// @return gradient sRGB value
     ///
     template <Floating T>
-    inline vec3<T> thermalToSrgb(const T v) noexcept
+    inline vec3<T> thermalToSrgb(const T v)
     {
         static constexpr vec3<T> palette[12u]{
             transnorm<T>(ucvec3{0u, 0u, 0u}),
@@ -243,7 +243,7 @@ namespace qc::color
     /// @param lrgb color to convert
     /// @return converted color
     template <Floating T>
-    inline vec3<T> lrgbToXyz(const vec3<T> & lrgb) noexcept
+    inline vec3<T> lrgbToXyz(const vec3<T> & lrgb)
     {
         return lrgbToXyzMatrix<T> * lrgb;
     }
@@ -254,7 +254,7 @@ namespace qc::color
     /// @return converted color
     ///
     template <Floating T>
-    inline vec3<T> xyzToLrgb(const vec3<T> & xyz) noexcept
+    inline vec3<T> xyzToLrgb(const vec3<T> & xyz)
     {
         return xyzToLrgbMatrix<T> * xyz;
     }
@@ -265,7 +265,7 @@ namespace qc::color
     /// @return converted color
     ///
     template <Floating T>
-    inline vec3<T> xyzToXyy(const vec3<T> & xyz) noexcept
+    inline vec3<T> xyzToXyy(const vec3<T> & xyz)
     {
         const T temp{sum(xyz)};
         if (temp)
@@ -284,7 +284,7 @@ namespace qc::color
     /// @return converted color
     ///
     template <Floating T>
-    inline vec3<T> xyyToXyz(const vec3<T> & xyy) noexcept
+    inline vec3<T> xyyToXyz(const vec3<T> & xyy)
     {
         const T temp{xyy.z / xyy.y};
         return {temp * xyy.x, xyy.z, temp * (T(1.0) - xyy.x - xyy.y)};
@@ -296,7 +296,7 @@ namespace qc::color
     /// @return converted color
     ///
     template <Floating T>
-    inline vec3<T> xyzToLab(const vec3<T> & xyz) noexcept
+    inline vec3<T> xyzToLab(const vec3<T> & xyz)
     {
         static const vec3<T> invWhitePoint{T(1.0) / xyzWhitePoint<T>};
 
@@ -315,7 +315,7 @@ namespace qc::color
     /// @return converted color
     ///
     template <Floating T>
-    inline vec3<T> labToXyz(const vec3<T> & lab) noexcept
+    inline vec3<T> labToXyz(const vec3<T> & lab)
     {
         // Not doing piecewise approximation
         const vec3<T> xyz{
@@ -332,7 +332,7 @@ namespace qc::color
     /// @return converted color
     ///
     template <Floating T>
-    inline vec3<T> xyzToLuv(const vec3<T> & xyz) noexcept
+    inline vec3<T> xyzToLuv(const vec3<T> & xyz)
     {
         static constexpr T u_v_nDivisor{xyzWhitePoint<T>.x + T(15.0) * xyzWhitePoint<T>.y + T(3.0) * xyzWhitePoint<T>.z};
         static constexpr T u_n{T(4.0) * xyzWhitePoint<T>.x / u_v_nDivisor};
@@ -363,7 +363,7 @@ namespace qc::color
     /// @return converted color
     ///
     template <Floating T>
-    inline vec3<T> luvToXyz(const vec3<T> & luv) noexcept
+    inline vec3<T> luvToXyz(const vec3<T> & luv)
     {
         static constexpr T u_v_nDivisor{xyzWhitePoint<T>.x + T(15.0) * xyzWhitePoint<T>.y + T(3.0) * xyzWhitePoint<T>.z};
         static constexpr T u_n{T(4.0) * xyzWhitePoint<T>.x / u_v_nDivisor};
@@ -393,7 +393,7 @@ namespace qc::color
     /// @return converted color
     ///
     template <Floating T>
-    inline vec3<T> luvToLch(const vec3<T> & luv) noexcept
+    inline vec3<T> luvToLch(const vec3<T> & luv)
     {
         const T theta{std::atan2(luv.z, luv.y)};
         return {
@@ -408,7 +408,7 @@ namespace qc::color
     /// @return converted color
     ///
     template <Floating T>
-    inline vec3<T> lchToLuv(const vec3<T> & lch) noexcept
+    inline vec3<T> lchToLuv(const vec3<T> & lch)
     {
         const T theta{(lch.z * T(2.0) - T(1.0)) * pi<T>};
         return {

@@ -23,29 +23,29 @@ namespace qc
         /// @param pos position of new bubble
         /// @param size size of new bubble
         ///
-        void add(P pos, S size) noexcept;
-        void add(const Bubble & bubble) noexcept;
+        void add(P pos, S size);
+        void add(const Bubble & bubble);
 
         ///
         /// Remove the first bubble of the given size, or a portion of the first bubble that best fits the given size
         /// @param size size of bubble to remove
         /// @return whether there was a bubble of sufficient size, and if so, the position of the bubble removed
         ///
-        std::pair<bool, P> remove(S size) noexcept;
+        std::pair<bool, P> remove(S size);
 
         ///
         /// Get the size of trailing free memory
         /// @param memoryEnd one past the last memory position
         /// @return free tail size
         ///
-        S tail(P memoryEnd) const noexcept;
+        S tail(P memoryEnd) const;
 
         ///
         /// Clear all bubbles
         ///
-        void clear() noexcept;
+        void clear();
 
-        const List<Bubble> & bubbles() const noexcept { return _bubbles; }
+        const List<Bubble> & bubbles() const { return _bubbles; }
 
       private:
 
@@ -58,7 +58,7 @@ namespace qc
 namespace qc
 {
     template <IntegralOrPointer P>
-    inline void BubbleTracker<P>::add(const P pos, const S size) noexcept
+    inline void BubbleTracker<P>::add(const P pos, const S size)
     {
         if (size <= S(0))
         {
@@ -101,7 +101,7 @@ namespace qc
     }
 
     template <IntegralOrPointer P>
-    inline std::pair<bool, P> BubbleTracker<P>::remove(const S size) noexcept
+    inline std::pair<bool, P> BubbleTracker<P>::remove(const S size)
     {
         if (size <= S(0))
         {
@@ -143,7 +143,7 @@ namespace qc
     }
 
     template <IntegralOrPointer P>
-    inline auto BubbleTracker<P>::tail(const P memoryEnd) const noexcept -> S
+    inline auto BubbleTracker<P>::tail(const P memoryEnd) const -> S
     {
         if (_bubbles.empty())
         {
@@ -157,7 +157,7 @@ namespace qc
     }
 
     template <IntegralOrPointer P>
-    inline void BubbleTracker<P>::clear() noexcept
+    inline void BubbleTracker<P>::clear()
     {
         _bubbles.clear();
     }

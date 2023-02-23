@@ -28,46 +28,46 @@ namespace qc
         /// Required to qualify as a standard UniformRandomBitGenerator
         /// @return the minimum possible generated value
         ///
-        static constexpr G min() noexcept { return std::numeric_limits<G>::min(); }
+        static constexpr G min() { return std::numeric_limits<G>::min(); }
 
         ///
         /// Required to qualify as a standard UniformRandomBitGenerator
         /// @return the maximum possible generated value
         ///
-        static constexpr G max() noexcept { return std::numeric_limits<G>::max(); }
+        static constexpr G max() { return std::numeric_limits<G>::max(); }
 
         ///
         /// Constructs a new random generater seeded with the given seed
         /// @param seed the seed to initialize the engine with
         ///
-        Random() noexcept;
-        explicit Random(const G seed) noexcept;
+        Random();
+        explicit Random(const G seed);
 
         ///
         /// Required to qualify as a standard UniformRandomBitGenerator
         /// @return the next random `G`
         ///
-        G operator()() noexcept;
+        G operator()();
 
         ///
         /// @return the next random integer in [0, 2^T_bits), floater in [0.0, 1.0), or boolean
         ///
-        template <NumericOrBoolean T = G> T next() noexcept;
+        template <NumericOrBoolean T = G> T next();
 
         ///
         /// @return the next random number in [0, `max`)
         ///
-        template <Numeric T> T next(const T max) noexcept;
+        template <Numeric T> T next(const T max);
 
         ///
         /// @return the next random number in [`min`, `max`)
         ///
-        template <Numeric T> T next(const T min, const T max) noexcept;
+        template <Numeric T> T next(const T min, const T max);
 
         ///
         /// @return the seed
         ///
-        G seed() const noexcept { return _seed; }
+        G seed() const { return _seed; }
 
       private:
 
@@ -90,12 +90,12 @@ namespace qc
 namespace qc
 {
     template <UnsignedIntegral G>
-    inline Random<G>::Random() noexcept :
+    inline Random<G>::Random() :
         Random(_globalSeed++)
     {}
 
     template <UnsignedIntegral G>
-    inline Random<G>::Random(const G seed) noexcept :
+    inline Random<G>::Random(const G seed) :
         _seed{seed},
         _state{.a = _seed, .b = _seed, .c = _seed, .d = 1}
     {
@@ -104,7 +104,7 @@ namespace qc
     }
 
     template <UnsignedIntegral G>
-    inline G Random<G>::operator()() noexcept
+    inline G Random<G>::operator()()
     {
         const G tmp{G(_state.a + _state.b + _state.d)};
         ++_state.d;
@@ -116,7 +116,7 @@ namespace qc
 
     template <UnsignedIntegral G>
     template <NumericOrBoolean T>
-    inline T Random<G>::next() noexcept
+    inline T Random<G>::next()
     {
         if constexpr (Integral<T>)
         {
@@ -148,7 +148,7 @@ namespace qc
                 return T(double(next<u64>() >> 11) * 0x1.0p-53);
             }
         }
-        else if constexpr (Same<T, bool>)
+        else if constexpr (Boolean<T>)
         {
             return (*this)() >> (std::numeric_limits<G>::digits - 1);
         }
@@ -156,7 +156,7 @@ namespace qc
 
     template <UnsignedIntegral G>
     template <Numeric T>
-    inline T Random<G>::next(const T max) noexcept
+    inline T Random<G>::next(const T max)
     {
         if constexpr (Integral<T>)
         {
@@ -188,7 +188,7 @@ namespace qc
 
     template <UnsignedIntegral G>
     template <Numeric T>
-    inline T Random<G>::next(const T min, const T max) noexcept
+    inline T Random<G>::next(const T min, const T max)
     {
         return T(next<T>(T(max - min)) + min);
     }

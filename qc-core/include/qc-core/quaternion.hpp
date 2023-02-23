@@ -24,21 +24,21 @@ namespace qc
         vec3<T> a{};
         T w{T(1.0)};
 
-        constexpr quat() noexcept = default;
-        template <Floating U> constexpr explicit quat(const quat<U> & q) noexcept;
-        constexpr quat(vec3<T> a, T w) noexcept;
-        constexpr explicit quat(vec3<T> v) noexcept;
-        constexpr explicit quat(vec4<T> v) noexcept;
+        constexpr quat() = default;
+        template <Floating U> constexpr explicit quat(const quat<U> & q);
+        constexpr quat(vec3<T> a, T w);
+        constexpr explicit quat(vec3<T> v);
+        constexpr explicit quat(vec4<T> v);
 
-        constexpr quat(const quat & q) noexcept = default;
-        constexpr quat(quat && q) noexcept = default;
+        constexpr quat(const quat & q) = default;
+        constexpr quat(quat && q) = default;
 
-        quat & operator=(const quat & q) noexcept = default;
-        quat & operator=(quat && q) noexcept = default;
+        quat & operator=(const quat & q) = default;
+        quat & operator=(quat && q) = default;
 
-        ~quat() noexcept = default;
+        ~quat() = default;
 
-        constexpr explicit operator bool() const noexcept;
+        constexpr explicit operator bool() const;
     };
 
     template <Floating T> quat<T> & operator+=(quat<T> & q1, const quat<T> & q2);
@@ -76,27 +76,27 @@ namespace qc
 {
     template <Floating T>
     template <Floating U>
-    inline constexpr quat<T>::quat(const quat<U> & q) noexcept :
+    inline constexpr quat<T>::quat(const quat<U> & q) :
         a(q.a), w(T(q.w))
     {}
 
     template <Floating T>
-    inline constexpr quat<T>::quat(const vec3<T> a, T w) noexcept :
+    inline constexpr quat<T>::quat(const vec3<T> a, T w) :
         a(a), w(w)
     {}
 
     template <Floating T>
-    inline constexpr quat<T>::quat(const vec3<T> v) noexcept :
+    inline constexpr quat<T>::quat(const vec3<T> v) :
         a(v), w(T(0.0))
     {}
 
     template <Floating T>
-    inline constexpr quat<T>::quat(const vec4<T> v) noexcept :
+    inline constexpr quat<T>::quat(const vec4<T> v) :
         a(v), w(v.w)
     {}
 
     template <Floating T>
-    inline constexpr quat<T>::operator bool() const noexcept
+    inline constexpr quat<T>::operator bool() const
     {
         return !a && w == T(1.0);
     }

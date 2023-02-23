@@ -1,8 +1,8 @@
+#include <qc-core/matrix-ext.hpp>
+
 #include <sstream>
 
 #include <gtest/gtest.h>
-
-#include <qc-core/matrix-ext.hpp>
 
 using namespace qc::concepts;
 using namespace qc::types;

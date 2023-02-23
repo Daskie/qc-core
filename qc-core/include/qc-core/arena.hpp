@@ -7,8 +7,6 @@
 
 namespace qc
 {
-    struct ArenaError {};
-
     ///
     /// ...
     /// Each element in the arena is stored with a leading 8 byte header. Of this, the lower four bytes are used to
@@ -19,16 +17,16 @@ namespace qc
     {
       public:
 
-        Arena() noexcept = default;
+        Arena() = default;
         explicit Arena(unat capacity);
 
         Arena(const Arena &) = delete;
-        Arena(Arena && other) noexcept;
+        Arena(Arena && other);
 
         Arena & operator=(const Arena &) = delete;
-        Arena & operator=(Arena && other) noexcept;
+        Arena & operator=(Arena && other);
 
-        ~Arena() noexcept (!debug);
+        ~Arena();
 
         void setCapacity(unat capacity);
 
@@ -42,11 +40,11 @@ namespace qc
 
         void shrinkToFit();
 
-        unat capacity() const noexcept { return _capacity; }
+        unat capacity() const { return _capacity; }
 
-        unat size() const noexcept { return _size; }
+        unat size() const { return _size; }
 
-        bool empty() const noexcept { return !_size; }
+        bool empty() const { return !_size; }
 
       private:
 
@@ -72,14 +70,14 @@ namespace qc
         setCapacity(capacity);
     }
 
-    inline Arena::Arena(Arena && other) noexcept :
+    inline Arena::Arena(Arena && other) :
         _capacity{std::exchange(other._capacity, 0u)},
         _size{std::exchange(other._size, 0u)},
         _memory{std::exchange(other._memory, nullptr)},
         _bubbles{std::move(other._bubbles)}
     {}
 
-    inline auto Arena::operator=(Arena && other) noexcept -> Arena &
+    inline auto Arena::operator=(Arena && other) -> Arena &
     {
         if (&other == this)
         {
@@ -94,23 +92,17 @@ namespace qc
         return *this;
     }
 
-    inline Arena::~Arena() noexcept (!debug)
+    inline Arena::~Arena()
     {
         if (_memory)
         {
             // Check for dangling references
             if constexpr (debug)
             {
-                if (_bubbles.bubbles().size() != 1u)
-                {
-                    throw ArenaError{};
-                }
+                assert(_bubbles.bubbles().size() == 1u);
 
                 const auto & bubble{_bubbles.bubbles().front()};
-                if (bubble.pos != _memory || unat(bubble.size) * 8u != _capacity)
-                {
-                    throw ArenaError{};
-                }
+                assert(bubble.pos == _memory && unat(bubble.size) * 8u == _capacity);
             }
 
             freePages(_memory);
@@ -134,7 +126,8 @@ namespace qc
         // May only be called before memory is reserved
         if (_memory)
         {
-            throw ArenaError{};
+            assert(false);
+            return;
         }
 
         const unat pageCount{std::bit_ceil((capacity + (pageSize - 1u)) / pageSize)};
@@ -157,10 +150,7 @@ namespace qc
         const auto [wasSpace, ptr]{_bubbles.remove(ptrdiff_t(wordCount))};
 
         // Arena is full
-        while (!wasSpace)
-        {
-            throw ArenaError{};
-        }
+        ABORT_IF(!wasSpace);
 
         const unat requiredSize{(unat(ptr - _memory) + wordCount) * 8u};
         if (requiredSize > _size)
@@ -243,9 +233,9 @@ namespace qc
             Arena & arena{**it};
             arena.destroy(v);
         }
-        else if constexpr (debug)
+        else
         {
-            throw ArenaError{};
+            assert(false);
         }
     }
 
@@ -255,10 +245,7 @@ namespace qc
         newSize = newPageCount * pageSize;
 
         // Ensure we have sufficient reserved memory
-        if (newSize > _capacity)
-        {
-            throw ArenaError{};
-        }
+        ABORT_IF(newSize > _capacity);
 
         // Commit new pages
         const size_t currentPageCount{_size / pageSize};

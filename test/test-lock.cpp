@@ -1,6 +1,6 @@
-#include <gtest/gtest.h>
-
 #include <qc-core/lock.hpp>
+
+#include <gtest/gtest.h>
 
 TEST(Lock, compile)
 {

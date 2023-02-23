@@ -1,10 +1,9 @@
+#include <qc-core/random.hpp>
 #include <qc-core/semi-stable-deque.hpp>
 
 #include <deque>
 
 #include <gtest/gtest.h>
-
-#include <qc-core/random.hpp>
 
 using namespace qc::concepts;
 using namespace qc::types;

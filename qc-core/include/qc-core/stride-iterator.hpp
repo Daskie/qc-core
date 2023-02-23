@@ -20,25 +20,25 @@ namespace qc
         //
         // `stride` should be at least `sizeof(value_type)` and an even multiple of `alignof(value_type)`
         //
-        constexpr StrideIter(value_type * ptr, const unat stride) noexcept :
+        constexpr StrideIter(value_type * ptr, const unat stride) :
             _ptr(ptr),
             _stride(stride)
         {}
 
-        constexpr StrideIter(const StrideIter & other) noexcept = default;
+        constexpr StrideIter(const StrideIter & other) = default;
 
         template <typename U> requires (Same<U, T> && std::is_const_v<T>)
-        constexpr explicit StrideIter(const StrideIter<U> & other) noexcept :
+        constexpr explicit StrideIter(const StrideIter<U> & other) :
             _ptr(other._ptr),
             _stride(other._stride)
         {}
 
-        constexpr StrideIter(StrideIter && other) noexcept = default;
+        constexpr StrideIter(StrideIter && other) = default;
 
-        StrideIter & operator=(const StrideIter & other) noexcept = default;
+        StrideIter & operator=(const StrideIter & other) = default;
 
         template <typename U> requires (Same<U, T> && std::is_const_v<T>)
-        StrideIter & operator=(const StrideIter<U> & other) noexcept
+        StrideIter & operator=(const StrideIter<U> & other)
         {
             if (&other == this)
             {
@@ -51,28 +51,28 @@ namespace qc
             return *this;
         }
 
-        StrideIter & operator=(StrideIter && other) noexcept = default;
+        StrideIter & operator=(StrideIter && other) = default;
 
-        ~StrideIter() noexcept = default;
+        ~StrideIter() = default;
 
-        value_type & operator*() const noexcept
+        value_type & operator*() const
         {
             return *_ptr;
         }
 
-        value_type * operator->() const noexcept
+        value_type * operator->() const
         {
             return _ptr;
         }
 
-        StrideIter & operator++() noexcept
+        StrideIter & operator++()
         {
             using Byte = std::conditional_t<std::is_const_v<value_type>, const std::byte, std::byte>;
             reinterpret_cast<Byte * &>(_ptr) += _stride;
             return *this;
         }
 
-        StrideIter operator++(int) noexcept
+        StrideIter operator++(int)
         {
             StrideIter temp(*this);
             operator++();
@@ -86,7 +86,7 @@ namespace qc
 
         template <typename U>
         requires Same<U, T>
-        constexpr bool operator==(const StrideIter<U> other) const noexcept
+        constexpr bool operator==(const StrideIter<U> other) const
         {
             return _ptr == other._ptr;
         }

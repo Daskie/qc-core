@@ -120,48 +120,48 @@ TEST(Arena, polymorphismUnique)
 
     {
         qc::Unq<A> a{qc::makeUnique<A>(x)};
-        EXPECT_EQ(0, x);
+        ASSERT_EQ(0, x);
 
         a = {};
-        EXPECT_EQ(1, x);
+        ASSERT_EQ(1, x);
 
         a = qc::makeUnique<A>(x);
-        EXPECT_EQ(1, x);
+        ASSERT_EQ(1, x);
 
         a = {};
-        EXPECT_EQ(2, x);
+        ASSERT_EQ(2, x);
     }
 
     x = 0;
 
     {
         qc::Unq<B> b{qc::makeUnique<B>(x)};
-        EXPECT_EQ(0, x);
+        ASSERT_EQ(0, x);
 
         b = {};
-        EXPECT_EQ(11, x);
+        ASSERT_EQ(11, x);
 
         b = qc::makeUnique<B>(x);
-        EXPECT_EQ(11, x);
+        ASSERT_EQ(11, x);
 
         b = {};
-        EXPECT_EQ(22, x);
+        ASSERT_EQ(22, x);
     }
 
     x = 0;
 
     {
         qc::Unq<A> a{qc::makeUnique<B>(x)};
-        EXPECT_EQ(0, x);
+        ASSERT_EQ(0, x);
 
         a = {};
-        EXPECT_EQ(11, x);
+        ASSERT_EQ(11, x);
 
         a = qc::makeUnique<B>(x);
-        EXPECT_EQ(11, x);
+        ASSERT_EQ(11, x);
 
         a = {};
-        EXPECT_EQ(22, x);
+        ASSERT_EQ(22, x);
     }
 }
 
@@ -174,48 +174,48 @@ TEST(Arena, polymorphismShared)
 
     {
         qc::Shr<A> a{qc::makeShared<A>(x)};
-        EXPECT_EQ(0, x);
+        ASSERT_EQ(0, x);
 
         a = {};
-        EXPECT_EQ(1, x);
+        ASSERT_EQ(1, x);
 
         a = qc::makeShared<A>(x);
-        EXPECT_EQ(1, x);
+        ASSERT_EQ(1, x);
 
         a = {};
-        EXPECT_EQ(2, x);
+        ASSERT_EQ(2, x);
     }
 
     x = 0;
 
     {
         qc::Shr<B> b{qc::makeShared<B>(x)};
-        EXPECT_EQ(0, x);
+        ASSERT_EQ(0, x);
 
         b = {};
-        EXPECT_EQ(11, x);
+        ASSERT_EQ(11, x);
 
         b = qc::makeShared<B>(x);
-        EXPECT_EQ(11, x);
+        ASSERT_EQ(11, x);
 
         b = {};
-        EXPECT_EQ(22, x);
+        ASSERT_EQ(22, x);
     }
 
     x = 0;
 
     {
         qc::Shr<A> a{qc::makeShared<B>(x)};
-        EXPECT_EQ(0, x);
+        ASSERT_EQ(0, x);
 
         a = {};
-        EXPECT_EQ(11, x);
+        ASSERT_EQ(11, x);
 
         a = qc::makeShared<B>(x);
-        EXPECT_EQ(11, x);
+        ASSERT_EQ(11, x);
 
         a = {};
-        EXPECT_EQ(22, x);
+        ASSERT_EQ(22, x);
     }
 
     x = 0;

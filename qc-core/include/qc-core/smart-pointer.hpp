@@ -13,31 +13,31 @@ namespace qc
 
       public:
 
-        Unq() noexcept = default;
-        Unq(T * ptr, Deleter deleter) noexcept;
+        Unq() = default;
+        Unq(T * ptr, Deleter deleter);
 
         Unq(const Unq &) = delete;
-        Unq(Unq && other) noexcept;
-        template <typename T_> requires std::derived_from<T_, T> Unq(Unq<T_> && other) noexcept;
+        Unq(Unq && other);
+        template <typename T_> requires std::derived_from<T_, T> Unq(Unq<T_> && other);
 
         Unq & operator=(const Unq &) = delete;
-        Unq & operator=(Unq && other) noexcept;
+        Unq & operator=(Unq && other);
 
-        ~Unq() noexcept;
+        ~Unq();
 
-        explicit operator bool() const noexcept { return _ptr; }
+        explicit operator bool() const { return _ptr; }
 
-        T & operator*() noexcept { return *_ptr; }
+        T & operator*() { return *_ptr; }
 
-        const T & operator*() const noexcept { return *_ptr; }
+        const T & operator*() const { return *_ptr; }
 
-        T * operator->() noexcept { return _ptr; }
+        T * operator->() { return _ptr; }
 
-        const T * operator->() const noexcept { return _ptr; }
+        const T * operator->() const { return _ptr; }
 
-        T * get() noexcept { return _ptr; }
+        T * get() { return _ptr; }
 
-        const T * get() const noexcept { return _ptr; }
+        const T * get() const { return _ptr; }
 
       private:
 
@@ -52,40 +52,40 @@ namespace qc
 
       public:
 
-        Shr() noexcept = default;
+        Shr() = default;
         /// `ptr` MUST BE ALIGNED ON A 8 BYTE BOUNDARY AND THERE MUST BE A ZERO U32 IMMEDIATELY BEFORE `ptr` USED FOR REFERENCE COUNTING
-        Shr(T * ptr, Deleter deleter) noexcept;
+        Shr(T * ptr, Deleter deleter);
 
-        Shr(const Shr & other) noexcept;
-        template <typename T_> requires std::derived_from<T_, T> Shr(const Shr<T_> & other) noexcept;
-        Shr(Shr && other) noexcept;
-        template <typename T_> requires std::derived_from<T_, T> Shr(Shr<T_> && other) noexcept;
+        Shr(const Shr & other);
+        template <typename T_> requires std::derived_from<T_, T> Shr(const Shr<T_> & other);
+        Shr(Shr && other);
+        template <typename T_> requires std::derived_from<T_, T> Shr(Shr<T_> && other);
 
-        Shr & operator=(const Shr & other) noexcept;
-        Shr & operator=(Shr && other) noexcept;
+        Shr & operator=(const Shr & other);
+        Shr & operator=(Shr && other);
 
-        ~Shr() noexcept;
+        ~Shr();
 
-        explicit operator bool() const noexcept { return _ptr; }
+        explicit operator bool() const { return _ptr; }
 
-        T & operator*() noexcept { return *_ptr; }
+        T & operator*() { return *_ptr; }
 
-        const T & operator*() const noexcept { return *_ptr; }
+        const T & operator*() const { return *_ptr; }
 
-        T * operator->() noexcept { return _ptr; }
+        T * operator->() { return _ptr; }
 
-        const T * operator->() const noexcept { return _ptr; }
+        const T * operator->() const { return _ptr; }
 
-        T * get() noexcept { return _ptr; }
+        T * get() { return _ptr; }
 
-        const T * get() const noexcept { return _ptr; }
+        const T * get() const { return _ptr; }
 
       private:
 
         T * _ptr{};
         Deleter _deleter{};
 
-        u32 & _refCount() const noexcept;
+        u32 & _refCount() const;
     };
 
     template <typename T, typename... Args> Unq<T> makeUnique(Args &&... args);
@@ -98,26 +98,26 @@ namespace qc
 namespace qc
 {
     template <typename T>
-    inline Unq<T>::Unq(T * const ptr, const Deleter deleter) noexcept :
+    inline Unq<T>::Unq(T * const ptr, const Deleter deleter) :
         _ptr{ptr},
         _deleter{deleter}
     {}
 
     template <typename T>
-    inline Unq<T>::Unq(Unq && other) noexcept :
+    inline Unq<T>::Unq(Unq && other) :
         _ptr{std::exchange(other._ptr, nullptr)},
         _deleter{std::exchange(other._deleter, nullptr)}
     {}
 
     template <typename T>
     template <typename T_> requires std::derived_from<T_, T>
-    inline Unq<T>::Unq(Unq<T_> && other) noexcept :
+    inline Unq<T>::Unq(Unq<T_> && other) :
         _ptr{std::exchange(other._ptr, nullptr)},
         _deleter{std::exchange(other._deleter, nullptr)}
     {}
 
     template <typename T>
-    inline Unq<T> & Unq<T>::operator=(Unq && other) noexcept
+    inline Unq<T> & Unq<T>::operator=(Unq && other)
     {
         if (&other == this)
         {
@@ -136,7 +136,7 @@ namespace qc
     }
 
     template <typename T>
-    inline Unq<T>::~Unq() noexcept
+    inline Unq<T>::~Unq()
     {
         if (_ptr)
         {
@@ -151,7 +151,7 @@ namespace qc
     }
 
     template <typename T>
-    inline Shr<T>::Shr(T * const ptr, const Deleter deleter) noexcept :
+    inline Shr<T>::Shr(T * const ptr, const Deleter deleter) :
         _ptr{ptr},
         _deleter{deleter}
     {
@@ -159,7 +159,7 @@ namespace qc
     }
 
     template <typename T>
-    inline Shr<T>::Shr(const Shr & other) noexcept :
+    inline Shr<T>::Shr(const Shr & other) :
         _ptr{other._ptr},
         _deleter{other._deleter}
     {
@@ -168,7 +168,7 @@ namespace qc
 
     template <typename T>
     template <typename T_> requires std::derived_from<T_, T>
-    inline Shr<T>::Shr(const Shr<T_> & other) noexcept :
+    inline Shr<T>::Shr(const Shr<T_> & other) :
         _ptr{other._ptr},
         _deleter{other._deleter}
     {
@@ -176,20 +176,20 @@ namespace qc
     }
 
     template <typename T>
-    inline Shr<T>::Shr(Shr && other) noexcept :
+    inline Shr<T>::Shr(Shr && other) :
         _ptr{std::exchange(other._ptr, nullptr)},
         _deleter{std::exchange(other._deleter, nullptr)}
     {}
 
     template <typename T>
     template <typename T_> requires std::derived_from<T_, T>
-    inline Shr<T>::Shr(Shr<T_> && other) noexcept :
+    inline Shr<T>::Shr(Shr<T_> && other) :
         _ptr{std::exchange(other._ptr, nullptr)},
         _deleter{std::exchange(other._deleter, nullptr)}
     {}
 
     template <typename T>
-    inline Shr<T> & Shr<T>::operator=(const Shr & other) noexcept
+    inline Shr<T> & Shr<T>::operator=(const Shr & other)
     {
         if (&other == this)
         {
@@ -216,7 +216,7 @@ namespace qc
     }
 
     template <typename T>
-    inline Shr<T> & Shr<T>::operator=(Shr && other) noexcept
+    inline Shr<T> & Shr<T>::operator=(Shr && other)
     {
         if (&other == this)
         {
@@ -238,7 +238,7 @@ namespace qc
     }
 
     template <typename T>
-    inline Shr<T>::~Shr() noexcept
+    inline Shr<T>::~Shr()
     {
         if (_ptr)
         {
@@ -256,7 +256,7 @@ namespace qc
     }
 
     template <typename T>
-    inline u32 & Shr<T>::_refCount() const noexcept
+    inline u32 & Shr<T>::_refCount() const
     {
         return reinterpret_cast<u32 *>(_ptr)[-1];
     }

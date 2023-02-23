@@ -16,20 +16,20 @@ namespace qc
 
       public:
 
-        KdTree() noexcept = default;
-        explicit KdTree(std::span<const fvec2> points) noexcept;
+        KdTree() = default;
+        explicit KdTree(std::span<const fvec2> points);
 
         KdTree(const KdTree &) = delete;
-        KdTree(KdTree &&) noexcept = default;
+        KdTree(KdTree &&) = default;
 
         KdTree & operator=(const KdTree &) = delete;
-        KdTree & operator=(KdTree &&) noexcept = default;
+        KdTree & operator=(KdTree &&) = default;
 
-        ~KdTree() noexcept = default;
+        ~KdTree() = default;
 
-        fvec2 nearest(fvec2 point) const noexcept;
+        fvec2 nearest(fvec2 point) const;
 
-        unat size() const noexcept { return _nodes.size(); }
+        unat size() const { return _nodes.size(); }
 
       private:
 
@@ -42,9 +42,9 @@ namespace qc
 
         List<_Node> _nodes{};
 
-        template <int axis> void _constructRecursive(const fvec2 * points, std::span<u32> orderedA, std::span<u32> orderedB, std::span<u32> scratch, _Node * node) noexcept;
+        template <int axis> void _constructRecursive(const fvec2 * points, std::span<u32> orderedA, std::span<u32> orderedB, std::span<u32> scratch, _Node * node);
 
-        template <int axis> void _nearestRecursive(fvec2 point, const _Node * node, fvec2 & nearestPoint, float & minDist2) const noexcept;
+        template <int axis> void _nearestRecursive(fvec2 point, const _Node * node, fvec2 & nearestPoint, float & minDist2) const;
     };
 }
 
@@ -52,7 +52,7 @@ namespace qc
 
 namespace qc
 {
-    inline KdTree::KdTree(const std::span<const fvec2> points) noexcept :
+    inline KdTree::KdTree(const std::span<const fvec2> points) :
         _nodes(points.size())
     {
         assert(points.size() <= 1'000'000'000);
@@ -76,13 +76,13 @@ namespace qc
         std::stable_sort(orderedY.begin(), orderedY.end(), sortY);
 
         // Reserve scratch
-        std::vector<u32> scratch(_nodes.size() / 2u);
+        List<u32> scratch(_nodes.size() / 2u);
 
         // Recursively construct tree
         _constructRecursive<0>(points.data(), orderedX, orderedY, scratch, &_nodes.front());
     }
 
-    inline fvec2 KdTree::nearest(const fvec2 point) const noexcept
+    inline fvec2 KdTree::nearest(const fvec2 point) const
     {
         assert(!_nodes.empty());
 
@@ -95,7 +95,7 @@ namespace qc
     }
 
     template <int alpha>
-    inline void KdTree::_constructRecursive(const fvec2 * const points, const std::span<u32> orderedA, const std::span<u32> orderedB, const std::span<u32> scratch, _Node * const node) noexcept
+    inline void KdTree::_constructRecursive(const fvec2 * const points, const std::span<u32> orderedA, const std::span<u32> orderedB, const std::span<u32> scratch, _Node * const node)
     {
         static constexpr int beta{1 - alpha};
 
@@ -196,7 +196,7 @@ namespace qc
     }
 
     template <int axis>
-    inline void KdTree::_nearestRecursive(const fvec2 point, const _Node * const node, fvec2 & nearestPoint, float & minDist2) const noexcept
+    inline void KdTree::_nearestRecursive(const fvec2 point, const _Node * const node, fvec2 & nearestPoint, float & minDist2) const
     {
         const fvec2 delta{point - node->point};
         const fvec2 dists2{delta.x * delta.x, delta.y * delta.y};

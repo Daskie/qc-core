@@ -1,11 +1,10 @@
 #include <qc-core/avl-tree.hpp>
+#include <qc-core/list.hpp>
+#include <qc-core/random.hpp>
 
 #include <string_view>
 
 #include <gtest/gtest.h>
-
-#include <qc-core/list.hpp>
-#include <qc-core/random.hpp>
 
 using namespace std::string_literals;
 using namespace std::string_view_literals;

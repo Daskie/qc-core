@@ -6,13 +6,52 @@
 #include <limits>
 #include <utility>
 
+#ifndef ABORT
+    #define ABORT() ::std::abort()
+#else
+    #error "`ABORT` already defined"
+#endif
+
+#ifndef ABORT_IF
+    #define ABORT_IF(condition) if (condition) [[unlikely]] ::std::abort()
+#else
+    #error "`ABORT_IF` already defined"
+#endif
+
+#ifndef FAIL
+    #define FAIL() return {}
+#else
+    #error "`FAIL` already defined"
+#endif
+
+#ifndef FAIL_IF
+    #define FAIL_IF(condition) if (condition) [[unlikely]] return {}
+#else
+    #error "`FAIL_IF` already defined"
+    #error
+#endif
+
+// Set forceinline
+// TODO: Add forceinline where appropriate
+#ifndef forceinline
+    #ifdef _MSC_VER
+        #define forceinline __forceinline
+    #elif __GNUC__
+        #define forceinline __attribute__((always_inline)) inline
+    #else
+        #error "Unsupported compiler"
+    #endif
+#else
+    #warning "`forceinline` already defined"
+#endif
+
 namespace qc
 {
-#ifdef NDEBUG
-    constexpr bool debug{false};
-#else
-    constexpr bool debug{true};
-#endif
+    #ifdef NDEBUG
+        constexpr bool debug{false};
+    #else
+        constexpr bool debug{true};
+    #endif
 
     static_assert(sizeof(uintptr_t) <= 8u);
     static_assert(std::is_same_v<uintptr_t, size_t>);
@@ -46,15 +85,18 @@ namespace qc
     inline namespace concepts
     {
         template <typename T1, typename T2> concept Same = std::is_same_v<std::remove_cv_t<T1>, std::remove_cv_t<T2>>;
-        template <typename T> concept Integral = std::is_integral_v<T> && !Same<T, bool> && !Same<T, char>;
+        template <typename T> concept Void = Same<T, void>;
+        template <typename T> concept Boolean = Same<T, bool>;
+        template <typename T> concept Integral = std::is_integral_v<T> && !Boolean<T> && !Same<T, char>;
         template <typename T> concept SignedIntegral = Integral<T> && std::is_signed_v<T>;
         template <typename T> concept UnsignedIntegral = Integral<T> && std::is_unsigned_v<T>;
         template <typename T> concept Floating = std::is_floating_point_v<T>;
         template <typename T> concept Numeric = Integral<T> || Floating<T>;
         template <typename T> concept Signed = SignedIntegral<T> || Floating<T>;
         template <typename T> concept Unsigned = UnsignedIntegral<T>;
-        template <typename T> concept NumericOrBoolean = Numeric<T> || Same<T, bool>;
+        template <typename T> concept NumericOrBoolean = Numeric<T> || Boolean<T>;
         template <typename T> concept Enum = std::is_enum_v<T>;
+        template <typename T> concept EnumOrBoolean = Enum<T> || Same<T, bool>;
         template <typename T> concept Pointer = std::is_pointer_v<T>;
         template <typename T> concept NumericOrPointer = Numeric<T> || Pointer<T>;
         template <typename T> concept IntegralOrPointer = Integral<T> || Pointer<T>;
@@ -85,7 +127,14 @@ namespace qc
 
     template <typename T, typename... Ts> concept OneOf = (std::same_as<T, Ts> || ...);
 
-    template <Enum E> constexpr std::underlying_type_t<E> underlyingVal(const E e) noexcept { return std::underlying_type_t<E>(e); }
+    template <bool condition, typename T1, typename T2>
+    constexpr decltype(auto) ternary(T1 && v1, T2 && v2)
+    {
+        if constexpr (condition) return std::forward<T1>(v1);
+        else return std::forward<T2>(v2);
+    }
+
+    template <Enum E> constexpr std::underlying_type_t<E> underlyingVal(const E e) { return std::underlying_type_t<E>(e); }
 
     template <typename T1, typename T2 = T1>
     struct Duo
@@ -93,11 +142,11 @@ namespace qc
         T1 a;
         T2 b;
 
-        T1 * begin() noexcept requires (Same<T1, T2>) { return &a; };
-        const T1 * begin() const noexcept requires (Same<T1, T2>) { return &a; };
+        T1 * begin() requires (Same<T1, T2>) { return &a; };
+        const T1 * begin() const requires (Same<T1, T2>) { return &a; };
 
-        T1 * end() noexcept requires (Same<T1, T2>) { return &b + 1; };
-        const T1 * end() const noexcept requires (Same<T1, T2>) { return &b + 1; };
+        T1 * end() requires (Same<T1, T2>) { return &b + 1; };
+        const T1 * end() const requires (Same<T1, T2>) { return &b + 1; };
     };
 
     template <typename T1, typename T2 = T1, typename T3 = T2>
@@ -107,11 +156,11 @@ namespace qc
         T2 b;
         T2 c;
 
-        T1 * begin() noexcept requires (Same<T1, T2> && Same<T1, T3>) { return &a; };
-        T1 * begin() const noexcept requires (Same<T1, T2> && Same<T1, T3>) { return &a; };
+        T1 * begin() requires (Same<T1, T2> && Same<T1, T3>) { return &a; };
+        const T1 * begin() const requires (Same<T1, T2> && Same<T1, T3>) { return &a; };
 
-        T1 * end() noexcept requires (Same<T1, T2> && Same<T1, T3>) { return &c + 1; };
-        T1 * end() const noexcept requires (Same<T1, T2> && Same<T1, T3>) { return &c + 1; };
+        T1 * end() requires (Same<T1, T2> && Same<T1, T3>) { return &c + 1; };
+        const T1 * end() const requires (Same<T1, T2> && Same<T1, T3>) { return &c + 1; };
     };
 
     ///
@@ -120,11 +169,57 @@ namespace qc
     /// Calls the given prodecure (function pointer, lambda, std::function, etc.) when it goes out of scope
     ///
     template <typename Proc>
-    struct ScopeGuard
+    class ScopeGuard
     {
-        Proc proc;
-        ScopeGuard(Proc && proc) : proc{std::move(proc)} {};
-        ~ScopeGuard() noexcept { proc(); }
+      public:
+
+        ScopeGuard(const Proc & proc) : _proc{proc} {};
+        ScopeGuard(Proc && proc) : _proc{std::move(proc)} {};
+
+        ~ScopeGuard() { if (!_released) _proc(); }
+
+        void release() { _released = true;  }
+
+      private:
+
+        Proc _proc;
+        bool _released{false};
+    };
+
+    ///
+    /// Simple object that holds a return error, or a value if there was no error
+    /// @tparam T value type
+    /// @tparam E error type
+    ///
+    template <typename T>
+    class Result
+    {
+      public:
+
+        Result();
+        Result(T && v);
+
+        Result(const Result &) = delete;
+        Result(Result &&) = delete;
+
+        Result & operator=(const Result &) = delete;
+        Result & operator=(Result &&) = delete;
+
+        ~Result();
+
+        [[nodiscard]] explicit operator bool() const { return _success; }
+
+        [[nodiscard]] T & operator*();
+        [[nodiscard]] const T & operator*() const;
+
+        [[nodiscard]] T * operator->();
+        [[nodiscard]] const T * operator->() const;
+
+      private:
+
+        // Putting val in a union stops its default constructor and destructor from being called automatically
+        union { T _val; };
+        bool _success;
     };
 
     //
@@ -166,6 +261,56 @@ namespace qc
 
 namespace qc
 {
+    template <typename T>
+    inline Result<T>::Result() :
+        _success{false}
+    #pragma warning(suppress: 4582)
+    {}
+
+    template <typename T>
+    inline Result<T>::Result(T && v) :
+        _val{std::move(v)},
+        _success{true}
+    {}
+
+    template <typename T>
+    inline Result<T>::~Result()
+    #pragma warning(suppress: 4583)
+    {
+        if (_success)
+        {
+            this->_val.~T();
+        }
+    }
+
+    template <typename T>
+    inline T & Result<T>::operator*()
+    {
+        assert(_success);
+        return this->_val;
+    }
+
+    template <typename T>
+    inline const T & Result<T>::operator*() const
+    {
+        assert(_success);
+        return this->_val;
+    }
+
+    template <typename T>
+    inline T * Result<T>::operator->()
+    {
+        assert(_success);
+        return &this->_val;
+    }
+
+    template <typename T>
+    inline const T * Result<T>::operator->() const
+    {
+        assert(_success);
+        return &this->_val;
+    }
+
     template <NumericOrPointer T1, NumericOrPointer T2>
     requires Sameish<T1, T2>
     inline constexpr auto min(const T1 v1, const T2 v2)

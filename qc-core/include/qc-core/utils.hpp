@@ -23,54 +23,88 @@ namespace qc::utils
         return pairwiseSum(n >> 1, vals) + pairwiseSum((n + 1u) >> 1, vals + (n >> 1));
     }
 
-    // Throws `std::system_error` on failure
-    inline List<std::byte> readFile(const std::filesystem::path & path)
+    template <typename DstContainer>
+    inline Result<DstContainer> _readFile(const std::filesystem::path & path)
     {
-        const uintmax_t size{std::filesystem::file_size(path)};
-        if (size > qc::min(uintmax_t(std::numeric_limits<unat>::max()), uintmax_t(std::numeric_limits<std::streamsize>::max())))
+        DstContainer dst{};
+
+        std::error_code ec{};
+        const uintmax_t size{std::filesystem::file_size(path, ec)};
+
+        // Issue with file, or file too large
+        if (ec || size > dst.max_size() || size > uintmax_t(std::numeric_limits<std::streamsize>::max()))
         {
-            throw std::system_error(std::make_error_code(std::errc::file_too_large));
+            return {};
         }
 
-        List<std::byte> data((unat(size)));
+        // TODO: Map file into memory instead
+        std::ifstream ifs{path, std::ios::binary};
 
-        std::ifstream ifs(path, std::ios::binary);
-        ifs.exceptions(std::ios::badbit | std::ios::failbit);
-        ifs.read(reinterpret_cast<char *>(data.data()), std::streamsize(size));
-
-        return data;
-    }
-
-    // Throws `std::system_error` on failure
-    inline std::string readAsciiFile(const std::filesystem::path & path)
-    {
-        const uintmax_t size{std::filesystem::file_size(path)};
-        if (size > qc::min(uintmax_t(std::numeric_limits<unat>::max()), uintmax_t(std::numeric_limits<std::streamsize>::max())))
+        // Failed to open file
+        if (!ifs.good())
         {
-            throw std::system_error(std::make_error_code(std::errc::file_too_large));
+            return {};
         }
 
-        std::string str(unat(size), '\0'); // TODO: explicitly initializes its memory - potential performance concern for large files
+        dst.resize(unat(size)); // TODO: string version initializes its memory - potential performance concern for large files
 
-        std::ifstream ifs(path, std::ios::binary);
-        ifs.exceptions(std::ios::badbit | std::ios::failbit);
-        ifs.read(&str.front(), std::streamsize(size));
+        ifs.read(std::bit_cast<char *>(dst.data()), std::streamsize(size));
 
-        return str;
+        // Failed to read file
+        if (!ifs.good())
+        {
+            return {};
+        }
+
+        return dst;
     }
 
-    // Throws `std::system_error` on failure
-    inline void writeFile(const std::filesystem::path & path, const void * const data, const unat size)
+    ///
+    /// @return the content of the file, or empty list if failure
+    ///
+    [[nodiscard]] inline Result<List<u8>> readFile(const std::filesystem::path & path)
     {
-        std::ofstream ofs(path, std::ios::out | std::ios::binary);
-        ofs.exceptions(std::ios::badbit | std::ios::failbit);
-        ofs.write(reinterpret_cast<const char *>(data), size);
+        return _readFile<List<u8>>(path);
     }
 
-    // Throws `std::system_error` on failure
-    inline void writeAsciiFile(const std::filesystem::path & path, const std::string_view str)
+    ///
+    /// @return the content of the file, or empty string if failure
+    ///
+    [[nodiscard]] inline Result<std::string> readTextFile(const std::filesystem::path & path)
     {
-        writeFile(path, str.data(), str.size());
+        return _readFile<std::string>(path);
+    }
+
+    /// @return whether the file was successfully written
+    [[nodiscard]] inline bool writeFile(const std::filesystem::path & path, const void * const data, const unat size)
+    {
+        if (!data)
+        {
+            assert(false);
+            return false;
+        }
+
+        // Data too large
+        if (size > uintmax_t(std::numeric_limits<std::streamsize>::max()))
+        {
+            return false;
+        }
+
+        std::ofstream ofs{path, std::ios::out | std::ios::binary};
+
+        // Failed to open file
+        if (!ofs.good())
+        {
+            return false;
+        }
+
+        return ofs.write(static_cast<const char *>(data), std::streamsize(size)).good();
+    }
+
+    /// @return whether the file was successfully written
+    [[nodiscard]] inline bool writeTextFile(const std::filesystem::path & path, const std::string_view str)
+    {
+        return writeFile(path, str.data(), str.size());
     }
 
     inline std::string timeString(double seconds)

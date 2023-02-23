@@ -75,10 +75,10 @@ qc_setup_target(
 )
 
 qc_setup_target(
-    test-e-box
+    test-result
     EXECUTABLE
     SOURCE_FILES
-        test-e-box.cpp
+        test-result.cpp
     PRIVATE_LINKS
         qc-core
         GTest::gtest_main
@@ -209,6 +209,16 @@ qc_setup_target(
     EXECUTABLE
     SOURCE_FILES
         test-semi-stable-deque.cpp
+    PRIVATE_LINKS
+        qc-core
+        GTest::gtest_main
+)
+
+qc_setup_target(
+    test-utils
+    EXECUTABLE
+    SOURCE_FILES
+        test-utils.cpp
     PRIVATE_LINKS
         qc-core
         GTest::gtest_main

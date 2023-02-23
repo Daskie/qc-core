@@ -31,11 +31,7 @@ namespace qc
             // Only do this once
             if (!_pageSizeChecked.test_and_set()) [[unlikely]]
             {
-                // Compare to actual page size
-                if (pageSize != _getPageSize())
-                {
-                    throw PageError{};
-                }
+                ABORT_IF(pageSize != _getPageSize());
             }
         }
     }
@@ -44,16 +40,18 @@ namespace qc
     {
         _verifyPageSize();
 
+        if (!pageCount)
+        {
+            return nullptr;
+        }
+
         void * const baseAddress{VirtualAlloc(
             nullptr,                  // System selects base address
             pageCount * pageSize,     // Size of allocation
             MEM_RESERVE | MEM_COMMIT, // Immediately pin pages in physical swap memory
             PAGE_READWRITE)};         // Grant read/write access
 
-        if (!baseAddress)
-        {
-            throw PageError{};
-        }
+        ABORT_IF(!baseAddress);
 
         return baseAddress;
     }
@@ -62,41 +60,37 @@ namespace qc
     {
         _verifyPageSize();
 
+        if (!pageCount)
+        {
+            return nullptr;
+        }
+
         void * const baseAddress{VirtualAlloc(
             nullptr,              // System selects base address
             pageCount * pageSize, // Size of allocation
             MEM_RESERVE,          // Only reserve pages, do not pin physical swap space
             PAGE_NOACCESS)};      // No access for uncommitted memory
 
-        if (!baseAddress)
-        {
-            throw PageError{};
-        }
+        ABORT_IF(!baseAddress);
 
         return baseAddress;
     }
 
     void commitPages(void * const pageStart, const unat pageCount)
     {
-        if (!pageCount)
+        if (!pageStart || !pageCount)
         {
             return;
         }
 
         // Ensure pointer is on page boundary
-        if (!pageStart || reinterpret_cast<unat>(pageStart) & (pageSize - 1u))
-        {
-            throw PageError{};
-        }
+        ABORT_IF(std::bit_cast<unat>(pageStart) & (pageSize - 1u));
 
-        if (!VirtualAlloc(
+        ABORT_IF(!VirtualAlloc(
             pageStart,            // Base page address
             pageCount * pageSize, // Size of commit
             MEM_COMMIT,           // Actually pin the pages in physical swap space
-            PAGE_READWRITE))      // Grant read/write access
-        {
-            throw PageError{};
-        }
+            PAGE_READWRITE));     // Grant read/write access
     }
 
     void decommitPages(void * const pageStart, const size_t pageCount)
@@ -107,18 +101,12 @@ namespace qc
         }
 
         // Ensure pointer is on page boundary
-        if (reinterpret_cast<size_t>(pageStart) & (pageSize - 1u))
-        {
-            throw PageError{};
-        }
+        ABORT_IF(std::bit_cast<unat>(pageStart) & (pageSize - 1u));
 
-        if (!VirtualFree(
+        ABORT_IF(!VirtualFree(
             pageStart,            // Base page address
             pageCount * pageSize, // Size of commit
-            MEM_DECOMMIT))        // Actually pin the pages in physical swap space
-        {
-            throw PageError{};
-        }
+            MEM_DECOMMIT));       // Actually pin the pages in physical swap space
     }
 
     void freePages(void * const pages)
@@ -129,17 +117,11 @@ namespace qc
         }
 
         // Ensure pointer is on page boundary
-        if (reinterpret_cast<size_t>(pages) & (pageSize - 1u))
-        {
-            throw PageError{};
-        }
+        ABORT_IF(std::bit_cast<unat>(pages) & (pageSize - 1u));
 
-        if (!VirtualFree(
-            pages,            // Base page address
-            0u, // Size of commit
-            MEM_RELEASE))        // Actually pin the pages in physical swap space
-        {
-            throw PageError{};
-        }
+        ABORT_IF(!VirtualFree(
+            pages,         // Base page address
+            0u,            // Size of commit
+            MEM_RELEASE)); // Actually pin the pages in physical swap space
     }
 }

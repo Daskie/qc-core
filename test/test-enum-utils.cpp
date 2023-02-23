@@ -1,6 +1,6 @@
-#include <gtest/gtest.h>
-
 #include <qc-core/enum-utils.hpp>
+
+#include <gtest/gtest.h>
 
 using namespace qc::concepts;
 using namespace qc::types;
@@ -24,8 +24,8 @@ TEST(enumUtils, countableEnum)
 
 TEST(enumUtils, enumCount)
 {
-    EXPECT_EQ(3u, qc::enumCount<Enum3>);
-    EXPECT_EQ(0u, qc::enumCount<Enum4>);
+    ASSERT_EQ(3u, qc::enumCount<Enum3>);
+    ASSERT_EQ(0u, qc::enumCount<Enum4>);
 }
 
 #if 0
@@ -38,15 +38,15 @@ template <typename E> concept Compiles = requires
 
 TEST(enumIterator, compiles)
 {
-    EXPECT_FALSE(Compiles<Enum0>);
-    EXPECT_FALSE(Compiles<Enum1>);
-    EXPECT_FALSE(Compiles<Enum2>);
-    EXPECT_TRUE(Compiles<Enum3>);
-    EXPECT_TRUE(Compiles<Enum4>);
-    EXPECT_FALSE(Compiles<Enum5>);
+    ASSERT_FALSE(Compiles<Enum0>);
+    ASSERT_FALSE(Compiles<Enum1>);
+    ASSERT_FALSE(Compiles<Enum2>);
+    ASSERT_TRUE(Compiles<Enum3>);
+    ASSERT_TRUE(Compiles<Enum4>);
+    ASSERT_FALSE(Compiles<Enum5>);
 
-    EXPECT_FALSE(Compiles<const Enum0>);
-    EXPECT_TRUE(Compiles<const Enum3>);
+    ASSERT_FALSE(Compiles<const Enum0>);
+    ASSERT_TRUE(Compiles<const Enum3>);
 }
 
 TEST(enumIterator, forLoop)
@@ -55,18 +55,18 @@ TEST(enumIterator, forLoop)
     uint count{0u};
 
     for (qc::EnumIterator<Enum3> it{Enum3::a}; it != qc::EnumIterator<Enum3>{Enum3::_n}; ++it) {
-        EXPECT_EQ(ref, *it);
+        ASSERT_EQ(ref, *it);
         ++reinterpret_cast<uint &>(ref);
         ++count;
     }
 
-    EXPECT_EQ(static_cast<uint>(Enum3::_n), count);
+    ASSERT_EQ(static_cast<uint>(Enum3::_n), count);
 }
 
 TEST(enumIterator, forLoopEmpty)
 {
-    EXPECT_EQ(Enum4::_n, *qc::iterateEnum<Enum4>.begin());
-    EXPECT_EQ(Enum4::_n, *qc::iterateEnum<Enum4>.end());
+    ASSERT_EQ(Enum4::_n, *qc::iterateEnum<Enum4>.begin());
+    ASSERT_EQ(Enum4::_n, *qc::iterateEnum<Enum4>.end());
 }
 
 TEST(enumIterator, forEach)
@@ -75,12 +75,12 @@ TEST(enumIterator, forEach)
     uint count{0u};
 
     for (const Enum3 e : qc::iterateEnum<Enum3>) {
-        EXPECT_EQ(ref, e);
+        ASSERT_EQ(ref, e);
         ++reinterpret_cast<uint &>(ref);
         ++count;
     }
 
-    EXPECT_EQ(static_cast<uint>(Enum3::_n), count);
+    ASSERT_EQ(static_cast<uint>(Enum3::_n), count);
 }
 
 #pragma warning(suppress: 4702)
@@ -96,6 +96,6 @@ TEST(enumIterator, forEachEmpty)
 
 TEST(enumUtils, enumArray)
 {
-    EXPECT_EQ((std::array<Enum3, 3u>{Enum3::a, Enum3::b, Enum3::c}), qc::enumArray<Enum3>);
-    EXPECT_EQ((std::array<Enum4, 0u>{}), qc::enumArray<Enum4>);
+    ASSERT_EQ((std::array<Enum3, 3u>{Enum3::a, Enum3::b, Enum3::c}), qc::enumArray<Enum3>);
+    ASSERT_EQ((std::array<Enum4, 0u>{}), qc::enumArray<Enum4>);
 }

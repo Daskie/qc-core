@@ -1,8 +1,10 @@
+#include <qc-core/vector-ext.hpp>
+
+#pragma warning(push)
+#pragma warning(disable: 4577)
 #include <sstream>
 
 #include <gtest/gtest.h>
-
-#include <qc-core/vector-ext.hpp>
 
 using namespace qc::concepts;
 using namespace qc::types;
@@ -796,26 +798,41 @@ static void compileFunctionsUIT()
 
 static void compileFunctionsBT()
 {
+    bool b1{};
     bvec2 b2{};
     bvec3 b3{};
     bvec4 b4{};
 
+    b1 && b2;
+    b2 && b1;
     b2 && b2;
+    b1 && b3;
+    b3 && b1;
     b3 && b3;
+    b1 && b4;
+    b4 && b1;
     b4 && b4;
 
+    b1 || b2;
+    b2 || b1;
     b2 || b2;
+    b1 || b3;
+    b3 || b1;
     b3 || b3;
+    b1 || b4;
+    b4 || b1;
     b4 || b4;
 
     !b2;
     !b3;
     !b4;
 
+    qc::all(b1);
     qc::all(b2);
     qc::all(b3);
     qc::all(b4);
 
+    qc::any(b1);
     qc::any(b2);
     qc::any(b3);
     qc::any(b4);
@@ -1131,3 +1148,4 @@ TEST(vector, concepts)
     static_assert(Vector4<dvec4>);
     static_assert(!Vector4<ivec2>);
 }
+#pragma warning(pop)

@@ -11,23 +11,23 @@ TEST(Arena, setCapacity)
         qc::Arena arena{};
         ASSERT_EQ(0u, arena.capacity());
 
-        EXPECT_THROW(static_cast<void>(arena.create<int>(0)), qc::ArenaError);
+        ASSERT_DEATH(static_cast<void>(arena.create<int>(0)), "");
 
         arena.setCapacity(1u);
         ASSERT_EQ(qc::pageSize, arena.capacity());
 
-        EXPECT_THROW(arena.setCapacity(qc::pageSize * 2u), qc::ArenaError);
-        EXPECT_THROW(arena.setCapacity(1u), qc::ArenaError);
-        EXPECT_THROW(arena.setCapacity(0u), qc::ArenaError);
+        ASSERT_DEBUG_DEATH(arena.setCapacity(qc::pageSize * 2u), "");
+        ASSERT_DEBUG_DEATH(arena.setCapacity(1u), "");
+        ASSERT_DEBUG_DEATH(arena.setCapacity(0u), "");
     }
 
     {
         qc::Arena arena{1u};
-        EXPECT_EQ(qc::pageSize, arena.capacity());
+        ASSERT_EQ(qc::pageSize, arena.capacity());
 
-        EXPECT_THROW(arena.setCapacity(qc::pageSize * 2u), qc::ArenaError);
-        EXPECT_THROW(arena.setCapacity(1u), qc::ArenaError);
-        EXPECT_THROW(arena.setCapacity(0u), qc::ArenaError);
+        ASSERT_DEBUG_DEATH(arena.setCapacity(qc::pageSize * 2u), "");
+        ASSERT_DEBUG_DEATH(arena.setCapacity(1u), "");
+        ASSERT_DEBUG_DEATH(arena.setCapacity(0u), "");
     }
 }
 
@@ -36,32 +36,32 @@ TEST(Arena, growth)
     struct Page { std::byte bytes[qc::pageSize - 8u]; };
 
     qc::Arena arena{qc::pageSize * 8u};
-    EXPECT_EQ(qc::pageSize * 8u, arena.capacity());
-    EXPECT_EQ(0u, arena.size());
+    ASSERT_EQ(qc::pageSize * 8u, arena.capacity());
+    ASSERT_EQ(0u, arena.size());
 
     Page & p1{arena.create<Page>()};
-    EXPECT_EQ(qc::pageSize, arena.size());
+    ASSERT_EQ(qc::pageSize, arena.size());
 
     Page & p2{arena.create<Page>()};
-    EXPECT_EQ(qc::pageSize * 2u, arena.size());
+    ASSERT_EQ(qc::pageSize * 2u, arena.size());
 
     Page & p3{arena.create<Page>()};
-    EXPECT_EQ(qc::pageSize * 4u, arena.size());
+    ASSERT_EQ(qc::pageSize * 4u, arena.size());
 
     Page & p4{arena.create<Page>()};
-    EXPECT_EQ(qc::pageSize * 4u, arena.size());
+    ASSERT_EQ(qc::pageSize * 4u, arena.size());
 
     Page & p5{arena.create<Page>()};
-    EXPECT_EQ(qc::pageSize * 8u, arena.size());
+    ASSERT_EQ(qc::pageSize * 8u, arena.size());
 
     Page & p6{arena.create<Page>()};
-    EXPECT_EQ(qc::pageSize * 8u, arena.size());
+    ASSERT_EQ(qc::pageSize * 8u, arena.size());
 
     Page & p7{arena.create<Page>()};
-    EXPECT_EQ(qc::pageSize * 8u, arena.size());
+    ASSERT_EQ(qc::pageSize * 8u, arena.size());
 
     Page & p8{arena.create<Page>()};
-    EXPECT_EQ(qc::pageSize * 8u, arena.size());
+    ASSERT_EQ(qc::pageSize * 8u, arena.size());
 
     arena.destroy(p1);
     arena.destroy(p2);
@@ -71,7 +71,7 @@ TEST(Arena, growth)
     arena.destroy(p6);
     arena.destroy(p7);
     arena.destroy(p8);
-    EXPECT_EQ(qc::pageSize * 8u, arena.size());
+    ASSERT_EQ(qc::pageSize * 8u, arena.size());
 }
 
 TEST(Arena, shrinkToFit)
@@ -79,73 +79,73 @@ TEST(Arena, shrinkToFit)
     struct Page { std::byte bytes[qc::pageSize - 8u]; };
 
     qc::Arena arena{qc::pageSize * 8u};
-    EXPECT_EQ(qc::pageSize * 8u, arena.capacity());
-    EXPECT_EQ(0u, arena.size());
+    ASSERT_EQ(qc::pageSize * 8u, arena.capacity());
+    ASSERT_EQ(0u, arena.size());
 
     arena.shrinkToFit();
-    EXPECT_EQ(qc::pageSize * 8u, arena.capacity());
-    EXPECT_EQ(0u, arena.size());
+    ASSERT_EQ(qc::pageSize * 8u, arena.capacity());
+    ASSERT_EQ(0u, arena.size());
 
     Page & p1{arena.create<Page>()};
-    EXPECT_EQ(qc::pageSize, arena.size());
+    ASSERT_EQ(qc::pageSize, arena.size());
 
     arena.shrinkToFit();
-    EXPECT_EQ(qc::pageSize, arena.size());
+    ASSERT_EQ(qc::pageSize, arena.size());
 
     Page & p2{arena.create<Page>()};
-    EXPECT_EQ(qc::pageSize * 2u, arena.size());
+    ASSERT_EQ(qc::pageSize * 2u, arena.size());
 
     arena.shrinkToFit();
-    EXPECT_EQ(qc::pageSize * 2u, arena.size());
+    ASSERT_EQ(qc::pageSize * 2u, arena.size());
 
     Page & p3{arena.create<Page>()};
-    EXPECT_EQ(qc::pageSize * 4u, arena.size());
+    ASSERT_EQ(qc::pageSize * 4u, arena.size());
 
     arena.shrinkToFit();
-    EXPECT_EQ(qc::pageSize * 4u, arena.size());
+    ASSERT_EQ(qc::pageSize * 4u, arena.size());
 
     Page & p4{arena.create<Page>()};
-    EXPECT_EQ(qc::pageSize * 4u, arena.size());
+    ASSERT_EQ(qc::pageSize * 4u, arena.size());
 
     arena.shrinkToFit();
-    EXPECT_EQ(qc::pageSize * 4u, arena.size());
+    ASSERT_EQ(qc::pageSize * 4u, arena.size());
 
     Page & p5{arena.create<Page>()};
-    EXPECT_EQ(qc::pageSize * 8u, arena.size());
+    ASSERT_EQ(qc::pageSize * 8u, arena.size());
 
     arena.shrinkToFit();
-    EXPECT_EQ(qc::pageSize * 8u, arena.size());
+    ASSERT_EQ(qc::pageSize * 8u, arena.size());
 
     Page & p6{arena.create<Page>()};
     Page & p7{arena.create<Page>()};
     Page & p8{arena.create<Page>()};
-    EXPECT_EQ(qc::pageSize * 8u, arena.size());
+    ASSERT_EQ(qc::pageSize * 8u, arena.size());
 
     arena.shrinkToFit();
-    EXPECT_EQ(qc::pageSize * 8u, arena.size());
+    ASSERT_EQ(qc::pageSize * 8u, arena.size());
 
     arena.destroy(p8);
     arena.destroy(p7);
     arena.destroy(p6);
     arena.shrinkToFit();
-    EXPECT_EQ(qc::pageSize * 8u, arena.size());
+    ASSERT_EQ(qc::pageSize * 8u, arena.size());
 
     arena.destroy(p4);
     arena.shrinkToFit();
-    EXPECT_EQ(qc::pageSize * 8u, arena.size());
+    ASSERT_EQ(qc::pageSize * 8u, arena.size());
 
     arena.destroy(p5);
     arena.shrinkToFit();
-    EXPECT_EQ(qc::pageSize * 4u, arena.size());
+    ASSERT_EQ(qc::pageSize * 4u, arena.size());
 
     arena.destroy(p3);
     arena.shrinkToFit();
-    EXPECT_EQ(qc::pageSize * 2u, arena.size());
+    ASSERT_EQ(qc::pageSize * 2u, arena.size());
 
     arena.destroy(p2);
     arena.destroy(p1);
     arena.shrinkToFit();
-    EXPECT_EQ(qc::pageSize * 0u, arena.size());
+    ASSERT_EQ(qc::pageSize * 0u, arena.size());
 }
 
 TEST(Arena, alignment)
@@ -186,17 +186,17 @@ TEST(Arena, largeValue)
     qc::Arena arena{qc::pageSize * 4u};
 
     Large & l1{arena.create<Large>()};
-    EXPECT_EQ(qc::pageSize * 2u, arena.size());
+    ASSERT_EQ(qc::pageSize * 2u, arena.size());
 
     Large & l2{arena.create<Large>()};
-    EXPECT_EQ(qc::pageSize * 4u, arena.size());
+    ASSERT_EQ(qc::pageSize * 4u, arena.size());
 
-    EXPECT_THROW(static_cast<void>(arena.create<Large>()), qc::ArenaError);
+    ASSERT_DEATH(static_cast<void>(arena.create<Large>()), "");
 
     arena.destroy(l1);
 
     Large & l3{arena.create<Large>()};
-    EXPECT_EQ(qc::pageSize * 4u, arena.size());
+    ASSERT_EQ(qc::pageSize * 4u, arena.size());
 
     arena.destroy(l2);
     arena.destroy(l3);
@@ -301,27 +301,27 @@ TEST(Arena, polymorphism)
     {
         A & a{arena.create<A>()};
         int & x{a.x};
-        EXPECT_EQ(0, x);
+        ASSERT_EQ(0, x);
 
         arena.destroy(a);
-        EXPECT_EQ(-1, x);
+        ASSERT_EQ(-1, x);
     }
 
     {
         B & b{arena.create<B>()};
         int & x{b.x};
-        EXPECT_EQ(0, x);
+        ASSERT_EQ(0, x);
 
         arena.destroy(b);
-        EXPECT_EQ(-3, x);
+        ASSERT_EQ(-3, x);
     }
 
     {
         A & a{arena.create<B>()};
         int & x{a.x};
-        EXPECT_EQ(0, x);
+        ASSERT_EQ(0, x);
 
         arena.destroy(a);
-        EXPECT_EQ(-3, x);
+        ASSERT_EQ(-3, x);
     }
 }

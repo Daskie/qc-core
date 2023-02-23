@@ -1,6 +1,6 @@
-#include <gtest/gtest.h>
-
 #include <qc-core/kd-tree.hpp>
+
+#include <gtest/gtest.h>
 
 // Currently the "real" K-d tree testing happens in the testing repo
 

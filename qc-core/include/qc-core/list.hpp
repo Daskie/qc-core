@@ -4,7 +4,6 @@
 
 #include <iterator>
 #include <span>
-#include <stdexcept>
 
 #include <qc-core/core.hpp>
 
@@ -17,15 +16,15 @@ namespace qc
     {
       public:
 
-        PushIterator(List<T> & list) noexcept : _list{&list} {}
+        PushIterator(List<T> & list) : _list{&list} {}
 
         PushIterator & operator=(const T & v);
         PushIterator & operator=(T && v);
 
-        PushIterator & operator*() noexcept { return *this; };
+        PushIterator & operator*() { return *this; };
 
-        PushIterator & operator++() noexcept { return *this; };
-        PushIterator & operator++(int) noexcept { return *this; };
+        PushIterator & operator++() { return *this; };
+        PushIterator & operator++(int) { return *this; };
 
       private:
 
@@ -36,6 +35,8 @@ namespace qc
     class List
     {
       public:
+
+        static_assert(std::is_move_constructible_v<T>);
 
         using value_type = T;
         using reference = T &;
@@ -49,23 +50,25 @@ namespace qc
         using reverse_iterator = T *;
         using const_reverse_iterator = const T *;
 
-        List() noexcept = default;
+        static constexpr unat max_size() { return unat{1u} << (std::numeric_limits<unat>::digits - 1); }
+
+        List() = default;
         List(unat n);
         List(unat n, const T & v);
         template <typename It> List(It first, It last);
         List(std::initializer_list<T> vs);
         List(std::span<const T> vs);
 
-        List(const List & other);
-        List(List && other) noexcept;
+        List(const List &) = delete;
+        List(List && other);
 
-        List & operator=(const List & other);
-        List & operator=(List && other) noexcept;
+        List & operator=(const List &) = delete;
+        List & operator=(List && other);
 
-        List & operator=(std::initializer_list<T> vs) noexcept;
-        List & operator=(std::span<const T> vs) noexcept;
+        List & operator=(std::initializer_list<T> vs);
+        List & operator=(std::span<const T> vs);
 
-        ~List() noexcept;
+        ~List();
 
         void assign(unat n, const T & v);
         template <typename It> void assign(It first, It last);
@@ -92,52 +95,49 @@ namespace qc
 
         template <typename... Args> T * emplace(T * pos, Args &&... args);
 
-        void pop() noexcept;
-        void pop(unat n) noexcept;
+        void pop();
+        void pop(unat n);
 
-        T * erase(T * pos) noexcept;
-        T * erase(T * first, T * last) noexcept;
+        T * erase(T * pos);
+        T * erase(T * first, T * last);
 
-        template <typename Pred> unat eraseIf(Pred && pred) noexcept;
+        template <typename Pred> unat eraseIf(Pred && pred);
 
-        T & operator[](const unat i) noexcept { return _data[i]; };
-        const T & operator[](const unat i) const noexcept { return _data[i]; };
+        T & operator[](const unat i);
+        const T & operator[](const unat i) const;
 
-        T & at(unat i);
-        const T & at(unat i) const;
+        T & front() { return *_data; }
+        const T & front() const { return *_data; }
 
-        T & front() noexcept { return *_data; }
-        const T & front() const noexcept { return *_data; }
+        T & back() { return _data[_size - 1u]; }
+        const T & back() const { return _data[_size - 1u]; }
 
-        T & back() noexcept { return _data[_size - 1u]; }
-        const T & back() const noexcept { return _data[_size - 1u]; }
+        unat capacity() const { return _capacity; }
 
-        unat capacity() const noexcept { return _capacity; }
+        unat size() const { return _size; }
 
-        unat size() const noexcept { return _size; }
+        bool empty() const { return !_size; }
 
-        bool empty() const noexcept { return !_size; }
+        T * data() { return _data; }
+        const T * data() const { return _data; }
 
-        T * data() noexcept { return _data; }
-        const T * data() const noexcept { return _data; }
+        std::span<T> span() { return {_data, _size}; }
+        std::span<const T> span() const { return {_data, _size}; }
+        std::span<T> span(const unat i, const unat n) { return {_data + i, n}; }
+        std::span<const T> span(const unat i, const unat n) const { return {_data + i, n}; }
 
-        std::span<T> span() noexcept { return {_data, _size}; }
-        std::span<const T> span() const noexcept { return {_data, _size}; }
-        std::span<T> span(const unat i, const unat n) noexcept { return {_data + i, n}; }
-        std::span<const T> span(const unat i, const unat n) const noexcept { return {_data + i, n}; }
+        T * begin() { return _data; }
+        const T * begin() const { return _data; }
+        const T * cbegin() const { return _data; }
 
-        T * begin() noexcept { return _data; }
-        const T * begin() const noexcept { return _data; }
-        const T * cbegin() const noexcept { return _data; }
+        T * end() { return _data + _size; }
+        const T * end() const { return _data + _size; }
+        const T * cend() const { return _data + _size; }
 
-        T * end() noexcept { return _data + _size; }
-        const T * end() const noexcept { return _data + _size; }
-        const T * cend() const noexcept { return _data + _size; }
+        PushIterator<T> pushIterator() { return PushIterator<T>{*this}; }
 
-        PushIterator<T> pushIterator() noexcept { return PushIterator<T>{*this}; }
-
-        bool operator==(const List & other) const noexcept;
-        bool operator==(std::initializer_list<T> other) const noexcept;
+        bool operator==(const List & other) const;
+        bool operator==(std::initializer_list<T> other) const;
 
       private:
 
@@ -150,7 +150,7 @@ namespace qc
         void _newMemory(unat capacity, unat gapI, unat gapN);
 
         void _shift(T * & pos);
-        T * _shift(T * & pos, unat n);
+        template <bool destruct> T * _shift(T * & pos, unat n);
     };
 
     template <typename T> concept ConstructableByInitializerList = std::is_constructible_v<T, std::initializer_list<typename T::value_type>>;
@@ -207,26 +207,14 @@ namespace qc
     }
 
     template <typename T>
-    inline List<T>::List(const List & other)
-    {
-        *this = other;
-    }
-
-    template <typename T>
-    inline List<T>::List(List && other) noexcept :
+    inline List<T>::List(List && other) :
         _capacity{std::exchange(other._capacity, 0u)},
         _size{std::exchange(other._size, 0u)},
         _data{std::exchange(other._data, nullptr)}
     {}
 
     template <typename T>
-    inline List<T> & List<T>::operator=(const List<T> & other)
-    {
-        return *this = other.span();
-    }
-
-    template <typename T>
-    inline List<T> & List<T>::operator=(List<T> && other) noexcept
+    inline List<T> & List<T>::operator=(List<T> && other)
     {
         _capacity = std::exchange(other._capacity, 0u);
         _size = std::exchange(other._size, 0u);
@@ -236,13 +224,13 @@ namespace qc
     }
 
     template <typename T>
-    inline List<T> & List<T>::operator=(const std::initializer_list<T> vs) noexcept
+    inline List<T> & List<T>::operator=(const std::initializer_list<T> vs)
     {
         return *this = std::span<const T>{std::data(vs), vs.size()};
     }
 
     template <typename T>
-    inline List<T> & List<T>::operator=(const std::span<const T> vs) noexcept
+    inline List<T> & List<T>::operator=(const std::span<const T> vs)
     {
         if constexpr (std::is_trivially_copyable_v<T>)
         {
@@ -263,7 +251,7 @@ namespace qc
     }
 
     template <typename T>
-    inline List<T>::~List() noexcept
+    inline List<T>::~List()
     {
         if (_capacity)
         {
@@ -456,6 +444,8 @@ namespace qc
     template <typename T>
     inline T * List<T>::insert(T * const pos, const T & v)
     {
+        static_assert(std::is_copy_constructible_v<T>);
+
         return emplace(pos, v);
     }
 
@@ -468,13 +458,16 @@ namespace qc
     template <typename T>
     inline T * List<T>::insert(T * pos, const unat n, const T & v)
     {
+        static_assert(std::is_copy_constructible_v<T>);
+        static constexpr bool destruct{!std::is_trivially_destructible_v<T> && !std::is_copy_assignable_v<T>};
+
         assert(unat(pos - _data) <= _size);
 
-        T * const constructedEnd{_shift(pos, n)};
+        T * const constructedEnd{_shift<destruct>(pos, n)};
         T * const unconstructedEnd{pos + n};
 
         T * dst{pos};
-        for (; dst < constructedEnd; ++dst) *dst = v;
+        if constexpr (!destruct) for (; dst < constructedEnd; ++dst) *dst = v;
         for (; dst < unconstructedEnd; ++dst) new (dst) T{v};
 
         return pos;
@@ -484,14 +477,17 @@ namespace qc
     template <typename It>
     inline T * List<T>::insert(T * pos, It first, const It last)
     {
+        static_assert(std::is_copy_constructible_v<T>);
+        static constexpr bool destruct{!std::is_trivially_destructible_v<T> && !std::is_copy_assignable_v<T>};
+
         assert(unat(pos - _data) <= _size);
 
         const unat n{unat(std::distance(first, last))};
-        T * const constructedEnd{_shift(pos, n)};
+        T * const constructedEnd{_shift<destruct>(pos, n)};
         T * const unconstructedEnd{pos + n};
 
         T * dst{pos};
-        for (; dst < constructedEnd; ++dst, ++first) *dst = *first;
+        if constexpr (!destruct) for (; dst < constructedEnd; ++dst, ++first) *dst = *first;
         for (; dst < unconstructedEnd; ++dst, ++first) new (dst) T{*first};
 
         return pos;
@@ -525,7 +521,7 @@ namespace qc
     }
 
     template <typename T>
-    inline void List<T>::pop() noexcept
+    inline void List<T>::pop()
     {
         assert(_size);
 
@@ -533,7 +529,7 @@ namespace qc
     }
 
     template <typename T>
-    inline void List<T>::pop(const unat n) noexcept
+    inline void List<T>::pop(const unat n)
     {
         assert(_size >= n);
 
@@ -549,13 +545,13 @@ namespace qc
     }
 
     template <typename T>
-    inline T * List<T>::erase(T * const pos) noexcept
+    inline T * List<T>::erase(T * const pos)
     {
         return erase(pos, pos + 1);
     }
 
     template <typename T>
-    inline T * List<T>::erase(T * const first, T * const last) noexcept
+    inline T * List<T>::erase(T * const first, T * const last)
     {
         if (first >= last)
         {
@@ -574,7 +570,15 @@ namespace qc
             T * dst{first};
             for (T * src{last}; src < end; ++src, ++dst)
             {
-                *dst = std::move(*src);
+                if constexpr (std::is_move_assignable_v<T>)
+                {
+                    *dst = std::move(*src);
+                }
+                else
+                {
+                    dst->~T();
+                    new (dst) T{std::move(*src)};
+                }
             }
             for (; dst < end; ++dst)
             {
@@ -588,7 +592,7 @@ namespace qc
 
     template <typename T>
     template <typename Pred>
-    inline unat List<T>::eraseIf(Pred && pred) noexcept
+    inline unat List<T>::eraseIf(Pred && pred)
     {
         T * const end{_data + _size};
         T * dst{_data};
@@ -613,24 +617,23 @@ namespace qc
     }
 
     template <typename T>
-    inline T & List<T>::at(const unat i)
+    inline T & List<T>::operator[](const unat i)
     {
-        return const_cast<T &>(static_cast<const List *>(this)->at(i));
-    }
-
-    template <typename T>
-    inline const T & List<T>::at(const unat i) const
-    {
-        if (i >= _size) [[unlikely]]
-        {
-            throw std::out_of_range{"Index out of bounds"};
-        }
+        assert(i < _size);
 
         return _data[i];
     }
 
     template <typename T>
-    inline bool List<T>::operator==(const List & other) const noexcept
+    inline const T & List<T>::operator[](const unat i) const
+    {
+        assert(i < _size);
+
+        return _data[i];
+    }
+
+    template <typename T>
+    inline bool List<T>::operator==(const List & other) const
     {
         if (this == &other)
         {
@@ -657,7 +660,7 @@ namespace qc
     }
 
     template <typename T>
-    inline bool List<T>::operator==(const std::initializer_list<T> other) const noexcept
+    inline bool List<T>::operator==(const std::initializer_list<T> other) const
     {
         if (_size != other.size())
         {
@@ -755,7 +758,15 @@ namespace qc
 
                     for (; src >= pos; --src, --dst)
                     {
-                        *dst = std::move(*src);
+                        if constexpr (std::is_move_assignable_v<T>)
+                        {
+                            *dst = std::move(*src);
+                        }
+                        else
+                        {
+                            dst->~T();
+                            new (dst) T{std::move(*src)};
+                        }
                     }
                 }
 
@@ -767,6 +778,7 @@ namespace qc
     }
 
     template <typename T>
+    template <bool destruct>
     inline T * List<T>::_shift(T * & pos, const unat n)
     {
         if (n == 0u)
@@ -797,13 +809,34 @@ namespace qc
                 new (dst) T{std::move(*src)};
             }
 
-            // The remainder of the elements will be move assigned
+            // The remainder of the elements will be moved
             for (; dst >= newTailStart; --src, --dst)
             {
-                *dst = std::move(*src);
+                if constexpr (std::is_move_assignable_v<T>)
+                {
+                    *dst = std::move(*src);
+                }
+                else
+                {
+                    dst->~T();
+                    new (dst) T{std::move(*src)};
+                }
             }
 
-            constructedEnd = min(newTailStart, oldTailEnd);
+            // Destruct now empty elements if necessary
+            if constexpr (destruct)
+            {
+                for (; dst >= pos; --dst)
+                {
+                    dst->~T();
+                }
+
+                constructedEnd = pos;
+            }
+            else
+            {
+                constructedEnd = min(newTailStart, oldTailEnd);
+            }
         }
 
         _size += n;

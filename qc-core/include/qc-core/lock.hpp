@@ -18,7 +18,7 @@ namespace qc
     {
       public:
 
-        Lock() noexcept = default;
+        Lock() = default;
 
         Lock(const Lock &) = delete;
         Lock(Lock &&) = delete;
@@ -26,13 +26,13 @@ namespace qc
         Lock & operator=(const Lock &) = delete;
         Lock & operator=(Lock &&) = delete;
 
-        ~Lock() noexcept = default;
+        ~Lock() = default;
 
-        void lock() noexcept;
+        void lock();
 
-        bool tryLock() noexcept;
+        bool tryLock();
 
-        void unlock() noexcept;
+        void unlock();
 
       private:
 
@@ -43,7 +43,7 @@ namespace qc
     {
       public:
 
-        SpinLock() noexcept = default;
+        SpinLock() = default;
 
         SpinLock(const Lock &) = delete;
         SpinLock(Lock &&) = delete;
@@ -51,13 +51,13 @@ namespace qc
         SpinLock & operator=(const Lock &) = delete;
         SpinLock & operator=(Lock &&) = delete;
 
-        ~SpinLock() noexcept = default;
+        ~SpinLock() = default;
 
-        void lock() noexcept;
+        void lock();
 
-        bool tryLock() noexcept;
+        bool tryLock();
 
-        void unlock() noexcept;
+        void unlock();
 
       private:
 
@@ -69,7 +69,7 @@ namespace qc
     {
       public:
 
-        LockGuardT(L & lock) noexcept;
+        LockGuardT(L & lock);
 
         LockGuardT(const LockGuardT &) = delete;
         LockGuardT(LockGuardT &&) = delete;
@@ -77,7 +77,7 @@ namespace qc
         LockGuardT & operator=(const LockGuardT &) = delete;
         LockGuardT & operator=(LockGuardT &&) = delete;
 
-        ~LockGuardT() noexcept;
+        ~LockGuardT();
 
       private:
 
@@ -89,22 +89,22 @@ namespace qc
 
 namespace qc
 {
-    inline void Lock::lock() noexcept
+    inline void Lock::lock()
     {
         _semaphore.acquire();
     }
 
-    inline bool Lock::tryLock() noexcept
+    inline bool Lock::tryLock()
     {
         return _semaphore.try_acquire();
     }
 
-    inline void Lock::unlock() noexcept
+    inline void Lock::unlock()
     {
         _semaphore.release();
     }
 
-    inline void SpinLock::lock() noexcept
+    inline void SpinLock::lock()
     {
         while (true)
         {
@@ -119,27 +119,27 @@ namespace qc
         }
     }
 
-    inline bool SpinLock::tryLock() noexcept
+    inline bool SpinLock::tryLock()
     {
         // First do a relaxed load to check if lock is free in order to prevent
         //   unnecessary cache misses if someone does while (!try_lock())
         return !_flag.test(std::memory_order_relaxed) && !_flag.test_and_set(std::memory_order_acquire);
     }
 
-    inline void SpinLock::unlock() noexcept
+    inline void SpinLock::unlock()
     {
         _flag.clear(std::memory_order_release);
     }
 
     template <typename L>
-    inline LockGuardT<L>::LockGuardT(L & lock) noexcept :
+    inline LockGuardT<L>::LockGuardT(L & lock) :
         _lock{lock}
     {
         _lock.lock();
     }
 
     template <typename L>
-    inline LockGuardT<L>::~LockGuardT() noexcept
+    inline LockGuardT<L>::~LockGuardT()
     {
         _lock.unlock();
     }

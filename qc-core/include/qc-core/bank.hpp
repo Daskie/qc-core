@@ -8,22 +8,21 @@ namespace qc
     template <typename T>
     class Bank
     {
-        static_assert(std::is_nothrow_move_constructible_v<T>);
-        static_assert(std::is_nothrow_destructible_v<T>);
+        static_assert(std::is_move_constructible_v<T>);
 
         static_assert(alignof(T) <= 8u); // TODO: Use std::align_val_t once supported by intellisense
 
       public:
 
-        Bank() noexcept = default;
+        Bank() = default;
 
         Bank(const Bank &) = delete;
-        Bank(Bank && other) noexcept;
+        Bank(Bank && other);
 
         Bank & operator=(const Bank &) = delete;
-        Bank & operator=(Bank && other) noexcept;
+        Bank & operator=(Bank && other);
 
-        ~Bank() noexcept;
+        ~Bank();
 
         void reserve(u32 capacity);
 
@@ -31,18 +30,18 @@ namespace qc
 
         template <typename... Args> NewElement create(Args && ... args);
 
-        T & operator[](u32 i) noexcept;
-        const T & operator[](u32 i) const noexcept;
+        T & operator[](u32 i);
+        const T & operator[](u32 i) const;
 
         void destroy(u32 i);
 
         void clear();
 
-        u32 size() const noexcept { return _size; }
+        u32 size() const { return _size; }
 
-        bool empty() const noexcept { return _size == 0u; }
+        bool empty() const { return _size == 0u; }
 
-        u32 capacity() const noexcept { return _capacity; }
+        u32 capacity() const { return _capacity; }
 
       private:
 
@@ -51,7 +50,7 @@ namespace qc
             u32 nextFreeI;
             T value;
 
-            ~_Slot() noexcept = delete;
+            ~_Slot() = delete;
         };
 
         static_assert(sizeof(_Slot) == sizeof(T)); // Necessary for backing array values to be contiguous
@@ -76,7 +75,7 @@ namespace qc
 namespace qc
 {
     template <typename T>
-    inline Bank<T>::Bank(Bank && other) noexcept :
+    inline Bank<T>::Bank(Bank && other) :
         _slots{std::exchange(other._slots, nullptr)},
         _capacity{std::exchange(other._capacity, 0u)},
         _size{std::exchange(other._size, 0u)},
@@ -84,7 +83,7 @@ namespace qc
     {}
 
     template <typename T>
-    inline Bank<T> & Bank<T>::operator=(Bank && other) noexcept
+    inline Bank<T> & Bank<T>::operator=(Bank && other)
     {
         if (&other == this)
         {
@@ -100,7 +99,7 @@ namespace qc
     }
 
     template <typename T>
-    inline Bank<T>::~Bank() noexcept
+    inline Bank<T>::~Bank()
     {
         // Destroy elements and free memory
         if (_slots)
@@ -151,13 +150,13 @@ namespace qc
     }
 
     template <typename T>
-    inline T & Bank<T>::operator[](const u32 i) noexcept
+    inline T & Bank<T>::operator[](const u32 i)
     {
         return _slots[i].value;
     }
 
     template <typename T>
-    inline const T & Bank<T>::operator[](const u32 i) const noexcept
+    inline const T & Bank<T>::operator[](const u32 i) const
     {
         return _slots[i].value;
     }

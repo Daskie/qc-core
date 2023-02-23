@@ -1,7 +1,10 @@
-#include <gtest/gtest.h>
-
 #include <qc-core/core-ext.hpp>
 #include <qc-core/list.hpp>
+
+// gtest overrides FAIL macro
+#pragma push_macro("FAIL")
+#include <gtest/gtest.h>
+#pragma pop_macro("FAIL")
 
 using namespace qc::concepts;
 using namespace qc::types;
@@ -359,10 +362,10 @@ template <typename From, typename To>
 void testTransnormFTFT()
 {
     static_assert(To(0.0) == qc::transnorm<To>(From(0.0)));
-    EXPECT_EQ(To(0.25), qc::transnorm<To>(From(0.25)));
-    EXPECT_EQ(To(0.5), qc::transnorm<To>(From(0.5)));
-    EXPECT_EQ(To(0.75), qc::transnorm<To>(From(0.75)));
-    EXPECT_EQ(To(1.0), qc::transnorm<To>(From(1.0)));
+    ASSERT_EQ(To(0.25), qc::transnorm<To>(From(0.25)));
+    ASSERT_EQ(To(0.5), qc::transnorm<To>(From(0.5)));
+    ASSERT_EQ(To(0.75), qc::transnorm<To>(From(0.75)));
+    ASSERT_EQ(To(1.0), qc::transnorm<To>(From(1.0)));
 }
 
 template <typename From, typename To>
@@ -371,17 +374,17 @@ void testTransnormFTST()
     const double epsilon(1.0 / std::ldexp(1.0, std::numeric_limits<To>::digits));
 
     static_assert(To(-std::numeric_limits<To>::max()) == qc::transnorm<To>(From(-1.0)));
-    EXPECT_NEAR(0.75, double(qc::transnorm<To>(From(-0.75))) / double(-std::numeric_limits<To>::max()), epsilon);
-    EXPECT_NEAR(0.5, double(qc::transnorm<To>(From(-0.5))) / double(-std::numeric_limits<To>::max()), epsilon);
-    EXPECT_NEAR(0.25, double(qc::transnorm<To>(From(-0.25))) / double(-std::numeric_limits<To>::max()), epsilon);
-    EXPECT_EQ(To(0u), qc::transnorm<To>(From(0.0)));
-    EXPECT_NEAR(0.25, double(qc::transnorm<To>(From(0.25))) / double(std::numeric_limits<To>::max()), epsilon);
-    EXPECT_NEAR(0.5, double(qc::transnorm<To>(From(0.5))) / double(std::numeric_limits<To>::max()), epsilon);
-    EXPECT_NEAR(0.75, double(qc::transnorm<To>(From(0.75))) / double(std::numeric_limits<To>::max()), epsilon);
-    EXPECT_EQ(std::numeric_limits<To>::max(), qc::transnorm<To>(From(1.0)));
+    ASSERT_NEAR(0.75, double(qc::transnorm<To>(From(-0.75))) / double(-std::numeric_limits<To>::max()), epsilon);
+    ASSERT_NEAR(0.5, double(qc::transnorm<To>(From(-0.5))) / double(-std::numeric_limits<To>::max()), epsilon);
+    ASSERT_NEAR(0.25, double(qc::transnorm<To>(From(-0.25))) / double(-std::numeric_limits<To>::max()), epsilon);
+    ASSERT_EQ(To(0u), qc::transnorm<To>(From(0.0)));
+    ASSERT_NEAR(0.25, double(qc::transnorm<To>(From(0.25))) / double(std::numeric_limits<To>::max()), epsilon);
+    ASSERT_NEAR(0.5, double(qc::transnorm<To>(From(0.5))) / double(std::numeric_limits<To>::max()), epsilon);
+    ASSERT_NEAR(0.75, double(qc::transnorm<To>(From(0.75))) / double(std::numeric_limits<To>::max()), epsilon);
+    ASSERT_EQ(std::numeric_limits<To>::max(), qc::transnorm<To>(From(1.0)));
 
-    EXPECT_GE(qc::transnorm<To>(From(-1.0) + std::numeric_limits<From>::epsilon()), qc::transnorm<To>(From(-1.0)));
-    EXPECT_LE(qc::transnorm<To>(From(1.0) - std::numeric_limits<From>::epsilon()), qc::transnorm<To>(From(1.0)));
+    ASSERT_GE(qc::transnorm<To>(From(-1.0) + std::numeric_limits<From>::epsilon()), qc::transnorm<To>(From(-1.0)));
+    ASSERT_LE(qc::transnorm<To>(From(1.0) - std::numeric_limits<From>::epsilon()), qc::transnorm<To>(From(1.0)));
 }
 
 template <typename From, typename To>
@@ -390,13 +393,13 @@ void testTransnormFTUT()
     const double epsilon(1.0 / std::ldexp(1.0, std::numeric_limits<To>::digits));
 
     static_assert(To(0u) == qc::transnorm<To>(From(0.0)));
-    EXPECT_NEAR(0.25, double(qc::transnorm<To>(From(0.25))) / double(std::numeric_limits<To>::max()), epsilon);
-    EXPECT_NEAR(0.5, double(qc::transnorm<To>(From(0.5))) / double(std::numeric_limits<To>::max()), epsilon);
-    EXPECT_NEAR(0.75, double(qc::transnorm<To>(From(0.75))) / double(std::numeric_limits<To>::max()), epsilon);
-    EXPECT_EQ(std::numeric_limits<To>::max(), qc::transnorm<To>(From(1.0)));
+    ASSERT_NEAR(0.25, double(qc::transnorm<To>(From(0.25))) / double(std::numeric_limits<To>::max()), epsilon);
+    ASSERT_NEAR(0.5, double(qc::transnorm<To>(From(0.5))) / double(std::numeric_limits<To>::max()), epsilon);
+    ASSERT_NEAR(0.75, double(qc::transnorm<To>(From(0.75))) / double(std::numeric_limits<To>::max()), epsilon);
+    ASSERT_EQ(std::numeric_limits<To>::max(), qc::transnorm<To>(From(1.0)));
 
-    EXPECT_GE(qc::transnorm<To>(std::numeric_limits<From>::min()), qc::transnorm<To>(From(0.0)));
-    EXPECT_LE(qc::transnorm<To>(From(1.0) - std::numeric_limits<From>::epsilon()), qc::transnorm<To>(From(1.0)));
+    ASSERT_GE(qc::transnorm<To>(std::numeric_limits<From>::min()), qc::transnorm<To>(From(0.0)));
+    ASSERT_LE(qc::transnorm<To>(From(1.0) - std::numeric_limits<From>::epsilon()), qc::transnorm<To>(From(1.0)));
 }
 
 template <typename From, typename To>
@@ -404,15 +407,15 @@ void testTransnormSTFT()
 {
     const To epsilon{To(1.0 / std::ldexp(1.0, std::numeric_limits<From>::digits))};
 
-    EXPECT_EQ(To(-1.0), qc::transnorm<To>(std::numeric_limits<From>::min()));
-    EXPECT_NEAR(To(-0.75), qc::transnorm<To>(From(-threeQuartersVal<From>)), epsilon);
-    EXPECT_NEAR(To(-0.5), qc::transnorm<To>(From(-halfVal<From>)), epsilon);
-    EXPECT_NEAR(To(-0.25), qc::transnorm<To>(From(-quarterVal<From>)), epsilon);
+    ASSERT_EQ(To(-1.0), qc::transnorm<To>(std::numeric_limits<From>::min()));
+    ASSERT_NEAR(To(-0.75), qc::transnorm<To>(From(-threeQuartersVal<From>)), epsilon);
+    ASSERT_NEAR(To(-0.5), qc::transnorm<To>(From(-halfVal<From>)), epsilon);
+    ASSERT_NEAR(To(-0.25), qc::transnorm<To>(From(-quarterVal<From>)), epsilon);
     static_assert(To(0.0) == qc::transnorm<To>(From(0)));
-    EXPECT_NEAR(To(0.25), qc::transnorm<To>(quarterVal<From>), epsilon);
-    EXPECT_NEAR(To(0.5), qc::transnorm<To>(halfVal<From>), epsilon);
-    EXPECT_NEAR(To(0.75), qc::transnorm<To>(threeQuartersVal<From>), epsilon);
-    EXPECT_EQ(To(1.0), qc::transnorm<To>(std::numeric_limits<From>::max()));
+    ASSERT_NEAR(To(0.25), qc::transnorm<To>(quarterVal<From>), epsilon);
+    ASSERT_NEAR(To(0.5), qc::transnorm<To>(halfVal<From>), epsilon);
+    ASSERT_NEAR(To(0.75), qc::transnorm<To>(threeQuartersVal<From>), epsilon);
+    ASSERT_EQ(To(1.0), qc::transnorm<To>(std::numeric_limits<From>::max()));
 }
 
 template <typename From, typename To>
@@ -421,10 +424,10 @@ void testTransnormUTFT()
     const To epsilon{To(1.0 / std::ldexp(1.0, std::numeric_limits<From>::digits))};
 
     static_assert(To(0.0) == qc::transnorm<To>(From(0u)));
-    EXPECT_NEAR(To(0.25), qc::transnorm<To>(quarterVal<From>), epsilon);
-    EXPECT_NEAR(To(0.5), qc::transnorm<To>(halfVal<From>), epsilon);
-    EXPECT_NEAR(To(0.75), qc::transnorm<To>(threeQuartersVal<From>), epsilon);
-    EXPECT_EQ(To(1.0), qc::transnorm<To>(std::numeric_limits<From>::max()));
+    ASSERT_NEAR(To(0.25), qc::transnorm<To>(quarterVal<From>), epsilon);
+    ASSERT_NEAR(To(0.5), qc::transnorm<To>(halfVal<From>), epsilon);
+    ASSERT_NEAR(To(0.75), qc::transnorm<To>(threeQuartersVal<From>), epsilon);
+    ASSERT_EQ(To(1.0), qc::transnorm<To>(std::numeric_limits<From>::max()));
 }
 
 template <typename From, typename To>
@@ -433,10 +436,10 @@ void testTransnormUTUT()
     const double epsilon(1.0 / std::ldexp(1.0, qc::min(std::numeric_limits<To>::digits, std::numeric_limits<From>::digits)));
 
     static_assert(To(0u) == qc::transnorm<To>(From(0u)));
-    EXPECT_NEAR(0.25, double(qc::transnorm<To>(From(quarterVal<From>))) / double(std::numeric_limits<To>::max()), epsilon);
-    EXPECT_NEAR(0.5, double(qc::transnorm<To>(From(halfVal<From>))) / double(std::numeric_limits<To>::max()), epsilon);
-    EXPECT_NEAR(0.75, double(qc::transnorm<To>(From(threeQuartersVal<From>))) / double(std::numeric_limits<To>::max()), epsilon);
-    EXPECT_EQ(To(std::numeric_limits<To>::max()), qc::transnorm<To>(std::numeric_limits<From>::max()));
+    ASSERT_NEAR(0.25, double(qc::transnorm<To>(From(quarterVal<From>))) / double(std::numeric_limits<To>::max()), epsilon);
+    ASSERT_NEAR(0.5, double(qc::transnorm<To>(From(halfVal<From>))) / double(std::numeric_limits<To>::max()), epsilon);
+    ASSERT_NEAR(0.75, double(qc::transnorm<To>(From(threeQuartersVal<From>))) / double(std::numeric_limits<To>::max()), epsilon);
+    ASSERT_EQ(To(std::numeric_limits<To>::max()), qc::transnorm<To>(std::numeric_limits<From>::max()));
 }
 
 template <typename From>
@@ -658,6 +661,12 @@ TEST(Core, concepts)
     static_assert(!Sameish<u32, f32>);
     static_assert(!Sameish<f32, s32>);
 
+    static_assert(Void<void>);
+    static_assert(!Void<int>);
+
+    static_assert(Boolean<bool>);
+    static_assert(!Boolean<int>);
+
     static_assert(Integral<s8>);
     static_assert(Integral<s16>);
     static_assert(Integral<s32>);
@@ -778,6 +787,10 @@ TEST(Core, concepts)
     static_assert(!Enum<void *>);
     static_assert(Enum<TestEnum>);
 
+    static_assert(EnumOrBoolean<TestEnum>);
+    static_assert(EnumOrBoolean<bool>);
+    static_assert(!EnumOrBoolean<int>);
+
     static_assert(SameNumericType<s32, s32>);
     static_assert(SameNumericType<u32, u32>);
     static_assert(SameNumericType<f32, f32>);
@@ -790,13 +803,53 @@ TEST(Core, concepts)
     static_assert(!SameNumericType<int, Dummy>);
 }
 
-static void _dummyFunction() {}
+TEST(Core, abort)
+{
+    ASSERT_DEATH(ABORT(), "");
+    ABORT_IF(false);
+    ASSERT_DEATH(ABORT_IF(true), "");
+}
+
+TEST(Core, fail)
+{
+    const auto fail{[]() -> bool { FAIL(); }};
+    ASSERT_FALSE(fail());
+
+    const auto failIf{[](const bool condition) -> bool { FAIL_IF(condition); return true; }};
+    ASSERT_TRUE(failIf(false));
+    ASSERT_FALSE(failIf(true));
+}
+
 
 TEST(Core, scopeGuard)
 {
-    qc::ScopeGuard guard1{[]() {}};
-    qc::ScopeGuard guard2{&_dummyFunction};
-    qc::ScopeGuard guard3{std::function{_dummyFunction}};
+    static thread_local bool called;
+    const auto proc{[]() { called = true; }};
+
+    called = false;
+    {
+        qc::ScopeGuard guard1{proc};
+    }
+    ASSERT_TRUE(called);
+
+    called = false;
+    {
+        qc::ScopeGuard guard2{static_cast<void (*)()>(proc)};
+    }
+    ASSERT_TRUE(called);
+
+    called = false;
+    {
+        qc::ScopeGuard guard3{std::function{proc}};
+    }
+    ASSERT_TRUE(called);
+
+    called = false;
+    {
+        qc::ScopeGuard guard3{proc};
+        guard3.release();
+    }
+    ASSERT_FALSE(called);
 }
 
 template <Floating F, SignedIntegral I>

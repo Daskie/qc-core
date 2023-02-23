@@ -4,10 +4,8 @@
 
 namespace qc
 {
-    struct PageError {};
-
     /// Assume pages are 4096 bytes for better compile-time optimization
-    /// This is checked the first time pages are reserved, and an exception is thrown if the actual page size differs
+    /// This is checked the first time pages are reserved, and the program will abort if the actual page size differs
     constexpr unat pageSize{4096u};
 
     ///
@@ -16,8 +14,7 @@ namespace qc
     /// Equivalent to `reservePages` + `commitPages`
     ///
     /// @param pageCount the number of pages to allocate
-    /// @return the start of the allocated memory
-    /// @throw PageError if `pageCount` is 0 or the allocation fails
+    /// @return the start of the allocated memory, or null if `pageCount` is 0
     ///
     [[nodiscard]] void * allocatePages(unat pageCount);
 
@@ -27,8 +24,7 @@ namespace qc
     /// This memory cannot be used before being committed, see `commitPages`
     ///
     /// @param pageCount the number of pages to reserve
-    /// @return the base of the reserved memory
-    /// @throw PageError if `pageCount` is 0 or the reservation fails
+    /// @return the base of the reserved memory, or null if `pageCount` is 0
     ///
     [[nodiscard]] void * reservePages(unat pageCount);
 
@@ -39,7 +35,6 @@ namespace qc
     ///
     /// @param pageStart the first page in the range to commit; pages must be currently reserved; no-op if null
     /// @param pageCount the number of pages to commit; no-op if zero
-    /// @throw PageError if the commit fails
     ///
     void commitPages(void * pageStart, unat pageCount);
 
@@ -50,7 +45,6 @@ namespace qc
     ///
     /// @param pageStart the first page in the range to decommit; pages must be currently reserved; no-op if null
     /// @param pageCount the number of pages to decommit; no-op if zero
-    /// @throw PageError if the decommit fails
     ///
     void decommitPages(void * pageStart, unat pageCount);
 
@@ -60,7 +54,6 @@ namespace qc
     /// Pages can be committed or not, the memory is freed regardless
     ///
     /// @param pages must be the base page returned by `allocatePages`/`reservePages`; no-op if null
-    /// @throw PageError if the free fails
     ///
     void freePages(void * pages);
 }

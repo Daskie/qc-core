@@ -1,6 +1,6 @@
-#include <gtest/gtest.h>
-
 #include <qc-core/list.hpp>
+
+#include <gtest/gtest.h>
 
 template <typename T> using IL = std::initializer_list<T>;
 
@@ -25,6 +25,13 @@ struct NonTrivial
     ~NonTrivial() { ++destructions; }
     bool operator==(const NonTrivial & other) const { return v == other.v; }
 };
+
+TEST(List, max_size)
+{
+    qc::List<int> list{};
+    ASSERT_EQ(list.max_size(), (size_t{1u} << (std::numeric_limits<size_t>::digits - 1)));
+    ASSERT_EQ(qc::List<int>::max_size(), list.max_size());
+}
 
 TEST(List, construction)
 {
@@ -133,14 +140,6 @@ TEST(List, construction)
         ASSERT_EQ(l1.capacity(), 3u);
         ASSERT_EQ(l1.size(), 3u);
         ASSERT_EQ(l1, (IL<int>{1, 2, 3}));
-
-        qc::List<int> l2(l1);
-        ASSERT_EQ(l1.capacity(), 3u);
-        ASSERT_EQ(l1.size(), 3u);
-        ASSERT_EQ(l1, (IL<int>{1, 2, 3}));
-        ASSERT_EQ(l2.size(), 3u);
-        ASSERT_EQ(l2.capacity(), 3u);
-        ASSERT_EQ(l2, (IL<int>{1, 2, 3}));
     }
     {
         NonTrivial::reset();
@@ -153,20 +152,6 @@ TEST(List, construction)
         ASSERT_EQ(l1.capacity(), 3u);
         ASSERT_EQ(l1.size(), 3u);
         ASSERT_EQ(l1, (IL<NonTrivial>{1, 2, 3}));
-
-        NonTrivial::reset();
-        qc::List<NonTrivial> l2(l1);
-        ASSERT_EQ(NonTrivial::contructions, 3);
-        ASSERT_EQ(NonTrivial::assignments, 0);
-        ASSERT_EQ(NonTrivial::copies, 3);
-        ASSERT_EQ(NonTrivial::moves, 0);
-        ASSERT_EQ(NonTrivial::destructions, 0);
-        ASSERT_EQ(l1.capacity(), 3u);
-        ASSERT_EQ(l1.size(), 3u);
-        ASSERT_EQ(l1, (IL<NonTrivial>{1, 2, 3}));
-        ASSERT_EQ(l2.capacity(), 3u);
-        ASSERT_EQ(l2.size(), 3u);
-        ASSERT_EQ(l2, (IL<NonTrivial>{1, 2, 3}));
     }
     {
         qc::List<int> l1{1, 2, 3};
@@ -224,14 +209,6 @@ TEST(List, assignment)
         ASSERT_EQ(l2, (IL<int>{1, 2, 3}));
         ASSERT_EQ(l1.size(), 0u);
         ASSERT_EQ(l1.capacity(), 0u);
-
-        l1 = l2;
-        ASSERT_EQ(l1.size(), 3u);
-        ASSERT_EQ(l1.capacity(), 3u);
-        ASSERT_EQ(l1, (IL<int>{1, 2, 3}));
-        ASSERT_EQ(l2.size(), 3u);
-        ASSERT_EQ(l2.capacity(), 3u);
-        ASSERT_EQ(l2, (IL<int>{1, 2, 3}));
     }
     {
         qc::List<int> list{9, 8, 7};
@@ -263,20 +240,6 @@ TEST(List, assignment)
         ASSERT_EQ(l2, (IL<NonTrivial>{1, 2, 3}));
         ASSERT_EQ(l1.size(), 0u);
         ASSERT_EQ(l1.capacity(), 0u);
-
-        NonTrivial::reset();
-        l1 = l2;
-        ASSERT_EQ(NonTrivial::contructions, 3);
-        ASSERT_EQ(NonTrivial::assignments, 0);
-        ASSERT_EQ(NonTrivial::copies, 3);
-        ASSERT_EQ(NonTrivial::moves, 0);
-        ASSERT_EQ(NonTrivial::destructions, 0);
-        ASSERT_EQ(l1.size(), 3u);
-        ASSERT_EQ(l1.capacity(), 3u);
-        ASSERT_EQ(l1, (IL<NonTrivial>{1, 2, 3}));
-        ASSERT_EQ(l2.size(), 3u);
-        ASSERT_EQ(l2.capacity(), 3u);
-        ASSERT_EQ(l2, (IL<NonTrivial>{1, 2, 3}));
     }
     {
         qc::List<NonTrivial> list{9, 8, 7};
@@ -1945,17 +1908,6 @@ TEST(List, subscript)
     }
 }
 
-TEST(List, at)
-{
-    {
-        qc::List<int> list{1, 2, 3};
-        ASSERT_EQ(1, list.at(0));
-        ASSERT_EQ(2, list.at(1));
-        ASSERT_EQ(3, list.at(2));
-        ASSERT_THROW(list.at(3u), std::out_of_range);
-    }
-}
-
 TEST(List, front)
 {
     {
@@ -2090,4 +2042,66 @@ TEST(List, pushIterator)
     ASSERT_EQ(list.size(), 3u);
     ASSERT_EQ(list, (IL<std::string>{"a", "b", "c"}));
     ASSERT_TRUE(cStr.empty());
+}
+
+TEST(List, nonMoveAssignableType)
+{
+    struct Unassignable
+    {
+        int v;
+        Unassignable(const int v) : v{v} {}
+        Unassignable(Unassignable &&) = default;
+        Unassignable(const Unassignable &) = default;
+        Unassignable & operator=(const Unassignable &) = delete;
+        Unassignable & operator=(Unassignable &&) = delete;
+        ~Unassignable() { v = -1; }
+        bool operator==(const Unassignable & other) const = default;
+    };
+
+    qc::List<Unassignable> list{};
+
+    list.push(0);
+    ASSERT_EQ(list, (IL<Unassignable>{0}));
+
+    list.push(Unassignable{1});
+    ASSERT_EQ(list, (IL<Unassignable>{0, 1}));
+
+    const Unassignable u1{2};
+    list.push(u1);
+    ASSERT_EQ(list, (IL<Unassignable>{0, 1, 2}));
+
+    list.insert(list.begin(), Unassignable{3});
+    ASSERT_EQ(list, (IL<Unassignable>{3, 0, 1, 2}));
+
+    const Unassignable u2{4};
+    list.insert(list.begin(), u2);
+    ASSERT_EQ(list, (IL<Unassignable>{4, 3, 0, 1, 2}));
+
+    list.emplace(list.begin(), 5);
+    ASSERT_EQ(list, (IL<Unassignable>{5, 4, 3, 0, 1, 2}));
+
+    list.insert(list.begin(), 3u, Unassignable{6});
+    ASSERT_EQ(list, (IL<Unassignable>{6, 6, 6, 5, 4, 3, 0, 1, 2}));
+
+    list.insert(list.begin(), {Unassignable{9}, Unassignable{8}, Unassignable{7}});
+    ASSERT_EQ(list, (IL<Unassignable>{9, 8, 7, 6, 6, 6, 5, 4, 3, 0, 1, 2}));
+
+    list.pop();
+    ASSERT_EQ(list, (IL<Unassignable>{9, 8, 7, 6, 6, 6, 5, 4, 3, 0, 1}));
+
+    list.pop(3u);
+    ASSERT_EQ(list, (IL<Unassignable>{9, 8, 7, 6, 6, 6, 5, 4}));
+
+    list.erase(list.begin());
+    ASSERT_EQ(list, (IL<Unassignable>{8, 7, 6, 6, 6, 5, 4}));
+
+    list.erase(list.begin(), list.begin() + 3);
+    ASSERT_EQ(list, (IL<Unassignable>{6, 6, 5, 4}));
+
+    ASSERT_LT(list.capacity(), 32u);
+    list.reserve(32u);
+    ASSERT_EQ(list, (IL<Unassignable>{6, 6, 5, 4}));
+
+    list.clear();
+    ASSERT_TRUE(list.empty());
 }

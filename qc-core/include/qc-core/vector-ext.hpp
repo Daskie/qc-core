@@ -23,11 +23,13 @@ namespace qc
     // ...
     //
     template <int n> constexpr bool any(bvec<n> v);
+    constexpr bool any(const bool v) { return v; }
 
     //
     // ...
     //
     template <int n> constexpr bool all(bvec<n> v);
+    constexpr bool all(const bool v) { return v; }
 
     //
     // ...
@@ -202,8 +204,8 @@ namespace qc
     ///
     /// ...
     ///
-    template <Signed T> vec2<T> rotateCW(const vec2<T> & v) noexcept;
-    template <Signed T> vec2<T> rotateCCW(const vec2<T> & v) noexcept;
+    template <Signed T> vec2<T> rotateCW(const vec2<T> & v);
+    template <Signed T> vec2<T> rotateCCW(const vec2<T> & v);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -681,13 +683,13 @@ namespace qc
     }
 
     template <Signed T>
-    inline vec2<T> rotateCW(const vec2<T> & v) noexcept
+    inline vec2<T> rotateCW(const vec2<T> & v)
     {
         return vec2<T>{v.y, T(-v.x)};
     }
 
     template <Signed T>
-    inline vec2<T> rotateCCW(const vec2<T> & v) noexcept
+    inline vec2<T> rotateCCW(const vec2<T> & v)
     {
         return vec2<T>{T(-v.y), v.x};
     }

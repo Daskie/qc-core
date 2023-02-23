@@ -75,7 +75,7 @@ namespace qc
         template <typename T> concept IntegralVector = Vector<T> && Integral<typename T::Type>;
         template <typename T> concept SignedIntegralVector = Vector<T> && SignedIntegral<typename T::Type>;
         template <typename T> concept UnsignedIntegralVector = Vector<T> && UnsignedIntegral<typename T::Type>;
-        template <typename T> concept BooleanVector = Vector<T> && Same<typename T::Type, bool>;
+        template <typename T> concept BooleanVector = Vector<T> && Boolean<typename T::Type>;
 
         template <typename T> concept Vector2 = Vector<T> && T::n == 2;
         template <typename T> concept Vector3 = Vector<T> && T::n == 3;
@@ -91,27 +91,27 @@ namespace qc
         T x;
         T y;
 
-        constexpr vec() noexcept = default;
-        constexpr vec(T v) noexcept;
-        template <NumericOrBoolean U> constexpr explicit vec(vec2<U> v) noexcept;
-        template <NumericOrBoolean U> constexpr explicit vec(vec3<U> v) noexcept;
-        template <NumericOrBoolean U> constexpr explicit vec(vec4<U> v) noexcept;
-        constexpr vec(T v1, T v2) noexcept;
+        constexpr vec() = default;
+        constexpr vec(T v);
+        template <NumericOrBoolean U> constexpr explicit vec(vec2<U> v);
+        template <NumericOrBoolean U> constexpr explicit vec(vec3<U> v);
+        template <NumericOrBoolean U> constexpr explicit vec(vec4<U> v);
+        constexpr vec(T v1, T v2);
 
-        constexpr vec(const vec & v) noexcept = default;
-        constexpr vec(vec && v) noexcept = default;
+        constexpr vec(const vec & v) = default;
+        constexpr vec(vec && v) = default;
 
-        vec & operator=(T v) noexcept;
+        vec & operator=(T v);
 
-        vec & operator=(const vec & v) noexcept = default;
-        vec & operator=(vec && v) noexcept = default;
+        vec & operator=(const vec & v) = default;
+        vec & operator=(vec && v) = default;
 
-        ~vec() noexcept = default;
+        ~vec() = default;
 
-        constexpr explicit operator bool() const noexcept;
+        constexpr explicit operator bool() const;
 
-        template <int i> T & at() noexcept;
-        template <int i> constexpr T at() const noexcept;
+        template <int i> T & at();
+        template <int i> constexpr T at() const;
 
         T & operator[](int i);
         T operator[](int i) const;
@@ -127,39 +127,39 @@ namespace qc
         T y;
         T z;
 
-        constexpr vec() noexcept = default;
-        constexpr vec(T v) noexcept;
-        template <NumericOrBoolean U> constexpr explicit vec(vec2<U> v) noexcept;
-        template <NumericOrBoolean U> constexpr explicit vec(vec3<U> v) noexcept;
-        template <NumericOrBoolean U> constexpr explicit vec(vec4<U> v) noexcept;
-        constexpr vec(T v1, T v2, T v3) noexcept;
-        constexpr vec(vec2<T> v1, T v2) noexcept;
-        constexpr vec(T v1, vec2<T> v2) noexcept;
+        constexpr vec() = default;
+        constexpr vec(T v);
+        template <NumericOrBoolean U> constexpr explicit vec(vec2<U> v);
+        template <NumericOrBoolean U> constexpr explicit vec(vec3<U> v);
+        template <NumericOrBoolean U> constexpr explicit vec(vec4<U> v);
+        constexpr vec(T v1, T v2, T v3);
+        constexpr vec(vec2<T> v1, T v2);
+        constexpr vec(T v1, vec2<T> v2);
 
-        constexpr vec(const vec & v) noexcept = default;
-        constexpr vec(vec && v) noexcept = default;
+        constexpr vec(const vec & v) = default;
+        constexpr vec(vec && v) = default;
 
-        vec & operator=(T v) noexcept;
+        vec & operator=(T v);
 
-        vec & operator=(const vec & v) noexcept = default;
-        vec & operator=(vec && v) noexcept = default;
-        vec & operator=(const vec2<T> & v) noexcept;
+        vec & operator=(const vec & v) = default;
+        vec & operator=(vec && v) = default;
+        vec & operator=(const vec2<T> & v);
 
-        ~vec() noexcept = default;
+        ~vec() = default;
 
-        constexpr explicit operator bool() const noexcept;
+        constexpr explicit operator bool() const;
 
-        template <int i> T & at() noexcept;
-        template <int i> constexpr T at() const noexcept;
+        template <int i> T & at();
+        template <int i> constexpr T at() const;
 
         T & operator[](int i);
         T operator[](int i) const;
 
-        vec2<T> & xy() noexcept;
-        constexpr vec2<T> xy() const noexcept;
+        vec2<T> & xy();
+        constexpr vec2<T> xy() const;
 
-        vec2<T> & yz() noexcept;
-        constexpr vec2<T> yz() const noexcept;
+        vec2<T> & yz();
+        constexpr vec2<T> yz() const;
     };
 
     template <NumericOrBoolean T>
@@ -173,53 +173,53 @@ namespace qc
         T z;
         T w;
 
-        constexpr vec() noexcept = default;
-        constexpr vec(T v) noexcept;
-        template <NumericOrBoolean U> constexpr explicit vec(vec2<U> v) noexcept;
-        template <NumericOrBoolean U> constexpr explicit vec(vec3<U> v) noexcept;
-        template <NumericOrBoolean U> constexpr explicit vec(vec4<U> v) noexcept;
-        constexpr vec(T v1, T v2, T v3, T v4) noexcept;
-        constexpr vec(vec2<T> v1, T v2, T v3) noexcept;
-        constexpr vec(T v1, vec2<T> v2, T v3) noexcept;
-        constexpr vec(T v1, T v2, vec2<T> v3) noexcept;
-        constexpr vec(vec2<T> v1, vec2<T> v2) noexcept;
-        constexpr vec(vec3<T> v1, T v2) noexcept;
-        constexpr vec(T v1, vec3<T> v2) noexcept;
+        constexpr vec() = default;
+        constexpr vec(T v);
+        template <NumericOrBoolean U> constexpr explicit vec(vec2<U> v);
+        template <NumericOrBoolean U> constexpr explicit vec(vec3<U> v);
+        template <NumericOrBoolean U> constexpr explicit vec(vec4<U> v);
+        constexpr vec(T v1, T v2, T v3, T v4);
+        constexpr vec(vec2<T> v1, T v2, T v3);
+        constexpr vec(T v1, vec2<T> v2, T v3);
+        constexpr vec(T v1, T v2, vec2<T> v3);
+        constexpr vec(vec2<T> v1, vec2<T> v2);
+        constexpr vec(vec3<T> v1, T v2);
+        constexpr vec(T v1, vec3<T> v2);
 
-        constexpr vec(const vec & v) noexcept = default;
-        constexpr vec(vec && v) noexcept = default;
+        constexpr vec(const vec & v) = default;
+        constexpr vec(vec && v) = default;
 
-        vec & operator=(T v) noexcept;
+        vec & operator=(T v);
 
-        vec & operator=(const vec & v) noexcept = default;
-        vec & operator=(vec && v) noexcept = default;
-        vec & operator=(const vec2<T> & v) noexcept;
-        vec & operator=(const vec3<T> & v) noexcept;
+        vec & operator=(const vec & v) = default;
+        vec & operator=(vec && v) = default;
+        vec & operator=(const vec2<T> & v);
+        vec & operator=(const vec3<T> & v);
 
-        ~vec() noexcept = default;
+        ~vec() = default;
 
-        constexpr explicit operator bool() const noexcept;
+        constexpr explicit operator bool() const;
 
-        template <int i> T & at() noexcept;
-        template <int i> constexpr T at() const noexcept;
+        template <int i> T & at();
+        template <int i> constexpr T at() const;
 
         T & operator[](int i);
         T operator[](int i) const;
 
-        vec2<T> & xy() noexcept;
-        constexpr vec2<T> xy() const noexcept;
+        vec2<T> & xy();
+        constexpr vec2<T> xy() const;
 
-        vec2<T> & yz() noexcept;
-        constexpr vec2<T> yz() const noexcept;
+        vec2<T> & yz();
+        constexpr vec2<T> yz() const;
 
-        vec2<T> & zw() noexcept;
-        constexpr vec2<T> zw() const noexcept;
+        vec2<T> & zw();
+        constexpr vec2<T> zw() const;
 
-        vec3<T> & xyz() noexcept;
-        constexpr vec3<T> xyz() const noexcept;
+        vec3<T> & xyz();
+        constexpr vec3<T> xyz() const;
 
-        vec3<T> & yzw() noexcept;
-        constexpr vec3<T> yzw() const noexcept;
+        vec3<T> & yzw();
+        constexpr vec3<T> yzw() const;
     };
 
     //
@@ -406,40 +406,40 @@ namespace qc
 namespace qc
 {
     template <NumericOrBoolean T>
-    inline constexpr vec<T, 2>::vec(const T v) noexcept :
+    inline constexpr vec<T, 2>::vec(const T v) :
         x{v},
         y{v}
     {}
 
     template <NumericOrBoolean T>
     template <NumericOrBoolean U>
-    inline constexpr vec<T, 2>::vec(const vec2<U> v) noexcept :
+    inline constexpr vec<T, 2>::vec(const vec2<U> v) :
         x{T(v.x)},
         y{T(v.y)}
     {}
 
     template <NumericOrBoolean T>
     template <NumericOrBoolean U>
-    inline constexpr vec<T, 2>::vec(const vec3<U> v) noexcept :
+    inline constexpr vec<T, 2>::vec(const vec3<U> v) :
         x{T(v.x)},
         y{T(v.y)}
     {}
 
     template <NumericOrBoolean T>
     template <NumericOrBoolean U>
-    inline constexpr vec<T, 2>::vec(const vec4<U> v) noexcept :
+    inline constexpr vec<T, 2>::vec(const vec4<U> v) :
         x{T(v.x)},
         y{T(v.y)}
     {}
 
     template <NumericOrBoolean T>
-    inline constexpr vec<T, 2>::vec(const T v1, const T v2) noexcept :
+    inline constexpr vec<T, 2>::vec(const T v1, const T v2) :
         x{v1},
         y{v2}
     {}
 
     template <NumericOrBoolean T>
-    inline vec2<T> & vec<T, 2>::operator=(const T v) noexcept
+    inline vec2<T> & vec<T, 2>::operator=(const T v)
     {
         x = v;
         y = v;
@@ -448,14 +448,14 @@ namespace qc
     }
 
     template <NumericOrBoolean T>
-    inline constexpr vec<T, 2>::operator bool() const noexcept
+    inline constexpr vec<T, 2>::operator bool() const
     {
         return x || y;
     }
 
     template <NumericOrBoolean T>
     template <int i>
-    inline T & vec<T, 2>::at() noexcept
+    inline T & vec<T, 2>::at()
     {
         static_assert(i >= 0 && i <= 1, "Index out of bounds");
         if constexpr (i == 0) return x;
@@ -464,7 +464,7 @@ namespace qc
 
     template <NumericOrBoolean T>
     template <int i>
-    inline constexpr T vec<T, 2>::at() const noexcept
+    inline constexpr T vec<T, 2>::at() const
     {
         static_assert(i >= 0 && i <= 1, "Index out of bounds");
         if constexpr (i == 0) return x;
@@ -484,7 +484,7 @@ namespace qc
     }
 
     template <NumericOrBoolean T>
-    inline constexpr vec<T, 3>::vec(const T v) noexcept :
+    inline constexpr vec<T, 3>::vec(const T v) :
         x{v},
         y{v},
         z{v}
@@ -492,7 +492,7 @@ namespace qc
 
     template <NumericOrBoolean T>
     template <NumericOrBoolean U>
-    inline constexpr vec<T, 3>::vec(const vec2<U> v) noexcept :
+    inline constexpr vec<T, 3>::vec(const vec2<U> v) :
         x{T(v.x)},
         y{T(v.y)},
         z{}
@@ -500,7 +500,7 @@ namespace qc
 
     template <NumericOrBoolean T>
     template <NumericOrBoolean U>
-    inline constexpr vec<T, 3>::vec(const vec3<U> v) noexcept :
+    inline constexpr vec<T, 3>::vec(const vec3<U> v) :
         x{T(v.x)},
         y{T(v.y)},
         z{T(v.z)}
@@ -508,35 +508,35 @@ namespace qc
 
     template <NumericOrBoolean T>
     template <NumericOrBoolean U>
-    inline constexpr vec<T, 3>::vec(const vec4<U> v) noexcept :
+    inline constexpr vec<T, 3>::vec(const vec4<U> v) :
         x{T(v.x)},
         y{T(v.y)},
         z{T(v.z)}
     {}
 
     template <NumericOrBoolean T>
-    inline constexpr vec<T, 3>::vec(const T v1, const T v2, const T v3) noexcept :
+    inline constexpr vec<T, 3>::vec(const T v1, const T v2, const T v3) :
         x{v1},
         y{v2},
         z{v3}
     {}
 
     template <NumericOrBoolean T>
-    inline constexpr vec<T, 3>::vec(const vec2<T> v1, const T v2) noexcept :
+    inline constexpr vec<T, 3>::vec(const vec2<T> v1, const T v2) :
         x{v1.x},
         y{v1.y},
         z{v2}
     {}
 
     template <NumericOrBoolean T>
-    inline constexpr vec<T, 3>::vec(const T v1, const vec2<T> v2) noexcept :
+    inline constexpr vec<T, 3>::vec(const T v1, const vec2<T> v2) :
         x{v1},
         y{v2.x},
         z{v2.y}
     {}
 
     template <NumericOrBoolean T>
-    inline vec3<T> & vec<T, 3>::operator=(const T v) noexcept
+    inline vec3<T> & vec<T, 3>::operator=(const T v)
     {
         x = v;
         y = v;
@@ -546,7 +546,7 @@ namespace qc
     }
 
     template <NumericOrBoolean T>
-    inline vec3<T> & vec<T, 3>::operator=(const vec2<T> & v) noexcept
+    inline vec3<T> & vec<T, 3>::operator=(const vec2<T> & v)
     {
         x = v.x;
         y = v.y;
@@ -556,14 +556,14 @@ namespace qc
     }
 
     template <NumericOrBoolean T>
-    inline constexpr vec<T, 3>::operator bool() const noexcept
+    inline constexpr vec<T, 3>::operator bool() const
     {
         return x || y || z;
     }
 
     template <NumericOrBoolean T>
     template <int i>
-    inline T & vec<T, 3>::at() noexcept
+    inline T & vec<T, 3>::at()
     {
         static_assert(i >= 0 && i <= 2, "Index out of bounds");
         if constexpr (i == 0) return x;
@@ -573,7 +573,7 @@ namespace qc
 
     template <NumericOrBoolean T>
     template <int i>
-    inline constexpr T vec<T, 3>::at() const noexcept
+    inline constexpr T vec<T, 3>::at() const
     {
         static_assert(i >= 0 && i <= 2, "Index out of bounds");
         if constexpr (i == 0) return x;
@@ -594,31 +594,31 @@ namespace qc
     }
 
     template <NumericOrBoolean T>
-    inline vec2<T> & vec<T, 3>::xy() noexcept
+    inline vec2<T> & vec<T, 3>::xy()
     {
         return reinterpret_cast<vec2<T> &>(x);
     }
 
     template <NumericOrBoolean T>
-    inline constexpr vec2<T> vec<T, 3>::xy() const noexcept
+    inline constexpr vec2<T> vec<T, 3>::xy() const
     {
         return reinterpret_cast<const vec2<T> &>(x);
     }
 
     template <NumericOrBoolean T>
-    inline vec2<T> & vec<T, 3>::yz() noexcept
+    inline vec2<T> & vec<T, 3>::yz()
     {
         return reinterpret_cast<vec2<T> &>(y);
     }
 
     template <NumericOrBoolean T>
-    inline constexpr vec2<T> vec<T, 3>::yz() const noexcept
+    inline constexpr vec2<T> vec<T, 3>::yz() const
     {
         return reinterpret_cast<const vec2<T> &>(y);
     }
 
     template <NumericOrBoolean T>
-    inline constexpr vec<T, 4>::vec(const T v) noexcept :
+    inline constexpr vec<T, 4>::vec(const T v) :
         x{v},
         y{v},
         z{v},
@@ -627,7 +627,7 @@ namespace qc
 
     template <NumericOrBoolean T>
     template <NumericOrBoolean U>
-    inline constexpr vec<T, 4>::vec(const vec2<U> v) noexcept :
+    inline constexpr vec<T, 4>::vec(const vec2<U> v) :
         x{T(v.x)},
         y{T(v.y)},
         z{},
@@ -636,7 +636,7 @@ namespace qc
 
     template <NumericOrBoolean T>
     template <NumericOrBoolean U>
-    inline constexpr vec<T, 4>::vec(const vec3<U> v) noexcept :
+    inline constexpr vec<T, 4>::vec(const vec3<U> v) :
         x{T(v.x)},
         y{T(v.y)},
         z{T(v.z)},
@@ -645,7 +645,7 @@ namespace qc
 
     template <NumericOrBoolean T>
     template <NumericOrBoolean U>
-    inline constexpr vec<T, 4>::vec(const vec4<U> v) noexcept :
+    inline constexpr vec<T, 4>::vec(const vec4<U> v) :
         x{T(v.x)},
         y{T(v.y)},
         z{T(v.z)},
@@ -653,7 +653,7 @@ namespace qc
     {}
 
     template <NumericOrBoolean T>
-    inline constexpr vec<T, 4>::vec(const T v1, const T v2, const T v3, const T v4) noexcept :
+    inline constexpr vec<T, 4>::vec(const T v1, const T v2, const T v3, const T v4) :
         x{v1},
         y{v2},
         z{v3},
@@ -661,7 +661,7 @@ namespace qc
     {}
 
     template <NumericOrBoolean T>
-    inline constexpr vec<T, 4>::vec(const vec2<T> v1, const T v2, const T v3) noexcept :
+    inline constexpr vec<T, 4>::vec(const vec2<T> v1, const T v2, const T v3) :
         x{v1.x},
         y{v1.y},
         z{v2},
@@ -669,7 +669,7 @@ namespace qc
     {}
 
     template <NumericOrBoolean T>
-    inline constexpr vec<T, 4>::vec(const T v1, const vec2<T> v2, const T v3) noexcept :
+    inline constexpr vec<T, 4>::vec(const T v1, const vec2<T> v2, const T v3) :
         x{v1},
         y{v2.x},
         z{v2.y},
@@ -677,7 +677,7 @@ namespace qc
     {}
 
     template <NumericOrBoolean T>
-    inline constexpr vec<T, 4>::vec(const T v1, const T v2, const vec2<T> v3) noexcept :
+    inline constexpr vec<T, 4>::vec(const T v1, const T v2, const vec2<T> v3) :
         x{v1},
         y{v2},
         z{v3.x},
@@ -685,7 +685,7 @@ namespace qc
     {}
 
     template <NumericOrBoolean T>
-    inline constexpr vec<T, 4>::vec(const vec2<T> v1, const vec2<T> v2) noexcept :
+    inline constexpr vec<T, 4>::vec(const vec2<T> v1, const vec2<T> v2) :
         x{v1.x},
         y{v1.y},
         z{v2.x},
@@ -693,7 +693,7 @@ namespace qc
     {}
 
     template <NumericOrBoolean T>
-    inline constexpr vec<T, 4>::vec(const vec3<T> v1, const T v2) noexcept :
+    inline constexpr vec<T, 4>::vec(const vec3<T> v1, const T v2) :
         x{v1.x},
         y{v1.y},
         z{v1.z},
@@ -701,7 +701,7 @@ namespace qc
     {}
 
     template <NumericOrBoolean T>
-    inline constexpr vec<T, 4>::vec(const T v1, const vec3<T> v2) noexcept :
+    inline constexpr vec<T, 4>::vec(const T v1, const vec3<T> v2) :
         x{v1},
         y{v2.x},
         z{v2.y},
@@ -709,7 +709,7 @@ namespace qc
     {}
 
     template <NumericOrBoolean T>
-    inline vec4<T> & vec<T, 4>::operator=(const T v) noexcept
+    inline vec4<T> & vec<T, 4>::operator=(const T v)
     {
         x = v;
         y = v;
@@ -720,7 +720,7 @@ namespace qc
     }
 
     template <NumericOrBoolean T>
-    inline vec4<T> & vec<T, 4>::operator=(const vec2<T> & v) noexcept
+    inline vec4<T> & vec<T, 4>::operator=(const vec2<T> & v)
     {
         x = v.x;
         y = v.y;
@@ -731,7 +731,7 @@ namespace qc
     }
 
     template <NumericOrBoolean T>
-    inline vec4<T> & vec<T, 4>::operator=(const vec3<T> & v) noexcept
+    inline vec4<T> & vec<T, 4>::operator=(const vec3<T> & v)
     {
         x = v.x;
         y = v.y;
@@ -742,14 +742,14 @@ namespace qc
     }
 
     template <NumericOrBoolean T>
-    inline constexpr vec<T, 4>::operator bool() const noexcept
+    inline constexpr vec<T, 4>::operator bool() const
     {
         return x || y || z || w;
     }
 
     template <NumericOrBoolean T>
     template <int i>
-    inline T & vec<T, 4>::at() noexcept
+    inline T & vec<T, 4>::at()
     {
         static_assert(i >= 0 && i <= 3, "Index out of bounds");
         if constexpr (i == 0) return x;
@@ -760,7 +760,7 @@ namespace qc
 
     template <NumericOrBoolean T>
     template <int i>
-    inline constexpr T vec<T, 4>::at() const noexcept
+    inline constexpr T vec<T, 4>::at() const
     {
         static_assert(i >= 0 && i <= 3, "Index out of bounds");
         if constexpr (i == 0) return x;
@@ -782,61 +782,61 @@ namespace qc
     }
 
     template <NumericOrBoolean T>
-    inline vec2<T> & vec<T, 4>::xy() noexcept
+    inline vec2<T> & vec<T, 4>::xy()
     {
         return reinterpret_cast<vec2<T> &>(x);
     }
 
     template <NumericOrBoolean T>
-    inline constexpr vec2<T> vec<T, 4>::xy() const noexcept
+    inline constexpr vec2<T> vec<T, 4>::xy() const
     {
         return reinterpret_cast<const vec2<T> &>(x);
     }
 
     template <NumericOrBoolean T>
-    inline vec2<T> & vec<T, 4>::yz() noexcept
+    inline vec2<T> & vec<T, 4>::yz()
     {
         return reinterpret_cast<vec2<T> &>(y);
     }
 
     template <NumericOrBoolean T>
-    inline constexpr vec2<T> vec<T, 4>::yz() const noexcept
+    inline constexpr vec2<T> vec<T, 4>::yz() const
     {
         return reinterpret_cast<const vec2<T> &>(y);
     }
 
     template <NumericOrBoolean T>
-    inline vec2<T> & vec<T, 4>::zw() noexcept
+    inline vec2<T> & vec<T, 4>::zw()
     {
         return reinterpret_cast<vec2<T> &>(z);
     }
 
     template <NumericOrBoolean T>
-    inline constexpr vec2<T> vec<T, 4>::zw() const noexcept
+    inline constexpr vec2<T> vec<T, 4>::zw() const
     {
         return reinterpret_cast<const vec2<T> &>(z);
     }
 
     template <NumericOrBoolean T>
-    inline vec3<T> & vec<T, 4>::xyz() noexcept
+    inline vec3<T> & vec<T, 4>::xyz()
     {
         return reinterpret_cast<vec3<T> &>(x);
     }
 
     template <NumericOrBoolean T>
-    inline constexpr vec3<T> vec<T, 4>::xyz() const noexcept
+    inline constexpr vec3<T> vec<T, 4>::xyz() const
     {
         return reinterpret_cast<const vec3<T> &>(x);
     }
 
     template <NumericOrBoolean T>
-    inline vec3<T> & vec<T, 4>::yzw() noexcept
+    inline vec3<T> & vec<T, 4>::yzw()
     {
         return reinterpret_cast<vec3<T> &>(y);
     }
 
     template <NumericOrBoolean T>
-    inline constexpr vec3<T> vec<T, 4>::yzw() const noexcept
+    inline constexpr vec3<T> vec<T, 4>::yzw() const
     {
         return reinterpret_cast<const vec3<T> &>(y);
     }

@@ -8,15 +8,12 @@
 
 namespace qc
 {
-    struct RingDequeError {};
-
     template <typename T>
     class RingDeque
     {
-        static_assert(std::is_nothrow_default_constructible_v<T>);
-        static_assert(std::is_nothrow_move_constructible_v<T>);
-        static_assert(std::is_nothrow_move_assignable_v<T>);
-        static_assert(std::is_nothrow_destructible_v<T>);
+        static_assert(std::is_default_constructible_v<T>);
+        static_assert(std::is_move_constructible_v<T>);
+        static_assert(std::is_move_assignable_v<T>);
 
         static_assert(alignof(T) <= 8u); // TODO: Use std::align_val_t once supported by intellisense
 
@@ -32,15 +29,15 @@ namespace qc
         using iterator = Iterator<false>;
         using const_iterator = Iterator<true>;
 
-        RingDeque() noexcept = default;
+        RingDeque() = default;
 
-        RingDeque(const RingDeque & other) noexcept = delete;
-        RingDeque(RingDeque && other) noexcept;
+        RingDeque(const RingDeque & other) = delete;
+        RingDeque(RingDeque && other);
 
-        RingDeque & operator=(const RingDeque & other) noexcept = delete;
-        RingDeque & operator=(RingDeque && other) noexcept;
+        RingDeque & operator=(const RingDeque & other) = delete;
+        RingDeque & operator=(RingDeque && other);
 
-        ~RingDeque() noexcept;
+        ~RingDeque();
 
         void reserve(size_t capacity);
 
@@ -62,8 +59,8 @@ namespace qc
         T & back();
         const T & back() const;
 
-        T & operator[](size_t i) noexcept;
-        const T & operator[](size_t i) const noexcept;
+        T & operator[](size_t i);
+        const T & operator[](size_t i) const;
 
         void pop_front();
 
@@ -71,19 +68,19 @@ namespace qc
 
         void clear();
 
-        size_t size() const noexcept { return _size; };
+        size_t size() const { return _size; };
 
-        bool empty() const noexcept { return !_size; };
+        bool empty() const { return !_size; };
 
-        size_t capacity() const noexcept { return _capacity; }
+        size_t capacity() const { return _capacity; }
 
-        iterator begin() noexcept;
-        const_iterator begin() const noexcept;
-        const_iterator cbegin() const noexcept;
+        iterator begin();
+        const_iterator begin() const;
+        const_iterator cbegin() const;
 
-        iterator end() noexcept;
-        const_iterator end() const noexcept;
-        const_iterator cend() const noexcept;
+        iterator end();
+        const_iterator end() const;
+        const_iterator cend() const;
 
       private:
 
@@ -112,22 +109,22 @@ namespace qc
         using pointer = value_type *;
         using difference_type = ptrdiff_t;
 
-        Iterator(const Iterator & other) noexcept = default;
-        Iterator(const Iterator<false> & other) noexcept requires constant;
+        Iterator(const Iterator & other) = default;
+        Iterator(const Iterator<false> & other) requires constant;
 
-        value_type & operator*() const noexcept { return *_v; }
+        value_type & operator*() const { return *_v; }
 
-        value_type * operator->() const noexcept { return _v; }
+        value_type * operator->() const { return _v; }
 
-        Iterator & operator++() noexcept;
+        Iterator & operator++();
 
-        Iterator operator++(int) noexcept;
+        Iterator operator++(int);
 
-        template <bool constant_> bool operator==(const Iterator<constant_> & other) const noexcept;
+        template <bool constant_> bool operator==(const Iterator<constant_> & other) const;
 
       private:
 
-        Iterator(value_type * v, value_type * start, value_type * end) noexcept;
+        Iterator(value_type * v, value_type * start, value_type * end);
 
         value_type * _v;
         value_type * _start;
@@ -140,7 +137,7 @@ namespace qc
 namespace qc
 {
     template <typename T>
-    inline RingDeque<T>::RingDeque(RingDeque && other) noexcept :
+    inline RingDeque<T>::RingDeque(RingDeque && other) :
         _slots{std::exchange(other._slots, nullptr)},
         _capacity{std::exchange(other._capacity, 0u)},
         _size{std::exchange(other._size, 0u)},
@@ -149,7 +146,7 @@ namespace qc
     {}
 
     template <typename T>
-    inline RingDeque<T> & RingDeque<T>::operator=(RingDeque && other) noexcept
+    inline RingDeque<T> & RingDeque<T>::operator=(RingDeque && other)
     {
         if (&other == this)
         {
@@ -166,7 +163,7 @@ namespace qc
     }
 
     template <typename T>
-    inline RingDeque<T>::~RingDeque() noexcept
+    inline RingDeque<T>::~RingDeque()
     {
         if (_slots)
         {
@@ -257,10 +254,7 @@ namespace qc
     template <typename T>
     inline const T & RingDeque<T>::front() const
     {
-        if (!_size) [[unlikely]]
-        {
-            throw RingDequeError{};
-        }
+        assert(_size);
 
         return *_front;
     }
@@ -274,23 +268,20 @@ namespace qc
     template <typename T>
     inline const T & RingDeque<T>::back() const
     {
-        if (!_size) [[unlikely]]
-        {
-            throw RingDequeError{};
-        }
+        assert(_size);
 
         return _back[_back == _slots ? nat(_capacity) - 1 : -1];
     }
 
     template <typename T>
-    inline T & RingDeque<T>::operator[](const size_t i) noexcept
+    inline T & RingDeque<T>::operator[](const size_t i)
     {
         const size_t absoluteI{_front - _slots + i};
         return _slots[absoluteI < _capacity ? absoluteI : absoluteI - _capacity];
     }
 
     template <typename T>
-    inline const T & RingDeque<T>::operator[](const size_t i) const noexcept
+    inline const T & RingDeque<T>::operator[](const size_t i) const
     {
         const size_t absoluteI{_front - _slots + i};
         return _slots[absoluteI < _capacity ? absoluteI : absoluteI - _capacity];
@@ -299,10 +290,7 @@ namespace qc
     template <typename T>
     inline void RingDeque<T>::pop_front()
     {
-        if (!_size) [[unlikely]]
-        {
-            throw RingDequeError{};
-        }
+        assert(_size);
 
         _front->~T();
         --_size;
@@ -317,10 +305,7 @@ namespace qc
     template <typename T>
     inline void RingDeque<T>::pop_back()
     {
-        if (!_size) [[unlikely]]
-        {
-            throw RingDequeError{};
-        }
+        assert(_size);
 
         if (_back == _slots)
         {
@@ -346,37 +331,37 @@ namespace qc
     }
 
     template <typename T>
-    inline auto RingDeque<T>::begin() noexcept -> iterator
+    inline auto RingDeque<T>::begin() -> iterator
     {
         return iterator{_front, _slots, _slots + _capacity};
     }
 
     template <typename T>
-    inline auto RingDeque<T>::begin() const noexcept -> const_iterator
+    inline auto RingDeque<T>::begin() const -> const_iterator
     {
         return const_iterator{_front, _slots, _slots + _capacity};
     }
 
     template <typename T>
-    inline auto RingDeque<T>::cbegin() const noexcept -> const_iterator
+    inline auto RingDeque<T>::cbegin() const -> const_iterator
     {
         return begin();
     }
 
     template <typename T>
-    inline auto RingDeque<T>::end() noexcept -> iterator
+    inline auto RingDeque<T>::end() -> iterator
     {
         return iterator{_back, _slots, _slots + _capacity};
     }
 
     template <typename T>
-    inline auto RingDeque<T>::end() const noexcept -> const_iterator
+    inline auto RingDeque<T>::end() const -> const_iterator
     {
         return const_iterator{_back, _slots, _slots + _capacity};
     }
 
     template <typename T>
-    inline auto RingDeque<T>::cend() const noexcept -> const_iterator
+    inline auto RingDeque<T>::cend() const -> const_iterator
     {
         return end();
     }
@@ -420,7 +405,7 @@ namespace qc
 
     template <typename T>
     template <bool constant>
-    inline RingDeque<T>::Iterator<constant>::Iterator(const Iterator<false> & other) noexcept requires constant :
+    inline RingDeque<T>::Iterator<constant>::Iterator(const Iterator<false> & other) requires constant :
         _v{other._v},
         _start{other._start},
         _end{other._end}
@@ -428,7 +413,7 @@ namespace qc
 
     template <typename T>
     template <bool constant>
-    inline auto RingDeque<T>::Iterator<constant>::operator++() noexcept -> Iterator &
+    inline auto RingDeque<T>::Iterator<constant>::operator++() -> Iterator &
     {
         ++_v;
 
@@ -442,7 +427,7 @@ namespace qc
 
     template <typename T>
     template <bool constant>
-    inline auto RingDeque<T>::Iterator<constant>::operator++(int) noexcept -> Iterator
+    inline auto RingDeque<T>::Iterator<constant>::operator++(int) -> Iterator
     {
         Iterator temp{*this};
         operator++();
@@ -452,14 +437,14 @@ namespace qc
     template <typename T>
     template <bool constant>
     template <bool constant_>
-    inline bool RingDeque<T>::Iterator<constant>::operator==(const Iterator<constant_> & other) const noexcept
+    inline bool RingDeque<T>::Iterator<constant>::operator==(const Iterator<constant_> & other) const
     {
         return _v == other._v;
     }
 
     template <typename T>
     template <bool constant>
-    inline RingDeque<T>::Iterator<constant>::Iterator(value_type * const v, value_type * const start, value_type * const end) noexcept :
+    inline RingDeque<T>::Iterator<constant>::Iterator(value_type * const v, value_type * const start, value_type * const end) :
         _v(v),
         _start(start),
         _end(end)

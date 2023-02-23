@@ -48,33 +48,33 @@ namespace qc
         vec2<T> c1{T(1.0), T(0.0)};
         vec2<T> c2{T(0.0), T(1.0)};
 
-        constexpr mat() noexcept = default;
-        constexpr mat(vec2<T> c1, vec2<T> c2) noexcept;
+        constexpr mat() = default;
+        constexpr mat(vec2<T> c1, vec2<T> c2);
         constexpr mat(
             T x1, T y1,
-            T x2, T y2) noexcept;
-        template <Floating U> constexpr explicit mat(const mat2<U> & m) noexcept;
-        template <Floating U> constexpr explicit mat(const mat3<U> & m) noexcept;
-        template <Floating U> constexpr explicit mat(const mat4<U> & m) noexcept;
+            T x2, T y2);
+        template <Floating U> constexpr explicit mat(const mat2<U> & m);
+        template <Floating U> constexpr explicit mat(const mat3<U> & m);
+        template <Floating U> constexpr explicit mat(const mat4<U> & m);
 
-        constexpr mat(const mat & m) noexcept = default;
-        constexpr mat(mat && m) noexcept = default;
+        constexpr mat(const mat & m) = default;
+        constexpr mat(mat && m) = default;
 
-        mat & operator=(const mat & m) noexcept = default;
-        mat & operator=(mat && m) noexcept = default;
+        mat & operator=(const mat & m) = default;
+        mat & operator=(mat && m) = default;
 
-        ~mat() noexcept = default;
+        ~mat() = default;
 
-        constexpr explicit operator bool() const noexcept;
+        constexpr explicit operator bool() const;
 
         vec2<T> & col(int i);
         vec2<T> col(int i) const;
 
         vec2<T> row(int i) const;
 
-        template <int i> constexpr vec2<T> row() const noexcept;
+        template <int i> constexpr vec2<T> row() const;
 
-        template <int i> constexpr vec2<T> col() const noexcept;
+        template <int i> constexpr vec2<T> col() const;
     };
 
     template <Floating T>
@@ -87,35 +87,35 @@ namespace qc
         vec3<T> c2{T(0.0), T(1.0), T(0.0)};
         vec3<T> c3{T(0.0), T(0.0), T(1.0)};
 
-        constexpr mat() noexcept = default;
-        constexpr mat(vec3<T> c1, vec3<T> c2, vec3<T> c3) noexcept;
+        constexpr mat() = default;
+        constexpr mat(vec3<T> c1, vec3<T> c2, vec3<T> c3);
         constexpr mat(
             T x1, T y1, T z1,
             T x2, T y2, T z2,
-            T x3, T y3, T z3) noexcept;
-        template <Floating U> constexpr explicit mat(const mat2<U> & m) noexcept;
-        template <Floating U> constexpr explicit mat(const mat3<U> & m) noexcept;
-        template <Floating U> constexpr explicit mat(const mat4<U> & m) noexcept;
+            T x3, T y3, T z3);
+        template <Floating U> constexpr explicit mat(const mat2<U> & m);
+        template <Floating U> constexpr explicit mat(const mat3<U> & m);
+        template <Floating U> constexpr explicit mat(const mat4<U> & m);
 
-        constexpr mat(const mat & m) noexcept = default;
-        constexpr mat(mat && m) noexcept = default;
+        constexpr mat(const mat & m) = default;
+        constexpr mat(mat && m) = default;
 
-        mat & operator=(const mat & m) noexcept = default;
-        mat & operator=(mat && m) noexcept = default;
-        mat & operator=(const mat2<T> & m) noexcept;
+        mat & operator=(const mat & m) = default;
+        mat & operator=(mat && m) = default;
+        mat & operator=(const mat2<T> & m);
 
-        ~mat() noexcept = default;
+        ~mat() = default;
 
-        constexpr explicit operator bool() const noexcept;
+        constexpr explicit operator bool() const;
 
         vec3<T> & col(int i);
         vec3<T> col(int i) const;
 
         vec3<T> row(int i) const;
 
-        template <int i> constexpr vec3<T> row() const noexcept;
+        template <int i> constexpr vec3<T> row() const;
 
-        template <int i> constexpr vec3<T> col() const noexcept;
+        template <int i> constexpr vec3<T> col() const;
     };
 
     template <Floating T>
@@ -129,37 +129,37 @@ namespace qc
         vec4<T> c3{T(0.0), T(0.0), T(1.0), T(0.0)};
         vec4<T> c4{T(0.0), T(0.0), T(0.0), T(1.0)};
 
-        constexpr mat() noexcept = default;
-        constexpr mat(vec4<T> c1, vec4<T> c2, vec4<T> c3, vec4<T> c4) noexcept;
+        constexpr mat() = default;
+        constexpr mat(vec4<T> c1, vec4<T> c2, vec4<T> c3, vec4<T> c4);
         constexpr mat(
             T x1, T y1, T z1, T w1,
             T x2, T y2, T z2, T w2,
             T x3, T y3, T z3, T w3,
-            T x4, T y4, T z4, T w4) noexcept;
-        template <Floating U> constexpr explicit mat(const mat2<U> & m) noexcept;
-        template <Floating U> constexpr explicit mat(const mat3<U> & m) noexcept;
-        template <Floating U> constexpr explicit mat(const mat4<U> & m) noexcept;
+            T x4, T y4, T z4, T w4);
+        template <Floating U> constexpr explicit mat(const mat2<U> & m);
+        template <Floating U> constexpr explicit mat(const mat3<U> & m);
+        template <Floating U> constexpr explicit mat(const mat4<U> & m);
 
-        constexpr mat(const mat & m) noexcept = default;
-        constexpr mat(mat && m) noexcept = default;
+        constexpr mat(const mat & m) = default;
+        constexpr mat(mat && m) = default;
 
-        mat & operator=(const mat & m) noexcept = default;
-        mat & operator=(mat && m) noexcept = default;
-        mat & operator=(const mat2<T> & m) noexcept;
-        mat & operator=(const mat3<T> & m) noexcept;
+        mat & operator=(const mat & m) = default;
+        mat & operator=(mat && m) = default;
+        mat & operator=(const mat2<T> & m);
+        mat & operator=(const mat3<T> & m);
 
-        ~mat() noexcept = default;
+        ~mat() = default;
 
-        constexpr explicit operator bool() const noexcept;
+        constexpr explicit operator bool() const;
 
         vec4<T> & col(int i);
         vec4<T> col(int i) const;
 
         vec4<T> row(int i) const;
 
-        template <int i> constexpr vec4<T> row() const noexcept;
+        template <int i> constexpr vec4<T> row() const;
 
-        template <int i> constexpr vec4<T> col() const noexcept;
+        template <int i> constexpr vec4<T> col() const;
     };
 
     template <typename T, int n> mat<T, n> & operator+=(mat<T, n> & m, T v);
@@ -214,7 +214,7 @@ namespace qc
 namespace qc
 {
     template <Floating T>
-    inline constexpr mat<T, 2>::mat(const vec2<T> c1, const vec2<T> c2) noexcept :
+    inline constexpr mat<T, 2>::mat(const vec2<T> c1, const vec2<T> c2) :
         c1{c1},
         c2{c2}
     {}
@@ -223,34 +223,34 @@ namespace qc
     inline constexpr mat<T, 2>::mat(
         const T x1, const T y1,
         const T x2, const T y2
-    ) noexcept :
+    ) :
         c1{x1, y1},
         c2{x2, y2}
     {}
 
     template <Floating T>
     template <Floating U>
-    inline constexpr mat<T, 2>::mat(const mat2<U> & m) noexcept :
+    inline constexpr mat<T, 2>::mat(const mat2<U> & m) :
         c1{m.c1},
         c2{m.c2}
     {}
 
     template <Floating T>
     template <Floating U>
-    inline constexpr mat<T, 2>::mat(const mat3<U> & m) noexcept :
+    inline constexpr mat<T, 2>::mat(const mat3<U> & m) :
         c1{m.c1},
         c2{m.c2}
     {}
 
     template <Floating T>
     template <Floating U>
-    inline constexpr mat<T, 2>::mat(const mat4<U> & m) noexcept :
+    inline constexpr mat<T, 2>::mat(const mat4<U> & m) :
         c1{m.c1},
         c2{m.c2}
     {}
 
     template <Floating T>
-    inline constexpr mat<T, 2>::operator bool() const noexcept
+    inline constexpr mat<T, 2>::operator bool() const
     {
         return *this == mat{};
     }
@@ -275,7 +275,7 @@ namespace qc
 
     template <Floating T>
     template <int i>
-    inline constexpr vec2<T> mat<T, 2>::col() const noexcept
+    inline constexpr vec2<T> mat<T, 2>::col() const
     {
         if constexpr (i == 0) return c1;
         if constexpr (i == 1) return c2;
@@ -283,13 +283,13 @@ namespace qc
 
     template <Floating T>
     template <int i>
-    inline constexpr vec2<T> mat<T, 2>::row() const noexcept
+    inline constexpr vec2<T> mat<T, 2>::row() const
     {
         return {c1.template at<i>(), c2.template at<i>()};
     }
 
     template <Floating T>
-    inline constexpr mat<T, 3>::mat(const vec3<T> c1, const vec3<T> c2, const vec3<T> c3) noexcept :
+    inline constexpr mat<T, 3>::mat(const vec3<T> c1, const vec3<T> c2, const vec3<T> c3) :
         c1{c1},
         c2{c2},
         c3{c3}
@@ -300,7 +300,7 @@ namespace qc
         const T x1, const T y1, const T z1,
         const T x2, const T y2, const T z2,
         const T x3, const T y3, const T z3
-    ) noexcept :
+    ) :
         c1{x1, y1, z1},
         c2{x2, y2, z2},
         c3{x3, y3, z3}
@@ -308,7 +308,7 @@ namespace qc
 
     template <Floating T>
     template <Floating U>
-    inline constexpr mat<T, 3>::mat(const mat2<U> & m) noexcept :
+    inline constexpr mat<T, 3>::mat(const mat2<U> & m) :
         c1{m.c1},
         c2{m.c2},
         c3{T(0.0), T(0.0), T(1.0)}
@@ -316,7 +316,7 @@ namespace qc
 
     template <Floating T>
     template <Floating U>
-    inline constexpr mat<T, 3>::mat(const mat3<U> & m) noexcept :
+    inline constexpr mat<T, 3>::mat(const mat3<U> & m) :
         c1{m.c1},
         c2{m.c2},
         c3{m.c3}
@@ -324,14 +324,14 @@ namespace qc
 
     template <Floating T>
     template <Floating U>
-    inline constexpr mat<T, 3>::mat(const mat4<U> & m) noexcept :
+    inline constexpr mat<T, 3>::mat(const mat4<U> & m) :
         c1{m.c1},
         c2{m.c2},
         c3{m.c3}
     {}
 
     template <Floating T>
-    inline mat3<T> & mat<T, 3>::operator=(const mat2<T> & m) noexcept
+    inline mat3<T> & mat<T, 3>::operator=(const mat2<T> & m)
     {
         c1 = m.c1;
         c2 = m.c2;
@@ -341,7 +341,7 @@ namespace qc
     }
 
     template <Floating T>
-    inline constexpr mat<T, 3>::operator bool() const noexcept
+    inline constexpr mat<T, 3>::operator bool() const
     {
         return *this == mat{};
     }
@@ -366,7 +366,7 @@ namespace qc
 
     template <Floating T>
     template <int i>
-    inline constexpr vec3<T> mat<T, 3>::col() const noexcept
+    inline constexpr vec3<T> mat<T, 3>::col() const
     {
         if constexpr (i == 0) return c1;
         if constexpr (i == 1) return c2;
@@ -375,13 +375,13 @@ namespace qc
 
     template <Floating T>
     template <int i>
-    inline constexpr vec3<T> mat<T, 3>::row() const noexcept
+    inline constexpr vec3<T> mat<T, 3>::row() const
     {
         return {c1.template at<i>(), c2.template at<i>(), c3.template at<i>()};
     }
 
     template <Floating T>
-    inline constexpr mat<T, 4>::mat(const vec4<T> c1, const vec4<T> c2, const vec4<T> c3, const vec4<T> c4) noexcept :
+    inline constexpr mat<T, 4>::mat(const vec4<T> c1, const vec4<T> c2, const vec4<T> c3, const vec4<T> c4) :
         c1{c1},
         c2{c2},
         c3{c3},
@@ -394,7 +394,7 @@ namespace qc
         const T x2, const T y2, const T z2, const T w2,
         const T x3, const T y3, const T z3, const T w3,
         const T x4, const T y4, const T z4, const T w4
-    ) noexcept :
+    ) :
         c1{x1, y1, z1, w1},
         c2{x2, y2, z2, w2},
         c3{x3, y3, z3, w3},
@@ -403,7 +403,7 @@ namespace qc
 
     template <Floating T>
     template <Floating U>
-    inline constexpr mat<T, 4>::mat(const mat2<U> & m) noexcept :
+    inline constexpr mat<T, 4>::mat(const mat2<U> & m) :
         c1{m.c1},
         c2{m.c2},
         c3{T(0.0), T(0.0), T(1.0), T(0.0)},
@@ -412,7 +412,7 @@ namespace qc
 
     template <Floating T>
     template <Floating U>
-    inline constexpr mat<T, 4>::mat(const mat3<U> & m) noexcept :
+    inline constexpr mat<T, 4>::mat(const mat3<U> & m) :
         c1{m.c1},
         c2{m.c2},
         c3{m.c3},
@@ -421,7 +421,7 @@ namespace qc
 
     template <Floating T>
     template <Floating U>
-    inline constexpr mat<T, 4>::mat(const mat4<U> & m) noexcept :
+    inline constexpr mat<T, 4>::mat(const mat4<U> & m) :
         c1{m.c1},
         c2{m.c2},
         c3{m.c3},
@@ -429,7 +429,7 @@ namespace qc
     {}
 
     template <Floating T>
-    inline mat4<T> & mat<T, 4>::operator=(const mat2<T> & m) noexcept
+    inline mat4<T> & mat<T, 4>::operator=(const mat2<T> & m)
     {
         c1 = m.c1;
         c2 = m.c2;
@@ -440,7 +440,7 @@ namespace qc
     }
 
     template <Floating T>
-    inline mat4<T> & mat<T, 4>::operator=(const mat3<T> & m) noexcept
+    inline mat4<T> & mat<T, 4>::operator=(const mat3<T> & m)
     {
         c1 = m.c1;
         c2 = m.c2;
@@ -451,7 +451,7 @@ namespace qc
     }
 
     template <Floating T>
-    inline constexpr mat<T, 4>::operator bool() const noexcept
+    inline constexpr mat<T, 4>::operator bool() const
     {
         return *this == mat{};
     }
@@ -476,7 +476,7 @@ namespace qc
 
     template <Floating T>
     template <int i>
-    inline constexpr vec4<T> mat<T, 4>::col() const noexcept
+    inline constexpr vec4<T> mat<T, 4>::col() const
     {
         if constexpr (i == 0) return c1;
         if constexpr (i == 1) return c2;
@@ -486,7 +486,7 @@ namespace qc
 
     template <Floating T>
     template <int i>
-    inline constexpr vec4<T> mat<T, 4>::row() const noexcept
+    inline constexpr vec4<T> mat<T, 4>::row() const
     {
         return {c1.template at<i>(), c2.template at<i>(), c3.template at<i>(), c4.template at<i>()};
     }

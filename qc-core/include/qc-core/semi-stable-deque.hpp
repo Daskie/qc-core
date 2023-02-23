@@ -6,8 +6,6 @@
 
 namespace qc
 {
-    struct SemiStableDequeError {};
-
     ///
     /// The most significant differences between this and `std::deque`:
     ///   1. This does not provide reference stability. References and iterators are invalidated when the capacity grows
@@ -19,9 +17,8 @@ namespace qc
     template <typename T>
     class SemiStableDeque
     {
-        static_assert(std::is_nothrow_move_constructible_v<T>);
-        static_assert(std::is_nothrow_move_assignable_v<T>);
-        static_assert(std::is_nothrow_destructible_v<T>);
+        static_assert(std::is_move_constructible_v<T>);
+        static_assert(std::is_move_assignable_v<T>);
 
         template <bool constant, bool reverse> class _Iterator;
 
@@ -32,15 +29,15 @@ namespace qc
         using reverse_iterator = _Iterator<false, true>;
         using const_reverse_iterator = _Iterator<true, true>;
 
-        SemiStableDeque() noexcept = default;
+        SemiStableDeque() = default;
 
         SemiStableDeque(const SemiStableDeque &) = delete;
-        SemiStableDeque(SemiStableDeque && other) noexcept;
+        SemiStableDeque(SemiStableDeque && other);
 
         SemiStableDeque & operator=(const SemiStableDeque &) = delete;
-        SemiStableDeque & operator=(SemiStableDeque && other) noexcept;
+        SemiStableDeque & operator=(SemiStableDeque && other);
 
-        ~SemiStableDeque() noexcept;
+        ~SemiStableDeque();
 
         struct NewElement { T & v; u32 i; };
 
@@ -67,38 +64,38 @@ namespace qc
         T & back();
         const T & back() const;
 
-        T & operator[](u32 pos) noexcept;
-        const T & operator[](u32 pos) const noexcept;
+        T & operator[](u32 pos);
+        const T & operator[](u32 pos) const;
 
-        iterator getIterator(u32 pos) noexcept;
-        const_iterator getIterator(u32 pos) const noexcept;
+        iterator getIterator(u32 pos);
+        const_iterator getIterator(u32 pos) const;
 
-        reverse_iterator getReverseIterator(u32 pos) noexcept;
-        const_reverse_iterator getReverseIterator(u32 pos) const noexcept;
+        reverse_iterator getReverseIterator(u32 pos);
+        const_reverse_iterator getReverseIterator(u32 pos) const;
 
         void clear();
 
-        u32 size() const noexcept { return _elements.size(); }
+        u32 size() const { return _elements.size(); }
 
-        bool empty() const noexcept { return _elements.empty(); }
+        bool empty() const { return _elements.empty(); }
 
-        u32 capacity() const noexcept { return _elements.capacity(); }
+        u32 capacity() const { return _elements.capacity(); }
 
-        iterator begin() noexcept;
-        const_iterator begin() const noexcept;
-        const_iterator cbegin() const noexcept { return begin(); };
+        iterator begin();
+        const_iterator begin() const;
+        const_iterator cbegin() const { return begin(); };
 
-        iterator end() noexcept;
-        const_iterator end() const noexcept;
-        const_iterator cend() const noexcept { return end(); };
+        iterator end();
+        const_iterator end() const;
+        const_iterator cend() const { return end(); };
 
-        reverse_iterator rbegin() noexcept;
-        const_reverse_iterator rbegin() const noexcept;
-        const_reverse_iterator crbegin() const noexcept { return rbegin(); };
+        reverse_iterator rbegin();
+        const_reverse_iterator rbegin() const;
+        const_reverse_iterator crbegin() const { return rbegin(); };
 
-        reverse_iterator rend() noexcept;
-        const_reverse_iterator rend() const noexcept;
-        const_reverse_iterator crend() const noexcept { return rend(); };
+        reverse_iterator rend();
+        const_reverse_iterator rend() const;
+        const_reverse_iterator crend() const { return rend(); };
 
       private:
 
@@ -111,10 +108,10 @@ namespace qc
             template <typename... Args> _Element(u32 prevI, u32 nextI, Args &&... args);
 
             _Element(const _Element &) = delete;
-            _Element(_Element && other) noexcept = default;
+            _Element(_Element && other) = default;
 
             _Element & operator=(const _Element &) = delete;
-            _Element & operator=(_Element && other) noexcept = default;
+            _Element & operator=(_Element && other) = default;
         };
 
         inline constexpr static u32 _invalidI{~u32(0u)};
@@ -141,31 +138,31 @@ namespace qc
         using pointer = value_type *;
         using difference_type = ptrdiff_t;
 
-        _Iterator() noexcept = default;
+        _Iterator() = default;
 
-        _Iterator(const _Iterator<false, reverse> &) noexcept requires constant;
+        _Iterator(const _Iterator<false, reverse> &) requires constant;
 
-        _Iterator(const _Iterator &) noexcept = default;
+        _Iterator(const _Iterator &) = default;
 
-        _Iterator & operator=(const _Iterator &) noexcept = default;
+        _Iterator & operator=(const _Iterator &) = default;
 
-        reference operator*() const noexcept { return _element->value; }
+        reference operator*() const { return _element->value; }
 
-        pointer operator->() const noexcept { return &_element->value; }
+        pointer operator->() const { return &_element->value; }
 
-        _Iterator & operator++() noexcept;
-        _Iterator operator++(int) noexcept;
+        _Iterator & operator++();
+        _Iterator operator++(int);
 
-        u32 pos() const noexcept { return u32(_element - _elements); }
+        u32 pos() const { return u32(_element - _elements); }
 
-        bool operator==(const _Iterator & other) const noexcept;
+        bool operator==(const _Iterator & other) const;
 
       private:
 
         _Element * _elements{};
         _Element * _element{};
 
-        _Iterator(_Element * elements, _Element * element) noexcept;
+        _Iterator(_Element * elements, _Element * element);
     };
 }
 
@@ -174,14 +171,14 @@ namespace qc
 namespace qc
 {
     template <typename T>
-    inline SemiStableDeque<T>::SemiStableDeque(SemiStableDeque && other) noexcept :
+    inline SemiStableDeque<T>::SemiStableDeque(SemiStableDeque && other) :
         _elements{std::move(other._elements)},
         _headI{std::exchange(other._headI, _invalidI)},
         _tailI{std::exchange(other._tailI, _invalidI)}
     {}
 
     template <typename T>
-    inline SemiStableDeque<T> & SemiStableDeque<T>::operator=(SemiStableDeque && other) noexcept
+    inline SemiStableDeque<T> & SemiStableDeque<T>::operator=(SemiStableDeque && other)
     {
         if (&other == this)
         {
@@ -196,7 +193,7 @@ namespace qc
     }
 
     template <typename T>
-    inline SemiStableDeque<T>::~SemiStableDeque() noexcept
+    inline SemiStableDeque<T>::~SemiStableDeque()
     {
         if constexpr (qc::debug)
         {
@@ -260,10 +257,7 @@ namespace qc
     template <typename T>
     inline void SemiStableDeque<T>::pop_back()
     {
-        if (_tailI == _invalidI) [[unlikely]]
-        {
-            throw SemiStableDequeError{};
-        }
+        assert(_tailI != _invalidI);
 
         pop(_tailI);
     }
@@ -271,10 +265,7 @@ namespace qc
     template <typename T>
     inline void SemiStableDeque<T>::pop_front()
     {
-        if (_headI == _invalidI) [[unlikely]]
-        {
-            throw SemiStableDequeError{};
-        }
+        assert(_headI != _invalidI);
 
         pop(_headI);
     }
@@ -320,10 +311,7 @@ namespace qc
     template <typename T>
     inline const T & SemiStableDeque<T>::front() const
     {
-        if (_headI == _invalidI) [[unlikely]]
-        {
-            throw SemiStableDequeError{};
-        }
+        assert(_headI != _invalidI);
 
         return _elements[_headI].value;
     }
@@ -337,46 +325,43 @@ namespace qc
     template <typename T>
     inline const T & SemiStableDeque<T>::back() const
     {
-        if (_tailI == _invalidI) [[unlikely]]
-        {
-            throw SemiStableDequeError{};
-        }
+        assert(_tailI != _invalidI);
 
         return _elements[_tailI].value;
     }
 
     template <typename T>
-    inline T & SemiStableDeque<T>::operator[](const u32 pos) noexcept
+    inline T & SemiStableDeque<T>::operator[](const u32 pos)
     {
         return _elements[pos].value;
     }
 
     template <typename T>
-    inline const T & SemiStableDeque<T>::operator[](const u32 pos) const noexcept
+    inline const T & SemiStableDeque<T>::operator[](const u32 pos) const
     {
         return _elements[pos].value;
     }
 
     template <typename T>
-    inline auto SemiStableDeque<T>::getIterator(const u32 pos) noexcept -> iterator
+    inline auto SemiStableDeque<T>::getIterator(const u32 pos) -> iterator
     {
         return iterator{&_elements[0u], &_elements[pos]};
     }
 
     template <typename T>
-    inline auto SemiStableDeque<T>::getIterator(const u32 pos) const noexcept -> const_iterator
+    inline auto SemiStableDeque<T>::getIterator(const u32 pos) const -> const_iterator
     {
         return const_iterator{&_elements[0u], &_elements[pos]};
     }
 
     template <typename T>
-    inline auto SemiStableDeque<T>::getReverseIterator(const u32 pos) noexcept -> reverse_iterator
+    inline auto SemiStableDeque<T>::getReverseIterator(const u32 pos) -> reverse_iterator
     {
         return reverse_iterator{&_elements[0u], &_elements[pos]};
     }
 
     template <typename T>
-    inline auto SemiStableDeque<T>::getReverseIterator(const u32 pos) const noexcept -> const_reverse_iterator
+    inline auto SemiStableDeque<T>::getReverseIterator(const u32 pos) const -> const_reverse_iterator
     {
         return const_reverse_iterator{&_elements[0u], &_elements[pos]};
     }
@@ -390,51 +375,51 @@ namespace qc
     }
 
     template <typename T>
-    inline auto SemiStableDeque<T>::begin() noexcept -> iterator
+    inline auto SemiStableDeque<T>::begin() -> iterator
     {
         const const_iterator it{const_cast<const SemiStableDeque *>(this)->begin()};
         return reinterpret_cast<const iterator &>(it);
     }
 
     template <typename T>
-    inline auto SemiStableDeque<T>::begin() const noexcept -> const_iterator
+    inline auto SemiStableDeque<T>::begin() const -> const_iterator
     {
         return _headI != _invalidI ? const_iterator{&_elements[0u], &_elements[_headI]} : const_iterator{};
     }
 
     template <typename T>
-    inline auto SemiStableDeque<T>::end() noexcept -> iterator
+    inline auto SemiStableDeque<T>::end() -> iterator
     {
         return iterator{};
     }
 
     template <typename T>
-    inline auto SemiStableDeque<T>::end() const noexcept -> const_iterator
+    inline auto SemiStableDeque<T>::end() const -> const_iterator
     {
         return const_iterator{};
     }
 
     template <typename T>
-    inline auto SemiStableDeque<T>::rbegin() noexcept -> reverse_iterator
+    inline auto SemiStableDeque<T>::rbegin() -> reverse_iterator
     {
         const const_iterator it{const_cast<const SemiStableDeque *>(this)->rbegin()};
         return reinterpret_cast<const iterator &>(it);
     }
 
     template <typename T>
-    inline auto SemiStableDeque<T>::rbegin() const noexcept -> const_reverse_iterator
+    inline auto SemiStableDeque<T>::rbegin() const -> const_reverse_iterator
     {
         return _tailI != _invalidI ? const_reverse_iterator{&_elements[0u], &_elements[_tailI]} : const_reverse_iterator{};
     }
 
     template <typename T>
-    inline auto SemiStableDeque<T>::rend() noexcept -> reverse_iterator
+    inline auto SemiStableDeque<T>::rend() -> reverse_iterator
     {
         return reverse_iterator{};
     }
 
     template <typename T>
-    inline auto SemiStableDeque<T>::rend() const noexcept -> const_reverse_iterator
+    inline auto SemiStableDeque<T>::rend() const -> const_reverse_iterator
     {
         return const_reverse_iterator{};
     }
@@ -449,21 +434,21 @@ namespace qc
 
     template <typename T>
     template <bool constant, bool reverse>
-    SemiStableDeque<T>::_Iterator<constant, reverse>::_Iterator(const _Iterator<false, reverse> & other) noexcept requires constant :
+    SemiStableDeque<T>::_Iterator<constant, reverse>::_Iterator(const _Iterator<false, reverse> & other) requires constant :
         _elements{other._elements},
         _element{other._element}
     {}
 
     template <typename T>
     template <bool constant, bool reverse>
-    SemiStableDeque<T>::_Iterator<constant, reverse>::_Iterator(_Element * const elements, _Element * const element) noexcept :
+    SemiStableDeque<T>::_Iterator<constant, reverse>::_Iterator(_Element * const elements, _Element * const element) :
         _elements{elements},
         _element{element}
     {}
 
     template <typename T>
     template <bool constant, bool reverse>
-    auto SemiStableDeque<T>::_Iterator<constant, reverse>::operator++() noexcept -> _Iterator &
+    auto SemiStableDeque<T>::_Iterator<constant, reverse>::operator++() -> _Iterator &
     {
         if constexpr (!reverse)
         {
@@ -479,7 +464,7 @@ namespace qc
 
     template <typename T>
     template <bool constant, bool reverse>
-    auto SemiStableDeque<T>::_Iterator<constant, reverse>::operator++(int) noexcept -> _Iterator
+    auto SemiStableDeque<T>::_Iterator<constant, reverse>::operator++(int) -> _Iterator
     {
         const _Iterator tmp{*this};
         ++*this;
@@ -488,7 +473,7 @@ namespace qc
 
     template <typename T>
     template <bool constant, bool reverse>
-    bool SemiStableDeque<T>::_Iterator<constant, reverse>::operator==(const _Iterator & other) const noexcept
+    bool SemiStableDeque<T>::_Iterator<constant, reverse>::operator==(const _Iterator & other) const
     {
         return _element == other._element;
     }
