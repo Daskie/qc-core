@@ -25,8 +25,6 @@ namespace qc
         template <int n> using uispan = span< u32, n>;
         template <int n> using  lspan = span< s64, n>;
         template <int n> using ulspan = span< u64, n>;
-        template <int n> using  nspan = span< nat, n>;
-        template <int n> using unspan = span<unat, n>;
 
         using  fspan1 = span< f32, 1>;
         using  fspan2 = span< f32, 2>;
@@ -68,19 +66,27 @@ namespace qc
         using ulspan2 = span< u64, 2>;
         using ulspan3 = span< u64, 3>;
         using ulspan4 = span< u64, 4>;
-        using  nspan1 = span< nat, 1>;
-        using  nspan2 = span< nat, 2>;
-        using  nspan3 = span< nat, 3>;
-        using  nspan4 = span< nat, 4>;
-        using unspan1 = span<unat, 1>;
-        using unspan2 = span<unat, 2>;
-        using unspan3 = span<unat, 3>;
-        using unspan4 = span<unat, 4>;
+
+        template <typename T> concept Span = Same<T, span<typename T::Type, T::n>>;
+
+        template <typename T> concept FloatingSpan = Span<T> && Floating<typename T::Type>;
+        template <typename T> concept IntegralSpan = Span<T> && Integral<typename T::Type>;
+        template <typename T> concept SignedIntegralSpan = Span<T> && SignedIntegral<typename T::Type>;
+        template <typename T> concept UnsignedIntegralSpan = Span<T> && UnsignedIntegral<typename T::Type>;
+        template <typename T> concept PointerSpan = Span<T> && Pointer<typename T::Type>;
+
+        template <typename T> concept Span1 = Span<T> && T::n == 1;
+        template <typename T> concept Span2 = Span<T> && T::n == 2;
+        template <typename T> concept Span3 = Span<T> && T::n == 3;
+        template <typename T> concept Span4 = Span<T> && T::n == 4;
     }
 
     template <NumericOrPointer T>
     struct span<T, 1>
     {
+        using Type = T;
+        static constexpr int n{1};
+
         T min;
         T max;
 
@@ -107,6 +113,9 @@ namespace qc
     template <Numeric T>
     struct span<T, 2>
     {
+        using Type = T;
+        static constexpr int n{2};
+
         vec2<T> min;
         vec2<T> max;
 
@@ -138,6 +147,9 @@ namespace qc
     template <Numeric T>
     struct span<T, 3>
     {
+        using Type = T;
+        static constexpr int n{3};
+
         vec3<T> min;
         vec3<T> max;
 
@@ -175,6 +187,9 @@ namespace qc
     template <Numeric T>
     struct span<T, 4>
     {
+        using Type = T;
+        static constexpr int n{4};
+
         vec4<T> min;
         vec4<T> max;
 
@@ -226,15 +241,15 @@ namespace qc
         template <Floating T>
         struct FullSpanHelper<T>
         {
-            inline static constexpr T minimum{-std::numeric_limits<T>::infinity()};
-            inline static constexpr T maximum{+std::numeric_limits<T>::infinity()};
+            static constexpr T minimum{-std::numeric_limits<T>::infinity()};
+            static constexpr T maximum{+std::numeric_limits<T>::infinity()};
         };
 
         template <Integral T>
         struct FullSpanHelper<T>
         {
-            inline static constexpr T minimum{std::numeric_limits<T>::min()};
-            inline static constexpr T maximum{std::numeric_limits<T>::max()};
+            static constexpr T minimum{std::numeric_limits<T>::min()};
+            static constexpr T maximum{std::numeric_limits<T>::max()};
         };
     }
 
@@ -242,11 +257,11 @@ namespace qc
     template <Numeric T, int n> constexpr span<T, n> nullSpan{fullSpan<T, n>.max, fullSpan<T, n>.min};
 
     template <Numeric T, int n> span<T, n> & operator+=(span<T, n> & s, T v);
-    template <Pointer T, int n> span<T, n> & operator+=(span<T, n> & s, nat v);
+    template <Pointer T, int n> span<T, n> & operator+=(span<T, n> & s, s64 v);
     template <Numeric T, int n> span<T, n> & operator+=(span<T, n> & s, const vec<T, n> & v);
 
     template <Numeric T, int n> span<T, n> & operator-=(span<T, n> & s, T v);
-    template <Pointer T, int n> span<T, n> & operator-=(span<T, n> & s, nat v);
+    template <Pointer T, int n> span<T, n> & operator-=(span<T, n> & s, s64 v);
     template <Numeric T, int n> span<T, n> & operator-=(span<T, n> & s, const vec<T, n> & v);
 
     template <Numeric T, int n> span<T, n> & operator*=(span<T, n> & s, T v);
@@ -260,13 +275,13 @@ namespace qc
     template <Numeric T, int n> span<T, n> & operator|=(span<T, n> & s1, const span<T, n> & s2);
 
     template <Numeric T, int n> constexpr span<T, n> operator+(const span<T, n> & s, T v);
-    template <Pointer T, int n> constexpr span<T, n> operator+(const span<T, n> & s, nat v);
+    template <Pointer T, int n> constexpr span<T, n> operator+(const span<T, n> & s, s64 v);
     template <Numeric T, int n> constexpr span<T, n> operator+(T v, const span<T, n> & s);
     template <Numeric T, int n> constexpr span<T, n> operator+(const span<T, n> & s, const vec<T, n> & v);
     template <Numeric T, int n> constexpr span<T, n> operator+(const vec<T, n> & v, const span<T, n> & s);
 
     template <Numeric T, int n> constexpr span<T, n> operator-(const span<T, n> & s, T v);
-    template <Pointer T, int n> constexpr span<T, n> operator-(const span<T, n> & s, nat v);
+    template <Pointer T, int n> constexpr span<T, n> operator-(const span<T, n> & s, s64 v);
     template <Numeric T, int n> constexpr span<T, n> operator-(T v1, const span<T, n> & s);
     template <Numeric T, int n> constexpr span<T, n> operator-(const span<T, n> & s, const vec<T, n> & v);
     template <Numeric T, int n> constexpr span<T, n> operator-(const vec<T, n> & v, const span<T, n> & s);
@@ -689,7 +704,7 @@ namespace qc
     }
 
     template <Pointer T, int n>
-    inline span<T, n> & operator+=(span<T, n> & s, const nat v)
+    inline span<T, n> & operator+=(span<T, n> & s, const s64 v)
     {
         s.min += v;
         s.max += v;
@@ -713,7 +728,7 @@ namespace qc
     }
 
     template <Pointer T, int n>
-    inline span<T, n> & operator-=(span<T, n> & s, const nat v)
+    inline span<T, n> & operator-=(span<T, n> & s, const s64 v)
     {
         s.min -= v;
         s.max -= v;
@@ -804,7 +819,7 @@ namespace qc
     }
 
     template <Pointer T, int n>
-    inline constexpr span<T, n> operator+(const span<T, n> & s, const nat v)
+    inline constexpr span<T, n> operator+(const span<T, n> & s, const s64 v)
     {
         return {s.min + v, s.max + v};
     }
@@ -848,7 +863,7 @@ namespace qc
     }
 
     template <Pointer T, int n>
-    inline constexpr span<T, n> operator-(const span<T, n> & s, const nat v)
+    inline constexpr span<T, n> operator-(const span<T, n> & s, const s64 v)
     {
         if constexpr (n == 1)
         {

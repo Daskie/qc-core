@@ -6,7 +6,7 @@ namespace qc
 {
     /// Assume pages are 4096 bytes for better compile-time optimization
     /// This is checked the first time pages are reserved, and the program will abort if the actual page size differs
-    constexpr unat pageSize{4096u};
+    constexpr u64 pageSize{4096u};
 
     ///
     /// Allocate a contiguous block of memory in page multiples
@@ -16,7 +16,7 @@ namespace qc
     /// @param pageCount the number of pages to allocate
     /// @return the start of the allocated memory, or null if `pageCount` is 0
     ///
-    [[nodiscard]] void * allocatePages(unat pageCount);
+    [[nodiscard]] void * allocatePages(u64 pageCount);
 
     ///
     /// Reserve a contiguous block of virtual memory without actually allocating any physical memory
@@ -26,7 +26,7 @@ namespace qc
     /// @param pageCount the number of pages to reserve
     /// @return the base of the reserved memory, or null if `pageCount` is 0
     ///
-    [[nodiscard]] void * reservePages(unat pageCount);
+    [[nodiscard]] void * reservePages(u64 pageCount);
 
     ///
     /// Commit a range of previously reserved pages to physical memory, allowing them to be used
@@ -36,7 +36,7 @@ namespace qc
     /// @param pageStart the first page in the range to commit; pages must be currently reserved; no-op if null
     /// @param pageCount the number of pages to commit; no-op if zero
     ///
-    void commitPages(void * pageStart, unat pageCount);
+    void commitPages(void * pageStart, u64 pageCount);
 
     ///
     /// Decommit a range of previously committed pages, freeing the associated physical memory back to the system
@@ -46,7 +46,7 @@ namespace qc
     /// @param pageStart the first page in the range to decommit; pages must be currently reserved; no-op if null
     /// @param pageCount the number of pages to decommit; no-op if zero
     ///
-    void decommitPages(void * pageStart, unat pageCount);
+    void decommitPages(void * pageStart, u64 pageCount);
 
     ///
     /// Frees a previously allocated/reserved memory block both physically and virtually

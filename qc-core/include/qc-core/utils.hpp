@@ -15,7 +15,7 @@
 namespace qc::utils
 {
     template <typename T>
-    inline T pairwiseSum(const unat n, const T * const vals)
+    inline T pairwiseSum(const u64 n, const T * const vals)
     {
         if (n == 0u) return T(0);
         if (n == 1u) return vals[0];
@@ -29,10 +29,10 @@ namespace qc::utils
         DstContainer dst{};
 
         std::error_code ec{};
-        const uintmax_t size{std::filesystem::file_size(path, ec)};
+        const u64 size{std::filesystem::file_size(path, ec)};
 
         // Issue with file, or file too large
-        if (ec || size > dst.max_size() || size > uintmax_t(std::numeric_limits<std::streamsize>::max()))
+        if (ec || size > dst.max_size() || size > u64(std::numeric_limits<std::streamsize>::max()))
         {
             return {};
         }
@@ -46,7 +46,7 @@ namespace qc::utils
             return {};
         }
 
-        dst.resize(unat(size)); // TODO: string version initializes its memory - potential performance concern for large files
+        dst.resize(size); // TODO: string version initializes its memory - potential performance concern for large files
 
         ifs.read(std::bit_cast<char *>(dst.data()), std::streamsize(size));
 
@@ -76,7 +76,7 @@ namespace qc::utils
     }
 
     /// @return whether the file was successfully written
-    [[nodiscard]] inline bool writeFile(const std::filesystem::path & path, const void * const data, const unat size)
+    [[nodiscard]] inline bool writeFile(const std::filesystem::path & path, const void * const data, const u64 size)
     {
         if (!data)
         {

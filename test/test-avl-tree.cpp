@@ -22,7 +22,7 @@ class qc::_internal::AvlTreeFriend
     static std::string genString(const AvlTree<T> & tree)
     {
         const qc::List<std::string> lines{_genString<T>(tree._root)};
-        unat totalLength{!lines.empty()};
+        u64 totalLength{!lines.empty()};
         for (const std::string & line : lines)
         {
             totalLength += line.length() + 1;
@@ -51,7 +51,7 @@ class qc::_internal::AvlTreeFriend
     template <UnsignedIntegral T>
     static bool validateBalance(const AvlTree<T> & tree)
     {
-        unat rootHeight{0u};
+        u64 rootHeight{0u};
         return !tree._root || _validateBalance<T>(tree._root, rootHeight);
     }
 
@@ -60,9 +60,9 @@ class qc::_internal::AvlTreeFriend
     static int _detLineAnchor(const std::string & line, const bool side)
     {
         int start{0};
-        while (!std::isdigit(line[unat(start)])) ++start;
+        while (!std::isdigit(line[u64(start)])) ++start;
         int end{start + 1};
-        while (end < int(line.size()) && std::isdigit(line[unat(end)])) ++end;
+        while (end < int(line.size()) && std::isdigit(line[u64(end)])) ++end;
         return start + (end - start - side) / 2;
     }
 
@@ -70,7 +70,7 @@ class qc::_internal::AvlTreeFriend
     {
         for (std::string & line : lines)
         {
-            line.insert(0u, unat(n), ' ');
+            line.insert(0u, u64(n), ' ');
         }
     }
 
@@ -113,7 +113,7 @@ class qc::_internal::AvlTreeFriend
             int minGap{std::numeric_limits<int>::max()};
             for (int i{0}; i < int(leftLines.size()) && i < int(rightLines.size()); ++i)
             {
-                qc::minify(minGap, leftBlockWidth - int(leftLines[unat(i)].size()) + int(rightLines[unat(i)].find_first_not_of(' ')));
+                qc::minify(minGap, leftBlockWidth - int(leftLines[u64(i)].size()) + int(rightLines[u64(i)].find_first_not_of(' ')));
             }
             rightBlockPos = leftBlockWidth - minGap + 3;
 
@@ -153,16 +153,16 @@ class qc::_internal::AvlTreeFriend
         const int leftDashCount{qc::max(valPos - leftHeadPos - 3, 0)};
         const int rightDashCount{qc::max(rightHeadPos - (valPos + valStrLength) - 2, 0)};
         const int valLineLength{valPos + valStrLength + bool(rightDashCount) + rightDashCount};
-        std::string & valLine{lines.push(unat(valLineLength), ' ')};
-        if (leftDashCount) std::fill_n(valLine.begin() + valPos - 1 - leftDashCount, unat(leftDashCount), '_');
+        std::string & valLine{lines.push(u64(valLineLength), ' ')};
+        if (leftDashCount) std::fill_n(valLine.begin() + valPos - 1 - leftDashCount, u64(leftDashCount), '_');
         std::copy(valStr.cbegin(), valStr.cend(), valLine.begin() + valPos);
-        if (rightDashCount) std::fill_n(valLine.begin() + valPos + valStrLength + 1, unat(rightDashCount), '_');
+        if (rightDashCount) std::fill_n(valLine.begin() + valPos + valStrLength + 1, u64(rightDashCount), '_');
 
         //--- Add slash line ---
 
         const int slashLineLength{isRight ? rightHeadPos : leftHeadPos + 2};
-        std::string & slashLine{lines.push(unat(slashLineLength), ' ')};
-        if (isLeft) slashLine[unat(leftHeadPos + 1)] = '/';
+        std::string & slashLine{lines.push(u64(slashLineLength), ' ')};
+        if (isLeft) slashLine[u64(leftHeadPos + 1)] = '/';
         if (isRight) slashLine.back() = '\\';
 
         //--- Add combined left/right lines ---
@@ -173,31 +173,31 @@ class qc::_internal::AvlTreeFriend
         // Add lines for both left and right
         for (; leftLineI < int(leftLines.size()) && rightLineI < int(rightLines.size()); ++leftLineI, ++rightLineI)
         {
-            lines.push(std::move(leftLines[unat(leftLineI)]));
+            lines.push(std::move(leftLines[u64(leftLineI)]));
             std::string & line{lines.back()};
-            const std::string & rightLine{rightLines[unat(rightLineI)]};
-            const unat lineLength{unat(rightBlockPos) + rightLine.size()};
+            const std::string & rightLine{rightLines[u64(rightLineI)]};
+            const u64 lineLength{u64(rightBlockPos) + rightLine.size()};
             line.reserve(lineLength);
-            line.insert(line.begin(), unat(leftBlockPos), ' ');
+            line.insert(line.begin(), u64(leftBlockPos), ' ');
             line.resize(lineLength, ' ');
-            const unat rightContentOffset{rightLine.find_first_not_of(' ')};
-            std::copy(rightLine.cbegin() + nat(rightContentOffset), rightLine.cend(), line.begin() + rightBlockPos + nat(rightContentOffset));
+            const u64 rightContentOffset{rightLine.find_first_not_of(' ')};
+            std::copy(rightLine.cbegin() + s64(rightContentOffset), rightLine.cend(), line.begin() + rightBlockPos + s64(rightContentOffset));
         }
 
         // Add leftover left lines
         for (; leftLineI < int(leftLines.size()); ++leftLineI)
         {
-            lines.push(std::move(leftLines[unat(leftLineI)]));
+            lines.push(std::move(leftLines[u64(leftLineI)]));
             std::string & line{lines.back()};
-            line.insert(line.begin(), unat(leftBlockPos), ' ');
+            line.insert(line.begin(), u64(leftBlockPos), ' ');
         }
 
         // Add leftover right lines
         for (; rightLineI < int(rightLines.size()); ++rightLineI)
         {
-            lines.push(std::move(rightLines[unat(rightLineI)]));
+            lines.push(std::move(rightLines[u64(rightLineI)]));
             std::string & line{lines.back()};
-            line.insert(line.begin(), unat(rightBlockPos), ' ');
+            line.insert(line.begin(), u64(rightBlockPos), ' ');
         }
 
         return lines;
@@ -212,22 +212,22 @@ class qc::_internal::AvlTreeFriend
     }
 
     template <UnsignedIntegral T>
-    static bool _validateBalance(const _Node<T> * const node, size_t & retHeight)
+    static bool _validateBalance(const _Node<T> * const node, u64 & retHeight)
     {
-        size_t leftHeight{0u};
+        u64 leftHeight{0u};
         if (node->left && !_validateBalance<T>(node->left, leftHeight))
         {
             return false;
         }
 
-        size_t rightHeight{0u};
+        u64 rightHeight{0u};
         if (node->right && !_validateBalance<T>(node->right, rightHeight))
         {
             return false;
         }
 
-        const size_t minHeight{qc::min(leftHeight, rightHeight)};
-        const size_t maxHeight{qc::max(leftHeight, rightHeight)};
+        const u64 minHeight{qc::min(leftHeight, rightHeight)};
+        const u64 maxHeight{qc::max(leftHeight, rightHeight)};
         if (maxHeight - minHeight > 1u)
         {
             return false;
@@ -679,7 +679,7 @@ TEST(AvlTree, stress)
         qcTree.erase(qcIt);
     }};
 
-    for (size_t iteration{0}; iteration < 100u; ++iteration)
+    for (u64 iteration{0}; iteration < 100u; ++iteration)
     {
         // Expand to 1024 elements
         while (stdTree.size() < 1024u)

@@ -229,7 +229,7 @@ TEST(SemiStableDeque, stress)
             else
             {
                 const u32 eraseI{random.next<u32>(u32(stdDeque.size()))};
-                stdDeque.erase(stdDeque.begin() + nat(eraseI));
+                stdDeque.erase(stdDeque.begin() + s64(eraseI));
                 auto it{deque.begin()};
                 for (u32 i{0u}; i < eraseI; ++i, ++it);
                 deque.pop(it);
@@ -259,13 +259,13 @@ TEST(SemiStableDeque, stress)
         while (!stdDeque.empty())
         {
             const u32 eraseI{random.next<u32>(u32(stdDeque.size()))};
-            const auto stdIt{stdDeque.begin() + nat(eraseI)};
+            const auto stdIt{stdDeque.begin() + s64(eraseI)};
             auto it{deque.begin()};
             for (u32 i{0u}; i < eraseI; ++i, ++it);
 
             ASSERT_EQ(*stdIt, *it);
 
-            stdDeque.erase(stdDeque.begin() + nat(eraseI));
+            stdDeque.erase(stdDeque.begin() + s64(eraseI));
             deque.pop(it);
 
             ASSERT_EQ(stdDeque.size(), deque.size());

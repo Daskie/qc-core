@@ -24,8 +24,8 @@ namespace qc
         using value_type = T;
         using reference = value_type &;
         using const_reference = const value_type &;
-        using difference_type = ptrdiff_t;
-        using size_type = size_t;
+        using difference_type = s64;
+        using size_type = u64;
         using iterator = Iterator<false>;
         using const_iterator = Iterator<true>;
 
@@ -39,7 +39,7 @@ namespace qc
 
         ~RingDeque();
 
-        void reserve(size_t capacity);
+        void reserve(u64 capacity);
 
         T & push_front(const T & v);
 
@@ -59,8 +59,8 @@ namespace qc
         T & back();
         const T & back() const;
 
-        T & operator[](size_t i);
-        const T & operator[](size_t i) const;
+        T & operator[](u64 i);
+        const T & operator[](u64 i) const;
 
         void pop_front();
 
@@ -68,11 +68,11 @@ namespace qc
 
         void clear();
 
-        size_t size() const { return _size; };
+        u64 size() const { return _size; };
 
         bool empty() const { return !_size; };
 
-        size_t capacity() const { return _capacity; }
+        u64 capacity() const { return _capacity; }
 
         iterator begin();
         const_iterator begin() const;
@@ -84,15 +84,15 @@ namespace qc
 
       private:
 
-        constexpr static size_t _minCapacity{16u}; // Must be power of two
+        constexpr static u64 _minCapacity{16u}; // Must be power of two
 
         T * _slots{};
-        size_t _capacity{};
-        size_t _size{};
+        u64 _capacity{};
+        u64 _size{};
         T * _front{}; // First element
         T * _back{}; // One past the last element
 
-        void _expand(size_t newCapacity);
+        void _expand(u64 newCapacity);
     };
 
     template <typename T>
@@ -107,7 +107,7 @@ namespace qc
         using value_type = std::conditional_t<constant, const T, T>;
         using reference = value_type &;
         using pointer = value_type *;
-        using difference_type = ptrdiff_t;
+        using difference_type = s64;
 
         Iterator(const Iterator & other) = default;
         Iterator(const Iterator<false> & other) requires constant;
@@ -173,7 +173,7 @@ namespace qc
     }
 
     template <typename T>
-    inline void RingDeque<T>::reserve(const size_t capacity)
+    inline void RingDeque<T>::reserve(const u64 capacity)
     {
         if (capacity > _capacity)
         {
@@ -270,20 +270,20 @@ namespace qc
     {
         assert(_size);
 
-        return _back[_back == _slots ? nat(_capacity) - 1 : -1];
+        return _back[_back == _slots ? s64(_capacity) - 1 : -1];
     }
 
     template <typename T>
-    inline T & RingDeque<T>::operator[](const size_t i)
+    inline T & RingDeque<T>::operator[](const u64 i)
     {
-        const size_t absoluteI{_front - _slots + i};
+        const u64 absoluteI{_front - _slots + i};
         return _slots[absoluteI < _capacity ? absoluteI : absoluteI - _capacity];
     }
 
     template <typename T>
-    inline const T & RingDeque<T>::operator[](const size_t i) const
+    inline const T & RingDeque<T>::operator[](const u64 i) const
     {
-        const size_t absoluteI{_front - _slots + i};
+        const u64 absoluteI{_front - _slots + i};
         return _slots[absoluteI < _capacity ? absoluteI : absoluteI - _capacity];
     }
 
@@ -367,7 +367,7 @@ namespace qc
     }
 
     template <typename T>
-    inline void RingDeque<T>::_expand(const size_t newCapacity)
+    inline void RingDeque<T>::_expand(const u64 newCapacity)
     {
         T * const newSlots{static_cast<T *>(::operator new(newCapacity * sizeof(T)))};
 
@@ -376,13 +376,13 @@ namespace qc
         {
             if (_back > _front)
             {
-                memcpy(newSlots, _front, size_t(_back - _front) * sizeof(T));
+                memcpy(newSlots, _front, u64(_back - _front) * sizeof(T));
             }
             else if (_back <= _front && _size)
             {
-                const size_t n{size_t(_slots + _capacity - _front)};
+                const u64 n{u64(_slots + _capacity - _front)};
                 memcpy(newSlots, _front, n * sizeof(T));
-                memcpy(newSlots + n, _slots, size_t(_back - _slots) * sizeof(T));
+                memcpy(newSlots + n, _slots, u64(_back - _slots) * sizeof(T));
             }
         }
         else

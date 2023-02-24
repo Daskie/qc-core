@@ -25,8 +25,6 @@ namespace qc
         template <int n> using  lvec = vec< s64, n>;
         template <int n> using ulvec = vec< u64, n>;
         template <int n> using  bvec = vec<bool, n>;
-        template <int n> using  nvec = vec< nat, n>;
-        template <int n> using unvec = vec<unat, n>;
 
         using  fvec2 = vec< f32, 2>;
         using  fvec3 = vec< f32, 3>;
@@ -61,12 +59,6 @@ namespace qc
         using  bvec2 = vec<bool, 2>;
         using  bvec3 = vec<bool, 3>;
         using  bvec4 = vec<bool, 4>;
-        using  nvec2 = vec< nat, 2>;
-        using  nvec3 = vec< nat, 3>;
-        using  nvec4 = vec< nat, 4>;
-        using unvec2 = vec<unat, 2>;
-        using unvec3 = vec<unat, 3>;
-        using unvec4 = vec<unat, 4>;
 
         template <typename T> concept Vector = Same<T, vec<typename T::Type, T::n>>;
 
@@ -86,7 +78,7 @@ namespace qc
     struct vec<T, 2>
     {
         using Type = T;
-        inline static constexpr int n{2};
+        static constexpr int n{2};
 
         T x;
         T y;
@@ -121,7 +113,7 @@ namespace qc
     struct vec<T, 3>
     {
         using Type = T;
-        inline static constexpr int n{3};
+        static constexpr int n{3};
 
         T x;
         T y;
@@ -166,7 +158,7 @@ namespace qc
     struct vec<T, 4>
     {
         using Type = T;
-        inline static constexpr int n{4};
+        static constexpr int n{4};
 
         T x;
         T y;

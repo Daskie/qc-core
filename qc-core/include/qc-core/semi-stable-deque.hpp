@@ -136,7 +136,7 @@ namespace qc
         using value_type = _T;
         using reference = value_type &;
         using pointer = value_type *;
-        using difference_type = ptrdiff_t;
+        using difference_type = s64;
 
         _Iterator() = default;
 

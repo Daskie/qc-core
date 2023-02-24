@@ -393,7 +393,7 @@ static void compileFunctionsPT()
 {
     using P = T *;
     P p{};
-    nat v{};
+    s64 v{};
     span1<P> s{p, p};
     std::stringstream os{};
 
@@ -566,4 +566,112 @@ TEST(span, compilation)
     testProperties();
     compileCasts();
     compileConstants();
+}
+
+template <typename T>
+void testSpanConceptT()
+{
+    static_assert(Span<span1<T>>);
+    static_assert(Span<span2<T>>);
+    static_assert(Span<span3<T>>);
+    static_assert(Span<span4<T>>);
+
+    static_assert(Span1<span1<T>>);
+    static_assert(!Span1<span2<T>>);
+    static_assert(!Span1<span3<T>>);
+    static_assert(!Span1<span4<T>>);
+
+    static_assert(Span2<span2<T>>);
+    static_assert(!Span2<span1<T>>);
+    static_assert(!Span2<span3<T>>);
+    static_assert(!Span2<span4<T>>);
+
+    static_assert(Span3<span3<T>>);
+    static_assert(!Span3<span1<T>>);
+    static_assert(!Span3<span2<T>>);
+    static_assert(!Span3<span4<T>>);
+
+    static_assert(Span4<span4<T>>);
+    static_assert(!Span4<span1<T>>);
+    static_assert(!Span4<span2<T>>);
+    static_assert(!Span4<span3<T>>);
+}
+
+template <typename T>
+void testFloaterSpanConceptT()
+{
+    static_assert(FloatingVector<vec2<T>>);
+    static_assert(FloatingVector<vec3<T>>);
+    static_assert(FloatingVector<vec4<T>>);
+}
+
+template <typename T>
+void testIntegerSpanConceptT()
+{
+    static_assert(IntegralVector<vec2<T>>);
+    static_assert(IntegralVector<vec3<T>>);
+    static_assert(IntegralVector<vec4<T>>);
+}
+
+template <typename T>
+void testSignedIntegerSpanConceptT()
+{
+    static_assert(SignedIntegralVector<vec2<T>>);
+    static_assert(SignedIntegralVector<vec3<T>>);
+    static_assert(SignedIntegralVector<vec4<T>>);
+}
+
+template <typename T>
+void testUnsignedIntegerSpanConceptT()
+{
+    static_assert(UnsignedIntegralVector<vec2<T>>);
+    static_assert(UnsignedIntegralVector<vec3<T>>);
+    static_assert(UnsignedIntegralVector<vec4<T>>);
+}
+
+TEST(vector, concepts)
+{
+    testSpanConceptT<s8>();
+    testSpanConceptT<u8>();
+    testSpanConceptT<s16>();
+    testSpanConceptT<u16>();
+    testSpanConceptT<f32>();
+    testSpanConceptT<s32>();
+    testSpanConceptT<u32>();
+    testSpanConceptT<f64>();
+    testSpanConceptT<s64>();
+    testSpanConceptT<u64>();
+    static_assert(!Span<int>);
+
+    testFloaterSpanConceptT<f32>();
+    testFloaterSpanConceptT<f64>();
+    static_assert(!FloatingSpan<ivec2>);
+
+    testIntegerSpanConceptT<s8>();
+    testIntegerSpanConceptT<u8>();
+    testIntegerSpanConceptT<s16>();
+    testIntegerSpanConceptT<u16>();
+    testIntegerSpanConceptT<s32>();
+    testIntegerSpanConceptT<u32>();
+    testIntegerSpanConceptT<s64>();
+    testIntegerSpanConceptT<u64>();
+    static_assert(!IntegralSpan<fvec2>);
+
+    testSignedIntegerSpanConceptT<s8>();
+    testSignedIntegerSpanConceptT<s16>();
+    testSignedIntegerSpanConceptT<s32>();
+    testSignedIntegerSpanConceptT<s64>();
+    static_assert(!SignedIntegralSpan<uivec2>);
+
+    testUnsignedIntegerSpanConceptT<u8>();
+    testUnsignedIntegerSpanConceptT<u16>();
+    testUnsignedIntegerSpanConceptT<u32>();
+    testUnsignedIntegerSpanConceptT<u64>();
+    static_assert(!UnsignedIntegralSpan<ivec2>);
+
+    static_assert(PointerSpan<span1<int *>>);
+    static_assert(PointerSpan<span1<const int *>>);
+    static_assert(Span1<span1<int *>>);
+    static_assert(Span1<span1<const int *>>);
+    static_assert(!PointerSpan<ispan1>);
 }

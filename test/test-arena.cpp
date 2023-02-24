@@ -153,24 +153,24 @@ TEST(Arena, alignment)
     qc::Arena arena{100u};
 
     u64 & v1{arena.create<u64>(u64(1u))};
-    ASSERT_EQ(0u, std::bit_cast<unat>(&v1) & 0b111u);
+    ASSERT_EQ(0u, std::bit_cast<u64>(&v1) & 0b111u);
     ASSERT_EQ(1u, v1);
 
     u32 & v2{arena.create<u32>(u32(2u))};
-    ASSERT_EQ(0u, std::bit_cast<unat>(&v2) & 0b111u);
+    ASSERT_EQ(0u, std::bit_cast<u64>(&v2) & 0b111u);
     ASSERT_EQ(2u, v2);
 
     u16 & v3{arena.create<u16>(u16(3u))};
-    ASSERT_EQ(0u, std::bit_cast<unat>(&v3) & 0b111u);
+    ASSERT_EQ(0u, std::bit_cast<u64>(&v3) & 0b111u);
     ASSERT_EQ(3u, v3);
 
     u8 & v4{arena.create<u8>(u8(4u))};
-    ASSERT_EQ(0u, std::bit_cast<unat>(&v4) & 0b111u);
+    ASSERT_EQ(0u, std::bit_cast<u64>(&v4) & 0b111u);
     ASSERT_EQ(4u, v4);
 
     struct Eleven { std::byte bytes[11u]; };
     Eleven & v5{arena.create<Eleven>()};
-    ASSERT_EQ(0u, std::bit_cast<unat>(&v5) & 0b111u);
+    ASSERT_EQ(0u, std::bit_cast<u64>(&v5) & 0b111u);
 
     arena.destroy(v1);
     arena.destroy(v2);

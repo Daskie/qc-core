@@ -377,10 +377,10 @@ namespace qc
     // Calculates the area of a non self-intersecting polygon
     // Points should be the vertices of the polygon given in order without duplicates
     template <Floating T>
-    inline T areaOfPoly(const unat n, const vec2<T> * const points)
+    inline T areaOfPoly(const u64 n, const vec2<T> * const points)
     {
         T a{};
-        for (unat i{0u}; i < n - 1u; ++i)
+        for (u64 i{0u}; i < n - 1u; ++i)
         {
             const vec2<T> v1(points[i]), v2(points[i + 1u]);
             a += v1.x * v2.y - v2.x * v1.y;
@@ -393,11 +393,11 @@ namespace qc
     // Calculates the centroid, or center of mass, of a non self-intersecting polygon
     // Points should be the vertices of the polygon given in order without duplicates
     template <Floating T>
-    inline vec2<T> centroidOfPoly(const unat n, const vec2<T> * const points)
+    inline vec2<T> centroidOfPoly(const u64 n, const vec2<T> * const points)
     {
         T a{};
         vec2<T> c;
-        for (unat i{0u}; i < n - 1u; ++i)
+        for (u64 i{0u}; i < n - 1u; ++i)
         {
             const vec2<T> v1(points[i]), v2(points[i + 1u]);
             T temp{v1.x * v2.y - v2.x * v1.y};

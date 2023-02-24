@@ -40,7 +40,7 @@ namespace qc
 
         u32 _maxPageCount{};
         u32 _pageCount{};
-        unat _maxCapacity{};
+        u64 _maxCapacity{};
 
         _PoolExtra() = default;
     };
@@ -61,13 +61,13 @@ namespace qc
         using value_type = T;
         using reference = T &;
         using const_reference = const T &;
-        using difference_type = ptrdiff_t;
-        using size_type = unat;
+        using difference_type = s64;
+        using size_type = u64;
         using iterator = _Iterator<false>;
         using const_iterator = _Iterator<true>;
 
         Pool() = default;
-        explicit Pool(unat capacity);
+        explicit Pool(u64 capacity);
 
         Pool(const Pool &) = delete;
         Pool(Pool && other);
@@ -77,7 +77,7 @@ namespace qc
 
         ~Pool();
 
-        void setCapacity(unat capacity);
+        void setCapacity(u64 capacity);
 
         template <typename... Args> [[nodiscard]] T & create(Args &&... args);
 
@@ -85,9 +85,9 @@ namespace qc
 
         bool contains(const T * v) const;
 
-        unat capacity() const;
+        u64 capacity() const;
 
-        unat size() const { return _size; }
+        u64 size() const { return _size; }
 
         bool empty() const { return _size == 0u; }
 
@@ -112,7 +112,7 @@ namespace qc
         inline static _Range _nullRange{};
 
         _Range _slotRange{};
-        unat _size{};
+        u64 _size{};
         List<_Range> _freeRanges{};
 
         _Range * _find(const T * slot);
@@ -137,7 +137,7 @@ namespace qc
         using value_type = _T;
         using reference = _T &;
         using pointer = _T *;
-        using difference_type = ptrdiff_t;
+        using difference_type = s64;
 
         _Iterator(const _Iterator &) = default;
         _Iterator(const _Iterator<false> &) requires constant;
@@ -174,7 +174,7 @@ namespace qc
     }
 
     template <typename T, bool fixed>
-    inline Pool<T, fixed>::Pool(const unat capacity)
+    inline Pool<T, fixed>::Pool(const u64 capacity)
     {
         setCapacity(capacity);
     }
@@ -234,7 +234,7 @@ namespace qc
     }
 
     template <typename T, bool fixed>
-    inline void Pool<T, fixed>::setCapacity(const unat capacity)
+    inline void Pool<T, fixed>::setCapacity(const u64 capacity)
     {
         // May only be called before memory is reserved
         if (_slotRange.start)
@@ -374,11 +374,11 @@ namespace qc
     }
 
     template <typename T, bool fixed>
-    inline unat Pool<T, fixed>::capacity() const
+    inline u64 Pool<T, fixed>::capacity() const
     {
         if constexpr (fixed)
         {
-            return size_t(_slotRange.end - _slotRange.start);
+            return u64(_slotRange.end - _slotRange.start);
         }
         else
         {
@@ -467,7 +467,7 @@ namespace qc
         this->_pageCount = newPageCount;
 
         // Update full range
-        const size_t newCapacity{this->_pageCount * pageSize / sizeof(T)};
+        const u64 newCapacity{this->_pageCount * pageSize / sizeof(T)};
         T * const currentRangeEnd{_slotRange.end};
         _slotRange.end = _slotRange.start + newCapacity;
 
@@ -501,7 +501,7 @@ namespace qc
             return;
         }
 
-        const size_t necessaryCapacity{size_t(highRange.start - _slotRange.start)};
+        const u64 necessaryCapacity{u64(highRange.start - _slotRange.start)};
         const u32 necessaryPageCount{u32((necessaryCapacity * sizeof(T) + pageSize - 1u) / pageSize)};
         const u32 unnecessaryPageCount{this->_pageCount - necessaryPageCount};
 
@@ -516,7 +516,7 @@ namespace qc
 
         // Update state
         this->_pageCount = necessaryPageCount;
-        const size_t newCapacity{this->_pageCount * pageSize / sizeof(T)};
+        const u64 newCapacity{this->_pageCount * pageSize / sizeof(T)};
         _slotRange.end = _slotRange.start + newCapacity;
         highRange.end = _slotRange.end;
         if (highRange.end == highRange.start)

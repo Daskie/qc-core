@@ -13,7 +13,7 @@ namespace qc
     ///   - https://www.pcg-random.org/posts/some-prng-implementations.html
     ///   - https://pracrand.sourceforge.net/
     ///
-    template <UnsignedIntegral G = unat>
+    template <UnsignedIntegral G = u64>
     class Random
     {
       public:

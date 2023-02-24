@@ -15,12 +15,12 @@ namespace qc
         using value_type = T;
         using reference = value_type &;
         using pointer = value_type *;
-        using difference_type = ptrdiff_t;
+        using difference_type = s64;
 
         //
         // `stride` should be at least `sizeof(value_type)` and an even multiple of `alignof(value_type)`
         //
-        constexpr StrideIter(value_type * ptr, const unat stride) :
+        constexpr StrideIter(value_type * ptr, const u64 stride) :
             _ptr(ptr),
             _stride(stride)
         {}
@@ -81,7 +81,7 @@ namespace qc
 
         difference_type operator-(const StrideIter other) const
         {
-            return (reinterpret_cast<const std::byte *>(_ptr) - reinterpret_cast<const std::byte *>(other._ptr)) / _stride;
+            return (std::bit_cast<const std::byte *>(_ptr) - std::bit_cast<const std::byte *>(other._ptr)) / _stride;
         }
 
         template <typename U>
@@ -94,6 +94,6 @@ namespace qc
       private:
 
         value_type * _ptr;
-        unat _stride;
+        u64 _stride;
     };
 }

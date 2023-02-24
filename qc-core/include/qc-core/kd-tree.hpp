@@ -29,7 +29,7 @@ namespace qc
 
         fvec2 nearest(fvec2 point) const;
 
-        unat size() const { return _nodes.size(); }
+        u64 size() const { return _nodes.size(); }
 
       private:
 
@@ -123,7 +123,7 @@ namespace qc
         }
 
         // Select median point along alpha axis
-        const unat lowerACount{orderedA.size() / 2u};
+        const u64 lowerACount{orderedA.size() / 2u};
         const u32 medianPointI{orderedA[lowerACount]};
         const fvec2 medianPoint{points[medianPointI]};
 
@@ -135,8 +135,8 @@ namespace qc
         node->upperOffset = node->lowerOffset + u32(lowerOrderedA.size());
 
         // Split ordered beta span into two ordered subspans
-        unat lowerBCount{0u};
-        unat upperBCount{0u};
+        u64 lowerBCount{0u};
+        u64 upperBCount{0u};
         for (const u32 pointI: orderedB)
         {
             const fvec2 point{points[pointI]};

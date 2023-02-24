@@ -151,7 +151,7 @@ namespace qc::color
         template <Floating T>
         inline vec3<T> hueToSrgb(const T hue, const T minComp, const T maxComp)
         {
-            const auto[fraction, whole]{fract_i<nat>(hue * T(6.0))};
+            const auto [fraction, whole]{fract_i<s64>(hue * T(6.0))};
             const T midOffset{(maxComp - minComp) * fraction};
             switch (whole)
             {

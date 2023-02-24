@@ -8,7 +8,7 @@ namespace qc
     template <IntegralOrPointer P>
     class BubbleTracker
     {
-        using S = std::conditional_t<Integral<P>, P, ptrdiff_t>;
+        using S = std::conditional_t<Integral<P>, P, s64>;
 
       public:
 
@@ -67,7 +67,7 @@ namespace qc
 
         // Find position in ordered list where this bubble would be inserted
         const auto it{qc::lowerBound(_bubbles.begin(), _bubbles.end(), pos, [](const Bubble & b, const P & p) { return b.pos >= p; })};
-        const unat i{unat(it - _bubbles.begin())};
+        const u64 i{u64(it - _bubbles.begin())};
 
         const bool isPre{i > 0u};
         const bool isPost{i < _bubbles.size()};

@@ -546,13 +546,13 @@ namespace qc
     template <typename It, typename T, typename GreaterEqual>
     inline It lowerBound(It first, const It last, const T & v, GreaterEqual greaterEqual)
     {
-        unat size{unat(last - first)};
+        u64 size{u64(last - first)};
 
         while (size)
         {
-            const unat half{size / 2u};
-            const It mid{first + nat(half)};
-            const It firstAlt{mid + nat(size & 1u)};
+            const u64 half{size / 2u};
+            const It mid{first + s64(half)};
+            const It firstAlt{mid + s64(size & 1u)};
             first = greaterEqual(*mid, v) ? first : firstAlt;
             size = half;
         }
@@ -563,13 +563,13 @@ namespace qc
     template <typename It, typename T, typename Greater>
     inline It upperBound(It first, const It last, const T & v, Greater greater)
     {
-        unat size{unat(last - first)};
+        u64 size{u64(last - first)};
 
         while (size)
         {
-            const unat half{size / 2u};
-            const It mid{first + nat(half)};
-            const It firstAlt{mid + nat(size & 1u)};
+            const u64 half{size / 2u};
+            const It mid{first + s64(half)};
+            const It firstAlt{mid + s64(size & 1u)};
             first = greater(*mid, v) ? first : firstAlt;
             size = half;
         }

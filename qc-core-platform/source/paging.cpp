@@ -19,7 +19,7 @@ namespace qc
     {
         std::atomic_flag _pageSizeChecked{};
 
-        unat _getPageSize()
+        u64 _getPageSize()
         {
             SYSTEM_INFO sSysInfo;
             GetSystemInfo(&sSysInfo);
@@ -36,7 +36,7 @@ namespace qc
         }
     }
 
-    void * allocatePages(const unat pageCount)
+    void * allocatePages(const u64 pageCount)
     {
         _verifyPageSize();
 
@@ -56,7 +56,7 @@ namespace qc
         return baseAddress;
     }
 
-    void * reservePages(const unat pageCount)
+    void * reservePages(const u64 pageCount)
     {
         _verifyPageSize();
 
@@ -76,7 +76,7 @@ namespace qc
         return baseAddress;
     }
 
-    void commitPages(void * const pageStart, const unat pageCount)
+    void commitPages(void * const pageStart, const u64 pageCount)
     {
         if (!pageStart || !pageCount)
         {
@@ -84,7 +84,7 @@ namespace qc
         }
 
         // Ensure pointer is on page boundary
-        ABORT_IF(std::bit_cast<unat>(pageStart) & (pageSize - 1u));
+        ABORT_IF(std::bit_cast<u64>(pageStart) & (pageSize - 1u));
 
         ABORT_IF(!VirtualAlloc(
             pageStart,            // Base page address
@@ -93,7 +93,7 @@ namespace qc
             PAGE_READWRITE));     // Grant read/write access
     }
 
-    void decommitPages(void * const pageStart, const size_t pageCount)
+    void decommitPages(void * const pageStart, const u64 pageCount)
     {
         if (!pageStart || !pageCount)
         {
@@ -101,7 +101,7 @@ namespace qc
         }
 
         // Ensure pointer is on page boundary
-        ABORT_IF(std::bit_cast<unat>(pageStart) & (pageSize - 1u));
+        ABORT_IF(std::bit_cast<u64>(pageStart) & (pageSize - 1u));
 
         ABORT_IF(!VirtualFree(
             pageStart,            // Base page address
@@ -117,7 +117,7 @@ namespace qc
         }
 
         // Ensure pointer is on page boundary
-        ABORT_IF(std::bit_cast<unat>(pages) & (pageSize - 1u));
+        ABORT_IF(std::bit_cast<u64>(pages) & (pageSize - 1u));
 
         ABORT_IF(!VirtualFree(
             pages,         // Base page address

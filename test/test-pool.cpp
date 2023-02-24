@@ -461,7 +461,7 @@ TEST(FixedPool, standard)
 TEST(Pool, single)
 {
     qc::Pool<int> pool{1u};
-    const unat maxCapacity{qc::pageSize / sizeof(int)};
+    const u64 maxCapacity{qc::pageSize / sizeof(int)};
     ASSERT_EQ(1u, pool.maxPageCount());
     ASSERT_EQ(maxCapacity, pool.capacity());
     ASSERT_EQ(0u, pool.pageCount());
@@ -671,7 +671,7 @@ TEST(FixedPool, setCapacity)
 
 TEST(Pool, shrinkToFit)
 {
-    const unat intsPerPage{qc::pageSize / sizeof(int)};
+    const u64 intsPerPage{qc::pageSize / sizeof(int)};
     qc::Pool<int> pool{5u * intsPerPage};
     ASSERT_EQ(5u, pool.maxPageCount());
     ASSERT_EQ(5u * intsPerPage, pool.capacity());

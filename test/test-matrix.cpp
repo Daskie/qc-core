@@ -509,25 +509,29 @@ TEST(matrix, compilation)
     compileCasts();
 }
 
+template <typename T>
+static void testMatrixConceptT()
+{
+    static_assert(Matrix<mat2<T>>);
+    static_assert(Matrix<mat3<T>>);
+    static_assert(Matrix<mat4<T>>);
+
+    static_assert(Matrix2<mat2<T>>);
+    static_assert(!Matrix2<mat3<T>>);
+    static_assert(!Matrix2<mat4<T>>);
+
+    static_assert(Matrix3<mat3<T>>);
+    static_assert(!Matrix3<mat2<T>>);
+    static_assert(!Matrix3<mat4<T>>);
+
+    static_assert(Matrix4<mat4<T>>);
+    static_assert(!Matrix4<mat2<T>>);
+    static_assert(!Matrix4<mat3<T>>);
+}
+
 TEST(matrix, concepts)
 {
-    static_assert(Matrix<fmat2>);
-    static_assert(Matrix<fmat3>);
-    static_assert(Matrix<fmat4>);
-    static_assert(Matrix<dmat2>);
-    static_assert(Matrix<dmat3>);
-    static_assert(Matrix<dmat4>);
+    testMatrixConceptT<f32>();
+    testMatrixConceptT<f64>();
     static_assert(!Matrix<int>);
-
-    static_assert(Matrix2<fmat2>);
-    static_assert(Matrix2<dmat2>);
-    static_assert(!Matrix2<fmat3>);
-
-    static_assert(Matrix3<fmat3>);
-    static_assert(Matrix3<dmat3>);
-    static_assert(!Matrix3<fmat4>);
-
-    static_assert(Matrix4<fmat4>);
-    static_assert(Matrix4<dmat4>);
-    static_assert(!Matrix4<fmat2>);
 }

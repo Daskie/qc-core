@@ -14,7 +14,7 @@ namespace qc
         std::is_unsigned_v<std::underlying_type_t<E>> &&
         requires { E::_n; };
 
-    template <CountableEnum E> constexpr unat enumCount{unat(E::_n)};
+    template <CountableEnum E> constexpr u64 enumCount{u64(E::_n)};
 
     // Don't think we need this, but keeping it around for a little while just in case
     #if 0
@@ -23,7 +23,7 @@ namespace qc
     struct EnumIterator
     {
         using iterator_category = std::input_iterator_tag;
-        using difference_type = ptrdiff_t;
+        using difference_type = s64;
         using value_type = const E;
         using pointer = const E *;
         using reference = const E &;

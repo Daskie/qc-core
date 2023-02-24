@@ -1033,6 +1033,18 @@ void testVectorConceptT()
     static_assert(Vector<vec2<T>>);
     static_assert(Vector<vec3<T>>);
     static_assert(Vector<vec4<T>>);
+
+    static_assert(Vector2<vec2<T>>);
+    static_assert(!Vector2<vec3<T>>);
+    static_assert(!Vector2<vec4<T>>);
+
+    static_assert(Vector3<vec3<T>>);
+    static_assert(!Vector3<vec2<T>>);
+    static_assert(!Vector3<vec4<T>>);
+
+    static_assert(Vector4<vec4<T>>);
+    static_assert(!Vector4<vec2<T>>);
+    static_assert(!Vector4<vec3<T>>);
 }
 
 template <typename T>
@@ -1079,6 +1091,7 @@ TEST(vector, concepts)
     testVectorConceptT<f64>();
     testVectorConceptT<s64>();
     testVectorConceptT<u64>();
+    testVectorConceptT<bool>();
     static_assert(!Vector<int>);
 
     testFloaterVectorConceptT<f32>();
@@ -1111,41 +1124,5 @@ TEST(vector, concepts)
     static_assert(BooleanVector<bvec3>);
     static_assert(BooleanVector<bvec4>);
     static_assert(!BooleanVector<fvec2>);
-
-    static_assert(Vector2<cvec2>);
-    static_assert(Vector2<ucvec2>);
-    static_assert(Vector2<svec2>);
-    static_assert(Vector2<usvec2>);
-    static_assert(Vector2<fvec2>);
-    static_assert(Vector2<ivec2>);
-    static_assert(Vector2<uivec2>);
-    static_assert(Vector2<lvec2>);
-    static_assert(Vector2<ulvec2>);
-    static_assert(Vector2<dvec2>);
-    static_assert(!Vector2<ivec3>);
-
-    static_assert(Vector3<cvec3>);
-    static_assert(Vector3<ucvec3>);
-    static_assert(Vector3<svec3>);
-    static_assert(Vector3<usvec3>);
-    static_assert(Vector3<fvec3>);
-    static_assert(Vector3<ivec3>);
-    static_assert(Vector3<uivec3>);
-    static_assert(Vector3<lvec3>);
-    static_assert(Vector3<ulvec3>);
-    static_assert(Vector3<dvec3>);
-    static_assert(!Vector3<ivec4>);
-
-    static_assert(Vector4<cvec4>);
-    static_assert(Vector4<ucvec4>);
-    static_assert(Vector4<svec4>);
-    static_assert(Vector4<usvec4>);
-    static_assert(Vector4<fvec4>);
-    static_assert(Vector4<ivec4>);
-    static_assert(Vector4<uivec4>);
-    static_assert(Vector4<lvec4>);
-    static_assert(Vector4<ulvec4>);
-    static_assert(Vector4<dvec4>);
-    static_assert(!Vector4<ivec2>);
 }
 #pragma warning(pop)

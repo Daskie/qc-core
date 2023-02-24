@@ -4,6 +4,8 @@
 
 template <typename T> using IL = std::initializer_list<T>;
 
+using namespace qc::types;
+
 struct NonTrivial
 {
     inline static int contructions{0};
@@ -29,7 +31,7 @@ struct NonTrivial
 TEST(List, max_size)
 {
     qc::List<int> list{};
-    ASSERT_EQ(list.max_size(), (size_t{1u} << (std::numeric_limits<size_t>::digits - 1)));
+    ASSERT_EQ(list.max_size(), (u64{1u} << 63));
     ASSERT_EQ(qc::List<int>::max_size(), list.max_size());
 }
 
@@ -2012,12 +2014,12 @@ TEST(List, equality)
 TEST(List, typeWithInitializerListConstructor)
 {
     {
-        qc::List<std::vector<size_t>> list{};
+        qc::List<std::vector<u64>> list{};
         list.push(4u, 5u);
-        ASSERT_EQ(list.front(), (std::vector<size_t>{5u, 5u, 5u, 5u}));
+        ASSERT_EQ(list.front(), (std::vector<u64>{5u, 5u, 5u, 5u}));
 
         list.emplace(list.end(), 2u, 3u);
-        ASSERT_EQ(list.back(), (std::vector<size_t>{3u, 3u}));
+        ASSERT_EQ(list.back(), (std::vector<u64>{3u, 3u}));
     }
 }
 

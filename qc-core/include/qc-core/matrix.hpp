@@ -43,7 +43,7 @@ namespace qc
     struct mat<T, 2>
     {
         using Type = T;
-        inline static constexpr int n{2};
+        static constexpr int n{2};
 
         vec2<T> c1{T(1.0), T(0.0)};
         vec2<T> c2{T(0.0), T(1.0)};
@@ -81,7 +81,7 @@ namespace qc
     struct mat<T, 3>
     {
         using Type = T;
-        inline static constexpr int n{3};
+        static constexpr int n{3};
 
         vec3<T> c1{T(1.0), T(0.0), T(0.0)};
         vec3<T> c2{T(0.0), T(1.0), T(0.0)};
@@ -122,7 +122,7 @@ namespace qc
     struct mat<T, 4>
     {
         using Type = T;
-        inline static constexpr int n{4};
+        static constexpr int n{4};
 
         vec4<T> c1{T(1.0), T(0.0), T(0.0), T(0.0)};
         vec4<T> c2{T(0.0), T(1.0), T(0.0), T(0.0)};

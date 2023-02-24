@@ -43,7 +43,7 @@ namespace
         compileNext<G, f64>();
     }
 
-    constexpr unat n{1000u};
+    constexpr u64 n{1000u};
 
     template <typename T, typename G>
     void testUnsigned(qc::Random<G> & random)
@@ -62,7 +62,7 @@ namespace
 
         u32 bits{};
 
-        for (unat i{0u}; i < n; ++i)
+        for (u64 i{0u}; i < n; ++i)
         {
             {
                 const T v{random.template next<T>(2u)};
@@ -99,7 +99,7 @@ namespace
     template <typename T, typename G>
     void testSigned(qc::Random<G> & random)
     {
-        for (unat i{0u}; i < n; ++i)
+        for (u64 i{0u}; i < n; ++i)
         {
             {
                 #pragma warning(suppress: 4189)
@@ -151,7 +151,7 @@ namespace
     template <typename T, typename G>
     void testFloating(qc::Random<G> & random)
     {
-        for (unat i{0u}; i < n; ++i)
+        for (u64 i{0u}; i < n; ++i)
         {
             {
                 const T v{random.template next<T>()};

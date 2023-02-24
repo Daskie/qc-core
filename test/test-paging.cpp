@@ -11,12 +11,12 @@ TEST(Paging, allocate)
     #pragma warning(suppress: 4834)
     ASSERT_EQ(qc::allocatePages(0u), nullptr);
 
-    const unat pageCount{3u};
-    unat * const mem{static_cast<unat *>(qc::allocatePages(pageCount))};
+    const u64 pageCount{3u};
+    u64 * const mem{static_cast<u64 *>(qc::allocatePages(pageCount))};
     ASSERT_TRUE(mem);
 
-    const unat n{pageCount * qc::pageSize / sizeof(unat)};
-    for (unat i{0u}; i < n; ++i)
+    const u64 n{pageCount * qc::pageSize / sizeof(u64)};
+    for (u64 i{0u}; i < n; ++i)
     {
         mem[i] = i;
     }
@@ -32,7 +32,7 @@ TEST(Paging, reserveCommit)
     #pragma warning(suppress: 4834)
     ASSERT_EQ(qc::reservePages(0u), nullptr);
 
-    unat * const mem{static_cast<size_t *>(qc::reservePages(3u))};
+    u64 * const mem{static_cast<u64 *>(qc::reservePages(3u))};
     ASSERT_TRUE(mem);
 
     ASSERT_DEATH(mem[0] = 1, "");
@@ -44,8 +44,8 @@ TEST(Paging, reserveCommit)
 
     qc::commitPages(mem, 1u);
 
-    const size_t n{qc::pageSize / sizeof(size_t)};
-    for (size_t i{0u}; i < n; ++i)
+    const u64 n{qc::pageSize / sizeof(u64)};
+    for (u64 i{0u}; i < n; ++i)
     {
         mem[i] = i;
     }
@@ -56,7 +56,7 @@ TEST(Paging, reserveCommit)
 
     qc::commitPages(mem + n, 2u);
 
-    for (size_t i{n}; i < 2u * n; ++i)
+    for (u64 i{n}; i < 2u * n; ++i)
     {
         mem[i] = i;
     }

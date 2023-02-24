@@ -26,8 +26,8 @@ namespace qc
         using value_type = T;
         using reference = T &;
         using const_reference = const T &;
-        using difference_type = ptrdiff_t;
-        using size_type = unat;
+        using difference_type = s64;
+        using size_type = u64;
         using iterator = _Iterator<false>;
         using const_iterator = _Iterator<true>;
 
@@ -48,13 +48,13 @@ namespace qc
 
         //iterator erase(iterator pos);
         //iterator erase(iterator start, iterator end);
-        //unat erase(const T & v);
+        //u64 erase(const T & v);
 
         void clear();
 
         bool contains(const T & v) const;
 
-        unat count(const T & v) const;
+        u64 count(const T & v) const;
 
         iterator find(const T & v);
         const_iterator find(const T & v) const;
@@ -68,7 +68,7 @@ namespace qc
         std::pair<iterator, iterator> equal_range(const T & v);
         std::pair<const_iterator, const_iterator> equal_range(const T & v) const;
 
-        unat size() const { return _size; }
+        u64 size() const { return _size; }
 
         bool empty() const { return !_size; }
 
@@ -99,7 +99,7 @@ namespace qc
         //static void _balanceShrink(_Node * node, bool side);
 
         _Node * _root{};
-        unat _size{};
+        u64 _size{};
 
         struct _InsertRet { iterator it; bool grew; };
         template <typename T_> iterator _insert(T_ && v);
@@ -123,7 +123,7 @@ namespace qc
         using value_type = _T;
         using reference = _T &;
         using pointer = _T *;
-        using difference_type = ptrdiff_t;
+        using difference_type = s64;
 
         _Iterator() = default;
 
@@ -230,7 +230,7 @@ namespace qc
     }
 
     template <typename T>
-    unat AvlTree<T>::erase(const T & v)
+    u64 AvlTree<T>::erase(const T & v)
     {
         erase(lower_bound(v), upper_bound(v));
     }
@@ -254,7 +254,7 @@ namespace qc
     }
 
     template <typename T>
-    unat AvlTree<T>::count(const T & v) const
+    u64 AvlTree<T>::count(const T & v) const
     {
         return std::distance(lower_bound(v), upper_bound(v));
     }
