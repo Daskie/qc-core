@@ -82,8 +82,8 @@ static void compileClassesT()
 
     // comparison operators
 
-    m2 == m2;
-    m2 != m2;
+    static_cast<void>(m2 == m2);
+    static_cast<void>(m2 != m2);
 
     // other
 
@@ -155,8 +155,8 @@ static void compileClassesT()
 
     // comparison operators
 
-    m3 == m3;
-    m3 != m3;
+    static_cast<void>(m3 == m3);
+    static_cast<void>(m3 != m3);
 
     // other
     os << m3;
@@ -230,8 +230,8 @@ static void compileClassesT()
 
     // comparison operators
 
-    m4 == m4;
-    m4 != m4;
+    static_cast<void>(m4 == m4);
+    static_cast<void>(m4 != m4);
 
     // other
     os << m4;

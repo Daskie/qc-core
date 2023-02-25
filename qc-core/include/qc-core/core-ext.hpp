@@ -124,16 +124,6 @@ namespace qc
     //
     // ...
     //
-    template <typename T, typename... Args> constexpr T sum(const T & v, const Args & ... args);
-
-    //
-    // ...
-    //
-    template <typename T, typename... Args> constexpr T product(const T & v, const Args & ... args);
-
-    //
-    // ...
-    //
     template <Floating T> constexpr T radians(T degrees);
 
     //
@@ -175,7 +165,7 @@ namespace qc
 namespace qc
 {
     template <Numeric T>
-    inline constexpr T median(T v1, T v2, T v3)
+    forceinline constexpr T median(T v1, T v2, T v3)
     {
         if (v1 > v2) std::swap(v1, v2);
         if (v2 > v3) std::swap(v2, v3);
@@ -183,7 +173,7 @@ namespace qc
     }
 
     template <Numeric T>
-    inline constexpr T abs(const T v)
+    forceinline constexpr T abs(const T v)
     {
         if constexpr (Signed<T>)
         {
@@ -197,7 +187,7 @@ namespace qc
     }
 
     template <Numeric T>
-    inline T & absify(T & v)
+    forceinline T & absify(T & v)
     {
         if constexpr (Signed<T>)
         {
@@ -209,7 +199,7 @@ namespace qc
     }
 
     template <Numeric T>
-    inline constexpr bool zeroish(const T v, const T e)
+    forceinline constexpr bool zeroish(const T v, const T e)
     {
         if constexpr (Floating<T>)
         {
@@ -222,7 +212,7 @@ namespace qc
     }
 
     template <Numeric T>
-    inline bool equalish(const T v1, const T v2, const T e)
+    forceinline bool equalish(const T v1, const T v2, const T e)
     {
         if constexpr (Floating<T>)
         {
@@ -235,7 +225,7 @@ namespace qc
     }
 
     template <Numeric T>
-    inline constexpr T sign(const T v)
+    forceinline constexpr T sign(const T v)
     {
         if constexpr (UnsignedIntegral<T>)
         {
@@ -253,7 +243,7 @@ namespace qc
     }
 
     template <Numeric T>
-    inline constexpr T trunc(const T v)
+    forceinline constexpr T trunc(const T v)
     {
         if constexpr (Floating<T>)
         {
@@ -266,20 +256,20 @@ namespace qc
     }
 
     template <Floating T>
-    inline constexpr T fract(const T v)
+    forceinline constexpr T fract(const T v)
     {
         return v - trunc(v);
     }
 
     template <SignedIntegral R, Floating T>
-    inline constexpr Duo<T, R> fract_i(const T v)
+    forceinline constexpr Duo<T, R> fract_i(const T v)
     {
         const intmax_t i{intmax_t(v)};
         return {v - T(i), R(i)};
     }
 
     template <Numeric T>
-    inline constexpr T mod(const T v, const T d)
+    forceinline constexpr T mod(const T v, const T d)
     {
         if constexpr (Floating<T>)
         {
@@ -292,7 +282,7 @@ namespace qc
     }
 
     template <Numeric T>
-    inline constexpr Duo<T, T> mod_q(const T v, const T d)
+    forceinline constexpr Duo<T, T> mod_q(const T v, const T d)
     {
         if constexpr (Floating<T>)
         {
@@ -307,7 +297,7 @@ namespace qc
     }
 
     template <Numeric R, Numeric T>
-    inline constexpr R round(const T v)
+    forceinline constexpr R round(const T v)
     {
         // Integral -> Anything
         if constexpr (Integral<T>)
@@ -341,7 +331,7 @@ namespace qc
     }
 
     template <Numeric R, Numeric T>
-    inline constexpr R floor(const T v)
+    forceinline constexpr R floor(const T v)
     {
         // Integral -> Anything
         if constexpr (Integral<T>)
@@ -366,7 +356,7 @@ namespace qc
     }
 
     template <Numeric R, Numeric T>
-    inline constexpr R ceil(const T v)
+    forceinline constexpr R ceil(const T v)
     {
         // Integral -> Anything
         if constexpr (Integral<T>)
@@ -391,13 +381,13 @@ namespace qc
     }
 
     template <Floating T>
-    inline T pow(const T v, const T e)
+    forceinline T pow(const T v, const T e)
     {
         return std::pow(v, e);
     }
 
     template <Floating T>
-    inline T pow(const T v, const int e)
+    forceinline T pow(const T v, const int e)
     {
         if (e >= 0)
         {
@@ -425,7 +415,7 @@ namespace qc
     }
 
     template <UnsignedIntegral T>
-    inline constexpr T log2Floor(const T v)
+    forceinline constexpr T log2Floor(const T v)
     {
         // Old, non-std way of doing it
         //static_assert(sizeof(T) <= 8u);
@@ -443,61 +433,49 @@ namespace qc
     }
 
     template <UnsignedIntegral T>
-    inline constexpr T mipmaps(const T size)
+    forceinline constexpr T mipmaps(const T size)
     {
         return T(std::bit_width(size));
     }
 
     template <Floating T>
-    inline constexpr T mix(const T v1, const T v2, const T t)
+    forceinline constexpr T mix(const T v1, const T v2, const T t)
     {
         return std::lerp(v1, v2, t);
     }
 
     template <Floating T>
-    inline constexpr T unmix(const T v1, const T v2, const T v)
+    forceinline constexpr T unmix(const T v1, const T v2, const T v)
     {
         return (v - v1) / (v2 - v1);
     }
 
     template <Floating T>
-    inline constexpr T smoothstep(const T v1, const T v2, const T t)
+    forceinline constexpr T smoothstep(const T v1, const T v2, const T t)
     {
         return mix(v1, v2, t * t * (T(3.0) - T(2.0) * t));
     }
 
-    template <typename T, typename... Args>
-    inline constexpr T sum(const T & v, const Args & ... args)
-    {
-        return T((v + ... + args));
-    }
-
-    template <typename T, typename... Args>
-    inline constexpr T product(const T & v, const Args & ... args)
-    {
-        return T((v * ... * args));
-    }
-
     template <Floating T>
-    inline constexpr T radians(const T degrees)
+    forceinline constexpr T radians(const T degrees)
     {
         return degrees * T(pi<T> / 180.0);
     }
 
     template <Floating T>
-    inline constexpr T degrees(const T radians)
+    forceinline constexpr T degrees(const T radians)
     {
         return radians * T(180.0 / pi<T>);
     }
 
     template <Floating To, Floating From>
-    inline constexpr To transnorm(const From v)
+    forceinline constexpr To transnorm(const From v)
     {
         return To(v);
     }
 
     template <SignedIntegral To, Floating From>
-    inline constexpr To transnorm(From v)
+    forceinline constexpr To transnorm(From v)
     {
         if (v <= From(-1.0)) return -std::numeric_limits<To>::max();
         if (v >= From(1.0)) return std::numeric_limits<To>::max();
@@ -505,7 +483,7 @@ namespace qc
     }
 
     template <UnsignedIntegral To, Floating From>
-    inline constexpr To transnorm(const From v)
+    forceinline constexpr To transnorm(const From v)
     {
         if (v <= From(0.0)) return To(0u);
         if (v >= From(1.0)) return std::numeric_limits<To>::max();
@@ -513,19 +491,19 @@ namespace qc
     }
 
     template <Floating To, SignedIntegral From>
-    inline constexpr To transnorm(const From v)
+    forceinline constexpr To transnorm(const From v)
     {
         return max(To(v) * (To(1.0) / To(std::numeric_limits<From>::max())), To(-1.0));
     }
 
     template <Floating To, UnsignedIntegral From>
-    inline constexpr To transnorm(const From v)
+    forceinline constexpr To transnorm(const From v)
     {
         return To(v) * (To(1.0) / To(std::numeric_limits<From>::max()));
     }
 
     template <UnsignedIntegral To, UnsignedIntegral From>
-    inline constexpr To transnorm(const From v)
+    forceinline constexpr To transnorm(const From v)
     {
         if constexpr (sizeof(From) == sizeof(To))
         {

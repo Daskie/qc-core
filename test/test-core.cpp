@@ -240,9 +240,6 @@ static void compileFunctionsT()
 
     qc::mod(v, v);
     qc::mod_q(v, v);
-
-    qc::sum(v, v, v, v, v);
-    qc::product(v, v, v, v, v);
 }
 
 template <typename T>

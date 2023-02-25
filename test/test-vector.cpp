@@ -286,9 +286,9 @@ static void compileFunctionsT()
     v == v3;
     v == v4;
 
-    v2 != v2;
-    v3 != v3;
-    v4 != v4;
+    static_cast<void>(v2 != v2);
+    static_cast<void>(v3 != v3);
+    static_cast<void>(v4 != v4);
     v2 != v;
     v3 != v;
     v4 != v;

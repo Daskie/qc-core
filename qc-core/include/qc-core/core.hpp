@@ -32,7 +32,6 @@
 #endif
 
 // Set forceinline
-// TODO: Add forceinline where appropriate
 #ifndef forceinline
     #ifdef _MSC_VER
         #define forceinline __forceinline
@@ -261,19 +260,19 @@ namespace qc
 namespace qc
 {
     template <typename T>
-    inline Result<T>::Result() :
+    forceinline Result<T>::Result() :
         _success{false}
     #pragma warning(suppress: 4582)
     {}
 
     template <typename T>
-    inline Result<T>::Result(T && v) :
+    forceinline Result<T>::Result(T && v) :
         _val{std::move(v)},
         _success{true}
     {}
 
     template <typename T>
-    inline Result<T>::~Result()
+    forceinline Result<T>::~Result()
     #pragma warning(suppress: 4583)
     {
         if (_success)
@@ -283,28 +282,28 @@ namespace qc
     }
 
     template <typename T>
-    inline T & Result<T>::operator*()
+    forceinline T & Result<T>::operator*()
     {
         assert(_success);
         return this->_val;
     }
 
     template <typename T>
-    inline const T & Result<T>::operator*() const
+    forceinline const T & Result<T>::operator*() const
     {
         assert(_success);
         return this->_val;
     }
 
     template <typename T>
-    inline T * Result<T>::operator->()
+    forceinline T * Result<T>::operator->()
     {
         assert(_success);
         return &this->_val;
     }
 
     template <typename T>
-    inline const T * Result<T>::operator->() const
+    forceinline const T * Result<T>::operator->() const
     {
         assert(_success);
         return &this->_val;
@@ -312,7 +311,7 @@ namespace qc
 
     template <NumericOrPointer T1, NumericOrPointer T2>
     requires Sameish<T1, T2>
-    inline constexpr auto min(const T1 v1, const T2 v2)
+    forceinline constexpr auto min(const T1 v1, const T2 v2)
     {
         using U = std::conditional_t<sizeof(T1) >= sizeof(T2), T1, T2>;
 
@@ -320,14 +319,14 @@ namespace qc
     }
 
     template <NumericOrPointer T1, NumericOrPointer T2, NumericOrPointer T3, NumericOrPointer... Ts>
-    inline constexpr auto min(const T1 v1, const T2 v2, const T3 v3, const Ts... vs)
+    forceinline constexpr auto min(const T1 v1, const T2 v2, const T3 v3, const Ts... vs)
     {
         return min(min(v1, v2), v3, vs...);
     }
 
     template <NumericOrPointer T1, NumericOrPointer T2>
     requires Sameish<T1, T2>
-    inline constexpr auto max(const T1 v1, const T2 v2)
+    forceinline constexpr auto max(const T1 v1, const T2 v2)
     {
         using U = std::conditional_t<sizeof(T1) >= sizeof(T2), T1, T2>;
 
@@ -335,45 +334,45 @@ namespace qc
     }
 
     template <NumericOrPointer T1, NumericOrPointer T2, NumericOrPointer T3, NumericOrPointer... Ts>
-    inline constexpr auto max(const T1 v1, const T2 v2, const T3 v3, const Ts... vs)
+    forceinline constexpr auto max(const T1 v1, const T2 v2, const T3 v3, const Ts... vs)
     {
         return max(max(v1, v2), v3, vs...);
     }
 
     template <NumericOrPointer T1, NumericOrPointer T2>
     requires (Sameish<T1, T2> && sizeof(T1) >= sizeof(T2))
-    inline T1 & minify(T1 & v1, const T2 v2)
+    forceinline T1 & minify(T1 & v1, const T2 v2)
     {
         return v2 < v1 ? v1 = v2 : v1;
     }
 
     template <NumericOrPointer T, NumericOrPointer T1, NumericOrPointer T2, NumericOrPointer... Ts>
-    inline T & minify(T & min, const T1 v1, const T2 v2, const Ts... vs)
+    forceinline T & minify(T & min, const T1 v1, const T2 v2, const Ts... vs)
     {
         return minify(minify(min, v1), v2, vs...);
     }
 
     template <NumericOrPointer T1, NumericOrPointer T2>
     requires (Sameish<T1, T2> && sizeof(T1) >= sizeof(T2))
-    inline T1 & maxify(T1 & v1, const T2 v2)
+    forceinline T1 & maxify(T1 & v1, const T2 v2)
     {
         return v2 > v1 ? v1 = v2 : v1;
     }
 
     template <NumericOrPointer T, NumericOrPointer T1, NumericOrPointer T2, NumericOrPointer... Ts>
-    inline T & maxify(T & min, const T1 v1, const T2 v2, const Ts... vs)
+    forceinline T & maxify(T & min, const T1 v1, const T2 v2, const Ts... vs)
     {
         return maxify(maxify(min, v1), v2, vs...);
     }
 
     template <Numeric T>
-    inline constexpr T clamp(const T v, const T min, const T max)
+    forceinline constexpr T clamp(const T v, const T min, const T max)
     {
         return qc::min(qc::max(v, min), max);
     }
 
     template <Numeric T>
-    inline T & clampify(T & v, const T min, const T max)
+    forceinline T & clampify(T & v, const T min, const T max)
     {
         return qc::minify(qc::maxify(v, min), max);
     }

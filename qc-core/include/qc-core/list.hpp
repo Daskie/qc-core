@@ -106,35 +106,35 @@ namespace qc
         T & operator[](const u64 i);
         const T & operator[](const u64 i) const;
 
-        T & front() { return *_data; }
-        const T & front() const { return *_data; }
+        T & front();
+        const T & front() const;
 
-        T & back() { return _data[_size - 1u]; }
-        const T & back() const { return _data[_size - 1u]; }
+        T & back();
+        const T & back() const;
 
-        u64 capacity() const { return _capacity; }
+        u64 capacity() const;
 
-        u64 size() const { return _size; }
+        u64 size() const;
 
-        bool empty() const { return !_size; }
+        bool empty() const;
 
-        T * data() { return _data; }
-        const T * data() const { return _data; }
+        T * data();
+        const T * data() const;
 
-        std::span<T> span() { return {_data, _size}; }
-        std::span<const T> span() const { return {_data, _size}; }
-        std::span<T> span(const u64 i, const u64 n) { return {_data + i, n}; }
-        std::span<const T> span(const u64 i, const u64 n) const { return {_data + i, n}; }
+        std::span<T> span();
+        std::span<const T> span() const;
+        std::span<T> span(const u64 i, const u64 n);
+        std::span<const T> span(const u64 i, const u64 n) const;
 
-        T * begin() { return _data; }
-        const T * begin() const { return _data; }
-        const T * cbegin() const { return _data; }
+        T * begin();
+        const T * begin() const;
+        const T * cbegin() const;
 
-        T * end() { return _data + _size; }
-        const T * end() const { return _data + _size; }
-        const T * cend() const { return _data + _size; }
+        T * end();
+        const T * end() const;
+        const T * cend() const;
 
-        PushIterator<T> pushIterator() { return PushIterator<T>{*this}; }
+        PushIterator<T> pushIterator();
 
         bool operator==(const List & other) const;
         bool operator==(std::initializer_list<T> other) const;
@@ -161,14 +161,15 @@ namespace qc
 namespace qc
 {
     template <typename T>
-    inline PushIterator<T> & PushIterator<T>::operator=(const T & v)
+    forceinline PushIterator<T> & PushIterator<T>::operator=(const T & v)
     {
         _list->push(v);
 
         return *this;
     }
+
     template <typename T>
-    inline PushIterator<T> & PushIterator<T>::operator=(T && v)
+    forceinline PushIterator<T> & PushIterator<T>::operator=(T && v)
     {
         _list->push(std::move(v));
 
@@ -176,45 +177,45 @@ namespace qc
     }
 
     template <typename T>
-    inline List<T>::List(const u64 n)
+    forceinline List<T>::List(const u64 n)
     {
         resize(n);
     }
 
     template <typename T>
-    inline List<T>::List(const u64 n, const T & v)
+    forceinline List<T>::List(const u64 n, const T & v)
     {
         assign(n, v);
     }
 
     template <typename T>
     template <typename It>
-    inline List<T>::List(It first, const It last)
+    forceinline List<T>::List(It first, const It last)
     {
         assign(first, last);
     }
 
     template <typename T>
-    inline List<T>::List(const std::initializer_list<T> vs)
+    forceinline List<T>::List(const std::initializer_list<T> vs)
     {
         *this = vs;
     }
 
     template <typename T>
-    inline List<T>::List(const std::span<const T> vs)
+    forceinline List<T>::List(const std::span<const T> vs)
     {
         *this = vs;
     }
 
     template <typename T>
-    inline List<T>::List(List && other) :
+    forceinline List<T>::List(List && other) :
         _capacity{std::exchange(other._capacity, 0u)},
         _size{std::exchange(other._size, 0u)},
         _data{std::exchange(other._data, nullptr)}
     {}
 
     template <typename T>
-    inline List<T> & List<T>::operator=(List<T> && other)
+    forceinline List<T> & List<T>::operator=(List<T> && other)
     {
         _capacity = std::exchange(other._capacity, 0u);
         _size = std::exchange(other._size, 0u);
@@ -224,7 +225,7 @@ namespace qc
     }
 
     template <typename T>
-    inline List<T> & List<T>::operator=(const std::initializer_list<T> vs)
+    forceinline List<T> & List<T>::operator=(const std::initializer_list<T> vs)
     {
         return *this = std::span<const T>{std::data(vs), vs.size()};
     }
@@ -272,7 +273,7 @@ namespace qc
     }
 
     template <typename T>
-    inline void List<T>::assign(const u64 n, const T & v)
+    forceinline void List<T>::assign(const u64 n, const T & v)
     {
         clear();
 
@@ -298,7 +299,7 @@ namespace qc
     }
 
     template <typename T>
-    inline void List<T>::reserve(const u64 capacity)
+    forceinline void List<T>::reserve(const u64 capacity)
     {
         if (capacity > _capacity)
         {
@@ -418,7 +419,7 @@ namespace qc
     }
 
     template <typename T>
-    inline T & List<T>::bump() requires std::is_trivially_default_constructible_v<T>
+    forceinline T & List<T>::bump() requires std::is_trivially_default_constructible_v<T>
     {
         if (_size == _capacity) [[unlikely]]
         {
@@ -429,7 +430,7 @@ namespace qc
     }
 
     template <typename T>
-    inline std::span<T> List<T>::bump(const u64 n) requires std::is_trivially_default_constructible_v<T>
+    forceinline std::span<T> List<T>::bump(const u64 n) requires std::is_trivially_default_constructible_v<T>
     {
         if (_size + n > _capacity) [[unlikely]]
         {
@@ -442,7 +443,7 @@ namespace qc
     }
 
     template <typename T>
-    inline T * List<T>::insert(T * const pos, const T & v)
+    forceinline T * List<T>::insert(T * const pos, const T & v)
     {
         static_assert(std::is_copy_constructible_v<T>);
 
@@ -450,7 +451,7 @@ namespace qc
     }
 
     template <typename T>
-    inline T * List<T>::insert(T * const pos, T && v)
+    forceinline T * List<T>::insert(T * const pos, T && v)
     {
         return emplace(pos, std::move(v));
     }
@@ -494,7 +495,7 @@ namespace qc
     }
 
     template <typename T>
-    inline T * List<T>::insert(T * pos, const std::initializer_list<T> vs)
+    forceinline T * List<T>::insert(T * pos, const std::initializer_list<T> vs)
     {
         return insert(pos, vs.begin(), vs.end());
     }
@@ -521,7 +522,7 @@ namespace qc
     }
 
     template <typename T>
-    inline void List<T>::pop()
+    forceinline void List<T>::pop()
     {
         assert(_size);
 
@@ -545,7 +546,7 @@ namespace qc
     }
 
     template <typename T>
-    inline T * List<T>::erase(T * const pos)
+    forceinline T * List<T>::erase(T * const pos)
     {
         return erase(pos, pos + 1);
     }
@@ -617,7 +618,7 @@ namespace qc
     }
 
     template <typename T>
-    inline T & List<T>::operator[](const u64 i)
+    forceinline T & List<T>::operator[](const u64 i)
     {
         assert(i < _size);
 
@@ -625,11 +626,131 @@ namespace qc
     }
 
     template <typename T>
-    inline const T & List<T>::operator[](const u64 i) const
+    forceinline const T & List<T>::operator[](const u64 i) const
     {
         assert(i < _size);
 
         return _data[i];
+    }
+
+    template <typename T>
+    forceinline T & List<T>::front()
+    {
+        return *_data;
+    }
+
+    template <typename T>
+    forceinline const T & List<T>::front() const
+    {
+        return *_data;
+    }
+
+    template <typename T>
+    forceinline T & List<T>::back()
+    {
+        return _data[_size - 1u];
+    }
+
+    template <typename T>
+    forceinline const T & List<T>::back() const
+    {
+        return _data[_size - 1u];
+    }
+
+    template <typename T>
+    forceinline u64 List<T>::capacity() const
+    {
+        return _capacity;
+    }
+
+    template <typename T>
+    forceinline u64 List<T>::size() const
+    {
+        return _size;
+    }
+
+    template <typename T>
+    forceinline bool List<T>::empty() const
+    {
+        return !_size;
+    }
+
+    template <typename T>
+    forceinline T * List<T>::data()
+    {
+        return _data;
+    }
+
+    template <typename T>
+    forceinline const T * List<T>::data() const
+    {
+        return _data;
+    }
+
+    template <typename T>
+    forceinline std::span<T> List<T>::span()
+    {
+        return {_data, _size};
+    }
+
+    template <typename T>
+    forceinline std::span<const T> List<T>::span() const
+    {
+        return {_data, _size};
+    }
+
+    template <typename T>
+    forceinline std::span<T> List<T>::span(const u64 i, const u64 n)
+    {
+        return {_data + i, n};
+    }
+
+    template <typename T>
+    forceinline std::span<const T> List<T>::span(const u64 i, const u64 n) const
+    {
+        return {_data + i, n};
+    }
+
+    template <typename T>
+    forceinline T * List<T>::begin()
+    {
+        return _data;
+    }
+
+    template <typename T>
+    forceinline const T * List<T>::begin() const
+    {
+        return _data;
+    }
+
+    template <typename T>
+    forceinline const T * List<T>::cbegin() const
+    {
+        return _data;
+    }
+
+    template <typename T>
+    forceinline T * List<T>::end()
+    {
+        return _data + _size;
+    }
+
+    template <typename T>
+    forceinline const T * List<T>::end() const
+    {
+        return _data + _size;
+    }
+
+    template <typename T>
+    forceinline const T * List<T>::cend() const
+    {
+        return _data + _size;
+    }
+
+    template <typename T>
+    forceinline PushIterator<T> List<T>::pushIterator()
+    {
+        return PushIterator<T>{*this};
     }
 
     template <typename T>

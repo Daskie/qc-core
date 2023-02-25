@@ -253,7 +253,7 @@ namespace qc
     }
 
     template <Numeric T, int n>
-    inline constexpr T sum(const vec<T, n> & v)
+    forceinline constexpr T sum(const vec<T, n> & v)
     {
         if constexpr (n == 2) return T(v.x + v.y);
         if constexpr (n == 3) return T(v.x + v.y + v.z);
@@ -261,7 +261,7 @@ namespace qc
     }
 
     template <Numeric T, int n>
-    inline constexpr T product(const vec<T, n> & v)
+    forceinline constexpr T product(const vec<T, n> & v)
     {
         if constexpr (n == 2) return T(v.x * v.y);
         if constexpr (n == 3) return T(v.x * v.y * v.z);
@@ -269,7 +269,7 @@ namespace qc
     }
 
     template <int n>
-    inline constexpr bool all(const bvec<n> v)
+    forceinline constexpr bool all(const bvec<n> v)
     {
         if constexpr (n == 2) return v.x && v.y;
         if constexpr (n == 3) return v.x && v.y && v.z;
@@ -277,7 +277,7 @@ namespace qc
     }
 
     template <int n>
-    inline constexpr bool any(const bvec<n> v)
+    forceinline constexpr bool any(const bvec<n> v)
     {
         return bool(v);
     }
@@ -295,7 +295,7 @@ namespace qc
     }
 
     template <Floating T, int n>
-    inline vec<T, n> pow(const vec<T, n> & v, const T p)
+    forceinline vec<T, n> pow(const vec<T, n> & v, const T p)
     {
         if constexpr (n == 2) return {std::pow(v.x, p), std::pow(v.y, p)};
         if constexpr (n == 3) return {std::pow(v.x, p), std::pow(v.y, p), std::pow(v.z, p)};
@@ -303,7 +303,7 @@ namespace qc
     }
 
     template <Floating T, int n>
-    inline vec<T, n> pow(const vec<T, n> & v, const vec<T, n> & p)
+    forceinline vec<T, n> pow(const vec<T, n> & v, const vec<T, n> & p)
     {
         if constexpr (n == 2) return {std::pow(v.x, p.x), std::pow(v.y, p.y)};
         if constexpr (n == 3) return {std::pow(v.x, p.x), std::pow(v.y, p.y), std::pow(v.z, p.z)};
@@ -311,7 +311,7 @@ namespace qc
     }
 
     template <Floating T, int n>
-    inline vec<T, n> exp(const vec<T, n> & v)
+    forceinline vec<T, n> exp(const vec<T, n> & v)
     {
         if constexpr (n == 2) return {std::exp(v.x), std::exp(v.y)};
         if constexpr (n == 3) return {std::exp(v.x), std::exp(v.y), std::exp(v.z)};
@@ -319,13 +319,13 @@ namespace qc
     }
 
     template <Floating T, int n>
-    inline T magnitude(const vec<T, n> & v)
+    forceinline T magnitude(const vec<T, n> & v)
     {
         return std::sqrt(magnitude2(v));
     }
 
     template <Numeric T, int n>
-    inline T magnitude2(const vec<T, n> & v)
+    forceinline T magnitude2(const vec<T, n> & v)
     {
         if constexpr (n == 2) return T(v.x * v.x + v.y * v.y);
         if constexpr (n == 3) return T(v.x * v.x + v.y * v.y + v.z * v.z);
@@ -333,19 +333,19 @@ namespace qc
     }
 
     template <Floating T, int n>
-    inline T distance(const vec<T, n> & v1, const vec<T, n> & v2)
+    forceinline T distance(const vec<T, n> & v1, const vec<T, n> & v2)
     {
         return std::sqrt(distance2(v1, v2));
     }
 
     template <Signed T, int n>
-    inline T distance2(const vec<T, n> & v1, const vec<T, n> & v2)
+    forceinline T distance2(const vec<T, n> & v1, const vec<T, n> & v2)
     {
         return magnitude2(v2 - v1);
     }
 
     template <Floating T, int n>
-    inline vec<T, n> normalize(const vec<T, n> & v)
+    forceinline vec<T, n> normalize(const vec<T, n> & v)
     {
         const T m2{magnitude2(v)};
 
@@ -358,7 +358,7 @@ namespace qc
     }
 
     template <Floating T, int n>
-    inline vec<T, n> & normalizeAssign(vec<T, n> & v)
+    forceinline vec<T, n> & normalizeAssign(vec<T, n> & v)
     {
         const T m2{magnitude2(v)};
 
@@ -371,7 +371,7 @@ namespace qc
     }
 
     template <Numeric T, int n>
-    inline T dot(const vec<T, n> & v1, const vec<T, n> & v2)
+    forceinline T dot(const vec<T, n> & v1, const vec<T, n> & v2)
     {
         if constexpr (n == 2) return T(v1.x * v2.x + v1.y * v2.y);
         if constexpr (n == 3) return T(v1.x * v2.x + v1.y * v2.y + v1.z * v2.z);
@@ -379,13 +379,13 @@ namespace qc
     }
 
     template <Numeric T>
-    inline T cross(const vec2<T> v1, const vec2<T> v2)
+    forceinline T cross(const vec2<T> v1, const vec2<T> v2)
     {
         return T(v1.x * v2.y - v1.y * v2.x);
     }
 
     template <Numeric T>
-    inline vec3<T> cross(const vec3<T> v1, const vec3<T> v2)
+    forceinline vec3<T> cross(const vec3<T> v1, const vec3<T> v2)
     {
         return {T(v1.y * v2.z - v1.z * v2.y), T(v1.z * v2.x - v1.x * v2.z), T(v1.x * v2.y - v1.y * v2.x)};
     }
@@ -476,7 +476,7 @@ namespace qc
     }
 
     template <Numeric T, int n>
-    inline constexpr vec<T, n> abs(const vec<T, n> & v)
+    forceinline constexpr vec<T, n> abs(const vec<T, n> & v)
     {
         if constexpr (n == 2) return {abs(v.x), abs(v.y)};
         if constexpr (n == 3) return {abs(v.x), abs(v.y), abs(v.z)};
@@ -484,7 +484,7 @@ namespace qc
     }
 
     template <Numeric T, int n>
-    inline vec<T, n> & absify(vec<T, n> & v)
+    forceinline vec<T, n> & absify(vec<T, n> & v)
     {
         if constexpr (n >= 1) absify(v.x);
         if constexpr (n >= 2) absify(v.y);
@@ -494,7 +494,7 @@ namespace qc
     }
 
     template <Numeric T, int n>
-    inline bool zeroish(const vec<T, n> & v, T e)
+    forceinline bool zeroish(const vec<T, n> & v, T e)
     {
         if constexpr (n == 2) return zeroish(v.x, e) && zeroish(v.y, e);
         if constexpr (n == 3) return zeroish(v.x, e) && zeroish(v.y, e) && zeroish(v.z, e);
@@ -502,19 +502,19 @@ namespace qc
     }
 
     template <Numeric T, int n>
-    inline bool equalish(const vec<T, n> & v1, const vec<T, n> & v2, const T e)
+    forceinline bool equalish(const vec<T, n> & v1, const vec<T, n> & v2, const T e)
     {
         return zeroish(v1 - v2, e);
     }
 
     template <Numeric T, int n>
-    inline bool equalish(const vec<T, n> & v1, const T v2, const T e)
+    forceinline bool equalish(const vec<T, n> & v1, const T v2, const T e)
     {
         return zeroish(v1 - v2, e);
     }
 
     template <Numeric T, int n>
-    inline constexpr vec<T, n> sign(const vec<T, n> & v)
+    forceinline constexpr vec<T, n> sign(const vec<T, n> & v)
     {
         if constexpr (n == 2) return {sign(v.x), sign(v.y)};
         if constexpr (n == 3) return {sign(v.x), sign(v.y), sign(v.z)};
@@ -522,7 +522,7 @@ namespace qc
     }
 
     template <Numeric R, Numeric T, int n>
-    inline vec<R, n> round(const vec<T, n> & v)
+    forceinline vec<R, n> round(const vec<T, n> & v)
     {
         if constexpr (Integral<T>)
         {
@@ -544,7 +544,7 @@ namespace qc
     }
 
     template <Numeric R, Numeric T, int n>
-    inline vec<R, n> floor(const vec<T, n> & v)
+    forceinline vec<R, n> floor(const vec<T, n> & v)
     {
         if constexpr (Integral<T>)
         {
@@ -566,7 +566,7 @@ namespace qc
     }
 
     template <Numeric R, Numeric T, int n>
-    inline vec<R, n> ceil(const vec<T, n> & v)
+    forceinline vec<R, n> ceil(const vec<T, n> & v)
     {
         if constexpr (Integral<T>)
         {
@@ -588,55 +588,55 @@ namespace qc
     }
 
     template <Floating T, int n>
-    inline vec<T, n> mix(const vec<T, n> & v1, const vec<T, n> & v2, const T t)
+    forceinline vec<T, n> mix(const vec<T, n> & v1, const vec<T, n> & v2, const T t)
     {
         return (T(1.0) - t) * v1 + t * v2;
     }
 
     template <Floating T, int n>
-    inline vec<T, n> mix(const vec<T, n> & v1, const vec<T, n> & v2, const vec2<T> weights)
+    forceinline vec<T, n> mix(const vec<T, n> & v1, const vec<T, n> & v2, const vec2<T> weights)
     {
         return weights.x * v1 + weights.y * v2;
     }
 
     template <Floating T, int n>
-    inline vec<T, n> mix(const vec<T, n> & v1, const vec<T, n> & v2, const vec<T, n> & v3, const vec3<T> weights)
+    forceinline vec<T, n> mix(const vec<T, n> & v1, const vec<T, n> & v2, const vec<T, n> & v3, const vec3<T> weights)
     {
         return weights.x * v1 + weights.y * v2 + weights.z * v3;
     }
 
     template <Floating T, int n>
-    inline vec<T, n> mix(const vec<T, n> & v1, const vec<T, n> & v2, const vec<T, n> & v3, const vec<T, n> & v4, const vec4<T> weights)
+    forceinline vec<T, n> mix(const vec<T, n> & v1, const vec<T, n> & v2, const vec<T, n> & v3, const vec<T, n> & v4, const vec4<T> weights)
     {
         return weights.x * v1 + weights.y * v2 + weights.z * v3 + weights.w * v4;
     }
 
     template <Floating T>
-    inline T mix(const T v1, const T v2, const vec2<T> weights)
+    forceinline T mix(const T v1, const T v2, const vec2<T> weights)
     {
         return weights.x * v1 + weights.y * v2;
     }
 
     template <Floating T>
-    inline T mix(const T v1, const T v2, const T v3, const vec3<T> weights)
+    forceinline T mix(const T v1, const T v2, const T v3, const vec3<T> weights)
     {
         return weights.x * v1 + weights.y * v2 + weights.z * v3;
     }
 
     template <Floating T>
-    inline T mix(const T v1, const T v2, const T v3, const T v4, const vec4<T> weights)
+    forceinline T mix(const T v1, const T v2, const T v3, const T v4, const vec4<T> weights)
     {
         return weights.x * v1 + weights.y * v2 + weights.z * v3 + weights.w * v4;
     }
 
     template <Floating T, int n>
-    inline vec<T, n> smoothstep(const vec<T, n> & v1, const vec<T, n> & v2, const T t)
+    forceinline vec<T, n> smoothstep(const vec<T, n> & v1, const vec<T, n> & v2, const T t)
     {
         return mix(v1, v2, t * t * (T(3.0) - T(2.0) * t));
     }
 
     template <Numeric To, Numeric From, int n>
-    inline constexpr vec<To, n> transnorm(const vec<From, n> & v)
+    forceinline constexpr vec<To, n> transnorm(const vec<From, n> & v)
     {
         if constexpr (n == 2) return {transnorm<To>(v.x), transnorm<To>(v.y)};
         if constexpr (n == 3) return {transnorm<To>(v.x), transnorm<To>(v.y), transnorm<To>(v.z)};
@@ -644,7 +644,7 @@ namespace qc
     }
 
     template <UnsignedIntegral T, int n>
-    inline constexpr T mipmaps(const vec<T, n> & size)
+    forceinline constexpr T mipmaps(const vec<T, n> & size)
     {
         return mipmaps(max(size));
     }
@@ -683,13 +683,13 @@ namespace qc
     }
 
     template <Signed T>
-    inline vec2<T> rotateCW(const vec2<T> & v)
+    forceinline vec2<T> rotateCW(const vec2<T> & v)
     {
         return vec2<T>{v.y, T(-v.x)};
     }
 
     template <Signed T>
-    inline vec2<T> rotateCCW(const vec2<T> & v)
+    forceinline vec2<T> rotateCCW(const vec2<T> & v)
     {
         return vec2<T>{T(-v.y), v.x};
     }

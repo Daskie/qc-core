@@ -275,15 +275,15 @@ static void compileFunctionsT()
     s3 / v3;
     s4 / v4;
 
-    s1 == s1;
-    s2 == s2;
-    s3 == s3;
-    s4 == s4;
+    static_cast<void>(s1 == s1);
+    static_cast<void>(s2 == s2);
+    static_cast<void>(s3 == s3);
+    static_cast<void>(s4 == s4);
 
-    s1 != s1;
-    s2 != s2;
-    s3 != s3;
-    s4 != s4;
+    static_cast<void>(s1 != s1);
+    static_cast<void>(s2 != s2);
+    static_cast<void>(s3 != s3);
+    static_cast<void>(s4 != s4);
 
     s1 & s1;
     s2 & s2;
@@ -401,8 +401,8 @@ static void compileFunctionsPT()
     s -= v;
     s + v;
     s - v;
-    s == s;
-    s != s;
+    static_cast<void>(s == s);
+    static_cast<void>(s != s);
     os << s;
     qc::min(s, p);
     qc::max(s, p);

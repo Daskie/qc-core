@@ -193,7 +193,7 @@ namespace qc
     }
 
     template <typename T, int n>
-    inline mat<T, n> transpose(const mat<T, n> & m)
+    forceinline mat<T, n> transpose(const mat<T, n> & m)
     {
         if constexpr (n == 2) return {m.template row<0>(), m.template row<1>()};
         if constexpr (n == 3) return {m.template row<0>(), m.template row<1>(), m.template row<2>()};
@@ -578,7 +578,7 @@ namespace qc
     }
 
     template <typename T>
-    inline mat2<T> map(const vec2<T> x1, const vec2<T> y1, const vec2<T> x2, const vec2<T> y2)
+    forceinline mat2<T> map(const vec2<T> x1, const vec2<T> y1, const vec2<T> x2, const vec2<T> y2)
     {
         const mat2<T> a(x1, y1);
         const mat2<T> b(x2, y2);
@@ -587,7 +587,7 @@ namespace qc
     }
 
     template <typename T>
-    inline mat2<T> map_o(const vec2<T> x1, const vec2<T> y1, const vec2<T> x2, const vec2<T> y2)
+    forceinline mat2<T> map_o(const vec2<T> x1, const vec2<T> y1, const vec2<T> x2, const vec2<T> y2)
     {
         const mat2<T> a(x1, y1);
         const mat2<T> b(x2, y2);
@@ -596,7 +596,7 @@ namespace qc
     }
 
     template <typename T>
-    inline mat3<T> map(const vec3<T> x1, const vec3<T> y1, const vec3<T> z1, const vec3<T> x2, const vec3<T> y2, const vec3<T> z2)
+    forceinline mat3<T> map(const vec3<T> x1, const vec3<T> y1, const vec3<T> z1, const vec3<T> x2, const vec3<T> y2, const vec3<T> z2)
     {
         const mat3<T> a(x1, y1, z1);
         const mat3<T> b(x2, y2, z2);
@@ -605,7 +605,7 @@ namespace qc
     }
 
     template <typename T>
-    inline mat3<T> map_o(const vec3<T> x1, const vec3<T> y1, const vec3<T> z1, const vec3<T> x2, const vec3<T> y2, const vec3<T> z2)
+    forceinline mat3<T> map_o(const vec3<T> x1, const vec3<T> y1, const vec3<T> z1, const vec3<T> x2, const vec3<T> y2, const vec3<T> z2)
     {
         const mat3<T> a(x1, y1, z1);
         const mat3<T> b(x2, y2, z2);
@@ -614,37 +614,37 @@ namespace qc
     }
 
     template <typename T>
-    inline mat2<T> mapTo(const vec2<T> x, const vec2<T> y)
+    forceinline mat2<T> mapTo(const vec2<T> x, const vec2<T> y)
     {
         return inverse(mat2<T>(x, y));
     }
 
     template <typename T>
-    inline mat2<T> mapTo_o(const vec2<T> x, const vec2<T> y)
+    forceinline mat2<T> mapTo_o(const vec2<T> x, const vec2<T> y)
     {
         return transpose(mat2<T>(x, y));
     }
 
     template <typename T>
-    inline mat3<T> mapTo(const vec3<T> x, const vec3<T> y, const vec3<T> z)
+    forceinline mat3<T> mapTo(const vec3<T> x, const vec3<T> y, const vec3<T> z)
     {
         return inverse(mat3<T>(x, y, z));
     }
 
     template <typename T>
-    inline mat3<T> mapTo_o(const vec3<T> x, const vec3<T> y, const vec3<T> z)
+    forceinline mat3<T> mapTo_o(const vec3<T> x, const vec3<T> y, const vec3<T> z)
     {
         return transpose(mat3<T>(x, y, z));
     }
 
     template <typename T>
-    inline mat2<T> mapFrom(const vec2<T> x, const vec2<T> y)
+    forceinline mat2<T> mapFrom(const vec2<T> x, const vec2<T> y)
     {
         return {x, y};
     }
 
     template <typename T>
-    inline mat3<T> mapFrom(const vec3<T> x, const vec3<T> y, const vec3<T> z)
+    forceinline mat3<T> mapFrom(const vec3<T> x, const vec3<T> y, const vec3<T> z)
     {
         return {x, y, z};
     }

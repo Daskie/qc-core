@@ -107,25 +107,25 @@ namespace qc
     }
 
     template <typename T>
-    inline T dot(const quat<T> & q1, const quat<T> & q2)
+    forceinline T dot(const quat<T> & q1, const quat<T> & q2)
     {
         return dot(q1.a, q2.a) + q1.w * q2.w;
     }
 
     template <typename T>
-    inline T magnitude(const quat<T> & q)
+    forceinline T magnitude(const quat<T> & q)
     {
         return std::sqrt(magnitude2(q));
     }
 
     template <typename T>
-    inline T magnitude2(const quat<T> & q)
+    forceinline T magnitude2(const quat<T> & q)
     {
         return magnitude2(q.a) + q.w * q.w;
     }
 
     template <typename T>
-    inline quat<T> normalize(const quat<T> & q)
+    forceinline quat<T> normalize(const quat<T> & q)
     {
         const T mag2(magnitude2(q));
 
@@ -139,25 +139,25 @@ namespace qc
     }
 
     template <typename T>
-    inline quat<T> inverse(const quat<T> & q)
+    forceinline quat<T> inverse(const quat<T> & q)
     {
         return {-q.a, q.w};
     }
 
     template <typename T>
-    inline T quatAngle(const quat<T> & q)
+    forceinline T quatAngle(const quat<T> & q)
     {
         return std::acos(q.w) * T(2.0);
     }
 
     template <typename T>
-    inline vec3<T> quatAxis(const quat<T> & q)
+    forceinline vec3<T> quatAxis(const quat<T> & q)
     {
         return quatAxis_n(normalize(q));
     }
 
     template <typename T>
-    inline vec3<T> quatAxis_n(const quat<T> & q)
+    forceinline vec3<T> quatAxis_n(const quat<T> & q)
     {
         const T d2{T(1.0) - q.w * q.w};
 
@@ -170,7 +170,7 @@ namespace qc
     }
 
     template <typename T>
-    inline quat<T> mix(const quat<T> & q1, const quat<T> & q2, const T t)
+    forceinline quat<T> mix(const quat<T> & q1, const quat<T> & q2, const T t)
     {
         const T s{T(1.0) - t};
         return {s * q1.a + t * q2.a, s * q1.w + t * q2.w};
@@ -257,7 +257,7 @@ namespace qc
     }
 
     template <typename T>
-    inline quat<T> nlerp(const quat<T> & q1, const quat<T> & q2, const T t)
+    forceinline quat<T> nlerp(const quat<T> & q1, const quat<T> & q2, const T t)
     {
         return normalize(quat<T>(mix(q1, q2, t)));
     }
