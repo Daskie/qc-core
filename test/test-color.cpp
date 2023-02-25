@@ -26,7 +26,7 @@ static void _instantiateColors()
     constexpr vec3<T> magenta{qc::color::magenta<T>};
 }
 
-TEST(color, colors)
+TEST(Color, colors)
 {
     _instantiateColors<f32>();
     _instantiateColors<f64>();
@@ -40,7 +40,7 @@ TEST(color, colors)
     _instantiateColors<u64>();
 }
 
-TEST(color, srgbToHsl)
+TEST(Color, srgbToHsl)
 {
     ASSERT_EQ(_truncate(fvec3{0.0f, 0.0f, 0.0f}), _truncate(qc::color::srgbToHsl(fvec3{0.0f, 0.0f, 0.0f})));
     for (float v{0.25f}; v <= 1.0f; v += 0.25f)
@@ -58,7 +58,7 @@ TEST(color, srgbToHsl)
     ASSERT_EQ(_truncate(fvec3{0.804f, 0.932f, 0.510f}), _truncate(qc::color::srgbToHsl(fvec3{0.811f, 0.053f, 0.967f})));
 }
 
-TEST(color, hslToSrgb)
+TEST(Color, hslToSrgb)
 {
     ASSERT_EQ(_truncate(fvec3{0.0f, 0.0f, 0.0f}), _truncate(qc::color::hslToSrgb(fvec3{0.0f, 0.0f, 0.0f})));
     for (float v{0.25f}; v <= 1.0f; v += 0.25f)
@@ -76,7 +76,7 @@ TEST(color, hslToSrgb)
     ASSERT_EQ(_truncate(fvec3{0.805f, 0.053f, 0.966f}), _truncate(qc::color::hslToSrgb(fvec3{0.804f, 0.932f, 0.510f})));
 }
 
-TEST(color, rgbToHslAndBack)
+TEST(Color, rgbToHslAndBack)
 {
     for (ivec3 rgb{0, 0, 0}; rgb.z < 256; ++rgb.z)
     {

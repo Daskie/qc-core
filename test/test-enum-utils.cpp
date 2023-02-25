@@ -12,7 +12,7 @@ enum class Enum3 : uint { a, b, c, _n };
 enum class Enum4 : uint { _n };
 enum class Enum5 : uint {};
 
-TEST(enumUtils, countableEnum)
+TEST(EnumUtils, countableEnum)
 {
     static_assert(!qc::CountableEnum<Enum0>);
     static_assert(!qc::CountableEnum<Enum1>);
@@ -22,7 +22,7 @@ TEST(enumUtils, countableEnum)
     static_assert(!qc::CountableEnum<Enum5>);
 }
 
-TEST(enumUtils, enumCount)
+TEST(EnumUtils, enumCount)
 {
     ASSERT_EQ(3u, qc::enumCount<Enum3>);
     ASSERT_EQ(0u, qc::enumCount<Enum4>);
@@ -94,7 +94,7 @@ TEST(enumIterator, forEachEmpty)
 
 #endif
 
-TEST(enumUtils, enumArray)
+TEST(EnumUtils, enumArray)
 {
     ASSERT_EQ((std::array<Enum3, 3u>{Enum3::a, Enum3::b, Enum3::c}), qc::enumArray<Enum3>);
     ASSERT_EQ((std::array<Enum4, 0u>{}), qc::enumArray<Enum4>);

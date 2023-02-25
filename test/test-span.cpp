@@ -559,7 +559,7 @@ static void compileConstants()
     compileConstantsT<u64>();
 }
 
-TEST(span, compilation)
+TEST(Span, compilation)
 {
     compileClasses();
     compileFunctions();
@@ -629,7 +629,7 @@ void testUnsignedIntegerSpanConceptT()
     static_assert(UnsignedIntegralVector<vec4<T>>);
 }
 
-TEST(vector, concepts)
+TEST(Span, concepts)
 {
     testSpanConceptT<s8>();
     testSpanConceptT<u8>();

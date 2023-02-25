@@ -1018,7 +1018,7 @@ static constexpr bool compileConstants()
     return true;
 }
 
-TEST(vector, compilation)
+TEST(Vector, compilation)
 {
     compileClasses();
     compileFunctions();
@@ -1079,7 +1079,7 @@ void testUnsignedIntegerVectorConceptT()
     static_assert(UnsignedIntegralVector<vec4<T>>);
 }
 
-TEST(vector, concepts)
+TEST(Vector, concepts)
 {
     testVectorConceptT<s8>();
     testVectorConceptT<u8>();

@@ -4,7 +4,7 @@
 
 // Currently the "real" K-d tree testing happens in the testing repo
 
-TEST(kdTree, compiles)
+TEST(KdTree, compiles)
 {
     qc::KdTree tree0{};
 

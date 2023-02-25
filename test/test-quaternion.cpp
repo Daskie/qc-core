@@ -195,7 +195,7 @@ static void compileCasts()
     compileCastsT<double>();
 }
 
-TEST(quaternion, compilation)
+TEST(Quaternion, compilation)
 {
     compileClasses();
     static_assert(compileClassesConstexpr());
@@ -205,7 +205,7 @@ TEST(quaternion, compilation)
     compileCasts();
 }
 
-TEST(quaternion, concepts)
+TEST(Quaternion, concepts)
 {
     static_assert(Quaternion<fquat>);
     static_assert(Quaternion<dquat>);

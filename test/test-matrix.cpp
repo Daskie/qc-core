@@ -499,7 +499,7 @@ static void compileCasts()
     compileCastsT<double>();
 }
 
-TEST(matrix, compilation)
+TEST(Matrix, compilation)
 {
     compileClasses();
     static_assert(compileClassesConstexpr());
@@ -529,7 +529,7 @@ static void testMatrixConceptT()
     static_assert(!Matrix4<mat3<T>>);
 }
 
-TEST(matrix, concepts)
+TEST(Matrix, concepts)
 {
     testMatrixConceptT<f32>();
     testMatrixConceptT<f64>();
