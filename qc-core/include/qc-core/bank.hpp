@@ -10,8 +10,6 @@ namespace qc
     {
         static_assert(std::is_move_constructible_v<T>);
 
-        static_assert(alignof(T) <= 8u); // TODO: Use std::align_val_t once supported by intellisense
-
       public:
 
         Bank() = default;
@@ -109,7 +107,7 @@ namespace qc
                 clear();
             }
 
-            ::operator delete(_slots);
+            ::operator delete(_slots, std::align_val_t{alignof(T)});
         }
 
         // Reset state
@@ -195,7 +193,7 @@ namespace qc
         const u32 oldCapacity{_capacity};
 
         // Allocate new slots
-        _Slot * const newSlots{static_cast<_Slot *>(::operator new(newCapacity * sizeof(_Slot)))};
+        _Slot * const newSlots{static_cast<_Slot *>(::operator new(newCapacity * sizeof(_Slot), std::align_val_t{alignof(T)}))};
 
         // Copy over existing slots
         // Simply memcpy if the type is trivially move constructible and destructible
@@ -238,7 +236,7 @@ namespace qc
         }
 
         // Free old slots
-        ::operator delete(_slots);
+        ::operator delete(_slots, std::align_val_t{alignof(T)});
 
         // Update state
         _slots = newSlots;

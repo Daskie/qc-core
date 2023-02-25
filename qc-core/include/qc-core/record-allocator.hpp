@@ -29,7 +29,7 @@ namespace qc::memory
     {
         template <typename> friend class RecordAllocator;
 
-        public: //--------------------------------------------------------------
+      public:
 
         using value_type = T;
         using propagate_on_container_copy_assignment = std::true_type;
@@ -100,7 +100,7 @@ namespace qc::memory
 
         bool operator==(const RecordAllocator &) const = default;
 
-        private: //-------------------------------------------------------------
+      private:
 
         u64 _listI{};
     };

@@ -19,7 +19,7 @@ namespace qc
     //
     class Clock
     {
-        public: //--------------------------------------------------------------
+      public:
 
         //
         // constructs clock with 1.0 sec period and 1.0 sec frequency
@@ -61,7 +61,7 @@ namespace qc
         double frequency() const;
         void frequency(double frequency);
 
-        private: //-------------------------------------------------------------
+      private:
 
         std::chrono::steady_clock::time_point _start;
         double _period;

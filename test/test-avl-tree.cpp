@@ -15,7 +15,6 @@ class qc::_internal::AvlTreeFriend
 {
     template <typename T> using _Node = typename AvlTree<T>::_Node;
 
-  // TODO: Fix access specifier alignment elsewhere
   public:
 
     template <UnsignedIntegral T>

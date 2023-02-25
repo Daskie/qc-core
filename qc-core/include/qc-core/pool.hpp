@@ -48,8 +48,6 @@ namespace qc
     template <typename T, bool fixed>
     class Pool : public _PoolExtra<T, fixed>
     {
-        static_assert(alignof(T) <= 8u); // TODO: Use std::align_val_t once supported by intellisense
-
         friend class _PoolExtra<T, fixed>;
 
         using _Extra = _PoolExtra<T, fixed>;
@@ -217,7 +215,7 @@ namespace qc
             // Free memory
             if constexpr (fixed)
             {
-                ::operator delete(_slotRange.start);
+                ::operator delete(_slotRange.start, std::align_val_t{alignof(T)});
             }
             else
             {
@@ -251,7 +249,7 @@ namespace qc
                 return;
             }
 
-            _slotRange.start = static_cast<T *>(::operator new(capacity * sizeof(T)));
+            _slotRange.start = static_cast<T *>(::operator new(capacity * sizeof(T), std::align_val_t{alignof(T)}));
             _slotRange.end = _slotRange.start + capacity;
             _freeRanges.push(_slotRange);
         }
@@ -330,7 +328,7 @@ namespace qc
             //         X         ->         [X]
             case 0:
             {
-                _freeRanges.insert(lowerIt, _Range{&v, &v + 1}); // TODO: Change to `emplace` once intellisense supports it
+                _freeRanges.emplace(lowerIt, &v, &v + 1);
                 break;
             }
 
@@ -475,7 +473,7 @@ namespace qc
         if (_freeRanges.empty() || _freeRanges.front().end != currentRangeEnd)
         {
             // Insert new free range
-            _freeRanges.insert(_freeRanges.begin(), _Range{currentRangeEnd, _slotRange.end}); // TODO: Switch to `emplace` once intellisense supports it
+            _freeRanges.emplace(_freeRanges.begin(), currentRangeEnd, _slotRange.end);
         }
         else
         {
