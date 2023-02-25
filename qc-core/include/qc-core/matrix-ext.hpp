@@ -13,90 +13,90 @@ namespace qc
     //
     // ...
     //
-    template <typename T, int n> bool isIdentity(const mat<T, n> & m);
+    template <typename T, int n> nodisc bool isIdentity(const mat<T, n> & m);
 
     //
     // ...
     //
-    template <typename T, int n> mat<T, n> transpose(const mat<T, n> & m);
+    template <typename T, int n> nodisc mat<T, n> transpose(const mat<T, n> & m);
 
     //
     // ...
     //
-    template <typename T, int n> mat<T, n> cofactor(const mat<T, n> & m);
+    template <typename T, int n> nodisc mat<T, n> cofactor(const mat<T, n> & m);
 
     //
     // ...
     //
-    template <typename T, int n> mat<T, n> adjoint(const mat<T, n> & m);
+    template <typename T, int n> nodisc mat<T, n> adjoint(const mat<T, n> & m);
 
     //
     // ...
     //
-    template <typename T, int n> T determinant(const mat<T, n> & m);
+    template <typename T, int n> nodisc T determinant(const mat<T, n> & m);
 
     //
     // ...
     //
-    template <typename T, int n> mat<T, n> inverse(const mat<T, n> & m);
+    template <typename T, int n> nodisc mat<T, n> inverse(const mat<T, n> & m);
 
     //
     // ...
     //
-    template <typename T, int n> mat<T, n + 1> translate(const vec<T, n> & delta);
+    template <typename T, int n> nodisc mat<T, n + 1> translate(const vec<T, n> & delta);
     template <typename T, int mn, int vn> requires (mn == vn + 1) mat<T, mn> & translate(mat<T, mn> & mat, const vec<T, vn> & delta);
 
     //
     // ...
     //
-    template <typename T, int n> mat<T, n> scale(const vec<T, n> & scale);
+    template <typename T, int n> nodisc mat<T, n> scale(const vec<T, n> & scale);
     template <typename T, int mn, int vn> mat<T, mn> & scale(mat<T, mn> & mat, const vec<T, vn> & scale);
 
     //
     // ...
     //
-    template <typename T> mat2<T> rotate(T angle);
+    template <typename T> nodisc mat2<T> rotate(T angle);
 
     //
     // ...
     //
-    template <typename T> mat3<T> rotateX(T angle);
+    template <typename T> nodisc mat3<T> rotateX(T angle);
 
     //
     // ...
     //
-    template <typename T> mat3<T> rotateY(T angle);
+    template <typename T> nodisc mat3<T> rotateY(T angle);
 
     //
     // ...
     //
-    template <typename T> mat3<T> rotateZ(T angle);
+    template <typename T> nodisc mat3<T> rotateZ(T angle);
 
     //
     // ...
     //
-    template <typename T> mat3<T> rotate(vec3<T> axis, T angle);
-    template <typename T> mat3<T> rotate_n(vec3<T> axis, T angle);
+    template <typename T> nodisc mat3<T> rotate(vec3<T> axis, T angle);
+    template <typename T> nodisc mat3<T> rotate_n(vec3<T> axis, T angle);
 
     //
     // ...
     // theta: thumb points up, phi: right, psi: forward
     //
-    template <typename T> mat3<T> euler(vec3<T> forward, vec3<T> up, T theta, T phi, T psi);
-    template <typename T> mat3<T> euler_n(vec3<T> forward, vec3<T> up, T theta, T phi, T psi);
+    template <typename T> nodisc mat3<T> euler(vec3<T> forward, vec3<T> up, T theta, T phi, T psi);
+    template <typename T> nodisc mat3<T> euler_n(vec3<T> forward, vec3<T> up, T theta, T phi, T psi);
 
     //
     // ...
     //
-    template <typename T, int n> mat<T, n> align(const vec<T, n> & v1, const vec<T, n> & v2);
-    template <typename T, int n> mat<T, n> align_n(const vec<T, n> & v1, const vec<T, n> & v2);
+    template <typename T, int n> nodisc mat<T, n> align(const vec<T, n> & v1, const vec<T, n> & v2);
+    template <typename T, int n> nodisc mat<T, n> align_n(const vec<T, n> & v1, const vec<T, n> & v2);
 
     //
     // ...
     // expects orthogonal vectors
     //
-    template <typename T> mat3<T> align(vec3<T> forward1, vec3<T> up1, vec3<T> forward2, vec3<T> up2);
-    template <typename T> mat3<T> align_n(vec3<T> forward1, vec3<T> up1, vec3<T> forward2, vec3<T> up2);
+    template <typename T> nodisc mat3<T> align(vec3<T> forward1, vec3<T> up1, vec3<T> forward2, vec3<T> up2);
+    template <typename T> nodisc mat3<T> align_n(vec3<T> forward1, vec3<T> up1, vec3<T> forward2, vec3<T> up2);
 
     //
     // ...
@@ -104,30 +104,30 @@ namespace qc
     // A to B is orthogonal i.e. A's basis vectors don't need to be orthogonal, nor
     // B's, but the angles between A's basis vectors must be the same as B's
     //
-    template <typename T> mat2<T> map(vec2<T> x1, vec2<T> y1, vec2<T> x2, vec2<T> y2);
-    template <typename T> mat2<T> map_o(vec2<T> x1, vec2<T> y1, vec2<T> x2, vec2<T> y2);
-    template <typename T> mat3<T> map(vec3<T> x1, vec3<T> y1, vec3<T> z1, vec3<T> x2, vec3<T> y2, vec3<T> z2);
-    template <typename T> mat3<T> map_o(vec3<T> x1, vec3<T> y1, vec3<T> z1, vec3<T> x2, vec3<T> y2, vec3<T> z2);
+    template <typename T> nodisc mat2<T> map(vec2<T> x1, vec2<T> y1, vec2<T> x2, vec2<T> y2);
+    template <typename T> nodisc mat2<T> map_o(vec2<T> x1, vec2<T> y1, vec2<T> x2, vec2<T> y2);
+    template <typename T> nodisc mat3<T> map(vec3<T> x1, vec3<T> y1, vec3<T> z1, vec3<T> x2, vec3<T> y2, vec3<T> z2);
+    template <typename T> nodisc mat3<T> map_o(vec3<T> x1, vec3<T> y1, vec3<T> z1, vec3<T> x2, vec3<T> y2, vec3<T> z2);
 
     //
     // ...
     //
-    template <typename T> mat2<T> mapTo(vec2<T> x, vec2<T> y);
-    template <typename T> mat2<T> mapTo_o(vec2<T> x, vec2<T> y);
-    template <typename T> mat3<T> mapTo(vec3<T> x, vec3<T> y, vec3<T> z);
-    template <typename T> mat3<T> mapTo_o(vec3<T> x, vec3<T> y, vec3<T> z);
+    template <typename T> nodisc mat2<T> mapTo(vec2<T> x, vec2<T> y);
+    template <typename T> nodisc mat2<T> mapTo_o(vec2<T> x, vec2<T> y);
+    template <typename T> nodisc mat3<T> mapTo(vec3<T> x, vec3<T> y, vec3<T> z);
+    template <typename T> nodisc mat3<T> mapTo_o(vec3<T> x, vec3<T> y, vec3<T> z);
 
     //
     // ...
     //
-    template <typename T> mat2<T> mapFrom(vec2<T> x, vec2<T> y);
-    template <typename T> mat3<T> mapFrom(vec3<T> x, vec3<T> y, vec3<T> z);
+    template <typename T> nodisc mat2<T> mapFrom(vec2<T> x, vec2<T> y);
+    template <typename T> nodisc mat3<T> mapFrom(vec3<T> x, vec3<T> y, vec3<T> z);
 
     //
     // ...
     // If `depth0to1` is true, the resulting z will be in [0, 1], else [-1, 1]
     //
-    template <bool depth0To1, typename T> mat4<T> orthoProj(T width, T height, T near, T far);
+    template <bool depth0To1, typename T> nodisc mat4<T> orthoProj(T width, T height, T near, T far);
 
     //
     // ...
@@ -135,23 +135,23 @@ namespace qc
     // `vfov` is the full vertical field of view
     // `aspect` is the "screen" height divided by width
     //
-    template <bool depth0To1, typename T> mat4<T> perspProj(T vfov, T aspect, T near, T far);
+    template <bool depth0To1, typename T> nodisc mat4<T> perspProj(T vfov, T aspect, T near, T far);
 
     //
     // ...
     // `camPos` and `lookAt` must not be the same point.
     // The camera must not be looking parallel to `up`.
     //
-    template <typename T> mat4<T> view(vec3<T> camPos, vec3<T> lookAt, vec3<T> up);
+    template <typename T> nodisc mat4<T> view(vec3<T> camPos, vec3<T> lookAt, vec3<T> up);
 
     //
     // ...
     //
-    template <typename T> mat4<T> view(vec3<T> camPos, vec3<T> camU, vec3<T> camV, vec3<T> camW);
-    template <typename T> mat4<T> view_n(vec3<T> camPos, vec3<T> camU, vec3<T> camV, vec3<T> camW);
+    template <typename T> nodisc mat4<T> view(vec3<T> camPos, vec3<T> camU, vec3<T> camV, vec3<T> camW);
+    template <typename T> nodisc mat4<T> view_n(vec3<T> camPos, vec3<T> camU, vec3<T> camV, vec3<T> camW);
     // basis vectors are orthonormal (optimization)
-    template <typename T> mat4<T> view_o(vec3<T> camPos, vec3<T> camU, vec3<T> camV, vec3<T> camW);
-    template <typename T> mat4<T> view_on(vec3<T> camPos, vec3<T> camU, vec3<T> camV, vec3<T> camW);
+    template <typename T> nodisc mat4<T> view_o(vec3<T> camPos, vec3<T> camU, vec3<T> camV, vec3<T> camW);
+    template <typename T> nodisc mat4<T> view_on(vec3<T> camPos, vec3<T> camU, vec3<T> camV, vec3<T> camW);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

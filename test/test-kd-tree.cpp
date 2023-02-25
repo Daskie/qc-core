@@ -15,7 +15,7 @@ TEST(KdTree, compiles)
 
     tree1 = std::move(tree3);
 
-    tree1.size();
+    static_cast<void>(tree1.size());
 
-    tree1.nearest({0.0f, 0.0f});
+    static_cast<void>(tree1.nearest({0.0f, 0.0f}));
 }

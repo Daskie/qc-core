@@ -26,20 +26,20 @@ namespace qc
 
         struct NewElement { T & v; u32 i; };
 
-        template <typename... Args> NewElement create(Args && ... args);
+        template <typename... Args> nodisc NewElement create(Args && ... args);
 
-        T & operator[](u32 i);
-        const T & operator[](u32 i) const;
+        nodisc T & operator[](u32 i);
+        nodisc const T & operator[](u32 i) const;
 
         void destroy(u32 i);
 
         void clear();
 
-        u32 size() const { return _size; }
+        nodisc u32 size() const { return _size; }
 
-        bool empty() const { return _size == 0u; }
+        nodisc bool empty() const { return _size == 0u; }
 
-        u32 capacity() const { return _capacity; }
+        nodisc u32 capacity() const { return _capacity; }
 
       private:
 
@@ -64,7 +64,7 @@ namespace qc
         void _expand(u32 newCapacity);
 
         // TODO: Dynamic bit field
-        List<bool> _makeFreeMap() const;
+        nodisc List<bool> _makeFreeMap() const;
     };
 }
 

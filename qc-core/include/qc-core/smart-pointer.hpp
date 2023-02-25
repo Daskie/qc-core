@@ -25,19 +25,19 @@ namespace qc
 
         ~Unq();
 
-        explicit operator bool() const { return _ptr; }
+        nodisc explicit operator bool() const { return _ptr; }
 
-        T & operator*() { return *_ptr; }
+        nodisc T & operator*() { return *_ptr; }
 
-        const T & operator*() const { return *_ptr; }
+        nodisc const T & operator*() const { return *_ptr; }
 
-        T * operator->() { return _ptr; }
+        nodisc T * operator->() { return _ptr; }
 
-        const T * operator->() const { return _ptr; }
+        nodisc const T * operator->() const { return _ptr; }
 
-        T * get() { return _ptr; }
+        nodisc T * get() { return _ptr; }
 
-        const T * get() const { return _ptr; }
+        nodisc const T * get() const { return _ptr; }
 
       private:
 
@@ -66,19 +66,19 @@ namespace qc
 
         ~Shr();
 
-        explicit operator bool() const { return _ptr; }
+        nodisc explicit operator bool() const { return _ptr; }
 
-        T & operator*() { return *_ptr; }
+        nodisc T & operator*() { return *_ptr; }
 
-        const T & operator*() const { return *_ptr; }
+        nodisc const T & operator*() const { return *_ptr; }
 
-        T * operator->() { return _ptr; }
+        nodisc T * operator->() { return _ptr; }
 
-        const T * operator->() const { return _ptr; }
+        nodisc const T * operator->() const { return _ptr; }
 
-        T * get() { return _ptr; }
+        nodisc T * get() { return _ptr; }
 
-        const T * get() const { return _ptr; }
+        nodisc const T * get() const { return _ptr; }
 
       private:
 
@@ -88,9 +88,9 @@ namespace qc
         u32 & _refCount() const;
     };
 
-    template <typename T, typename... Args> Unq<T> makeUnique(Args &&... args);
+    template <typename T, typename... Args> nodisc Unq<T> makeUnique(Args &&... args);
 
-    template <typename T, typename... Args> Shr<T> makeShared(Args &&... args);
+    template <typename T, typename... Args> nodisc Shr<T> makeShared(Args &&... args);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

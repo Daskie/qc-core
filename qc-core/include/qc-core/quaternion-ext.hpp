@@ -13,43 +13,43 @@ namespace qc
     //
     // ...
     //
-    template <typename T> T dot(const quat<T> & q1, const quat<T> & q2);
+    template <typename T> nodisc T dot(const quat<T> & q1, const quat<T> & q2);
 
     //
     // ...
     //
-    template <typename T> T magnitude(const quat<T> & q);
+    template <typename T> nodisc T magnitude(const quat<T> & q);
 
     //
     // ...
     //
-    template <typename T> T magnitude2(const quat<T> & q);
+    template <typename T> nodisc T magnitude2(const quat<T> & q);
 
     //
     // ...
     //
-    template <typename T> quat<T> normalize(const quat<T> & q);
+    template <typename T> nodisc quat<T> normalize(const quat<T> & q);
 
     //
     // ...
     //
-    template <typename T> quat<T> inverse(const quat<T> & q);
+    template <typename T> nodisc quat<T> inverse(const quat<T> & q);
 
     //
     // ...
     //
-    template <typename T> T quatAngle(const quat<T> & q);
+    template <typename T> nodisc T quatAngle(const quat<T> & q);
 
     //
     // ...
     //
-    template <typename T> vec3<T> quatAxis(const quat<T> & q);
-    template <typename T> vec3<T> quatAxis_n(const quat<T> & q);
+    template <typename T> nodisc vec3<T> quatAxis(const quat<T> & q);
+    template <typename T> nodisc vec3<T> quatAxis_n(const quat<T> & q);
 
     //
     // ...
     //
-    template <typename T> quat<T> mix(const quat<T> & q1, const quat<T> & q2, T t);
+    template <typename T> nodisc quat<T> mix(const quat<T> & q1, const quat<T> & q2, T t);
 
     //
     // ...
@@ -59,41 +59,41 @@ namespace qc
     //
     // ...
     //
-    template <typename T> quat<T> rotateQ(vec3<T> axis, T angle);
-    template <typename T> quat<T> rotateQ_n(vec3<T> axis, T angle);
+    template <typename T> nodisc quat<T> rotateQ(vec3<T> axis, T angle);
+    template <typename T> nodisc quat<T> rotateQ_n(vec3<T> axis, T angle);
 
     //
     // ...
     //
-    template <typename T> quat<T> alignQ(vec3<T> v1, vec3<T> v2);
-    template <typename T> quat<T> alignQ_n(vec3<T> v1, vec3<T> v2);
+    template <typename T> nodisc quat<T> alignQ(vec3<T> v1, vec3<T> v2);
+    template <typename T> nodisc quat<T> alignQ_n(vec3<T> v1, vec3<T> v2);
 
     //
     // ...
     // expects orthogonal vectors
     //
-    template <typename T> quat<T> alignQ(vec3<T> forward1, vec3<T> up1, vec3<T> forward2, vec3<T> up2);
-    template <typename T> quat<T> alignQ_n(vec3<T> forward1, vec3<T> up1, vec3<T> forward2, vec3<T> up2);
+    template <typename T> nodisc quat<T> alignQ(vec3<T> forward1, vec3<T> up1, vec3<T> forward2, vec3<T> up2);
+    template <typename T> nodisc quat<T> alignQ_n(vec3<T> forward1, vec3<T> up1, vec3<T> forward2, vec3<T> up2);
 
     //
     // ...
     // theta: thumb points up, phi: right, psi: forward
     //
-    template <typename T> quat<T> eulerQ(vec3<T> forward, vec3<T> up, T theta, T phi, T psi);
-    template <typename T> quat<T> eulerQ_n(vec3<T> forward, vec3<T> up, T theta, T phi, T psi);
+    template <typename T> nodisc quat<T> eulerQ(vec3<T> forward, vec3<T> up, T theta, T phi, T psi);
+    template <typename T> nodisc quat<T> eulerQ_n(vec3<T> forward, vec3<T> up, T theta, T phi, T psi);
 
     //
     // ...
     //
-    template <typename T> mat3<T> toMat(const quat<T> & q);
+    template <typename T> nodisc mat3<T> toMat(const quat<T> & q);
 
     //
     // ...
     // t is a "time" value between 0 and 1
     //
-    template <typename T> quat<T> nlerp(const quat<T> & q1, const quat<T> & q2, T t);
+    template <typename T> nodisc quat<T> nlerp(const quat<T> & q1, const quat<T> & q2, T t);
 
-    template <typename T> quat<T> slerp(const quat<T> & q1, const quat<T> & q2, T t);
+    template <typename T> nodisc quat<T> slerp(const quat<T> & q1, const quat<T> & q2, T t);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

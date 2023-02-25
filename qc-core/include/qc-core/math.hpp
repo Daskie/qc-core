@@ -7,13 +7,13 @@
 namespace qc
 {
     template <Floating T>
-    inline vec2<T> polarToCartesian(const T theta)
+    nodisc inline vec2<T> polarToCartesian(const T theta)
     {
         return {std::cos(theta), std::sin(theta)};
     }
 
     template <Floating T>
-    inline vec2<T> polarToCartesian(const T r, const T theta)
+    nodisc inline vec2<T> polarToCartesian(const T r, const T theta)
     {
         return r * polarToCartesian(theta);
     }
@@ -23,13 +23,13 @@ namespace qc
     // `v.y` is theta
     //
     template <Floating T>
-    inline vec2<T> polarToCartesian(const vec2<T> v)
+    nodisc inline vec2<T> polarToCartesian(const vec2<T> v)
     {
         return polarToCartesian(v.x, v.y);
     }
 
     template <Floating T>
-    inline vec2<T> cartesianToPolar(const vec2<T> v)
+    nodisc inline vec2<T> cartesianToPolar(const vec2<T> v)
     {
         return {magnitude(v), std::atan2(v.y, v.x)};
     }
@@ -39,7 +39,7 @@ namespace qc
     // `phi` is the angle from the z axis
     //
     template <Floating T>
-    inline vec3<T> sphericalToCartesian(const T theta, const T phi)
+    nodisc inline vec3<T> sphericalToCartesian(const T theta, const T phi)
     {
         const T sinPhi{std::sin(phi)};
         return {sinPhi * std::cos(theta), sinPhi * std::sin(theta), std::cos(phi)};
@@ -51,7 +51,7 @@ namespace qc
     // `phi` is the angle from the z axis
     //
     template <Floating T>
-    inline vec3<T> sphericalToCartesian(const T r, const T theta, const T phi)
+    nodisc inline vec3<T> sphericalToCartesian(const T r, const T theta, const T phi)
     {
         return r * sphericalToCartesian(theta, phi);
     }
@@ -62,45 +62,45 @@ namespace qc
     // `v.z` is the angle from the z axis
     //
     template <Floating T>
-    inline vec3<T> sphericalToCartesian(const vec3<T> v)
+    nodisc inline vec3<T> sphericalToCartesian(const vec3<T> v)
     {
         return sphericalToCartesian(v.y, v.z) * v.r;
     }
 
     template <Floating T>
-    inline vec3<T> cartesianToSpherical(const vec3<T> v)
+    nodisc inline vec3<T> cartesianToSpherical(const vec3<T> v)
     {
         const T r{magnitude(v)};
         return {r, std::atan2(v.y, v.x), std::acos(v.z / r)};
     }
 
     template <Floating T>
-    inline vec3<T> cylindricalToCartesian(const T r, const T theta, const T z)
+    nodisc inline vec3<T> cylindricalToCartesian(const T r, const T theta, const T z)
     {
         return {polarToCartesian(r, theta), z};
     }
 
     template <Floating T>
-    inline vec3<T> cylindricalToCartesian(const vec3<T> v)
+    nodisc inline vec3<T> cylindricalToCartesian(const vec3<T> v)
     {
         return cylindricalToCartesian(v.x, v.y, v.z);
     }
 
     template <Floating T>
-    inline vec3<T> cartesianToCylindrical(const vec3<T> v)
+    nodisc inline vec3<T> cartesianToCylindrical(const vec3<T> v)
     {
         return {magnitude(v), std::atan2(v.y, v.x), v.z};
     }
 
     //a is distance from vertex A in range [0, 1] (can be outside range and outside triangle), AX, AY, and AZ define cartesian position of A
-    inline fvec2 barycentricToCartesian(const fvec3 v, const fvec2 A, const fvec2 B, const fvec2 C)
+    nodisc inline fvec2 barycentricToCartesian(const fvec3 v, const fvec2 A, const fvec2 B, const fvec2 C)
     {
         return fvec2{
             v.x * A.x + v.y * B.x + v.z * C.x,
             v.x * A.y + v.y * B.y + v.z * C.y};
     }
 
-    inline fvec3 cartesianToBarycentric(const fvec2 v, const fvec2 A, const fvec2 B, const fvec2 C)
+    nodisc inline fvec3 cartesianToBarycentric(const fvec2 v, const fvec2 A, const fvec2 B, const fvec2 C)
     {
         fmat2 mat{
             A.x - C.x, A.y - C.y,
@@ -114,7 +114,7 @@ namespace qc
     //maps a point in cartesian space to the surface of a sphere and returns cartesian coordinates
     //the point's x and y components, along with thetaPerUnit, determine the distance in radians from the origin
     //the point's z component determines the radius
-    inline fvec3 mapToSphere(const fvec3 v, const float thetaPerUnit)
+    nodisc inline fvec3 mapToSphere(const fvec3 v, const float thetaPerUnit)
     {
         const fvec2 perp(ortho(v.xy()));
         const float theta(magnitude(v.xy()) * thetaPerUnit);
@@ -125,23 +125,23 @@ namespace qc
 
     //draw a line from v to A; gets the angle of this line w/ respect to the A bisector
     //possible angles range from -1 (along AB side) to 1 (along AC side), w/ linear-ness
-    inline float baryToAngleA(const fvec3 v)
+    nodisc inline float baryToAngleA(const fvec3 v)
     {
         return (v.z - v.y) / v.x;
     }
 
-    inline float baryToAngleB(const fvec3 v)
+    nodisc inline float baryToAngleB(const fvec3 v)
     {
         return (v.x - v.z) / v.y;
     }
 
-    inline float baryToAngleC(const fvec3 v)
+    nodisc inline float baryToAngleC(const fvec3 v)
     {
         return (v.y - v.x) / v.z;
     }
 
     //given a bary angle, return point along given a corresponding to angle
-    inline fvec3 baryFromAngleA(const float angle, const float a)
+    nodisc inline fvec3 baryFromAngleA(const float angle, const float a)
     {
         fvec3 v;
         v.x = a;
@@ -150,7 +150,7 @@ namespace qc
         return v;
     }
 
-    inline fvec3 baryFromAngleB(const float angle, const float b)
+    nodisc inline fvec3 baryFromAngleB(const float angle, const float b)
     {
         fvec3 v;
         v.y = b;
@@ -159,7 +159,7 @@ namespace qc
         return v;
     }
 
-    inline fvec3 baryFromAngleC(const float angle, const float c)
+    nodisc inline fvec3 baryFromAngleC(const float angle, const float c)
     {
         fvec3 v;
         v.z = c;
@@ -173,7 +173,7 @@ namespace qc
     // `v` should have a linear distribution in range [0, 1].
     //
     template <Floating T>
-    inline vec2<T> discPoint(const T v)
+    nodisc inline vec2<T> discPoint(const T v)
     {
         return polarToCartesian((T(2.0) * pi<T>) * v);
     }
@@ -183,7 +183,7 @@ namespace qc
     // `v` should have a linear distribution in range [0, 1].
     //
     template <Floating T>
-    inline vec2<T> circlePoint(const vec2<T> v)
+    nodisc inline vec2<T> circlePoint(const vec2<T> v)
     {
         return std::sqrt(v.x) * discPoint(v.y);
     }
@@ -193,7 +193,7 @@ namespace qc
     // `v` should have a linear distribution in range [0, 1].
     //
     template <Floating T>
-    inline vec3<T> spherePoint(const vec2<T> v)
+    nodisc inline vec3<T> spherePoint(const vec2<T> v)
     {
         return sphericalToCartesian(
             (T(2.0) * pi<T>) * v.x,
@@ -205,20 +205,20 @@ namespace qc
     // `v` should have a linear distribution in range [0, 1].
     //
     template <Floating T>
-    inline vec3<T> ballPoint(const vec3<T> v)
+    nodisc inline vec3<T> ballPoint(const vec3<T> v)
     {
         return std::cbrt(v.x) * spherePoint(v.yz());
     }
 
     template <Floating T>
-    inline vec2<T> circlePointFibonacci(const int i, const int n)
+    nodisc inline vec2<T> circlePointFibonacci(const int i, const int n)
     {
         const T p{T(i + 1) / T(n + 1)};
         return circlePoint(vec2<T>(p, phi<T> * T(i)));
     }
 
     template <Floating T>
-    inline vec3<T> spherePointFibonacci(const int i, const int n)
+    nodisc inline vec3<T> spherePointFibonacci(const int i, const int n)
     {
         const T p{T(i + 1) / T(n + 1)};
         return spherePoint(vec2<T>(phi<T> * T(i), p));
@@ -227,7 +227,7 @@ namespace qc
     // This correctly avoids numeric stability issues when a is very small but not zero
     // See https://math.stackexchange.com/questions/4000135/quadratic-formula-fails-numerically-at-small-a-coefficients/4000145#4000145
     template <Floating T>
-    inline Duo<T> quadraticRoots(const T a, const T b, const T c)
+    nodisc inline Duo<T> quadraticRoots(const T a, const T b, const T c)
     {
         if (a != T(0.0))
         {
@@ -262,7 +262,7 @@ namespace qc
     }
 
     template <Floating T, int n>
-    inline T distance2ToLine(const vec<T, n> & p1, const vec<T, n> & p2, const vec<T, n> & p)
+    nodisc inline T distance2ToLine(const vec<T, n> & p1, const vec<T, n> & p2, const vec<T, n> & p)
     {
         const vec<T, n> a{p2 - p1};
         const vec<T, n> b{p - p1};
@@ -377,7 +377,7 @@ namespace qc
     // Calculates the area of a non self-intersecting polygon
     // Points should be the vertices of the polygon given in order without duplicates
     template <Floating T>
-    inline T areaOfPoly(const u64 n, const vec2<T> * const points)
+    nodisc inline T areaOfPoly(const u64 n, const vec2<T> * const points)
     {
         T a{};
         for (u64 i{0u}; i < n - 1u; ++i)
@@ -393,7 +393,7 @@ namespace qc
     // Calculates the centroid, or center of mass, of a non self-intersecting polygon
     // Points should be the vertices of the polygon given in order without duplicates
     template <Floating T>
-    inline vec2<T> centroidOfPoly(const u64 n, const vec2<T> * const points)
+    nodisc inline vec2<T> centroidOfPoly(const u64 n, const vec2<T> * const points)
     {
         T a{};
         vec2<T> c;

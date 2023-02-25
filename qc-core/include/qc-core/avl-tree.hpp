@@ -52,33 +52,33 @@ namespace qc
 
         void clear();
 
-        bool contains(const T & v) const;
+        nodisc bool contains(const T & v) const;
 
-        u64 count(const T & v) const;
+        nodisc u64 count(const T & v) const;
 
-        iterator find(const T & v);
-        const_iterator find(const T & v) const;
+        nodisc iterator find(const T & v);
+        nodisc const_iterator find(const T & v) const;
 
-        iterator lower_bound(const T & v);
-        const_iterator lower_bound(const T & v) const;
+        nodisc iterator lower_bound(const T & v);
+        nodisc const_iterator lower_bound(const T & v) const;
 
-        iterator upper_bound(const T & v);
-        const_iterator upper_bound(const T & v) const;
+        nodisc iterator upper_bound(const T & v);
+        nodisc const_iterator upper_bound(const T & v) const;
 
-        std::pair<iterator, iterator> equal_range(const T & v);
-        std::pair<const_iterator, const_iterator> equal_range(const T & v) const;
+        nodisc std::pair<iterator, iterator> equal_range(const T & v);
+        nodisc std::pair<const_iterator, const_iterator> equal_range(const T & v) const;
 
-        u64 size() const { return _size; }
+        nodisc u64 size() const { return _size; }
 
-        bool empty() const { return !_size; }
+        nodisc bool empty() const { return !_size; }
 
-        iterator begin() { return const_cast<_Node *>(static_cast<const AvlTree *>(this)->begin()._node); }
-        const_iterator begin() const;
-        const_iterator cbegin() const { return begin(); }
+        nodisc iterator begin() { return const_cast<_Node *>(static_cast<const AvlTree *>(this)->begin()._node); }
+        nodisc const_iterator begin() const;
+        nodisc const_iterator cbegin() const { return begin(); }
 
-        iterator end() { return nullptr; }
-        const_iterator end() const { return nullptr; }
-        const_iterator cend() const { return nullptr; };
+        nodisc iterator end() { return nullptr; }
+        nodisc const_iterator end() const { return nullptr; }
+        nodisc const_iterator cend() const { return nullptr; };
 
       public: // NOCOMMIT
 
@@ -127,9 +127,9 @@ namespace qc
 
         _Iterator() = default;
 
-        reference operator*() const { return _node->v; }
+        nodisc reference operator*() const { return _node->v; }
 
-        pointer operator->() const { return &_node->v; }
+        nodisc pointer operator->() const { return &_node->v; }
 
         _Iterator & operator++();
         _Iterator operator++(int);

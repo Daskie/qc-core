@@ -28,13 +28,13 @@ namespace qc
         /// Required to qualify as a standard UniformRandomBitGenerator
         /// @return the minimum possible generated value
         ///
-        static constexpr G min() { return std::numeric_limits<G>::min(); }
+        nodisc static constexpr G min() { return std::numeric_limits<G>::min(); }
 
         ///
         /// Required to qualify as a standard UniformRandomBitGenerator
         /// @return the maximum possible generated value
         ///
-        static constexpr G max() { return std::numeric_limits<G>::max(); }
+        nodisc static constexpr G max() { return std::numeric_limits<G>::max(); }
 
         ///
         /// Constructs a new random generater seeded with the given seed
@@ -47,27 +47,27 @@ namespace qc
         /// Required to qualify as a standard UniformRandomBitGenerator
         /// @return the next random `G`
         ///
-        G operator()();
+        nodisc G operator()();
 
         ///
         /// @return the next random integer in [0, 2^T_bits), floater in [0.0, 1.0), or boolean
         ///
-        template <NumericOrBoolean T = G> T next();
+        template <NumericOrBoolean T = G> nodisc T next();
 
         ///
         /// @return the next random number in [0, `max`)
         ///
-        template <Numeric T> T next(const T max);
+        template <Numeric T> nodisc T next(const T max);
 
         ///
         /// @return the next random number in [`min`, `max`)
         ///
-        template <Numeric T> T next(const T min, const T max);
+        template <Numeric T> nodisc T next(const T min, const T max);
 
         ///
         /// @return the seed
         ///
-        G seed() const { return _seed; }
+        nodisc G seed() const { return _seed; }
 
       private:
 
@@ -100,7 +100,7 @@ namespace qc
         _state{.a = _seed, .b = _seed, .c = _seed, .d = 1}
     {
         // Warm up generator
-        for (int i{0}; i < 12; ++i) (*this)();
+        for (int i{0}; i < 12; ++i) static_cast<void>((*this)());
     }
 
     template <UnsignedIntegral G>

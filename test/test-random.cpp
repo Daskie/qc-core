@@ -11,25 +11,25 @@ namespace
     void compileNext()
     {
         qc::Random<G> r{};
-        r.next<T>();
-        r.next<T>(T{});
-        r.next<T>(T{}, T{});
+        static_cast<void>(r.next<T>());
+        static_cast<void>(r.next<T>(T{}));
+        static_cast<void>(r.next<T>(T{}, T{}));
     }
 
     template <typename G>
     void compile()
     {
         static_assert(std::is_same_v<typename qc::Random<G>::result_type, G>);
-        qc::Random<G>::min();
-        qc::Random<G>::max();
+        static_cast<void>(qc::Random<G>::min());
+        static_cast<void>(qc::Random<G>::max());
 
         qc::Random<G> r1{};
         qc::Random<G> r2{G{}};
         qc::Random<G> r3{r2};
         r1 = r2;
-        r1();
-        r1.next();
-        r1.seed();
+        static_cast<void>(r1());
+        static_cast<void>(r1.next());
+        static_cast<void>(r1.seed());
 
         compileNext<G, u8>();
         compileNext<G, u16>();
@@ -48,7 +48,7 @@ namespace
     template <typename T, typename G>
     void testUnsigned(qc::Random<G> & random)
     {
-        random.template next<T>();
+        static_cast<void>(random.template next<T>());
 
         {
             const T v{random.template next<T>(0u)};
@@ -202,11 +202,11 @@ namespace
     {
         qc::Random<G> random{};
 
-        random.template next<bool>();
+        static_cast<void>(random.template next<bool>());
 
-        random.next();
-        random.next(10u);
-        random.next(10u, 20u);
+        static_cast<void>(random.next());
+        static_cast<void>(random.next(10u));
+        static_cast<void>(random.next(10u, 20u));
 
         testUnsigned<u8>(random);
         testUnsigned<u16>(random);

@@ -27,9 +27,9 @@ namespace qc
 
         ~KdTree() = default;
 
-        fvec2 nearest(fvec2 point) const;
+        nodisc fvec2 nearest(fvec2 point) const;
 
-        u64 size() const { return _nodes.size(); }
+        nodisc u64 size() const { return _nodes.size(); }
 
       private:
 

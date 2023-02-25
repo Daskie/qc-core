@@ -11,12 +11,12 @@ namespace qc
     //
     // ...
     //
-    template <Numeric T> constexpr T median(T v1, T v2, T v3);
+    template <Numeric T> nodisc constexpr T median(T v1, T v2, T v3);
 
     //
     // ...
     //
-    template <Numeric T> constexpr T abs(T v);
+    template <Numeric T> nodisc constexpr T abs(T v);
 
     //
     // ...
@@ -26,17 +26,17 @@ namespace qc
     //
     // ...
     //
-    template <Numeric T> constexpr bool zeroish(T v, T e = std::numeric_limits<T>::epsilon());
+    template <Numeric T> nodisc constexpr bool zeroish(T v, T e = std::numeric_limits<T>::epsilon());
 
     //
     // ...
     //
-    template <Numeric T> bool equalish(const T v1, const T v2, T e = std::numeric_limits<T>::epsilon());
+    template <Numeric T> nodisc bool equalish(const T v1, const T v2, T e = std::numeric_limits<T>::epsilon());
 
     //
     // ...
     //
-    template <Numeric T> constexpr T sign(T v);
+    template <Numeric T> nodisc constexpr T sign(T v);
 
     //
     // Returns `v` stripped of any fractional part.
@@ -44,102 +44,102 @@ namespace qc
     // If `T` is a double, only works for values that can fit in a `s64`.
     // If `T` is integral, simply returns `v`.
     //
-    template <Numeric T> constexpr T trunc(T v);
+    template <Numeric T> nodisc constexpr T trunc(T v);
 
     //
     // Fast round for "normal" values of absolute magnitude smaller than roughly one quadrillion
     // .5 values rounds to even, not up
     //
-    template <Numeric R, Numeric T> constexpr R round(T v);
+    template <Numeric R, Numeric T> nodisc constexpr R round(T v);
 
     //
     // Fast floor for "normal" values whose truncated form can fit in an intmax_t
     //
-    template <Numeric R, Numeric T> constexpr R floor(T v);
+    template <Numeric R, Numeric T> nodisc constexpr R floor(T v);
 
     //
     // Fast ceil for "normal" values whose truncated form can fit in an intmax_t
     //
-    template <Numeric R, Numeric T> constexpr R ceil(T v);
+    template <Numeric R, Numeric T> nodisc constexpr R ceil(T v);
 
     // Simple wrapper around std::pow
-    template <Floating T> T pow(T v, T e);
+    template <Floating T> nodisc T pow(T v, T e);
 
     //
     // ...
     // ~2.15x faster than std::pow
     //
-    template <Floating T> T pow(T v, int e);
-    template <Floating T> T pow(T v, uint e);
+    template <Floating T> nodisc T pow(T v, int e);
+    template <Floating T> nodisc T pow(T v, uint e);
 
     //
     // ...
     //
-    template <UnsignedIntegral T> constexpr T log2Floor(T v);
+    template <UnsignedIntegral T> nodisc constexpr T log2Floor(T v);
 
     //
     // ...
     //
-    template <UnsignedIntegral T> constexpr T mipmaps(T size);
+    template <UnsignedIntegral T> nodisc constexpr T mipmaps(T size);
 
     //
     // ...
     // ~3.3x faster than std::modf
     //
-    template <Floating T> constexpr T fract(T v);
+    template <Floating T> nodisc constexpr T fract(T v);
 
     //
     // ...
     //
-    template <SignedIntegral R, Floating T> constexpr Duo<T, R> fract_i(T v);
+    template <SignedIntegral R, Floating T> nodisc constexpr Duo<T, R> fract_i(T v);
 
     //
     // ...
     // ~2.5x faster than std::fmod
     // `d` must be > 0
     //
-    template <Numeric T> constexpr T mod(T v, T d);
+    template <Numeric T> nodisc constexpr T mod(T v, T d);
 
     //
     // ...
     // `d` must be > 0
     //
-    template <Numeric T> constexpr Duo<T, T> mod_q(T v, T d);
+    template <Numeric T> nodisc constexpr Duo<T, T> mod_q(T v, T d);
 
     //
     // ...
     //
-    template <Floating T> constexpr T mix(T v1, T v2, T t);
+    template <Floating T> nodisc constexpr T mix(T v1, T v2, T t);
 
     //
     // ...
     //
-    template <Floating T> constexpr T unmix(T v1, T v2, T v);
+    template <Floating T> nodisc constexpr T unmix(T v1, T v2, T v);
 
     //
     // ...
     //
-    template <Floating T> constexpr T smoothstep(T v1, T v2, T t);
+    template <Floating T> nodisc constexpr T smoothstep(T v1, T v2, T t);
 
     //
     // ...
     //
-    template <Floating T> constexpr T radians(T degrees);
+    template <Floating T> nodisc constexpr T radians(T degrees);
 
     //
     // ...
     //
-    template <Floating T> constexpr T degrees(T radians);
+    template <Floating T> nodisc constexpr T degrees(T radians);
 
     //
     // Converts between normalized types.
     //
-    template <Floating         To, Floating         From> constexpr To transnorm(From v);
-    template <SignedIntegral   To, Floating         From> constexpr To transnorm(From v);
-    template <UnsignedIntegral To, Floating         From> constexpr To transnorm(From v);
-    template <Floating         To, SignedIntegral   From> constexpr To transnorm(From v);
-    template <Floating         To, UnsignedIntegral From> constexpr To transnorm(From v);
-    template <UnsignedIntegral To, UnsignedIntegral From> constexpr To transnorm(From v);
+    template <Floating         To, Floating         From> nodisc constexpr To transnorm(From v);
+    template <SignedIntegral   To, Floating         From> nodisc constexpr To transnorm(From v);
+    template <UnsignedIntegral To, Floating         From> nodisc constexpr To transnorm(From v);
+    template <Floating         To, SignedIntegral   From> nodisc constexpr To transnorm(From v);
+    template <Floating         To, UnsignedIntegral From> nodisc constexpr To transnorm(From v);
+    template <UnsignedIntegral To, UnsignedIntegral From> nodisc constexpr To transnorm(From v);
 
     ///
     /// Branchless binary search
@@ -148,7 +148,7 @@ namespace qc
     ///
     /// @return iterator to the first element greater than or equal to `v`
     ///
-    template <typename It, typename T, typename GreaterEqual = std::greater_equal<>> It lowerBound(It first, It last, const T & v, GreaterEqual greaterEqual = std::greater_equal<>{});
+    template <typename It, typename T, typename GreaterEqual = std::greater_equal<>> nodisc It lowerBound(It first, It last, const T & v, GreaterEqual greaterEqual = std::greater_equal<>{});
 
     ///
     /// Branchless binary search
@@ -157,7 +157,7 @@ namespace qc
     ///
     /// @return iterator to the first element greater than `v`
     ///
-    template <typename It, typename T, typename Greater = std::greater<>> It upperBound(It first, It last, const T & v, Greater greater = std::greater<>{});
+    template <typename It, typename T, typename Greater = std::greater<>> nodisc It upperBound(It first, It last, const T & v, Greater greater = std::greater<>{});
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

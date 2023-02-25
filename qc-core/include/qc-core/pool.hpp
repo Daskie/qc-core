@@ -32,9 +32,9 @@ namespace qc
 
         void shrinkToFit();
 
-        u32 maxPageCount() const { return _maxPageCount; }
+        nodisc u32 maxPageCount() const { return _maxPageCount; }
 
-        u32 pageCount() const { return _pageCount; }
+        nodisc u32 pageCount() const { return _pageCount; }
 
       protected:
 
@@ -77,27 +77,27 @@ namespace qc
 
         void setCapacity(u64 capacity);
 
-        template <typename... Args> [[nodiscard]] T & create(Args &&... args);
+        template <typename... Args> nodisc T & create(Args &&... args);
 
         void destroy(T & v);
 
-        bool contains(const T * v) const;
+        nodisc bool contains(const T * v) const;
 
-        u64 capacity() const;
+        nodisc u64 capacity() const;
 
-        u64 size() const { return _size; }
+        nodisc u64 size() const { return _size; }
 
-        bool empty() const { return _size == 0u; }
+        nodisc bool empty() const { return _size == 0u; }
 
-        bool full() const { return _size >= capacity(); }
+        nodisc bool full() const { return _size >= capacity(); }
 
-        iterator begin();
-        const_iterator begin() const;
-        const_iterator cbegin() const { return begin(); };
+        nodisc iterator begin();
+        nodisc const_iterator begin() const;
+        nodisc const_iterator cbegin() const { return begin(); };
 
-        iterator end();
-        const_iterator end() const;
-        const_iterator cend() const { return end(); };
+        nodisc iterator end();
+        nodisc const_iterator end() const;
+        nodisc const_iterator cend() const { return end(); };
 
       private:
 
@@ -113,7 +113,7 @@ namespace qc
         u64 _size{};
         List<_Range> _freeRanges{};
 
-        _Range * _find(const T * slot);
+        nodisc _Range * _find(const T * slot);
 
         void _expand() requires (!fixed);
 
@@ -142,14 +142,14 @@ namespace qc
 
         _Iterator & operator=(const _Iterator &) = default;
 
-        reference operator*() const { return *_slot; }
+        nodisc reference operator*() const { return *_slot; }
 
-        pointer operator->() const { return _slot; }
+        nodisc pointer operator->() const { return _slot; }
 
         _Iterator & operator++();
         _Iterator operator++(int);
 
-        bool operator==(const _Iterator & other) const;
+        nodisc bool operator==(const _Iterator & other) const;
 
       private:
 

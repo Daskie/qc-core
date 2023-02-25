@@ -38,14 +38,14 @@ namespace qc
         /// @param memoryEnd one past the last memory position
         /// @return free tail size
         ///
-        S tail(P memoryEnd) const;
+        nodisc S tail(P memoryEnd) const;
 
         ///
         /// Clear all bubbles
         ///
         void clear();
 
-        const List<Bubble> & bubbles() const { return _bubbles; }
+        nodisc const List<Bubble> & bubbles() const { return _bubbles; }
 
       private:
 

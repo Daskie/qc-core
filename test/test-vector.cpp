@@ -40,10 +40,10 @@ static void compileClassesT()
     f2(v);
 
     // access
-    v2[0];
+    static_cast<void>(v2[0]);
 
-    v2.template at<0>();
-    v2.template at<1>();
+    static_cast<void>(v2.template at<0>());
+    static_cast<void>(v2.template at<1>());
 
     //--------------------------------------------------------------------------
     // Vec3
@@ -71,14 +71,14 @@ static void compileClassesT()
     f3(v);
 
     // access
-    v3[0];
+    static_cast<void>(v3[0]);
 
-    v3.template at<0>();
-    v3.template at<1>();
-    v3.template at<2>();
+    static_cast<void>(v3.template at<0>());
+    static_cast<void>(v3.template at<1>());
+    static_cast<void>(v3.template at<2>());
 
-    v3.xy();
-    v3.yz();
+    static_cast<void>(v3.xy());
+    static_cast<void>(v3.yz());
 
     //--------------------------------------------------------------------------
     // Vec4
@@ -111,18 +111,18 @@ static void compileClassesT()
     f4(v);
 
     // access
-    v4[0];
+    static_cast<void>(v4[0]);
 
-    v4.template at<0>();
-    v4.template at<1>();
-    v4.template at<2>();
-    v4.template at<3>();
+    static_cast<void>(v4.template at<0>());
+    static_cast<void>(v4.template at<1>());
+    static_cast<void>(v4.template at<2>());
+    static_cast<void>(v4.template at<3>());
 
-    v4.xy();
-    v4.yz();
-    v4.zw();
-    v4.xyz();
-    v4.yzw();
+    static_cast<void>(v4.xy());
+    static_cast<void>(v4.yz());
+    static_cast<void>(v4.zw());
+    static_cast<void>(v4.xyz());
+    static_cast<void>(v4.yzw());
 }
 
 static void compileClasses()
@@ -276,65 +276,65 @@ static void compileFunctionsT()
 
     // comparison
 
-    v2 == v2;
-    v3 == v3;
-    v4 == v4;
-    v2 == v;
-    v3 == v;
-    v4 == v;
-    v == v2;
-    v == v3;
-    v == v4;
+    static_cast<void>(v2 == v2);
+    static_cast<void>(v3 == v3);
+    static_cast<void>(v4 == v4);
+    static_cast<void>(v2 == v);
+    static_cast<void>(v3 == v);
+    static_cast<void>(v4 == v);
+    static_cast<void>(v == v2);
+    static_cast<void>(v == v3);
+    static_cast<void>(v == v4);
 
     static_cast<void>(v2 != v2);
     static_cast<void>(v3 != v3);
     static_cast<void>(v4 != v4);
-    v2 != v;
-    v3 != v;
-    v4 != v;
-    v != v2;
-    v != v3;
-    v != v4;
+    static_cast<void>(v2 != v);
+    static_cast<void>(v3 != v);
+    static_cast<void>(v4 != v);
+    static_cast<void>(v != v2);
+    static_cast<void>(v != v3);
+    static_cast<void>(v != v4);
 
-    v2 < v2;
-    v3 < v3;
-    v4 < v4;
-    v2 < v;
-    v3 < v;
-    v4 < v;
-    v < v2;
-    v < v3;
-    v < v4;
+    static_cast<void>(v2 < v2);
+    static_cast<void>(v3 < v3);
+    static_cast<void>(v4 < v4);
+    static_cast<void>(v2 < v);
+    static_cast<void>(v3 < v);
+    static_cast<void>(v4 < v);
+    static_cast<void>(v < v2);
+    static_cast<void>(v < v3);
+    static_cast<void>(v < v4);
 
-    v2 > v2;
-    v3 > v3;
-    v4 > v4;
-    v2 > v;
-    v3 > v;
-    v4 > v;
-    v > v2;
-    v > v3;
-    v > v4;
+    static_cast<void>(v2 > v2);
+    static_cast<void>(v3 > v3);
+    static_cast<void>(v4 > v4);
+    static_cast<void>(v2 > v);
+    static_cast<void>(v3 > v);
+    static_cast<void>(v4 > v);
+    static_cast<void>(v > v2);
+    static_cast<void>(v > v3);
+    static_cast<void>(v > v4);
 
-    v2 <= v2;
-    v3 <= v3;
-    v4 <= v4;
-    v2 <= v;
-    v3 <= v;
-    v4 <= v;
-    v <= v2;
-    v <= v3;
-    v <= v4;
+    static_cast<void>(v2 <= v2);
+    static_cast<void>(v3 <= v3);
+    static_cast<void>(v4 <= v4);
+    static_cast<void>(v2 <= v);
+    static_cast<void>(v3 <= v);
+    static_cast<void>(v4 <= v);
+    static_cast<void>(v <= v2);
+    static_cast<void>(v <= v3);
+    static_cast<void>(v <= v4);
 
-    v2 >= v2;
-    v3 >= v3;
-    v4 >= v4;
-    v2 >= v;
-    v3 >= v;
-    v4 >= v;
-    v >= v2;
-    v >= v3;
-    v >= v4;
+    static_cast<void>(v2 >= v2);
+    static_cast<void>(v3 >= v3);
+    static_cast<void>(v4 >= v4);
+    static_cast<void>(v2 >= v);
+    static_cast<void>(v3 >= v);
+    static_cast<void>(v4 >= v);
+    static_cast<void>(v >= v2);
+    static_cast<void>(v >= v3);
+    static_cast<void>(v >= v4);
 
     // condensation
 
@@ -827,15 +827,15 @@ static void compileFunctionsBT()
     !b3;
     !b4;
 
-    qc::all(b1);
-    qc::all(b2);
-    qc::all(b3);
-    qc::all(b4);
+    static_cast<void>(qc::all(b1));
+    static_cast<void>(qc::all(b2));
+    static_cast<void>(qc::all(b3));
+    static_cast<void>(qc::all(b4));
 
-    qc::any(b1);
-    qc::any(b2);
-    qc::any(b3);
-    qc::any(b4);
+    static_cast<void>(qc::any(b1));
+    static_cast<void>(qc::any(b2));
+    static_cast<void>(qc::any(b3));
+    static_cast<void>(qc::any(b4));
 }
 
 static void compileFunctions()

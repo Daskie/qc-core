@@ -33,8 +33,8 @@ static void compileClassesT()
     s1 = std::move(s1);
 
     // other
-    s1.size();
-    s1.contains(v);
+    static_cast<void>(s1.size());
+    static_cast<void>(s1.contains(v));
 
     //--------------------------------------------------------------------------
     // Span2
@@ -52,9 +52,9 @@ static void compileClassesT()
     s2 = std::move(s2);
 
     // other
-    s2.size();
-    s2.x();
-    s2.y();
+    static_cast<void>(s2.size());
+    static_cast<void>(s2.x());
+    static_cast<void>(s2.y());
 
     //--------------------------------------------------------------------------
     // Span3
@@ -74,13 +74,13 @@ static void compileClassesT()
     s3 = std::move(s3);
 
     // other
-    s3.size();
-    s3.contains(v3);
-    s3.x();
-    s3.y();
-    s3.z();
-    s3.xy();
-    s3.yz();
+    static_cast<void>(s3.size());
+    static_cast<void>(s3.contains(v3));
+    static_cast<void>(s3.x());
+    static_cast<void>(s3.y());
+    static_cast<void>(s3.z());
+    static_cast<void>(s3.xy());
+    static_cast<void>(s3.yz());
 
     //--------------------------------------------------------------------------
     // Span4
@@ -104,16 +104,16 @@ static void compileClassesT()
     s4 = std::move(s4);
 
     // other
-    s4.size();
-    s4.contains(v4);
-    s4.x();
-    s4.y();
-    s4.z();
-    s4.w();
-    s4.xy();
-    s4.yz();
-    s4.xyz();
-    s4.yzw();
+    static_cast<void>(s4.size());
+    static_cast<void>(s4.contains(v4));
+    static_cast<void>(s4.x());
+    static_cast<void>(s4.y());
+    static_cast<void>(s4.z());
+    static_cast<void>(s4.w());
+    static_cast<void>(s4.xy());
+    static_cast<void>(s4.yz());
+    static_cast<void>(s4.xyz());
+    static_cast<void>(s4.yzw());
 }
 
 template <typename T>
@@ -134,7 +134,7 @@ static void compileClassesPT()
     s1 = std::move(s1);
 
     // other
-    s1.size();
+    static_cast<void>(s1.size());
 }
 
 static void compileClasses()
@@ -370,22 +370,22 @@ static void compileFunctionsFT()
     span3<T> s3{};
     span4<T> s4{};
 
-    qc::round<s8>(s1);
-    qc::round<s16>(s1);
-    qc::round<s32>(s1);
-    qc::round<s64>(s1);
-    qc::round<s8>(s2);
-    qc::round<s16>(s2);
-    qc::round<s32>(s2);
-    qc::round<s64>(s2);
-    qc::round<s8>(s3);
-    qc::round<s16>(s3);
-    qc::round<s32>(s3);
-    qc::round<s64>(s3);
-    qc::round<s8>(s4);
-    qc::round<s16>(s4);
-    qc::round<s32>(s4);
-    qc::round<s64>(s4);
+    static_cast<void>(qc::round<s8>(s1));
+    static_cast<void>(qc::round<s16>(s1));
+    static_cast<void>(qc::round<s32>(s1));
+    static_cast<void>(qc::round<s64>(s1));
+    static_cast<void>(qc::round<s8>(s2));
+    static_cast<void>(qc::round<s16>(s2));
+    static_cast<void>(qc::round<s32>(s2));
+    static_cast<void>(qc::round<s64>(s2));
+    static_cast<void>(qc::round<s8>(s3));
+    static_cast<void>(qc::round<s16>(s3));
+    static_cast<void>(qc::round<s32>(s3));
+    static_cast<void>(qc::round<s64>(s3));
+    static_cast<void>(qc::round<s8>(s4));
+    static_cast<void>(qc::round<s16>(s4));
+    static_cast<void>(qc::round<s32>(s4));
+    static_cast<void>(qc::round<s64>(s4));
 }
 
 template <typename T>

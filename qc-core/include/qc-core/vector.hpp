@@ -100,15 +100,15 @@ namespace qc
 
         ~vec() = default;
 
-        constexpr explicit operator bool() const;
+        nodisc constexpr explicit operator bool() const;
 
-        template <int i> T & at();
-        template <int i> constexpr T at() const;
+        template <int i> nodisc T & at();
+        template <int i> nodisc constexpr T at() const;
 
-        T & operator[](int i);
-        T operator[](int i) const;
+        nodisc T & operator[](int i);
+        nodisc T operator[](int i) const;
 
-        constexpr bool operator==(const vec &) const = default;
+        nodisc constexpr bool operator==(const vec &) const = default;
     };
 
     template <NumericOrBoolean T>
@@ -141,21 +141,21 @@ namespace qc
 
         ~vec() = default;
 
-        constexpr explicit operator bool() const;
+        nodisc constexpr explicit operator bool() const;
 
-        template <int i> T & at();
-        template <int i> constexpr T at() const;
+        template <int i> nodisc T & at();
+        template <int i> nodisc constexpr T at() const;
 
-        T & operator[](int i);
-        T operator[](int i) const;
+        nodisc T & operator[](int i);
+        nodisc T operator[](int i) const;
 
-        vec2<T> & xy();
-        constexpr vec2<T> xy() const;
+        nodisc vec2<T> & xy();
+        nodisc constexpr vec2<T> xy() const;
 
-        vec2<T> & yz();
-        constexpr vec2<T> yz() const;
+        nodisc vec2<T> & yz();
+        nodisc constexpr vec2<T> yz() const;
 
-        constexpr bool operator==(const vec &) const = default;
+        nodisc constexpr bool operator==(const vec &) const = default;
     };
 
     template <NumericOrBoolean T>
@@ -194,30 +194,30 @@ namespace qc
 
         ~vec() = default;
 
-        constexpr explicit operator bool() const;
+        nodisc constexpr explicit operator bool() const;
 
-        template <int i> T & at();
-        template <int i> constexpr T at() const;
+        template <int i> nodisc T & at();
+        template <int i> nodisc constexpr T at() const;
 
-        T & operator[](int i);
-        T operator[](int i) const;
+        nodisc T & operator[](int i);
+        nodisc T operator[](int i) const;
 
-        vec2<T> & xy();
-        constexpr vec2<T> xy() const;
+        nodisc vec2<T> & xy();
+        nodisc constexpr vec2<T> xy() const;
 
-        vec2<T> & yz();
-        constexpr vec2<T> yz() const;
+        nodisc vec2<T> & yz();
+        nodisc constexpr vec2<T> yz() const;
 
-        vec2<T> & zw();
-        constexpr vec2<T> zw() const;
+        nodisc vec2<T> & zw();
+        nodisc constexpr vec2<T> zw() const;
 
-        vec3<T> & xyz();
-        constexpr vec3<T> xyz() const;
+        nodisc vec3<T> & xyz();
+        nodisc constexpr vec3<T> xyz() const;
 
-        vec3<T> & yzw();
-        constexpr vec3<T> yzw() const;
+        nodisc vec3<T> & yzw();
+        nodisc constexpr vec3<T> yzw() const;
 
-        constexpr bool operator==(const vec &) const = default;
+        nodisc constexpr bool operator==(const vec &) const = default;
     };
 
     //
@@ -302,85 +302,85 @@ namespace qc
 
     template <UnsignedIntegral T, int n> vec<T, n> & operator>>=(vec<T, n> & v1, int v2);
 
-    template <Numeric T, int n> constexpr vec<T, n> operator+(const vec<T, n> & v);
+    template <Numeric T, int n> nodisc constexpr vec<T, n> operator+(const vec<T, n> & v);
 
-    template <Numeric T, int n> constexpr vec<T, n> operator-(const vec<T, n> & v);
+    template <Numeric T, int n> nodisc constexpr vec<T, n> operator-(const vec<T, n> & v);
 
-    template <UnsignedIntegral T, int n> constexpr vec<T, n> operator~(const vec<T, n> & v);
+    template <UnsignedIntegral T, int n> nodisc constexpr vec<T, n> operator~(const vec<T, n> & v);
 
-    template <Numeric T, int n> constexpr vec<T, n> operator+(const vec<T, n> & v1, const vec<T, n> & v2);
-    template <Numeric T, int n> constexpr vec<T, n> operator+(const vec<T, n> & v1, T v2);
-    template <Numeric T, int n> constexpr vec<T, n> operator+(T v1, const vec<T, n> & v2);
+    template <Numeric T, int n> nodisc constexpr vec<T, n> operator+(const vec<T, n> & v1, const vec<T, n> & v2);
+    template <Numeric T, int n> nodisc constexpr vec<T, n> operator+(const vec<T, n> & v1, T v2);
+    template <Numeric T, int n> nodisc constexpr vec<T, n> operator+(T v1, const vec<T, n> & v2);
 
-    template <Numeric T, int n> constexpr vec<T, n> operator-(const vec<T, n> & v1, const vec<T, n> & v2);
-    template <Numeric T, int n> constexpr vec<T, n> operator-(const vec<T, n> & v1, T v2);
-    template <Numeric T, int n> constexpr vec<T, n> operator-(T v1, const vec<T, n> & v2);
+    template <Numeric T, int n> nodisc constexpr vec<T, n> operator-(const vec<T, n> & v1, const vec<T, n> & v2);
+    template <Numeric T, int n> nodisc constexpr vec<T, n> operator-(const vec<T, n> & v1, T v2);
+    template <Numeric T, int n> nodisc constexpr vec<T, n> operator-(T v1, const vec<T, n> & v2);
 
-    template <Numeric T, int n> constexpr vec<T, n> operator*(const vec<T, n> & v1, const vec<T, n> & v2);
-    template <Numeric T, int n> constexpr vec<T, n> operator*(const vec<T, n> & v1, T v2);
-    template <Numeric T, int n> constexpr vec<T, n> operator*(T v1, const vec<T, n> & v2);
+    template <Numeric T, int n> nodisc constexpr vec<T, n> operator*(const vec<T, n> & v1, const vec<T, n> & v2);
+    template <Numeric T, int n> nodisc constexpr vec<T, n> operator*(const vec<T, n> & v1, T v2);
+    template <Numeric T, int n> nodisc constexpr vec<T, n> operator*(T v1, const vec<T, n> & v2);
 
-    template <Numeric T, int n> constexpr vec<T, n> operator/(const vec<T, n> & v1, const vec<T, n> & v2);
-    template <Numeric T, int n> constexpr vec<T, n> operator/(const vec<T, n> & v1, T v2);
-    template <Numeric T, int n> constexpr vec<T, n> operator/(T v1, const vec<T, n> & v2);
+    template <Numeric T, int n> nodisc constexpr vec<T, n> operator/(const vec<T, n> & v1, const vec<T, n> & v2);
+    template <Numeric T, int n> nodisc constexpr vec<T, n> operator/(const vec<T, n> & v1, T v2);
+    template <Numeric T, int n> nodisc constexpr vec<T, n> operator/(T v1, const vec<T, n> & v2);
 
-    template <Numeric T, int n> constexpr vec<T, n> operator%(const vec<T, n> & v1, const vec<T, n> & v2);
-    template <Numeric T, int n> constexpr vec<T, n> operator%(const vec<T, n> & v1, T v2);
-    template <Numeric T, int n> constexpr vec<T, n> operator%(T v1, const vec<T, n> & v2);
+    template <Numeric T, int n> nodisc constexpr vec<T, n> operator%(const vec<T, n> & v1, const vec<T, n> & v2);
+    template <Numeric T, int n> nodisc constexpr vec<T, n> operator%(const vec<T, n> & v1, T v2);
+    template <Numeric T, int n> nodisc constexpr vec<T, n> operator%(T v1, const vec<T, n> & v2);
 
-    template <UnsignedIntegral T, int n> constexpr vec<T, n> operator&(const vec<T, n> & v1, const vec<T, n> & v2);
-    template <UnsignedIntegral T, int n> constexpr vec<T, n> operator&(const vec<T, n> & v1, T v2);
-    template <UnsignedIntegral T, int n> constexpr vec<T, n> operator&(T v1, const vec<T, n> & v2);
+    template <UnsignedIntegral T, int n> nodisc constexpr vec<T, n> operator&(const vec<T, n> & v1, const vec<T, n> & v2);
+    template <UnsignedIntegral T, int n> nodisc constexpr vec<T, n> operator&(const vec<T, n> & v1, T v2);
+    template <UnsignedIntegral T, int n> nodisc constexpr vec<T, n> operator&(T v1, const vec<T, n> & v2);
 
-    template <UnsignedIntegral T, int n> constexpr vec<T, n> operator|(const vec<T, n> & v1, const vec<T, n> & v2);
-    template <UnsignedIntegral T, int n> constexpr vec<T, n> operator|(const vec<T, n> & v1, T v2);
-    template <UnsignedIntegral T, int n> constexpr vec<T, n> operator|(T v1, const vec<T, n> & v2);
+    template <UnsignedIntegral T, int n> nodisc constexpr vec<T, n> operator|(const vec<T, n> & v1, const vec<T, n> & v2);
+    template <UnsignedIntegral T, int n> nodisc constexpr vec<T, n> operator|(const vec<T, n> & v1, T v2);
+    template <UnsignedIntegral T, int n> nodisc constexpr vec<T, n> operator|(T v1, const vec<T, n> & v2);
 
-    template <UnsignedIntegral T, int n> constexpr vec<T, n> operator^(const vec<T, n> & v1, const vec<T, n> & v2);
-    template <UnsignedIntegral T, int n> constexpr vec<T, n> operator^(const vec<T, n> & v1, T v2);
-    template <UnsignedIntegral T, int n> constexpr vec<T, n> operator^(T v1, const vec<T, n> & v2);
+    template <UnsignedIntegral T, int n> nodisc constexpr vec<T, n> operator^(const vec<T, n> & v1, const vec<T, n> & v2);
+    template <UnsignedIntegral T, int n> nodisc constexpr vec<T, n> operator^(const vec<T, n> & v1, T v2);
+    template <UnsignedIntegral T, int n> nodisc constexpr vec<T, n> operator^(T v1, const vec<T, n> & v2);
 
-    template <UnsignedIntegral T, int n> constexpr vec<T, n> operator<<(const vec<T, n> & v1, int v2);
+    template <UnsignedIntegral T, int n> nodisc constexpr vec<T, n> operator<<(const vec<T, n> & v1, int v2);
 
-    template <UnsignedIntegral T, int n> constexpr vec<T, n> operator>>(const vec<T, n> & v1, int v2);
+    template <UnsignedIntegral T, int n> nodisc constexpr vec<T, n> operator>>(const vec<T, n> & v1, int v2);
 
-    template <typename T, int n> constexpr bvec<n> operator==(const vec<T, n> & v1, T v2);
-    template <typename T, int n> constexpr bvec<n> operator==(T v1, const vec<T, n> & v2);
+    template <typename T, int n> nodisc constexpr bvec<n> operator==(const vec<T, n> & v1, T v2);
+    template <typename T, int n> nodisc constexpr bvec<n> operator==(T v1, const vec<T, n> & v2);
 
-    template <typename T, int n> constexpr bvec<n> operator!=(const vec<T, n> & v1, T v2);
-    template <typename T, int n> constexpr bvec<n> operator!=(T v1, const vec<T, n> & v2);
+    template <typename T, int n> nodisc constexpr bvec<n> operator!=(const vec<T, n> & v1, T v2);
+    template <typename T, int n> nodisc constexpr bvec<n> operator!=(T v1, const vec<T, n> & v2);
 
-    template <Numeric T, int n> constexpr bvec<n> operator<(const vec<T, n> & v1, const vec<T, n> & v2);
-    template <Numeric T, int n> constexpr bvec<n> operator<(const vec<T, n> & v1, T v2);
-    template <Numeric T, int n> constexpr bvec<n> operator<(T v1, const vec<T, n> & v2);
+    template <Numeric T, int n> nodisc constexpr bvec<n> operator<(const vec<T, n> & v1, const vec<T, n> & v2);
+    template <Numeric T, int n> nodisc constexpr bvec<n> operator<(const vec<T, n> & v1, T v2);
+    template <Numeric T, int n> nodisc constexpr bvec<n> operator<(T v1, const vec<T, n> & v2);
 
-    template <Numeric T, int n> constexpr bvec<n> operator>(const vec<T, n> & v1, const vec<T, n> & v2);
-    template <Numeric T, int n> constexpr bvec<n> operator>(const vec<T, n> & v1, T v2);
-    template <Numeric T, int n> constexpr bvec<n> operator>(T v1, const vec<T, n> & v2);
+    template <Numeric T, int n> nodisc constexpr bvec<n> operator>(const vec<T, n> & v1, const vec<T, n> & v2);
+    template <Numeric T, int n> nodisc constexpr bvec<n> operator>(const vec<T, n> & v1, T v2);
+    template <Numeric T, int n> nodisc constexpr bvec<n> operator>(T v1, const vec<T, n> & v2);
 
-    template <Numeric T, int n> constexpr bvec<n> operator<=(const vec<T, n> & v1, const vec<T, n> & v2);
-    template <Numeric T, int n> constexpr bvec<n> operator<=(const vec<T, n> & v1, T v2);
-    template <Numeric T, int n> constexpr bvec<n> operator<=(T v1, const vec<T, n> & v2);
+    template <Numeric T, int n> nodisc constexpr bvec<n> operator<=(const vec<T, n> & v1, const vec<T, n> & v2);
+    template <Numeric T, int n> nodisc constexpr bvec<n> operator<=(const vec<T, n> & v1, T v2);
+    template <Numeric T, int n> nodisc constexpr bvec<n> operator<=(T v1, const vec<T, n> & v2);
 
-    template <Numeric T, int n> constexpr bvec<n> operator>=(const vec<T, n> & v1, const vec<T, n> & v2);
-    template <Numeric T, int n> constexpr bvec<n> operator>=(const vec<T, n> & v1, T v2);
-    template <Numeric T, int n> constexpr bvec<n> operator>=(T v1, const vec<T, n> & v2);
+    template <Numeric T, int n> nodisc constexpr bvec<n> operator>=(const vec<T, n> & v1, const vec<T, n> & v2);
+    template <Numeric T, int n> nodisc constexpr bvec<n> operator>=(const vec<T, n> & v1, T v2);
+    template <Numeric T, int n> nodisc constexpr bvec<n> operator>=(T v1, const vec<T, n> & v2);
 
-    template <int n> constexpr bvec<n> operator&&(bvec<n> v1, bvec<n> v2);
+    template <int n> nodisc constexpr bvec<n> operator&&(bvec<n> v1, bvec<n> v2);
 
-    template <int n> constexpr bvec<n> operator||(bvec<n> v1, bvec<n> v2);
+    template <int n> nodisc constexpr bvec<n> operator||(bvec<n> v1, bvec<n> v2);
 
-    template <int n> constexpr bvec<n> operator!(bvec<n> v1);
+    template <int n> nodisc constexpr bvec<n> operator!(bvec<n> v1);
 
-    template <Numeric T, int n> constexpr T min(const vec<T, n> & v);
-    template <Numeric T, int n, typename... Extra> constexpr vec<T, n> min(const vec<T, n> & v1, const vec<T, n> & v2, Extra &&... extra);
-    template <Numeric T, int n, typename... Extra> constexpr vec<T, n> min(const vec<T, n> & v1, T v2, Extra &&... extra);
-    template <Numeric T, int n, typename... Extra> constexpr vec<T, n> min(T v1, const vec<T, n> & v2, Extra &&... extra);
+    template <Numeric T, int n> nodisc constexpr T min(const vec<T, n> & v);
+    template <Numeric T, int n, typename... Extra> nodisc constexpr vec<T, n> min(const vec<T, n> & v1, const vec<T, n> & v2, Extra &&... extra);
+    template <Numeric T, int n, typename... Extra> nodisc constexpr vec<T, n> min(const vec<T, n> & v1, T v2, Extra &&... extra);
+    template <Numeric T, int n, typename... Extra> nodisc constexpr vec<T, n> min(T v1, const vec<T, n> & v2, Extra &&... extra);
 
-    template <Numeric T, int n> constexpr T max(const vec<T, n> & v);
-    template <Numeric T, int n, typename... Extra> constexpr vec<T, n> max(const vec<T, n> & v1, const vec<T, n> & v2, Extra &&... extra);
-    template <Numeric T, int n, typename... Extra> constexpr vec<T, n> max(const vec<T, n> & v1, T v2, Extra &&... extra);
-    template <Numeric T, int n, typename... Extra> constexpr vec<T, n> max(T v1, const vec<T, n> & v2, Extra &&... extra);
+    template <Numeric T, int n> nodisc constexpr T max(const vec<T, n> & v);
+    template <Numeric T, int n, typename... Extra> nodisc constexpr vec<T, n> max(const vec<T, n> & v1, const vec<T, n> & v2, Extra &&... extra);
+    template <Numeric T, int n, typename... Extra> nodisc constexpr vec<T, n> max(const vec<T, n> & v1, T v2, Extra &&... extra);
+    template <Numeric T, int n, typename... Extra> nodisc constexpr vec<T, n> max(T v1, const vec<T, n> & v2, Extra &&... extra);
 
     template <Numeric T, int n, typename... Extra> vec<T, n> & minify(vec<T, n> & v1, const vec<T, n> & v2, Extra &&... extra);
     template <Numeric T, int n, typename... Extra> vec<T, n> & minify(vec<T, n> & v1, T v2, Extra &&... extra);
@@ -388,10 +388,10 @@ namespace qc
     template <Numeric T, int n, typename... Extra> vec<T, n> & maxify(vec<T, n> & v1, const vec<T, n> & v2, Extra &&... extra);
     template <Numeric T, int n, typename... Extra> vec<T, n> & maxify(vec<T, n> & v1, T v2, Extra &&... extra);
 
-    template <Numeric T> constexpr T median(vec3<T> v);
+    template <Numeric T> nodisc constexpr T median(vec3<T> v);
 
-    template <Numeric T, int n> constexpr vec<T, n> clamp(const vec<T, n> & v, T min, T max);
-    template <Numeric T, int n> constexpr vec<T, n> clamp(const vec<T, n> & v, const vec<T, n> & min, const vec<T, n> & max);
+    template <Numeric T, int n> nodisc constexpr vec<T, n> clamp(const vec<T, n> & v, T min, T max);
+    template <Numeric T, int n> nodisc constexpr vec<T, n> clamp(const vec<T, n> & v, const vec<T, n> & min, const vec<T, n> & max);
 
     template <Numeric T, int n> vec<T, n> & clampify(vec<T, n> & v, T min, T max);
     template <Numeric T, int n> vec<T, n> & clampify(vec<T, n> & v, const vec<T, n> & min, const vec<T, n> & max);

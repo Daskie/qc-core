@@ -55,12 +55,12 @@ namespace qc
 
         ~StrideIter() = default;
 
-        value_type & operator*() const
+        nodisc value_type & operator*() const
         {
             return *_ptr;
         }
 
-        value_type * operator->() const
+        nodisc value_type * operator->() const
         {
             return _ptr;
         }
@@ -79,14 +79,14 @@ namespace qc
             return temp;
         }
 
-        difference_type operator-(const StrideIter other) const
+        nodisc difference_type operator-(const StrideIter other) const
         {
             return (std::bit_cast<const std::byte *>(_ptr) - std::bit_cast<const std::byte *>(other._ptr)) / _stride;
         }
 
         template <typename U>
         requires Same<U, T>
-        constexpr bool operator==(const StrideIter<U> other) const
+        nodisc constexpr bool operator==(const StrideIter<U> other) const
         {
             return _ptr == other._ptr;
         }

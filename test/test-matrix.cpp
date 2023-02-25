@@ -43,14 +43,14 @@ static void compileClassesT()
 
     // access
 
-    m2.col(0);
-    m2.row(0);
+    static_cast<void>(m2.col(0));
+    static_cast<void>(m2.row(0));
 
-    m2.template row<0>();
-    m2.template row<1>();
+    static_cast<void>(m2.template row<0>());
+    static_cast<void>(m2.template row<1>());
 
-    m2.template col<0>();
-    m2.template col<1>();
+    static_cast<void>(m2.template col<0>());
+    static_cast<void>(m2.template col<1>());
 
     // arithmetic assignment
 
@@ -114,16 +114,16 @@ static void compileClassesT()
 
     // access
 
-    m3.col(0);
-    m3.row(0);
+    static_cast<void>(m3.col(0));
+    static_cast<void>(m3.row(0));
 
-    m3.template row<0>();
-    m3.template row<1>();
-    m3.template row<2>();
+    static_cast<void>(m3.template row<0>());
+    static_cast<void>(m3.template row<1>());
+    static_cast<void>(m3.template row<2>());
 
-    m3.template col<0>();
-    m3.template col<1>();
-    m3.template col<2>();
+    static_cast<void>(m3.template col<0>());
+    static_cast<void>(m3.template col<1>());
+    static_cast<void>(m3.template col<2>());
 
     // arithmetic assignment
 
@@ -187,18 +187,18 @@ static void compileClassesT()
 
     // access
 
-    m4.col(0);
-    m4.row(0);
+    static_cast<void>(m4.col(0));
+    static_cast<void>(m4.row(0));
 
-    m4.template row<0>();
-    m4.template row<1>();
-    m4.template row<2>();
-    m4.template row<3>();
+    static_cast<void>(m4.template row<0>());
+    static_cast<void>(m4.template row<1>());
+    static_cast<void>(m4.template row<2>());
+    static_cast<void>(m4.template row<3>());
 
-    m4.template col<0>();
-    m4.template col<1>();
-    m4.template col<2>();
-    m4.template col<3>();
+    static_cast<void>(m4.template col<0>());
+    static_cast<void>(m4.template col<1>());
+    static_cast<void>(m4.template col<2>());
+    static_cast<void>(m4.template col<3>());
 
     // arithmetic assignment
 
@@ -269,11 +269,11 @@ static constexpr void compileClassesConstexprT()
 
     // access
 
-    m2.template col<0>();
-    m2.template col<1>();
+    static_cast<void>(m2.template col<0>());
+    static_cast<void>(m2.template col<1>());
 
-    m2.template row<0>();
-    m2.template row<1>();
+    static_cast<void>(m2.template row<0>());
+    static_cast<void>(m2.template row<1>());
 
     //--------------------------------------------------------------------------
     // Mat3
@@ -290,13 +290,13 @@ static constexpr void compileClassesConstexprT()
 
     // access
 
-    m3.template col<0>();
-    m3.template col<1>();
-    m3.template col<2>();
+    static_cast<void>(m3.template col<0>());
+    static_cast<void>(m3.template col<1>());
+    static_cast<void>(m3.template col<2>());
 
-    m3.template row<0>();
-    m3.template row<1>();
-    m3.template row<2>();
+    static_cast<void>(m3.template row<0>());
+    static_cast<void>(m3.template row<1>());
+    static_cast<void>(m3.template row<2>());
 
     //--------------------------------------------------------------------------
     // Mat4
@@ -313,15 +313,15 @@ static constexpr void compileClassesConstexprT()
 
     // access
 
-    m4.template col<0>();
-    m4.template col<1>();
-    m4.template col<2>();
-    m4.template col<3>();
+    static_cast<void>(m4.template col<0>());
+    static_cast<void>(m4.template col<1>());
+    static_cast<void>(m4.template col<2>());
+    static_cast<void>(m4.template col<3>());
 
-    m4.template row<0>();
-    m4.template row<1>();
-    m4.template row<2>();
-    m4.template row<3>();
+    static_cast<void>(m4.template row<0>());
+    static_cast<void>(m4.template row<1>());
+    static_cast<void>(m4.template row<2>());
+    static_cast<void>(m4.template row<3>());
 
 }
 
@@ -344,24 +344,24 @@ static void compileFunctionsT()
     mat3<T> m3{};
     mat4<T> m4{};
 
-    qc::isIdentity(m2);
-    qc::isIdentity(m3);
-    qc::isIdentity(m4);
-    qc::transpose(m2);
-    qc::transpose(m3);
-    qc::transpose(m4);
-    qc::cofactor(m2);
-    qc::cofactor(m3);
-    qc::cofactor(m4);
-    qc::adjoint(m2);
-    qc::adjoint(m3);
-    qc::adjoint(m4);
-    qc::determinant(m2);
-    qc::determinant(m3);
-    qc::determinant(m4);
-    qc::inverse(m2);
-    qc::inverse(m3);
-    qc::inverse(m4);
+    static_cast<void>(qc::isIdentity(m2));
+    static_cast<void>(qc::isIdentity(m3));
+    static_cast<void>(qc::isIdentity(m4));
+    static_cast<void>(qc::transpose(m2));
+    static_cast<void>(qc::transpose(m3));
+    static_cast<void>(qc::transpose(m4));
+    static_cast<void>(qc::cofactor(m2));
+    static_cast<void>(qc::cofactor(m3));
+    static_cast<void>(qc::cofactor(m4));
+    static_cast<void>(qc::adjoint(m2));
+    static_cast<void>(qc::adjoint(m3));
+    static_cast<void>(qc::adjoint(m4));
+    static_cast<void>(qc::determinant(m2));
+    static_cast<void>(qc::determinant(m3));
+    static_cast<void>(qc::determinant(m4));
+    static_cast<void>(qc::inverse(m2));
+    static_cast<void>(qc::inverse(m3));
+    static_cast<void>(qc::inverse(m4));
     qc::fullMat<T, 2>(v);
     qc::fullMat<T, 3>(v);
     qc::fullMat<T, 4>(v);

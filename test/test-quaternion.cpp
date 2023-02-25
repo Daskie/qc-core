@@ -55,7 +55,7 @@ static void compileClassesT()
     q / q;
 
     // comparison operators
-    q == q;
+    static_cast<void>(q == q);
 
     // other
     os << q;

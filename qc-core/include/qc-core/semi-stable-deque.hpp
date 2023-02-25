@@ -58,44 +58,44 @@ namespace qc
         void pop(u32 pos);
         void pop(iterator it);
 
-        T & front();
-        const T & front() const;
+        nodisc T & front();
+        nodisc const T & front() const;
 
-        T & back();
-        const T & back() const;
+        nodisc T & back();
+        nodisc const T & back() const;
 
-        T & operator[](u32 pos);
-        const T & operator[](u32 pos) const;
+        nodisc T & operator[](u32 pos);
+        nodisc const T & operator[](u32 pos) const;
 
-        iterator getIterator(u32 pos);
-        const_iterator getIterator(u32 pos) const;
+        nodisc iterator getIterator(u32 pos);
+        nodisc const_iterator getIterator(u32 pos) const;
 
-        reverse_iterator getReverseIterator(u32 pos);
-        const_reverse_iterator getReverseIterator(u32 pos) const;
+        nodisc reverse_iterator getReverseIterator(u32 pos);
+        nodisc const_reverse_iterator getReverseIterator(u32 pos) const;
 
         void clear();
 
-        u32 size() const { return _elements.size(); }
+        nodisc u32 size() const { return _elements.size(); }
 
-        bool empty() const { return _elements.empty(); }
+        nodisc bool empty() const { return _elements.empty(); }
 
-        u32 capacity() const { return _elements.capacity(); }
+        nodisc u32 capacity() const { return _elements.capacity(); }
 
-        iterator begin();
-        const_iterator begin() const;
-        const_iterator cbegin() const { return begin(); };
+        nodisc iterator begin();
+        nodisc const_iterator begin() const;
+        nodisc const_iterator cbegin() const { return begin(); };
 
-        iterator end();
-        const_iterator end() const;
-        const_iterator cend() const { return end(); };
+        nodisc iterator end();
+        nodisc const_iterator end() const;
+        nodisc const_iterator cend() const { return end(); };
 
-        reverse_iterator rbegin();
-        const_reverse_iterator rbegin() const;
-        const_reverse_iterator crbegin() const { return rbegin(); };
+        nodisc reverse_iterator rbegin();
+        nodisc const_reverse_iterator rbegin() const;
+        nodisc const_reverse_iterator crbegin() const { return rbegin(); };
 
-        reverse_iterator rend();
-        const_reverse_iterator rend() const;
-        const_reverse_iterator crend() const { return rend(); };
+        nodisc reverse_iterator rend();
+        nodisc const_reverse_iterator rend() const;
+        nodisc const_reverse_iterator crend() const { return rend(); };
 
       private:
 
@@ -146,16 +146,16 @@ namespace qc
 
         _Iterator & operator=(const _Iterator &) = default;
 
-        reference operator*() const { return _element->value; }
+        nodisc reference operator*() const { return _element->value; }
 
-        pointer operator->() const { return &_element->value; }
+        nodisc pointer operator->() const { return &_element->value; }
 
         _Iterator & operator++();
         _Iterator operator++(int);
 
-        u32 pos() const { return u32(_element - _elements); }
+        nodisc u32 pos() const { return u32(_element - _elements); }
 
-        bool operator==(const _Iterator & other) const;
+        nodisc bool operator==(const _Iterator & other) const;
 
       private:
 

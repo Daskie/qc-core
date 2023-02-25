@@ -103,13 +103,13 @@ namespace qc
 
         ~span() = default;
 
-        constexpr explicit operator bool() const;
+        nodisc constexpr explicit operator bool() const;
 
-        constexpr auto size() const;
+        nodisc constexpr auto size() const;
 
-        constexpr bool contains(T v) const;
+        nodisc constexpr bool contains(T v) const;
 
-        constexpr bool operator==(const span &) const = default;
+        nodisc constexpr bool operator==(const span &) const = default;
     };
 
     template <Numeric T>
@@ -136,16 +136,16 @@ namespace qc
 
         ~span() = default;
 
-        constexpr explicit operator bool() const;
+        nodisc constexpr explicit operator bool() const;
 
-        constexpr vec2<T> size() const;
+        nodisc constexpr vec2<T> size() const;
 
-        constexpr bool contains(const vec2<T> & v) const;
+        nodisc constexpr bool contains(const vec2<T> & v) const;
 
-        constexpr span1<T> x() const;
-        constexpr span1<T> y() const;
+        nodisc constexpr span1<T> x() const;
+        nodisc constexpr span1<T> y() const;
 
-        constexpr bool operator==(const span &) const = default;
+        nodisc constexpr bool operator==(const span &) const = default;
     };
 
     template <Numeric T>
@@ -174,20 +174,20 @@ namespace qc
 
         ~span() = default;
 
-        constexpr explicit operator bool() const;
+        nodisc constexpr explicit operator bool() const;
 
-        constexpr vec3<T> size() const;
+        nodisc constexpr vec3<T> size() const;
 
-        constexpr bool contains(const vec3<T> & v) const;
+        nodisc constexpr bool contains(const vec3<T> & v) const;
 
-        constexpr span1<T> x() const;
-        constexpr span1<T> y() const;
-        constexpr span1<T> z() const;
+        nodisc constexpr span1<T> x() const;
+        nodisc constexpr span1<T> y() const;
+        nodisc constexpr span1<T> z() const;
 
-        constexpr span2<T> xy() const;
-        constexpr span2<T> yz() const;
+        nodisc constexpr span2<T> xy() const;
+        nodisc constexpr span2<T> yz() const;
 
-        constexpr bool operator==(const span &) const = default;
+        nodisc constexpr bool operator==(const span &) const = default;
     };
 
     template <Numeric T>
@@ -220,25 +220,25 @@ namespace qc
 
         ~span() = default;
 
-        constexpr explicit operator bool() const;
+        nodisc constexpr explicit operator bool() const;
 
-        constexpr vec4<T> size() const;
+        nodisc constexpr vec4<T> size() const;
 
-        constexpr bool contains(const vec4<T> & v) const;
+        nodisc constexpr bool contains(const vec4<T> & v) const;
 
-        constexpr span1<T> x() const;
-        constexpr span1<T> y() const;
-        constexpr span1<T> z() const;
-        constexpr span1<T> w() const;
+        nodisc constexpr span1<T> x() const;
+        nodisc constexpr span1<T> y() const;
+        nodisc constexpr span1<T> z() const;
+        nodisc constexpr span1<T> w() const;
 
-        constexpr span2<T> xy() const;
-        constexpr span2<T> yz() const;
-        constexpr span2<T> zw() const;
+        nodisc constexpr span2<T> xy() const;
+        nodisc constexpr span2<T> yz() const;
+        nodisc constexpr span2<T> zw() const;
 
-        constexpr span3<T> xyz() const;
-        constexpr span3<T> yzw() const;
+        nodisc constexpr span3<T> xyz() const;
+        nodisc constexpr span3<T> yzw() const;
 
-        constexpr bool operator==(const span &) const = default;
+        nodisc constexpr bool operator==(const span &) const = default;
     };
 
     namespace _internal
@@ -282,35 +282,35 @@ namespace qc
 
     template <Numeric T, int n> span<T, n> & operator|=(span<T, n> & s1, const span<T, n> & s2);
 
-    template <Numeric T, int n> constexpr span<T, n> operator+(const span<T, n> & s, T v);
-    template <Pointer T, int n> constexpr span<T, n> operator+(const span<T, n> & s, s64 v);
-    template <Numeric T, int n> constexpr span<T, n> operator+(T v, const span<T, n> & s);
-    template <Numeric T, int n> constexpr span<T, n> operator+(const span<T, n> & s, const vec<T, n> & v);
-    template <Numeric T, int n> constexpr span<T, n> operator+(const vec<T, n> & v, const span<T, n> & s);
+    template <Numeric T, int n> nodisc constexpr span<T, n> operator+(const span<T, n> & s, T v);
+    template <Pointer T, int n> nodisc constexpr span<T, n> operator+(const span<T, n> & s, s64 v);
+    template <Numeric T, int n> nodisc constexpr span<T, n> operator+(T v, const span<T, n> & s);
+    template <Numeric T, int n> nodisc constexpr span<T, n> operator+(const span<T, n> & s, const vec<T, n> & v);
+    template <Numeric T, int n> nodisc constexpr span<T, n> operator+(const vec<T, n> & v, const span<T, n> & s);
 
-    template <Numeric T, int n> constexpr span<T, n> operator-(const span<T, n> & s, T v);
-    template <Pointer T, int n> constexpr span<T, n> operator-(const span<T, n> & s, s64 v);
-    template <Numeric T, int n> constexpr span<T, n> operator-(T v1, const span<T, n> & s);
-    template <Numeric T, int n> constexpr span<T, n> operator-(const span<T, n> & s, const vec<T, n> & v);
-    template <Numeric T, int n> constexpr span<T, n> operator-(const vec<T, n> & v, const span<T, n> & s);
+    template <Numeric T, int n> nodisc constexpr span<T, n> operator-(const span<T, n> & s, T v);
+    template <Pointer T, int n> nodisc constexpr span<T, n> operator-(const span<T, n> & s, s64 v);
+    template <Numeric T, int n> nodisc constexpr span<T, n> operator-(T v1, const span<T, n> & s);
+    template <Numeric T, int n> nodisc constexpr span<T, n> operator-(const span<T, n> & s, const vec<T, n> & v);
+    template <Numeric T, int n> nodisc constexpr span<T, n> operator-(const vec<T, n> & v, const span<T, n> & s);
 
-    template <Numeric T, int n> constexpr span<T, n> operator*(const span<T, n> & s, T v);
-    template <Numeric T, int n> constexpr span<T, n> operator*(T v, const span<T, n> & s);
-    template <Numeric T, int n> constexpr span<T, n> operator*(const span<T, n> & s, const vec<T, n> & v);
-    template <Numeric T, int n> constexpr span<T, n> operator*(const vec<T, n> & v, const span<T, n> & s);
+    template <Numeric T, int n> nodisc constexpr span<T, n> operator*(const span<T, n> & s, T v);
+    template <Numeric T, int n> nodisc constexpr span<T, n> operator*(T v, const span<T, n> & s);
+    template <Numeric T, int n> nodisc constexpr span<T, n> operator*(const span<T, n> & s, const vec<T, n> & v);
+    template <Numeric T, int n> nodisc constexpr span<T, n> operator*(const vec<T, n> & v, const span<T, n> & s);
 
-    template <Numeric T, int n> constexpr span<T, n> operator/(const span<T, n> & s, T v);
-    template <Numeric T, int n> constexpr span<T, n> operator/(const span<T, n> & s, const vec<T, n> & v);
+    template <Numeric T, int n> nodisc constexpr span<T, n> operator/(const span<T, n> & s, T v);
+    template <Numeric T, int n> nodisc constexpr span<T, n> operator/(const span<T, n> & s, const vec<T, n> & v);
 
-    template <Numeric T, int n> constexpr span<T, n> operator&(const span<T, n> & s1, const span<T, n> & s2);
+    template <Numeric T, int n> nodisc constexpr span<T, n> operator&(const span<T, n> & s1, const span<T, n> & s2);
 
-    template <Numeric T, int n> constexpr span<T, n> operator|(const span<T, n> & s1, const span<T, n> & s2);
+    template <Numeric T, int n> nodisc constexpr span<T, n> operator|(const span<T, n> & s1, const span<T, n> & s2);
 
-    template <NumericOrPointer T, int n> constexpr span<T, n> min(const span<T, n> & s1, T v);
-    template <Numeric          T, int n> constexpr span<T, n> min(const span<T, n> & s, const vec<T, n> & v);
+    template <NumericOrPointer T, int n> nodisc constexpr span<T, n> min(const span<T, n> & s1, T v);
+    template <Numeric          T, int n> nodisc constexpr span<T, n> min(const span<T, n> & s, const vec<T, n> & v);
 
-    template <NumericOrPointer T, int n> constexpr span<T, n> max(const span<T, n> & s, T v);
-    template <Numeric          T, int n> constexpr span<T, n> max(const span<T, n> & s, const vec<T, n> & v);
+    template <NumericOrPointer T, int n> nodisc constexpr span<T, n> max(const span<T, n> & s, T v);
+    template <Numeric          T, int n> nodisc constexpr span<T, n> max(const span<T, n> & s, const vec<T, n> & v);
 
     template <NumericOrPointer T, int n> span<T, n> & minify(span<T, n> & s, T v);
     template <Numeric          T, int n> span<T, n> & minify(span<T, n> & s, const vec<T, n> & v);
@@ -318,10 +318,10 @@ namespace qc
     template <NumericOrPointer T, int n> span<T, n> & maxify(span<T, n> & s, T v);
     template <Numeric          T, int n> span<T, n> & maxify(span<T, n> & s, const vec<T, n> & v);
 
-    template <NumericOrPointer T, int n> constexpr span<T, n> clamp(const span<T, n> & s, T min, T max);
-    template <Numeric T, int n> constexpr span<T, n> clamp(const span<T, n> & s, const vec<T, n> & min, const vec<T, n> & max);
-    template <NumericOrPointer T> constexpr T clamp(T v, const span1<T> & span);
-    template <Numeric T, int n> constexpr vec<T, n> clamp(const vec<T, n> & v, const span<T, n> & s);
+    template <NumericOrPointer T, int n> nodisc constexpr span<T, n> clamp(const span<T, n> & s, T min, T max);
+    template <Numeric T, int n> nodisc constexpr span<T, n> clamp(const span<T, n> & s, const vec<T, n> & min, const vec<T, n> & max);
+    template <NumericOrPointer T> nodisc constexpr T clamp(T v, const span1<T> & span);
+    template <Numeric T, int n> nodisc constexpr vec<T, n> clamp(const vec<T, n> & v, const span<T, n> & s);
 
     template <NumericOrPointer T, int n> span<T, n> & clampify(span<T, n> & s, T min, T max);
     template <Numeric T, int n> span<T, n> & clampify(span<T, n> & s, const vec<T, n> & min, const vec<T, n> & max);

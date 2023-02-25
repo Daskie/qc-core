@@ -11,7 +11,7 @@ namespace qc
     //
     // ...
     //
-    template <Numeric R, Numeric T, int n> span<R, n> round(const span<T, n> & s);
+    template <Numeric R, Numeric T, int n> nodisc span<R, n> round(const span<T, n> & s);
 
     //
     // ...

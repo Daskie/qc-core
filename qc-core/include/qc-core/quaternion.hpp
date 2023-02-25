@@ -38,9 +38,9 @@ namespace qc
 
         ~quat() = default;
 
-        constexpr explicit operator bool() const;
+        nodisc constexpr explicit operator bool() const;
 
-        constexpr bool operator==(const quat &) const = default;
+        nodisc constexpr bool operator==(const quat &) const = default;
     };
 
     template <Floating T> quat<T> & operator+=(quat<T> & q1, const quat<T> & q2);
@@ -53,20 +53,20 @@ namespace qc
 
     template <Floating T> quat<T> & operator/=(quat<T> & q1, const quat<T> & q2);
 
-    template <Floating T> constexpr quat<T> operator+(const quat<T> & q);
+    template <Floating T> nodisc constexpr quat<T> operator+(const quat<T> & q);
 
-    template <Floating T> constexpr quat<T> operator-(const quat<T> & q);
+    template <Floating T> nodisc constexpr quat<T> operator-(const quat<T> & q);
 
-    template <Floating T> constexpr quat<T> operator+(const quat<T> & q1, const quat<T> & q2);
+    template <Floating T> nodisc constexpr quat<T> operator+(const quat<T> & q1, const quat<T> & q2);
 
-    template <Floating T> constexpr quat<T> operator-(const quat<T> & q1, const quat<T> & q2);
+    template <Floating T> nodisc constexpr quat<T> operator-(const quat<T> & q1, const quat<T> & q2);
 
-    template <Floating T> constexpr quat<T> operator*(const quat<T> & q1, const quat<T> & q2);
-    template <Floating T> constexpr quat<T> operator*(const quat<T> & q, T v);
-    template <Floating T> constexpr quat<T> operator*(T v, const quat<T> & q);
-    template <Floating T> constexpr vec3<T> operator*(const quat<T> & q, vec3<T> v);
+    template <Floating T> nodisc constexpr quat<T> operator*(const quat<T> & q1, const quat<T> & q2);
+    template <Floating T> nodisc constexpr quat<T> operator*(const quat<T> & q, T v);
+    template <Floating T> nodisc constexpr quat<T> operator*(T v, const quat<T> & q);
+    template <Floating T> nodisc constexpr vec3<T> operator*(const quat<T> & q, vec3<T> v);
 
-    template <Floating T> constexpr quat<T> operator/(const quat<T> & q1, const quat<T> & q2);
+    template <Floating T> nodisc constexpr quat<T> operator/(const quat<T> & q1, const quat<T> & q2);
 
 }
 

@@ -6,6 +6,24 @@
 #include <limits>
 #include <utility>
 
+#ifndef forceinline
+    #ifdef _MSC_VER
+        #define forceinline __forceinline
+    #elif __GNUC__
+        #define forceinline __attribute__((always_inline)) inline
+    #else
+        #error "Unsupported compiler"
+    #endif
+#else
+    #error "`forceinline` already defined"
+#endif
+
+#ifndef nodisc
+    #define nodisc [[nodiscard]]
+#else
+    #error "`nodisc` already defined"
+#endif
+
 #ifndef ABORT
     #define ABORT() ::std::abort()
 #else
@@ -28,20 +46,6 @@
     #define FAIL_IF(condition) if (condition) [[unlikely]] return {}
 #else
     #error "`FAIL_IF` already defined"
-    #error
-#endif
-
-// Set forceinline
-#ifndef forceinline
-    #ifdef _MSC_VER
-        #define forceinline __forceinline
-    #elif __GNUC__
-        #define forceinline __attribute__((always_inline)) inline
-    #else
-        #error "Unsupported compiler"
-    #endif
-#else
-    #warning "`forceinline` already defined"
 #endif
 
 namespace qc
@@ -126,13 +130,13 @@ namespace qc
     template <typename T, typename... Ts> concept OneOf = (std::same_as<T, Ts> || ...);
 
     template <bool condition, typename T1, typename T2>
-    constexpr decltype(auto) ternary(T1 && v1, T2 && v2)
+    nodisc constexpr decltype(auto) ternary(T1 && v1, T2 && v2)
     {
         if constexpr (condition) return std::forward<T1>(v1);
         else return std::forward<T2>(v2);
     }
 
-    template <Enum E> constexpr std::underlying_type_t<E> underlyingVal(const E e) { return std::underlying_type_t<E>(e); }
+    template <Enum E> nodisc constexpr std::underlying_type_t<E> underlyingVal(const E e) { return std::underlying_type_t<E>(e); }
 
     template <typename T1, typename T2 = T1>
     struct Duo
@@ -140,11 +144,11 @@ namespace qc
         T1 a;
         T2 b;
 
-        T1 * begin() requires (Same<T1, T2>) { return &a; };
-        const T1 * begin() const requires (Same<T1, T2>) { return &a; };
+        nodisc forceinline T1 * begin() requires (Same<T1, T2>) { return &a; };
+        nodisc forceinline const T1 * begin() const requires (Same<T1, T2>) { return &a; };
 
-        T1 * end() requires (Same<T1, T2>) { return &b + 1; };
-        const T1 * end() const requires (Same<T1, T2>) { return &b + 1; };
+        nodisc forceinline T1 * end() requires (Same<T1, T2>) { return &b + 1; };
+        nodisc forceinline const T1 * end() const requires (Same<T1, T2>) { return &b + 1; };
     };
 
     template <typename T1, typename T2 = T1, typename T3 = T2>
@@ -152,13 +156,13 @@ namespace qc
     {
         T1 a;
         T2 b;
-        T2 c;
+        T3 c;
 
-        T1 * begin() requires (Same<T1, T2> && Same<T1, T3>) { return &a; };
-        const T1 * begin() const requires (Same<T1, T2> && Same<T1, T3>) { return &a; };
+        nodisc forceinline T1 * begin() requires (Same<T1, T2> && Same<T1, T3>) { return &a; };
+        nodisc forceinline const T1 * begin() const requires (Same<T1, T2> && Same<T1, T3>) { return &a; };
 
-        T1 * end() requires (Same<T1, T2> && Same<T1, T3>) { return &c + 1; };
-        const T1 * end() const requires (Same<T1, T2> && Same<T1, T3>) { return &c + 1; };
+        nodisc forceinline T1 * end() requires (Same<T1, T2> && Same<T1, T3>) { return &c + 1; };
+        nodisc forceinline const T1 * end() const requires (Same<T1, T2> && Same<T1, T3>) { return &c + 1; };
     };
 
     ///
@@ -205,13 +209,13 @@ namespace qc
 
         ~Result();
 
-        [[nodiscard]] explicit operator bool() const { return _success; }
+        nodisc explicit operator bool() const { return _success; }
 
-        [[nodiscard]] T & operator*();
-        [[nodiscard]] const T & operator*() const;
+        nodisc T & operator*();
+        nodisc const T & operator*() const;
 
-        [[nodiscard]] T * operator->();
-        [[nodiscard]] const T * operator->() const;
+        nodisc T * operator->();
+        nodisc const T * operator->() const;
 
       private:
 
@@ -223,14 +227,14 @@ namespace qc
     //
     // ...
     //
-    template <NumericOrPointer T1, NumericOrPointer T2> requires Sameish<T1, T2> constexpr auto min(T1 v1, T2 v2);
-    template <NumericOrPointer T1, NumericOrPointer T2, NumericOrPointer T3, typename... Ts> constexpr auto min(T1 v1, T2 v2, T3 v3, Ts... vs);
+    template <NumericOrPointer T1, NumericOrPointer T2> requires Sameish<T1, T2> nodisc constexpr auto min(T1 v1, T2 v2);
+    template <NumericOrPointer T1, NumericOrPointer T2, NumericOrPointer T3, typename... Ts> nodisc constexpr auto min(T1 v1, T2 v2, T3 v3, Ts... vs);
 
     //
     // ...
     //
-    template <NumericOrPointer T1, NumericOrPointer T2> requires Sameish<T1, T2> constexpr auto max(T1 v1, T2 v2);
-    template <NumericOrPointer T1, NumericOrPointer T2, NumericOrPointer T3, typename... Ts> constexpr auto max(T1 v1, T2 v2, T3 v3, Ts... vs);
+    template <NumericOrPointer T1, NumericOrPointer T2> requires Sameish<T1, T2> nodisc constexpr auto max(T1 v1, T2 v2);
+    template <NumericOrPointer T1, NumericOrPointer T2, NumericOrPointer T3, typename... Ts> nodisc constexpr auto max(T1 v1, T2 v2, T3 v3, Ts... vs);
 
     //
     // ...
@@ -247,7 +251,7 @@ namespace qc
     //
     // ...
     //
-    template <Numeric T> constexpr T clamp(T v, T min, T max);
+    template <Numeric T> nodisc constexpr T clamp(T v, T min, T max);
 
     //
     // ...

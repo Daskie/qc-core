@@ -103,41 +103,41 @@ namespace qc
 
         template <typename Pred> u64 eraseIf(Pred && pred);
 
-        T & operator[](const u64 i);
-        const T & operator[](const u64 i) const;
+        nodisc T & operator[](const u64 i);
+        nodisc const T & operator[](const u64 i) const;
 
-        T & front();
-        const T & front() const;
+        nodisc T & front();
+        nodisc const T & front() const;
 
-        T & back();
-        const T & back() const;
+        nodisc T & back();
+        nodisc const T & back() const;
 
-        u64 capacity() const;
+        nodisc u64 capacity() const;
 
-        u64 size() const;
+        nodisc u64 size() const;
 
-        bool empty() const;
+        nodisc bool empty() const;
 
-        T * data();
-        const T * data() const;
+        nodisc T * data();
+        nodisc const T * data() const;
 
-        std::span<T> span();
-        std::span<const T> span() const;
-        std::span<T> span(const u64 i, const u64 n);
-        std::span<const T> span(const u64 i, const u64 n) const;
+        nodisc std::span<T> span();
+        nodisc std::span<const T> span() const;
+        nodisc std::span<T> span(const u64 i, const u64 n);
+        nodisc std::span<const T> span(const u64 i, const u64 n) const;
 
-        T * begin();
-        const T * begin() const;
-        const T * cbegin() const;
+        nodisc T * begin();
+        nodisc const T * begin() const;
+        nodisc const T * cbegin() const;
 
-        T * end();
-        const T * end() const;
-        const T * cend() const;
+        nodisc T * end();
+        nodisc const T * end() const;
+        nodisc const T * cend() const;
 
-        PushIterator<T> pushIterator();
+        nodisc PushIterator<T> pushIterator();
 
-        bool operator==(const List & other) const;
-        bool operator==(std::initializer_list<T> other) const;
+        nodisc bool operator==(const List & other) const;
+        nodisc bool operator==(std::initializer_list<T> other) const;
 
       private:
 

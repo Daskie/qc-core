@@ -30,21 +30,21 @@ namespace qc
 
         void setCapacity(u64 capacity);
 
-        template <typename T, typename... Args> [[nodiscard]] T & create(Args && ... args);
+        template <typename T, typename... Args> nodisc T & create(Args && ... args);
 
-        template <typename T, typename... Args> [[nodiscard]] Unq<T> createUnique(Args && ... args);
+        template <typename T, typename... Args> nodisc Unq<T> createUnique(Args && ... args);
 
-        template <typename T, typename... Args> [[nodiscard]] Shr<T> createShared(Args && ... args);
+        template <typename T, typename... Args> nodisc Shr<T> createShared(Args && ... args);
 
         template <typename T> void destroy(T & v);
 
         void shrinkToFit();
 
-        u64 capacity() const { return _capacity; }
+        nodisc u64 capacity() const { return _capacity; }
 
-        u64 size() const { return _size; }
+        nodisc u64 size() const { return _size; }
 
-        bool empty() const { return !_size; }
+        nodisc bool empty() const { return !_size; }
 
       private:
 

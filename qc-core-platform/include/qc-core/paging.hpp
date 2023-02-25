@@ -16,7 +16,7 @@ namespace qc
     /// @param pageCount the number of pages to allocate
     /// @return the start of the allocated memory, or null if `pageCount` is 0
     ///
-    [[nodiscard]] void * allocatePages(u64 pageCount);
+    nodisc void * allocatePages(u64 pageCount);
 
     ///
     /// Reserve a contiguous block of virtual memory without actually allocating any physical memory
@@ -26,7 +26,7 @@ namespace qc
     /// @param pageCount the number of pages to reserve
     /// @return the base of the reserved memory, or null if `pageCount` is 0
     ///
-    [[nodiscard]] void * reservePages(u64 pageCount);
+    nodisc void * reservePages(u64 pageCount);
 
     ///
     /// Commit a range of previously reserved pages to physical memory, allowing them to be used

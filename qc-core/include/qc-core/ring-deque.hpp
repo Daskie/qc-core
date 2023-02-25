@@ -51,14 +51,14 @@ namespace qc
 
         template <typename... Args> T & emplace_back(Args &&... args);
 
-        T & front();
-        const T & front() const;
+        nodisc T & front();
+        nodisc const T & front() const;
 
-        T & back();
-        const T & back() const;
+        nodisc T & back();
+        nodisc const T & back() const;
 
-        T & operator[](u64 i);
-        const T & operator[](u64 i) const;
+        nodisc T & operator[](u64 i);
+        nodisc const T & operator[](u64 i) const;
 
         void pop_front();
 
@@ -66,19 +66,19 @@ namespace qc
 
         void clear();
 
-        u64 size() const { return _size; };
+        nodisc u64 size() const { return _size; };
 
-        bool empty() const { return !_size; };
+        nodisc bool empty() const { return !_size; };
 
-        u64 capacity() const { return _capacity; }
+        nodisc u64 capacity() const { return _capacity; }
 
-        iterator begin();
-        const_iterator begin() const;
-        const_iterator cbegin() const;
+        nodisc iterator begin();
+        nodisc const_iterator begin() const;
+        nodisc const_iterator cbegin() const;
 
-        iterator end();
-        const_iterator end() const;
-        const_iterator cend() const;
+        nodisc iterator end();
+        nodisc const_iterator end() const;
+        nodisc const_iterator cend() const;
 
       private:
 
@@ -110,15 +110,15 @@ namespace qc
         Iterator(const Iterator & other) = default;
         Iterator(const Iterator<false> & other) requires constant;
 
-        value_type & operator*() const { return *_v; }
+        nodisc value_type & operator*() const { return *_v; }
 
-        value_type * operator->() const { return _v; }
+        nodisc value_type * operator->() const { return _v; }
 
         Iterator & operator++();
 
         Iterator operator++(int);
 
-        template <bool constant_> bool operator==(const Iterator<constant_> & other) const;
+        template <bool constant_> nodisc bool operator==(const Iterator<constant_> & other) const;
 
       private:
 

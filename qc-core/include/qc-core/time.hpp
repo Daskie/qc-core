@@ -9,7 +9,7 @@ namespace qc
     //
     // Returns nanoseconds since epoch
     //
-    s64 now();
+    nodisc s64 now();
 
     //
     // Simple clock usable for most timing-related needs
@@ -37,28 +37,28 @@ namespace qc
         //
         // the fractional number of cycles since the clock started
         //
-        double age() const;
+        nodisc double age() const;
 
         //
         // the integral number or cycles since the clock started
         //
-        int cycles() const;
+        nodisc int cycles() const;
 
         //
         // the fractional part of the current cycle
         //
-        double time() const;
+        nodisc double time() const;
 
         //
         // gets/sets the period
         //
-        double period() const;
+        nodisc double period() const;
         void period(double period);
 
         //
         // gets/sets the frequency
         //
-        double frequency() const;
+        nodisc double frequency() const;
         void frequency(double frequency);
 
       private:

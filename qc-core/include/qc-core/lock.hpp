@@ -30,7 +30,7 @@ namespace qc
 
         void lock();
 
-        bool tryLock();
+        nodisc bool tryLock();
 
         void unlock();
 
@@ -55,7 +55,7 @@ namespace qc
 
         void lock();
 
-        bool tryLock();
+        nodisc bool tryLock();
 
         void unlock();
 

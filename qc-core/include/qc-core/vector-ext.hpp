@@ -12,24 +12,24 @@ namespace qc
     //
     // ...
     //
-    template <Numeric  T, int n> constexpr T sum(const vec<T, n> & v);
+    template <Numeric  T, int n> nodisc constexpr T sum(const vec<T, n> & v);
 
     //
     // ...
     //
-    template <Numeric T, int n> constexpr T product(const vec<T, n> & v);
+    template <Numeric T, int n> nodisc constexpr T product(const vec<T, n> & v);
 
     //
     // ...
     //
-    template <int n> constexpr bool any(bvec<n> v);
-    constexpr bool any(const bool v) { return v; }
+    template <int n> nodisc constexpr bool any(bvec<n> v);
+    nodisc constexpr bool any(const bool v) { return v; }
 
     //
     // ...
     //
-    template <int n> constexpr bool all(bvec<n> v);
-    constexpr bool all(const bool v) { return v; }
+    template <int n> nodisc constexpr bool all(bvec<n> v);
+    nodisc constexpr bool all(const bool v) { return v; }
 
     //
     // ...
@@ -39,38 +39,38 @@ namespace qc
     //
     // ...
     //
-    template <Floating T, int n> vec<T, n> pow(const vec<T, n> & v, T p);
-    template <Floating T, int n> vec<T, n> pow(const vec<T, n> & v, const vec<T, n> & p);
+    template <Floating T, int n> nodisc vec<T, n> pow(const vec<T, n> & v, T p);
+    template <Floating T, int n> nodisc vec<T, n> pow(const vec<T, n> & v, const vec<T, n> & p);
 
     //
     // ...
     //
-    template <Floating T, int n> vec<T, n> exp(const vec<T, n> & v);
+    template <Floating T, int n> nodisc vec<T, n> exp(const vec<T, n> & v);
 
     //
     // ...
     //
-    template <Floating T, int n> T magnitude(const vec<T, n> & v);
+    template <Floating T, int n> nodisc T magnitude(const vec<T, n> & v);
 
     //
     // ...
     //
-    template <Numeric T, int n> T magnitude2(const vec<T, n> & v);
+    template <Numeric T, int n> nodisc T magnitude2(const vec<T, n> & v);
 
     //
     // ...
     //
-    template <Floating T, int n> T distance(const vec<T, n> & v1, const vec<T, n> & v2);
+    template <Floating T, int n> nodisc T distance(const vec<T, n> & v1, const vec<T, n> & v2);
 
     //
     // ...
     //
-    template <Signed T, int n> T distance2(const vec<T, n> & v1, const vec<T, n> & v2);
+    template <Signed T, int n> nodisc T distance2(const vec<T, n> & v1, const vec<T, n> & v2);
 
     //
     // ...
     //
-    template <Floating T, int n> vec<T, n> normalize(const vec<T, n> & v);
+    template <Floating T, int n> nodisc vec<T, n> normalize(const vec<T, n> & v);
 
     //
     // ...
@@ -80,29 +80,29 @@ namespace qc
     //
     // ...
     //
-    template <Numeric T, int n> T dot(const vec<T, n> & v1, const vec<T, n> & v2);
+    template <Numeric T, int n> nodisc T dot(const vec<T, n> & v1, const vec<T, n> & v2);
 
     //
     // ...
     //
-    template <Numeric T> T cross(vec2<T> v1, vec2<T> v2);
-    template <Numeric T> vec3<T> cross(vec3<T> v1, vec3<T> v2);
+    template <Numeric T> nodisc T cross(vec2<T> v1, vec2<T> v2);
+    template <Numeric T> nodisc vec3<T> cross(vec3<T> v1, vec3<T> v2);
 
     //
     // ...
     //
-    template <Numeric T, int n> bool parallel(const vec<T, n> & v1, const vec<T, n> & v2);
+    template <Numeric T, int n> nodisc bool parallel(const vec<T, n> & v1, const vec<T, n> & v2);
 
     //
     // ...
     //
-    template <Numeric T, int n> bool orthogonal(const vec<T, n> & v1, const vec<T, n> & v2);
+    template <Numeric T, int n> nodisc bool orthogonal(const vec<T, n> & v1, const vec<T, n> & v2);
 
     //
     // ...
     //
-    template <Signed T> vec2<T> ortho(const vec2<T> & v);
-    template <Signed T> vec3<T> ortho(const vec3<T> & v);
+    template <Signed T> nodisc vec2<T> ortho(const vec2<T> & v);
+    template <Signed T> nodisc vec3<T> ortho(const vec3<T> & v);
 
     //
     // ...
@@ -114,14 +114,14 @@ namespace qc
     //
     // ...
     //
-    template <Floating T, int n> vec<T, n> reflect(const vec<T, n> & v, const vec<T, n> & norm);
-    template <Floating T, int n> vec<T, n> reflect_n(const vec<T, n> & v, const vec<T, n> & norm);
+    template <Floating T, int n> nodisc vec<T, n> reflect(const vec<T, n> & v, const vec<T, n> & norm);
+    template <Floating T, int n> nodisc vec<T, n> reflect_n(const vec<T, n> & v, const vec<T, n> & norm);
 
     //
     // ...
     //
-    template <Floating T, int n> T angle(const vec<T, n> & v1, const vec<T, n> & v2);
-    template <Floating T, int n> T angle_n(const vec<T, n> & v1, const vec<T, n> & v2);
+    template <Floating T, int n> nodisc T angle(const vec<T, n> & v1, const vec<T, n> & v2);
+    template <Floating T, int n> nodisc T angle_n(const vec<T, n> & v1, const vec<T, n> & v2);
 
     //
     // ...
@@ -131,7 +131,7 @@ namespace qc
     //
     // ...
     //
-    template <Numeric T, int n> constexpr vec<T, n> abs(const vec<T, n> & v);
+    template <Numeric T, int n> nodisc constexpr vec<T, n> abs(const vec<T, n> & v);
 
     //
     // ...
@@ -141,71 +141,71 @@ namespace qc
     //
     // ...
     //
-    template <Numeric T, int n> bool zeroish(const vec<T, n> & v, T e = std::numeric_limits<T>::epsilon());
+    template <Numeric T, int n> nodisc bool zeroish(const vec<T, n> & v, T e = std::numeric_limits<T>::epsilon());
 
     //
     // ...
     //
-    template <Numeric T, int n> bool equalish(const vec<T, n> & v1, const vec<T, n> & v2, T e = std::numeric_limits<T>::epsilon());
-    template <Numeric T, int n> bool equalish(const vec<T, n> & v1, const T v2, T e = std::numeric_limits<T>::epsilon());
+    template <Numeric T, int n> nodisc bool equalish(const vec<T, n> & v1, const vec<T, n> & v2, T e = std::numeric_limits<T>::epsilon());
+    template <Numeric T, int n> nodisc bool equalish(const vec<T, n> & v1, const T v2, T e = std::numeric_limits<T>::epsilon());
 
     //
     // ...
     //
-    template <Numeric T, int n> constexpr vec<T, n> sign(const vec<T, n> & v);
+    template <Numeric T, int n> nodisc constexpr vec<T, n> sign(const vec<T, n> & v);
 
     //
     // ...
     //
-    template <Numeric R, Numeric T, int n> vec<R, n> round(const vec<T, n> & v);
+    template <Numeric R, Numeric T, int n> nodisc vec<R, n> round(const vec<T, n> & v);
 
     //
     // ...
     //
-    template <Numeric R, Numeric T, int n> vec<R, n> floor(const vec<T, n> & v);
+    template <Numeric R, Numeric T, int n> nodisc vec<R, n> floor(const vec<T, n> & v);
 
     //
     // ...
     //
-    template <Numeric R, Numeric T, int n> vec<R, n> ceil(const vec<T, n> & v);
+    template <Numeric R, Numeric T, int n> nodisc vec<R, n> ceil(const vec<T, n> & v);
 
     //
     // ...
     //
-    template <Floating T, int n> vec<T, n> mix(const vec<T, n> & v1, const vec<T, n> & v2, T t);
-    template <Floating T, int n> vec<T, n> mix(const vec<T, n> & v1, const vec<T, n> & v2, vec2<T> weights);
-    template <Floating T, int n> vec<T, n> mix(const vec<T, n> & v1, const vec<T, n> & v2, const vec<T, n> & v3, vec3<T> weights);
-    template <Floating T, int n> vec<T, n> mix(const vec<T, n> & v1, const vec<T, n> & v2, const vec<T, n> & v3, const vec<T, n> & v4, vec4<T> weights);
-    template <Floating T> T mix(T v1, T v2, vec2<T> weights);
-    template <Floating T> T mix(T v1, T v2, T v3, vec3<T> weights);
-    template <Floating T> T mix(T v1, T v2, T v3, T v4, vec4<T> weights);
+    template <Floating T, int n> nodisc vec<T, n> mix(const vec<T, n> & v1, const vec<T, n> & v2, T t);
+    template <Floating T, int n> nodisc vec<T, n> mix(const vec<T, n> & v1, const vec<T, n> & v2, vec2<T> weights);
+    template <Floating T, int n> nodisc vec<T, n> mix(const vec<T, n> & v1, const vec<T, n> & v2, const vec<T, n> & v3, vec3<T> weights);
+    template <Floating T, int n> nodisc vec<T, n> mix(const vec<T, n> & v1, const vec<T, n> & v2, const vec<T, n> & v3, const vec<T, n> & v4, vec4<T> weights);
+    template <Floating T> nodisc T mix(T v1, T v2, vec2<T> weights);
+    template <Floating T> nodisc T mix(T v1, T v2, T v3, vec3<T> weights);
+    template <Floating T> nodisc T mix(T v1, T v2, T v3, T v4, vec4<T> weights);
 
     //
     // ...
     //
-    template <Floating T, int n> vec<T, n> smoothstep(const vec<T, n> & v1, const vec<T, n> & v2, T t);
+    template <Floating T, int n> nodisc vec<T, n> smoothstep(const vec<T, n> & v1, const vec<T, n> & v2, T t);
 
     //
     // Converts between normalized types.
     // Works with floats, signed, and unsigned integers.
     //
-    template <Numeric To, Numeric From, int n> constexpr vec<To, n> transnorm(const vec<From, n> & v);
+    template <Numeric To, Numeric From, int n> nodisc constexpr vec<To, n> transnorm(const vec<From, n> & v);
 
     //
     // ...
     //
-    template <UnsignedIntegral T, int n> constexpr T mipmaps(const vec<T, n> & size);
+    template <UnsignedIntegral T, int n> nodisc constexpr T mipmaps(const vec<T, n> & size);
 
     //
     // ...
     //
-    template <Numeric T, int n> vec<T, n> composite(const vec<T, n> & v1, const vec<T, n> & v2);
+    template <Numeric T, int n> nodisc vec<T, n> composite(const vec<T, n> & v1, const vec<T, n> & v2);
 
     ///
     /// ...
     ///
-    template <Signed T> vec2<T> rotateCW(const vec2<T> & v);
-    template <Signed T> vec2<T> rotateCCW(const vec2<T> & v);
+    template <Signed T> nodisc vec2<T> rotateCW(const vec2<T> & v);
+    template <Signed T> nodisc vec2<T> rotateCCW(const vec2<T> & v);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

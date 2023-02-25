@@ -65,18 +65,18 @@ namespace qc
 
         ~mat() = default;
 
-        constexpr explicit operator bool() const;
+        nodisc constexpr explicit operator bool() const;
 
-        vec2<T> & col(int i);
-        vec2<T> col(int i) const;
+        nodisc vec2<T> & col(int i);
+        nodisc vec2<T> col(int i) const;
 
-        vec2<T> row(int i) const;
+        nodisc vec2<T> row(int i) const;
 
-        template <int i> constexpr vec2<T> row() const;
+        template <int i> nodisc constexpr vec2<T> row() const;
 
-        template <int i> constexpr vec2<T> col() const;
+        template <int i> nodisc constexpr vec2<T> col() const;
 
-        constexpr bool operator==(const mat &) const = default;
+        nodisc constexpr bool operator==(const mat &) const = default;
     };
 
     template <Floating T>
@@ -108,19 +108,18 @@ namespace qc
 
         ~mat() = default;
 
-        constexpr explicit operator bool() const;
+        nodisc constexpr explicit operator bool() const;
 
-        vec3<T> & col(int i);
-        vec3<T> col(int i) const;
+        nodisc vec3<T> & col(int i);
+        nodisc vec3<T> col(int i) const;
 
-        vec3<T> row(int i) const;
+        nodisc vec3<T> row(int i) const;
 
-        template <int i> constexpr vec3<T> row() const;
+        template <int i> nodisc constexpr vec3<T> row() const;
 
-        template <int i> constexpr vec3<T> col() const;
+        template <int i> nodisc constexpr vec3<T> col() const;
 
-        // TODO: [[noexcept]] where applicable
-        constexpr bool operator==(const mat &) const = default;
+        nodisc constexpr bool operator==(const mat &) const = default;
     };
 
     template <Floating T>
@@ -155,18 +154,18 @@ namespace qc
 
         ~mat() = default;
 
-        constexpr explicit operator bool() const;
+        nodisc constexpr explicit operator bool() const;
 
-        vec4<T> & col(int i);
-        vec4<T> col(int i) const;
+        nodisc vec4<T> & col(int i);
+        nodisc vec4<T> col(int i) const;
 
-        vec4<T> row(int i) const;
+        nodisc vec4<T> row(int i) const;
 
-        template <int i> constexpr vec4<T> row() const;
+        template <int i> nodisc constexpr vec4<T> row() const;
 
-        template <int i> constexpr vec4<T> col() const;
+        template <int i> nodisc constexpr vec4<T> col() const;
 
-        constexpr bool operator==(const mat &) const = default;
+        nodisc constexpr bool operator==(const mat &) const = default;
     };
 
     template <typename T, int n> mat<T, n> & operator+=(mat<T, n> & m, T v);
@@ -181,35 +180,35 @@ namespace qc
 
     template <typename T, int n> mat<T, n> & operator/=(mat<T, n> & m, T v);
 
-    template <typename T, int n> constexpr mat<T, n> operator+(const mat<T, n> & m);
+    template <typename T, int n> nodisc constexpr mat<T, n> operator+(const mat<T, n> & m);
 
-    template <typename T, int n> constexpr mat<T, n> operator-(const mat<T, n> & m);
+    template <typename T, int n> nodisc constexpr mat<T, n> operator-(const mat<T, n> & m);
 
-    template <typename T, int n> constexpr mat<T, n> operator+(const mat<T, n> & m1, const mat<T, n> & m2);
-    template <typename T, int n> constexpr mat<T, n> operator+(const mat<T, n> & m, T v);
-    template <typename T, int n> constexpr mat<T, n> operator+(T v, const mat<T, n> & m);
+    template <typename T, int n> nodisc constexpr mat<T, n> operator+(const mat<T, n> & m1, const mat<T, n> & m2);
+    template <typename T, int n> nodisc constexpr mat<T, n> operator+(const mat<T, n> & m, T v);
+    template <typename T, int n> nodisc constexpr mat<T, n> operator+(T v, const mat<T, n> & m);
 
-    template <typename T, int n> constexpr mat<T, n> operator-(const mat<T, n> & m1, const mat<T, n> & m2);
-    template <typename T, int n> constexpr mat<T, n> operator-(const mat<T, n> & m, T v);
-    template <typename T, int n> constexpr mat<T, n> operator-(T v, const mat<T, n> & m);
+    template <typename T, int n> nodisc constexpr mat<T, n> operator-(const mat<T, n> & m1, const mat<T, n> & m2);
+    template <typename T, int n> nodisc constexpr mat<T, n> operator-(const mat<T, n> & m, T v);
+    template <typename T, int n> nodisc constexpr mat<T, n> operator-(T v, const mat<T, n> & m);
 
-    template <typename T, int n> constexpr mat<T, n> operator*(const mat<T, n> & m1, const mat<T, n> & m2);
-    template <typename T, int n> constexpr mat<T, n> operator*(const mat<T, n> & m, T v);
-    template <typename T, int n> constexpr mat<T, n> operator*(T v, const mat<T, n> & m);
-    template <typename T, int n> constexpr vec<T, n> operator*(const mat<T, n> & m, const vec<T, n> & v);
+    template <typename T, int n> nodisc constexpr mat<T, n> operator*(const mat<T, n> & m1, const mat<T, n> & m2);
+    template <typename T, int n> nodisc constexpr mat<T, n> operator*(const mat<T, n> & m, T v);
+    template <typename T, int n> nodisc constexpr mat<T, n> operator*(T v, const mat<T, n> & m);
+    template <typename T, int n> nodisc constexpr vec<T, n> operator*(const mat<T, n> & m, const vec<T, n> & v);
 
-    template <typename T, int n> constexpr mat<T, n> operator/(const mat<T, n> & m, T v);
-    template <typename T, int n> constexpr mat<T, n> operator/(T v, const mat<T, n> & m);
-
-    //
-    // ...
-    //
-    template <typename T, int n> constexpr mat<T, n> fullMat(T v);
+    template <typename T, int n> nodisc constexpr mat<T, n> operator/(const mat<T, n> & m, T v);
+    template <typename T, int n> nodisc constexpr mat<T, n> operator/(T v, const mat<T, n> & m);
 
     //
     // ...
     //
-    template <typename T, int n> constexpr mat<T, n> nullMat();
+    template <typename T, int n> nodisc constexpr mat<T, n> fullMat(T v);
+
+    //
+    // ...
+    //
+    template <typename T, int n> nodisc constexpr mat<T, n> nullMat();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
