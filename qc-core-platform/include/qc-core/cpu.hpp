@@ -17,6 +17,7 @@ namespace qc
     {
         CpuVendor vendor{};
         std::string brandStr{};
+        bool isAvxSupported{};
         bool isAvx2Supported{};
     };
 

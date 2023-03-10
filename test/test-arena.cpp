@@ -204,7 +204,9 @@ TEST(Arena, largeValue)
 
 TEST(Arena, unique)
 {
-    struct Obj { int v{0}; ~Obj() { v = -1; } };
+    static thread_local bool destructed{false};
+
+    struct Obj { int v{0}; ~Obj() { destructed = true; } };
 
     qc::Arena arena{100};
 
@@ -214,28 +216,30 @@ TEST(Arena, unique)
     ASSERT_EQ(&*o1, o1.get());
     ASSERT_TRUE(o1);
 
-    int & v1{o1->v};
     qc::Unq<Obj> o2{std::move(o1)};
-    ASSERT_EQ(1, v1);
+    ASSERT_EQ(1, o2->v);
 
     o1 = std::move(o2);
-    ASSERT_EQ(1, v1);
+    ASSERT_EQ(1, o1->v);
 
+    destructed = false;
     o1 = {};
-    ASSERT_EQ(-1, v1);
+    ASSERT_TRUE(destructed);
     ASSERT_FALSE(o1);
 
+    destructed = false;
     {
         qc::Unq<Obj> o3{arena.createUnique<Obj>(2)};
-        ASSERT_EQ(2, v1);
+        ASSERT_EQ(2, o3->v);
     }
-
-    ASSERT_EQ(-1, v1);
+    ASSERT_TRUE(destructed);
 }
 
 TEST(Arena, shared)
 {
-    struct Obj { int v{0}; ~Obj() { v = -1; } };
+    static thread_local bool destructed{false};
+
+    struct Obj { int v{0}; ~Obj() { destructed = true; } };
 
     qc::Arena arena{100};
 
@@ -245,83 +249,88 @@ TEST(Arena, shared)
     ASSERT_EQ(&*o1, o1.get());
     ASSERT_TRUE(o1);
 
-    int & v1{o1->v};
-    ASSERT_EQ(1, v1);
+    ASSERT_EQ(1, o1->v);
 
     qc::Shr<Obj> o2{std::move(o1)};
-    ASSERT_EQ(1, v1);
+    ASSERT_EQ(1, o2->v);
 
     o1 = std::move(o2);
-    ASSERT_EQ(1, v1);
+    ASSERT_EQ(1, o1->v);
 
+    destructed = false;
     o1 = {};
-    ASSERT_EQ(-1, v1);
+    ASSERT_TRUE(destructed);
     ASSERT_FALSE(o1);
 
     o1 = arena.createShared<Obj>(2);
-    ASSERT_EQ(2, v1);
+    ASSERT_EQ(2, o1->v);
 
     o2 = o1;
-    ASSERT_EQ(2, v1);
+    ASSERT_EQ(2, o2->v);
 
+    destructed = false;
     o1 = {};
-    ASSERT_EQ(2, v1);
+    ASSERT_FALSE(destructed);
 
+    destructed = false;
     o2 = {};
-    ASSERT_EQ(-1, v1);
+    ASSERT_TRUE(destructed);
 
     o1 = arena.createShared<Obj>(3);
-    ASSERT_EQ(3, v1);
+    ASSERT_EQ(3, o1->v);
 
     {
         qc::Shr<Obj> o3{o1};
-        ASSERT_EQ(3, v1);
+        ASSERT_EQ(3, o3->v);
     }
 
-    ASSERT_EQ(3, v1);
+    ASSERT_EQ(3, o1->v);
 
     {
         qc::Shr<Obj> o3{o1};
-        ASSERT_EQ(3, v1);
+        ASSERT_EQ(3, o3->v);
 
+        destructed = false;
         o1 = {};
-        ASSERT_EQ(3, v1);
+        ASSERT_FALSE(destructed);
     }
-
-    ASSERT_EQ(-1, v1);
+    ASSERT_TRUE(destructed);
 }
 
 TEST(Arena, polymorphism)
 {
-    struct A { int x{0}; virtual ~A() { x -= 1; } };
-    struct B : A { int y{0}; ~B() override { x -= 2; } };
+    static thread_local bool aDestructed{false};
+    static thread_local bool bDestructed{false};
+
+    struct A { virtual ~A() { aDestructed = true; } };
+    struct B : A { ~B() override { bDestructed = true; } };
 
     qc::Arena arena{100};
 
     {
         A & a{arena.create<A>()};
-        int & x{a.x};
-        ASSERT_EQ(0, x);
-
+        aDestructed = false;
+        bDestructed = false;
         arena.destroy(a);
-        ASSERT_EQ(-1, x);
+        ASSERT_TRUE(aDestructed);
+        ASSERT_FALSE(bDestructed);
     }
 
     {
         B & b{arena.create<B>()};
-        int & x{b.x};
-        ASSERT_EQ(0, x);
-
+        aDestructed = false;
+        bDestructed = false;
         arena.destroy(b);
-        ASSERT_EQ(-3, x);
+        ASSERT_TRUE(aDestructed);
+        ASSERT_TRUE(bDestructed);
     }
 
     {
         A & a{arena.create<B>()};
-        int & x{a.x};
-        ASSERT_EQ(0, x);
-
+        aDestructed = false;
+        bDestructed = false;
         arena.destroy(a);
-        ASSERT_EQ(-3, x);
+        ASSERT_TRUE(aDestructed);
+        ASSERT_TRUE(bDestructed);
     }
 }

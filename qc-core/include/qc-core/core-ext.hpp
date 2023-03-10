@@ -3,6 +3,7 @@
 #include <cmath>
 
 #include <bit>
+#include <functional>
 
 #include <qc-core/core.hpp>
 

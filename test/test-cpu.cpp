@@ -11,5 +11,6 @@ TEST(Cpu, info)
 
     ASSERT_NE(info.vendor, qc::CpuVendor::unknown);
     ASSERT_FALSE(info.brandStr.empty());
+    ASSERT_TRUE(info.isAvxSupported);
     ASSERT_TRUE(info.isAvx2Supported);
 }

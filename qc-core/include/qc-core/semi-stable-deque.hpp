@@ -127,20 +127,20 @@ namespace qc
     {
         friend SemiStableDeque;
 
-        using _T = std::conditional_t<constant, const T, T>;
-        using _Element = std::conditional_t<constant, const _Element, _Element>;
+        using _T_ = std::conditional_t<constant, const T, T>;
+        using _Element_ = std::conditional_t<constant, const _Element, _Element>;
 
       public:
 
         using iterator_category = std::forward_iterator_tag;
-        using value_type = _T;
+        using value_type = _T_;
         using reference = value_type &;
         using pointer = value_type *;
         using difference_type = s64;
 
         _Iterator() = default;
 
-        _Iterator(const _Iterator<false, reverse> &) requires constant;
+        _Iterator(const _Iterator<false, reverse> &) requires (constant);
 
         _Iterator(const _Iterator &) = default;
 
@@ -159,10 +159,10 @@ namespace qc
 
       private:
 
-        _Element * _elements{};
-        _Element * _element{};
+        _Element_ * _elements{};
+        _Element_ * _element{};
 
-        _Iterator(_Element * elements, _Element * element);
+        _Iterator(_Element_ * elements, _Element_ * element);
     };
 }
 
@@ -434,14 +434,14 @@ namespace qc
 
     template <typename T>
     template <bool constant, bool reverse>
-    SemiStableDeque<T>::_Iterator<constant, reverse>::_Iterator(const _Iterator<false, reverse> & other) requires constant :
+    SemiStableDeque<T>::_Iterator<constant, reverse>::_Iterator(const _Iterator<false, reverse> & other) requires (constant) :
         _elements{other._elements},
         _element{other._element}
     {}
 
     template <typename T>
     template <bool constant, bool reverse>
-    SemiStableDeque<T>::_Iterator<constant, reverse>::_Iterator(_Element * const elements, _Element * const element) :
+    SemiStableDeque<T>::_Iterator<constant, reverse>::_Iterator(_Element_ * const elements, _Element_ * const element) :
         _elements{elements},
         _element{element}
     {}

@@ -126,19 +126,19 @@ namespace qc
     {
         friend class Pool<T, fixed>;
 
-        using _T = std::conditional_t<constant, const T, T>;
-        using _Range = std::conditional_t<constant, const _Range, _Range>;
+        using _T_ = std::conditional_t<constant, const T, T>;
+        using _Range_ = std::conditional_t<constant, const _Range, _Range>;
 
       public:
 
         using iterator_category = std::forward_iterator_tag;
-        using value_type = _T;
-        using reference = _T &;
-        using pointer = _T *;
+        using value_type = _T_;
+        using reference = _T_ &;
+        using pointer = _T_ *;
         using difference_type = s64;
 
         _Iterator(const _Iterator &) = default;
-        _Iterator(const _Iterator<false> &) requires constant;
+        _Iterator(const _Iterator<false> &) requires (constant);
 
         _Iterator & operator=(const _Iterator &) = default;
 
@@ -153,10 +153,10 @@ namespace qc
 
       private:
 
-        _T * _slot{};
-        _Range * _nextFreeRange{};
+        _T_ * _slot{};
+        _Range_ * _nextFreeRange{};
 
-        _Iterator(_T * slot, _Range * nextFreeRange);
+        _Iterator(_T_ * slot, _Range_ * nextFreeRange);
     };
 }
 
@@ -219,7 +219,7 @@ namespace qc
             }
             else
             {
-                freePages(_slotRange.start);
+                freePages(_slotRange.start, this->_maxPageCount);
             }
         }
 
@@ -525,14 +525,14 @@ namespace qc
 
     template <typename T, bool fixed>
     template <bool constant>
-    inline Pool<T, fixed>::_Iterator<constant>::_Iterator(const _Iterator<false> & other) requires constant :
+    inline Pool<T, fixed>::_Iterator<constant>::_Iterator(const _Iterator<false> & other) requires (constant) :
         _slot{other._slot},
         _nextFreeRange{other._nextFreeRange}
     {}
 
     template <typename T, bool fixed>
     template <bool constant>
-    inline Pool<T, fixed>::_Iterator<constant>::_Iterator(_T * const slot, _Range * const nextFreeRange) :
+    inline Pool<T, fixed>::_Iterator<constant>::_Iterator(_T_ * const slot, _Range_ * const nextFreeRange) :
         _slot{slot},
         _nextFreeRange{nextFreeRange}
     {}

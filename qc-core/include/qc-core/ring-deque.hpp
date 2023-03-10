@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstring>
+
 #include <bit>
 #include <iterator>
 #include <new>
@@ -108,7 +110,7 @@ namespace qc
         using difference_type = s64;
 
         Iterator(const Iterator & other) = default;
-        Iterator(const Iterator<false> & other) requires constant;
+        Iterator(const Iterator<false> & other) requires (constant);
 
         nodisc value_type & operator*() const { return *_v; }
 
@@ -403,7 +405,7 @@ namespace qc
 
     template <typename T>
     template <bool constant>
-    inline RingDeque<T>::Iterator<constant>::Iterator(const Iterator<false> & other) requires constant :
+    inline RingDeque<T>::Iterator<constant>::Iterator(const Iterator<false> & other) requires (constant) :
         _v{other._v},
         _start{other._start},
         _end{other._end}

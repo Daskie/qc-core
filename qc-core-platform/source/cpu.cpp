@@ -1,9 +1,11 @@
 #include <qc-core/cpu.hpp>
 
-#ifdef WIN32
+#include <bit>
+
+#ifdef QC_MSVC
     #include <intrin.h>
 #else
-    #error "Platform not yet supported"
+    #include <cpuid.h>
 #endif
 
 namespace qc
@@ -12,10 +14,24 @@ namespace qc
     {
         struct _Regs
         {
-            int eax, ebx, ecx, edx;
+            u32 eax, ebx, ecx, edx;
 
-            int * data() { return &eax; }
+            std::string_view str() const
+            {
+                return {std::bit_cast<const char *>(this), sizeof(*this)};
+            }
         };
+
+        _Regs _cpuid(const u32 id)
+        {
+            _Regs regs;
+            #ifdef QC_MSVC
+                __cpuid(std::bit_cast<int *>(&regs.eax), int(id));
+            #else
+                __cpuid(id, regs.eax, regs.ebx, regs.ecx, regs.edx);
+            #endif
+            return regs;
+        }
 
         CpuInfo _getCpuInfo()
         {
@@ -26,29 +42,12 @@ namespace qc
 
             CpuInfo info{};
 
-            // Process ID 0
+            // Get vendor string and highest valid function ID
+            _Regs regs0{_cpuid(0x0u)};
+            const u32 maxId{regs0.eax};
 
-            _Regs regs{};
-
-            // Calling __cpuid with 0x0 as the function_id argument gets the number of the highest valid function ID
-            __cpuid(regs.data(), 0x0);
-
-            const int maxId{regs.eax};
-
-            // Capture vendor string
-
-            union
-            {
-                int blocks[4u]; // Extra for terminator
-                char chars[16u];
-            } vendorData{};
-
-            vendorData.blocks[0] = regs.ebx;
-            vendorData.blocks[1] = regs.edx;
-            vendorData.blocks[2] = regs.ecx;
-
-            const std::string_view vendorStr{vendorData.chars};
-
+            std::swap(regs0.ecx, regs0.edx);
+            std::string_view vendorStr{regs0.str().substr(4u)};
             if (vendorStr == "GenuineIntel")
             {
                 info.vendor = CpuVendor::intel;
@@ -62,51 +61,34 @@ namespace qc
                 info.vendor = CpuVendor::unknown;
             }
 
-            // Process ID 0x7
-            if (maxId >= 0x7)
+            // Get AVX support
+            if (maxId >= 0x1u)
             {
-                __cpuid(regs.data(), 0x7);
-
-                info.isAvx2Supported = bool(regs.ebx & (1 << 5));
+                const _Regs regs1{_cpuid(0x1u)};
+                info.isAvxSupported = bool(regs1.ecx & (1u << 28));
             }
 
-            // Process extended IDs
-
-            // Calling __cpuid with 0x80000000 as the function_id argument gets the number of the highest valid extended ID
-            __cpuid(regs.data(), 0x80000000);
-
-            const int maxExtId{regs.eax};
-
-            // Capture brand string
-
-            union
+            // Get AVX2 support
+            if (maxId >= 0x7u)
             {
-                int blocks[13u]; // Extra for terminator
-                char chars[52u];
-            } brandData{};
+                const _Regs regs7{_cpuid(0x7u)};
+                info.isAvx2Supported = bool(regs7.ebx & (1u << 5));
+            }
 
+            // Get highest valid extended ID
+            const _Regs extRegs0{_cpuid(0x80000000u)};
+            const u32 maxExtId{extRegs0.eax};
+
+            // Get brand string
             if (maxExtId >= 0x80000004)
             {
-                __cpuid(regs.data(), 0x80000002);
-                brandData.blocks[0] = regs.eax;
-                brandData.blocks[1] = regs.ebx;
-                brandData.blocks[2] = regs.ecx;
-                brandData.blocks[3] = regs.edx;
-
-                __cpuid(regs.data(), 0x80000003);
-                brandData.blocks[4] = regs.eax;
-                brandData.blocks[5] = regs.ebx;
-                brandData.blocks[6] = regs.ecx;
-                brandData.blocks[7] = regs.edx;
-
-                __cpuid(regs.data(), 0x80000004);
-                brandData.blocks[ 8] = regs.eax;
-                brandData.blocks[ 9] = regs.ebx;
-                brandData.blocks[10] = regs.ecx;
-                brandData.blocks[11] = regs.edx;
+                const _Regs extRegs2{_cpuid(0x80000002u)};
+                const _Regs extRegs3{_cpuid(0x80000003u)};
+                const _Regs extRegs4{_cpuid(0x80000004u)};
+                info.brandStr += extRegs2.str();
+                info.brandStr += extRegs3.str();
+                info.brandStr += extRegs4.str();
             }
-
-            info.brandStr = brandData.chars;
 
             return info;
         }

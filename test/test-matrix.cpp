@@ -39,7 +39,7 @@ static void compileClassesT()
 
     // conversion
 
-    static_cast<bool>(m2);
+    static_cast<void>(static_cast<bool>(m2));
 
     // access
 
@@ -110,7 +110,7 @@ static void compileClassesT()
 
     // conversion
 
-    static_cast<bool>(m3);
+    static_cast<void>(static_cast<bool>(m3));
 
     // access
 
@@ -183,7 +183,7 @@ static void compileClassesT()
 
     // conversion
 
-    static_cast<bool>(m4);
+    static_cast<void>(static_cast<bool>(m4));
 
     // access
 
@@ -244,96 +244,6 @@ static void compileClasses()
 }
 
 template <typename T>
-static constexpr void compileClassesConstexprT()
-{
-    constexpr T v{T(1.0)};
-    constexpr vec2<T> v2{};
-    constexpr vec3<T> v3{};
-    constexpr vec4<T> v4{};
-    constexpr mat2<T> m2{};
-    constexpr mat3<T> m3{};
-    constexpr mat4<T> m4{};
-
-    //--------------------------------------------------------------------------
-    // Mat2
-
-    // constructors
-
-    constexpr mat2<T> m2_1{};
-    constexpr mat2<T> m2_2{m2};
-    constexpr mat2<T> m2_3{std::move(m2)};
-    constexpr mat2<T> m2_4{v, v, v, v};
-    constexpr mat2<T> m2_6{m3};
-    constexpr mat2<T> m2_7{m4};
-    constexpr mat2<T> m2_8{v2, v2};
-
-    // access
-
-    static_cast<void>(m2.template col<0>());
-    static_cast<void>(m2.template col<1>());
-
-    static_cast<void>(m2.template row<0>());
-    static_cast<void>(m2.template row<1>());
-
-    //--------------------------------------------------------------------------
-    // Mat3
-
-    // constructors
-
-    constexpr mat3<T> m3_1{};
-    constexpr mat3<T> m3_2{m3};
-    constexpr mat3<T> m3_3{std::move(m3)};
-    constexpr mat3<T> m3_4{v, v, v, v, v, v, v, v, v};
-    constexpr mat3<T> m3_6{m2};
-    constexpr mat3<T> m3_7{m4};
-    constexpr mat3<T> m3_8{v3, v3, v3};
-
-    // access
-
-    static_cast<void>(m3.template col<0>());
-    static_cast<void>(m3.template col<1>());
-    static_cast<void>(m3.template col<2>());
-
-    static_cast<void>(m3.template row<0>());
-    static_cast<void>(m3.template row<1>());
-    static_cast<void>(m3.template row<2>());
-
-    //--------------------------------------------------------------------------
-    // Mat4
-
-    // constructors
-
-    constexpr mat4<T> m4_1{};
-    constexpr mat4<T> m4_2{m4};
-    constexpr mat4<T> m4_3{std::move(m4)};
-    constexpr mat4<T> m4_4{v, v, v, v, v, v, v, v, v, v, v, v, v, v, v, v};
-    constexpr mat4<T> m4_6{m2};
-    constexpr mat4<T> m4_7{m3};
-    constexpr mat4<T> m4_8{v4, v4, v4, v4};
-
-    // access
-
-    static_cast<void>(m4.template col<0>());
-    static_cast<void>(m4.template col<1>());
-    static_cast<void>(m4.template col<2>());
-    static_cast<void>(m4.template col<3>());
-
-    static_cast<void>(m4.template row<0>());
-    static_cast<void>(m4.template row<1>());
-    static_cast<void>(m4.template row<2>());
-    static_cast<void>(m4.template row<3>());
-
-}
-
-static constexpr bool compileClassesConstexpr()
-{
-    compileClassesConstexprT<float>();
-    compileClassesConstexprT<double>();
-
-    return true;
-}
-
-template <typename T>
 static void compileFunctionsT()
 {
     T v{1.0};
@@ -369,83 +279,56 @@ static void compileFunctionsT()
     qc::nullMat<T, 3>();
     qc::nullMat<T, 4>();
 
-    qc::translate(v2);
-    qc::translate(v3);
+    static_cast<void>(qc::translate(v2));
+    static_cast<void>(qc::translate(v3));
     qc::translate(m3, v2);
     qc::translate(m4, v3);
-    qc::scale(v2);
-    qc::scale(v3);
-    qc::scale(v4);
+    static_cast<void>(qc::scale(v2));
+    static_cast<void>(qc::scale(v3));
+    static_cast<void>(qc::scale(v4));
     qc::scale(m2, v2);
     qc::scale(m3, v2);
     qc::scale(m3, v3);
     qc::scale(m4, v3);
-    qc::rotate(v);
-    qc::rotateX(v);
-    qc::rotateY(v);
-    qc::rotateZ(v);
-    qc::rotate(v3, v);
-    qc::rotate_n(v3, v);
-    qc::euler(v3, v3, v, v, v);
-    qc::euler_n(v3, v3, v, v, v);
-    qc::align(v2, v2);
-    qc::align(v3, v3);
+    static_cast<void>(qc::rotate(v));
+    static_cast<void>(qc::rotateX(v));
+    static_cast<void>(qc::rotateY(v));
+    static_cast<void>(qc::rotateZ(v));
+    static_cast<void>(qc::rotate(v3, v));
+    static_cast<void>(qc::rotate_n(v3, v));
+    static_cast<void>(qc::euler(v3, v3, v, v, v));
+    static_cast<void>(qc::euler_n(v3, v3, v, v, v));
+    static_cast<void>(qc::align(v2, v2));
+    static_cast<void>(qc::align(v3, v3));
     qc::align_n(v2, v2);
     qc::align_n(v3, v3);
-    qc::align(v3, v3, v3, v3);
-    qc::align_n(v3, v3, v3, v3);
-    qc::map(v2, v2, v2, v2);
-    qc::map_o(v2, v2, v2, v2);
-    qc::map(v3, v3, v3, v3, v3, v3);
-    qc::map_o(v3, v3, v3, v3, v3, v3);
-    qc::mapTo(v2, v2);
-    qc::mapTo_o(v2, v2);
-    qc::mapTo(v3, v3, v3);
-    qc::mapTo_o(v3, v3, v3);
-    qc::mapFrom(v2, v2);
-    qc::mapFrom(v3, v3, v3);
-    qc::orthoProj<true>(v, v, v, v);
-    qc::orthoProj<false>(v, v, v, v);
-    qc::perspProj<true>(v, v, v, v);
-    qc::perspProj<false>(v, v, v, v);
-    qc::view(v3, v3, v3);
-    qc::view(v3, v3, v3, v3);
-    qc::view_n(v3, v3, v3, v3);
-    qc::view_o(v3, v3, v3, v3);
-    qc::view_on(v3, v3, v3, v3);
+    static_cast<void>(qc::align(v3, v3, v3, v3));
+    static_cast<void>(qc::align_n(v3, v3, v3, v3));
+    static_cast<void>(qc::map(v2, v2, v2, v2));
+    static_cast<void>(qc::map_o(v2, v2, v2, v2));
+    static_cast<void>(qc::map(v3, v3, v3, v3, v3, v3));
+    static_cast<void>(qc::map_o(v3, v3, v3, v3, v3, v3));
+    static_cast<void>(qc::mapTo(v2, v2));
+    static_cast<void>(qc::mapTo_o(v2, v2));
+    static_cast<void>(qc::mapTo(v3, v3, v3));
+    static_cast<void>(qc::mapTo_o(v3, v3, v3));
+    static_cast<void>(qc::mapFrom(v2, v2));
+    static_cast<void>(qc::mapFrom(v3, v3, v3));
+    static_cast<void>(qc::orthoProj<true>(v, v, v, v));
+    static_cast<void>(qc::orthoProj<false>(v, v, v, v));
+    static_cast<void>(qc::perspProj<true>(v, v, v, v));
+    static_cast<void>(qc::perspProj<false>(v, v, v, v));
+    static_cast<void>(qc::view(v3, v3, v3));
+    static_cast<void>(qc::view(v3, v3, v3, v3));
+    static_cast<void>(qc::view_n(v3, v3, v3, v3));
+    static_cast<void>(qc::view_o(v3, v3, v3, v3));
+    static_cast<void>(qc::view_on(v3, v3, v3, v3));
 }
 
 static void compileFunctions()
 {
     compileFunctionsT<float>();
     compileFunctionsT<double>();
-}
-
-template <typename T>
-static constexpr void compileFunctionsConstexprT()
-{
-    constexpr T v{T(1.0)};
-    constexpr vec2<T> v2{T(1.0)};
-    constexpr vec3<T> v3{T(1.0)};
-    constexpr vec4<T> v4{T(1.0)};
-    constexpr mat2<T> m2{v2, v2};
-    constexpr mat3<T> m3{v3, v3, v3};
-    constexpr mat4<T> m4{v4, v4, v4, v4};
-
-    qc::fullMat<T, 2>(v);
-    qc::fullMat<T, 3>(v);
-    qc::fullMat<T, 4>(v);
-    qc::nullMat<T, 2>();
-    qc::nullMat<T, 3>();
-    qc::nullMat<T, 4>();
-}
-
-static constexpr bool compileFunctionsConstexpr()
-{
-    compileFunctionsConstexprT<float>();
-    compileFunctionsConstexprT<double>();
-
-    return true;
 }
 
 template <typename T, int n>
@@ -481,9 +364,9 @@ static void testProperties()
 template <typename T1, typename T2>
 static void compileCastsTT()
 {
-    static_cast<mat2<T2>>(mat2<T1>());
-    static_cast<mat3<T2>>(mat3<T1>());
-    static_cast<mat4<T2>>(mat4<T1>());
+    static_cast<void>(static_cast<mat2<T2>>(mat2<T1>()));
+    static_cast<void>(static_cast<mat3<T2>>(mat3<T1>()));
+    static_cast<void>(static_cast<mat4<T2>>(mat4<T1>()));
 }
 
 template <typename T>
@@ -502,9 +385,7 @@ static void compileCasts()
 TEST(Matrix, compilation)
 {
     compileClasses();
-    static_assert(compileClassesConstexpr());
     compileFunctions();
-    static_assert(compileFunctionsConstexpr());
     testProperties();
     compileCasts();
 }

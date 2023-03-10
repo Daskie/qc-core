@@ -50,6 +50,8 @@ namespace qc
 
         inline static List<Arena *> _arenas{};
 
+        static u64 _pageCount(u64 capacity);
+
         template <typename T> static void _destroy(T & v);
 
         u64 _capacity{};
@@ -100,12 +102,12 @@ namespace qc
             if constexpr (debug)
             {
                 assert(_bubbles.bubbles().size() == 1u);
-
+                #pragma warning(suppress: 4189)
                 const auto & bubble{_bubbles.bubbles().front()};
                 assert(bubble.pos == _memory && u64(bubble.size) * 8u == _capacity);
             }
 
-            freePages(_memory);
+            freePages(_memory, _pageCount(_capacity));
 
             // Remove self from sorted arena list
             auto it{_arenas.begin()};
@@ -130,7 +132,7 @@ namespace qc
             return;
         }
 
-        const u64 pageCount{std::bit_ceil((capacity + (pageSize - 1u)) / pageSize)};
+        const u64 pageCount{_pageCount(capacity)};
         _capacity = pageCount * pageSize;
         _memory = static_cast<u64 *>(reservePages(pageCount));
         _bubbles.add(_memory, s64(_capacity / 8u));
@@ -214,6 +216,11 @@ namespace qc
         decommitPages(reinterpret_cast<std::byte *>(_memory) + necessaryPageCount * pageSize, unnecessaryPageCount);
 
         _size = necessaryPageCount * pageSize;
+    }
+
+    inline u64 Arena::_pageCount(const u64 capacity)
+    {
+        return std::bit_ceil((capacity + (pageSize - 1u)) / pageSize);
     }
 
     template <typename T>

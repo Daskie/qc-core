@@ -114,15 +114,15 @@ namespace qc
     {
         friend class AvlTree<T>;
 
-        using _T = std::conditional_t<constant, const T, T>;
-        using _Node = std::conditional_t<constant, const _Node, _Node>;
+        using _T_ = std::conditional_t<constant, const T, T>;
+        using _Node_ = std::conditional_t<constant, const _Node, _Node>;
 
       public:
 
         using iterator_category = std::bidirectional_iterator_tag;
-        using value_type = _T;
-        using reference = _T &;
-        using pointer = _T *;
+        using value_type = _T_;
+        using reference = _T_ &;
+        using pointer = _T_ *;
         using difference_type = s64;
 
         _Iterator() = default;
@@ -139,9 +139,9 @@ namespace qc
 
       private:
 
-        _Node * _node{};
+        _Node_ * _node{};
 
-        _Iterator(_Node * node);
+        _Iterator(_Node_ * node);
     };
 }
 
@@ -170,7 +170,7 @@ namespace qc
     }
 
     template <typename T>
-    AvlTree<T>::~AvlTree<T>()
+    AvlTree<T>::~AvlTree()
     {
         clear();
     }
@@ -630,7 +630,7 @@ namespace qc
 
     template <typename T>
     template <bool constant>
-    AvlTree<T>::_Iterator<constant>::_Iterator(_Node * const node) :
+    AvlTree<T>::_Iterator<constant>::_Iterator(_Node_ * const node) :
         _node{node}
     {}
 
@@ -645,7 +645,7 @@ namespace qc
         }
         else
         {
-            _Node * prev;
+            _Node_ * prev;
             do {
                 prev = _node;
                 _node = _node->parent;
@@ -675,7 +675,7 @@ namespace qc
         }
         else
         {
-            _Node * prev;
+            _Node_ * prev;
             do
             {
                 prev = _node;

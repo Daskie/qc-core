@@ -33,7 +33,7 @@ static void compileClassesT()
     q = std::move(q);
 
     // conversion
-    static_cast<bool>(q);
+    static_cast<void>(static_cast<bool>(q));
 
     // arithmetic assignment
     q += q;
@@ -44,15 +44,15 @@ static void compileClassesT()
     q /= q;
 
     // arithmetic operators
-    +q;
-    -q;
-    q + q;
-    q - q;
-    q * q;
-    q * v;
-    v * q;
-    q * v3;
-    q / q;
+    static_cast<void>(+q);
+    static_cast<void>(-q);
+    static_cast<void>(q + q);
+    static_cast<void>(q - q);
+    static_cast<void>(q * q);
+    static_cast<void>(q * v);
+    static_cast<void>(v * q);
+    static_cast<void>(q * v3);
+    static_cast<void>(q / q);
 
     // comparison operators
     static_cast<void>(q == q);
@@ -68,35 +68,6 @@ static void compileClasses()
 }
 
 template <typename T>
-static constexpr void compileClassesConstexprT()
-{
-    /*constexpr T v{1.0};
-    constexpr vec3<T> v3(1.0f);
-    constexpr vec4<T> v4(1.0f);
-    constexpr mat3<T> m3(v3, v3, v3);
-    constexpr quat<T> q(v4);
-
-    //--------------------------------------------------------------------------
-    // Quat
-
-    // constructors
-    quat<T> q_1;
-    quat<T> q_2(q);
-    quat<T> q_3(std::move(q));
-    quat<T> q_4(v3, v);
-    quat<T> q_6(v3);
-    quat<T> q_7(v4);*/
-}
-
-static constexpr bool compileClassesConstexpr()
-{
-    compileClassesConstexprT<float>();
-    compileClassesConstexprT<double>();
-
-    return true;
-}
-
-template <typename T>
 static void compileFunctionsT()
 {
     T v{1.0};
@@ -105,53 +76,33 @@ static void compileFunctionsT()
     mat3<T> m3{v3, v3, v3};
     quat<T> q{v4};
 
-    qc::dot(q, q);
-    qc::magnitude(q);
-    qc::magnitude2(q);
-    qc::normalize(q);
-    qc::inverse(q);
-    qc::quatAngle(q);
-    qc::quatAxis(q);
-    qc::quatAxis_n(q);
-    qc::mix(q, q, v);
+    static_cast<void>(qc::dot(q, q));
+    static_cast<void>(qc::magnitude(q));
+    static_cast<void>(qc::magnitude2(q));
+    static_cast<void>(qc::normalize(q));
+    static_cast<void>(qc::inverse(q));
+    static_cast<void>(qc::quatAngle(q));
+    static_cast<void>(qc::quatAxis(q));
+    static_cast<void>(qc::quatAxis_n(q));
+    static_cast<void>(qc::mix(q, q, v));
 
-    qc::rotateQ(v3, v);
-    qc::rotateQ_n(v3, v);
-    qc::alignQ(v3, v3);
-    qc::alignQ_n(v3, v3);
-    qc::alignQ(v3, v3, v3, v3);
-    qc::alignQ_n(v3, v3, v3, v3);
-    qc::eulerQ(v3, v3, v, v, v);
-    qc::eulerQ_n(v3, v3, v, v, v);
-    qc::toMat(q);
-    qc::nlerp(q, q, v);
-    qc::slerp(q, q, v);
+    static_cast<void>(qc::rotateQ(v3, v));
+    static_cast<void>(qc::rotateQ_n(v3, v));
+    static_cast<void>(qc::alignQ(v3, v3));
+    static_cast<void>(qc::alignQ_n(v3, v3));
+    static_cast<void>(qc::alignQ(v3, v3, v3, v3));
+    static_cast<void>(qc::alignQ_n(v3, v3, v3, v3));
+    static_cast<void>(qc::eulerQ(v3, v3, v, v, v));
+    static_cast<void>(qc::eulerQ_n(v3, v3, v, v, v));
+    static_cast<void>(qc::toMat(q));
+    static_cast<void>(qc::nlerp(q, q, v));
+    static_cast<void>(qc::slerp(q, q, v));
 }
 
 static void compileFunctions()
 {
     compileFunctionsT<float>();
     compileFunctionsT<double>();
-}
-
-template <typename T>
-static constexpr void compileFunctionsConstexprT()
-{
-    /*constexpr T v{1.0};
-    constexpr vec3<T> v3(1.0);
-    constexpr vec4<T> v4(1.0);
-    constexpr mat3<T> m3(v3, v3, v3);
-    constexpr quat<T> q(v4);
-
-    //toMat(q);*/
-}
-
-static constexpr bool compileFunctionsConstexpr()
-{
-    compileFunctionsConstexprT<float>();
-    compileFunctionsConstexprT<double>();
-
-    return true;
 }
 
 template <typename T>
@@ -179,7 +130,7 @@ static void testProperties()
 template <typename T1, typename T2>
 static void compileCastsTT()
 {
-    static_cast<quat<T2>>(quat<T1>());
+    static_cast<void>(static_cast<quat<T2>>(quat<T1>()));
 }
 
 template <typename T>
@@ -198,9 +149,7 @@ static void compileCasts()
 TEST(Quaternion, compilation)
 {
     compileClasses();
-    static_assert(compileClassesConstexpr());
     compileFunctions();
-    static_assert(compileFunctionsConstexpr());
     testProperties();
     compileCasts();
 }

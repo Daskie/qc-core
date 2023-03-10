@@ -1,5 +1,6 @@
 #pragma once
 
+#include <atomic>
 #include <bit>
 #include <chrono>
 
@@ -71,12 +72,12 @@ namespace qc
 
       private:
 
-        template <typename> struct _Constants;
-        template <> struct _Constants< u8> { static constexpr int p{ 3}, q{ 2}, r{1}; };
-        template <> struct _Constants<u16> { static constexpr int p{ 4}, q{ 3}, r{2}; };
-        template <> struct _Constants<u32> { static constexpr int p{21}, q{ 9}, r{3}; };
-        template <> struct _Constants<u64> { static constexpr int p{24}, q{11}, r{3}; };
-        static constexpr _Constants<G> _constants{};
+        struct _Constants { int p, q, r; };
+        static constexpr _Constants _constants{
+            Same<G,  u8> ? _Constants{ 3,  2, 1} :
+            Same<G, u16> ? _Constants{ 4,  3, 2} :
+            Same<G, u32> ? _Constants{21,  9, 3} :
+                           _Constants{24, 11, 3}};
 
         inline static std::atomic<G> _globalSeed{G(std::chrono::high_resolution_clock::now().time_since_epoch().count())};
 

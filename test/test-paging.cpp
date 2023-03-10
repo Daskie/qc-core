@@ -3,6 +3,12 @@
 
 #include <gtest/gtest.h>
 
+#ifdef QC_MSVC
+    #define ASSERT_DEATH_IF_MSVC(statement, regex) ASSERT_DEATH(statement, regex)
+#else
+    #define ASSERT_DEATH_IF_MSVC(statement, regex) static_cast<void>(0)
+#endif
+
 using namespace qc::concepts;
 using namespace qc::types;
 
@@ -21,14 +27,19 @@ TEST(Paging, allocate)
         mem[i] = i;
     }
 
-    qc::freePages(nullptr);
-    ASSERT_DEATH(qc::freePages(mem + 1), "");
-    qc::freePages(mem);
-    ASSERT_DEATH(qc::freePages(mem), "");
+    qc::freePages(nullptr, 0u);
+    qc::freePages(nullptr, 1u);
+    qc::freePages(mem, 0u);
+    ASSERT_DEATH(qc::freePages(mem + 1, pageCount), "");
+    ASSERT_DEATH_IF_MSVC(qc::freePages(mem + qc::pageSize * pageCount, 1u), "");
+    qc::freePages(mem, pageCount);
+    ASSERT_DEATH_IF_MSVC(qc::freePages(mem, pageCount), "");
 }
 
 TEST(Paging, reserveCommit)
 {
+    const u64 n{qc::pageSize / sizeof(u64)};
+
     #pragma warning(suppress: 4834)
     ASSERT_EQ(qc::reservePages(0u), nullptr);
 
@@ -41,10 +52,10 @@ TEST(Paging, reserveCommit)
     qc::commitPages(nullptr, 1u);
     qc::commitPages(mem, 0u);
     ASSERT_DEATH(qc::commitPages(mem + 1, 1u), "");
+    ASSERT_DEATH(qc::commitPages(mem + n * 1000u, 1u), "");
 
     qc::commitPages(mem, 1u);
 
-    const u64 n{qc::pageSize / sizeof(u64)};
     for (u64 i{0u}; i < n; ++i)
     {
         mem[i] = i;
@@ -61,13 +72,14 @@ TEST(Paging, reserveCommit)
         mem[i] = i;
     }
 
-    ASSERT_DEATH(qc::commitPages(mem + n * 3u, 1u), "");
-    ASSERT_DEATH(qc::commitPages(mem, 4u), "");
+    ASSERT_DEATH(qc::commitPages(mem + n * 1000u, 1u), "");
+    ASSERT_DEATH_IF_MSVC(qc::commitPages(mem, 4u), "");
 
     qc::decommitPages(nullptr, 0u);
     qc::decommitPages(nullptr, 1u);
     qc::decommitPages(mem, 0u);
     ASSERT_DEATH(qc::decommitPages(mem + 1, 1u), "");
+    ASSERT_DEATH(qc::decommitPages(mem + n * 1000u, 1u), "");
 
     qc::decommitPages(mem + n, 1u);
     mem[0] = 0u;
@@ -79,7 +91,7 @@ TEST(Paging, reserveCommit)
     qc::commitPages(mem + n, 1u);
     mem[n] = 1u;
 
-    ASSERT_DEATH(qc::decommitPages(mem, 4u), "");
+    ASSERT_DEATH_IF_MSVC(qc::decommitPages(mem, 4u), "");
     mem[0] = 0u;
     mem[n] = 1u;
     mem[n * 2u] = 2u;
@@ -89,8 +101,11 @@ TEST(Paging, reserveCommit)
     ASSERT_DEATH(mem[n] = 1u, "");
     ASSERT_DEATH(mem[n * 2u] = 2u, "");
 
-    qc::freePages(nullptr);
-    ASSERT_DEATH(qc::freePages(mem + 1), "");
-    qc::freePages(mem);
-    ASSERT_DEATH(qc::freePages(mem), "");
+    qc::freePages(nullptr, 0u);
+    qc::freePages(nullptr, 1u);
+    qc::freePages(mem, 0u);
+    ASSERT_DEATH(qc::freePages(mem + 1, 3u), "");
+    ASSERT_DEATH_IF_MSVC(qc::freePages(mem + n, 1u), "");
+    qc::freePages(mem, 3u);
+    ASSERT_DEATH_IF_MSVC(qc::freePages(mem, 3u), "");
 }

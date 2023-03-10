@@ -54,6 +54,7 @@ namespace qc
     /// Pages can be committed or not, the memory is freed regardless
     ///
     /// @param pages must be the base page returned by `allocatePages`/`reservePages`; no-op if null
+    /// @param pageCount must be the number of pages returned by `allocatePages`/`reservePages`; no-op if zero
     ///
-    void freePages(void * pages);
+    void freePages(void * pages, u64 pageCount);
 }

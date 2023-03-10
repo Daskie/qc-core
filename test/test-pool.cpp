@@ -77,7 +77,7 @@ TEST(Pool, standard)
 
     // [0|1|2|3|4]
     #pragma warning(suppress: 4834)
-    ASSERT_DEATH(pool.create(5), "");
+    ASSERT_DEATH(static_cast<void>(pool.create(5)), "");
 
     // [0|1|2|3|_]
     pool.destroy(e4);
@@ -300,7 +300,7 @@ TEST(FixedPool, standard)
 
     // [0|1|2|3|4]
     #pragma warning(suppress: 4834)
-    ASSERT_DEATH(pool.create(5), "");
+    ASSERT_DEATH(static_cast<void>(pool.create(5)), "");
 
     // [0|1|2|3|_]
     pool.destroy(e4);

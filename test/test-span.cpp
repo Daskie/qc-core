@@ -212,68 +212,68 @@ static void compileFunctionsT()
     s3 |= s3;
     s4 |= s4;
 
-    s1 + v;
-    s2 + v;
-    s3 + v;
-    s4 + v;
+    static_cast<void>(s1 + v);
+    static_cast<void>(s2 + v);
+    static_cast<void>(s3 + v);
+    static_cast<void>(s4 + v);
 
-    s2 + v2;
-    s3 + v3;
-    s4 + v4;
+    static_cast<void>(s2 + v2);
+    static_cast<void>(s3 + v3);
+    static_cast<void>(s4 + v4);
 
-    v + s1;
-    v + s2;
-    v + s3;
-    v + s4;
+    static_cast<void>(v + s1);
+    static_cast<void>(v + s2);
+    static_cast<void>(v + s3);
+    static_cast<void>(v + s4);
 
-    v2 + s2;
-    v3 + s3;
-    v4 + s4;
+    static_cast<void>(v2 + s2);
+    static_cast<void>(v3 + s3);
+    static_cast<void>(v4 + s4);
 
-    s1 - v;
-    s2 - v;
-    s3 - v;
-    s4 - v;
+    static_cast<void>(s1 - v);
+    static_cast<void>(s2 - v);
+    static_cast<void>(s3 - v);
+    static_cast<void>(s4 - v);
 
-    s2 - v2;
-    s3 - v3;
-    s4 - v4;
+    static_cast<void>(s2 - v2);
+    static_cast<void>(s3 - v3);
+    static_cast<void>(s4 - v4);
 
-    v - s1;
-    v - s2;
-    v - s3;
-    v - s4;
+    static_cast<void>(v - s1);
+    static_cast<void>(v - s2);
+    static_cast<void>(v - s3);
+    static_cast<void>(v - s4);
 
-    v2 - s2;
-    v3 - s3;
-    v4 - s4;
+    static_cast<void>(v2 - s2);
+    static_cast<void>(v3 - s3);
+    static_cast<void>(v4 - s4);
 
-    s1 * v;
-    s2 * v;
-    s3 * v;
-    s4 * v;
+    static_cast<void>(s1 * v);
+    static_cast<void>(s2 * v);
+    static_cast<void>(s3 * v);
+    static_cast<void>(s4 * v);
 
-    s2 * v2;
-    s3 * v3;
-    s4 * v4;
+    static_cast<void>(s2 * v2);
+    static_cast<void>(s3 * v3);
+    static_cast<void>(s4 * v4);
 
-    v * s1;
-    v * s2;
-    v * s3;
-    v * s4;
+    static_cast<void>(v * s1);
+    static_cast<void>(v * s2);
+    static_cast<void>(v * s3);
+    static_cast<void>(v * s4);
 
-    v2 * s2;
-    v3 * s3;
-    v4 * s4;
+    static_cast<void>(v2 * s2);
+    static_cast<void>(v3 * s3);
+    static_cast<void>(v4 * s4);
 
-    s1 / v;
-    s2 / v;
-    s3 / v;
-    s4 / v;
+    static_cast<void>(s1 / v);
+    static_cast<void>(s2 / v);
+    static_cast<void>(s3 / v);
+    static_cast<void>(s4 / v);
 
-    s2 / v2;
-    s3 / v3;
-    s4 / v4;
+    static_cast<void>(s2 / v2);
+    static_cast<void>(s3 / v3);
+    static_cast<void>(s4 / v4);
 
     static_cast<void>(s1 == s1);
     static_cast<void>(s2 == s2);
@@ -285,36 +285,36 @@ static void compileFunctionsT()
     static_cast<void>(s3 != s3);
     static_cast<void>(s4 != s4);
 
-    s1 & s1;
-    s2 & s2;
-    s3 & s3;
-    s4 & s4;
+    static_cast<void>(s1 & s1);
+    static_cast<void>(s2 & s2);
+    static_cast<void>(s3 & s3);
+    static_cast<void>(s4 & s4);
 
-    s1 | s1;
-    s2 | s2;
-    s3 | s3;
-    s4 | s4;
+    static_cast<void>(s1 | s1);
+    static_cast<void>(s2 | s2);
+    static_cast<void>(s3 | s3);
+    static_cast<void>(s4 | s4);
 
     os << s1;
     os << s2;
     os << s3;
     os << s4;
 
-    qc::min(s1, v);
-    qc::min(s2, v);
-    qc::min(s2, v2);
-    qc::min(s3, v);
-    qc::min(s3, v3);
-    qc::min(s4, v);
-    qc::min(s4, v4);
+    static_cast<void>(qc::min(s1, v));
+    static_cast<void>(qc::min(s2, v));
+    static_cast<void>(qc::min(s2, v2));
+    static_cast<void>(qc::min(s3, v));
+    static_cast<void>(qc::min(s3, v3));
+    static_cast<void>(qc::min(s4, v));
+    static_cast<void>(qc::min(s4, v4));
 
-    qc::max(s1, v);
-    qc::max(s2, v);
-    qc::max(s2, v2);
-    qc::max(s3, v);
-    qc::max(s3, v3);
-    qc::max(s4, v);
-    qc::max(s4, v4);
+    static_cast<void>(qc::max(s1, v));
+    static_cast<void>(qc::max(s2, v));
+    static_cast<void>(qc::max(s2, v2));
+    static_cast<void>(qc::max(s3, v));
+    static_cast<void>(qc::max(s3, v3));
+    static_cast<void>(qc::max(s4, v));
+    static_cast<void>(qc::max(s4, v4));
 
     qc::minify(s1, v);
     qc::minify(s2, v);
@@ -332,22 +332,22 @@ static void compileFunctionsT()
     qc::maxify(s4, v);
     qc::maxify(s4, v4);
 
-    qc::round<T>(s1);
-    qc::round<T>(s2);
-    qc::round<T>(s3);
-    qc::round<T>(s4);
+    static_cast<void>(qc::round<T>(s1));
+    static_cast<void>(qc::round<T>(s2));
+    static_cast<void>(qc::round<T>(s3));
+    static_cast<void>(qc::round<T>(s4));
 
     qc::clamp(s1, v, v);
     qc::clamp(s2, v, v);
     qc::clamp(s3, v, v);
     qc::clamp(s4, v, v);
-    qc::clamp(s2, v2, v2);
-    qc::clamp(s3, v3, v3);
-    qc::clamp(s4, v4, v4);
+    static_cast<void>(qc::clamp(s2, v2, v2));
+    static_cast<void>(qc::clamp(s3, v3, v3));
+    static_cast<void>(qc::clamp(s4, v4, v4));
     qc::clamp(v, s1);
-    qc::clamp(v2, s2);
-    qc::clamp(v3, s3);
-    qc::clamp(v4, s4);
+    static_cast<void>(qc::clamp(v2, s2));
+    static_cast<void>(qc::clamp(v3, s3));
+    static_cast<void>(qc::clamp(v4, s4));
 
     qc::clampify(s1, v, v);
     qc::clampify(s2, v, v);
@@ -399,13 +399,13 @@ static void compileFunctionsPT()
 
     s += v;
     s -= v;
-    s + v;
-    s - v;
+    static_cast<void>(s + v);
+    static_cast<void>(s - v);
     static_cast<void>(s == s);
     static_cast<void>(s != s);
     os << s;
-    qc::min(s, p);
-    qc::max(s, p);
+    static_cast<void>(qc::min(s, p));
+    static_cast<void>(qc::max(s, p));
     qc::minify(s, p);
     qc::maxify(s, p);
 }
@@ -482,15 +482,15 @@ static void compileCastsTTN()
     { span<T2, n> s{s3}; }
     { span<T2, n> s{s4}; }
 
-    static_cast<span<T2, n>>(s1);
-    static_cast<span<T2, n>>(s2);
-    static_cast<span<T2, n>>(s3);
-    static_cast<span<T2, n>>(s4);
+    static_cast<void>(static_cast<span<T2, n>>(s1));
+    static_cast<void>(static_cast<span<T2, n>>(s2));
+    static_cast<void>(static_cast<span<T2, n>>(s3));
+    static_cast<void>(static_cast<span<T2, n>>(s4));
 
-    static_cast<bool>(s1);
-    static_cast<bool>(s2);
-    static_cast<bool>(s3);
-    static_cast<bool>(s4);
+    static_cast<void>(static_cast<bool>(s1));
+    static_cast<void>(static_cast<bool>(s2));
+    static_cast<void>(static_cast<bool>(s3));
+    static_cast<void>(static_cast<bool>(s4));
 }
 
 template <typename T1, typename T2>

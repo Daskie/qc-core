@@ -1,5 +1,7 @@
 #pragma once
 
+#include <bit>
+
 #include <qc-core/core.hpp>
 #include <qc-core/list.hpp>
 

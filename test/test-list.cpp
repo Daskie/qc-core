@@ -1349,9 +1349,9 @@ TEST(List, insertRange)
         ASSERT_EQ(list.capacity(), 0u);
         ASSERT_EQ(list.size(), 0u);
 
-        IL<NonTrivial> v{};
+        IL<NonTrivial> v1{};
         NonTrivial::reset();
-        NonTrivial * it{list.insert(list.begin(), v)};
+        NonTrivial * it{list.insert(list.begin(), v1)};
         ASSERT_EQ(NonTrivial::contructions, 0);
         ASSERT_EQ(NonTrivial::assignments, 0);
         ASSERT_EQ(NonTrivial::copies, 0);
@@ -1361,9 +1361,9 @@ TEST(List, insertRange)
         ASSERT_EQ(list.capacity(), 0u);
         ASSERT_EQ(list.size(), 0u);
 
-        v = {1};
+        IL<NonTrivial> v2{1};
         NonTrivial::reset();
-        it = list.insert(list.begin(), v);
+        it = list.insert(list.begin(), v2);
         ASSERT_EQ(NonTrivial::contructions, 1);
         ASSERT_EQ(NonTrivial::assignments, 0);
         ASSERT_EQ(NonTrivial::copies, 1);
@@ -1375,9 +1375,9 @@ TEST(List, insertRange)
         ASSERT_EQ(list, (IL<NonTrivial>{1}));
 
         list.clear();
-        v = {1, 2, 3};
+        IL<NonTrivial> v3{1, 2, 3};
         NonTrivial::reset();
-        it = list.insert(list.begin(), v);
+        it = list.insert(list.begin(), v3);
         ASSERT_EQ(NonTrivial::contructions, 3);
         ASSERT_EQ(NonTrivial::assignments, 0);
         ASSERT_EQ(NonTrivial::copies, 3);
@@ -1388,9 +1388,9 @@ TEST(List, insertRange)
         ASSERT_EQ(list.size(), 3u);
         ASSERT_EQ(list, (IL<NonTrivial>{1, 2, 3}));
 
-        v = {};
+        IL<NonTrivial> v4{};
         NonTrivial::reset();
-        it = list.insert(list.begin(), v);
+        it = list.insert(list.begin(), v4);
         ASSERT_EQ(NonTrivial::contructions, 0);
         ASSERT_EQ(NonTrivial::assignments, 0);
         ASSERT_EQ(NonTrivial::copies, 0);
@@ -1401,9 +1401,9 @@ TEST(List, insertRange)
         ASSERT_EQ(list.size(), 3u);
         ASSERT_EQ(list, (IL<NonTrivial>{1, 2, 3}));
 
-        v = {};
+        IL<NonTrivial> v5{};
         NonTrivial::reset();
-        it = list.insert(list.end(), v);
+        it = list.insert(list.end(), v5);
         ASSERT_EQ(NonTrivial::contructions, 0);
         ASSERT_EQ(NonTrivial::assignments, 0);
         ASSERT_EQ(NonTrivial::copies, 0);
@@ -1414,9 +1414,9 @@ TEST(List, insertRange)
         ASSERT_EQ(list.size(), 3u);
         ASSERT_EQ(list, (IL<NonTrivial>{1, 2, 3}));
 
-        v = {4, 5, 6};
+        IL<NonTrivial> v6{4, 5, 6};
         NonTrivial::reset();
-        it = list.insert(list.begin(), v);
+        it = list.insert(list.begin(), v6);
         ASSERT_EQ(NonTrivial::contructions, 3);
         ASSERT_EQ(NonTrivial::assignments, 3);
         ASSERT_EQ(NonTrivial::copies, 3);
@@ -1427,9 +1427,9 @@ TEST(List, insertRange)
         ASSERT_EQ(list.size(), 6u);
         ASSERT_EQ(list, (IL<NonTrivial>{4, 5, 6, 1, 2, 3}));
 
-        v = {7, 8, 9};
+        IL<NonTrivial> v7{7, 8, 9};
         NonTrivial::reset();
-        it = list.insert(list.end(), v);
+        it = list.insert(list.end(), v7);
         ASSERT_EQ(NonTrivial::contructions, 3);
         ASSERT_EQ(NonTrivial::assignments, 0);
         ASSERT_EQ(NonTrivial::copies, 3);
@@ -1440,9 +1440,9 @@ TEST(List, insertRange)
         ASSERT_EQ(list.size(), 9u);
         ASSERT_EQ(list, (IL<NonTrivial>{4, 5, 6, 1, 2, 3, 7, 8, 9}));
 
-        v = {10, 11, 12};
+        IL<NonTrivial> v8{10, 11, 12};
         NonTrivial::reset();
-        it = list.insert(list.end() - 3, v);
+        it = list.insert(list.end() - 3, v8);
         ASSERT_EQ(NonTrivial::contructions, 3);
         ASSERT_EQ(NonTrivial::assignments, 3);
         ASSERT_EQ(NonTrivial::copies, 3);
@@ -1458,9 +1458,9 @@ TEST(List, insertRange)
         ASSERT_EQ(list.size(), 12u);
         ASSERT_EQ(list, (IL<NonTrivial>{4, 5, 6, 1, 2, 3, 10, 11, 12, 7, 8, 9}));
 
-        v = {};
+        IL<NonTrivial> v9{};
         NonTrivial::reset();
-        it = list.insert(list.begin(), v);
+        it = list.insert(list.begin(), v9);
         ASSERT_EQ(NonTrivial::contructions, 0);
         ASSERT_EQ(NonTrivial::assignments, 0);
         ASSERT_EQ(NonTrivial::copies, 0);
@@ -1471,9 +1471,9 @@ TEST(List, insertRange)
         ASSERT_EQ(list.size(), 12u);
         ASSERT_EQ(list, (IL<NonTrivial>{4, 5, 6, 1, 2, 3, 10, 11, 12, 7, 8, 9}));
 
-        v = {13, 14, 15};
+        IL<NonTrivial> v10{13, 14, 15};
         NonTrivial::reset();
-        it = list.insert(list.begin(), v);
+        it = list.insert(list.begin(), v10);
         ASSERT_EQ(NonTrivial::contructions, 15);
         ASSERT_EQ(NonTrivial::assignments, 0);
         ASSERT_EQ(NonTrivial::copies, 3);
@@ -1490,9 +1490,9 @@ TEST(List, insertRange)
         ASSERT_EQ(list.size(), 12u);
         ASSERT_EQ(list, (IL<NonTrivial>{4, 5, 6, 1, 2, 3, 10, 11, 12, 7, 8, 9}));
 
-        v = {13, 14, 15};
+        IL<NonTrivial> v11{13, 14, 15};
         NonTrivial::reset();
-        it = list.insert(list.end(), v);
+        it = list.insert(list.end(), v11);
         ASSERT_EQ(NonTrivial::contructions, 15);
         ASSERT_EQ(NonTrivial::assignments, 0);
         ASSERT_EQ(NonTrivial::copies, 3);
@@ -1509,9 +1509,9 @@ TEST(List, insertRange)
         ASSERT_EQ(list.size(), 12u);
         ASSERT_EQ(list, (IL<NonTrivial>{4, 5, 6, 1, 2, 3, 10, 11, 12, 7, 8, 9}));
 
-        v = {13, 14, 15};
+        IL<NonTrivial> v12{13, 14, 15};
         NonTrivial::reset();
-        it = list.insert(list.begin() + 6, v);
+        it = list.insert(list.begin() + 6, v12);
         ASSERT_EQ(NonTrivial::contructions, 15);
         ASSERT_EQ(NonTrivial::assignments, 0);
         ASSERT_EQ(NonTrivial::copies, 3);

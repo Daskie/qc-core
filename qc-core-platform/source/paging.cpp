@@ -1,8 +1,9 @@
 #include <qc-core/paging.hpp>
 
 #include <atomic>
+#include <bit>
 
-#ifdef WIN32
+#ifdef QC_MSVC
     #pragma warning(push)
     #pragma warning(disable: 5039)
     #define WIN32_LEAN_AND_MEAN
@@ -10,7 +11,8 @@
     #include <windows.h>
     #pragma warning(pop)
 #else
-    #error "Platform not yet supported"
+    #include <sys/mman.h>
+    #include <unistd.h>
 #endif
 
 namespace qc
@@ -21,9 +23,13 @@ namespace qc
 
         u64 _getPageSize()
         {
-            SYSTEM_INFO sSysInfo;
-            GetSystemInfo(&sSysInfo);
-            return sSysInfo.dwPageSize;
+            #ifdef QC_MSVC
+                SYSTEM_INFO sSysInfo;
+                GetSystemInfo(&sSysInfo);
+                return sSysInfo.dwPageSize;
+            #else
+                return getpagesize();
+            #endif
         }
 
         void _verifyPageSize()
@@ -45,11 +51,23 @@ namespace qc
             return nullptr;
         }
 
-        void * const baseAddress{VirtualAlloc(
-            nullptr,                  // System selects base address
-            pageCount * pageSize,     // Size of allocation
-            MEM_RESERVE | MEM_COMMIT, // Immediately pin pages in physical swap memory
-            PAGE_READWRITE)};         // Grant read/write access
+        void * baseAddress;
+        #ifdef QC_MSVC
+            baseAddress = VirtualAlloc(
+                nullptr, // System selects base address
+                pageCount * pageSize, // Size of allocation
+                MEM_RESERVE | MEM_COMMIT, // Immediately pin pages in physical swap memory
+                PAGE_READWRITE); // Grant read/write access
+        #else
+            baseAddress = mmap(
+                nullptr, // System selects base address
+                pageCount * pageSize,  // Size of allocation
+                PROT_READ | PROT_WRITE, // Allow memory to be used immediately
+                MAP_PRIVATE | MAP_ANONYMOUS, // Mapping private memory, not a file
+                -1, // Anonymous mapping must use -1 for file descriptor
+                0); // No offset
+            ABORT_IF(baseAddress == MAP_FAILED);
+        #endif
 
         ABORT_IF(!baseAddress);
 
@@ -65,11 +83,23 @@ namespace qc
             return nullptr;
         }
 
-        void * const baseAddress{VirtualAlloc(
-            nullptr,              // System selects base address
-            pageCount * pageSize, // Size of allocation
-            MEM_RESERVE,          // Only reserve pages, do not pin physical swap space
-            PAGE_NOACCESS)};      // No access for uncommitted memory
+        void * baseAddress;
+        #ifdef QC_MSVC
+            baseAddress = VirtualAlloc(
+                nullptr, // System selects base address
+                pageCount * pageSize, // Size of allocation
+                MEM_RESERVE, // Only reserve pages, do not pin physical swap space
+                PAGE_NOACCESS); // No access for uncommitted memory
+        #else
+            baseAddress = mmap(
+                nullptr, // System selects base address
+                pageCount * pageSize, // Size of allocation
+                PROT_NONE, // Prevents the memory from being used until its been committed
+                MAP_PRIVATE | MAP_ANONYMOUS, // Mapping private memory, not a file
+                -1, // Anonymous mapping must use -1 for file descriptor
+                0); // No offset
+            ABORT_IF(baseAddress == MAP_FAILED);
+        #endif
 
         ABORT_IF(!baseAddress);
 
@@ -86,11 +116,16 @@ namespace qc
         // Ensure pointer is on page boundary
         ABORT_IF(std::bit_cast<u64>(pageStart) & (pageSize - 1u));
 
-        ABORT_IF(!VirtualAlloc(
-            pageStart,            // Base page address
-            pageCount * pageSize, // Size of commit
-            MEM_COMMIT,           // Actually pin the pages in physical swap space
-            PAGE_READWRITE));     // Grant read/write access
+        #ifdef QC_MSVC
+            ABORT_IF(!VirtualAlloc(
+                pageStart, // Base page address
+                pageCount * pageSize, // Size of commit
+                MEM_COMMIT, // Actually pin the pages in physical swap space
+                PAGE_READWRITE)); // Grant read/write access
+        #else
+            // Make already mapped memory read/writable
+            ABORT_IF(mprotect(pageStart, pageCount * pageSize, PROT_READ | PROT_WRITE));
+        #endif
     }
 
     void decommitPages(void * const pageStart, const u64 pageCount)
@@ -103,15 +138,17 @@ namespace qc
         // Ensure pointer is on page boundary
         ABORT_IF(std::bit_cast<u64>(pageStart) & (pageSize - 1u));
 
-        ABORT_IF(!VirtualFree(
-            pageStart,            // Base page address
-            pageCount * pageSize, // Size of commit
-            MEM_DECOMMIT));       // Actually pin the pages in physical swap space
+        #ifdef QC_MSVC
+            ABORT_IF(!VirtualFree(pageStart, pageCount * pageSize, MEM_DECOMMIT));
+        #else
+            // Make already mapped memory unread/unwritable
+            ABORT_IF(mprotect(pageStart, pageCount * pageSize, PROT_NONE));
+        #endif
     }
 
-    void freePages(void * const pages)
+    void freePages(void * const pages, const u64 pageCount)
     {
-        if (!pages)
+        if (!pages || !pageCount)
         {
             return;
         }
@@ -119,9 +156,10 @@ namespace qc
         // Ensure pointer is on page boundary
         ABORT_IF(std::bit_cast<u64>(pages) & (pageSize - 1u));
 
-        ABORT_IF(!VirtualFree(
-            pages,         // Base page address
-            0u,            // Size of commit
-            MEM_RELEASE)); // Actually pin the pages in physical swap space
+        #ifdef QC_MSVC
+            ABORT_IF(!VirtualFree(pages, 0u, MEM_RELEASE));
+        #else
+            ABORT_IF(munmap(pages, pageCount * pageSize));
+        #endif
     }
 }

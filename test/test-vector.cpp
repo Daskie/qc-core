@@ -35,7 +35,7 @@ static void compileClassesT()
     v2 = std::move(v2);
 
     // Conversion
-    static_cast<bool>(v2);
+    static_cast<void>(static_cast<bool>(v2));
     auto f2{[](const vec2<T>) {}};
     f2(v);
 
@@ -66,7 +66,7 @@ static void compileClassesT()
     v3 = v2;
 
     // Conversion
-    static_cast<bool>(v3);
+    static_cast<void>(static_cast<bool>(v3));
     auto f3{[](const vec3<T>) {}};
     f3(v);
 
@@ -106,7 +106,7 @@ static void compileClassesT()
     v4 = v3;
 
     // Conversion
-    static_cast<bool>(v4);
+    static_cast<void>(static_cast<bool>(v4));
     auto f4{[](const vec4<T>) {}};
     f4(v);
 
@@ -199,79 +199,79 @@ static void compileFunctionsT()
     v3 %= T(1);
     v4 %= T(1);
 
-    ++v2;
-    ++v3;
-    ++v4;
+    static_cast<void>(++v2);
+    static_cast<void>(++v3);
+    static_cast<void>(++v4);
 
-    v2++;
-    v3++;
-    v4++;
+    static_cast<void>(v2++);
+    static_cast<void>(v3++);
+    static_cast<void>(v4++);
 
-    --v2;
-    --v3;
-    --v4;
+    static_cast<void>(--v2);
+    static_cast<void>(--v3);
+    static_cast<void>(--v4);
 
-    v2--;
-    v3--;
-    v4--;
+    static_cast<void>(v2--);
+    static_cast<void>(v3--);
+    static_cast<void>(v4--);
 
-    +v2;
-    +v3;
-    +v4;
+    static_cast<void>(+v2);
+    static_cast<void>(+v3);
+    static_cast<void>(+v4);
 
-    -v2;
-    -v3;
-    -v4;
+    static_cast<void>(-v2);
+    static_cast<void>(-v3);
+    static_cast<void>(-v4);
 
-    v2 + v2;
-    v3 + v3;
-    v4 + v4;
-    v2 + v;
-    v3 + v;
-    v4 + v;
-    v + v2;
-    v + v3;
-    v + v4;
+    static_cast<void>(v2 + v2);
+    static_cast<void>(v3 + v3);
+    static_cast<void>(v4 + v4);
+    static_cast<void>(v2 + v);
+    static_cast<void>(v3 + v);
+    static_cast<void>(v4 + v);
+    static_cast<void>(v + v2);
+    static_cast<void>(v + v3);
+    static_cast<void>(v + v4);
 
-    v2 - v2;
-    v3 - v3;
-    v4 - v4;
-    v2 - v;
-    v3 - v;
-    v4 - v;
-    v - v2;
-    v - v3;
-    v - v4;
+    static_cast<void>(v2 - v2);
+    static_cast<void>(v3 - v3);
+    static_cast<void>(v4 - v4);
+    static_cast<void>(v2 - v);
+    static_cast<void>(v3 - v);
+    static_cast<void>(v4 - v);
+    static_cast<void>(v - v2);
+    static_cast<void>(v - v3);
+    static_cast<void>(v - v4);
 
-    v2 * v2;
-    v3 * v3;
-    v4 * v4;
-    v2 * v;
-    v3 * v;
-    v4 * v;
-    v * v2;
-    v * v3;
-    v * v4;
+    static_cast<void>(v2 * v2);
+    static_cast<void>(v3 * v3);
+    static_cast<void>(v4 * v4);
+    static_cast<void>(v2 * v);
+    static_cast<void>(v3 * v);
+    static_cast<void>(v4 * v);
+    static_cast<void>(v * v2);
+    static_cast<void>(v * v3);
+    static_cast<void>(v * v4);
 
-    v2 / vec2<T>(T(1));
-    v3 / vec3<T>(T(1));
-    v4 / vec4<T>(T(1));
-    v2 / T(1);
-    v3 / T(1);
-    v4 / T(1);
-    v / vec2<T>(T(1));
-    v / vec3<T>(T(1));
-    v / vec4<T>(T(1));
+    static_cast<void>(v2 / vec2<T>(T(1)));
+    static_cast<void>(v3 / vec3<T>(T(1)));
+    static_cast<void>(v4 / vec4<T>(T(1)));
+    static_cast<void>(v2 / T(1));
+    static_cast<void>(v3 / T(1));
+    static_cast<void>(v4 / T(1));
+    static_cast<void>(v / vec2<T>(T(1)));
+    static_cast<void>(v / vec3<T>(T(1)));
+    static_cast<void>(v / vec4<T>(T(1)));
 
-    v2 % vec2<T>(T(1));
-    v3 % vec3<T>(T(1));
-    v4 % vec4<T>(T(1));
-    v2 % T(1);
-    v3 % T(1);
-    v4 % T(1);
-    v % vec2<T>(T(1));
-    v % vec3<T>(T(1));
-    v % vec4<T>(T(1));
+    static_cast<void>(v2 % vec2<T>(T(1)));
+    static_cast<void>(v3 % vec3<T>(T(1)));
+    static_cast<void>(v4 % vec4<T>(T(1)));
+    static_cast<void>(v2 % T(1));
+    static_cast<void>(v3 % T(1));
+    static_cast<void>(v4 % T(1));
+    static_cast<void>(v % vec2<T>(T(1)));
+    static_cast<void>(v % vec3<T>(T(1)));
+    static_cast<void>(v % vec4<T>(T(1)));
 
 
     // comparison
@@ -338,13 +338,13 @@ static void compileFunctionsT()
 
     // condensation
 
-    qc::sum(v2);
-    qc::sum(v3);
-    qc::sum(v4);
+    static_cast<void>(qc::sum(v2));
+    static_cast<void>(qc::sum(v3));
+    static_cast<void>(qc::sum(v4));
 
-    qc::product(v2);
-    qc::product(v3);
-    qc::product(v4);
+    static_cast<void>(qc::product(v2));
+    static_cast<void>(qc::product(v3));
+    static_cast<void>(qc::product(v4));
 
     // other
 
@@ -354,84 +354,84 @@ static void compileFunctionsT()
 
     // uncategorized
 
-    qc::magnitude2(v2);
-    qc::magnitude2(v3);
-    qc::magnitude2(v4);
+    static_cast<void>(qc::magnitude2(v2));
+    static_cast<void>(qc::magnitude2(v3));
+    static_cast<void>(qc::magnitude2(v4));
 
-    qc::dot(v2, v2);
-    qc::dot(v3, v3);
-    qc::dot(v4, v4);
+    static_cast<void>(qc::dot(v2, v2));
+    static_cast<void>(qc::dot(v3, v3));
+    static_cast<void>(qc::dot(v4, v4));
 
-    qc::cross(v2, v2);
-    qc::cross(v3, v3);
+    static_cast<void>(qc::cross(v2, v2));
+    static_cast<void>(qc::cross(v3, v3));
 
-    qc::parallel(v2, v2);
-    qc::parallel(v3, v3);
-    qc::parallel(v4, v4);
+    static_cast<void>(qc::parallel(v2, v2));
+    static_cast<void>(qc::parallel(v3, v3));
+    static_cast<void>(qc::parallel(v4, v4));
 
-    qc::orthogonal(v2, v2);
-    qc::orthogonal(v3, v3);
-    qc::orthogonal(v4, v4);
+    static_cast<void>(qc::orthogonal(v2, v2));
+    static_cast<void>(qc::orthogonal(v3, v3));
+    static_cast<void>(qc::orthogonal(v4, v4));
 
     if constexpr (!std::is_unsigned_v<T>)
     {
-        qc::ortho(v2);
-        qc::ortho(v3);
+        static_cast<void>(qc::ortho(v2));
+        static_cast<void>(qc::ortho(v3));
     }
 
-    qc::min(v2);
-    qc::min(v3);
-    qc::min(v4);
+    static_cast<void>(qc::min(v2));
+    static_cast<void>(qc::min(v3));
+    static_cast<void>(qc::min(v4));
 
-    qc::min(v2, v2);
-    qc::min(v3, v3);
-    qc::min(v4, v4);
+    static_cast<void>(qc::min(v2, v2));
+    static_cast<void>(qc::min(v3, v3));
+    static_cast<void>(qc::min(v4, v4));
 
-    qc::min(v2, v2, v2);
-    qc::min(v3, v3, v3);
-    qc::min(v4, v4, v4);
+    static_cast<void>(qc::min(v2, v2, v2));
+    static_cast<void>(qc::min(v3, v3, v3));
+    static_cast<void>(qc::min(v4, v4, v4));
 
-    qc::min(v2, v2, v2, v2);
-    qc::min(v3, v3, v3, v3);
-    qc::min(v4, v4, v4, v4);
+    static_cast<void>(qc::min(v2, v2, v2, v2));
+    static_cast<void>(qc::min(v3, v3, v3, v3));
+    static_cast<void>(qc::min(v4, v4, v4, v4));
 
-    qc::min(v2, v2, v2, v2, v2);
-    qc::min(v3, v3, v3, v3, v3);
-    qc::min(v4, v4, v4, v4, v4);
+    static_cast<void>(qc::min(v2, v2, v2, v2, v2));
+    static_cast<void>(qc::min(v3, v3, v3, v3, v3));
+    static_cast<void>(qc::min(v4, v4, v4, v4, v4));
 
-    qc::min(v2, v);
-    qc::min(v3, v);
-    qc::min(v4, v);
-    qc::min(v, v2);
-    qc::min(v, v3);
-    qc::min(v, v4);
+    static_cast<void>(qc::min(v2, v));
+    static_cast<void>(qc::min(v3, v));
+    static_cast<void>(qc::min(v4, v));
+    static_cast<void>(qc::min(v, v2));
+    static_cast<void>(qc::min(v, v3));
+    static_cast<void>(qc::min(v, v4));
 
-    qc::max(v2);
-    qc::max(v3);
-    qc::max(v4);
+    static_cast<void>(qc::max(v2));
+    static_cast<void>(qc::max(v3));
+    static_cast<void>(qc::max(v4));
 
-    qc::max(v2, v2);
-    qc::max(v3, v3);
-    qc::max(v4, v4);
+    static_cast<void>(qc::max(v2, v2));
+    static_cast<void>(qc::max(v3, v3));
+    static_cast<void>(qc::max(v4, v4));
 
-    qc::max(v2, v2, v2);
-    qc::max(v3, v3, v3);
-    qc::max(v4, v4, v4);
+    static_cast<void>(qc::max(v2, v2, v2));
+    static_cast<void>(qc::max(v3, v3, v3));
+    static_cast<void>(qc::max(v4, v4, v4));
 
-    qc::max(v2, v2, v2, v2);
-    qc::max(v3, v3, v3, v3);
-    qc::max(v4, v4, v4, v4);
+    static_cast<void>(qc::max(v2, v2, v2, v2));
+    static_cast<void>(qc::max(v3, v3, v3, v3));
+    static_cast<void>(qc::max(v4, v4, v4, v4));
 
-    qc::max(v2, v2, v2, v2, v2);
-    qc::max(v3, v3, v3, v3, v3);
-    qc::max(v4, v4, v4, v4, v4);
+    static_cast<void>(qc::max(v2, v2, v2, v2, v2));
+    static_cast<void>(qc::max(v3, v3, v3, v3, v3));
+    static_cast<void>(qc::max(v4, v4, v4, v4, v4));
 
-    qc::max(v2, v);
-    qc::max(v3, v);
-    qc::max(v4, v);
-    qc::max(v, v2);
-    qc::max(v, v3);
-    qc::max(v, v4);
+    static_cast<void>(qc::max(v2, v));
+    static_cast<void>(qc::max(v3, v));
+    static_cast<void>(qc::max(v4, v));
+    static_cast<void>(qc::max(v, v2));
+    static_cast<void>(qc::max(v, v3));
+    static_cast<void>(qc::max(v, v4));
 
     qc::minify(v2, v2);
     qc::minify(v3, v3);
@@ -447,18 +447,18 @@ static void compileFunctionsT()
     qc::maxify(v3, v);
     qc::maxify(v4, v);
 
-    qc::median(v3);
+    static_cast<void>(qc::median(v3));
 
     qc::sort(v2);
     qc::sort(v3);
     qc::sort(v4);
 
-    qc::clamp(v2, v, v);
-    qc::clamp(v3, v, v);
-    qc::clamp(v4, v, v);
-    qc::clamp(v2, v2, v2);
-    qc::clamp(v3, v3, v3);
-    qc::clamp(v4, v4, v4);
+    static_cast<void>(qc::clamp(v2, v, v));
+    static_cast<void>(qc::clamp(v3, v, v));
+    static_cast<void>(qc::clamp(v4, v, v));
+    static_cast<void>(qc::clamp(v2, v2, v2));
+    static_cast<void>(qc::clamp(v3, v3, v3));
+    static_cast<void>(qc::clamp(v4, v4, v4));
 
     qc::clampify(v2, v, v);
     qc::clampify(v3, v, v);
@@ -467,53 +467,53 @@ static void compileFunctionsT()
     qc::clampify(v3, v3, v3);
     qc::clampify(v4, v4, v4);
 
-    qc::abs(v2);
-    qc::abs(v3);
-    qc::abs(v4);
+    static_cast<void>(qc::abs(v2));
+    static_cast<void>(qc::abs(v3));
+    static_cast<void>(qc::abs(v4));
 
     qc::absify(v2);
     qc::absify(v3);
     qc::absify(v4);
 
-    qc::zeroish(v2);
-    qc::zeroish(v3);
-    qc::zeroish(v4);
+    static_cast<void>(qc::zeroish(v2));
+    static_cast<void>(qc::zeroish(v3));
+    static_cast<void>(qc::zeroish(v4));
 
-    qc::equalish(v2, v2);
-    qc::equalish(v3, v3);
-    qc::equalish(v4, v4);
+    static_cast<void>(qc::equalish(v2, v2));
+    static_cast<void>(qc::equalish(v3, v3));
+    static_cast<void>(qc::equalish(v4, v4));
 
-    qc::equalish(v2, v2, v);
-    qc::equalish(v3, v3, v);
-    qc::equalish(v4, v4, v);
+    static_cast<void>(qc::equalish(v2, v2, v));
+    static_cast<void>(qc::equalish(v3, v3, v));
+    static_cast<void>(qc::equalish(v4, v4, v));
 
-    qc::equalish(v2, v);
-    qc::equalish(v3, v);
-    qc::equalish(v4, v);
+    static_cast<void>(qc::equalish(v2, v));
+    static_cast<void>(qc::equalish(v3, v));
+    static_cast<void>(qc::equalish(v4, v));
 
-    qc::equalish(v2, v, v);
-    qc::equalish(v3, v, v);
-    qc::equalish(v4, v, v);
+    static_cast<void>(qc::equalish(v2, v, v));
+    static_cast<void>(qc::equalish(v3, v, v));
+    static_cast<void>(qc::equalish(v4, v, v));
 
-    qc::sign(v2);
-    qc::sign(v3);
-    qc::sign(v3);
+    static_cast<void>(qc::sign(v2));
+    static_cast<void>(qc::sign(v3));
+    static_cast<void>(qc::sign(v3));
 
-    qc::round<T>(v2);
-    qc::round<T>(v3);
-    qc::round<T>(v4);
+    static_cast<void>(qc::round<T>(v2));
+    static_cast<void>(qc::round<T>(v3));
+    static_cast<void>(qc::round<T>(v4));
 
-    qc::floor<T>(v2);
-    qc::floor<T>(v3);
-    qc::floor<T>(v4);
+    static_cast<void>(qc::floor<T>(v2));
+    static_cast<void>(qc::floor<T>(v3));
+    static_cast<void>(qc::floor<T>(v4));
 
-    qc::ceil<T>(v2);
-    qc::ceil<T>(v3);
-    qc::ceil<T>(v4);
+    static_cast<void>(qc::ceil<T>(v2));
+    static_cast<void>(qc::ceil<T>(v3));
+    static_cast<void>(qc::ceil<T>(v4));
 
-    qc::composite(v2, v2);
-    qc::composite(v3, v3);
-    qc::composite(v4, v4);
+    static_cast<void>(qc::composite(v2, v2));
+    static_cast<void>(qc::composite(v3, v3));
+    static_cast<void>(qc::composite(v4, v4));
 }
 
 template <typename T>
@@ -524,68 +524,68 @@ static void compileFunctionsFT()
     vec3<T> v3{};
     vec4<T> v4{};
 
-    qc::round<s8>(v2);
-    qc::round<s8>(v3);
-    qc::round<s8>(v4);
-    qc::round<s16>(v2);
-    qc::round<s16>(v3);
-    qc::round<s16>(v4);
-    qc::round<s32>(v2);
-    qc::round<s32>(v3);
-    qc::round<s32>(v4);
-    qc::round<s64>(v2);
-    qc::round<s64>(v3);
-    qc::round<s64>(v4);
+    static_cast<void>(qc::round<s8>(v2));
+    static_cast<void>(qc::round<s8>(v3));
+    static_cast<void>(qc::round<s8>(v4));
+    static_cast<void>(qc::round<s16>(v2));
+    static_cast<void>(qc::round<s16>(v3));
+    static_cast<void>(qc::round<s16>(v4));
+    static_cast<void>(qc::round<s32>(v2));
+    static_cast<void>(qc::round<s32>(v3));
+    static_cast<void>(qc::round<s32>(v4));
+    static_cast<void>(qc::round<s64>(v2));
+    static_cast<void>(qc::round<s64>(v3));
+    static_cast<void>(qc::round<s64>(v4));
 
-    qc::floor<s8>(v2);
-    qc::floor<s8>(v3);
-    qc::floor<s8>(v4);
-    qc::floor<s16>(v2);
-    qc::floor<s16>(v3);
-    qc::floor<s16>(v4);
-    qc::floor<s32>(v2);
-    qc::floor<s32>(v3);
-    qc::floor<s32>(v4);
-    qc::floor<s64>(v2);
-    qc::floor<s64>(v3);
-    qc::floor<s64>(v4);
+    static_cast<void>(qc::floor<s8>(v2));
+    static_cast<void>(qc::floor<s8>(v3));
+    static_cast<void>(qc::floor<s8>(v4));
+    static_cast<void>(qc::floor<s16>(v2));
+    static_cast<void>(qc::floor<s16>(v3));
+    static_cast<void>(qc::floor<s16>(v4));
+    static_cast<void>(qc::floor<s32>(v2));
+    static_cast<void>(qc::floor<s32>(v3));
+    static_cast<void>(qc::floor<s32>(v4));
+    static_cast<void>(qc::floor<s64>(v2));
+    static_cast<void>(qc::floor<s64>(v3));
+    static_cast<void>(qc::floor<s64>(v4));
 
-    qc::ceil<s8>(v2);
-    qc::ceil<s8>(v3);
-    qc::ceil<s8>(v4);
-    qc::ceil<s16>(v2);
-    qc::ceil<s16>(v3);
-    qc::ceil<s16>(v4);
-    qc::ceil<s32>(v2);
-    qc::ceil<s32>(v3);
-    qc::ceil<s32>(v4);
-    qc::ceil<s64>(v2);
-    qc::ceil<s64>(v3);
-    qc::ceil<s64>(v4);
+    static_cast<void>(qc::ceil<s8>(v2));
+    static_cast<void>(qc::ceil<s8>(v3));
+    static_cast<void>(qc::ceil<s8>(v4));
+    static_cast<void>(qc::ceil<s16>(v2));
+    static_cast<void>(qc::ceil<s16>(v3));
+    static_cast<void>(qc::ceil<s16>(v4));
+    static_cast<void>(qc::ceil<s32>(v2));
+    static_cast<void>(qc::ceil<s32>(v3));
+    static_cast<void>(qc::ceil<s32>(v4));
+    static_cast<void>(qc::ceil<s64>(v2));
+    static_cast<void>(qc::ceil<s64>(v3));
+    static_cast<void>(qc::ceil<s64>(v4));
 
-    qc::pow(v2, v);
-    qc::pow(v3, v);
-    qc::pow(v4, v);
+    static_cast<void>(qc::pow(v2, v));
+    static_cast<void>(qc::pow(v3, v));
+    static_cast<void>(qc::pow(v4, v));
 
-    qc::pow(v2, v2);
-    qc::pow(v3, v3);
-    qc::pow(v4, v4);
+    static_cast<void>(qc::pow(v2, v2));
+    static_cast<void>(qc::pow(v3, v3));
+    static_cast<void>(qc::pow(v4, v4));
 
-    qc::exp(v2);
-    qc::exp(v3);
-    qc::exp(v4);
+    static_cast<void>(qc::exp(v2));
+    static_cast<void>(qc::exp(v3));
+    static_cast<void>(qc::exp(v4));
 
-    qc::magnitude(v2);
-    qc::magnitude(v3);
-    qc::magnitude(v4);
+    static_cast<void>(qc::magnitude(v2));
+    static_cast<void>(qc::magnitude(v3));
+    static_cast<void>(qc::magnitude(v4));
 
-    qc::distance(v2, v2);
-    qc::distance(v3, v3);
-    qc::distance(v4, v4);
+    static_cast<void>(qc::distance(v2, v2));
+    static_cast<void>(qc::distance(v3, v3));
+    static_cast<void>(qc::distance(v4, v4));
 
-    qc::normalize(v2);
-    qc::normalize(v3);
-    qc::normalize(v4);
+    static_cast<void>(qc::normalize(v2));
+    static_cast<void>(qc::normalize(v3));
+    static_cast<void>(qc::normalize(v4));
 
     qc::normalizeAssign(v2);
     qc::normalizeAssign(v3);
@@ -597,67 +597,67 @@ static void compileFunctionsFT()
     qc::orthogonalize(v3, v3, v3);
     qc::orthogonalize_n(v3, v3, v3);
 
-    qc::reflect(v2, v2);
-    qc::reflect(v3, v3);
+    static_cast<void>(qc::reflect(v2, v2));
+    static_cast<void>(qc::reflect(v3, v3));
 
-    qc::angle(v2, v2);
-    qc::angle_n(v2, v2);
-    qc::angle(v3, v3);
-    qc::angle_n(v3, v3);
-    qc::angle(v4, v4);
-    qc::angle_n(v4, v4);
+    static_cast<void>(qc::angle(v2, v2));
+    static_cast<void>(qc::angle_n(v2, v2));
+    static_cast<void>(qc::angle(v3, v3));
+    static_cast<void>(qc::angle_n(v3, v3));
+    static_cast<void>(qc::angle(v4, v4));
+    static_cast<void>(qc::angle_n(v4, v4));
 
-    qc::mix(v2, v2, v);
-    qc::mix(v3, v3, v);
-    qc::mix(v4, v4, v);
+    static_cast<void>(qc::mix(v2, v2, v));
+    static_cast<void>(qc::mix(v3, v3, v));
+    static_cast<void>(qc::mix(v4, v4, v));
 
-    qc::mix(v, v, v2);
-    qc::mix(v2, v2, v2);
-    qc::mix(v3, v3, v2);
-    qc::mix(v4, v4, v2);
-    qc::mix(v, v, v, v3);
-    qc::mix(v2, v2, v2, v3);
-    qc::mix(v3, v3, v3, v3);
-    qc::mix(v4, v4, v4, v3);
-    qc::mix(v, v, v, v, v4);
-    qc::mix(v2, v2, v2, v2, v4);
-    qc::mix(v3, v3, v3, v3, v4);
-    qc::mix(v4, v4, v4, v4, v4);
+    static_cast<void>(qc::mix(v, v, v2));
+    static_cast<void>(qc::mix(v2, v2, v2));
+    static_cast<void>(qc::mix(v3, v3, v2));
+    static_cast<void>(qc::mix(v4, v4, v2));
+    static_cast<void>(qc::mix(v, v, v, v3));
+    static_cast<void>(qc::mix(v2, v2, v2, v3));
+    static_cast<void>(qc::mix(v3, v3, v3, v3));
+    static_cast<void>(qc::mix(v4, v4, v4, v3));
+    static_cast<void>(qc::mix(v, v, v, v, v4));
+    static_cast<void>(qc::mix(v2, v2, v2, v2, v4));
+    static_cast<void>(qc::mix(v3, v3, v3, v3, v4));
+    static_cast<void>(qc::mix(v4, v4, v4, v4, v4));
 
-    qc::smoothstep(v2, v2, v);
-    qc::smoothstep(v3, v3, v);
-    qc::smoothstep(v4, v4, v);
+    static_cast<void>(qc::smoothstep(v2, v2, v));
+    static_cast<void>(qc::smoothstep(v3, v3, v));
+    static_cast<void>(qc::smoothstep(v4, v4, v));
 
-    qc::transnorm<f32>(v2);
-    qc::transnorm<f32>(v3);
-    qc::transnorm<f32>(v4);
-    qc::transnorm<f64>(v2);
-    qc::transnorm<f64>(v3);
-    qc::transnorm<f64>(v4);
-    qc::transnorm<s8>(v2);
-    qc::transnorm<s8>(v3);
-    qc::transnorm<s8>(v4);
-    qc::transnorm<s16>(v2);
-    qc::transnorm<s16>(v3);
-    qc::transnorm<s16>(v4);
-    qc::transnorm<s32>(v2);
-    qc::transnorm<s32>(v3);
-    qc::transnorm<s32>(v4);
-    qc::transnorm<s64>(v2);
-    qc::transnorm<s64>(v3);
-    qc::transnorm<s64>(v4);
-    qc::transnorm<u8>(v2);
-    qc::transnorm<u8>(v3);
-    qc::transnorm<u8>(v4);
-    qc::transnorm<u16>(v2);
-    qc::transnorm<u16>(v3);
-    qc::transnorm<u16>(v4);
-    qc::transnorm<u32>(v2);
-    qc::transnorm<u32>(v3);
-    qc::transnorm<u32>(v4);
-    qc::transnorm<u64>(v2);
-    qc::transnorm<u64>(v3);
-    qc::transnorm<u64>(v4);
+    static_cast<void>(qc::transnorm<f32>(v2));
+    static_cast<void>(qc::transnorm<f32>(v3));
+    static_cast<void>(qc::transnorm<f32>(v4));
+    static_cast<void>(qc::transnorm<f64>(v2));
+    static_cast<void>(qc::transnorm<f64>(v3));
+    static_cast<void>(qc::transnorm<f64>(v4));
+    static_cast<void>(qc::transnorm<s8>(v2));
+    static_cast<void>(qc::transnorm<s8>(v3));
+    static_cast<void>(qc::transnorm<s8>(v4));
+    static_cast<void>(qc::transnorm<s16>(v2));
+    static_cast<void>(qc::transnorm<s16>(v3));
+    static_cast<void>(qc::transnorm<s16>(v4));
+    static_cast<void>(qc::transnorm<s32>(v2));
+    static_cast<void>(qc::transnorm<s32>(v3));
+    static_cast<void>(qc::transnorm<s32>(v4));
+    static_cast<void>(qc::transnorm<s64>(v2));
+    static_cast<void>(qc::transnorm<s64>(v3));
+    static_cast<void>(qc::transnorm<s64>(v4));
+    static_cast<void>(qc::transnorm<u8>(v2));
+    static_cast<void>(qc::transnorm<u8>(v3));
+    static_cast<void>(qc::transnorm<u8>(v4));
+    static_cast<void>(qc::transnorm<u16>(v2));
+    static_cast<void>(qc::transnorm<u16>(v3));
+    static_cast<void>(qc::transnorm<u16>(v4));
+    static_cast<void>(qc::transnorm<u32>(v2));
+    static_cast<void>(qc::transnorm<u32>(v3));
+    static_cast<void>(qc::transnorm<u32>(v4));
+    static_cast<void>(qc::transnorm<u64>(v2));
+    static_cast<void>(qc::transnorm<u64>(v3));
+    static_cast<void>(qc::transnorm<u64>(v4));
 }
 
 template <typename T>
@@ -667,12 +667,12 @@ static void compileFunctionsST()
     vec2<T> v3{};
     vec2<T> v4{};
 
-    qc::distance2(v2, v2);
-    qc::distance2(v3, v3);
-    qc::distance2(v4, v4);
+    static_cast<void>(qc::distance2(v2, v2));
+    static_cast<void>(qc::distance2(v3, v3));
+    static_cast<void>(qc::distance2(v4, v4));
 
-    qc::rotateCW(v2);
-    qc::rotateCCW(v2);
+    static_cast<void>(qc::rotateCW(v2));
+    static_cast<void>(qc::rotateCCW(v2));
 }
 
 template <typename T>
@@ -685,12 +685,12 @@ static void compileFunctionsSIT()
     vec3<T> v3{};
     vec4<T> v4{};
 
-    qc::transnorm<f32>(v2);
-    qc::transnorm<f32>(v3);
-    qc::transnorm<f32>(v4);
-    qc::transnorm<f64>(v2);
-    qc::transnorm<f64>(v3);
-    qc::transnorm<f64>(v4);
+    static_cast<void>(qc::transnorm<f32>(v2));
+    static_cast<void>(qc::transnorm<f32>(v3));
+    static_cast<void>(qc::transnorm<f32>(v4));
+    static_cast<void>(qc::transnorm<f64>(v2));
+    static_cast<void>(qc::transnorm<f64>(v3));
+    static_cast<void>(qc::transnorm<f64>(v4));
 }
 
 template <typename T>
@@ -730,70 +730,70 @@ static void compileFunctionsUIT()
     v3 <<= 1;
     v4 <<= 1;
 
-    ~v2;
-    ~v3;
-    ~v4;
+    static_cast<void>(~v2);
+    static_cast<void>(~v3);
+    static_cast<void>(~v4);
 
-    v2 & v2;
-    v3 & v3;
-    v4 & v4;
-    v2 & v;
-    v3 & v;
-    v4 & v;
-    v & v2;
-    v & v3;
-    v & v4;
+    static_cast<void>(v2 & v2);
+    static_cast<void>(v3 & v3);
+    static_cast<void>(v4 & v4);
+    static_cast<void>(v2 & v);
+    static_cast<void>(v3 & v);
+    static_cast<void>(v4 & v);
+    static_cast<void>(v & v2);
+    static_cast<void>(v & v3);
+    static_cast<void>(v & v4);
 
-    v2 | v2;
-    v3 | v3;
-    v4 | v4;
-    v2 | v;
-    v3 | v;
-    v4 | v;
-    v | v2;
-    v | v3;
-    v | v4;
+    static_cast<void>(v2 | v2);
+    static_cast<void>(v3 | v3);
+    static_cast<void>(v4 | v4);
+    static_cast<void>(v2 | v);
+    static_cast<void>(v3 | v);
+    static_cast<void>(v4 | v);
+    static_cast<void>(v | v2);
+    static_cast<void>(v | v3);
+    static_cast<void>(v | v4);
 
-    v2 ^ v2;
-    v3 ^ v3;
-    v4 ^ v4;
-    v2 ^ v;
-    v3 ^ v;
-    v4 ^ v;
-    v ^ v2;
-    v ^ v3;
-    v ^ v4;
+    static_cast<void>(v2 ^ v2);
+    static_cast<void>(v3 ^ v3);
+    static_cast<void>(v4 ^ v4);
+    static_cast<void>(v2 ^ v);
+    static_cast<void>(v3 ^ v);
+    static_cast<void>(v4 ^ v);
+    static_cast<void>(v ^ v2);
+    static_cast<void>(v ^ v3);
+    static_cast<void>(v ^ v4);
 
-    v2 >> 1;
-    v3 >> 1;
-    v4 >> 1;
+    static_cast<void>(v2 >> 1);
+    static_cast<void>(v3 >> 1);
+    static_cast<void>(v4 >> 1);
 
-    v2 << 1;
-    v3 << 1;
-    v4 << 1;
+    static_cast<void>(v2 << 1);
+    static_cast<void>(v3 << 1);
+    static_cast<void>(v4 << 1);
 
-    qc::transnorm<f32>(v2);
-    qc::transnorm<f32>(v3);
-    qc::transnorm<f32>(v4);
-    qc::transnorm<f64>(v2);
-    qc::transnorm<f64>(v3);
-    qc::transnorm<f64>(v4);
-    qc::transnorm<u8>(v2);
-    qc::transnorm<u8>(v3);
-    qc::transnorm<u8>(v4);
-    qc::transnorm<u16>(v2);
-    qc::transnorm<u16>(v3);
-    qc::transnorm<u16>(v4);
-    qc::transnorm<u32>(v2);
-    qc::transnorm<u32>(v3);
-    qc::transnorm<u32>(v4);
-    qc::transnorm<u64>(v2);
-    qc::transnorm<u64>(v3);
-    qc::transnorm<u64>(v4);
+    static_cast<void>(qc::transnorm<f32>(v2));
+    static_cast<void>(qc::transnorm<f32>(v3));
+    static_cast<void>(qc::transnorm<f32>(v4));
+    static_cast<void>(qc::transnorm<f64>(v2));
+    static_cast<void>(qc::transnorm<f64>(v3));
+    static_cast<void>(qc::transnorm<f64>(v4));
+    static_cast<void>(qc::transnorm<u8>(v2));
+    static_cast<void>(qc::transnorm<u8>(v3));
+    static_cast<void>(qc::transnorm<u8>(v4));
+    static_cast<void>(qc::transnorm<u16>(v2));
+    static_cast<void>(qc::transnorm<u16>(v3));
+    static_cast<void>(qc::transnorm<u16>(v4));
+    static_cast<void>(qc::transnorm<u32>(v2));
+    static_cast<void>(qc::transnorm<u32>(v3));
+    static_cast<void>(qc::transnorm<u32>(v4));
+    static_cast<void>(qc::transnorm<u64>(v2));
+    static_cast<void>(qc::transnorm<u64>(v3));
+    static_cast<void>(qc::transnorm<u64>(v4));
 
-    qc::mipmaps(v2);
-    qc::mipmaps(v3);
-    qc::mipmaps(v4);
+    static_cast<void>(qc::mipmaps(v2));
+    static_cast<void>(qc::mipmaps(v3));
+    static_cast<void>(qc::mipmaps(v4));
 }
 
 static void compileFunctionsBT()
@@ -803,29 +803,29 @@ static void compileFunctionsBT()
     bvec3 b3{};
     bvec4 b4{};
 
-    b1 && b2;
-    b2 && b1;
-    b2 && b2;
-    b1 && b3;
-    b3 && b1;
-    b3 && b3;
-    b1 && b4;
-    b4 && b1;
-    b4 && b4;
+    static_cast<void>(b1 && b2);
+    static_cast<void>(b2 && b1);
+    static_cast<void>(b2 && b2);
+    static_cast<void>(b1 && b3);
+    static_cast<void>(b3 && b1);
+    static_cast<void>(b3 && b3);
+    static_cast<void>(b1 && b4);
+    static_cast<void>(b4 && b1);
+    static_cast<void>(b4 && b4);
 
-    b1 || b2;
-    b2 || b1;
-    b2 || b2;
-    b1 || b3;
-    b3 || b1;
-    b3 || b3;
-    b1 || b4;
-    b4 || b1;
-    b4 || b4;
+    static_cast<void>(b1 || b2);
+    static_cast<void>(b2 || b1);
+    static_cast<void>(b2 || b2);
+    static_cast<void>(b1 || b3);
+    static_cast<void>(b3 || b1);
+    static_cast<void>(b3 || b3);
+    static_cast<void>(b1 || b4);
+    static_cast<void>(b4 || b1);
+    static_cast<void>(b4 || b4);
 
-    !b2;
-    !b3;
-    !b4;
+    static_cast<void>(!b2);
+    static_cast<void>(!b3);
+    static_cast<void>(!b4);
 
     static_cast<void>(qc::all(b1));
     static_cast<void>(qc::all(b2));

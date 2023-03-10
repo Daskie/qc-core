@@ -44,14 +44,14 @@ TEST(Core, types)
 template <Floating T>
 static void compileNumbersT()
 {
-    qc::infinity<T>;
-    qc::nan<T>;
-    qc::pi<T>;
-    qc::e<T>;
-    qc::phi<T>;
-    qc::sqrt2<T>;
-    qc::sqrt3<T>;
-    qc::sqrt5<T>;
+    static_cast<void>(qc::infinity<T>);
+    static_cast<void>(qc::nan<T>);
+    static_cast<void>(qc::pi<T>);
+    static_cast<void>(qc::e<T>);
+    static_cast<void>(qc::phi<T>);
+    static_cast<void>(qc::sqrt2<T>);
+    static_cast<void>(qc::sqrt3<T>);
+    static_cast<void>(qc::sqrt5<T>);
 }
 #pragma warning(pop)
 
@@ -64,33 +64,45 @@ TEST(Core, numbers)
 TEST(Core, classes)
 {
     qc::Duo<int> d1;
-    d1.a;
-    d1.b;
+    static_cast<void>(d1.a);
+    static_cast<void>(d1.b);
+    static_cast<void>(d1[0u]);
+    static_cast<void>(d1[1u]);
+    static_cast<void>(d1[0]);
+    static_cast<void>(d1[1]);
+    static_cast<void>(d1[false]);
+    static_cast<void>(d1[true]);
     #pragma warning(suppress: 4189)
-    for (int & v : d1);
+    for (int & v : d1) {}
     ASSERT_EQ(std::distance(d1.begin(), d1.end()), 2);
 
     qc::Duo<int, std::string> d2;
-    d2.a;
-    d2.b;
+    static_cast<void>(d2.a);
+    static_cast<void>(d2.b);
 
     qc::Trio<int> t1;
-    t1.a;
-    t1.b;
-    t1.c;
+    static_cast<void>(t1.a);
+    static_cast<void>(t1.b);
+    static_cast<void>(t1.c);
+    static_cast<void>(d1[0u]);
+    static_cast<void>(d1[1u]);
+    static_cast<void>(d1[2u]);
+    static_cast<void>(d1[0]);
+    static_cast<void>(d1[1]);
+    static_cast<void>(d1[2]);
     #pragma warning(suppress: 4189)
-    for (int & v : t1);
+    for (int & v : t1) {}
     ASSERT_EQ(std::distance(t1.begin(), t1.end()), 3);
 
     qc::Trio<int, std::string> t2;
-    t2.a;
-    t2.b;
-    t2.b;
+    static_cast<void>(t2.a);
+    static_cast<void>(t2.b);
+    static_cast<void>(t2.b);
 
     qc::Trio<int, std::string, TestEnum> t3;
-    t3.a;
-    t3.b;
-    t3.b;
+    static_cast<void>(t3.a);
+    static_cast<void>(t3.b);
+    static_cast<void>(t3.b);
 }
 
 template <typename T1, typename T2>
@@ -102,15 +114,15 @@ static void compileFunctionsSITT()
     T1 v1{};
     T2 v2{};
 
-    qc::min(v1, v2);
-    qc::min(v1, v2, v1);
-    qc::min(v1, v2, v1, v2);
-    qc::min(v1, v2, v1, v2, v1);
+    static_cast<void>(qc::min(v1, v2));
+    static_cast<void>(qc::min(v1, v2, v1));
+    static_cast<void>(qc::min(v1, v2, v1, v2));
+    static_cast<void>(qc::min(v1, v2, v1, v2, v1));
 
-    qc::max(v1, v2);
-    qc::max(v1, v2, v1);
-    qc::max(v1, v2, v1, v2);
-    qc::max(v1, v2, v1, v2, v1);
+    static_cast<void>(qc::max(v1, v2));
+    static_cast<void>(qc::max(v1, v2, v1));
+    static_cast<void>(qc::max(v1, v2, v1, v2));
+    static_cast<void>(qc::max(v1, v2, v1, v2, v1));
 
     if constexpr (sizeof(T1) >= sizeof(T2))
     {
@@ -132,15 +144,15 @@ static void compileFunctionsUITT()
     T1 v1{};
     T2 v2{};
 
-    qc::min(v1, v2);
-    qc::min(v1, v2, v1);
-    qc::min(v1, v2, v1, v2);
-    qc::min(v1, v2, v1, v2, v1);
+    static_cast<void>(qc::min(v1, v2));
+    static_cast<void>(qc::min(v1, v2, v1));
+    static_cast<void>(qc::min(v1, v2, v1, v2));
+    static_cast<void>(qc::min(v1, v2, v1, v2, v1));
 
-    qc::max(v1, v2);
-    qc::max(v1, v2, v1);
-    qc::max(v1, v2, v1, v2);
-    qc::max(v1, v2, v1, v2, v1);
+    static_cast<void>(qc::max(v1, v2));
+    static_cast<void>(qc::max(v1, v2, v1));
+    static_cast<void>(qc::max(v1, v2, v1, v2));
+    static_cast<void>(qc::max(v1, v2, v1, v2, v1));
 
     if constexpr (sizeof(T1) >= sizeof(T2))
     {
@@ -162,15 +174,15 @@ static void compileFunctionsFTT()
     T1 v1{};
     T2 v2{};
 
-    qc::min(v1, v2);
-    qc::min(v1, v2, v1);
-    qc::min(v1, v2, v1, v2);
-    qc::min(v1, v2, v1, v2, v1);
+    static_cast<void>(qc::min(v1, v2));
+    static_cast<void>(qc::min(v1, v2, v1));
+    static_cast<void>(qc::min(v1, v2, v1, v2));
+    static_cast<void>(qc::min(v1, v2, v1, v2, v1));
 
-    qc::max(v1, v2);
-    qc::max(v1, v2, v1);
-    qc::max(v1, v2, v1, v2);
-    qc::max(v1, v2, v1, v2, v1);
+    static_cast<void>(qc::max(v1, v2));
+    static_cast<void>(qc::max(v1, v2, v1));
+    static_cast<void>(qc::max(v1, v2, v1, v2));
+    static_cast<void>(qc::max(v1, v2, v1, v2, v1));
 
     if constexpr (sizeof(T1) >= sizeof(T2))
     {
@@ -203,11 +215,11 @@ static void compileFunctionsT()
     T v{1};
     T * vp{};
 
-    qc::min(vp, vp);
-    qc::min(vp, vp, vp);
+    static_cast<void>(qc::min(vp, vp));
+    static_cast<void>(qc::min(vp, vp, vp));
 
-    qc::max(vp, vp);
-    qc::max(vp, vp, vp);
+    static_cast<void>(qc::max(vp, vp));
+    static_cast<void>(qc::max(vp, vp, vp));
 
     qc::minify(vp, vp);
     qc::minify(vp, vp, vp);
@@ -215,31 +227,31 @@ static void compileFunctionsT()
     qc::maxify(vp, vp);
     qc::maxify(vp, vp, vp);
 
-    qc::median(v, v, v);
+    static_cast<void>(qc::median(v, v, v));
 
-    qc::abs(v);
+    static_cast<void>(qc::abs(v));
     qc::absify(v);
 
-    qc::clamp(v, v, v);
+    static_cast<void>(qc::clamp(v, v, v));
 
     qc::clampify(v, v, v);
 
-    qc::zeroish(v);
-    qc::zeroish(v, v);
+    static_cast<void>(qc::zeroish(v));
+    static_cast<void>(qc::zeroish(v, v));
 
-    qc::equalish(v, v);
-    qc::equalish(v, v, v);
+    static_cast<void>(qc::equalish(v, v));
+    static_cast<void>(qc::equalish(v, v, v));
 
-    qc::sign(v);
+    static_cast<void>(qc::sign(v));
 
-    qc::round<T>(v);
+    static_cast<void>(qc::round<T>(v));
 
-    qc::floor<T>(v);
+    static_cast<void>(qc::floor<T>(v));
 
-    qc::ceil<T>(v);
+    static_cast<void>(qc::ceil<T>(v));
 
-    qc::mod(v, v);
-    qc::mod_q(v, v);
+    static_cast<void>(qc::mod(v, v));
+    static_cast<void>(qc::mod_q(v, v));
 }
 
 template <typename T>
@@ -267,7 +279,7 @@ static void compileFunctionsUIT()
 
     T v{1u};
 
-    qc::log2Floor(v);
+    static_cast<void>(qc::log2Floor(v));
 }
 
 template <typename T>
@@ -278,41 +290,41 @@ static void compileFunctionsFT()
 
     T v{1.0};
 
-    qc::equalish(v, v);
-    qc::equalish(v, v, v);
+    static_cast<void>(qc::equalish(v, v));
+    static_cast<void>(qc::equalish(v, v, v));
 
-    qc::round<s8>(v);
-    qc::round<s16>(v);
-    qc::round<s32>(v);
-    qc::round<s64>(v);
+    static_cast<void>(qc::round<s8>(v));
+    static_cast<void>(qc::round<s16>(v));
+    static_cast<void>(qc::round<s32>(v));
+    static_cast<void>(qc::round<s64>(v));
 
-    qc::floor<s8>(v);
-    qc::floor<s16>(v);
-    qc::floor<s32>(v);
-    qc::floor<s64>(v);
+    static_cast<void>(qc::floor<s8>(v));
+    static_cast<void>(qc::floor<s16>(v));
+    static_cast<void>(qc::floor<s32>(v));
+    static_cast<void>(qc::floor<s64>(v));
 
-    qc::ceil<s8>(v);
-    qc::ceil<s16>(v);
-    qc::ceil<s32>(v);
-    qc::ceil<s64>(v);
+    static_cast<void>(qc::ceil<s8>(v));
+    static_cast<void>(qc::ceil<s16>(v));
+    static_cast<void>(qc::ceil<s32>(v));
+    static_cast<void>(qc::ceil<s64>(v));
 
-    qc::pow(v, v);
-    qc::pow(v, 1);
-    qc::pow(v, 1u);
+    static_cast<void>(qc::pow(v, v));
+    static_cast<void>(qc::pow(v, 1));
+    static_cast<void>(qc::pow(v, 1u));
 
-    qc::fract(v);
-    qc::fract_i<s8>(v);
-    qc::fract_i<s16>(v);
-    qc::fract_i<s32>(v);
-    qc::fract_i<s64>(v);
+    static_cast<void>(qc::fract(v));
+    static_cast<void>(qc::fract_i<s8>(v));
+    static_cast<void>(qc::fract_i<s16>(v));
+    static_cast<void>(qc::fract_i<s32>(v));
+    static_cast<void>(qc::fract_i<s64>(v));
 
-    qc::mix(v, v, v);
+    static_cast<void>(qc::mix(v, v, v));
 
-    qc::unmix(v, v, v);
+    static_cast<void>(qc::unmix(v, v, v));
 
-    qc::radians(v);
+    static_cast<void>(qc::radians(v));
 
-    qc::degrees(v);
+    static_cast<void>(qc::degrees(v));
 }
 
 TEST(Core, functions)

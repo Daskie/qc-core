@@ -488,8 +488,8 @@ namespace qc
     template <typename T>
     inline mat3<T> rotate_n(const vec3<T> axis, const T angle)
     {
-        const T s{sin(angle)};
-        const T c{cos(angle)};
+        const T s{std::sin(angle)};
+        const T c{std::cos(angle)};
         const T cm{T(1.0) - c};
         const T xs{axis.x * s};
         const T ys{axis.y * s};

@@ -11,9 +11,9 @@ namespace
     void compileNext()
     {
         qc::Random<G> r{};
-        static_cast<void>(r.next<T>());
-        static_cast<void>(r.next<T>(T{}));
-        static_cast<void>(r.next<T>(T{}, T{}));
+        static_cast<void>(r.template next<T>());
+        static_cast<void>(r.template next<T>(T{}));
+        static_cast<void>(r.template next<T>(T{}, T{}));
     }
 
     template <typename G>
