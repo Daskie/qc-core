@@ -4,7 +4,7 @@
 
 template <typename T> using IL = std::initializer_list<T>;
 
-using namespace qc::types;
+using namespace qc::primitives;
 
 struct NonTrivial
 {

@@ -2,8 +2,8 @@
 
 #include <gtest/gtest.h>
 
-using namespace qc::concepts;
 using namespace qc::types;
+using namespace qc::primitives;
 
 TEST(Arena, setCapacity)
 {

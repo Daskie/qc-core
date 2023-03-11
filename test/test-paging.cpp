@@ -9,8 +9,8 @@
     #define ASSERT_DEATH_IF_MSVC(statement, regex) static_cast<void>(0)
 #endif
 
-using namespace qc::concepts;
 using namespace qc::types;
+using namespace qc::primitives;
 
 TEST(Paging, allocate)
 {

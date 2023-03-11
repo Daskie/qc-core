@@ -5,8 +5,8 @@
 
 #include <gtest/gtest.h>
 
-using namespace qc::concepts;
 using namespace qc::types;
+using namespace qc::primitives;
 
 template <typename T> using Deque = qc::RingDeque<T>;
 

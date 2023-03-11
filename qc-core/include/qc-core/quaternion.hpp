@@ -6,7 +6,7 @@ namespace qc
 {
     template <Floating T> struct quat;
 
-    inline namespace types
+    inline namespace primitives
     {
         using qc::quat;
 
@@ -43,30 +43,28 @@ namespace qc
         nodisc constexpr bool operator==(const quat &) const = default;
     };
 
-    template <Floating T> quat<T> & operator+=(quat<T> & q1, const quat<T> & q2);
+    template <Floating T2, FloatingSuperOf<T2> T1> quat<T1> & operator+=(quat<T1> & q1, const quat<T2> & q2);
 
-    template <Floating T> quat<T> & operator-=(quat<T> & q1, const quat<T> & q2);
+    template <Floating T2, FloatingSuperOf<T2> T1> quat<T1> & operator-=(quat<T1> & q1, const quat<T2> & q2);
 
-    template <Floating T> quat<T> & operator*=(quat<T> & q1, const quat<T> & q2);
-    template <Floating T> quat<T> & operator*=(quat<T> & q, T v);
-    template <Floating T> vec3<T> & operator*=(vec3<T> & v, const quat<T> & q); // THIS IS EQUIVALENT TO v = q * v !!!
+    template <Floating T2, FloatingSuperOf<T2> T1> quat<T1> & operator*=(quat<T1> & q1, const quat<T2> & q2);
+    template <Floating T2, FloatingSuperOf<T2> T1> quat<T1> & operator*=(quat<T1> & q, T2 v);
+    template <Floating T2, FloatingSuperOf<T2> T1> vec3<T1> & operator*=(vec3<T1> & v, const quat<T2> & q); // THIS IS EQUIVALENT TO v = q * v !!!
 
-    template <Floating T> quat<T> & operator/=(quat<T> & q1, const quat<T> & q2);
+    template <Floating T2, FloatingSuperOf<T2> T1> quat<T1> & operator/=(quat<T1> & q1, const quat<T2> & q2);
 
     template <Floating T> nodisc constexpr quat<T> operator+(const quat<T> & q);
 
     template <Floating T> nodisc constexpr quat<T> operator-(const quat<T> & q);
 
-    template <Floating T> nodisc constexpr quat<T> operator+(const quat<T> & q1, const quat<T> & q2);
+    template <Floating T1, Floating T2> nodisc constexpr quat<LargerOf<T1, T2>> operator+(const quat<T1> & q1, const quat<T2> & q2);
 
-    template <Floating T> nodisc constexpr quat<T> operator-(const quat<T> & q1, const quat<T> & q2);
+    template <Floating T1, Floating T2> nodisc constexpr quat<LargerOf<T1, T2>> operator-(const quat<T1> & q1, const quat<T2> & q2);
 
-    template <Floating T> nodisc constexpr quat<T> operator*(const quat<T> & q1, const quat<T> & q2);
-    template <Floating T> nodisc constexpr quat<T> operator*(const quat<T> & q, T v);
-    template <Floating T> nodisc constexpr quat<T> operator*(T v, const quat<T> & q);
-    template <Floating T> nodisc constexpr vec3<T> operator*(const quat<T> & q, vec3<T> v);
-
-    template <Floating T> nodisc constexpr quat<T> operator/(const quat<T> & q1, const quat<T> & q2);
+    template <Floating T1, Floating T2> nodisc constexpr quat<LargerOf<T1, T2>> operator*(const quat<T1> & q1, const quat<T2> & q2);
+    template <Floating T1, Floating T2> nodisc constexpr quat<LargerOf<T1, T2>> operator*(const quat<T1> & q, T2 v);
+    template <Floating T1, Floating T2> nodisc constexpr quat<LargerOf<T1, T2>> operator*(T1 v, const quat<T2> & q);
+    template <Floating T1, Floating T2> nodisc constexpr vec3<LargerOf<T1, T2>> operator*(const quat<T1> & q, vec3<T2> v);
 
 }
 
@@ -101,38 +99,38 @@ namespace qc
         return !a && w == T(1.0);
     }
 
-    template <Floating T>
-    forceinline quat<T> & operator+=(quat<T> & q1, const quat<T> & q2)
+    template <Floating T2, FloatingSuperOf<T2> T1>
+    forceinline quat<T1> & operator+=(quat<T1> & q1, const quat<T2> & q2)
     {
         return q1 = q1 + q2;
     }
 
-    template <Floating T>
-    forceinline quat<T> & operator-=(quat<T> & q1, const quat<T> & q2)
+    template <Floating T2, FloatingSuperOf<T2> T1>
+    forceinline quat<T1> & operator-=(quat<T1> & q1, const quat<T2> & q2)
     {
         return q1 = q1 - q2;
     }
 
-    template <Floating T>
-    forceinline quat<T> & operator*=(quat<T> & q1, const quat<T> & q2)
+    template <Floating T2, FloatingSuperOf<T2> T1>
+    forceinline quat<T1> & operator*=(quat<T1> & q1, const quat<T2> & q2)
     {
         return q1 = q1 * q2;
     }
 
-    template <Floating T>
-    forceinline quat<T> & operator*=(quat<T> & q, const T v)
+    template <Floating T2, FloatingSuperOf<T2> T1>
+    forceinline quat<T1> & operator*=(quat<T1> & q, const T2 v)
     {
         return q = q * v;
     }
 
-    template <Floating T>
-    forceinline vec3<T> & operator*=(vec3<T> & v, const quat<T> & q)
+    template <Floating T2, FloatingSuperOf<T2> T1>
+    forceinline vec3<T1> & operator*=(vec3<T1> & v, const quat<T2> & q)
     {
         return v = q * v;
     }
 
-    template <Floating T>
-    forceinline quat<T> & operator/=(quat<T> & q1, const quat<T> & q2)
+    template <Floating T2, FloatingSuperOf<T2> T1>
+    forceinline quat<T1> & operator/=(quat<T1> & q1, const quat<T2> & q2)
     {
         return q1 = q1 / q2;
     }
@@ -149,47 +147,41 @@ namespace qc
         return {-q.a, -q.w};
     }
 
-    template <Floating T>
-    forceinline constexpr quat<T> operator+(const quat<T> & q1, const quat<T> & q2)
+    template <Floating T1, Floating T2>
+    forceinline constexpr quat<LargerOf<T1, T2>> operator+(const quat<T1> & q1, const quat<T2> & q2)
     {
         return {q1.a + q2.a, q1.w + q2.w};
     }
 
-    template <Floating T>
-    forceinline constexpr quat<T> operator-(const quat<T> & q1, const quat<T> & q2)
+    template <Floating T1, Floating T2>
+    forceinline constexpr quat<LargerOf<T1, T2>> operator-(const quat<T1> & q1, const quat<T2> & q2)
     {
         return {q1.a - q2.a, q1.w - q2.w};
     }
 
-    template <Floating T>
-    forceinline constexpr quat<T> operator*(const quat<T> & q1, const quat<T> & q2)
+    template <Floating T1, Floating T2>
+    forceinline constexpr quat<LargerOf<T1, T2>> operator*(const quat<T1> & q1, const quat<T2> & q2)
     {
         return {
             q1.w * q2.a + q2.w * q1.a + cross(q1.a, q2.a),
             q1.w * q2.w - dot(q1.a, q2.a)};
     }
 
-    template <Floating T>
-    forceinline constexpr quat<T> operator*(const quat<T> & q, const T v)
+    template <Floating T1, Floating T2>
+    forceinline constexpr quat<LargerOf<T1, T2>> operator*(const quat<T1> & q, const T2 v)
     {
         return {q.a * v, q.w * v};
     }
 
-    template <Floating T>
-    forceinline constexpr quat<T> operator*(const T v, const quat<T> & q)
+    template <Floating T1, Floating T2>
+    forceinline constexpr quat<LargerOf<T1, T2>> operator*(const T1 v, const quat<T2> & q)
     {
         return {v * q.a, v * q.w};
     }
 
-    template <Floating T>
-    forceinline constexpr vec3<T> operator*(const quat<T> & q, const vec3<T> v)
+    template <Floating T1, Floating T2>
+    forceinline constexpr vec3<LargerOf<T1, T2>> operator*(const quat<T1> & q, const vec3<T2> v)
     {
-        return v + cross(T(2.0) * q.a, cross(q.a, v) + q.w * v);
-    }
-
-    template <Floating T>
-    forceinline constexpr quat<T> operator/(const quat<T> & q1, const quat<T> & q2)
-    {
-        return {q1.a * q2.w - q2.a * q1.w - cross(q1.a, q2.a), dot(q1, q2)};
+        return v + cross(T1(2.0) * q.a, cross(q.a, v) + q.w * v);
     }
 }

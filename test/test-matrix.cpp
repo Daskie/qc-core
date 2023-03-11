@@ -4,8 +4,8 @@
 
 #include <gtest/gtest.h>
 
-using namespace qc::concepts;
 using namespace qc::types;
+using namespace qc::primitives;
 
 template <typename T>
 static void compileClassesT()
@@ -67,18 +67,18 @@ static void compileClassesT()
 
     +m2;
     -m2;
-    m2 + m2;
-    m2 + v;
-    v + m2;
-    m2 - m2;
-    m2 - v;
-    v - m2;
-    m2 * m2;
-    m2 * v;
-    v * m2;
-    m2 * v2;
-    m2 / T(1);
-    T(1) / m2;
+    static_cast<void>(m2 + m2);
+    static_cast<void>(m2 + v);
+    static_cast<void>(v + m2);
+    static_cast<void>(m2 - m2);
+    static_cast<void>(m2 - v);
+    static_cast<void>(v - m2);
+    static_cast<void>(m2 * m2);
+    static_cast<void>(m2 * v);
+    static_cast<void>(v * m2);
+    static_cast<void>(m2 * v2);
+    static_cast<void>(m2 / T(1));
+    static_cast<void>(T(1) / m2);
 
     // comparison operators
 
@@ -140,18 +140,18 @@ static void compileClassesT()
 
     +m3;
     -m3;
-    m3 + m3;
-    m3 + v;
-    v + m3;
-    m3 - m3;
-    m3 - v;
-    v - m3;
-    m3 * m3;
-    m3 * v;
-    v * m3;
-    m3 * v3;
-    m3 / T(1);
-    T(1) / m3;
+    static_cast<void>(m3 + m3);
+    static_cast<void>(m3 + v);
+    static_cast<void>(v + m3);
+    static_cast<void>(m3 - m3);
+    static_cast<void>(m3 - v);
+    static_cast<void>(v - m3);
+    static_cast<void>(m3 * m3);
+    static_cast<void>(m3 * v);
+    static_cast<void>(v * m3);
+    static_cast<void>(m3 * v3);
+    static_cast<void>(m3 / T(1));
+    static_cast<void>(T(1) / m3);
 
     // comparison operators
 
@@ -215,18 +215,18 @@ static void compileClassesT()
 
     +m4;
     -m4;
-    m4 + m4;
-    m4 + v;
-    v + m4;
-    m4 - m4;
-    m4 - v;
-    v - m4;
-    m4 * m4;
-    m4 * v;
-    v * m4;
-    m4 * v4;
-    m4 / T(1);
-    T(1) / m4;
+    static_cast<void>(m4 + m4);
+    static_cast<void>(m4 + v);
+    static_cast<void>(v + m4);
+    static_cast<void>(m4 - m4);
+    static_cast<void>(m4 - v);
+    static_cast<void>(v - m4);
+    static_cast<void>(m4 * m4);
+    static_cast<void>(m4 * v);
+    static_cast<void>(v * m4);
+    static_cast<void>(m4 * v4);
+    static_cast<void>(m4 / T(1));
+    static_cast<void>(T(1) / m4);
 
     // comparison operators
 
@@ -325,10 +325,53 @@ static void compileFunctionsT()
     static_cast<void>(qc::view_on(v3, v3, v3, v3));
 }
 
+template <int n>
+static void compileFunctionsNonMatching()
+{
+    float _f{};
+    fvec<n> _fvec{};
+    dvec<n> _dvec{};
+    fmat<n> _fmat{};
+    dmat<n> _dmat{};
+
+    _dmat += _f;
+    _dmat += _fmat;
+
+    _dmat -= _f;
+    _dmat -= _fmat;
+
+    _dmat *= _f;
+    _dvec *= _fmat;
+    _dmat *= _fmat;
+
+    _dmat /= _f;
+
+    static_cast<void>(_dmat + _f);
+    static_cast<void>(_dmat + _fmat);
+    static_cast<void>(_f + _dmat);
+    static_cast<void>(_fmat + _dmat );
+
+    static_cast<void>(_dmat - _f);
+    static_cast<void>(_dmat - _fmat);
+    static_cast<void>(_f - _dmat);
+    static_cast<void>(_fmat - _dmat);
+
+    static_cast<void>(_dmat * _f);
+    static_cast<void>(_dmat * _fvec);
+    static_cast<void>(_dmat * _fmat);
+    static_cast<void>(_f * _dmat);
+    static_cast<void>(_fmat * _dmat);
+
+    static_cast<void>(_dmat / _f);
+}
+
 static void compileFunctions()
 {
     compileFunctionsT<float>();
     compileFunctionsT<double>();
+    compileFunctionsNonMatching<2>();
+    compileFunctionsNonMatching<3>();
+    compileFunctionsNonMatching<4>();
 }
 
 template <typename T, int n>
@@ -364,9 +407,9 @@ static void testProperties()
 template <typename T1, typename T2>
 static void compileCastsTT()
 {
-    static_cast<void>(static_cast<mat2<T2>>(mat2<T1>()));
-    static_cast<void>(static_cast<mat3<T2>>(mat3<T1>()));
-    static_cast<void>(static_cast<mat4<T2>>(mat4<T1>()));
+    static_cast<void>(static_cast<mat2<T2>>(mat2<T1>{}));
+    static_cast<void>(static_cast<mat3<T2>>(mat3<T1>{}));
+    static_cast<void>(static_cast<mat4<T2>>(mat4<T1>{}));
 }
 
 template <typename T>
@@ -410,7 +453,7 @@ static void testMatrixConceptT()
     static_assert(!Matrix4<mat3<T>>);
 }
 
-TEST(Matrix, concepts)
+TEST(Matrix, types)
 {
     testMatrixConceptT<f32>();
     testMatrixConceptT<f64>();

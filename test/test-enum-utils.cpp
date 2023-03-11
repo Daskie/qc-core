@@ -2,8 +2,8 @@
 
 #include <gtest/gtest.h>
 
-using namespace qc::concepts;
 using namespace qc::types;
+using namespace qc::primitives;
 
 enum class Enum0 : int { a, b, c };
 enum class Enum1 : int { a, b, c, _n };

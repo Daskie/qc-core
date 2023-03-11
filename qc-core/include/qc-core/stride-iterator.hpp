@@ -84,7 +84,7 @@ namespace qc
             return (std::bit_cast<const std::byte *>(_ptr) - std::bit_cast<const std::byte *>(other._ptr)) / _stride;
         }
 
-        template <typename U> requires (Same<U, T>)
+        template <typename U> requires Same<U, T>
         nodisc constexpr bool operator==(const StrideIter<U> other) const
         {
             return _ptr == other._ptr;

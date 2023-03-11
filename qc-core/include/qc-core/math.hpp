@@ -118,9 +118,9 @@ namespace qc
     {
         const fvec2 perp(ortho(v.xy()));
         const float theta(magnitude(v.xy()) * thetaPerUnit);
-        const fmat3 rot(rotate(fvec3(perp), theta));
+        const fmat3 rot(rotate(fvec3{perp}, theta));
 
-        return rot * fvec3(0.0f, 0.0f, v.z);
+        return rot * fvec3{0.0f, 0.0f, v.z};
     }
 
     //draw a line from v to A; gets the angle of this line w/ respect to the A bisector
@@ -214,14 +214,14 @@ namespace qc
     nodisc inline vec2<T> circlePointFibonacci(const int i, const int n)
     {
         const T p{T(i + 1) / T(n + 1)};
-        return circlePoint(vec2<T>(p, phi<T> * T(i)));
+        return circlePoint(vec2<T>{p, phi<T> * T(i)});
     }
 
     template <Floating T>
     nodisc inline vec3<T> spherePointFibonacci(const int i, const int n)
     {
         const T p{T(i + 1) / T(n + 1)};
-        return spherePoint(vec2<T>(phi<T> * T(i), p));
+        return spherePoint(vec2<T>{phi<T> * T(i), p});
     }
 
     // This correctly avoids numeric stability issues when a is very small but not zero

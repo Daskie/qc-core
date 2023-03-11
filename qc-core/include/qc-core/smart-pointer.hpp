@@ -18,7 +18,7 @@ namespace qc
 
         Unq(const Unq &) = delete;
         Unq(Unq && other);
-        template <typename T_> requires (std::derived_from<T_, T>) Unq(Unq<T_> && other);
+        template <typename T_> requires std::derived_from<T_, T> Unq(Unq<T_> && other);
 
         Unq & operator=(const Unq &) = delete;
         Unq & operator=(Unq && other);
@@ -57,9 +57,9 @@ namespace qc
         Shr(T * ptr, Deleter deleter);
 
         Shr(const Shr & other);
-        template <typename T_> requires (std::derived_from<T_, T>) Shr(const Shr<T_> & other);
+        template <typename T_> requires std::derived_from<T_, T> Shr(const Shr<T_> & other);
         Shr(Shr && other);
-        template <typename T_> requires (std::derived_from<T_, T>) Shr(Shr<T_> && other);
+        template <typename T_> requires std::derived_from<T_, T> Shr(Shr<T_> && other);
 
         Shr & operator=(const Shr & other);
         Shr & operator=(Shr && other);
@@ -110,7 +110,7 @@ namespace qc
     {}
 
     template <typename T>
-    template <typename T_> requires (std::derived_from<T_, T>)
+    template <typename T_> requires std::derived_from<T_, T>
     inline Unq<T>::Unq(Unq<T_> && other) :
         _ptr{std::exchange(other._ptr, nullptr)},
         _deleter{std::exchange(other._deleter, nullptr)}
@@ -167,7 +167,7 @@ namespace qc
     }
 
     template <typename T>
-    template <typename T_> requires (std::derived_from<T_, T>)
+    template <typename T_> requires std::derived_from<T_, T>
     inline Shr<T>::Shr(const Shr<T_> & other) :
         _ptr{other._ptr},
         _deleter{other._deleter}
@@ -182,7 +182,7 @@ namespace qc
     {}
 
     template <typename T>
-    template <typename T_> requires (std::derived_from<T_, T>)
+    template <typename T_> requires std::derived_from<T_, T>
     inline Shr<T>::Shr(Shr<T_> && other) :
         _ptr{std::exchange(other._ptr, nullptr)},
         _deleter{std::exchange(other._deleter, nullptr)}

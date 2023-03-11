@@ -6,14 +6,14 @@
 #include <gtest/gtest.h>
 #pragma pop_macro("FAIL")
 
-using namespace qc::concepts;
 using namespace qc::types;
+using namespace qc::primitives;
 
 enum TestEnum { a, b, c };
 
 #pragma warning(push)
 #pragma warning(disable: 4101)
-TEST(Core, types)
+TEST(Core, primitives)
 {
     s8 s08_;
     u8 u08_;
@@ -26,16 +26,14 @@ TEST(Core, types)
     u64 u64_;
     f64 f64_;
 
-    qc::stype<u8> stype_08_;
-    qc::stype<u16> stype_16_;
-    qc::stype<u32> stype_32_;
-    qc::stype<u64> stype_64_;
-    qc::utype<s8> utype_08_;
-    qc::utype<s16> utype_16_;
-    qc::utype<s32> utype_32_;
-    qc::utype<s64> utype_64_;
-    qc::ftype<u32> ftype_32_;
-    qc::ftype<u64> ftype_64_;
+    schar schar_;
+    uchar uchar_;
+    ushort ushort_;
+    uint uint_;
+    ulong ulong_;
+    llong llong_;
+    ullong ullong_;
+    ldouble ldouble_;
 }
 #pragma warning(pop)
 
@@ -361,6 +359,48 @@ TEST(Core, functions)
     compileFunctionsUIT<u16>();
     compileFunctionsUIT<u32>();
     compileFunctionsUIT<u64>();
+
+    // Non-matching min/max types
+
+    u8 _u8{};
+    u32 _u32{};
+    u64 _u64{};
+    s8 _s8{};
+    s64 _s64{};
+    f32 _f32{};
+    f64 _f64{};
+
+    static_cast<void>(qc::min(_u8, _u64));
+    static_cast<void>(qc::min(_s8, _s64));
+    static_cast<void>(qc::min(_u8, _s64));
+    static_cast<void>(qc::min(_s8, _u32));
+    static_cast<void>(qc::min(_u64, _u8));
+    static_cast<void>(qc::min(_s64, _s8));
+    static_cast<void>(qc::min(_s64, _u8));
+    static_cast<void>(qc::min(_u32, _s8));
+    static_cast<void>(qc::min(_f32, _f64));
+    static_cast<void>(qc::min(_f64, _f32));
+
+    static_cast<void>(qc::max(_u8, _u64));
+    static_cast<void>(qc::max(_s8, _s64));
+    static_cast<void>(qc::max(_u8, _s64));
+    static_cast<void>(qc::max(_s8, _u32));
+    static_cast<void>(qc::max(_u64, _u8));
+    static_cast<void>(qc::max(_s64, _s8));
+    static_cast<void>(qc::max(_s64, _u8));
+    static_cast<void>(qc::max(_u32, _s8));
+    static_cast<void>(qc::max(_f32, _f64));
+    static_cast<void>(qc::max(_f64, _f32));
+
+    static_cast<void>(qc::minify(_u64, _u8));
+    static_cast<void>(qc::minify(_s64, _s8));
+    static_cast<void>(qc::minify(_s64, _u32));
+    static_cast<void>(qc::minify(_f64, _f32));
+
+    static_cast<void>(qc::maxify(_u64, _u8));
+    static_cast<void>(qc::maxify(_s64, _s8));
+    static_cast<void>(qc::maxify(_s64, _u32));
+    static_cast<void>(qc::maxify(_f64, _f32));
 }
 
 template <Integral T> static constexpr T halfVal{T(std::numeric_limits<T>::max() / 2 + T(1))};
@@ -641,9 +681,65 @@ TEST(Core, binarySearch)
     ASSERT_EQ(3, qc::upperBound(vvv3.begin(), vvv3.end(), 2) - vvv3.begin());
 }
 
-TEST(Core, concepts)
+TEST(Core, types)
 {
     struct Dummy {};
+
+    static_assert(std::same_as<qc::LargerOf<s16, s8>, s16>);
+    static_assert(std::same_as<qc::LargerOf<int, double>, double>);
+
+    static_assert(std::same_as<qc::Common<s8, s8>, s8>);
+    static_assert(std::same_as<qc::Common<s8, s64>, s64>);
+    static_assert(std::same_as<qc::Common<s64, s8>, s64>);
+    static_assert(std::same_as<qc::Common<s64, s64>, s64>);
+
+    static_assert(std::same_as<qc::Common<u8, u8>, u8>);
+    static_assert(std::same_as<qc::Common<u8, u64>, u64>);
+    static_assert(std::same_as<qc::Common<u64, u8>, u64>);
+    static_assert(std::same_as<qc::Common<u64, u64>, u64>);
+
+    static_assert(std::same_as<qc::Common<u8, s8>, s16>);
+    static_assert(std::same_as<qc::Common<s8, u8>, s16>);
+    static_assert(std::same_as<qc::Common<u8, s16>, s16>);
+    static_assert(std::same_as<qc::Common<s16, u8>, s16>);
+    static_assert(std::same_as<qc::Common<u8, s32>, s32>);
+    static_assert(std::same_as<qc::Common<s32, u8>, s32>);
+    static_assert(std::same_as<qc::Common<u8, s64>, s64>);
+    static_assert(std::same_as<qc::Common<s64, u8>, s64>);
+
+    static_assert(std::same_as<qc::Common<u16, s8>, s32>);
+    static_assert(std::same_as<qc::Common<s8, u16>, s32>);
+    static_assert(std::same_as<qc::Common<u16, s16>, s32>);
+    static_assert(std::same_as<qc::Common<s16, u16>, s32>);
+    static_assert(std::same_as<qc::Common<u16, s32>, s32>);
+    static_assert(std::same_as<qc::Common<s32, u16>, s32>);
+    static_assert(std::same_as<qc::Common<u16, s64>, s64>);
+    static_assert(std::same_as<qc::Common<s64, u16>, s64>);
+
+    static_assert(std::same_as<qc::Common<u32, s8>, s64>);
+    static_assert(std::same_as<qc::Common<s8, u32>, s64>);
+    static_assert(std::same_as<qc::Common<u32, s16>, s64>);
+    static_assert(std::same_as<qc::Common<s16, u32>, s64>);
+    static_assert(std::same_as<qc::Common<u32, s32>, s64>);
+    static_assert(std::same_as<qc::Common<s32, u32>, s64>);
+    static_assert(std::same_as<qc::Common<u32, s64>, s64>);
+    static_assert(std::same_as<qc::Common<s64, u32>, s64>);
+
+    static_assert(std::same_as<qc::Common<f32, f32>, f32>);
+    static_assert(std::same_as<qc::Common<f32, f64>, f64>);
+    static_assert(std::same_as<qc::Common<f64, f32>, f64>);
+    static_assert(std::same_as<qc::Common<f64, f64>, f64>);
+
+    static_assert(OneOf<Dummy, Dummy>);
+    static_assert(OneOf<Dummy, const Dummy>);
+    static_assert(!OneOf<Dummy, int>);
+    static_assert(OneOf<const Dummy, Dummy>);
+    static_assert(OneOf<Dummy, Dummy, Dummy>);
+    static_assert(OneOf<Dummy, Dummy, int>);
+    static_assert(OneOf<Dummy, int, Dummy>);
+    static_assert(!OneOf<Dummy, int, int>);
+    static_assert(OneOf<Dummy, int, int, Dummy, int, int>);
+    static_assert(!OneOf<Dummy, int, int, int, int, int>);
 
     static_assert(Same<Dummy, Dummy>);
     static_assert(Same<Dummy, const Dummy>);
@@ -656,19 +752,6 @@ TEST(Core, concepts)
     static_assert(!Same<Dummy &, const Dummy &>);
     static_assert(!Same<Dummy *, const Dummy *>);
     static_assert(!Same<Dummy &&, const Dummy &&>);
-
-    static_assert(Sameish<Dummy, Dummy>);
-    static_assert(Sameish<Dummy, const Dummy>);
-    static_assert(Sameish<Dummy, Dummy &>);
-    static_assert(Sameish<Dummy, Dummy &&>);
-    static_assert(!Sameish<Dummy, Dummy *>);
-    static_assert(!Sameish<Dummy *, const Dummy *>);
-    static_assert(Sameish<s32, s64>);
-    static_assert(Sameish<u32, u64>);
-    static_assert(Sameish<f32, f64>);
-    static_assert(!Sameish<s32, u32>);
-    static_assert(!Sameish<u32, f32>);
-    static_assert(!Sameish<f32, s32>);
 
     static_assert(Void<void>);
     static_assert(!Void<int>);
@@ -800,16 +883,24 @@ TEST(Core, concepts)
     static_assert(EnumOrBoolean<bool>);
     static_assert(!EnumOrBoolean<int>);
 
-    static_assert(SameNumericType<s32, s32>);
-    static_assert(SameNumericType<u32, u32>);
-    static_assert(SameNumericType<f32, f32>);
-    static_assert(SameNumericType<bool, bool>);
-    static_assert(SameNumericType<char, char>);
-    static_assert(SameNumericType<Dummy, Dummy>);
-    static_assert(!SameNumericType<s32, u32>);
-    static_assert(!SameNumericType<u32, f32>);
-    static_assert(!SameNumericType<f32, s32>);
-    static_assert(!SameNumericType<int, Dummy>);
+    static_assert(qc::CommonExists<s8, s64>);
+    static_assert(qc::CommonExists<u8, u64>);
+    static_assert(qc::CommonExists<s8, u8>);
+    static_assert(qc::CommonExists<s8, u16>);
+    static_assert(qc::CommonExists<s8, u32>);
+    static_assert(!qc::CommonExists<s8, u64>);
+    static_assert(qc::CommonExists<s16, u8>);
+    static_assert(qc::CommonExists<s16, u16>);
+    static_assert(qc::CommonExists<s16, u32>);
+    static_assert(!qc::CommonExists<s16, u64>);
+    static_assert(qc::CommonExists<s32, u8>);
+    static_assert(qc::CommonExists<s32, u16>);
+    static_assert(qc::CommonExists<s32, u32>);
+    static_assert(!qc::CommonExists<s32, u64>);
+    static_assert(qc::CommonExists<s64, u8>);
+    static_assert(qc::CommonExists<s64, u16>);
+    static_assert(qc::CommonExists<s64, u32>);
+    static_assert(!qc::CommonExists<s64, u64>);
 }
 
 TEST(Core, abort)

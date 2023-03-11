@@ -259,7 +259,7 @@ namespace qc
     template <typename T>
     forceinline quat<T> nlerp(const quat<T> & q1, const quat<T> & q2, const T t)
     {
-        return normalize(quat<T>(mix(q1, q2, t)));
+        return normalize(quat<T>{mix(q1, q2, t)});
     }
 
     template <typename T>

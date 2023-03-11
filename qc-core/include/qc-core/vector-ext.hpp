@@ -60,12 +60,12 @@ namespace qc
     //
     // ...
     //
-    template <Floating T, int n> nodisc T distance(const vec<T, n> & v1, const vec<T, n> & v2);
+    template <Floating T1, Floating T2, int n> nodisc LargerOf<T1, T2> distance(const vec<T1, n> & v1, const vec<T2, n> & v2);
 
     //
     // ...
     //
-    template <Signed T, int n> nodisc T distance2(const vec<T, n> & v1, const vec<T, n> & v2);
+    template <Numeric T1, Numeric T2, int n> nodisc Common<T1, T2> distance2(const vec<T1, n> & v1, const vec<T2, n> & v2);
 
     //
     // ...
@@ -80,13 +80,13 @@ namespace qc
     //
     // ...
     //
-    template <Numeric T, int n> nodisc T dot(const vec<T, n> & v1, const vec<T, n> & v2);
+    template <Numeric T1, Numeric T2, int n> nodisc Common<T1, T2> dot(const vec<T1, n> & v1, const vec<T2, n> & v2);
 
     //
     // ...
     //
-    template <Numeric T> nodisc T cross(vec2<T> v1, vec2<T> v2);
-    template <Numeric T> nodisc vec3<T> cross(vec3<T> v1, vec3<T> v2);
+    template <Numeric T1, Numeric T2> nodisc Common<T1, T2> cross(vec2<T1> v1, vec2<T2> v2);
+    template <Numeric T1, Numeric T2> nodisc vec3<Common<T1, T2>> cross(vec3<T1> v1, vec3<T2> v2);
 
     //
     // ...
@@ -332,16 +332,23 @@ namespace qc
         if constexpr (n == 4) return T(v.x * v.x + v.y * v.y + v.z * v.z + v.w * v.w);
     }
 
-    template <Floating T, int n>
-    forceinline T distance(const vec<T, n> & v1, const vec<T, n> & v2)
+    template <Floating T1, Floating T2, int n>
+    forceinline LargerOf<T1, T2> distance(const vec<T1, n> & v1, const vec<T2, n> & v2)
     {
         return std::sqrt(distance2(v1, v2));
     }
 
-    template <Signed T, int n>
-    forceinline T distance2(const vec<T, n> & v1, const vec<T, n> & v2)
+    template <Numeric T1, Numeric T2, int n>
+    forceinline Common<T1, T2> distance2(const vec<T1, n> & v1, const vec<T2, n> & v2)
     {
-        return magnitude2(v2 - v1);
+        if constexpr (Signed<Common<T1, T2>>)
+        {
+            return magnitude2(v2 - v1);
+        }
+        else
+        {
+            return magnitude2(max(v1, v2) - min(v1, v2));
+        }
     }
 
     template <Floating T, int n>
@@ -370,24 +377,29 @@ namespace qc
         return v /= std::sqrt(m2);
     }
 
-    template <Numeric T, int n>
-    forceinline T dot(const vec<T, n> & v1, const vec<T, n> & v2)
+    template <Numeric T1, Numeric T2, int n>
+    forceinline Common<T1, T2> dot(const vec<T1, n> & v1, const vec<T2, n> & v2)
     {
+        using T = Common<T1, T2>;
         if constexpr (n == 2) return T(v1.x * v2.x + v1.y * v2.y);
         if constexpr (n == 3) return T(v1.x * v2.x + v1.y * v2.y + v1.z * v2.z);
         if constexpr (n == 4) return T(v1.x * v2.x + v1.y * v2.y + v1.z * v2.z + v1.w * v2.w);
     }
 
-    template <Numeric T>
-    forceinline T cross(const vec2<T> v1, const vec2<T> v2)
+    template <Numeric T1, Numeric T2>
+    forceinline Common<T1, T2> cross(const vec2<T1> v1, const vec2<T2> v2)
     {
-        return T(v1.x * v2.y - v1.y * v2.x);
+        return Common<T1, T2>(v1.x * v2.y - v1.y * v2.x);
     }
 
-    template <Numeric T>
-    forceinline vec3<T> cross(const vec3<T> v1, const vec3<T> v2)
+    template <Numeric T1, Numeric T2>
+    forceinline vec3<Common<T1, T2>> cross(const vec3<T1> v1, const vec3<T2> v2)
     {
-        return {T(v1.y * v2.z - v1.z * v2.y), T(v1.z * v2.x - v1.x * v2.z), T(v1.x * v2.y - v1.y * v2.x)};
+        using T = Common<T1, T2>;
+        return {
+            T(v1.y * v2.z - v1.z * v2.y),
+            T(v1.z * v2.x - v1.x * v2.z),
+            T(v1.x * v2.y - v1.y * v2.x)};
     }
 
     template <Numeric T, int n>

@@ -2,8 +2,8 @@
 
 #include <gtest/gtest.h>
 
-using namespace qc::concepts;
 using namespace qc::types;
+using namespace qc::primitives;
 
 static fvec3 _truncate(const fvec3 & val)
 {

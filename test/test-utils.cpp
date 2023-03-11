@@ -4,7 +4,7 @@
 
 namespace
 {
-    using namespace qc::types;
+    using namespace qc::primitives;
 
     std::filesystem::path dirFile{"utils-test-dir"};
 

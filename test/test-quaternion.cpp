@@ -4,8 +4,8 @@
 
 #include <gtest/gtest.h>
 
-using namespace qc::concepts;
 using namespace qc::types;
+using namespace qc::primitives;
 
 template <typename T>
 static void compileClassesT()
@@ -41,7 +41,6 @@ static void compileClassesT()
     q *= q;
     q *= v;
     v3 *= q;
-    q /= q;
 
     // arithmetic operators
     static_cast<void>(+q);
@@ -52,7 +51,6 @@ static void compileClassesT()
     static_cast<void>(q * v);
     static_cast<void>(v * q);
     static_cast<void>(q * v3);
-    static_cast<void>(q / q);
 
     // comparison operators
     static_cast<void>(q == q);
@@ -99,10 +97,36 @@ static void compileFunctionsT()
     static_cast<void>(qc::slerp(q, q, v));
 }
 
+static void compileFunctionsNonMatching()
+{
+    float _f{};
+    fvec3 _fvec{};
+    dvec3 _dvec{};
+    fquat _fquat{};
+    dquat _dquat{};
+
+    _dquat += _fquat;
+    _dquat -= _fquat;
+    _dquat *= _fquat;
+    _dquat *= _f;
+    _dvec *= _fquat;
+
+    static_cast<void>(_dquat + _fquat);
+    static_cast<void>(_fquat + _dquat);
+    static_cast<void>(_dquat - _fquat);
+    static_cast<void>(_fquat - _dquat);
+    static_cast<void>(_dquat * _fquat);
+    static_cast<void>(_fquat * _dquat);
+    static_cast<void>(_dquat * _f);
+    static_cast<void>(_f * _dquat);
+    static_cast<void>(_dquat * _fvec);
+}
+
 static void compileFunctions()
 {
     compileFunctionsT<float>();
     compileFunctionsT<double>();
+    compileFunctionsNonMatching();
 }
 
 template <typename T>
@@ -130,7 +154,7 @@ static void testProperties()
 template <typename T1, typename T2>
 static void compileCastsTT()
 {
-    static_cast<void>(static_cast<quat<T2>>(quat<T1>()));
+    static_cast<void>(static_cast<quat<T2>>(quat<T1>{}));
 }
 
 template <typename T>
@@ -154,7 +178,7 @@ TEST(Quaternion, compilation)
     compileCasts();
 }
 
-TEST(Quaternion, concepts)
+TEST(Quaternion, types)
 {
     static_assert(Quaternion<fquat>);
     static_assert(Quaternion<dquat>);

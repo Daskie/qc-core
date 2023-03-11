@@ -132,7 +132,7 @@ namespace qc
             else if constexpr (sizeof(T) > sizeof(G))
             {
                 using U = std::make_unsigned_t<T>;
-                using H = typename sized<sizeof(U) / 2u>::utype;
+                using H = typename Sized<sizeof(U) / 2u>::U;
                 const H h1{next<H>()};
                 const H h2{next<H>()};
                 return T(U(h1) | (U(h2) << std::numeric_limits<H>::digits));

@@ -6,8 +6,8 @@
 
 #include <gtest/gtest.h>
 
-using namespace qc::concepts;
 using namespace qc::types;
+using namespace qc::primitives;
 
 template <typename T>
 static void compileClassesT()
@@ -185,16 +185,16 @@ static void compileFunctionsT()
     v3 *= v;
     v4 *= v;
 
-    v2 /= vec2<T>(T(1));
-    v3 /= vec3<T>(T(1));
-    v4 /= vec4<T>(T(1));
+    v2 /= vec2<T>{T(1)};
+    v3 /= vec3<T>{T(1)};
+    v4 /= vec4<T>{T(1)};
     v2 /= T(1);
     v3 /= T(1);
     v4 /= T(1);
 
-    v2 %= vec2<T>(T(1));
-    v3 %= vec3<T>(T(1));
-    v4 %= vec4<T>(T(1));
+    v2 %= vec2<T>{T(1)};
+    v3 %= vec3<T>{T(1)};
+    v4 %= vec4<T>{T(1)};
     v2 %= T(1);
     v3 %= T(1);
     v4 %= T(1);
@@ -253,26 +253,25 @@ static void compileFunctionsT()
     static_cast<void>(v * v3);
     static_cast<void>(v * v4);
 
-    static_cast<void>(v2 / vec2<T>(T(1)));
-    static_cast<void>(v3 / vec3<T>(T(1)));
-    static_cast<void>(v4 / vec4<T>(T(1)));
+    static_cast<void>(v2 / vec2<T>{T(1)});
+    static_cast<void>(v3 / vec3<T>{T(1)});
+    static_cast<void>(v4 / vec4<T>{T(1)});
     static_cast<void>(v2 / T(1));
     static_cast<void>(v3 / T(1));
     static_cast<void>(v4 / T(1));
-    static_cast<void>(v / vec2<T>(T(1)));
-    static_cast<void>(v / vec3<T>(T(1)));
-    static_cast<void>(v / vec4<T>(T(1)));
+    static_cast<void>(v / vec2<T>{T(1)});
+    static_cast<void>(v / vec3<T>{T(1)});
+    static_cast<void>(v / vec4<T>{T(1)});
 
-    static_cast<void>(v2 % vec2<T>(T(1)));
-    static_cast<void>(v3 % vec3<T>(T(1)));
-    static_cast<void>(v4 % vec4<T>(T(1)));
+    static_cast<void>(v2 % vec2<T>{T(1)});
+    static_cast<void>(v3 % vec3<T>{T(1)});
+    static_cast<void>(v4 % vec4<T>{T(1)});
     static_cast<void>(v2 % T(1));
     static_cast<void>(v3 % T(1));
     static_cast<void>(v4 % T(1));
-    static_cast<void>(v % vec2<T>(T(1)));
-    static_cast<void>(v % vec3<T>(T(1)));
-    static_cast<void>(v % vec4<T>(T(1)));
-
+    static_cast<void>(v % vec2<T>{T(1)});
+    static_cast<void>(v % vec3<T>{T(1)});
+    static_cast<void>(v % vec4<T>{T(1)});
 
     // comparison
 
@@ -838,6 +837,278 @@ static void compileFunctionsBT()
     static_cast<void>(qc::any(b4));
 }
 
+template <int n>
+static void compileFunctionsNonMatching()
+{
+    u8 _u8{};
+    u32 _u32{};
+    u64 _u64{};
+    s8 _s8{};
+    s64 _s64{};
+    f32 _f32{};
+    f64 _f64{};
+
+    vec<u8, n> _vec_u8{};
+    vec<u32, n> _vec_u32{};
+    vec<u64, n> _vec_u64{};
+    vec<s8, n> _vec_s8{};
+    vec<s64, n> _vec_s64{};
+    vec<f32, n> _vec_f32{};
+    vec<f64, n> _vec_f64{};
+
+    _vec_u64 += _u8;
+    _vec_u64 += _vec_u8;
+    _vec_s64 += _s8;
+    _vec_s64 += _vec_s8;
+    _vec_s64 += _u32;
+    _vec_s64 += _vec_u32;
+    _vec_f64 += _f32;
+    _vec_f64 += _vec_f32;
+
+    _vec_u64 -= _u8;
+    _vec_u64 -= _vec_u8;
+    _vec_s64 -= _s8;
+    _vec_s64 -= _vec_s8;
+    _vec_s64 -= _u32;
+    _vec_s64 -= _vec_u32;
+    _vec_f64 -= _f32;
+    _vec_f64 -= _vec_f32;
+
+    _vec_u64 *= _u8;
+    _vec_u64 *= _vec_u8;
+    _vec_s64 *= _s8;
+    _vec_s64 *= _vec_s8;
+    _vec_s64 *= _u32;
+    _vec_s64 *= _vec_u32;
+    _vec_f64 *= _f32;
+    _vec_f64 *= _vec_f32;
+
+    _vec_u64 /= u8{1u};
+    _vec_u64 /= vec<u8, n>{1u};
+    _vec_s64 /= s8{1};
+    _vec_s64 /= vec<s8, n>{1};
+    _vec_s64 /= u32{1u};
+    _vec_s64 /= vec<u32, n>{1u};
+    _vec_f64 /= f32{1.0f};
+    _vec_f64 /= vec<f32, n>{1.0};
+
+    _vec_u64 %= u8{1u};
+    _vec_u64 %= vec<u8, n>{1u};
+    _vec_s64 %= s8{1};
+    _vec_s64 %= vec<s8, n>{1};
+    _vec_s64 %= u32{1u};
+    _vec_s64 %= vec<u32, n>{1u};
+    _vec_f64 %= f32{1.0f};
+    _vec_f64 %= vec<f32, n>{1.0};
+
+    _vec_u64 &= _u8;
+    _vec_u64 &= _vec_u8;
+
+    _vec_u64 |= _u8;
+    _vec_u64 |= _vec_u8;
+
+    _vec_u64 ^= _u8;
+    _vec_u64 ^= _vec_u8;
+
+    static_cast<void>(_vec_u64 + _u8);
+    static_cast<void>(_vec_s64 + _s8);
+    static_cast<void>(_vec_s64 + _u32);
+    static_cast<void>(_vec_f64 + _f32);
+    static_cast<void>(_u8 + _vec_u64);
+    static_cast<void>(_s8 + _vec_s64);
+    static_cast<void>(_u32 + _vec_s64);
+    static_cast<void>(_f32 + _vec_f64);
+
+    static_cast<void>(_vec_u64 - _u8);
+    static_cast<void>(_vec_s64 - _s8);
+    static_cast<void>(_vec_s64 - _u32);
+    static_cast<void>(_vec_f64 - _f32);
+    static_cast<void>(_u8 - _vec_u64);
+    static_cast<void>(_s8 - _vec_s64);
+    static_cast<void>(_u32 - _vec_s64);
+    static_cast<void>(_f32 - _vec_f64);
+
+    static_cast<void>(_vec_u64 * _u8);
+    static_cast<void>(_vec_s64 * _s8);
+    static_cast<void>(_vec_s64 * _u32);
+    static_cast<void>(_vec_f64 * _f32);
+    static_cast<void>(_u8 * _vec_u64);
+    static_cast<void>(_s8 * _vec_s64);
+    static_cast<void>(_u32 * _vec_s64);
+    static_cast<void>(_f32 * _vec_f64);
+
+    static_cast<void>(_vec_u64 / u8{1u});
+    static_cast<void>(_vec_s64 / s8{1});
+    static_cast<void>(_vec_s64 / u32{1u});
+    static_cast<void>(_vec_f64 / f32{1.0f});
+    static_cast<void>(_u8 / vec<u64, n>{1u});
+    static_cast<void>(_s8 / vec<s64, n>{1});
+    static_cast<void>(_u32 / vec<s64, n>{1});
+    static_cast<void>(_f32 / vec<f64, n>{1.0});
+
+    static_cast<void>(_vec_u64 % u8{1u});
+    static_cast<void>(_vec_s64 % s8{1});
+    static_cast<void>(_vec_s64 % u32{1u});
+    static_cast<void>(_vec_f64 % f32{1.0f});
+    static_cast<void>(_u8 % vec<u64, n>{1u});
+    static_cast<void>(_s8 % vec<s64, n>{1});
+    static_cast<void>(_u32 % vec<s64, n>{1});
+    static_cast<void>(_f32 % vec<f64, n>{1.0});
+
+    static_cast<void>(_vec_u64 & _u8);
+    static_cast<void>(_u8 & _vec_u64);
+
+    static_cast<void>(_vec_u64 | _u8);
+    static_cast<void>(_u8 | _vec_u64);
+
+    static_cast<void>(_vec_u64 ^ _u8);
+    static_cast<void>(_u8 ^ _vec_u64);
+
+    static_cast<void>(_vec_u64 == _u8);
+    static_cast<void>(_vec_s64 == _s8);
+    static_cast<void>(_vec_s64 == _u32);
+    static_cast<void>(_vec_f64 == _f32);
+    static_cast<void>(_u8 == _vec_u64);
+    static_cast<void>(_s8 == _vec_s64);
+    static_cast<void>(_u32 == _vec_s64);
+    static_cast<void>(_f32 == _vec_f64);
+
+    static_cast<void>(_vec_u64 != _u8);
+    static_cast<void>(_vec_s64 != _s8);
+    static_cast<void>(_vec_s64 != _u32);
+    static_cast<void>(_vec_f64 != _f32);
+    static_cast<void>(_u8 != _vec_u64);
+    static_cast<void>(_s8 != _vec_s64);
+    static_cast<void>(_u32 != _vec_s64);
+    static_cast<void>(_f32 != _vec_f64);
+
+    static_cast<void>(_vec_u64 > _u8);
+    static_cast<void>(_vec_s64 > _s8);
+    static_cast<void>(_vec_s64 > _u32);
+    static_cast<void>(_vec_f64 > _f32);
+    static_cast<void>(_u8 > _vec_u64);
+    static_cast<void>(_s8 > _vec_s64);
+    static_cast<void>(_u32 > _vec_s64);
+    static_cast<void>(_f32 > _vec_f64);
+
+    static_cast<void>(_vec_u64 < _u8);
+    static_cast<void>(_vec_s64 < _s8);
+    static_cast<void>(_vec_s64 < _u32);
+    static_cast<void>(_vec_f64 < _f32);
+    static_cast<void>(_u8 < _vec_u64);
+    static_cast<void>(_s8 < _vec_s64);
+    static_cast<void>(_u32 < _vec_s64);
+    static_cast<void>(_f32 < _vec_f64);
+
+    static_cast<void>(_vec_u64 >= _u8);
+    static_cast<void>(_vec_s64 >= _s8);
+    static_cast<void>(_vec_s64 >= _u32);
+    static_cast<void>(_vec_f64 >= _f32);
+    static_cast<void>(_u8 >= _vec_u64);
+    static_cast<void>(_s8 >= _vec_s64);
+    static_cast<void>(_u32 >= _vec_s64);
+    static_cast<void>(_f32 >= _vec_f64);
+
+    static_cast<void>(_vec_u64 <= _u8);
+    static_cast<void>(_vec_s64 <= _s8);
+    static_cast<void>(_vec_s64 <= _u32);
+    static_cast<void>(_vec_f64 <= _f32);
+    static_cast<void>(_u8 <= _vec_u64);
+    static_cast<void>(_s8 <= _vec_s64);
+    static_cast<void>(_u32 <= _vec_s64);
+    static_cast<void>(_f32 <= _vec_f64);
+
+    static_cast<void>(qc::min(_vec_u8, _vec_u64));
+    static_cast<void>(qc::min(_vec_u8, _u64));
+    static_cast<void>(qc::min(_u8, _vec_u64));
+    static_cast<void>(qc::min(_vec_s8, _vec_s64));
+    static_cast<void>(qc::min(_vec_s8, _s64));
+    static_cast<void>(qc::min(_s8, _vec_s64));
+    static_cast<void>(qc::min(_vec_u32, _vec_s64));
+    static_cast<void>(qc::min(_vec_u32, _s64));
+    static_cast<void>(qc::min(_u32, _vec_s64));
+    static_cast<void>(qc::min(_vec_u64, _vec_u8));
+    static_cast<void>(qc::min(_vec_u64, _u8));
+    static_cast<void>(qc::min(_u64, _vec_u8));
+    static_cast<void>(qc::min(_vec_s64, _vec_s8));
+    static_cast<void>(qc::min(_vec_s64, _s8));
+    static_cast<void>(qc::min(_s64, _vec_s8));
+    static_cast<void>(qc::min(_vec_s64, _vec_u32));
+    static_cast<void>(qc::min(_vec_s64, _u32));
+    static_cast<void>(qc::min(_s64, _vec_u32));
+    static_cast<void>(qc::min(_vec_f32, _vec_f64));
+    static_cast<void>(qc::min(_vec_f32, _f64));
+    static_cast<void>(qc::min(_f32, _vec_f64));
+    static_cast<void>(qc::min(_vec_f64, _vec_f32));
+    static_cast<void>(qc::min(_vec_f64, _f32));
+    static_cast<void>(qc::min(_f64, _vec_f32));
+
+
+    static_cast<void>(qc::max(_vec_u8, _vec_u64));
+    static_cast<void>(qc::max(_vec_u8, _u64));
+    static_cast<void>(qc::max(_u8, _vec_u64));
+    static_cast<void>(qc::max(_vec_s8, _vec_s64));
+    static_cast<void>(qc::max(_vec_s8, _s64));
+    static_cast<void>(qc::max(_s8, _vec_s64));
+    static_cast<void>(qc::max(_vec_u32, _vec_s64));
+    static_cast<void>(qc::max(_vec_u32, _s64));
+    static_cast<void>(qc::max(_u32, _vec_s64));
+    static_cast<void>(qc::max(_vec_u64, _vec_u8));
+    static_cast<void>(qc::max(_vec_u64, _u8));
+    static_cast<void>(qc::max(_u64, _vec_u8));
+    static_cast<void>(qc::max(_vec_s64, _vec_s8));
+    static_cast<void>(qc::max(_vec_s64, _s8));
+    static_cast<void>(qc::max(_s64, _vec_s8));
+    static_cast<void>(qc::max(_vec_s64, _vec_u32));
+    static_cast<void>(qc::max(_vec_s64, _u32));
+    static_cast<void>(qc::max(_s64, _vec_u32));
+    static_cast<void>(qc::max(_vec_f32, _vec_f64));
+    static_cast<void>(qc::max(_vec_f32, _f64));
+    static_cast<void>(qc::max(_f32, _vec_f64));
+    static_cast<void>(qc::max(_vec_f64, _vec_f32));
+    static_cast<void>(qc::max(_vec_f64, _f32));
+    static_cast<void>(qc::max(_f64, _vec_f32));
+
+    static_cast<void>(qc::minify(_vec_u64, _vec_u8));
+    static_cast<void>(qc::minify(_vec_u64, _u8));
+    static_cast<void>(qc::minify(_vec_s64, _vec_s8));
+    static_cast<void>(qc::minify(_vec_s64, _s8));
+    static_cast<void>(qc::minify(_vec_s64, _vec_u32));
+    static_cast<void>(qc::minify(_vec_s64, _u32));
+    static_cast<void>(qc::minify(_vec_f64, _vec_f32));
+    static_cast<void>(qc::minify(_vec_f64, _f32));
+
+    static_cast<void>(qc::maxify(_vec_u64, _vec_u8));
+    static_cast<void>(qc::maxify(_vec_u64, _u8));
+    static_cast<void>(qc::maxify(_vec_s64, _vec_s8));
+    static_cast<void>(qc::maxify(_vec_s64, _s8));
+    static_cast<void>(qc::maxify(_vec_s64, _vec_u32));
+    static_cast<void>(qc::maxify(_vec_s64, _u32));
+    static_cast<void>(qc::maxify(_vec_f64, _vec_f32));
+    static_cast<void>(qc::maxify(_vec_f64, _f32));
+
+    static_cast<void>(qc::distance(_vec_f32, _vec_f64));
+    static_cast<void>(qc::distance(_vec_f64, _vec_f32));
+
+    static_cast<void>(qc::distance2(_vec_u64, _vec_u8));
+    static_cast<void>(qc::distance2(_vec_s64, _vec_s8));
+    static_cast<void>(qc::distance2(_vec_s64, _vec_u32));
+    static_cast<void>(qc::distance2(_vec_f64, _vec_f32));
+
+    static_cast<void>(qc::dot(_vec_u64, _vec_u8));
+    static_cast<void>(qc::dot(_vec_s64, _vec_s8));
+    static_cast<void>(qc::dot(_vec_s64, _vec_u32));
+    static_cast<void>(qc::dot(_vec_f64, _vec_f32));
+
+    if constexpr (n == 2 || n == 3)
+    {
+        static_cast<void>(qc::cross(_vec_u64, _vec_u8));
+        static_cast<void>(qc::cross(_vec_s64, _vec_s8));
+        static_cast<void>(qc::cross(_vec_s64, _vec_u32));
+        static_cast<void>(qc::cross(_vec_f64, _vec_f32));
+    }
+}
+
 static void compileFunctions()
 {
     compileFunctionsT<f32>();
@@ -881,6 +1152,10 @@ static void compileFunctions()
     compileFunctionsUIT<u64>();
 
     compileFunctionsBT();
+
+    compileFunctionsNonMatching<2>();
+    compileFunctionsNonMatching<3>();
+    compileFunctionsNonMatching<4>();
 }
 
 template <typename T, int n>
@@ -933,13 +1208,13 @@ static constexpr void compileVecCastsTTN()
     { vec<T2, n> v{v3}; }
     { vec<T2, n> v{v4}; }
 
-    static_cast<vec<T2, n>>(v2);
-    static_cast<vec<T2, n>>(v3);
-    static_cast<vec<T2, n>>(v4);
+    static_cast<void>(static_cast<vec<T2, n>>(v2));
+    static_cast<void>(static_cast<vec<T2, n>>(v3));
+    static_cast<void>(static_cast<vec<T2, n>>(v4));
 }
 
 template <typename T1, typename T2>
-static constexpr void compileCastsTT()
+static void compileCastsTT()
 {
     compileVecCastsTTN<T1, T2, 2>();
     compileVecCastsTTN<T1, T2, 3>();
@@ -947,7 +1222,7 @@ static constexpr void compileCastsTT()
 }
 
 template <typename T>
-static constexpr void compileCastsT()
+static void compileCastsT()
 {
     compileCastsTT<T, f32>();
     compileCastsTT<T, f64>();
@@ -962,7 +1237,7 @@ static constexpr void compileCastsT()
     compileCastsTT<T, bool>();
 }
 
-static constexpr bool compileCasts()
+static void compileCasts()
 {
     compileCastsT<f32>();
     compileCastsT<f64>();
@@ -975,8 +1250,6 @@ static constexpr bool compileCasts()
     compileCastsT<u32>();
     compileCastsT<u64>();
     compileCastsT<bool>();
-
-    return true;
 }
 
 template <typename T>
@@ -1002,7 +1275,7 @@ static constexpr void compileConstantsT()
     constexpr vec4<T> nw4{qc::nw4<T>};
 }
 
-static constexpr bool compileConstants()
+static void compileConstants()
 {
     compileConstantsT<f32>();
     compileConstantsT<f64>();
@@ -1014,8 +1287,6 @@ static constexpr bool compileConstants()
     compileConstantsT<u16>();
     compileConstantsT<u32>();
     compileConstantsT<u64>();
-
-    return true;
 }
 
 TEST(Vector, compilation)
@@ -1023,8 +1294,8 @@ TEST(Vector, compilation)
     compileClasses();
     compileFunctions();
     testProperties();
-    static_assert(compileCasts());
-    static_assert(compileConstants());
+    compileCasts();
+    compileConstants();
 }
 
 template <typename T>
@@ -1079,7 +1350,7 @@ void testUnsignedIntegerVectorConceptT()
     static_assert(UnsignedIntegralVector<vec4<T>>);
 }
 
-TEST(Vector, concepts)
+TEST(Vector, types)
 {
     testVectorConceptT<s8>();
     testVectorConceptT<u8>();

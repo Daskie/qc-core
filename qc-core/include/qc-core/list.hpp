@@ -84,8 +84,8 @@ namespace qc
 
         template <typename... Args> T & push(Args &&... args);
 
-        T & bump() requires (std::is_trivially_default_constructible_v<T>);
-        std::span<T> bump(u64 n) requires (std::is_trivially_default_constructible_v<T>);
+        T & bump() requires std::is_trivially_default_constructible_v<T>;
+        std::span<T> bump(u64 n) requires std::is_trivially_default_constructible_v<T>;
 
         T * insert(T * pos, const T & v);
         T * insert(T * pos, T && v);
@@ -419,7 +419,7 @@ namespace qc
     }
 
     template <typename T>
-    forceinline T & List<T>::bump() requires (std::is_trivially_default_constructible_v<T>)
+    forceinline T & List<T>::bump() requires std::is_trivially_default_constructible_v<T>
     {
         if (_size == _capacity) [[unlikely]]
         {
@@ -430,7 +430,7 @@ namespace qc
     }
 
     template <typename T>
-    forceinline std::span<T> List<T>::bump(const u64 n) requires (std::is_trivially_default_constructible_v<T>)
+    forceinline std::span<T> List<T>::bump(const u64 n) requires std::is_trivially_default_constructible_v<T>
     {
         if (_size + n > _capacity) [[unlikely]]
         {

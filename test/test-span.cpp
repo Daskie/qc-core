@@ -4,8 +4,8 @@
 
 #include <gtest/gtest.h>
 
-using namespace qc::concepts;
 using namespace qc::types;
+using namespace qc::primitives;
 
 template <typename T>
 static void compileClassesT()
@@ -410,6 +410,330 @@ static void compileFunctionsPT()
     qc::maxify(s, p);
 }
 
+template <int n>
+static void compileFunctionsNonMatching()
+{
+    u8 _u8{};
+    u32 _u32{};
+    u64 _u64{};
+    s8 _s8{};
+    s64 _s64{};
+    f32 _f32{};
+    f64 _f64{};
+
+    vec<u8, n> _vec_u8{};
+    vec<u32, n> _vec_u32{};
+    vec<u64, n> _vec_u64{};
+    vec<s8, n> _vec_s8{};
+    vec<s64, n> _vec_s64{};
+    vec<f32, n> _vec_f32{};
+    vec<f64, n> _vec_f64{};
+
+    span<u8, n> _span_u8{};
+    span<u32, n> _span_u32{};
+    span<u64, n> _span_u64{};
+    span<s8, n> _span_s8{};
+    span<s64, n> _span_s64{};
+    span<f32, n> _span_f32{};
+    span<f64, n> _span_f64{};
+
+    _span_u64 += _u8;
+    _span_s64 += _s8;
+    _span_s64 += _u32;
+    _span_f64 += _f32;
+    _span_u64 += _vec_u8;
+    _span_s64 += _vec_s8;
+    _span_s64 += _vec_u32;
+    _span_f64 += _vec_f32;
+
+    _span_u64 -= _u8;
+    _span_s64 -= _s8;
+    _span_s64 -= _u32;
+    _span_f64 -= _f32;
+    _span_u64 -= _vec_u8;
+    _span_s64 -= _vec_s8;
+    _span_s64 -= _vec_u32;
+    _span_f64 -= _vec_f32;
+
+    _span_u64 *= _u8;
+    _span_s64 *= _s8;
+    _span_s64 *= _u32;
+    _span_f64 *= _f32;
+    _span_u64 *= _vec_u8;
+    _span_s64 *= _vec_s8;
+    _span_s64 *= _vec_u32;
+    _span_f64 *= _vec_f32;
+
+    _span_u64 /= u8{1u};
+    _span_s64 /= s8{1};
+    _span_s64 /= u32{1u};
+    _span_f64 /= f32{1.0f};
+    _span_u64 /= vec<u8, n>{1u};
+    _span_s64 /= vec<s8, n>{1};
+    _span_s64 /= vec<u32, n>{1u};
+    _span_f64 /= vec<f32, n>{1.0f};
+
+    _span_u64 &= _span_u8;
+    _span_s64 &= _span_s8;
+    _span_s64 &= _span_u32;
+    _span_f64 &= _span_f32;
+
+    _span_u64 |= _span_u8;
+    _span_s64 |= _span_s8;
+    _span_s64 |= _span_u32;
+    _span_f64 |= _span_f32;
+
+    static_cast<void>(_span_u8 + _u64);
+    static_cast<void>(_span_u64 + _u8);
+    static_cast<void>(_span_s8 + _s64);
+    static_cast<void>(_span_s64 + _s8);
+    static_cast<void>(_span_s8 + _u32);
+    static_cast<void>(_span_s64 + _u32);
+    static_cast<void>(_span_f32 + _f64);
+    static_cast<void>(_span_f64 + _f32);
+    static_cast<void>(_span_u8 + _vec_u64);
+    static_cast<void>(_span_u64 + _vec_u8);
+    static_cast<void>(_span_s8 + _vec_s64);
+    static_cast<void>(_span_s64 + _vec_s8);
+    static_cast<void>(_span_s8 + _vec_u32);
+    static_cast<void>(_span_s64 + _vec_u32);
+    static_cast<void>(_span_f32 + _vec_f64);
+    static_cast<void>(_span_f64 + _vec_f32);
+
+    static_cast<void>(_span_u8 - _u64);
+    static_cast<void>(_span_u64 - _u8);
+    static_cast<void>(_span_s8 - _s64);
+    static_cast<void>(_span_s64 - _s8);
+    static_cast<void>(_span_s8 - _u32);
+    static_cast<void>(_span_s64 - _u32);
+    static_cast<void>(_span_f32 - _f64);
+    static_cast<void>(_span_f64 - _f32);
+    static_cast<void>(_span_u8 - _vec_u64);
+    static_cast<void>(_span_u64 - _vec_u8);
+    static_cast<void>(_span_s8 - _vec_s64);
+    static_cast<void>(_span_s64 - _vec_s8);
+    static_cast<void>(_span_s8 - _vec_u32);
+    static_cast<void>(_span_s64 - _vec_u32);
+    static_cast<void>(_span_f32 - _vec_f64);
+    static_cast<void>(_span_f64 - _vec_f32);
+
+    static_cast<void>(_span_u8 * _u64);
+    static_cast<void>(_span_u64 * _u8);
+    static_cast<void>(_span_s8 * _s64);
+    static_cast<void>(_span_s64 * _s8);
+    static_cast<void>(_span_s8 * _u32);
+    static_cast<void>(_span_s64 * _u32);
+    static_cast<void>(_span_f32 * _f64);
+    static_cast<void>(_span_f64 * _f32);
+    static_cast<void>(_span_u8 * _vec_u64);
+    static_cast<void>(_span_u64 * _vec_u8);
+    static_cast<void>(_span_s8 * _vec_s64);
+    static_cast<void>(_span_s64 * _vec_s8);
+    static_cast<void>(_span_s8 * _vec_u32);
+    static_cast<void>(_span_s64 * _vec_u32);
+    static_cast<void>(_span_f32 * _vec_f64);
+    static_cast<void>(_span_f64 * _vec_f32);
+
+    static_cast<void>(_span_u8 / u64{1u});
+    static_cast<void>(_span_u64 / u8{1u});
+    static_cast<void>(_span_s8 / s64{1});
+    static_cast<void>(_span_s64 / s8{1});
+    static_cast<void>(_span_s8 / u32{1u});
+    static_cast<void>(_span_s64 / u32{1u});
+    static_cast<void>(_span_f32 / f64{1.0f});
+    static_cast<void>(_span_f64 / f32{1.0f});
+    static_cast<void>(_span_u8 / vec<u64, n>{1u});
+    static_cast<void>(_span_u64 / vec<u8, n>{1u});
+    static_cast<void>(_span_s8 / vec<s64, n>{1});
+    static_cast<void>(_span_s64 / vec<s8, n>{1});
+    static_cast<void>(_span_s8 / vec<u32, n>{1u});
+    static_cast<void>(_span_s64 / vec<u32, n>{1u});
+    static_cast<void>(_span_f32 / vec<f64, n>{1.0f});
+    static_cast<void>(_span_f64 / vec<f32, n>{1.0f});
+
+    static_cast<void>(_span_u8 & _span_u64);
+    static_cast<void>(_span_u64 & _span_u8);
+    static_cast<void>(_span_s8 & _span_s64);
+    static_cast<void>(_span_s64 & _span_s8);
+    static_cast<void>(_span_s8 & _span_u32);
+    static_cast<void>(_span_s64 & _span_u32);
+    static_cast<void>(_span_f32 & _span_f64);
+    static_cast<void>(_span_f64 & _span_f32);
+
+    static_cast<void>(_span_u8 | _span_u64);
+    static_cast<void>(_span_u64 | _span_u8);
+    static_cast<void>(_span_s8 | _span_s64);
+    static_cast<void>(_span_s64 | _span_s8);
+    static_cast<void>(_span_s8 | _span_u32);
+    static_cast<void>(_span_s64 | _span_u32);
+    static_cast<void>(_span_f32 | _span_f64);
+    static_cast<void>(_span_f64 | _span_f32);
+
+    static_cast<void>(qc::min(_span_u8, _u64));
+    static_cast<void>(qc::min(_span_u8, _vec_u64));
+    static_cast<void>(qc::min(_span_u64, _u8));
+    static_cast<void>(qc::min(_span_u64, _vec_u8));
+    static_cast<void>(qc::min(_span_s8, _s64));
+    static_cast<void>(qc::min(_span_s8, _vec_s64));
+    static_cast<void>(qc::min(_span_s64, _s8));
+    static_cast<void>(qc::min(_span_s64, _vec_s8));
+    static_cast<void>(qc::min(_span_s64, _u32));
+    static_cast<void>(qc::min(_span_s64, _vec_u32));
+    static_cast<void>(qc::min(_span_f32, _f64));
+    static_cast<void>(qc::min(_span_f32, _vec_f64));
+    static_cast<void>(qc::min(_span_f64, _f32));
+    static_cast<void>(qc::min(_span_f64, _vec_f32));
+
+    static_cast<void>(qc::max(_span_u8, _u64));
+    static_cast<void>(qc::max(_span_u8, _vec_u64));
+    static_cast<void>(qc::max(_span_u64, _u8));
+    static_cast<void>(qc::max(_span_u64, _vec_u8));
+    static_cast<void>(qc::max(_span_s8, _s64));
+    static_cast<void>(qc::max(_span_s8, _vec_s64));
+    static_cast<void>(qc::max(_span_s64, _s8));
+    static_cast<void>(qc::max(_span_s64, _vec_s8));
+    static_cast<void>(qc::max(_span_s64, _u32));
+    static_cast<void>(qc::max(_span_s64, _vec_u32));
+    static_cast<void>(qc::max(_span_f32, _f64));
+    static_cast<void>(qc::max(_span_f32, _vec_f64));
+    static_cast<void>(qc::max(_span_f64, _f32));
+    static_cast<void>(qc::max(_span_f64, _vec_f32));
+
+    static_cast<void>(qc::minify(_span_u64, _u8));
+    static_cast<void>(qc::minify(_span_u64, _vec_u8));
+    static_cast<void>(qc::minify(_span_s64, _s8));
+    static_cast<void>(qc::minify(_span_s64, _vec_s8));
+    static_cast<void>(qc::minify(_span_s64, _u32));
+    static_cast<void>(qc::minify(_span_s64, _vec_u32));
+    static_cast<void>(qc::minify(_span_f64, _f32));
+    static_cast<void>(qc::minify(_span_f64, _vec_f32));
+}
+
+template <>
+void compileFunctionsNonMatching<1>()
+{
+    u8 _u8{};
+    u32 _u32{};
+    u64 _u64{};
+    s8 _s8{};
+    s64 _s64{};
+    f32 _f32{};
+    f64 _f64{};
+
+    span1<u8> _span_u8{};
+    span1<u32> _span_u32{};
+    span1<u64> _span_u64{};
+    span1<s8> _span_s8{};
+    span1<s64> _span_s64{};
+    span1<f32> _span_f32{};
+    span1<f64> _span_f64{};
+
+    _span_u64 += _u8;
+    _span_s64 += _s8;
+    _span_s64 += _u32;
+    _span_f64 += _f32;
+
+    _span_u64 -= _u8;
+    _span_s64 -= _s8;
+    _span_s64 -= _u32;
+    _span_f64 -= _f32;
+
+    _span_u64 *= _u8;
+    _span_s64 *= _s8;
+    _span_s64 *= _u32;
+    _span_f64 *= _f32;
+
+    _span_u64 /= u8{1u};
+    _span_s64 /= s8{1};
+    _span_s64 /= u32{1u};
+    _span_f64 /= f32{1.0f};
+
+    _span_u64 &= _span_u8;
+    _span_s64 &= _span_s8;
+    _span_s64 &= _span_u32;
+    _span_f64 &= _span_f32;
+
+    _span_u64 |= _span_u8;
+    _span_s64 |= _span_s8;
+    _span_s64 |= _span_u32;
+    _span_f64 |= _span_f32;
+
+    static_cast<void>(_span_u8 + _u64);
+    static_cast<void>(_span_u64 + _u8);
+    static_cast<void>(_span_s8 + _s64);
+    static_cast<void>(_span_s64 + _s8);
+    static_cast<void>(_span_s8 + _u32);
+    static_cast<void>(_span_s64 + _u32);
+    static_cast<void>(_span_f32 + _f64);
+    static_cast<void>(_span_f64 + _f32);
+
+    static_cast<void>(_span_u8 - _u64);
+    static_cast<void>(_span_u64 - _u8);
+    static_cast<void>(_span_s8 - _s64);
+    static_cast<void>(_span_s64 - _s8);
+    static_cast<void>(_span_s8 - _u32);
+    static_cast<void>(_span_s64 - _u32);
+    static_cast<void>(_span_f32 - _f64);
+    static_cast<void>(_span_f64 - _f32);
+
+    static_cast<void>(_span_u8 * _u64);
+    static_cast<void>(_span_u64 * _u8);
+    static_cast<void>(_span_s8 * _s64);
+    static_cast<void>(_span_s64 * _s8);
+    static_cast<void>(_span_s8 * _u32);
+    static_cast<void>(_span_s64 * _u32);
+    static_cast<void>(_span_f32 * _f64);
+    static_cast<void>(_span_f64 * _f32);
+
+    static_cast<void>(_span_u8 / u64{1u});
+    static_cast<void>(_span_u64 / u8{1u});
+    static_cast<void>(_span_s8 / s64{1});
+    static_cast<void>(_span_s64 / s8{1});
+    static_cast<void>(_span_s8 / u32{1u});
+    static_cast<void>(_span_s64 / u32{1u});
+    static_cast<void>(_span_f32 / f64{1.0f});
+    static_cast<void>(_span_f64 / f32{1.0f});
+
+    static_cast<void>(_span_u8 & _span_u64);
+    static_cast<void>(_span_u64 & _span_u8);
+    static_cast<void>(_span_s8 & _span_s64);
+    static_cast<void>(_span_s64 & _span_s8);
+    static_cast<void>(_span_s8 & _span_u32);
+    static_cast<void>(_span_s64 & _span_u32);
+    static_cast<void>(_span_f32 & _span_f64);
+    static_cast<void>(_span_f64 & _span_f32);
+
+    static_cast<void>(_span_u8 | _span_u64);
+    static_cast<void>(_span_u64 | _span_u8);
+    static_cast<void>(_span_s8 | _span_s64);
+    static_cast<void>(_span_s64 | _span_s8);
+    static_cast<void>(_span_s8 | _span_u32);
+    static_cast<void>(_span_s64 | _span_u32);
+    static_cast<void>(_span_f32 | _span_f64);
+    static_cast<void>(_span_f64 | _span_f32);
+
+    static_cast<void>(qc::min(_span_u8, _u64));
+    static_cast<void>(qc::min(_span_u64, _u8));
+    static_cast<void>(qc::min(_span_s8, _s64));
+    static_cast<void>(qc::min(_span_s64, _s8));
+    static_cast<void>(qc::min(_span_s64, _u32));
+    static_cast<void>(qc::min(_span_f32, _f64));
+    static_cast<void>(qc::min(_span_f64, _f32));
+
+    static_cast<void>(qc::max(_span_u8, _u64));
+    static_cast<void>(qc::max(_span_u64, _u8));
+    static_cast<void>(qc::max(_span_s8, _s64));
+    static_cast<void>(qc::max(_span_s64, _s8));
+    static_cast<void>(qc::max(_span_s64, _u32));
+    static_cast<void>(qc::max(_span_f32, _f64));
+    static_cast<void>(qc::max(_span_f64, _f32));
+
+    static_cast<void>(qc::minify(_span_u64, _u8));
+    static_cast<void>(qc::minify(_span_s64, _s8));
+    static_cast<void>(qc::minify(_span_s64, _u32));
+    static_cast<void>(qc::minify(_span_f64, _f32));
+}
+
 static void compileFunctions()
 {
     compileFunctionsT<f32>();
@@ -427,6 +751,11 @@ static void compileFunctions()
     compileFunctionsFT<f64>();
 
     compileFunctionsPT<int>();
+
+    compileFunctionsNonMatching<1>();
+    compileFunctionsNonMatching<2>();
+    compileFunctionsNonMatching<3>();
+    compileFunctionsNonMatching<4>();
 }
 
 template <typename T, int n>
@@ -629,7 +958,7 @@ void testUnsignedIntegerSpanConceptT()
     static_assert(UnsignedIntegralVector<vec4<T>>);
 }
 
-TEST(Span, concepts)
+TEST(Span, types)
 {
     testSpanConceptT<s8>();
     testSpanConceptT<u8>();

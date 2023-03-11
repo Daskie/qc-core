@@ -60,17 +60,8 @@ namespace qc
     static_assert(std::is_same_v<std::size_t, uint64_t>);
     static_assert(std::is_same_v<std::intptr_t, int64_t>);
 
-    inline namespace types
+    inline namespace primitives
     {
-        using schar = signed char;
-        using uchar = unsigned char;
-        using ushort = unsigned short;
-        using uint = unsigned int;
-        using ulong = unsigned long;
-        using llong = long long;
-        using ullong = unsigned long long;
-        using ldouble = long double;
-
         using s8 = int8_t;
         using u8 = uint8_t;
         using s16 = int16_t;
@@ -81,17 +72,27 @@ namespace qc
         using s64 = int64_t;
         using u64 = uint64_t;
         using f64 = double;
+
+        using schar = signed char;
+        using uchar = unsigned char;
+        using ushort = unsigned short;
+        using uint = unsigned int;
+        using ulong = unsigned long;
+        using llong = long long;
+        using ullong = unsigned long long;
+        using ldouble = long double;
     }
 
-    inline namespace concepts
+    inline namespace types
     {
         template <typename T1, typename T2> concept Same = std::is_same_v<std::remove_cv_t<T1>, std::remove_cv_t<T2>>;
+        template <typename T, typename... Ts> concept OneOf = (Same<T, Ts> || ...);
         template <typename T> concept Void = Same<T, void>;
         template <typename T> concept Boolean = Same<T, bool>;
-        template <typename T> concept Integral = std::is_integral_v<T> && !Boolean<T> && !Same<T, char>;
-        template <typename T> concept SignedIntegral = Integral<T> && std::is_signed_v<T>;
-        template <typename T> concept UnsignedIntegral = Integral<T> && std::is_unsigned_v<T>;
-        template <typename T> concept Floating = std::is_floating_point_v<T>;
+        template <typename T> concept SignedIntegral = OneOf<T, s8, s16, s32, s64>;
+        template <typename T> concept UnsignedIntegral = OneOf<T, u8, u16, u32, u64>;
+        template <typename T> concept Integral = SignedIntegral<T> || UnsignedIntegral<T>;
+        template <typename T> concept Floating = OneOf<T, float, double>;
         template <typename T> concept Numeric = Integral<T> || Floating<T>;
         template <typename T> concept Signed = SignedIntegral<T> || Floating<T>;
         template <typename T> concept Unsigned = UnsignedIntegral<T>;
@@ -101,8 +102,31 @@ namespace qc
         template <typename T> concept Pointer = std::is_pointer_v<T>;
         template <typename T> concept NumericOrPointer = Numeric<T> || Pointer<T>;
         template <typename T> concept IntegralOrPointer = Integral<T> || Pointer<T>;
-        template <typename T1, typename T2> concept SameNumericType = SignedIntegral<T1> == SignedIntegral<T2> && UnsignedIntegral<T1> == UnsignedIntegral<T2> && Floating<T1> == Floating<T2>;
-        template <typename T1, typename T2> concept Sameish = std::is_same_v<std::decay_t<T1>, std::decay_t<T2>> || (Numeric<T1> && Numeric<T2> && SameNumericType<T1, T2>);
+
+        template <int size> struct Sized;
+        template <> struct Sized<1> { using S =  s8; using U =  u8; };
+        template <> struct Sized<2> { using S = s16; using U = u16; };
+        template <> struct Sized<4> { using S = s32; using U = u32; using F = f32; };
+        template <> struct Sized<8> { using S = s64; using U = u64; using F = f64; };
+
+        template <typename T1, typename T2> using LargerOf = std::conditional_t<sizeof(T1) >= sizeof(T2), T1, T2>;
+    }
+
+    template <Numeric T1, Numeric T2> struct _CommonHelper;
+    template <Floating T1, Floating T2> struct _CommonHelper<T1, T2> { using T = LargerOf<T1, T2>; };
+    template <SignedIntegral T1, SignedIntegral T2> struct _CommonHelper<T1, T2> { using T = LargerOf<T1, T2>; };
+    template <UnsignedIntegral T1, UnsignedIntegral T2> struct _CommonHelper<T1, T2> { using T = LargerOf<T1, T2>; };
+    template <SignedIntegral T1, UnsignedIntegral T2> requires (sizeof(T2) <= 4u) struct _CommonHelper<T1, T2> { using T = typename Sized<sizeof(T2) >= sizeof(T1) ? sizeof(T2) * 2u : sizeof(T1)>::S; };
+    template <UnsignedIntegral T1, SignedIntegral T2> requires (sizeof(T1) <= 4u) struct _CommonHelper<T1, T2> { using T = typename Sized<sizeof(T1) >= sizeof(T2) ? sizeof(T1) * 2u : sizeof(T2)>::S; };
+
+    inline namespace types
+    {
+        template <Numeric T1, Numeric T2> using Common = _CommonHelper<T1, T2>::T;
+        template <typename T1, typename T2> concept CommonExists = requires { typename Common<T1, T2>; };
+        template <typename T1, typename T2> concept SuperOf = std::is_same_v<T1, Common<T1, T2>>;
+        template <typename T1, typename T2> concept UnsignedSuperOf = UnsignedIntegral<T1> && UnsignedIntegral<T2> && sizeof(T1) >= sizeof(T2);
+        template <typename T1, typename T2> concept SignedSuperOf = SignedIntegral<T1> && SignedIntegral<T2> && sizeof(T1) >= sizeof(T2);
+        template <typename T1, typename T2> concept FloatingSuperOf = Floating<T1> && Floating<T2> && sizeof(T1) >= sizeof(T2);
     }
 
     inline namespace numbers
@@ -116,17 +140,6 @@ namespace qc
         template <Floating T> inline constexpr T sqrt3{T(1.732050807568877)};
         template <Floating T> inline constexpr T sqrt5{T(2.236067977499790)};
     }
-
-    template <int size> struct sized;
-    template <> struct sized<1> { using stype =  s8; using utype =  u8; };
-    template <> struct sized<2> { using stype = s16; using utype = u16; };
-    template <> struct sized<4> { using stype = s32; using utype = u32; using ftype = f32; };
-    template <> struct sized<8> { using stype = s64; using utype = u64; using ftype = f64; };
-    template <typename T> using stype = typename sized<sizeof(T)>::stype;
-    template <typename T> using utype = typename sized<sizeof(T)>::utype;
-    template <typename T> using ftype = typename sized<sizeof(T)>::ftype;
-
-    template <typename T, typename... Ts> concept OneOf = (std::same_as<T, Ts> || ...);
 
     template <bool condition, typename T1, typename T2>
     nodisc constexpr decltype(auto) ternary(T1 && v1, T2 && v2)
@@ -249,28 +262,32 @@ namespace qc
     //
     // ...
     //
-    template <NumericOrPointer T1, NumericOrPointer T2> requires (Sameish<T1, T2>) nodisc constexpr auto min(T1 v1, T2 v2);
+    template <Numeric T1, Numeric T2> nodisc constexpr Common<T1, T2> min(T1 v1, T2 v2);
+    template <typename T> nodisc constexpr T * min(T * v1, T * v2);
     template <Numeric T1, Numeric T2, Numeric T3, Numeric... Ts> nodisc constexpr auto min(T1 v1, T2 v2, T3 v3, Ts... vs);
-    template <typename T, typename... Ts> nodisc constexpr auto min(T * v1, T * v2, T * v3, Ts... vs);
+    template <typename T, typename... Ts> nodisc constexpr T * min(T * v1, T * v2, T * v3, Ts... vs);
 
     //
     // ...
     //
-    template <NumericOrPointer T1, NumericOrPointer T2> requires (Sameish<T1, T2>) nodisc constexpr auto max(T1 v1, T2 v2);
+    template <Numeric T1, Numeric T2> nodisc constexpr Common<T1, T2> max(T1 v1, T2 v2);
+    template <typename T> nodisc constexpr T * max(T * v1, T * v2);
     template <Numeric T1, Numeric T2, Numeric T3, Numeric... Ts> nodisc constexpr auto max(T1 v1, T2 v2, T3 v3, Ts... vs);
-    template <typename T, typename... Ts> nodisc constexpr auto max(T * v1, T * v2, T * v3, Ts... vs);
+    template <typename T, typename... Ts> nodisc constexpr T * max(T * v1, T * v2, T * v3, Ts... vs);
 
     //
     // ...
     //
-    template <NumericOrPointer T1, NumericOrPointer T2> requires (Sameish<T1, T2> && sizeof(T1) >= sizeof(T2)) T1 & minify(T1 & v1, T2 v2);
+    template <Numeric T2, SuperOf<T2> T1> T1 & minify(T1 & v1, T2 v2);
+    template <typename T> T * & minify(T * & v1, T * v2);
     template <Numeric T, Numeric T1, Numeric T2, Numeric... Ts> T & minify(T & min, T1 v1, T2 v2, Ts... vs);
     template <typename T, typename... Ts> T * & minify(T * & min, T * v1, T * v2, Ts... vs);
 
     //
     // ...
     //
-    template <NumericOrPointer T1, NumericOrPointer T2> requires (Sameish<T1, T2> && sizeof(T1) >= sizeof(T2)) T1 & maxify(T1 & v1, T2 v2);
+    template <Numeric T2, SuperOf<T2> T1> T1 & maxify(T1 & v1, T2 v2);
+    template <typename T> T * & maxify(T * & v1, T * v2);
     template <Numeric T, Numeric T1, Numeric T2, Numeric... Ts> T & maxify(T & min, T1 v1, T2 v2, Ts... vs);
     template <typename T, typename... Ts> T * & maxify(T * & min, T * v1, T * v2, Ts... vs);
 
@@ -339,13 +356,18 @@ namespace qc
         return &this->_val;
     }
 
-    template <NumericOrPointer T1, NumericOrPointer T2>
-    requires (Sameish<T1, T2>)
-    forceinline constexpr auto min(const T1 v1, const T2 v2)
+    template <Numeric T1, Numeric T2>
+    forceinline constexpr Common<T1, T2> min(const T1 v1, const T2 v2)
     {
-        using U = std::conditional_t<sizeof(T1) >= sizeof(T2), T1, T2>;
+        using T = Common<T1, T2>;
+        if constexpr (Signed<T1> == Signed<T2>) return T(v2 < v1 ? v2 : v1);
+        else return min(T{v1}, T{v2});
+    }
 
-        return v2 < v1 ? U(v2) : U(v1);
+    template <typename T>
+    forceinline constexpr T * min(T * const v1, T * const v2)
+    {
+        return v2 < v1 ? v2 : v1;
     }
 
     template <Numeric T1, Numeric T2, Numeric T3, Numeric... Ts>
@@ -355,18 +377,23 @@ namespace qc
     }
 
     template <typename T, typename... Ts>
-    forceinline constexpr auto min(T * const v1, T * const v2, T * const v3, Ts... vs)
+    forceinline constexpr T * min(T * const v1, T * const v2, T * const v3, Ts... vs)
     {
         return min(min(v1, v2), v3, vs...);
     }
 
-    template <NumericOrPointer T1, NumericOrPointer T2>
-    requires (Sameish<T1, T2>)
-    forceinline constexpr auto max(const T1 v1, const T2 v2)
+    template <Numeric T1, Numeric T2>
+    forceinline constexpr Common<T1, T2> max(const T1 v1, const T2 v2)
     {
-        using U = std::conditional_t<sizeof(T1) >= sizeof(T2), T1, T2>;
+        using T = Common<T1, T2>;
+        if constexpr (Signed<T1> == Signed<T2>) return T(v2 > v1 ? v2 : v1);
+        else return max(T{v1}, T{v2});
+    }
 
-        return v2 > v1 ? U(v2) : U(v1);
+    template <typename T>
+    forceinline constexpr T * max(T * const v1, T * const v2)
+    {
+        return v2 > v1 ? v2 : v1;
     }
 
     template <Numeric T1, Numeric T2, Numeric T3, Numeric... Ts>
@@ -376,14 +403,19 @@ namespace qc
     }
 
     template <typename T, typename... Ts>
-    forceinline constexpr auto max(T * const v1, T * const v2, T * const v3, Ts... vs)
+    forceinline constexpr T * max(T * const v1, T * const v2, T * const v3, Ts... vs)
     {
         return max(max(v1, v2), v3, vs...);
     }
 
-    template <NumericOrPointer T1, NumericOrPointer T2>
-    requires (Sameish<T1, T2> && sizeof(T1) >= sizeof(T2))
+    template <Numeric T2, SuperOf<T2> T1>
     forceinline T1 & minify(T1 & v1, const T2 v2)
+    {
+        return v2 < v1 ? v1 = v2 : v1;
+    }
+
+    template <typename T>
+    forceinline T * & minify(T * & v1, T * const v2)
     {
         return v2 < v1 ? v1 = v2 : v1;
     }
@@ -400,9 +432,14 @@ namespace qc
         return minify(minify(min, v1), v2, vs...);
     }
 
-    template <NumericOrPointer T1, NumericOrPointer T2>
-    requires (Sameish<T1, T2> && sizeof(T1) >= sizeof(T2))
+    template <Numeric T2, SuperOf<T2> T1>
     forceinline T1 & maxify(T1 & v1, const T2 v2)
+    {
+        return v2 > v1 ? v1 = v2 : v1;
+    }
+
+    template <typename T>
+    forceinline T * & maxify(T * & v1, T * const v2)
     {
         return v2 > v1 ? v1 = v2 : v1;
     }

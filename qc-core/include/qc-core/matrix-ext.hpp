@@ -616,25 +616,25 @@ namespace qc
     template <typename T>
     forceinline mat2<T> mapTo(const vec2<T> x, const vec2<T> y)
     {
-        return inverse(mat2<T>(x, y));
+        return inverse(mat2<T>{x, y});
     }
 
     template <typename T>
     forceinline mat2<T> mapTo_o(const vec2<T> x, const vec2<T> y)
     {
-        return transpose(mat2<T>(x, y));
+        return transpose(mat2<T>{x, y});
     }
 
     template <typename T>
     forceinline mat3<T> mapTo(const vec3<T> x, const vec3<T> y, const vec3<T> z)
     {
-        return inverse(mat3<T>(x, y, z));
+        return inverse(mat3<T>{x, y, z});
     }
 
     template <typename T>
     forceinline mat3<T> mapTo_o(const vec3<T> x, const vec3<T> y, const vec3<T> z)
     {
-        return transpose(mat3<T>(x, y, z));
+        return transpose(mat3<T>{x, y, z});
     }
 
     template <typename T>
@@ -691,7 +691,7 @@ namespace qc
     template <typename T>
     inline mat4<T> view_n(const vec3<T> camPos, const vec3<T> camU, const vec3<T> camV, const vec3<T> camW)
     {
-        return mat4<T>(mapTo(camU, camV, camW)) * translate(-camPos);
+        return mat4<T>{mapTo(camU, camV, camW)} * translate(-camPos);
     }
 
     template <typename T>

@@ -6,7 +6,7 @@ namespace qc
 {
     template <typename T, int n> struct span;
 
-    inline namespace types
+    inline namespace primitives
     {
         using qc::span;
 
@@ -264,59 +264,65 @@ namespace qc
     template <Numeric T, int n> constexpr span<T, n> fullSpan{_internal::FullSpanHelper<T>::minimum, _internal::FullSpanHelper<T>::maximum};
     template <Numeric T, int n> constexpr span<T, n> nullSpan{fullSpan<T, n>.max, fullSpan<T, n>.min};
 
-    template <Numeric T, int n> span<T, n> & operator+=(span<T, n> & s, T v);
+    template <Numeric T2, SuperOf<T2> T1, int n> span<T1, n> & operator+=(span<T1, n> & s, T2 v);
     template <Pointer T, int n> span<T, n> & operator+=(span<T, n> & s, s64 v);
-    template <Numeric T, int n> span<T, n> & operator+=(span<T, n> & s, const vec<T, n> & v);
+    template <Numeric T2, SuperOf<T2> T1, int n> span<T1, n> & operator+=(span<T1, n> & s, const vec<T2, n> & v);
 
-    template <Numeric T, int n> span<T, n> & operator-=(span<T, n> & s, T v);
+    template <Numeric T2, SuperOf<T2> T1, int n> span<T1, n> & operator-=(span<T1, n> & s, T2 v);
     template <Pointer T, int n> span<T, n> & operator-=(span<T, n> & s, s64 v);
-    template <Numeric T, int n> span<T, n> & operator-=(span<T, n> & s, const vec<T, n> & v);
+    template <Numeric T2, SuperOf<T2> T1, int n> span<T1, n> & operator-=(span<T1, n> & s, const vec<T2, n> & v);
 
-    template <Numeric T, int n> span<T, n> & operator*=(span<T, n> & s, T v);
-    template <Numeric T, int n> span<T, n> & operator*=(span<T, n> & s, const vec<T, n> & v);
+    template <Numeric T2, SuperOf<T2> T1, int n> span<T1, n> & operator*=(span<T1, n> & s, T2 v);
+    template <Numeric T2, SuperOf<T2> T1, int n> span<T1, n> & operator*=(span<T1, n> & s, const vec<T2, n> & v);
 
-    template <Numeric T, int n> span<T, n> & operator/=(span<T, n> & s, T v);
-    template <Numeric T, int n> span<T, n> & operator/=(span<T, n> & s, const vec<T, n> & v);
+    template <Numeric T2, SuperOf<T2> T1, int n> span<T1, n> & operator/=(span<T1, n> & s, T2 v);
+    template <Numeric T2, SuperOf<T2> T1, int n> span<T1, n> & operator/=(span<T1, n> & s, const vec<T2, n> & v);
 
-    template <Numeric T, int n> span<T, n> & operator&=(span<T, n> & s1, const span<T, n> & s2);
+    template <Numeric T2, SuperOf<T2> T1, int n> span<T1, n> & operator&=(span<T1, n> & s1, const span<T2, n> & s2);
 
-    template <Numeric T, int n> span<T, n> & operator|=(span<T, n> & s1, const span<T, n> & s2);
+    template <Numeric T2, SuperOf<T2> T1, int n> span<T1, n> & operator|=(span<T1, n> & s1, const span<T2, n> & s2);
 
-    template <Numeric T, int n> nodisc constexpr span<T, n> operator+(const span<T, n> & s, T v);
+    // TODO: Try to eliminate any now uneccessary `vec(`/`mat(`/`quat(`/`span(` casts accross the board
+
+    template <Numeric T1, Numeric T2, int n> nodisc constexpr span<Common<T1, T2>, n> operator+(const span<T1, n> & s, T2 v);
     template <Pointer T, int n> nodisc constexpr span<T, n> operator+(const span<T, n> & s, s64 v);
-    template <Numeric T, int n> nodisc constexpr span<T, n> operator+(T v, const span<T, n> & s);
-    template <Numeric T, int n> nodisc constexpr span<T, n> operator+(const span<T, n> & s, const vec<T, n> & v);
-    template <Numeric T, int n> nodisc constexpr span<T, n> operator+(const vec<T, n> & v, const span<T, n> & s);
+    template <Numeric T1, Numeric T2, int n> nodisc constexpr span<Common<T1, T2>, n> operator+(T1 v, const span<T2, n> & s);
+    template <Numeric T1, Numeric T2, int n> nodisc constexpr span<Common<T1, T2>, n> operator+(const span<T1, n> & s, const vec<T2, n> & v);
+    template <Numeric T1, Numeric T2, int n> nodisc constexpr span<Common<T1, T2>, n> operator+(const vec<T1, n> & v, const span<T2, n> & s);
 
-    template <Numeric T, int n> nodisc constexpr span<T, n> operator-(const span<T, n> & s, T v);
+    template <Numeric T1, Numeric T2, int n> nodisc constexpr span<Common<T1, T2>, n> operator-(const span<T1, n> & s, T2 v);
     template <Pointer T, int n> nodisc constexpr span<T, n> operator-(const span<T, n> & s, s64 v);
-    template <Numeric T, int n> nodisc constexpr span<T, n> operator-(T v1, const span<T, n> & s);
-    template <Numeric T, int n> nodisc constexpr span<T, n> operator-(const span<T, n> & s, const vec<T, n> & v);
-    template <Numeric T, int n> nodisc constexpr span<T, n> operator-(const vec<T, n> & v, const span<T, n> & s);
+    template <Numeric T1, Numeric T2, int n> nodisc constexpr span<Common<T1, T2>, n> operator-(T1 v1, const span<T2, n> & s);
+    template <Numeric T1, Numeric T2, int n> nodisc constexpr span<Common<T1, T2>, n> operator-(const span<T1, n> & s, const vec<T2, n> & v);
+    template <Numeric T1, Numeric T2, int n> nodisc constexpr span<Common<T1, T2>, n> operator-(const vec<T1, n> & v, const span<T2, n> & s);
 
-    template <Numeric T, int n> nodisc constexpr span<T, n> operator*(const span<T, n> & s, T v);
-    template <Numeric T, int n> nodisc constexpr span<T, n> operator*(T v, const span<T, n> & s);
-    template <Numeric T, int n> nodisc constexpr span<T, n> operator*(const span<T, n> & s, const vec<T, n> & v);
-    template <Numeric T, int n> nodisc constexpr span<T, n> operator*(const vec<T, n> & v, const span<T, n> & s);
+    template <Numeric T1, Numeric T2, int n> nodisc constexpr span<Common<T1, T2>, n> operator*(const span<T1, n> & s, T2 v);
+    template <Numeric T1, Numeric T2, int n> nodisc constexpr span<Common<T1, T2>, n> operator*(T1 v, const span<T2, n> & s);
+    template <Numeric T1, Numeric T2, int n> nodisc constexpr span<Common<T1, T2>, n> operator*(const span<T1, n> & s, const vec<T2, n> & v);
+    template <Numeric T1, Numeric T2, int n> nodisc constexpr span<Common<T1, T2>, n> operator*(const vec<T1, n> & v, const span<T2, n> & s);
 
-    template <Numeric T, int n> nodisc constexpr span<T, n> operator/(const span<T, n> & s, T v);
-    template <Numeric T, int n> nodisc constexpr span<T, n> operator/(const span<T, n> & s, const vec<T, n> & v);
+    template <Numeric T1, Numeric T2, int n> nodisc constexpr span<Common<T1, T2>, n> operator/(const span<T1, n> & s, T2 v);
+    template <Numeric T1, Numeric T2, int n> nodisc constexpr span<Common<T1, T2>, n> operator/(const span<T1, n> & s, const vec<T2, n> & v);
 
-    template <Numeric T, int n> nodisc constexpr span<T, n> operator&(const span<T, n> & s1, const span<T, n> & s2);
+    template <Numeric T1, Numeric T2, int n> nodisc constexpr span<Common<T1, T2>, n> operator&(const span<T1, n> & s1, const span<T2, n> & s2);
 
-    template <Numeric T, int n> nodisc constexpr span<T, n> operator|(const span<T, n> & s1, const span<T, n> & s2);
+    template <Numeric T1, Numeric T2, int n> nodisc constexpr span<Common<T1, T2>, n> operator|(const span<T1, n> & s1, const span<T2, n> & s2);
 
-    template <NumericOrPointer T, int n> nodisc constexpr span<T, n> min(const span<T, n> & s1, T v);
-    template <Numeric          T, int n> nodisc constexpr span<T, n> min(const span<T, n> & s, const vec<T, n> & v);
+    template <Numeric T1, Numeric T2, int n> nodisc constexpr span<Common<T1, T2>, n> min(const span<T1, n> & s1, T2 v);
+    template <typename T, int n> nodisc constexpr span<T *, n> min(const span<T *, n> & s1, T * v);
+    template <Numeric T1, Numeric T2, int n> nodisc constexpr span<Common<T1, T2>, n> min(const span<T1, n> & s, const vec<T2, n> & v);
 
-    template <NumericOrPointer T, int n> nodisc constexpr span<T, n> max(const span<T, n> & s, T v);
-    template <Numeric          T, int n> nodisc constexpr span<T, n> max(const span<T, n> & s, const vec<T, n> & v);
+    template <Numeric T1, Numeric T2, int n> nodisc constexpr span<Common<T1, T2>, n> max(const span<T1, n> & s1, T2 v);
+    template <typename T, int n> nodisc constexpr span<T *, n> max(const span<T *, n> & s1, T * v);
+    template <Numeric T1, Numeric T2, int n> nodisc constexpr span<Common<T1, T2>, n> max(const span<T1, n> & s, const vec<T2, n> & v);
 
-    template <NumericOrPointer T, int n> span<T, n> & minify(span<T, n> & s, T v);
-    template <Numeric          T, int n> span<T, n> & minify(span<T, n> & s, const vec<T, n> & v);
+    template <Numeric T2, SuperOf<T2> T1, int n> span<T1, n> & minify(span<T1, n> & s, T2 v);
+    template <typename T, int n> span<T *, n> & minify(span<T *, n> & s, T * v);
+    template <Numeric T2, SuperOf<T2> T1, int n> span<T1, n> & minify(span<T1, n> & s, const vec<T2, n> & v);
 
-    template <NumericOrPointer T, int n> span<T, n> & maxify(span<T, n> & s, T v);
-    template <Numeric          T, int n> span<T, n> & maxify(span<T, n> & s, const vec<T, n> & v);
+    template <Numeric T2, SuperOf<T2> T1, int n> span<T1, n> & maxify(span<T1, n> & s, T2 v);
+    template <typename T, int n> span<T *, n> & maxify(span<T *, n> & s, T * v);
+    template <Numeric T2, SuperOf<T2> T1, int n> span<T1, n> & maxify(span<T1, n> & s, const vec<T2, n> & v);
 
     template <NumericOrPointer T, int n> nodisc constexpr span<T, n> clamp(const span<T, n> & s, T min, T max);
     template <Numeric T, int n> nodisc constexpr span<T, n> clamp(const span<T, n> & s, const vec<T, n> & min, const vec<T, n> & max);
@@ -699,8 +705,8 @@ namespace qc
         return {min.yzw(), max.yzw()};
     }
 
-    template <Numeric T, int n>
-    forceinline span<T, n> & operator+=(span<T, n> & s, const T v)
+    template <Numeric T2, SuperOf<T2> T1, int n>
+    forceinline span<T1, n> & operator+=(span<T1, n> & s, const T2 v)
     {
         s.min += v;
         s.max += v;
@@ -715,16 +721,16 @@ namespace qc
         return s;
     }
 
-    template <Numeric T, int n>
-    forceinline span<T, n> & operator+=(span<T, n> & s, const vec<T, n> & v)
+    template <Numeric T2, SuperOf<T2> T1, int n>
+    forceinline span<T1, n> & operator+=(span<T1, n> & s, const vec<T2, n> & v)
     {
         s.min += v;
         s.max += v;
         return s;
     }
 
-    template <Numeric T, int n>
-    forceinline span<T, n> & operator-=(span<T, n> & s, const T v)
+    template <Numeric T2, SuperOf<T2> T1, int n>
+    forceinline span<T1, n> & operator-=(span<T1, n> & s, const T2 v)
     {
         s.min -= v;
         s.max -= v;
@@ -739,36 +745,36 @@ namespace qc
         return s;
     }
 
-    template <Numeric T, int n>
-    forceinline span<T, n> & operator-=(span<T, n> & s, const vec<T, n> & v)
+    template <Numeric T2, SuperOf<T2> T1, int n>
+    forceinline span<T1, n> & operator-=(span<T1, n> & s, const vec<T2, n> & v)
     {
         s.min -= v;
         s.max -= v;
         return s;
     }
 
-    template <Numeric T, int n>
-    forceinline span<T, n> & operator*=(span<T, n> & s, const T v)
+    template <Numeric T2, SuperOf<T2> T1, int n>
+    forceinline span<T1, n> & operator*=(span<T1, n> & s, const T2 v)
     {
         s.min *= v;
         s.max *= v;
         return s;
     }
 
-    template <Numeric T, int n>
-    forceinline span<T, n> & operator*=(span<T, n> & s, const vec<T, n> & v)
+    template <Numeric T2, SuperOf<T2> T1, int n>
+    forceinline span<T1, n> & operator*=(span<T1, n> & s, const vec<T2, n> & v)
     {
         s.min *= v;
         s.max *= v;
         return s;
     }
 
-    template <Numeric T, int n>
-    forceinline span<T, n> & operator/=(span<T, n> & s, const T v)
+    template <Numeric T2, SuperOf<T2> T1, int n>
+    forceinline span<T1, n> & operator/=(span<T1, n> & s, const T2 v)
     {
-        if constexpr (Floating<T>)
+        if constexpr (Floating<T1>)
         {
-            return s *= (T(1.0) / v);
+            return s *= T2(1.0) / v;
         }
         else
         {
@@ -778,12 +784,12 @@ namespace qc
         }
     }
 
-    template <Numeric T, int n>
-    forceinline span<T, n> & operator/=(span<T, n> & s, const vec<T, n> & v)
+    template <Numeric T2, SuperOf<T2> T1, int n>
+    forceinline span<T1, n> & operator/=(span<T1, n> & s, const vec<T2, n> & v)
     {
-        if constexpr (Floating<T>)
+        if constexpr (Floating<T1>)
         {
-            return s *= T(1.0) / v;
+            return s *= T2(1.0) / v;
         }
         else
         {
@@ -793,25 +799,26 @@ namespace qc
         }
     }
 
-    template <Numeric T, int n>
-    forceinline span<T, n> & operator&=(span<T, n> & s1, const span<T, n> & s2)
+    template <Numeric T2, SuperOf<T2> T1, int n>
+    forceinline span<T1, n> & operator&=(span<T1, n> & s1, const span<T2, n> & s2)
     {
         maxify(s1.min, s2.min);
         minify(s1.max, s2.max);
         return s1;
     }
 
-    template <Numeric T, int n>
-    forceinline span<T, n> & operator|=(span<T, n> & s1, const span<T, n> & s2)
+    template <Numeric T2, SuperOf<T2> T1, int n>
+    forceinline span<T1, n> & operator|=(span<T1, n> & s1, const span<T2, n> & s2)
     {
         minify(s1.min, s2.min);
         maxify(s1.max, s2.max);
         return s1;
     }
 
-    template <Numeric T, int n>
-    forceinline constexpr span<T, n> operator+(const span<T, n> & s, const T v)
+    template <Numeric T1, Numeric T2, int n>
+    forceinline constexpr span<Common<T1, T2>, n> operator+(const span<T1, n> & s, const T2 v)
     {
+        using T = Common<T1, T2>;
         if constexpr (n == 1)
         {
             return {T(s.min + v), T(s.max + v)};
@@ -828,9 +835,10 @@ namespace qc
         return {s.min + v, s.max + v};
     }
 
-    template <Numeric T, int n>
-    forceinline constexpr span<T, n> operator+(const T v, const span<T, n> & s)
+    template <Numeric T1, Numeric T2, int n>
+    forceinline constexpr span<Common<T1, T2>, n> operator+(const T1 v, const span<T2, n> & s)
     {
+        using T = Common<T1, T2>;
         if constexpr (n == 1)
         {
             return {T(v + s.min), T(v + s.max)};
@@ -841,21 +849,22 @@ namespace qc
         }
     }
 
-    template <Numeric T, int n>
-    forceinline constexpr span<T, n> operator+(const span<T, n> & s, const vec<T, n> & v)
+    template <Numeric T1, Numeric T2, int n>
+    forceinline constexpr span<Common<T1, T2>, n> operator+(const span<T1, n> & s, const vec<T2, n> & v)
     {
         return {s.min + v, s.max + v};
     }
 
-    template <Numeric T, int n>
-    forceinline constexpr span<T, n> operator+(const vec<T, n> & v, const span<T, n> & s)
+    template <Numeric T1, Numeric T2, int n>
+    forceinline constexpr span<Common<T1, T2>, n> operator+(const vec<T1, n> & v, const span<T2, n> & s)
     {
         return {v + s.min, v + s.max};
     }
 
-    template <Numeric T, int n>
-    forceinline constexpr span<T, n> operator-(const span<T, n> & s, const T v)
+    template <Numeric T1, Numeric T2, int n>
+    forceinline constexpr span<Common<T1, T2>, n> operator-(const span<T1, n> & s, const T2 v)
     {
+        using T = Common<T1, T2>;
         if constexpr (n == 1)
         {
             return {T(s.min - v), T(s.max - v)};
@@ -879,9 +888,10 @@ namespace qc
         }
     }
 
-    template <Numeric T, int n>
-    forceinline constexpr span<T, n> operator-(const T v, const span<T, n> & s)
+    template <Numeric T1, Numeric T2, int n>
+    forceinline constexpr span<Common<T1, T2>, n> operator-(const T1 v, const span<T2, n> & s)
     {
+        using T = Common<T1, T2>;
         if constexpr (n == 1)
         {
             return {T(v - s.min), T(v - s.max)};
@@ -892,21 +902,22 @@ namespace qc
         }
     }
 
-    template <Numeric T, int n>
-    forceinline constexpr span<T, n> operator-(const span<T, n> & s, const vec<T, n> & v)
+    template <Numeric T1, Numeric T2, int n>
+    forceinline constexpr span<Common<T1, T2>, n> operator-(const span<T1, n> & s, const vec<T2, n> & v)
     {
         return {s.min - v, s.max - v};
     }
 
-    template <Numeric T, int n>
-    forceinline constexpr span<T, n> operator-(const vec<T, n> & v, const span<T, n> & s)
+    template <Numeric T1, Numeric T2, int n>
+    forceinline constexpr span<Common<T1, T2>, n> operator-(const vec<T1, n> & v, const span<T2, n> & s)
     {
         return {v - s.min, v - s.max};
     }
 
-    template <Numeric T, int n>
-    forceinline constexpr span<T, n> operator*(const span<T, n> & s, const T v)
+    template <Numeric T1, Numeric T2, int n>
+    forceinline constexpr span<Common<T1, T2>, n> operator*(const span<T1, n> & s, const T2 v)
     {
+        using T = Common<T1, T2>;
         if constexpr (n == 1)
         {
             return {T(s.min * v), T(s.max * v)};
@@ -917,9 +928,10 @@ namespace qc
         }
     }
 
-    template <Numeric T, int n>
-    forceinline constexpr span<T, n> operator*(const T v, const span<T, n> & s)
+    template <Numeric T1, Numeric T2, int n>
+    forceinline constexpr span<Common<T1, T2>, n> operator*(const T1 v, const span<T2, n> & s)
     {
+        using T = Common<T1, T2>;
         if constexpr (n == 1)
         {
             return {T(v * s.min), T(v * s.max)};
@@ -930,24 +942,25 @@ namespace qc
         }
     }
 
-    template <Numeric T, int n>
-    forceinline constexpr span<T, n> operator*(const span<T, n> & s, const vec<T, n> & v)
+    template <Numeric T1, Numeric T2, int n>
+    forceinline constexpr span<Common<T1, T2>, n> operator*(const span<T1, n> & s, const vec<T2, n> & v)
     {
         return {s.min * v, s.max * v};
     }
 
-    template <Numeric T, int n>
-    forceinline constexpr span<T, n> operator*(const vec<T, n> & v, const span<T, n> & s)
+    template <Numeric T1, Numeric T2, int n>
+    forceinline constexpr span<Common<T1, T2>, n> operator*(const vec<T1, n> & v, const span<T2, n> & s)
     {
         return {v * s.min, v * s.max};
     }
 
-    template <Numeric T, int n>
-    forceinline constexpr span<T, n> operator/(const span<T, n> & s, const T v)
+    template <Numeric T1, Numeric T2, int n>
+    forceinline constexpr span<Common<T1, T2>, n> operator/(const span<T1, n> & s, const T2 v)
     {
-        if constexpr (Floating<T>)
+        using T = Common<T1, T2>;
+        if constexpr (Floating<T1>)
         {
-            return s * (T(1.0) / v);
+            return s * (T2(1.0) / v);
         }
         else
         {
@@ -962,12 +975,12 @@ namespace qc
         }
     }
 
-    template <Numeric T, int n>
-    forceinline constexpr span<T, n> operator/(const span<T, n> & s, const vec<T, n> & v)
+    template <Numeric T1, Numeric T2, int n>
+    forceinline constexpr span<Common<T1, T2>, n> operator/(const span<T1, n> & s, const vec<T2, n> & v)
     {
-        if constexpr (Floating<T>)
+        if constexpr (Floating<T1>)
         {
-            return s * (T(1.0) / v);
+            return s * (T2(1.0) / v);
         }
         else
         {
@@ -975,68 +988,96 @@ namespace qc
         }
     }
 
-    template <Numeric T, int n>
-    forceinline constexpr span<T, n> operator&(const span<T, n> & s1, const span<T, n> & s2)
+    template <Numeric T1, Numeric T2, int n>
+    forceinline constexpr span<Common<T1, T2>, n> operator&(const span<T1, n> & s1, const span<T2, n> & s2)
     {
         return {max(s1.min, s2.min), min(s1.max, s2.max)};
     }
 
-    template <Numeric T, int n>
-    forceinline constexpr span<T, n> operator|(const span<T, n> & s1, const span<T, n> & s2)
+    template <Numeric T1, Numeric T2, int n>
+    forceinline constexpr span<Common<T1, T2>, n> operator|(const span<T1, n> & s1, const span<T2, n> & s2)
     {
         return {min(s1.min, s2.min), max(s1.max, s2.max)};
     }
 
-    template <NumericOrPointer T, int n>
-    forceinline constexpr span<T, n> min(const span<T, n> & s, const T v)
+    template <Numeric T1, Numeric T2, int n>
+    forceinline constexpr span<Common<T1, T2>, n> min(const span<T1, n> & s, const T2 v)
     {
         return {min(s.min, v), min(s.max, v)};
     }
 
-    template <Numeric T, int n>
-    forceinline constexpr span<T, n> min(const span<T, n> & s, const vec<T, n> & v)
+    template <typename T, int n>
+    forceinline constexpr span<T *, n> min(const span<T *, n> & s, T * const v)
     {
         return {min(s.min, v), min(s.max, v)};
     }
 
-    template <NumericOrPointer T, int n>
-    forceinline constexpr span<T, n> max(const span<T, n> & s, const T v)
+    template <Numeric T1, Numeric T2, int n>
+    forceinline constexpr span<Common<T1, T2>, n> min(const span<T1, n> & s, const vec<T2, n> & v)
+    {
+        return {min(s.min, v), min(s.max, v)};
+    }
+
+    template <Numeric T1, Numeric T2, int n>
+    forceinline constexpr span<Common<T1, T2>, n> max(const span<T1, n> & s, const T2 v)
     {
         return {max(s.min, v), max(s.max, v)};
     }
 
-    template <Numeric T, int n>
-    forceinline constexpr span<T, n> max(const span<T, n> & s, const vec<T, n> & v)
+    template <typename T, int n>
+    forceinline constexpr span<T *, n> max(const span<T *, n> & s, T * const v)
     {
         return {max(s.min, v), max(s.max, v)};
     }
 
-    template <NumericOrPointer T, int n>
-    forceinline span<T, n> & minify(span<T, n> & s, const T v)
+    template <Numeric T1, Numeric T2, int n>
+    forceinline constexpr span<Common<T1, T2>, n> max(const span<T1, n> & s, const vec<T2, n> & v)
+    {
+        return {max(s.min, v), max(s.max, v)};
+    }
+
+    template <Numeric T2, SuperOf<T2> T1, int n>
+    forceinline span<T1, n> & minify(span<T1, n> & s, const T2 v)
     {
         minify(s.min, v);
         minify(s.max, v);
         return s;
     }
 
-    template <Numeric T, int n>
-    forceinline span<T, n> & minify(span<T, n> & s, const vec<T, n> & v)
+    template <typename T, int n>
+    forceinline span<T *, n> & minify(span<T *, n> & s, T * const v)
     {
         minify(s.min, v);
         minify(s.max, v);
         return s;
     }
 
-    template <NumericOrPointer T, int n>
-    forceinline span<T, n> & maxify(span<T, n> & s, const T v)
+    template <Numeric T2, SuperOf<T2> T1, int n>
+    forceinline span<T1, n> & minify(span<T1, n> & s, const vec<T2, n> & v)
+    {
+        minify(s.min, v);
+        minify(s.max, v);
+        return s;
+    }
+
+    template <Numeric T2, SuperOf<T2> T1, int n>
+    forceinline span<T1, n> & maxify(span<T1, n> & s, const T2 v)
     {
         maxify(s.min, v);
         maxify(s.max, v);
         return s;
     }
 
-    template <Numeric T, int n>
-    forceinline span<T, n> & maxify(span<T, n> & s, const vec<T, n> & v)
+    template <typename T, int n>
+    forceinline span<T *, n> & maxify(span<T *, n> & s, T * const v)
+    {
+        maxify(s.min, v);
+        maxify(s.max, v);
+        return s;
+    }
+
+    template <Numeric T2, SuperOf<T2> T1, int n>
+    forceinline span<T1, n> & maxify(span<T1, n> & s, const vec<T2, n> & v)
     {
         maxify(s.min, v);
         maxify(s.max, v);

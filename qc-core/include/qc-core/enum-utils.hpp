@@ -57,7 +57,7 @@ namespace qc
     };
 
     // Ensure `EnumIterator<const E>` resolves to same type as `EnumIterator<E>`
-    template <CountableEnum E> requires (std::is_const_v<E>) struct EnumIterator<E> : EnumIterator<std::remove_const_t<E>> {};
+    template <CountableEnum E> requires std::is_const_v<E> struct EnumIterator<E> : EnumIterator<std::remove_const_t<E>> {};
 
     template <CountableEnum E>
     struct EnumIteration
@@ -74,7 +74,7 @@ namespace qc
     };
 
     // Ensure `EnumIteration<const E>` resolves to same type as `EnumIteration<E>`
-    template <CountableEnum E> requires (std::is_const_v<E>) struct EnumIteration<E> : EnumIteration<std::remove_const_t<E>> {};
+    template <CountableEnum E> requires std::is_const_v<E> struct EnumIteration<E> : EnumIteration<std::remove_const_t<E>> {};
 
     template <CountableEnum E> constexpr EnumIteration<E> iterateEnum{};
 

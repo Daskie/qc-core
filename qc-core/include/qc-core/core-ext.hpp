@@ -516,8 +516,8 @@ namespace qc
         }
         else
         {
-            using NextFrom = typename sized<sizeof(From) * 2>::utype;
-            using OpType = typename sized<max(sizeof(NextFrom), sizeof(decltype(v << 1)))>::utype;
+            using NextFrom = typename Sized<sizeof(From) * 2>::U;
+            using OpType = typename Sized<max(sizeof(NextFrom), sizeof(decltype(v << 1)))>::U;
             return transnorm<To>(NextFrom(v | (OpType(v) << (8u * sizeof(From)))));
         }
     }
