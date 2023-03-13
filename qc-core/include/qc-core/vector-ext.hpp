@@ -157,17 +157,17 @@ namespace qc
     //
     // ...
     //
-    template <Numeric R, Numeric T, int n> nodisc vec<R, n> round(const vec<T, n> & v);
+    template <Numeric R, Numeric T, int n> nodisc constexpr vec<R, n> round(const vec<T, n> & v);
 
     //
     // ...
     //
-    template <Numeric R, Numeric T, int n> nodisc vec<R, n> floor(const vec<T, n> & v);
+    template <Numeric R, Numeric T, int n> nodisc constexpr vec<R, n> floor(const vec<T, n> & v);
 
     //
     // ...
     //
-    template <Numeric R, Numeric T, int n> nodisc vec<R, n> ceil(const vec<T, n> & v);
+    template <Numeric R, Numeric T, int n> nodisc constexpr vec<R, n> ceil(const vec<T, n> & v);
 
     //
     // ...
@@ -534,7 +534,7 @@ namespace qc
     }
 
     template <Numeric R, Numeric T, int n>
-    forceinline vec<R, n> round(const vec<T, n> & v)
+    forceinline vec<R, n> constexpr round(const vec<T, n> & v)
     {
         if constexpr (Integral<T>)
         {
@@ -556,7 +556,7 @@ namespace qc
     }
 
     template <Numeric R, Numeric T, int n>
-    forceinline vec<R, n> floor(const vec<T, n> & v)
+    forceinline constexpr vec<R, n> floor(const vec<T, n> & v)
     {
         if constexpr (Integral<T>)
         {
@@ -578,7 +578,7 @@ namespace qc
     }
 
     template <Numeric R, Numeric T, int n>
-    forceinline vec<R, n> ceil(const vec<T, n> & v)
+    forceinline constexpr vec<R, n> ceil(const vec<T, n> & v)
     {
         if constexpr (Integral<T>)
         {

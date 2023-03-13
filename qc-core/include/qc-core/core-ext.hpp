@@ -48,6 +48,35 @@ namespace qc
     template <Numeric T> nodisc constexpr T trunc(T v);
 
     //
+    // ...
+    // ~3.3x faster than std::modf
+    //
+    template <Floating T> nodisc constexpr T fract(T v);
+
+    //
+    // ...
+    //
+    template <SignedIntegral R, Floating T> nodisc constexpr Duo<T, R> fract_i(T v);
+
+    //
+    // ...
+    // ~2.5x faster than std::fmod
+    // `d` must be > 0
+    //
+    template <Numeric T> nodisc constexpr T mod(T v, T d);
+
+    //
+    // ...
+    // `d` must be > 0
+    //
+    template <Numeric T> nodisc constexpr Duo<T, T> mod_q(T v, T d);
+
+    ///
+    /// @return whether the floating value is an integer
+    ///
+    template <Floating T> nodisc constexpr bool isInteger(T v);
+
+    //
     // Fast round for "normal" values of absolute magnitude smaller than roughly one quadrillion
     // .5 values rounds to even, not up
     //
@@ -82,30 +111,6 @@ namespace qc
     // ...
     //
     template <UnsignedIntegral T> nodisc constexpr T mipmaps(T size);
-
-    //
-    // ...
-    // ~3.3x faster than std::modf
-    //
-    template <Floating T> nodisc constexpr T fract(T v);
-
-    //
-    // ...
-    //
-    template <SignedIntegral R, Floating T> nodisc constexpr Duo<T, R> fract_i(T v);
-
-    //
-    // ...
-    // ~2.5x faster than std::fmod
-    // `d` must be > 0
-    //
-    template <Numeric T> nodisc constexpr T mod(T v, T d);
-
-    //
-    // ...
-    // `d` must be > 0
-    //
-    template <Numeric T> nodisc constexpr Duo<T, T> mod_q(T v, T d);
 
     //
     // ...
@@ -295,6 +300,12 @@ namespace qc
             const auto q{v / d};
             return {T(v - q * d), T(q)};
         }
+    }
+
+    template <Floating T>
+    forceinline constexpr bool isInteger(const T v)
+    {
+        return v == trunc(v);
     }
 
     template <Numeric R, Numeric T>

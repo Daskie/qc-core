@@ -316,6 +316,8 @@ static void compileFunctionsFT()
     static_cast<void>(qc::fract_i<s32>(v));
     static_cast<void>(qc::fract_i<s64>(v));
 
+    static_cast<void>(qc::isInteger(v));
+
     static_cast<void>(qc::mix(v, v, v));
 
     static_cast<void>(qc::unmix(v, v, v));
