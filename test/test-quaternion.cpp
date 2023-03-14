@@ -97,13 +97,25 @@ static void compileFunctionsT()
     static_cast<void>(qc::slerp(q, q, v));
 }
 
-static void compileFunctionsNonMatching()
+static void compileNonMatching()
 {
     float _f{};
     fvec3 _fvec{};
     dvec3 _dvec{};
     fquat _fquat{};
     dquat _dquat{};
+
+    {
+        dquat q1{_fquat};
+        dquat q2{_fvec};
+        dquat q3{_fvec, _f};
+        dquat q4{fvec4{}};
+    }
+    {
+        fquat q{_dquat};
+    }
+
+    _dquat = _fquat;
 
     _dquat += _fquat;
     _dquat -= _fquat;
@@ -126,7 +138,7 @@ static void compileFunctions()
 {
     compileFunctionsT<float>();
     compileFunctionsT<double>();
-    compileFunctionsNonMatching();
+    compileNonMatching();
 }
 
 template <typename T>

@@ -326,13 +326,46 @@ static void compileFunctionsT()
 }
 
 template <int n>
-static void compileFunctionsNonMatching()
+static void compileNonMatching()
 {
     float _f{};
     fvec<n> _fvec{};
     dvec<n> _dvec{};
     fmat<n> _fmat{};
     dmat<n> _dmat{};
+
+    {
+        dmat<n> m{_fmat};
+    }
+    if constexpr (n == 2u)
+    {
+        dmat<n> m1{
+            _f, _f,
+            _f, _f};
+        dmat<n> m2{_fvec, _fvec};
+    }
+    if constexpr (n == 3u)
+    {
+        dmat<n> m1{
+            _f, _f, _f,
+            _f, _f, _f,
+            _f, _f, _f};
+        dmat<n> m2{_fvec, _fvec, _fvec};
+    }
+    if constexpr (n == 4u)
+    {
+        dmat<n> m1{
+            _f, _f, _f, _f,
+            _f, _f, _f, _f,
+            _f, _f, _f, _f,
+            _f, _f, _f, _f};
+        dmat<n> m2{_fvec, _fvec, _fvec, _fvec};
+    }
+    {
+        fmat<n> m{_dmat};
+    }
+
+    _dmat = _fmat;
 
     _dmat += _f;
     _dmat += _fmat;
@@ -369,9 +402,9 @@ static void compileFunctions()
 {
     compileFunctionsT<float>();
     compileFunctionsT<double>();
-    compileFunctionsNonMatching<2>();
-    compileFunctionsNonMatching<3>();
-    compileFunctionsNonMatching<4>();
+    compileNonMatching<2>();
+    compileNonMatching<3>();
+    compileNonMatching<4>();
 }
 
 template <typename T, int n>

@@ -120,18 +120,42 @@ template <typename T>
 static void compileClassesPT()
 {
     using P = T *;
+    using CP = const T *;
     P p{};
+    CP cp{};
     span1<P> s1{};
+    span1<CP> cs1{};
 
     // constructors
-    span<P, 1> s1_1{};
-    span<P, 1> s1_2{s1};
-    span<P, 1> s1_3{std::move(s1)};
-    span<P, 1> s1_4{p, p};
+    {
+        span<P, 1> s1_1{};
+        span<P, 1> s1_2{s1};
+        span<P, 1> s1_3{std::move(s1)};
+        span<P, 1> s1_4{p, p};
+    }
+    // const constructors
+    {
+        span<CP, 1> s1_1{};
+        span<CP, 1> s1_2{cs1};
+        span<CP, 1> s1_3{s1};
+        span<CP, 1> s1_4{std::move(cs1)};
+        span<CP, 1> s1_5{std::move(s1)};
+        span<CP, 1> s1_6{cp, cp};
+        span<CP, 1> s1_7{p, p};
+    }
 
     // assignment operators
-    s1 = s1;
-    s1 = std::move(s1);
+    {
+        s1 = s1;
+        s1 = std::move(s1);
+    }
+    // const assignment operators
+    {
+        cs1 = cs1;
+        cs1 = s1;
+        cs1 = std::move(cs1);
+        cs1 = std::move(s1);
+    }
 
     // other
     static_cast<void>(s1.size());
@@ -411,7 +435,7 @@ static void compileFunctionsPT()
 }
 
 template <int n>
-static void compileFunctionsNonMatching()
+static void compileNonMatching()
 {
     u8 _u8{};
     u32 _u32{};
@@ -436,6 +460,27 @@ static void compileFunctionsNonMatching()
     span<s64, n> _span_s64{};
     span<f32, n> _span_f32{};
     span<f64, n> _span_f64{};
+
+    {
+        span<u64, n> s1{_u8, _u8};
+        span<u64, n> s2{_vec_u8, _vec_u8};
+        span<u64, n> s3{_span_u8};
+        span<s64, n> s4{_s8, _s8};
+        span<s64, n> s5{_vec_s8, _vec_s8};
+        span<s64, n> s6{_span_s8};
+        span<f64, n> s7{_f32, _f32};
+        span<f64, n> s8{_vec_f32, _vec_f32};
+        span<f64, n> s9{_span_f32};
+    }
+    {
+        span<u8, n> s1{_span_u64};
+        span<s8, n> s2{_span_s64};
+        span<f32, n> s3{_span_f64};
+    }
+
+    _span_u64 = _span_u8;
+    _span_s64 = _span_s8;
+    _span_f64 = _span_f32;
 
     _span_u64 += _u8;
     _span_s64 += _s8;
@@ -610,7 +655,7 @@ static void compileFunctionsNonMatching()
 }
 
 template <>
-void compileFunctionsNonMatching<1>()
+void compileNonMatching<1>()
 {
     u8 _u8{};
     u32 _u32{};
@@ -627,6 +672,10 @@ void compileFunctionsNonMatching<1>()
     span1<s64> _span_s64{};
     span1<f32> _span_f32{};
     span1<f64> _span_f64{};
+
+    {
+
+    }
 
     _span_u64 += _u8;
     _span_s64 += _s8;
@@ -752,10 +801,10 @@ static void compileFunctions()
 
     compileFunctionsPT<int>();
 
-    compileFunctionsNonMatching<1>();
-    compileFunctionsNonMatching<2>();
-    compileFunctionsNonMatching<3>();
-    compileFunctionsNonMatching<4>();
+    compileNonMatching<1>();
+    compileNonMatching<2>();
+    compileNonMatching<3>();
+    compileNonMatching<4>();
 }
 
 template <typename T, int n>
@@ -805,16 +854,6 @@ static void compileCastsTTN()
     span2<T1> s2{};
     span3<T1> s3{};
     span4<T1> s4{};
-
-    { span<T2, n> s{s1}; }
-    { span<T2, n> s{s2}; }
-    { span<T2, n> s{s3}; }
-    { span<T2, n> s{s4}; }
-
-    static_cast<void>(static_cast<span<T2, n>>(s1));
-    static_cast<void>(static_cast<span<T2, n>>(s2));
-    static_cast<void>(static_cast<span<T2, n>>(s3));
-    static_cast<void>(static_cast<span<T2, n>>(s4));
 
     static_cast<void>(static_cast<bool>(s1));
     static_cast<void>(static_cast<bool>(s2));

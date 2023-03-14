@@ -124,9 +124,13 @@ namespace qc
         template <Numeric T1, Numeric T2> using Common = _CommonHelper<T1, T2>::T;
         template <typename T1, typename T2> concept CommonExists = requires { typename Common<T1, T2>; };
         template <typename T1, typename T2> concept SuperOf = std::is_same_v<T1, Common<T1, T2>>;
+        template <typename T1, typename T2> concept SubOf = std::is_same_v<T2, Common<T1, T2>>;
         template <typename T1, typename T2> concept UnsignedSuperOf = UnsignedIntegral<T1> && UnsignedIntegral<T2> && sizeof(T1) >= sizeof(T2);
+        template <typename T1, typename T2> concept UnsignedSubOf = UnsignedIntegral<T1> && UnsignedIntegral<T2> && sizeof(T1) <= sizeof(T2);
         template <typename T1, typename T2> concept SignedSuperOf = SignedIntegral<T1> && SignedIntegral<T2> && sizeof(T1) >= sizeof(T2);
+        template <typename T1, typename T2> concept SignedSubOf = SignedIntegral<T1> && SignedIntegral<T2> && sizeof(T1) <= sizeof(T2);
         template <typename T1, typename T2> concept FloatingSuperOf = Floating<T1> && Floating<T2> && sizeof(T1) >= sizeof(T2);
+        template <typename T1, typename T2> concept FloatingSubOf = Floating<T1> && Floating<T2> && sizeof(T1) <= sizeof(T2);
     }
 
     inline namespace numbers
@@ -278,7 +282,7 @@ namespace qc
     //
     // ...
     //
-    template <Numeric T2, SuperOf<T2> T1> T1 & minify(T1 & v1, T2 v2);
+    template <Numeric T1, SubOf<T1> T2> T1 & minify(T1 & v1, T2 v2);
     template <typename T> T * & minify(T * & v1, T * v2);
     template <Numeric T, Numeric T1, Numeric T2, Numeric... Ts> T & minify(T & min, T1 v1, T2 v2, Ts... vs);
     template <typename T, typename... Ts> T * & minify(T * & min, T * v1, T * v2, Ts... vs);
@@ -286,7 +290,7 @@ namespace qc
     //
     // ...
     //
-    template <Numeric T2, SuperOf<T2> T1> T1 & maxify(T1 & v1, T2 v2);
+    template <Numeric T1, SubOf<T1> T2> T1 & maxify(T1 & v1, T2 v2);
     template <typename T> T * & maxify(T * & v1, T * v2);
     template <Numeric T, Numeric T1, Numeric T2, Numeric... Ts> T & maxify(T & min, T1 v1, T2 v2, Ts... vs);
     template <typename T, typename... Ts> T * & maxify(T * & min, T * v1, T * v2, Ts... vs);
@@ -408,7 +412,7 @@ namespace qc
         return max(max(v1, v2), v3, vs...);
     }
 
-    template <Numeric T2, SuperOf<T2> T1>
+    template <Numeric T1, SubOf<T1> T2>
     forceinline T1 & minify(T1 & v1, const T2 v2)
     {
         return v2 < v1 ? v1 = v2 : v1;
@@ -432,7 +436,7 @@ namespace qc
         return minify(minify(min, v1), v2, vs...);
     }
 
-    template <Numeric T2, SuperOf<T2> T1>
+    template <Numeric T1, SubOf<T1> T2>
     forceinline T1 & maxify(T1 & v1, const T2 v2)
     {
         return v2 > v1 ? v1 = v2 : v1;

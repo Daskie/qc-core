@@ -838,7 +838,7 @@ static void compileFunctionsBT()
 }
 
 template <int n>
-static void compileFunctionsNonMatching()
+static void compileNonMatching()
 {
     u8 _u8{};
     u32 _u32{};
@@ -855,6 +855,31 @@ static void compileFunctionsNonMatching()
     vec<s64, n> _vec_s64{};
     vec<f32, n> _vec_f32{};
     vec<f64, n> _vec_f64{};
+
+    {
+        vec<u64, n> v1{_u8};
+        vec<u64, n> v2{_vec_u8};
+        vec<s64, n> v3{_s8};
+        vec<s64, n> v4{_vec_s8};
+        vec<s64, n> v5{_u32};
+        vec<s64, n> v6{_vec_u32};
+        vec<f64, n> v7{_f32};
+        vec<f64, n> v8{_vec_f32};
+    }
+    {
+        vec<u8, n> v1{_vec_u64};
+        vec<s8, n> v2{_vec_s64};
+        vec<f32, n> v3{_vec_f64};
+    }
+
+    _vec_u64 = _u8;
+    _vec_u64 = _vec_u8;
+    _vec_s64 = _s8;
+    _vec_s64 = _vec_s8;
+    _vec_s64 = _u32;
+    _vec_s64 = _vec_u32;
+    _vec_f64 = _f32;
+    _vec_f64 = _vec_f32;
 
     _vec_u64 += _u8;
     _vec_u64 += _vec_u8;
@@ -1153,9 +1178,9 @@ static void compileFunctions()
 
     compileFunctionsBT();
 
-    compileFunctionsNonMatching<2>();
-    compileFunctionsNonMatching<3>();
-    compileFunctionsNonMatching<4>();
+    compileNonMatching<2>();
+    compileNonMatching<3>();
+    compileNonMatching<4>();
 }
 
 template <typename T, int n>
