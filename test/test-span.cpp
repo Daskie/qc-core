@@ -44,8 +44,10 @@ static void compileClassesT()
     span<T, 2> s2_2{s2};
     span<T, 2> s2_3{std::move(s2)};
     span<T, 2> s2_4{v2, v2};
-    span<T, 2> s2_5{v, v};
-    span<T, 2> s2_6{s1, s1};
+    span<T, 2> s2_5{v, v2};
+    span<T, 2> s2_6{v2, v};
+    span<T, 2> s2_7{v, v};
+    span<T, 2> s2_8{s1, s1};
 
     // assignment operators
     s2 = s2;
@@ -64,10 +66,12 @@ static void compileClassesT()
     span<T, 3> s3_2{s3};
     span<T, 3> s3_3{std::move(s3)};
     span<T, 3> s3_4{v3, v3};
-    span<T, 3> s3_5{v, v};
-    span<T, 3> s3_6{s1, s1, s1};
-    span<T, 3> s3_7{s2, s1};
-    span<T, 3> s3_8{s1, s2};
+    span<T, 3> s3_5{v, v3};
+    span<T, 3> s3_6{v3, v};
+    span<T, 3> s3_7{v, v};
+    span<T, 3> s3_8{s1, s1, s1};
+    span<T, 3> s3_9{s2, s1};
+    span<T, 3> s3_10{s1, s2};
 
     // assignment operators
     s3 = s3;
@@ -90,14 +94,16 @@ static void compileClassesT()
     span<T, 4> s4_2{s4};
     span<T, 4> s4_3{std::move(s4)};
     span<T, 4> s4_4{v4, v4};
-    span<T, 4> s4_5{v, v};
-    span<T, 4> s4_6{s1, s1, s1, s1};
-    span<T, 4> s4_7{s2, s1, s1};
-    span<T, 4> s4_8{s1, s2, s1};
-    span<T, 4> s4_9{s1, s1, s2};
-    span<T, 4> s4_10{s2, s2};
-    span<T, 4> s4_11{s3, s1};
-    span<T, 4> s4_12{s1, s3};
+    span<T, 4> s4_5{v, v4};
+    span<T, 4> s4_6{v4, v};
+    span<T, 4> s4_7{v, v};
+    span<T, 4> s4_8{s1, s1, s1, s1};
+    span<T, 4> s4_9{s2, s1, s1};
+    span<T, 4> s4_0{s1, s2, s1};
+    span<T, 4> s4_11{s1, s1, s2};
+    span<T, 4> s4_12{s2, s2};
+    span<T, 4> s4_13{s3, s1};
+    span<T, 4> s4_14{s1, s3};
 
     // assignment operators
     s4 = s4;
@@ -463,14 +469,20 @@ static void compileNonMatching()
 
     {
         span<u64, n> s1{_u8, _u8};
-        span<u64, n> s2{_vec_u8, _vec_u8};
-        span<u64, n> s3{_span_u8};
-        span<s64, n> s4{_s8, _s8};
-        span<s64, n> s5{_vec_s8, _vec_s8};
-        span<s64, n> s6{_span_s8};
-        span<f64, n> s7{_f32, _f32};
-        span<f64, n> s8{_vec_f32, _vec_f32};
-        span<f64, n> s9{_span_f32};
+        span<u64, n> s2{_vec_u8, _u8};
+        span<u64, n> s3{_u8, _vec_u8};
+        span<u64, n> s4{_vec_u8, _vec_u8};
+        span<u64, n> s5{_span_u8};
+        span<s64, n> s6{_s8, _s8};
+        span<s64, n> s7{_vec_s8, _s8};
+        span<s64, n> s8{_s8, _vec_s8};
+        span<s64, n> s9{_vec_s8, _vec_s8};
+        span<s64, n> s10{_span_s8};
+        span<f64, n> s11{_f32, _f32};
+        span<f64, n> s12{_vec_f32, _f32};
+        span<f64, n> s13{_f32, _vec_f32};
+        span<f64, n> s14{_vec_f32, _vec_f32};
+        span<f64, n> s15{_span_f32};
     }
     {
         span<u8, n> s1{_span_u64};
@@ -674,7 +686,17 @@ void compileNonMatching<1>()
     span1<f64> _span_f64{};
 
     {
-
+        span1<u64> s1{_u8, _u8};
+        span1<u64> s3{_span_u8};
+        span1<s64> s4{_s8, _s8};
+        span1<s64> s6{_span_s8};
+        span1<f64> s7{_f32, _f32};
+        span1<f64> s9{_span_f32};
+    }
+    {
+        span1<u8> s1{_span_u64};
+        span1<s8> s2{_span_s64};
+        span1<f32> s3{_span_f64};
     }
 
     _span_u64 += _u8;
