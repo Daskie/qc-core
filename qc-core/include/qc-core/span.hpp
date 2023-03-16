@@ -331,8 +331,6 @@ namespace qc
 
     template <Numeric T1, SubOf<T1> T2, int n> span<T1, n> & operator|=(span<T1, n> & s1, const span<T2, n> & s2);
 
-    // TODO: Try to eliminate any now uneccessary `vec(`/`mat(`/`quat(`/`span(` casts accross the board
-
     template <Numeric T1, Numeric T2, int n> nodisc constexpr span<Common<T1, T2>, n> operator+(const span<T1, n> & s, T2 v);
     template <Pointer T, int n> nodisc constexpr span<T, n> operator+(const span<T, n> & s, s64 v);
     template <Numeric T1, Numeric T2, int n> nodisc constexpr span<Common<T1, T2>, n> operator+(T1 v, const span<T2, n> & s);

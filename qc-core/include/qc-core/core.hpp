@@ -103,7 +103,6 @@ namespace qc
 
     inline namespace types
     {
-        // TODO: Try getting rid of std::remove_cv
         template <typename T1, typename T2> concept Same = std::is_same_v<std::remove_cv_t<T1>, std::remove_cv_t<T2>>;
         template <typename T, typename... Ts> concept OneOf = (Same<T, Ts> || ...);
         template <typename T> concept Void = Same<T, void>;

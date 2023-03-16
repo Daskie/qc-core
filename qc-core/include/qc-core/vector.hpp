@@ -632,7 +632,6 @@ namespace qc
         return reinterpret_cast<vec2<T> &>(x);
     }
 
-    // TODO: Try [[msvc::intrinsic]]
     template <NumericOrBoolean T>
     forceinline constexpr vec2<T> vec<T, 3>::xy() const
     {
