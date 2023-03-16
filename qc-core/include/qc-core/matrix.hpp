@@ -48,6 +48,8 @@ namespace qc
         vec2<T> c1{T(1.0), T(0.0)};
         vec2<T> c2{T(0.0), T(1.0)};
 
+        TRIVIALLY_SERIALIZABLE;
+
         constexpr mat() = default;
         template <FloatingSubOf<T> U> constexpr mat(const vec2<U> & c1, const vec2<U> & c2);
         template <FloatingSubOf<T> U> constexpr mat(
@@ -90,6 +92,8 @@ namespace qc
         vec3<T> c1{T(1.0), T(0.0), T(0.0)};
         vec3<T> c2{T(0.0), T(1.0), T(0.0)};
         vec3<T> c3{T(0.0), T(0.0), T(1.0)};
+
+        TRIVIALLY_SERIALIZABLE;
 
         constexpr mat() = default;
         template <FloatingSubOf<T> U> constexpr mat(const vec3<U> & c1, const vec3<U> & c2, const vec3<U> & c3);
@@ -136,6 +140,8 @@ namespace qc
         vec4<T> c2{T(0.0), T(1.0), T(0.0), T(0.0)};
         vec4<T> c3{T(0.0), T(0.0), T(1.0), T(0.0)};
         vec4<T> c4{T(0.0), T(0.0), T(0.0), T(1.0)};
+
+        TRIVIALLY_SERIALIZABLE;
 
         constexpr mat() = default;
         template <FloatingSubOf<T> U> constexpr mat(const vec4<U> & c1, const vec4<U> & c2, const vec4<U> & c3, const vec4<U> & c4);

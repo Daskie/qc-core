@@ -24,6 +24,8 @@ namespace qc
         vec3<T> a{};
         T w{T(1.0)};
 
+        TRIVIALLY_SERIALIZABLE;
+
         constexpr quat() = default;
         template <FloatingSubOf<T> U> constexpr quat(const vec3<U> & a, U w);
         template <FloatingSubOf<T> U> constexpr explicit quat(const vec3<U> & v);

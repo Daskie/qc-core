@@ -48,6 +48,24 @@
     #error "`FAIL_IF` already defined"
 #endif
 
+#ifndef TRIVIALLY_SERIALIZABLE
+    #define TRIVIALLY_SERIALIZABLE static constexpr bool triviallySerializable{true}
+#else
+    #error "`TRIVIALLY_SERIALIZABLE` already defined"
+#endif
+
+#ifndef TRIVIALLY_SERIALIZABLE_IF
+    #define TRIVIALLY_SERIALIZABLE_IF(condition) static constexpr bool triviallySerializable{condition}
+#else
+    #error "`TRIVIALLY_SERIALIZABLE_IF` already defined"
+#endif
+
+#ifndef SERIALIZABLE
+    #define SERIALIZABLE(n) static constexpr int serializableN{n}
+#else
+    #error "`SERIALIZABLE` already defined"
+#endif
+
 namespace qc
 {
     #ifdef QC_DEBUG
@@ -85,6 +103,7 @@ namespace qc
 
     inline namespace types
     {
+        // TODO: Try getting rid of std::remove_cv
         template <typename T1, typename T2> concept Same = std::is_same_v<std::remove_cv_t<T1>, std::remove_cv_t<T2>>;
         template <typename T, typename... Ts> concept OneOf = (Same<T, Ts> || ...);
         template <typename T> concept Void = Same<T, void>;
@@ -161,6 +180,8 @@ namespace qc
     {
         T1 a;
         T2 b;
+
+        SERIALIZABLE(2);
     };
 
     template <typename T>
@@ -168,6 +189,8 @@ namespace qc
     {
         T a;
         T b;
+
+        SERIALIZABLE(2);
 
         template <std::integral I> nodisc forceinline T & operator[](const I i) { return (&a)[i]; }
         template <std::integral I> nodisc forceinline const T & operator[](const I i) const { return (&a)[i]; }
@@ -185,6 +208,8 @@ namespace qc
         T1 a;
         T2 b;
         T3 c;
+
+        SERIALIZABLE(3);
     };
 
     template <typename T>
@@ -193,6 +218,8 @@ namespace qc
         T a;
         T b;
         T c;
+
+        SERIALIZABLE(3);
 
         template <std::integral I> nodisc forceinline T & operator[](const I i) { return (&a)[i]; }
         template <std::integral I> nodisc forceinline const T & operator[](const I i) const { return (&a)[i]; }

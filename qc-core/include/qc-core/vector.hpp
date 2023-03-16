@@ -83,6 +83,8 @@ namespace qc
         T x;
         T y;
 
+        TRIVIALLY_SERIALIZABLE;
+
         constexpr vec() = default;
         constexpr vec(T v);
         template <NumericOrBoolean U> constexpr explicit vec(vec2<U> v);
@@ -121,6 +123,8 @@ namespace qc
         T x;
         T y;
         T z;
+
+        TRIVIALLY_SERIALIZABLE;
 
         constexpr vec() = default;
         constexpr vec(T v);
@@ -170,6 +174,8 @@ namespace qc
         T y;
         T z;
         T w;
+
+        TRIVIALLY_SERIALIZABLE;
 
         constexpr vec() = default;
         constexpr vec(T v);

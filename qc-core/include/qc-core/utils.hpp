@@ -23,6 +23,7 @@ namespace qc::utils
         return pairwiseSum(n >> 1, vals) + pairwiseSum((n + 1u) >> 1, vals + (n >> 1));
     }
 
+    // TODO: Version that maps file to memory for bulk transfers, non-sequential access, or both reading and writing
     template <typename DstContainer>
     nodisc inline Result<DstContainer> _readFile(const std::filesystem::path & path)
     {
@@ -32,29 +33,19 @@ namespace qc::utils
         const u64 size{std::filesystem::file_size(path, ec)};
 
         // Issue with file, or file too large
-        if (ec || size > dst.max_size() || size > u64(std::numeric_limits<std::streamsize>::max()))
-        {
-            return {};
-        }
+        FAIL_IF(ec || size > dst.max_size() || size > u64(std::numeric_limits<std::streamsize>::max()));
 
-        // TODO: Map file into memory instead
         std::ifstream ifs{path, std::ios::binary};
 
         // Failed to open file
-        if (!ifs.good())
-        {
-            return {};
-        }
+        FAIL_IF(!ifs.good());
 
         dst.resize(size); // TODO: string version initializes its memory - potential performance concern for large files
 
         ifs.read(std::bit_cast<char *>(dst.data()), std::streamsize(size));
 
         // Failed to read file
-        if (!ifs.good())
-        {
-            return {};
-        }
+        FAIL_IF(!ifs.good());
 
         return dst;
     }
@@ -78,25 +69,16 @@ namespace qc::utils
     /// @return whether the file was successfully written
     nodisc inline bool writeFile(const std::filesystem::path & path, const void * const data, const u64 size)
     {
-        if (!data)
-        {
-            assert(false);
-            return false;
-        }
+        // No data provided
+        FAIL_IF(size && !data);
 
         // Data too large
-        if (size > uintmax_t(std::numeric_limits<std::streamsize>::max()))
-        {
-            return false;
-        }
+        FAIL_IF(size > uintmax_t(std::numeric_limits<std::streamsize>::max()));
 
         std::ofstream ofs{path, std::ios::out | std::ios::binary};
 
         // Failed to open file
-        if (!ofs.good())
-        {
-            return false;
-        }
+        FAIL_IF(!ofs.good());
 
         return ofs.write(static_cast<const char *>(data), std::streamsize(size)).good();
     }

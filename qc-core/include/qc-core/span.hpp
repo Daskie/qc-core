@@ -121,6 +121,8 @@ namespace qc
         T min;
         T max;
 
+        TRIVIALLY_SERIALIZABLE;
+
         constexpr span() = default;
         template <SubOf<T> U> constexpr span(U v1, U v2);
         template <Numeric U> constexpr explicit span(const span1<U> & s);
@@ -152,6 +154,8 @@ namespace qc
 
         vec2<T> min;
         vec2<T> max;
+
+        TRIVIALLY_SERIALIZABLE;
 
         constexpr span() = default;
         template <SubOf<T> U> constexpr span(U v1, U v2);
@@ -191,6 +195,8 @@ namespace qc
 
         vec3<T> min;
         vec3<T> max;
+
+        TRIVIALLY_SERIALIZABLE;
 
         constexpr span() = default;
         template <SubOf<T> U> constexpr span(U v1, U v2);
@@ -236,6 +242,8 @@ namespace qc
 
         vec4<T> min;
         vec4<T> max;
+
+        TRIVIALLY_SERIALIZABLE;
 
         constexpr span() = default;
         template <SubOf<T> U> constexpr span(U v1, U v2);
