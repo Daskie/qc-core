@@ -107,8 +107,8 @@ namespace qc
         template <typename T, typename... Ts> concept OneOf = (Same<T, Ts> || ...);
         template <typename T> concept Void = Same<T, void>;
         template <typename T> concept Boolean = Same<T, bool>;
-        template <typename T> concept SignedIntegral = OneOf<T, s8, s16, s32, s64>;
-        template <typename T> concept UnsignedIntegral = OneOf<T, u8, u16, u32, u64>;
+        template <typename T> concept SignedIntegral = OneOf<T, signed char, short, int, long, long long>;
+        template <typename T> concept UnsignedIntegral = OneOf<T, unsigned char, unsigned short, unsigned int, unsigned long, unsigned long long>;
         template <typename T> concept Integral = SignedIntegral<T> || UnsignedIntegral<T>;
         template <typename T> concept Floating = OneOf<T, float, double>;
         template <typename T> concept Numeric = Integral<T> || Floating<T>;
@@ -165,6 +165,18 @@ namespace qc
         template <Floating T> inline constexpr T sqrt3{T(1.732050807568877)};
         template <Floating T> inline constexpr T sqrt5{T(2.236067977499790)};
     }
+
+    enum Platform { other, windows, linux };
+
+    constexpr Platform platform{
+        #if defined QC_WINDOWS
+            Platform::windows
+        #elif defined QC_LINUX
+            Platform::linux
+        #else
+            Platform::other
+        #endif
+    };
 
     template <bool condition, typename T1, typename T2>
     nodisc constexpr decltype(auto) ternary(T1 && v1, T2 && v2)

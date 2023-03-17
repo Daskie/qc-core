@@ -2,9 +2,14 @@
 
 #include <qc-core/paging.hpp>
 
-#define WIN32_LEAN_AND_MEAN
-#define NOMINMAX
-#include <windows.h>
+#ifdef QC_MSVC
+    #define WIN32_LEAN_AND_MEAN
+    #define NOMINMAX
+    #include <windows.h>
+#else
+    #include <fcntl.h>
+    #include <unistd.h>
+#endif
 
 namespace qc
 {
@@ -39,21 +44,93 @@ namespace qc
                 _availableBuffer = buffer;
             }
         }
+
+        s64 _openFile(const std::filesystem::path & file, const bool readWrite)
+        {
+            #ifdef QC_MSVC
+                return std::bit_cast<s64>(CreateFileW(
+                    file.c_str(),
+                    DWORD(readWrite ? GENERIC_WRITE : GENERIC_READ),
+                    DWORD(readWrite ? 0 : FILE_SHARE_READ),
+                    nullptr,
+                    DWORD(readWrite ? CREATE_ALWAYS : OPEN_EXISTING),
+                    DWORD(readWrite ? FILE_ATTRIBUTE_NORMAL : FILE_FLAG_SEQUENTIAL_SCAN),
+                    nullptr));
+            #else
+                if (readWrite)
+                {
+                    return creat(file.c_str(), 0644u);
+                }
+                else
+                {
+                    return open(file.c_str(), O_RDONLY);
+                }
+            #endif
+        }
+
+        s64 _readFile(const s64 fd, std::byte * const dst, const u64 bytes)
+        {
+            #ifdef QC_MSVC
+                DWORD bytesRead{};
+                const bool success{bool(ReadFile(
+                    std::bit_cast<HANDLE>(fd),
+                    dst,
+                    DWORD(min(bytes, std::numeric_limits<DWORD>::max())),
+                    &bytesRead,
+                    nullptr))};
+                return success ? bytesRead : -1;
+            #else
+                return read(s32(fd), dst, bytes);
+            #endif
+        }
+
+        bool _writeFile(const s64 fd, const std::byte * src, u64 bytes)
+        {
+            do
+            {
+                s64 bytesWritten;
+                #ifdef QC_MSVC
+                    DWORD bytesWritten_;
+                    const bool success{bool(WriteFile(
+                        std::bit_cast<HANDLE>(fd),
+                        src,
+                        DWORD(min(bytes, std::numeric_limits<DWORD>::max())),
+                        &bytesWritten_,
+                        nullptr))};
+                    bytesWritten = success ? bytesWritten_ : -1;
+                #else
+                    bytesWritten = write(s32(fd), src, bytes);
+                #endif
+
+                if (bytesWritten < 0)
+                {
+                    return false;
+                }
+
+                src += bytesWritten;
+                bytes -= bytesWritten;
+            }
+            while (bytes);
+
+            return true;
+        }
+
+        bool _closeFile(const s64 fd)
+        {
+            #ifdef QC_MSVC
+                return CloseHandle(std::bit_cast<HANDLE>(fd));
+            #else
+                return !::close(fd);
+            #endif
+        }
+
     }
 
-    BinaryOFStream::BinaryOFStream(const std::filesystem::path & file) :
-        _fileHandle{INVALID_HANDLE_VALUE}
+    BinaryOFStream::BinaryOFStream(const std::filesystem::path & file)
     {
-        _fileHandle = CreateFileW(
-            file.c_str(),
-            GENERIC_WRITE,
-            0,
-            nullptr,
-            CREATE_ALWAYS,
-            FILE_ATTRIBUTE_NORMAL,
-            nullptr);
+        _fd = _openFile(file, true);
 
-        if (_fileHandle == INVALID_HANDLE_VALUE)
+        if (_fd == -1)
         {
             _error = true;
             return;
@@ -82,12 +159,10 @@ namespace qc
             _flush();
         }
 
-        if (_fileHandle != INVALID_HANDLE_VALUE)
+        if (_fd != -1)
         {
-            if (!CloseHandle(std::exchange(_fileHandle, INVALID_HANDLE_VALUE)))
-            {
-                _error = true;
-            }
+            _error = !_closeFile(_fd) || _error;
+            _fd = -1;
         }
 
         return !_error;
@@ -95,30 +170,23 @@ namespace qc
 
     void BinaryOFStream::_flush()
     {
-        DWORD bytesWritten{};
-        if (!WriteFile(_fileHandle, _buffer, DWORD(bufferSize - _remaining), &bytesWritten, nullptr))
+        const u64 bytes{bufferSize - _remaining};
+
+        if (!_writeFile(_fd, _buffer, bytes))
         {
             _error = true;
             return;
         }
 
-        _remaining += bytesWritten;
-        _bufferPos -= bytesWritten;
+        _remaining += bytes;
+        _bufferPos -= bytes;
     }
 
-    BinaryIFStream::BinaryIFStream(const std::filesystem::path & file) :
-        _fileHandle{INVALID_HANDLE_VALUE}
+    BinaryIFStream::BinaryIFStream(const std::filesystem::path & file)
     {
-        _fileHandle = CreateFileW(
-            file.c_str(),
-            GENERIC_READ,
-            FILE_SHARE_READ,
-            nullptr,
-            OPEN_EXISTING,
-            FILE_FLAG_SEQUENTIAL_SCAN,
-            nullptr);
+        _fd = _openFile(file, false);
 
-        if (_fileHandle == INVALID_HANDLE_VALUE)
+        if (_fd == -1)
         {
             _error = true;
             return;
@@ -140,12 +208,10 @@ namespace qc
 
     bool BinaryIFStream::close()
     {
-        if (_fileHandle != INVALID_HANDLE_VALUE)
+        if (_fd != -1)
         {
-            if (!CloseHandle(std::exchange(_fileHandle, INVALID_HANDLE_VALUE)))
-            {
-                _error = true;
-            }
+            _error = !_closeFile(_fd) || _error;
+            _fd = -1;
         }
 
         return !_error;
@@ -161,8 +227,9 @@ namespace qc
 
         _bufferPos = _buffer + _remaining;
 
-        DWORD bytesRead{};
-        if (!ReadFile(_fileHandle, _bufferPos, DWORD(bufferSize - _remaining), &bytesRead, nullptr))
+        const s64 bytesRead(_readFile(_fd, _bufferPos, bufferSize - _remaining));
+
+        if (bytesRead < 0)
         {
             _error = true;
             return;

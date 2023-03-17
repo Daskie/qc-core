@@ -151,8 +151,8 @@ TEST(BinaryFStream, multipleStreamsSameFile)
     qc::BinaryOFStream ofs1{file};
     ASSERT_TRUE(ofs1);
     qc::BinaryOFStream ofs2{file};
-    ASSERT_FALSE(ofs2);
-    ASSERT_FALSE(ofs2.close());
+    ASSERT_EQ(bool(ofs2), qc::platform != qc::Platform::windows);
+    ASSERT_EQ(ofs2.close(), qc::platform != qc::Platform::windows);
 
     ASSERT_TRUE(ofs1 << 123);
     ASSERT_TRUE(ofs1.close());

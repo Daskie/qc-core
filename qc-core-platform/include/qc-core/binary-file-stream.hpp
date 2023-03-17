@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstring>
+
 #include <filesystem>
 
 #include <qc-core/core.hpp>
@@ -39,7 +41,7 @@ namespace qc
       private:
 
         bool _error{};
-        void * _fileHandle{};
+        s64 _fd{-1};
         std::byte * _buffer{};
         std::byte * _bufferPos{};
         u64 _remaining{};
@@ -65,7 +67,7 @@ namespace qc
       private:
 
         bool _error{};
-        void * _fileHandle{};
+        s64 _fd{-1};
         std::byte * _buffer{};
         std::byte * _bufferPos{};
         u64 _remaining{};
@@ -106,7 +108,7 @@ namespace qc
         }
         else
         {
-            return *this << StreamSpan{&src, 1u};
+            return *this << StreamSpan<const T>{&src, 1u};
         }
     }
 
