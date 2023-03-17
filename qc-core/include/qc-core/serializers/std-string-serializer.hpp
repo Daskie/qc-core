@@ -9,7 +9,7 @@ namespace qc
 {
     inline Serializer & operator<<(Serializer & s, const std::string & str)
     {
-        return s << str.size() << SerializeSpan<char>{str.data(), str.size()};
+        return s << str.size() << StreamSpan<const char>{str.data(), str.size()};
     }
 
     inline Deserializer & operator>>(Deserializer & ds, std::string & str)
@@ -18,7 +18,7 @@ namespace qc
         if (ds >> size)
         {
             str.resize(size);
-            ds >> DeserializeSpan<char>{str.data(), str.size()};
+            ds >> StreamSpan<char>{str.data(), str.size()};
         }
         return ds;
     }

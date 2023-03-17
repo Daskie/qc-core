@@ -120,12 +120,15 @@ namespace qc
         template <typename T> concept Pointer = std::is_pointer_v<T>;
         template <typename T> concept NumericOrPointer = Numeric<T> || Pointer<T>;
         template <typename T> concept IntegralOrPointer = Integral<T> || Pointer<T>;
+        template <typename T> concept TriviallyCopyable = std::is_trivially_copyable_v<T>;
 
         template <int size> struct Sized;
         template <> struct Sized<1> { using S =  s8; using U =  u8; };
         template <> struct Sized<2> { using S = s16; using U = u16; };
         template <> struct Sized<4> { using S = s32; using U = u32; using F = f32; };
         template <> struct Sized<8> { using S = s64; using U = u64; using F = f64; };
+
+        template <typename T, u64 n> using CArray = T[n];
 
         template <typename T1, typename T2> using LargerOf = std::conditional_t<sizeof(T1) >= sizeof(T2), T1, T2>;
     }

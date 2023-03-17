@@ -69,7 +69,7 @@ TEST(Serializer, primitives)
         serializer << fquat{fvec3{1.0f, 2.0f, 3.0f}, 4.0f};
         serializer << dquat{dvec3{1.0, 2.0, 3.0}, 4.0};
         serializer << ispan1{1, 2} << ispan2{ivec2{3, 4}, ivec2{5, 6}} << ispan3{ivec3{7, 8, 9}, ivec3{10, 11, 12}} << ispan4{ivec4{13, 14, 15, 16}, ivec4{17, 18, 19, 20}};
-        ASSERT_TRUE(serializer);
+        ASSERT_TRUE(serializer.close());
     }
     {
         qc::Deserializer deserializer{file};
@@ -215,7 +215,7 @@ TEST(Serializer, primitives)
             ASSERT_EQ(v3, (ispan3{ivec3{7, 8, 9}, ivec3{10, 11, 12}}));
             ASSERT_EQ(v4, (ispan4{ivec4{13, 14, 15, 16}, ivec4{17, 18, 19, 20}}));
         }
-        ASSERT_TRUE(deserializer);
+        ASSERT_TRUE(deserializer.close());
     }
 }
 
@@ -227,7 +227,7 @@ TEST(Serializer, fieldN)
         qc::Serializer serializer{file};
         ASSERT_TRUE(serializer);
         serializer << CustomB{CustomA{ivec2{1, 2}, true}, CustomA{ivec2{3, 4}, false}, 5.0};
-        ASSERT_TRUE(serializer);
+        ASSERT_TRUE(serializer.close());
     }
     {
         qc::Deserializer deserializer{file};
@@ -241,7 +241,7 @@ TEST(Serializer, fieldN)
             ASSERT_EQ(v.b.b, false);
             ASSERT_EQ(v.c, 5.0);
         }
-        ASSERT_TRUE(deserializer);
+        ASSERT_TRUE(deserializer.close());
     }
 }
 
@@ -251,7 +251,7 @@ TEST(Serializer, string)
         qc::Serializer serializer{file};
         ASSERT_TRUE(serializer);
         serializer << std::string{"oh wow, super cool"};
-        ASSERT_TRUE(serializer);
+        ASSERT_TRUE(serializer.close());
     }
     {
         qc::Deserializer deserializer{file};
@@ -261,7 +261,7 @@ TEST(Serializer, string)
             deserializer >> v;
             ASSERT_EQ(v, "oh wow, super cool");
         }
-        ASSERT_TRUE(deserializer);
+        ASSERT_TRUE(deserializer.close());
     }
 }
 
@@ -272,7 +272,7 @@ TEST(Serializer, list)
         ASSERT_TRUE(serializer);
         serializer << qc::List<int>{1, 2, 3};
         serializer << qc::List<std::string>{"1", "2", "3"};
-        ASSERT_TRUE(serializer);
+        ASSERT_TRUE(serializer.close());
     }
     {
         qc::Deserializer deserializer{file};
@@ -284,7 +284,7 @@ TEST(Serializer, list)
             ASSERT_EQ(v1, (qc::List<int>{1, 2, 3}));
             ASSERT_EQ(v2, (qc::List<std::string>{"1", "2", "3"}));
         }
-        ASSERT_TRUE(deserializer);
+        ASSERT_TRUE(deserializer.close());
     }
 }
 

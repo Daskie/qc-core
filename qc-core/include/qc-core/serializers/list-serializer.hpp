@@ -12,7 +12,7 @@ namespace qc
 
         if constexpr (TriviallyCopyable<T>)
         {
-            s << SerializeSpan<T>{list.data(), list.size()};
+            s << StreamSpan<const T>{list.data(), list.size()};
         }
         else
         {
@@ -32,7 +32,7 @@ namespace qc
 
             if constexpr (TriviallyCopyable<T>)
             {
-                ds >> DeserializeSpan<T>{list.data(), list.size()};
+                ds >> StreamSpan<T>{list.data(), list.size()};
             }
             else
             {

@@ -1,18 +1,13 @@
 #pragma once
 
 #include <filesystem>
-#include <fstream>
 
-#include <qc-core/core.hpp>
+#include <qc-core/binary-file-stream.hpp>
 
 namespace qc
 {
     template <typename T> concept TriviallySerializable = Numeric<T> || Enum<T> || OneOf<T, bool, char> || T::triviallySerializable;
     template <typename T> concept HasSerializableN = Integral<decltype(T::serializableN)>;
-    template <typename T> concept TriviallyCopyable = std::is_trivially_copyable_v<T>;
-
-    template <TriviallyCopyable T> struct SerializeSpan { const T * src; u64 n; };
-    template <TriviallyCopyable T> struct DeserializeSpan { T * dst; u64 n; };
 
     class Serializer
     {
@@ -20,16 +15,17 @@ namespace qc
 
         template <TriviallySerializable T> friend Serializer & operator<<(Serializer & s, const T & v);
         template <HasSerializableN T> friend Serializer & operator<<(Serializer & s, const T & v);
-        template <TriviallyCopyable T> friend Serializer & operator<<(Serializer & s, SerializeSpan<T> srcSpan);
+        template <TriviallyCopyable T> friend Serializer & operator<<(Serializer & s, StreamSpan<const T> srcSpan);
 
         Serializer(const std::filesystem::path & dstFile);
 
-        explicit operator bool() const { return !_error; }
+        explicit operator bool() const { return bool(_ofs); }
+
+        bool close();
 
       private:
 
-        std::ofstream _ofs;
-        bool _error;
+        BinaryOFStream _ofs;
     };
 
     class Deserializer
@@ -38,16 +34,17 @@ namespace qc
 
         template <TriviallySerializable T> friend Deserializer & operator>>(Deserializer & ds, T & v);
         template <HasSerializableN T> friend Deserializer & operator>>(Deserializer & ds, T & v);
-        template <TriviallyCopyable T> friend Deserializer & operator>>(Deserializer & s, DeserializeSpan<T> dstSpan);
+        template <TriviallyCopyable T> friend Deserializer & operator>>(Deserializer & ds, StreamSpan<T> dstSpan);
 
         Deserializer(const std::filesystem::path & srcFile);
 
-        explicit operator bool() const { return !_error; }
+        explicit operator bool() const { return bool(_ifs); }
+
+        bool close();
 
       private:
 
-        std::ifstream _ifs;
-        bool _error;
+        BinaryIFStream _ifs;
     };
 }
 
@@ -60,11 +57,7 @@ namespace qc
     {
         static_assert(std::is_trivially_copyable_v<T>);
 
-        if (!s._error)
-        {
-            s._error = !s._ofs.write(std::bit_cast<const char *>(&v), sizeof(T)).good();
-        }
-
+        s._ofs << v;
         return s;
     }
 
@@ -117,38 +110,29 @@ namespace qc
         }
     }
 
-    Serializer::Serializer(const std::filesystem::path & dstFile) :
-        _ofs{dstFile, std::ios::out | std::ios::binary},
-        _error{!_ofs.good()}
-    {}
-
     template <TriviallyCopyable T>
-    Serializer & operator<<(Serializer & s, const SerializeSpan<T> srcSpan)
+    Serializer & operator<<(Serializer & s, const StreamSpan<const T> srcSpan)
     {
-        static_assert(sizeof(std::streamsize) <= sizeof(u64));
-
-        if (srcSpan.n > u64(std::numeric_limits<std::streamsize>::max()) / sizeof(T))
-        {
-            s._error = true;
-        }
-
-        if (!s._error)
-        {
-            s._error = !s._ofs.write(std::bit_cast<const char *>(srcSpan.src), std::streamsize(srcSpan.n * sizeof(T))).good();
-        }
-
+        s._ofs << srcSpan;
         return s;
     }
 
-    template <TriviallySerializable T>
-    Deserializer & operator>>(Deserializer & s, T & v)
-    {
-        if (!s._error)
-        {
-            s._error = !s._ifs.read(std::bit_cast<char *>(&v), sizeof(T)).good();
-        }
+    Serializer::Serializer(const std::filesystem::path & dstFile) :
+        _ofs{dstFile}
+    {}
 
-        return s;
+    bool Serializer::close()
+    {
+        return _ofs.close();
+    }
+
+    template <TriviallySerializable T>
+    Deserializer & operator>>(Deserializer & ds, T & v)
+    {
+        static_assert(std::is_trivially_copyable_v<T>);
+
+        ds._ifs >> v;
+        return ds;
     }
 
     template <HasSerializableN T>
@@ -201,25 +185,18 @@ namespace qc
     }
 
     template <TriviallyCopyable T>
-    Deserializer & operator>>(Deserializer & ds, const DeserializeSpan<T> dstSpan)
+    Deserializer & operator>>(Deserializer & ds, const StreamSpan<T> dstSpan)
     {
-        static_assert(sizeof(std::streamsize) <= sizeof(u64));
-
-        if (dstSpan.n > u64(std::numeric_limits<std::streamsize>::max()) / sizeof(T))
-        {
-            ds._error = true;
-        }
-
-        if (!ds._error)
-        {
-            ds._error = !ds._ifs.read(std::bit_cast<char *>(dstSpan.dst), std::streamsize(dstSpan.n * sizeof(T))).good();
-        }
-
+        ds._ifs >> dstSpan;
         return ds;
     }
 
     Deserializer::Deserializer(const std::filesystem::path & srcFile) :
-        _ifs{srcFile, std::ios::in | std::ios::binary},
-        _error{!_ifs.good()}
+        _ifs{srcFile}
     {}
+
+    bool Deserializer::close()
+    {
+        return _ifs.close();
+    }
 }

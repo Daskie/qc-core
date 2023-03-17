@@ -66,6 +66,17 @@ namespace qc
         template <Numeric T> nodisc T next(const T min, const T max);
 
         ///
+        /// Reset the generator to its initial state
+        /// Equivalent to `setSeed(seed())`
+        ///
+        void reset();
+
+        ///
+        /// Set the seed, overriding the current internal state
+        ///
+        void setSeed(G seed);
+
+        ///
         /// @return the seed
         ///
         nodisc G seed() const { return _seed; }
@@ -79,10 +90,10 @@ namespace qc
             Same<G, u32> ? _Constants{21,  9, 3} :
                            _Constants{24, 11, 3}};
 
-        inline static std::atomic<G> _globalSeed{G(std::chrono::high_resolution_clock::now().time_since_epoch().count())};
+        inline static std::atomic<G> _globalSeed{G(std::chrono::steady_clock::now().time_since_epoch().count())};
 
-        G _seed{};
-        struct { G a, b, c, d; } _state{};
+        G _seed;
+        struct { G a, b, c, d; } _state;
     };
 }
 
@@ -96,12 +107,9 @@ namespace qc
     {}
 
     template <UnsignedIntegral G>
-    inline Random<G>::Random(const G seed) :
-        _seed{seed},
-        _state{.a = _seed, .b = _seed, .c = _seed, .d = 1}
+    inline Random<G>::Random(const G seed)
     {
-        // Warm up generator
-        for (int i{0}; i < 12; ++i) static_cast<void>((*this)());
+        setSeed(seed);
     }
 
     template <UnsignedIntegral G>
@@ -192,5 +200,24 @@ namespace qc
     inline T Random<G>::next(const T min, const T max)
     {
         return T(next<T>(T(max - min)) + min);
+    }
+
+    template <UnsignedIntegral G>
+    inline void Random<G>::reset()
+    {
+        setSeed(_seed);
+    }
+
+    template <UnsignedIntegral G>
+    inline void Random<G>::setSeed(const G seed)
+    {
+        _seed = seed;
+        _state.a = _seed;
+        _state.b = _seed;
+        _state.c = _seed;
+        _state.d = 1u;
+
+        // Warm up generator
+        for (int i{0}; i < 12; ++i) static_cast<void>((*this)());
     }
 }
