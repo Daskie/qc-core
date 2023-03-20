@@ -118,10 +118,10 @@ namespace qc
         using Type = T;
         static constexpr int n{1};
 
+        TRIVIALLY_SERIALIZABLE;
+
         T min;
         T max;
-
-        TRIVIALLY_SERIALIZABLE;
 
         constexpr span() = default;
         template <SubOf<T> U> constexpr span(U v1, U v2);
@@ -152,10 +152,10 @@ namespace qc
         using Type = T;
         static constexpr int n{2};
 
+        TRIVIALLY_SERIALIZABLE;
+
         vec2<T> min;
         vec2<T> max;
-
-        TRIVIALLY_SERIALIZABLE;
 
         constexpr span() = default;
         template <SubOf<T> U> constexpr span(U v1, U v2);
@@ -193,10 +193,10 @@ namespace qc
         using Type = T;
         static constexpr int n{3};
 
+        TRIVIALLY_SERIALIZABLE;
+
         vec3<T> min;
         vec3<T> max;
-
-        TRIVIALLY_SERIALIZABLE;
 
         constexpr span() = default;
         template <SubOf<T> U> constexpr span(U v1, U v2);
@@ -240,10 +240,10 @@ namespace qc
         using Type = T;
         static constexpr int n{4};
 
+        TRIVIALLY_SERIALIZABLE;
+
         vec4<T> min;
         vec4<T> max;
-
-        TRIVIALLY_SERIALIZABLE;
 
         constexpr span() = default;
         template <SubOf<T> U> constexpr span(U v1, U v2);

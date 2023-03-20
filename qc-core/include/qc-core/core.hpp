@@ -61,7 +61,7 @@
 #endif
 
 #ifndef SERIALIZABLE
-    #define SERIALIZABLE(n) static constexpr int serializableN{n}
+    #define SERIALIZABLE(n) friend class ::qc::Serializer; friend class ::qc::Deserializer; static constexpr int serializableN{n}
 #else
     #error "`SERIALIZABLE` already defined"
 #endif
@@ -178,6 +178,10 @@ namespace qc
         #endif
     };
 
+    // Forward declarations
+    class Serializer;
+    class Deserializer;
+
     template <bool condition, typename T1, typename T2>
     nodisc constexpr decltype(auto) ternary(T1 && v1, T2 && v2)
     {
@@ -192,19 +196,19 @@ namespace qc
     template <typename T1, typename T2 = T1>
     struct Duo
     {
+        SERIALIZABLE(2);
+
         T1 a;
         T2 b;
-
-        SERIALIZABLE(2);
     };
 
     template <typename T>
     struct Duo<T, T>
     {
+        SERIALIZABLE(2);
+
         T a;
         T b;
-
-        SERIALIZABLE(2);
 
         template <std::integral I> nodisc forceinline T & operator[](const I i) { return (&a)[i]; }
         template <std::integral I> nodisc forceinline const T & operator[](const I i) const { return (&a)[i]; }
@@ -219,21 +223,21 @@ namespace qc
     template <typename T1, typename T2 = T1, typename T3 = T2>
     struct Trio
     {
+        SERIALIZABLE(3);
+
         T1 a;
         T2 b;
         T3 c;
-
-        SERIALIZABLE(3);
     };
 
     template <typename T>
     struct Trio<T, T, T>
     {
+        SERIALIZABLE(3);
+
         T a;
         T b;
         T c;
-
-        SERIALIZABLE(3);
 
         template <std::integral I> nodisc forceinline T & operator[](const I i) { return (&a)[i]; }
         template <std::integral I> nodisc forceinline const T & operator[](const I i) const { return (&a)[i]; }

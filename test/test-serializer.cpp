@@ -9,6 +9,7 @@
 #include <qc-core/vector.hpp>
 
 #include <qc-core/serializers/list-serializer.hpp>
+#include <qc-core/serializers/std-map-serializer.hpp>
 #include <qc-core/serializers/std-string-serializer.hpp>
 
 using namespace qc::types;
@@ -18,19 +19,35 @@ enum CustomEnum { a, b, c };
 
 struct CustomA
 {
+    SERIALIZABLE(2);
+
     ivec2 a;
     bool b;
-
-    SERIALIZABLE(2);
 };
 
 struct CustomB
 {
-    CustomA a;
-    CustomA b;
-    double c;
+  public:
 
     SERIALIZABLE(3);
+
+    CustomB() = default;
+
+    CustomB(const CustomA & a, const CustomA & b, const double c) :
+        _a{a},
+        _b{b},
+        _c{c}
+    {}
+
+    const CustomA & a() { return _a; }
+    const CustomA & b() { return _b; }
+    double c() { return _c; }
+
+  private:
+
+    CustomA _a;
+    CustomA _b;
+    double _c;
 };
 
 struct Blah {};
@@ -235,17 +252,17 @@ TEST(Serializer, fieldN)
         {
             CustomB v;
             deserializer >> v;
-            ASSERT_EQ(v.a.a, (ivec2{1, 2}));
-            ASSERT_EQ(v.a.b, true);
-            ASSERT_EQ(v.b.a, (ivec2{3, 4}));
-            ASSERT_EQ(v.b.b, false);
-            ASSERT_EQ(v.c, 5.0);
+            ASSERT_EQ(v.a().a, (ivec2{1, 2}));
+            ASSERT_EQ(v.a().b, true);
+            ASSERT_EQ(v.b().a, (ivec2{3, 4}));
+            ASSERT_EQ(v.b().b, false);
+            ASSERT_EQ(v.c(), 5.0);
         }
         ASSERT_TRUE(deserializer.close());
     }
 }
 
-TEST(Serializer, string)
+TEST(Serializer, stdString)
 {
     {
         qc::Serializer serializer{file};
@@ -260,6 +277,26 @@ TEST(Serializer, string)
             std::string v;
             deserializer >> v;
             ASSERT_EQ(v, "oh wow, super cool");
+        }
+        ASSERT_TRUE(deserializer.close());
+    }
+}
+
+TEST(Serializer, stdMap)
+{
+    {
+        qc::Serializer serializer{file};
+        ASSERT_TRUE(serializer);
+        serializer << std::map<std::string, int>{{"a", 1}, {"b", 2}, {"c", 3}};
+        ASSERT_TRUE(serializer.close());
+    }
+    {
+        qc::Deserializer deserializer{file};
+        ASSERT_TRUE(deserializer);
+        {
+            std::map<std::string, int> v;
+            deserializer >> v;
+            ASSERT_EQ(v, (std::map<std::string, int>{{"a", 1}, {"b", 2}, {"c", 3}}));
         }
         ASSERT_TRUE(deserializer.close());
     }

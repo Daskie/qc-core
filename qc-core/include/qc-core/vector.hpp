@@ -80,10 +80,10 @@ namespace qc
         using Type = T;
         static constexpr int n{2};
 
+        TRIVIALLY_SERIALIZABLE;
+
         T x;
         T y;
-
-        TRIVIALLY_SERIALIZABLE;
 
         constexpr vec() = default;
         constexpr vec(T v);
@@ -120,11 +120,11 @@ namespace qc
         using Type = T;
         static constexpr int n{3};
 
+        TRIVIALLY_SERIALIZABLE;
+
         T x;
         T y;
         T z;
-
-        TRIVIALLY_SERIALIZABLE;
 
         constexpr vec() = default;
         constexpr vec(T v);
@@ -170,12 +170,12 @@ namespace qc
         using Type = T;
         static constexpr int n{4};
 
+        TRIVIALLY_SERIALIZABLE;
+
         T x;
         T y;
         T z;
         T w;
-
-        TRIVIALLY_SERIALIZABLE;
 
         constexpr vec() = default;
         constexpr vec(T v);
