@@ -26,7 +26,7 @@ namespace qc
         {
             _Regs regs;
             #ifdef QC_MSVC
-                __cpuid(std::bit_cast<int *>(&regs.eax), int(id));
+                ::__cpuid(std::bit_cast<int *>(&regs.eax), int(id));
             #else
                 __cpuid(id, regs.eax, regs.ebx, regs.ecx, regs.edx);
             #endif

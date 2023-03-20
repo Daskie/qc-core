@@ -48,7 +48,7 @@ namespace qc
         s64 _openFile(const std::filesystem::path & file, const bool readWrite)
         {
             #ifdef QC_MSVC
-                return std::bit_cast<s64>(CreateFileW(
+                return std::bit_cast<s64>(::CreateFileW(
                     file.c_str(),
                     DWORD(readWrite ? GENERIC_WRITE : GENERIC_READ),
                     DWORD(readWrite ? 0 : FILE_SHARE_READ),
@@ -59,11 +59,11 @@ namespace qc
             #else
                 if (readWrite)
                 {
-                    return creat(file.c_str(), 0644u);
+                    return ::creat(file.c_str(), 0644u);
                 }
                 else
                 {
-                    return open(file.c_str(), O_RDONLY);
+                    return ::open(file.c_str(), O_RDONLY);
                 }
             #endif
         }
@@ -72,7 +72,7 @@ namespace qc
         {
             #ifdef QC_MSVC
                 DWORD bytesRead{};
-                const bool success{bool(ReadFile(
+                const bool success{bool(::ReadFile(
                     std::bit_cast<HANDLE>(fd),
                     dst,
                     DWORD(min(bytes, std::numeric_limits<DWORD>::max())),
@@ -80,7 +80,7 @@ namespace qc
                     nullptr))};
                 return success ? bytesRead : -1;
             #else
-                return read(s32(fd), dst, bytes);
+                return ::read(s32(fd), dst, bytes);
             #endif
         }
 
@@ -91,7 +91,7 @@ namespace qc
                 s64 bytesWritten;
                 #ifdef QC_MSVC
                     DWORD bytesWritten_;
-                    const bool success{bool(WriteFile(
+                    const bool success{bool(::WriteFile(
                         std::bit_cast<HANDLE>(fd),
                         src,
                         DWORD(min(bytes, std::numeric_limits<DWORD>::max())),
@@ -99,7 +99,7 @@ namespace qc
                         nullptr))};
                     bytesWritten = success ? bytesWritten_ : -1;
                 #else
-                    bytesWritten = write(s32(fd), src, bytes);
+                    bytesWritten = ::write(s32(fd), src, bytes);
                 #endif
 
                 if (bytesWritten < 0)
@@ -118,7 +118,7 @@ namespace qc
         bool _closeFile(const s64 fd)
         {
             #ifdef QC_MSVC
-                return CloseHandle(std::bit_cast<HANDLE>(fd));
+                return ::CloseHandle(std::bit_cast<HANDLE>(fd));
             #else
                 return !::close(fd);
             #endif
