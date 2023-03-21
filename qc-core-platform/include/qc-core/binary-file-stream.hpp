@@ -8,7 +8,15 @@
 
 namespace qc
 {
-    template <TriviallyCopyable T> struct StreamSpan { T * vs; u64 n; };
+    template <typename T> struct StreamSpan
+    {
+        T * vs;
+        u64 n;
+
+        T * begin() const { return vs; }
+
+        T * end() const { return vs + n; }
+    };
 
     class _BinaryStreamCommon
     {

@@ -19,7 +19,7 @@ enum CustomEnum { a, b, c };
 
 struct CustomA
 {
-    SERIALIZABLE(2);
+    SERIALIZABLE;
 
     ivec2 a;
     bool b;
@@ -29,7 +29,7 @@ struct CustomB
 {
   public:
 
-    SERIALIZABLE(3);
+    SERIALIZABLE;
 
     CustomB() = default;
 
@@ -236,10 +236,8 @@ TEST(Serializer, primitives)
     }
 }
 
-TEST(Serializer, fieldN)
+TEST(Serializer, fields)
 {
-    static_assert(qc::HasSerializableN<CustomA>);
-
     {
         qc::Serializer serializer{file};
         ASSERT_TRUE(serializer);
@@ -258,6 +256,34 @@ TEST(Serializer, fieldN)
             ASSERT_EQ(v.b().b, false);
             ASSERT_EQ(v.c(), 5.0);
         }
+        ASSERT_TRUE(deserializer.close());
+    }
+}
+
+TEST(Serializer, span)
+{
+    {
+        qc::Serializer serializer{file};
+        ASSERT_TRUE(serializer);
+        const int arr1[3u]{1, 2, 3};
+        const std::string arr2[3u]{"a", "b", "c"};
+        ASSERT_TRUE((serializer << qc::StreamSpan<const int>{arr1, 3u}));
+        ASSERT_TRUE((serializer << qc::StreamSpan<const std::string>{arr2, 3u}));
+        ASSERT_TRUE(serializer.close());
+    }
+    {
+        qc::Deserializer deserializer{file};
+        ASSERT_TRUE(deserializer);
+        int arr1[3u]{};
+        std::string arr2[3u]{};
+        ASSERT_TRUE((deserializer >> qc::StreamSpan<int>{arr1, 3u}));
+        ASSERT_EQ(arr1[0], 1);
+        ASSERT_EQ(arr1[1], 2);
+        ASSERT_EQ(arr1[2], 3);
+        ASSERT_TRUE((deserializer >> qc::StreamSpan<std::string>{arr2, 3u}));
+        ASSERT_EQ(arr2[0], "a");
+        ASSERT_EQ(arr2[1], "b");
+        ASSERT_EQ(arr2[2], "c");
         ASSERT_TRUE(deserializer.close());
     }
 }

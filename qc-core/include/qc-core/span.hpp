@@ -118,7 +118,7 @@ namespace qc
         using Type = T;
         static constexpr int n{1};
 
-        TRIVIALLY_SERIALIZABLE;
+        SERIALIZABLE;
 
         T min;
         T max;
@@ -152,7 +152,7 @@ namespace qc
         using Type = T;
         static constexpr int n{2};
 
-        TRIVIALLY_SERIALIZABLE;
+        SERIALIZABLE;
 
         vec2<T> min;
         vec2<T> max;
@@ -193,7 +193,7 @@ namespace qc
         using Type = T;
         static constexpr int n{3};
 
-        TRIVIALLY_SERIALIZABLE;
+        SERIALIZABLE;
 
         vec3<T> min;
         vec3<T> max;
@@ -240,7 +240,7 @@ namespace qc
         using Type = T;
         static constexpr int n{4};
 
-        TRIVIALLY_SERIALIZABLE;
+        SERIALIZABLE;
 
         vec4<T> min;
         vec4<T> max;

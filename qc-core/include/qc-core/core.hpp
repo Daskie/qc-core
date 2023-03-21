@@ -48,20 +48,8 @@
     #error "`FAIL_IF` already defined"
 #endif
 
-#ifndef TRIVIALLY_SERIALIZABLE
-    #define TRIVIALLY_SERIALIZABLE static constexpr bool triviallySerializable{true}
-#else
-    #error "`TRIVIALLY_SERIALIZABLE` already defined"
-#endif
-
-#ifndef TRIVIALLY_SERIALIZABLE_IF
-    #define TRIVIALLY_SERIALIZABLE_IF(condition) static constexpr bool triviallySerializable{condition}
-#else
-    #error "`TRIVIALLY_SERIALIZABLE_IF` already defined"
-#endif
-
 #ifndef SERIALIZABLE
-    #define SERIALIZABLE(n) friend class ::qc::Serializer; friend class ::qc::Deserializer; static constexpr int serializableN{n}
+    #define SERIALIZABLE friend class ::qc::Serializer; friend class ::qc::Deserializer; static constexpr bool serializable{true}
 #else
     #error "`SERIALIZABLE` already defined"
 #endif
@@ -196,7 +184,7 @@ namespace qc
     template <typename T1, typename T2 = T1>
     struct Duo
     {
-        SERIALIZABLE(2);
+        SERIALIZABLE;
 
         T1 a;
         T2 b;
@@ -205,7 +193,7 @@ namespace qc
     template <typename T>
     struct Duo<T, T>
     {
-        SERIALIZABLE(2);
+        SERIALIZABLE;
 
         T a;
         T b;
@@ -223,7 +211,7 @@ namespace qc
     template <typename T1, typename T2 = T1, typename T3 = T2>
     struct Trio
     {
-        SERIALIZABLE(3);
+        SERIALIZABLE;
 
         T1 a;
         T2 b;
@@ -233,7 +221,7 @@ namespace qc
     template <typename T>
     struct Trio<T, T, T>
     {
-        SERIALIZABLE(3);
+        SERIALIZABLE;
 
         T a;
         T b;

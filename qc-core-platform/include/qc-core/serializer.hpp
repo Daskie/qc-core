@@ -6,9 +6,7 @@
 
 namespace qc
 {
-
-    template <typename T> concept TriviallySerializable = Numeric<T> || Enum<T> || OneOf<T, bool, char> || T::triviallySerializable;
-    template <typename T> concept HasSerializableN = Integral<decltype(T::serializableN)>;
+    template <typename T> concept Serializable = Numeric<T> || Enum<T> || OneOf<T, bool, char> || T::serializable;
 
     class Serializer
     {
@@ -20,9 +18,8 @@ namespace qc
 
         bool close();
 
-        template <TriviallySerializable T> Serializer & operator<<(const T & v);
-        template <HasSerializableN T> Serializer & operator<<(const T & v);
-        template <TriviallyCopyable T> Serializer & operator<<(StreamSpan<const T> srcSpan);
+        template <Serializable T> Serializer & operator<<(const T & v);
+        template <typename T> Serializer & operator<<(StreamSpan<const T> srcSpan);
 
       private:
 
@@ -39,9 +36,8 @@ namespace qc
 
         bool close();
 
-        template <TriviallySerializable T> Deserializer & operator>>(T & v);
-        template <HasSerializableN T> Deserializer & operator>>(T & v);
-        template <TriviallyCopyable T> Deserializer & operator>>(StreamSpan<T> dstSpan);
+        template <Serializable T> Deserializer & operator>>(T & v);
+        template <typename T> Deserializer & operator>>(StreamSpan<T> dstSpan);
 
       private:
 
@@ -58,68 +54,85 @@ namespace qc
         return _ofs.close();
     }
 
-    template <TriviallySerializable T>
+    template <Serializable T>
     Serializer & Serializer::operator<<(const T & v)
     {
-        static_assert(std::is_trivially_copyable_v<T>);
-
-        _ofs << v;
-        return *this;
-    }
-
-    template <HasSerializableN T>
-    Serializer & Serializer::operator<<(const T & v)
-    {
-        if constexpr (T::serializableN == 1)
+        if constexpr(std::is_trivially_copyable_v<T>)
         {
-            const auto & [v1]{v};
-            return *this << v1;
-        }
-        else if constexpr (T::serializableN == 2)
-        {
-            const auto & [v1, v2]{v};
-            return *this << v1 << v2;
-        }
-        else if constexpr (T::serializableN == 3)
-        {
-            const auto & [v1, v2, v3]{v};
-            return *this << v1 << v2 << v3;
-        }
-        else if constexpr (T::serializableN == 4)
-        {
-            const auto & [v1, v2, v3, v4]{v};
-            return *this << v1 << v2 << v3 << v4;
-        }
-        else if constexpr (T::serializableN == 5)
-        {
-            const auto & [v1, v2, v3, v4, v5]{v};
-            return *this << v1 << v2 << v3 << v4 << v5;
-        }
-        else if constexpr (T::serializableN == 6)
-        {
-            const auto & [v1, v2, v3, v4, v5, v6]{v};
-            return *this << v1 << v2 << v3 << v4 << v5 << v6;
-        }
-        else if constexpr (T::serializableN == 7)
-        {
-            const auto & [v1, v2, v3, v4, v5, v6, v7]{v};
-            return *this << v1 << v2 << v3 << v4 << v5 << v6 << v7;
-        }
-        else if constexpr (T::serializableN == 8)
-        {
-            const auto & [v1, v2, v3, v4, v5, v6, v7, v8]{v};
-            return *this << v1 << v2 << v3 << v4 << v5 << v6 << v7 << v8;
+            _ofs << v;
         }
         else
         {
-            static_assert(!sizeof(T));
+            // This is a gross substitute for proper reflection and technically non-standard
+            // TODO: Update/eliminate once C++ supports static reflection
+            if constexpr (requires { [](T v) { auto & [_1]{v}; }; })
+            {
+                const auto & [v1]{v};
+                return *this << v1;
+            }
+            else if constexpr (requires { [](T v) { auto & [_1, _2]{v}; }; })
+            {
+                const auto & [v1, v2]{v};
+                return *this << v1 << v2;
+            }
+            else if constexpr (requires { [](T v) { auto & [_1, _2, _3]{v}; }; })
+            {
+                const auto & [v1, v2, v3]{v};
+                return *this << v1 << v2 << v3;
+            }
+            else if constexpr (requires { [](T v) { auto & [_1, _2, _3, _4]{v}; }; })
+            {
+                const auto & [v1, v2, v3, v4]{v};
+                return *this << v1 << v2 << v3 << v4;
+            }
+            else if constexpr (requires { [](T v) { auto & [_1, _2, _3, _4, _5]{v}; }; })
+            {
+                const auto & [v1, v2, v3, v4, v5]{v};
+                return *this << v1 << v2 << v3 << v4 << v5;
+            }
+            else if constexpr (requires { [](T v) { auto & [_1, _2, _3, _4, _5, _6]{v}; }; })
+            {
+                const auto & [v1, v2, v3, v4, v5, v6]{v};
+                return *this << v1 << v2 << v3 << v4 << v5 << v6;
+            }
+            else if constexpr (requires { [](T v) { auto & [_1, _2, _3, _4, _5, _6, _7]{v}; }; })
+            {
+                const auto & [v1, v2, v3, v4, v5, v6, v7]{v};
+                return *this << v1 << v2 << v3 << v4 << v5 << v6 << v7;
+            }
+            else if constexpr (requires { [](T v) { auto & [_1, _2, _3, _4, _5, _6, _7, _8]{v}; }; })
+            {
+                const auto & [v1, v2, v3, v4, v5, v6, v7, v8]{v};
+                return *this << v1 << v2 << v3 << v4 << v5 << v6 << v7 << v8;
+            }
+            else if constexpr (requires { [](T v) { auto & [_1, _2, _3, _4, _5, _6, _7, _8, _9]{v}; }; })
+            {
+                static_assert(!sizeof(T), "More fields than currently supported");
+            }
+            else
+            {
+                static_assert(!sizeof(T));
+            }
         }
+
+        return *this;
     }
 
-    template <TriviallyCopyable T>
+    template <typename T>
     Serializer & Serializer::operator<<(const StreamSpan<const T> srcSpan)
     {
-        _ofs << srcSpan;
+        if constexpr (Serializable<T> && TriviallyCopyable<T>)
+        {
+            _ofs << srcSpan;
+        }
+        else
+        {
+            for (const T & v : srcSpan)
+            {
+                *this << v;
+            }
+        }
+
         return *this;
     }
 
@@ -136,68 +149,85 @@ namespace qc
         return _ifs.close();
     }
 
-    template <TriviallySerializable T>
+    template <Serializable T>
     Deserializer & Deserializer::operator>>(T & v)
     {
-        static_assert(std::is_trivially_copyable_v<T>);
-
-        _ifs >> v;
-        return *this;
-    }
-
-    template <HasSerializableN T>
-    Deserializer & Deserializer::operator>>(T & v)
-    {
-        if constexpr (T::serializableN == 1)
+        if constexpr (std::is_trivially_copyable_v<T>)
         {
-            auto & [v1]{v};
-            return *this >> v1;
-        }
-        else if constexpr (T::serializableN == 2)
-        {
-            auto & [v1, v2]{v};
-            return *this >> v1 >> v2;
-        }
-        else if constexpr (T::serializableN == 3)
-        {
-            auto & [v1, v2, v3]{v};
-            return *this >> v1 >> v2 >> v3;
-        }
-        else if constexpr (T::serializableN == 4)
-        {
-            auto & [v1, v2, v3, v4]{v};
-            return *this >> v1 >> v2 >> v3 >> v4;
-        }
-        else if constexpr (T::serializableN == 5)
-        {
-            auto & [v1, v2, v3, v4, v5]{v};
-            return *this >> v1 >> v2 >> v3 >> v4 >> v5;
-        }
-        else if constexpr (T::serializableN == 6)
-        {
-            auto & [v1, v2, v3, v4, v5, v6]{v};
-            return *this >> v1 >> v2 >> v3 >> v4 >> v5 >> v6;
-        }
-        else if constexpr (T::serializableN == 7)
-        {
-            auto & [v1, v2, v3, v4, v5, v6, v7]{v};
-            return *this >> v1 >> v2 >> v3 >> v4 >> v5 >> v6 >> v7;
-        }
-        else if constexpr (T::serializableN == 8)
-        {
-            auto & [v1, v2, v3, v4, v5, v6, v7, v8]{v};
-            return *this >> v1 >> v2 >> v3 >> v4 >> v5 >> v6 >> v7 >> v8;
+            _ifs >> v;
         }
         else
         {
-            static_assert(!sizeof(T));
+            // This is a gross substitute for proper reflection and technically non-standard
+            // TODO: Update/eliminate once C++ supports static reflection
+            if constexpr (requires { [](T v) { auto & [_1]{v}; }; })
+            {
+                const auto & [v1]{v};
+                return *this >> v1;
+            }
+            else if constexpr (requires { [](T v) { auto & [_1, _2]{v}; }; })
+            {
+                const auto & [v1, v2]{v};
+                return *this >> v1 >> v2;
+            }
+            else if constexpr (requires { [](T v) { auto & [_1, _2, _3]{v}; }; })
+            {
+                const auto & [v1, v2, v3]{v};
+                return *this >> v1 >> v2 >> v3;
+            }
+            else if constexpr (requires { [](T v) { auto & [_1, _2, _3, _4]{v}; }; })
+            {
+                const auto & [v1, v2, v3, v4]{v};
+                return *this >> v1 >> v2 >> v3 >> v4;
+            }
+            else if constexpr (requires { [](T v) { auto & [_1, _2, _3, _4, _5]{v}; }; })
+            {
+                const auto & [v1, v2, v3, v4, v5]{v};
+                return *this >> v1 >> v2 >> v3 >> v4 >> v5;
+            }
+            else if constexpr (requires { [](T v) { auto & [_1, _2, _3, _4, _5, _6]{v}; }; })
+            {
+                const auto & [v1, v2, v3, v4, v5, v6]{v};
+                return *this >> v1 >> v2 >> v3 >> v4 >> v5 >> v6;
+            }
+            else if constexpr (requires { [](T v) { auto & [_1, _2, _3, _4, _5, _6, _7]{v}; }; })
+            {
+                const auto & [v1, v2, v3, v4, v5, v6, v7]{v};
+                return *this >> v1 >> v2 >> v3 >> v4 >> v5 >> v6 >> v7;
+            }
+            else if constexpr (requires { [](T v) { auto & [_1, _2, _3, _4, _5, _6, _7, _8]{v}; }; })
+            {
+                const auto & [v1, v2, v3, v4, v5, v6, v7, v8]{v};
+                return *this >> v1 >> v2 >> v3 >> v4 >> v5 >> v6 >> v7 >> v8;
+            }
+            else if constexpr (requires { [](T v) { auto & [_1, _2, _3, _4, _5, _6, _7, _8, _9]{v}; }; })
+            {
+                static_assert(!sizeof(T), "More fields than currently supported");
+            }
+            else
+            {
+                static_assert(!sizeof(T));
+            }
         }
+
+        return *this;
     }
 
-    template <TriviallyCopyable T>
+    template <typename T>
     Deserializer & Deserializer::operator>>(const StreamSpan<T> dstSpan)
     {
-        _ifs >> dstSpan;
+        if constexpr (Serializable<T> && TriviallyCopyable<T>)
+        {
+            _ifs >> dstSpan;
+        }
+        else
+        {
+            for (T & v : dstSpan)
+            {
+                *this >> v;
+            }
+        }
+
         return *this;
     }
 }
