@@ -4,7 +4,7 @@ qc_setup_target(
     test
     EXECUTABLE
     PRIVATE_LINKS
-        qc-core-platform
+        qc-core-cpu
         GTest::gtest_main
     DISABLE_LTO
 )

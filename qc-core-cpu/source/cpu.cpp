@@ -26,20 +26,15 @@ namespace qc
         {
             _Regs regs;
             #ifdef QC_MSVC
-                ::__cpuid(std::bit_cast<int *>(&regs.eax), int(id));
+                ::__cpuidex(std::bit_cast<int *>(&regs.eax), int(id), 0);
             #else
-                __cpuid(id, regs.eax, regs.ebx, regs.ecx, regs.edx);
+                __cpuid_count(id, 0, regs.eax, regs.ebx, regs.ecx, regs.edx);
             #endif
             return regs;
         }
 
         CpuInfo _getCpuInfo()
         {
-            // Can't use AVX if we're checking for the existence of AVX
-            #ifdef __AVX__
-            static_assert(false)
-            #endif
-
             CpuInfo info{};
 
             // Get vendor string and highest valid function ID

@@ -9,8 +9,8 @@ FetchContent_MakeAvailable(qc-cmake)
 
 add_subdirectory(qc-core)
 
-add_subdirectory(qc-core-platform)
+add_subdirectory(qc-core-cpu)
 
 add_subdirectory(test)
 
-qc_setup_install(TARGETS qc-core qc-core-platform)
+qc_setup_install(TARGETS qc-core qc-core-cpu)

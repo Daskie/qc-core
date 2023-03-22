@@ -1,1 +1,1 @@
-qc_setup_target(qc-core INTERFACE_LIBRARY)
+qc_setup_target(qc-core STATIC_LIBRARY)

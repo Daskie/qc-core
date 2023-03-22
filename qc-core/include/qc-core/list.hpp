@@ -867,7 +867,17 @@ namespace qc
             {
                 if constexpr (std::is_trivially_copyable_v<T>)
                 {
+                    #ifdef QC_GCC
+                        // GCC doesn't correctly consider the `pos < end` check above when `_data` and `pos` are null
+                        #pragma GCC diagnostic push
+                        #pragma GCC diagnostic ignored "-Wnonnull"
+                    #endif
+
                     std::memmove(pos + 1, pos, u64(end - pos) * sizeof(T));
+
+                    #ifdef QC_GCC
+                        #pragma GCC diagnostic pop
+                    #endif
                 }
                 else
                 {
