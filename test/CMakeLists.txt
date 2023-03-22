@@ -6,4 +6,5 @@ qc_setup_target(
     PRIVATE_LINKS
         qc-core-platform
         GTest::gtest_main
+    DISABLE_LTO
 )

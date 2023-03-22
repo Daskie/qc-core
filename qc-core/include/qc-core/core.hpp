@@ -49,7 +49,7 @@
 #endif
 
 #ifndef SERIALIZABLE
-    #define SERIALIZABLE friend class ::qc::Serializer; friend class ::qc::Deserializer; static constexpr bool serializable{true}
+    #define SERIALIZABLE(n) friend class ::qc::Serializer; friend class ::qc::Deserializer; static constexpr ::qc::u32 _serializableN{n}
 #else
     #error "`SERIALIZABLE` already defined"
 #endif
@@ -184,7 +184,7 @@ namespace qc
     template <typename T1, typename T2 = T1>
     struct Duo
     {
-        SERIALIZABLE;
+        SERIALIZABLE(2);
 
         T1 a;
         T2 b;
@@ -193,7 +193,7 @@ namespace qc
     template <typename T>
     struct Duo<T, T>
     {
-        SERIALIZABLE;
+        SERIALIZABLE(2);
 
         T a;
         T b;
@@ -211,7 +211,7 @@ namespace qc
     template <typename T1, typename T2 = T1, typename T3 = T2>
     struct Trio
     {
-        SERIALIZABLE;
+        SERIALIZABLE(3);
 
         T1 a;
         T2 b;
@@ -221,7 +221,7 @@ namespace qc
     template <typename T>
     struct Trio<T, T, T>
     {
-        SERIALIZABLE;
+        SERIALIZABLE(3);
 
         T a;
         T b;

@@ -42,10 +42,10 @@ namespace qc
     template <Floating T>
     struct mat<T, 2>
     {
+        SERIALIZABLE(2);
+
         using Type = T;
         static constexpr int n{2};
-
-        SERIALIZABLE;
 
         vec2<T> c1{T(1.0), T(0.0)};
         vec2<T> c2{T(0.0), T(1.0)};
@@ -89,7 +89,7 @@ namespace qc
         using Type = T;
         static constexpr int n{3};
 
-        SERIALIZABLE;
+        SERIALIZABLE(3);
 
         vec3<T> c1{T(1.0), T(0.0), T(0.0)};
         vec3<T> c2{T(0.0), T(1.0), T(0.0)};
@@ -136,7 +136,7 @@ namespace qc
         using Type = T;
         static constexpr int n{4};
 
-        SERIALIZABLE;
+        SERIALIZABLE(4);
 
         vec4<T> c1{T(1.0), T(0.0), T(0.0), T(0.0)};
         vec4<T> c2{T(0.0), T(1.0), T(0.0), T(0.0)};

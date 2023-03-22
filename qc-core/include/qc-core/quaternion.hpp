@@ -21,7 +21,7 @@ namespace qc
     {
         using Type = T;
 
-        SERIALIZABLE;
+        SERIALIZABLE(2);
 
         vec3<T> a{};
         T w{T(1.0)};

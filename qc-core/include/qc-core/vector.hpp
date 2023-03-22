@@ -80,7 +80,7 @@ namespace qc
         using Type = T;
         static constexpr int n{2};
 
-        SERIALIZABLE;
+        SERIALIZABLE(2);
 
         T x;
         T y;
@@ -120,7 +120,7 @@ namespace qc
         using Type = T;
         static constexpr int n{3};
 
-        SERIALIZABLE;
+        SERIALIZABLE(3);
 
         T x;
         T y;
@@ -170,7 +170,7 @@ namespace qc
         using Type = T;
         static constexpr int n{4};
 
-        SERIALIZABLE;
+        SERIALIZABLE(4);
 
         T x;
         T y;

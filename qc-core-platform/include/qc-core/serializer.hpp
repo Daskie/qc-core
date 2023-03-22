@@ -6,7 +6,7 @@
 
 namespace qc
 {
-    template <typename T> concept Serializable = Numeric<T> || Enum<T> || OneOf<T, bool, char> || T::serializable;
+    template <typename T> concept Serializable = Numeric<T> || Enum<T> || OneOf<T, bool, char> || T::_serializableN > 0u;
 
     class Serializer
     {
@@ -57,65 +57,59 @@ namespace qc
     template <Serializable T>
     Serializer & Serializer::operator<<(const T & v)
     {
+        // TODO: Ensure serializableN size matches actual size of type
         if constexpr(std::is_trivially_copyable_v<T>)
         {
             _ofs << v;
+            return *this;
         }
         else
         {
-            // This is a gross substitute for proper reflection and technically non-standard
-            // TODO: Update/eliminate once C++ supports static reflection
-            if constexpr (requires { [](T v) { auto & [_1]{v}; }; })
+            if constexpr (T::_serializableN == 1u)
             {
                 const auto & [v1]{v};
                 return *this << v1;
             }
-            else if constexpr (requires { [](T v) { auto & [_1, _2]{v}; }; })
+            else if constexpr (T::_serializableN == 2u)
             {
                 const auto & [v1, v2]{v};
                 return *this << v1 << v2;
             }
-            else if constexpr (requires { [](T v) { auto & [_1, _2, _3]{v}; }; })
+            else if constexpr (T::_serializableN == 3u)
             {
                 const auto & [v1, v2, v3]{v};
                 return *this << v1 << v2 << v3;
             }
-            else if constexpr (requires { [](T v) { auto & [_1, _2, _3, _4]{v}; }; })
+            else if constexpr (T::_serializableN == 4u)
             {
                 const auto & [v1, v2, v3, v4]{v};
                 return *this << v1 << v2 << v3 << v4;
             }
-            else if constexpr (requires { [](T v) { auto & [_1, _2, _3, _4, _5]{v}; }; })
+            else if constexpr (T::_serializableN == 5u)
             {
                 const auto & [v1, v2, v3, v4, v5]{v};
                 return *this << v1 << v2 << v3 << v4 << v5;
             }
-            else if constexpr (requires { [](T v) { auto & [_1, _2, _3, _4, _5, _6]{v}; }; })
+            else if constexpr (T::_serializableN == 6u)
             {
                 const auto & [v1, v2, v3, v4, v5, v6]{v};
                 return *this << v1 << v2 << v3 << v4 << v5 << v6;
             }
-            else if constexpr (requires { [](T v) { auto & [_1, _2, _3, _4, _5, _6, _7]{v}; }; })
+            else if constexpr (T::_serializableN == 7u)
             {
                 const auto & [v1, v2, v3, v4, v5, v6, v7]{v};
                 return *this << v1 << v2 << v3 << v4 << v5 << v6 << v7;
             }
-            else if constexpr (requires { [](T v) { auto & [_1, _2, _3, _4, _5, _6, _7, _8]{v}; }; })
+            else if constexpr (T::_serializableN == 8u)
             {
                 const auto & [v1, v2, v3, v4, v5, v6, v7, v8]{v};
                 return *this << v1 << v2 << v3 << v4 << v5 << v6 << v7 << v8;
-            }
-            else if constexpr (requires { [](T v) { auto & [_1, _2, _3, _4, _5, _6, _7, _8, _9]{v}; }; })
-            {
-                static_assert(!sizeof(T), "More fields than currently supported");
             }
             else
             {
                 static_assert(!sizeof(T));
             }
         }
-
-        return *this;
     }
 
     template <typename T>
@@ -155,62 +149,55 @@ namespace qc
         if constexpr (std::is_trivially_copyable_v<T>)
         {
             _ifs >> v;
+            return *this;
         }
         else
         {
-            // This is a gross substitute for proper reflection and technically non-standard
-            // TODO: Update/eliminate once C++ supports static reflection
-            if constexpr (requires { [](T v) { auto & [_1]{v}; }; })
+            if constexpr (T::_serializableN == 1u)
             {
-                const auto & [v1]{v};
+                auto & [v1]{v};
                 return *this >> v1;
             }
-            else if constexpr (requires { [](T v) { auto & [_1, _2]{v}; }; })
+            else if constexpr (T::_serializableN == 2u)
             {
-                const auto & [v1, v2]{v};
+                auto & [v1, v2]{v};
                 return *this >> v1 >> v2;
             }
-            else if constexpr (requires { [](T v) { auto & [_1, _2, _3]{v}; }; })
+            else if constexpr (T::_serializableN == 3u)
             {
-                const auto & [v1, v2, v3]{v};
+                auto & [v1, v2, v3]{v};
                 return *this >> v1 >> v2 >> v3;
             }
-            else if constexpr (requires { [](T v) { auto & [_1, _2, _3, _4]{v}; }; })
+            else if constexpr (T::_serializableN == 4u)
             {
-                const auto & [v1, v2, v3, v4]{v};
+                auto & [v1, v2, v3, v4]{v};
                 return *this >> v1 >> v2 >> v3 >> v4;
             }
-            else if constexpr (requires { [](T v) { auto & [_1, _2, _3, _4, _5]{v}; }; })
+            else if constexpr (T::_serializableN == 5u)
             {
-                const auto & [v1, v2, v3, v4, v5]{v};
+                auto & [v1, v2, v3, v4, v5]{v};
                 return *this >> v1 >> v2 >> v3 >> v4 >> v5;
             }
-            else if constexpr (requires { [](T v) { auto & [_1, _2, _3, _4, _5, _6]{v}; }; })
+            else if constexpr (T::_serializableN == 6u)
             {
-                const auto & [v1, v2, v3, v4, v5, v6]{v};
+                auto & [v1, v2, v3, v4, v5, v6]{v};
                 return *this >> v1 >> v2 >> v3 >> v4 >> v5 >> v6;
             }
-            else if constexpr (requires { [](T v) { auto & [_1, _2, _3, _4, _5, _6, _7]{v}; }; })
+            else if constexpr (T::_serializableN == 7u)
             {
-                const auto & [v1, v2, v3, v4, v5, v6, v7]{v};
+                auto & [v1, v2, v3, v4, v5, v6, v7]{v};
                 return *this >> v1 >> v2 >> v3 >> v4 >> v5 >> v6 >> v7;
             }
-            else if constexpr (requires { [](T v) { auto & [_1, _2, _3, _4, _5, _6, _7, _8]{v}; }; })
+            else if constexpr (T::_serializableN == 8u)
             {
-                const auto & [v1, v2, v3, v4, v5, v6, v7, v8]{v};
+                auto & [v1, v2, v3, v4, v5, v6, v7, v8]{v};
                 return *this >> v1 >> v2 >> v3 >> v4 >> v5 >> v6 >> v7 >> v8;
-            }
-            else if constexpr (requires { [](T v) { auto & [_1, _2, _3, _4, _5, _6, _7, _8, _9]{v}; }; })
-            {
-                static_assert(!sizeof(T), "More fields than currently supported");
             }
             else
             {
                 static_assert(!sizeof(T));
             }
         }
-
-        return *this;
     }
 
     template <typename T>

@@ -19,7 +19,7 @@ enum CustomEnum { a, b, c };
 
 struct CustomA
 {
-    SERIALIZABLE;
+    SERIALIZABLE(2);
 
     ivec2 a;
     bool b;
@@ -29,7 +29,7 @@ struct CustomB
 {
   public:
 
-    SERIALIZABLE;
+    SERIALIZABLE(3);
 
     CustomB() = default;
 
@@ -50,9 +50,13 @@ struct CustomB
     double _c;
 };
 
-struct Blah {};
-struct Wow : Blah { int x; };
-static_assert(sizeof(Wow) == 4u);
+struct CustomC
+{
+    SERIALIZABLE(2);
+
+    int a;
+    qc::List<int> b;
+};
 
 const std::filesystem::path file{"qc-serializer-test.bin"};
 
@@ -255,6 +259,23 @@ TEST(Serializer, fields)
             ASSERT_EQ(v.b().a, (ivec2{3, 4}));
             ASSERT_EQ(v.b().b, false);
             ASSERT_EQ(v.c(), 5.0);
+        }
+        ASSERT_TRUE(deserializer.close());
+    }
+    {
+        qc::Serializer serializer{file};
+        ASSERT_TRUE(serializer);
+        serializer << CustomC{1, qc::List<int>{2, 3}};
+        ASSERT_TRUE(serializer.close());
+    }
+    {
+        qc::Deserializer deserializer{file};
+        ASSERT_TRUE(deserializer);
+        {
+            CustomC v;
+            deserializer >> v;
+            ASSERT_EQ(v.a, 1);
+            ASSERT_EQ(v.b, (qc::List<int>{2, 3}));
         }
         ASSERT_TRUE(deserializer.close());
     }

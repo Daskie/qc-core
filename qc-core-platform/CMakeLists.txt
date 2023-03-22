@@ -3,5 +3,5 @@ qc_setup_target(
     STATIC_LIBRARY
     PUBLIC_LINKS
         qc-core
-    DISABLE_AVX2
+    DISABLE_AVX2 # TODO: Only want to disable this for cpu.cpp
 )
