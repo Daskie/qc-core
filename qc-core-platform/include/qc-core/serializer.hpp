@@ -57,59 +57,67 @@ namespace qc
     template <Serializable T>
     Serializer & Serializer::operator<<(const T & v)
     {
-        // TODO: Ensure serializableN size matches actual size of type
-        if constexpr(std::is_trivially_copyable_v<T>)
-        {
-            _ofs << v;
-            return *this;
-        }
-        else
+        if constexpr (requires { T::_serializableN; })
         {
             if constexpr (T::_serializableN == 1u)
             {
                 const auto & [v1]{v};
-                return *this << v1;
+                if constexpr (std::is_trivially_copyable_v<T>) _ofs << v;
+                else *this << v1;
             }
             else if constexpr (T::_serializableN == 2u)
             {
-                const auto & [v1, v2]{v};
-                return *this << v1 << v2;
+                [[maybe_unused]] const auto & [v1, v2]{v};
+                if constexpr (std::is_trivially_copyable_v<T>) _ofs << v;
+                else *this << v1 << v2;
             }
             else if constexpr (T::_serializableN == 3u)
             {
-                const auto & [v1, v2, v3]{v};
-                return *this << v1 << v2 << v3;
+                [[maybe_unused]] const auto & [v1, v2, v3]{v};
+                if constexpr (std::is_trivially_copyable_v<T>) _ofs << v;
+                else *this << v1 << v2 << v3;
             }
             else if constexpr (T::_serializableN == 4u)
             {
-                const auto & [v1, v2, v3, v4]{v};
-                return *this << v1 << v2 << v3 << v4;
+                [[maybe_unused]] const auto & [v1, v2, v3, v4]{v};
+                if constexpr (std::is_trivially_copyable_v<T>) _ofs << v;
+                else *this << v1 << v2 << v3 << v4;
             }
             else if constexpr (T::_serializableN == 5u)
             {
-                const auto & [v1, v2, v3, v4, v5]{v};
-                return *this << v1 << v2 << v3 << v4 << v5;
+                [[maybe_unused]] const auto & [v1, v2, v3, v4, v5]{v};
+                if constexpr (std::is_trivially_copyable_v<T>) _ofs << v;
+                else *this << v1 << v2 << v3 << v4 << v5;
             }
             else if constexpr (T::_serializableN == 6u)
             {
-                const auto & [v1, v2, v3, v4, v5, v6]{v};
-                return *this << v1 << v2 << v3 << v4 << v5 << v6;
+                [[maybe_unused]] const auto & [v1, v2, v3, v4, v5, v6]{v};
+                if constexpr (std::is_trivially_copyable_v<T>) _ofs << v;
+                else *this << v1 << v2 << v3 << v4 << v5 << v6;
             }
             else if constexpr (T::_serializableN == 7u)
             {
-                const auto & [v1, v2, v3, v4, v5, v6, v7]{v};
-                return *this << v1 << v2 << v3 << v4 << v5 << v6 << v7;
+                [[maybe_unused]] const auto & [v1, v2, v3, v4, v5, v6, v7]{v};
+                if constexpr (std::is_trivially_copyable_v<T>) _ofs << v;
+                else *this << v1 << v2 << v3 << v4 << v5 << v6 << v7;
             }
             else if constexpr (T::_serializableN == 8u)
             {
-                const auto & [v1, v2, v3, v4, v5, v6, v7, v8]{v};
-                return *this << v1 << v2 << v3 << v4 << v5 << v6 << v7 << v8;
+                [[maybe_unused]] const auto & [v1, v2, v3, v4, v5, v6, v7, v8]{v};
+                if constexpr (std::is_trivially_copyable_v<T>) _ofs << v;
+                else *this << v1 << v2 << v3 << v4 << v5 << v6 << v7 << v8;
             }
             else
             {
                 static_assert(!sizeof(T));
             }
         }
+        else
+        {
+            _ofs << v;
+        }
+
+        return *this;
     }
 
     template <typename T>
@@ -146,58 +154,67 @@ namespace qc
     template <Serializable T>
     Deserializer & Deserializer::operator>>(T & v)
     {
-        if constexpr (std::is_trivially_copyable_v<T>)
-        {
-            _ifs >> v;
-            return *this;
-        }
-        else
+        if constexpr (requires { T::_serializableN; })
         {
             if constexpr (T::_serializableN == 1u)
             {
-                auto & [v1]{v};
-                return *this >> v1;
+                [[maybe_unused]] auto & [v1]{v};
+                if constexpr (std::is_trivially_copyable_v<T>) _ifs >> v;
+                else *this >> v1;
             }
             else if constexpr (T::_serializableN == 2u)
             {
-                auto & [v1, v2]{v};
-                return *this >> v1 >> v2;
+                [[maybe_unused]] auto & [v1, v2]{v};
+                if constexpr (std::is_trivially_copyable_v<T>) _ifs >> v;
+                else *this >> v1 >> v2;
             }
             else if constexpr (T::_serializableN == 3u)
             {
-                auto & [v1, v2, v3]{v};
-                return *this >> v1 >> v2 >> v3;
+                [[maybe_unused]] auto & [v1, v2, v3]{v};
+                if constexpr (std::is_trivially_copyable_v<T>) _ifs >> v;
+                else *this >> v1 >> v2 >> v3;
             }
             else if constexpr (T::_serializableN == 4u)
             {
-                auto & [v1, v2, v3, v4]{v};
-                return *this >> v1 >> v2 >> v3 >> v4;
+                [[maybe_unused]] auto & [v1, v2, v3, v4]{v};
+                if constexpr (std::is_trivially_copyable_v<T>) _ifs >> v;
+                else *this >> v1 >> v2 >> v3 >> v4;
             }
             else if constexpr (T::_serializableN == 5u)
             {
-                auto & [v1, v2, v3, v4, v5]{v};
-                return *this >> v1 >> v2 >> v3 >> v4 >> v5;
+                [[maybe_unused]] auto & [v1, v2, v3, v4, v5]{v};
+                if constexpr (std::is_trivially_copyable_v<T>) _ifs >> v;
+                else *this >> v1 >> v2 >> v3 >> v4 >> v5;
             }
             else if constexpr (T::_serializableN == 6u)
             {
-                auto & [v1, v2, v3, v4, v5, v6]{v};
-                return *this >> v1 >> v2 >> v3 >> v4 >> v5 >> v6;
+                [[maybe_unused]] auto & [v1, v2, v3, v4, v5, v6]{v};
+                if constexpr (std::is_trivially_copyable_v<T>) _ifs >> v;
+                else *this >> v1 >> v2 >> v3 >> v4 >> v5 >> v6;
             }
             else if constexpr (T::_serializableN == 7u)
             {
-                auto & [v1, v2, v3, v4, v5, v6, v7]{v};
-                return *this >> v1 >> v2 >> v3 >> v4 >> v5 >> v6 >> v7;
+                [[maybe_unused]] auto & [v1, v2, v3, v4, v5, v6, v7]{v};
+                if constexpr (std::is_trivially_copyable_v<T>) _ifs >> v;
+                else *this >> v1 >> v2 >> v3 >> v4 >> v5 >> v6 >> v7;
             }
             else if constexpr (T::_serializableN == 8u)
             {
-                auto & [v1, v2, v3, v4, v5, v6, v7, v8]{v};
-                return *this >> v1 >> v2 >> v3 >> v4 >> v5 >> v6 >> v7 >> v8;
+                [[maybe_unused]] auto & [v1, v2, v3, v4, v5, v6, v7, v8]{v};
+                if constexpr (std::is_trivially_copyable_v<T>) _ifs >> v;
+                else *this >> v1 >> v2 >> v3 >> v4 >> v5 >> v6 >> v7 >> v8;
             }
             else
             {
                 static_assert(!sizeof(T));
             }
         }
+        else
+        {
+            _ifs >> v;
+        }
+
+        return *this;
     }
 
     template <typename T>

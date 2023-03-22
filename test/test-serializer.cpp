@@ -376,7 +376,7 @@ template <typename T> concept Serializable = requires(T v, qc::Serializer s) { s
 template <typename T> concept Deserializable = requires(T v, qc::Deserializer ds) { ds >> v; };
 template <typename T> concept Unserializable = !Serializable<T> && !Deserializable<T>;
 
-TEST(Serializer, fails)
+TEST(Serializer, unserializable)
 {
     static_assert(Unserializable<char *>);
     static_assert(Unserializable<const char *>);
