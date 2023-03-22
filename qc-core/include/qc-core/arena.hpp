@@ -101,9 +101,9 @@ namespace qc
             // Check for dangling references
             if constexpr (debug)
             {
-                assert(_bubbles.bubbles().size() == 1u);
-                [[maybe_unused]] const auto & bubble{_bubbles.bubbles().front()};
-                assert(bubble.pos == _memory && u64(bubble.size) * 8u == _capacity);
+                ABORT_IF(_bubbles.bubbles().size() != 1u);
+                const auto & bubble{_bubbles.bubbles().front()};
+                ABORT_IF(bubble.pos != _memory || u64(bubble.size) * 8u != _capacity);
             }
 
             freePages(_memory, _pageCount(_capacity));
@@ -127,7 +127,7 @@ namespace qc
         // May only be called before memory is reserved
         if (_memory)
         {
-            assert(false);
+            DEBUG_ABORT();
             return;
         }
 
@@ -241,7 +241,7 @@ namespace qc
         }
         else
         {
-            assert(false);
+            DEBUG_ABORT();
         }
     }
 

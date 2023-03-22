@@ -21,6 +21,14 @@
 
 #define ABORT_IF(condition) if (condition) [[unlikely]] ::std::abort()
 
+#ifdef QC_DEBUG
+    #define DEBUG_ABORT() ABORT()
+    #define DEBUG_ABORT_IF(condition) ABORT_IF(condition)
+#else
+    #define DEBUG_ABORT() static_cast<void>(0)
+    #define DEBUG_ABORT_IF(condition) static_cast<void>(condition)
+#endif
+
 #define FAIL() do { if constexpr (::qc::debug) ::qc::failBreak(); return {}; } while (false)
 
 #define FAIL_IF(condition) if (condition) [[unlikely]] FAIL()

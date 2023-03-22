@@ -237,7 +237,7 @@ namespace qc
         // May only be called before memory is reserved
         if (_slotRange.start)
         {
-            assert(false);
+            DEBUG_ABORT();
             return;
         }
 
@@ -293,7 +293,7 @@ namespace qc
         // Ensure the slot is in the pool
         if (!contains(&v))
         {
-            assert(false);
+            DEBUG_ABORT();
             return;
         }
 
@@ -306,7 +306,7 @@ namespace qc
         // Ensure slot is in-use, i.e. it's not in a free range
         if (isLower && &v < lowerIt->end)
         {
-            assert(false);
+            DEBUG_ABORT();
             return;
         }
 
