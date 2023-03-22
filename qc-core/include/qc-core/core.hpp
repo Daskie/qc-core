@@ -3,6 +3,7 @@
 #include <cassert>
 #include <cstdint>
 
+#include <bit>
 #include <limits>
 #include <utility>
 
@@ -62,9 +63,10 @@ namespace qc
         constexpr bool debug{true};
     #endif
 
-    /// Only support 64 bit platform
+    /// Only support 64 bit, little endian platforms
     static_assert(std::is_same_v<std::size_t, uint64_t>);
     static_assert(std::is_same_v<std::intptr_t, int64_t>);
+    static_assert(std::endian::native == std::endian::little);
 
     inline namespace primitives
     {
@@ -238,8 +240,7 @@ namespace qc
     };
 
     ///
-    /// Simple guard lock
-    ///
+    /// Simple scope guard
     /// Calls the given prodecure (function pointer, lambda, std::function, etc.) when it goes out of scope
     ///
     template <typename Proc>
