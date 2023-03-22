@@ -377,8 +377,7 @@ namespace qc
     template <typename T>
     inline auto SemiStableDeque<T>::begin() -> iterator
     {
-        const const_iterator it{const_cast<const SemiStableDeque *>(this)->begin()};
-        return reinterpret_cast<const iterator &>(it);
+        return _headI != _invalidI ? iterator{&_elements[0u], &_elements[_headI]} : iterator{};
     }
 
     template <typename T>
@@ -402,8 +401,7 @@ namespace qc
     template <typename T>
     inline auto SemiStableDeque<T>::rbegin() -> reverse_iterator
     {
-        const const_iterator it{const_cast<const SemiStableDeque *>(this)->rbegin()};
-        return reinterpret_cast<const iterator &>(it);
+        return _tailI != _invalidI ? reverse_iterator{&_elements[0u], &_elements[_tailI]} : reverse_iterator{};
     }
 
     template <typename T>
@@ -426,10 +424,10 @@ namespace qc
 
     template <typename T>
     template <typename... Args>
-    inline SemiStableDeque<T>::_Element::_Element(const u32 prevI, const u32 nextI, Args &&... args) :
+    inline SemiStableDeque<T>::_Element::_Element(const u32 prevI_, const u32 nextI_, Args &&... args) :
         value{std::forward<Args>(args)...},
-        prevI{prevI},
-        nextI{nextI}
+        prevI{prevI_},
+        nextI{nextI_}
     {}
 
     template <typename T>

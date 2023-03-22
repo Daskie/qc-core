@@ -78,9 +78,9 @@ namespace qc
 {
     template <Floating T>
     template <FloatingSubOf<T> U>
-    forceinline constexpr quat<T>::quat(const vec3<U> & a, const U w) :
-        a{a},
-        w{w}
+    forceinline constexpr quat<T>::quat(const vec3<U> & a_, const U w_) :
+        a{a_},
+        w{w_}
     {}
 
     template <Floating T>

@@ -115,8 +115,8 @@ TEST(Arena, polymorphismUnique)
 {
     int x{0};
 
-    struct A { int & x; A(int & x) : x{x} {}; virtual ~A() { ++x; } };
-    struct B : A { int y{}; B(int & x) : A{x} {}; ~B() override { x += 10; } };
+    struct A { int & x; A(int & x_) : x{x_} {}; virtual ~A() { ++x; } };
+    struct B : A { int y{}; B(int & x_) : A{x_} {}; ~B() override { x += 10; } };
 
     {
         qc::Unq<A> a{qc::makeUnique<A>(x)};
@@ -169,8 +169,8 @@ TEST(Arena, polymorphismShared)
 {
     int x{0};
 
-    struct A { int & x; A(int & x) : x{x} {}; virtual ~A() { ++x; } };
-    struct B : A { int y{}; B(int & x) : A{x} {}; ~B() override { x += 10; } };
+    struct A { int & x; A(int & x_) : x{x_} {}; virtual ~A() { ++x; } };
+    struct B : A { int y{}; B(int & x_) : A{x_} {}; ~B() override { x += 10; } };
 
     {
         qc::Shr<A> a{qc::makeShared<A>(x)};

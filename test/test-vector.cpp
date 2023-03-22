@@ -1,7 +1,5 @@
 #include <qc-core/vector-ext.hpp>
 
-#pragma warning(push)
-#pragma warning(disable: 4577)
 #include <sstream>
 
 #include <gtest/gtest.h>
@@ -1421,4 +1419,3 @@ TEST(Vector, types)
     static_assert(BooleanVector<bvec4>);
     static_assert(!BooleanVector<fvec2>);
 }
-#pragma warning(pop)

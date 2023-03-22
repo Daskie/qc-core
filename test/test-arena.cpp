@@ -156,7 +156,7 @@ TEST(Arena, alignment)
     ASSERT_EQ(0u, std::bit_cast<u64>(&v1) & 0b111u);
     ASSERT_EQ(1u, v1);
 
-    u32 & v2{arena.create<u32>(u32(2u))};
+    u32 & v2{arena.create<u32>(2u)};
     ASSERT_EQ(0u, std::bit_cast<u64>(&v2) & 0b111u);
     ASSERT_EQ(2u, v2);
 

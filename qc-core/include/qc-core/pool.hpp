@@ -388,7 +388,7 @@ namespace qc
     inline auto Pool<T, fixed>::begin() -> iterator
     {
         const const_iterator it{const_cast<const Pool *>(this)->begin()};
-        return reinterpret_cast<const iterator &>(it);
+        return {const_cast<T *>(it._slot), const_cast<_Range *>(it._nextFreeRange)};
     }
 
     template <typename T, bool fixed>
@@ -430,7 +430,7 @@ namespace qc
     template <typename T, bool fixed>
     inline auto Pool<T, fixed>::_find(const T * const slot) -> _Range *
     {
-        return lowerBound(_freeRanges.begin(), _freeRanges.end(), slot, [](const _Range & range, const T * const slot) -> bool { return range.start <= slot; });
+        return lowerBound(_freeRanges.begin(), _freeRanges.end(), slot, [](const _Range & range, const T * const slot_) -> bool { return range.start <= slot_; });
     }
 
     template <typename T, bool fixed>

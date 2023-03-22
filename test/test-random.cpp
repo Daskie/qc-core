@@ -102,8 +102,8 @@ namespace
         for (u64 i{0u}; i < n; ++i)
         {
             {
-                #pragma warning(suppress: 4189)
                 const T v{random.template next<T>()};
+                ASSERT_EQ(v, v);
             }
 
             {

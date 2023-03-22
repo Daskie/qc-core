@@ -11,34 +11,29 @@ using namespace qc::primitives;
 
 enum TestEnum { a, b, c };
 
-#pragma warning(push)
-#pragma warning(disable: 4101)
 TEST(Core, primitives)
 {
-    s8 s08_;
-    u8 u08_;
-    s16 s16_;
-    u16 u16_;
-    s32 s32_;
-    u32 u32_;
-    f32 f32_;
-    s64 s64_;
-    u64 u64_;
-    f64 f64_;
+    [[maybe_unused]] s8 s08_;
+    [[maybe_unused]] u8 u08_;
+    [[maybe_unused]] s16 s16_;
+    [[maybe_unused]] u16 u16_;
+    [[maybe_unused]] s32 s32_;
+    [[maybe_unused]] u32 u32_;
+    [[maybe_unused]] f32 f32_;
+    [[maybe_unused]] s64 s64_;
+    [[maybe_unused]] u64 u64_;
+    [[maybe_unused]] f64 f64_;
 
-    schar schar_;
-    uchar uchar_;
-    ushort ushort_;
-    uint uint_;
-    ulong ulong_;
-    llong llong_;
-    ullong ullong_;
-    ldouble ldouble_;
+    [[maybe_unused]] schar schar_;
+    [[maybe_unused]] uchar uchar_;
+    [[maybe_unused]] ushort ushort_;
+    [[maybe_unused]] uint uint_;
+    [[maybe_unused]] ulong ulong_;
+    [[maybe_unused]] llong llong_;
+    [[maybe_unused]] ullong ullong_;
+    [[maybe_unused]] ldouble ldouble_;
 }
-#pragma warning(pop)
 
-#pragma warning(push)
-#pragma warning(disable: 4555)
 template <Floating T>
 static void compileNumbersT()
 {
@@ -51,7 +46,6 @@ static void compileNumbersT()
     static_cast<void>(qc::sqrt3<T>);
     static_cast<void>(qc::sqrt5<T>);
 }
-#pragma warning(pop)
 
 TEST(Core, numbers)
 {
@@ -70,8 +64,7 @@ TEST(Core, classes)
     static_cast<void>(d1[1]);
     static_cast<void>(d1[false]);
     static_cast<void>(d1[true]);
-    #pragma warning(suppress: 4189)
-    for (int & v : d1) {}
+    for ([[maybe_unused]] int & v : d1) {}
     ASSERT_EQ(std::distance(d1.begin(), d1.end()), 2);
 
     qc::Duo<int, std::string> d2;
@@ -88,8 +81,7 @@ TEST(Core, classes)
     static_cast<void>(d1[0]);
     static_cast<void>(d1[1]);
     static_cast<void>(d1[2]);
-    #pragma warning(suppress: 4189)
-    for (int & v : t1) {}
+    for ([[maybe_unused]] int & v : t1) {}
     ASSERT_EQ(std::distance(t1.begin(), t1.end()), 3);
 
     qc::Trio<int, std::string> t2;

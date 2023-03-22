@@ -19,7 +19,7 @@ struct NonTrivial
     int v{};
 
     NonTrivial() { ++contructions; }
-    NonTrivial(const int v) : v{v} { ++contructions; }
+    NonTrivial(const int v_) : v{v_} { ++contructions; }
     NonTrivial(const NonTrivial & other) : v{other.v} { ++contructions; ++copies; }
     NonTrivial(NonTrivial && other) : v{other.v} { ++contructions; ++moves; }
     NonTrivial & operator=(const NonTrivial & other) { v = other.v; ++assignments; ++copies; return *this; }
@@ -2051,7 +2051,7 @@ TEST(List, nonMoveAssignableType)
     struct Unassignable
     {
         int v;
-        Unassignable(const int v) : v{v} {}
+        Unassignable(const int v_) : v{v_} {}
         Unassignable(Unassignable &&) = default;
         Unassignable(const Unassignable &) = default;
         Unassignable & operator=(const Unassignable &) = delete;

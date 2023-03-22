@@ -256,7 +256,6 @@ namespace
     }
 }
 
-#pragma warning(disable: 4189) // NOCOMMIT
 TEST(AvlTree, rotateRight)
 {
     qc::AvlTree<u32> tree{};
@@ -332,7 +331,6 @@ TEST(AvlTree, rotateRight)
     ASSERT_TRUE(_treeMatches(tree, expected));
 }
 
-#pragma warning(disable: 4189) // NOCOMMIT
 TEST(AvlTree, rotateLeft)
 {
     qc::AvlTree<u32> tree{};
@@ -408,7 +406,6 @@ TEST(AvlTree, rotateLeft)
     ASSERT_TRUE(_treeMatches(tree, expected));
 }
 
-#pragma warning(disable: 4189) // NOCOMMIT
 TEST(AvlTree, rotateLeftRight)
 {
     qc::AvlTree<u32> tree{};
@@ -525,7 +522,6 @@ TEST(AvlTree, rotateLeftRight)
     ASSERT_TRUE(_treeMatches(tree, expected));
 }
 
-#pragma warning(disable: 4189) // NOCOMMIT
 TEST(AvlTree, rotateRightLeft)
 {
     qc::AvlTree<u32> tree{};

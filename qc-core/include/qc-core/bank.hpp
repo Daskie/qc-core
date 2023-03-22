@@ -201,7 +201,7 @@ namespace qc
         // Simply memcpy if the type is trivially move constructible and destructible
         if constexpr (std::is_trivially_move_constructible_v<T> && std::is_trivially_destructible_v<T>)
         {
-            std::memcpy(newSlots, _slots, oldCapacity * sizeof(_Slot));
+            std::memcpy(static_cast<void *>(newSlots), _slots, oldCapacity * sizeof(_Slot));
         }
         // Otherwise we need to manually move and destruct the elements
         else

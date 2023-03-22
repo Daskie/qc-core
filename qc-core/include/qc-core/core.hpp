@@ -55,6 +55,16 @@
     #error "`SERIALIZABLE` already defined"
 #endif
 
+#ifndef SUPPRESS_MSVC_WARNING
+    #ifdef QC_MSVC
+        #define SUPPRESS_MSVC_WARNING(code) __pragma(warning(suppress: code))
+    #else
+        #define SUPPRESS_MSVC_WARNING(code)
+    #endif
+#else
+    #error "`SUPPRESS_MSVC_WARNING` already defined"
+#endif
+
 namespace qc
 {
     #ifdef QC_DEBUG
@@ -347,7 +357,7 @@ namespace qc
     template <typename T>
     forceinline Result<T>::Result() :
         _success{false}
-    #pragma warning(suppress: 4582)
+    SUPPRESS_MSVC_WARNING(4582)
     {}
 
     template <typename T>
@@ -358,7 +368,7 @@ namespace qc
 
     template <typename T>
     forceinline Result<T>::~Result()
-    #pragma warning(suppress: 4583)
+    SUPPRESS_MSVC_WARNING(4583)
     {
         if (_success)
         {

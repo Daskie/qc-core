@@ -23,7 +23,7 @@ TEST(BinaryFStream, general)
         qc::BinaryIFStream ifs{file};
         ASSERT_TRUE(ifs);
         {
-            u8 v1; u16 v2; u32 v3; u64 v4;
+            u8 v1{}; u16 v2{}; u32 v3{}; u64 v4{};
             ifs >> v1 >> v2 >> v3 >> v4;
             ASSERT_EQ(v1, 1u);
             ASSERT_EQ(v2, 2u);
@@ -127,7 +127,7 @@ TEST(BinaryFStream, close)
     {
         qc::BinaryOFStream ofs{file};
         ASSERT_TRUE(ofs);
-        ofs << int(777);
+        ofs << 777;
         ASSERT_TRUE(ofs);
         ASSERT_TRUE(ofs.close());
         ASSERT_TRUE(ofs.close());

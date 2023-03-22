@@ -50,7 +50,7 @@ TEST(Result, destruction)
 
 TEST(Result, noDefaultConstructor)
 {
-    struct Dummy { int x; Dummy(const int x) : x{x} {} };
+    struct Dummy { int x; Dummy(const int x_) : x{x_} {} };
 
     const qc::Result<Dummy> b1{7};
     ASSERT_TRUE(b1);

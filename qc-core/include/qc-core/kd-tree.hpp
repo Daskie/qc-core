@@ -69,8 +69,8 @@ namespace qc
 
         // Sort by axes
         // We sort along the secondary axis as well to improve spatial coherency
-        const auto sortX{[&points](const u32 i0, const u32 i1) { const fvec2 & p0{points[i0]}, & p1{points[i1]}; return p0.x < p1.x || p0.x == p1.x && p0.y < p1.y; }};
-        const auto sortY{[&points](const u32 i0, const u32 i1) { const fvec2 & p0{points[i0]}, & p1{points[i1]}; return p0.y < p1.y || p0.y == p1.y && p0.x < p1.x; }};
+        const auto sortX{[&points](const u32 i0, const u32 i1) { const fvec2 & p0{points[i0]}, & p1{points[i1]}; return p0.x < p1.x || (p0.x == p1.x && p0.y < p1.y); }};
+        const auto sortY{[&points](const u32 i0, const u32 i1) { const fvec2 & p0{points[i0]}, & p1{points[i1]}; return p0.y < p1.y || (p0.y == p1.y && p0.x < p1.x); }};
         // Stable sort necessary to preserve order of equal elements
         std::stable_sort(orderedX.begin(), orderedX.end(), sortX);
         std::stable_sort(orderedY.begin(), orderedY.end(), sortY);

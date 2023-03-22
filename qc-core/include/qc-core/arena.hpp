@@ -102,8 +102,7 @@ namespace qc
             if constexpr (debug)
             {
                 assert(_bubbles.bubbles().size() == 1u);
-                #pragma warning(suppress: 4189)
-                const auto & bubble{_bubbles.bubbles().front()};
+                [[maybe_unused]] const auto & bubble{_bubbles.bubbles().front()};
                 assert(bubble.pos == _memory && u64(bubble.size) * 8u == _capacity);
             }
 

@@ -229,9 +229,9 @@ namespace qc
 {
     template <Floating T>
     template <FloatingSubOf<T> U>
-    forceinline constexpr mat<T, 2>::mat(const vec2<U> & c1, const vec2<U> & c2) :
-        c1{c1},
-        c2{c2}
+    forceinline constexpr mat<T, 2>::mat(const vec2<U> & c1_, const vec2<U> & c2_) :
+        c1{c1_},
+        c2{c2_}
     {}
 
     template <Floating T>
@@ -316,10 +316,10 @@ namespace qc
 
     template <Floating T>
     template <FloatingSubOf<T> U>
-    forceinline constexpr mat<T, 3>::mat(const vec3<U> & c1, const vec3<U> & c2, const vec3<U> & c3) :
-        c1{c1},
-        c2{c2},
-        c3{c3}
+    forceinline constexpr mat<T, 3>::mat(const vec3<U> & c1_, const vec3<U> & c2_, const vec3<U> & c3_) :
+        c1{c1_},
+        c2{c2_},
+        c3{c3_}
     {}
 
     template <Floating T>
@@ -422,11 +422,11 @@ namespace qc
 
     template <Floating T>
     template <FloatingSubOf<T> U>
-    forceinline constexpr mat<T, 4>::mat(const vec4<U> & c1, const vec4<U> & c2, const vec4<U> & c3, const vec4<U> & c4) :
-        c1{c1},
-        c2{c2},
-        c3{c3},
-        c4{c4}
+    forceinline constexpr mat<T, 4>::mat(const vec4<U> & c1_, const vec4<U> & c2_, const vec4<U> & c3_, const vec4<U> & c4_) :
+        c1{c1_},
+        c2{c2_},
+        c3{c3_},
+        c4{c4_}
     {}
 
     template <Floating T>

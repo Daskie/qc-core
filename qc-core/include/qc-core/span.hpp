@@ -972,7 +972,7 @@ namespace qc
         using T = Common<T1, T2>;
         if constexpr (n == 1)
         {
-            return {T(s.min + v), T(s.max + v)};
+            return {T(T(s.min) + T(v)), T(T(s.max) + T(v))};
         }
         else
         {
@@ -992,7 +992,7 @@ namespace qc
         using T = Common<T1, T2>;
         if constexpr (n == 1)
         {
-            return {T(v + s.min), T(v + s.max)};
+            return {T(T(v) + T(s.min)), T(T(v) + T(s.max))};
         }
         else
         {
@@ -1018,7 +1018,7 @@ namespace qc
         using T = Common<T1, T2>;
         if constexpr (n == 1)
         {
-            return {T(s.min - v), T(s.max - v)};
+            return {T(T(s.min) - T(v)), T(T(s.max) - T(v))};
         }
         else
         {
@@ -1031,7 +1031,7 @@ namespace qc
     {
         if constexpr (n == 1)
         {
-            return {T(s.min - v), T(s.max - v)};
+            return {T(T(s.min) - T(v)), T(T(s.max) - T(v))};
         }
         else
         {
@@ -1045,7 +1045,7 @@ namespace qc
         using T = Common<T1, T2>;
         if constexpr (n == 1)
         {
-            return {T(v - s.min), T(v - s.max)};
+            return {T(T(v) - T(s.min)), T(T(v) - T(s.max))};
         }
         else
         {
@@ -1071,7 +1071,7 @@ namespace qc
         using T = Common<T1, T2>;
         if constexpr (n == 1)
         {
-            return {T(s.min * v), T(s.max * v)};
+            return {T(T(s.min) * T(v)), T(T(s.max) * T(v))};
         }
         else
         {
@@ -1085,7 +1085,7 @@ namespace qc
         using T = Common<T1, T2>;
         if constexpr (n == 1)
         {
-            return {T(v * s.min), T(v * s.max)};
+            return {T(T(v) * T(s.min)), T(T(v) * T(s.max))};
         }
         else
         {
@@ -1117,7 +1117,7 @@ namespace qc
         {
             if constexpr (n == 1)
             {
-                return {T(s.min / v), T(s.max / v)};
+                return {T(T(s.min) / T(v)), T(T(s.max) / T(v))};
             }
             else
             {

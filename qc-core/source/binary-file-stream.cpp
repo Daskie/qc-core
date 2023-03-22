@@ -108,7 +108,7 @@ namespace qc
                 }
 
                 src += bytesWritten;
-                bytes -= bytesWritten;
+                bytes -= u64(bytesWritten);
             }
             while (bytes);
 
@@ -120,7 +120,7 @@ namespace qc
             #ifdef QC_MSVC
                 return ::CloseHandle(std::bit_cast<HANDLE>(fd));
             #else
-                return !::close(fd);
+                return !::close(int(fd));
             #endif
         }
 
@@ -235,6 +235,6 @@ namespace qc
             return;
         }
 
-        _remaining += bytesRead;
+        _remaining += u64(bytesRead);
     }
 }

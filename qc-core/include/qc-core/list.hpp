@@ -587,7 +587,7 @@ namespace qc
             }
         }
 
-        _size -= last - first;
+        _size -= u64(last - first);
         return first;
     }
 

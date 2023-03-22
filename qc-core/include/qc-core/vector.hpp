@@ -1145,18 +1145,18 @@ namespace qc
     forceinline constexpr vec<Common<T1, T2>, n> operator+(const vec<T1, n> & v1, const vec<T2, n> & v2)
     {
         using T = Common<T1, T2>;
-        if constexpr (n == 2) return {T(v1.x + v2.x), T(v1.y + v2.y)};
-        if constexpr (n == 3) return {T(v1.x + v2.x), T(v1.y + v2.y), T(v1.z + v2.z)};
-        if constexpr (n == 4) return {T(v1.x + v2.x), T(v1.y + v2.y), T(v1.z + v2.z), T(v1.w + v2.w)};
+        if constexpr (n == 2) return {T(T(v1.x) + T(v2.x)), T(T(v1.y) + T(v2.y))};
+        if constexpr (n == 3) return {T(T(v1.x) + T(v2.x)), T(T(v1.y) + T(v2.y)), T(T(v1.z) + T(v2.z))};
+        if constexpr (n == 4) return {T(T(v1.x) + T(v2.x)), T(T(v1.y) + T(v2.y)), T(T(v1.z) + T(v2.z)), T(T(v1.w) + T(v2.w))};
     }
 
     template <Numeric T1, Numeric T2, int n>
     forceinline constexpr vec<Common<T1, T2>, n> operator+(const vec<T1, n> & v1, const T2 v2)
     {
         using T = Common<T1, T2>;
-        if constexpr (n == 2) return {T(v1.x + v2), T(v1.y + v2)};
-        if constexpr (n == 3) return {T(v1.x + v2), T(v1.y + v2), T(v1.z + v2)};
-        if constexpr (n == 4) return {T(v1.x + v2), T(v1.y + v2), T(v1.z + v2), T(v1.w + v2)};
+        if constexpr (n == 2) return {T(T(v1.x) + T(v2)), T(T(v1.y) + T(v2))};
+        if constexpr (n == 3) return {T(T(v1.x) + T(v2)), T(T(v1.y) + T(v2)), T(T(v1.z) + T(v2))};
+        if constexpr (n == 4) return {T(T(v1.x) + T(v2)), T(T(v1.y) + T(v2)), T(T(v1.z) + T(v2)), T(T(v1.w) + T(v2))};
     }
 
     template <Numeric T1, Numeric T2, int n>
@@ -1169,63 +1169,63 @@ namespace qc
     forceinline constexpr vec<Common<T1, T2>, n> operator-(const vec<T1, n> & v1, const vec<T2, n> & v2)
     {
         using T = Common<T1, T2>;
-        if constexpr (n == 2) return {T(v1.x - v2.x), T(v1.y - v2.y)};
-        if constexpr (n == 3) return {T(v1.x - v2.x), T(v1.y - v2.y), T(v1.z - v2.z)};
-        if constexpr (n == 4) return {T(v1.x - v2.x), T(v1.y - v2.y), T(v1.z - v2.z), T(v1.w - v2.w)};
+        if constexpr (n == 2) return {T(T(v1.x) - T(v2.x)), T(T(v1.y) - T(v2.y))};
+        if constexpr (n == 3) return {T(T(v1.x) - T(v2.x)), T(T(v1.y) - T(v2.y)), T(T(v1.z) - T(v2.z))};
+        if constexpr (n == 4) return {T(T(v1.x) - T(v2.x)), T(T(v1.y) - T(v2.y)), T(T(v1.z) - T(v2.z)), T(T(v1.w) - T(v2.w))};
     }
 
     template <Numeric T1, Numeric T2, int n>
     forceinline constexpr vec<Common<T1, T2>, n> operator-(const vec<T1, n> & v1, const T2 v2)
     {
         using T = Common<T1, T2>;
-        if constexpr (n == 2) return {T(v1.x - v2), T(v1.y - v2)};
-        if constexpr (n == 3) return {T(v1.x - v2), T(v1.y - v2), T(v1.z - v2)};
-        if constexpr (n == 4) return {T(v1.x - v2), T(v1.y - v2), T(v1.z - v2), T(v1.w - v2)};
+        if constexpr (n == 2) return {T(T(v1.x) - T(v2)), T(T(v1.y) - T(v2))};
+        if constexpr (n == 3) return {T(T(v1.x) - T(v2)), T(T(v1.y) - T(v2)), T(T(v1.z) - T(v2))};
+        if constexpr (n == 4) return {T(T(v1.x) - T(v2)), T(T(v1.y) - T(v2)), T(T(v1.z) - T(v2)), T(T(v1.w) - T(v2))};
     }
 
     template <Numeric T1, Numeric T2, int n>
     forceinline constexpr vec<Common<T1, T2>, n> operator-(const T1 v1, const vec<T2, n> & v2)
     {
         using T = Common<T1, T2>;
-        if constexpr (n == 2) return {T(v1 - v2.x), T(v1 - v2.y)};
-        if constexpr (n == 3) return {T(v1 - v2.x), T(v1 - v2.y), T(v1 - v2.z)};
-        if constexpr (n == 4) return {T(v1 - v2.x), T(v1 - v2.y), T(v1 - v2.z), T(v1 - v2.w)};
+        if constexpr (n == 2) return {T(T(v1) - T(v2.x)), T(T(v1) - T(v2.y))};
+        if constexpr (n == 3) return {T(T(v1) - T(v2.x)), T(T(v1) - T(v2.y)), T(T(v1) - T(v2.z))};
+        if constexpr (n == 4) return {T(T(v1) - T(v2.x)), T(T(v1) - T(v2.y)), T(T(v1) - T(v2.z)), T(T(v1) - T(v2.w))};
     }
 
     template <Numeric T1, Numeric T2, int n>
     forceinline constexpr vec<Common<T1, T2>, n> operator*(const vec<T1, n> & v1, const vec<T2, n> & v2)
     {
         using T = Common<T1, T2>;
-        if constexpr (n == 2) return {T(v1.x * v2.x), T(v1.y * v2.y)};
-        if constexpr (n == 3) return {T(v1.x * v2.x), T(v1.y * v2.y), T(v1.z * v2.z)};
-        if constexpr (n == 4) return {T(v1.x * v2.x), T(v1.y * v2.y), T(v1.z * v2.z), T(v1.w * v2.w)};
+        if constexpr (n == 2) return {T(T(v1.x) * T(v2.x)), T(T(v1.y) * T(v2.y))};
+        if constexpr (n == 3) return {T(T(v1.x) * T(v2.x)), T(T(v1.y) * T(v2.y)), T(T(v1.z) * T(v2.z))};
+        if constexpr (n == 4) return {T(T(v1.x) * T(v2.x)), T(T(v1.y) * T(v2.y)), T(T(v1.z) * T(v2.z)), T(T(v1.w) * T(v2.w))};
     }
 
     template <Numeric T1, Numeric T2, int n>
     forceinline constexpr vec<Common<T1, T2>, n> operator*(const vec<T1, n> & v1, const T2 v2)
     {
         using T = Common<T1, T2>;
-        if constexpr (n == 2) return {T(v1.x * v2), T(v1.y * v2)};
-        if constexpr (n == 3) return {T(v1.x * v2), T(v1.y * v2), T(v1.z * v2)};
-        if constexpr (n == 4) return {T(v1.x * v2), T(v1.y * v2), T(v1.z * v2), T(v1.w * v2)};
+        if constexpr (n == 2) return {T(T(v1.x) * T(v2)), T(T(v1.y) * T(v2))};
+        if constexpr (n == 3) return {T(T(v1.x) * T(v2)), T(T(v1.y) * T(v2)), T(T(v1.z) * T(v2))};
+        if constexpr (n == 4) return {T(T(v1.x) * T(v2)), T(T(v1.y) * T(v2)), T(T(v1.z) * T(v2)), T(T(v1.w) * T(v2))};
     }
 
     template <Numeric T1, Numeric T2, int n>
     forceinline constexpr vec<Common<T1, T2>, n> operator*(const T1 v1, const vec<T2, n> & v2)
     {
         using T = Common<T1, T2>;
-        if constexpr (n == 2) return {T(v1 * v2.x), T(v1 * v2.y)};
-        if constexpr (n == 3) return {T(v1 * v2.x), T(v1 * v2.y), T(v1 * v2.z)};
-        if constexpr (n == 4) return {T(v1 * v2.x), T(v1 * v2.y), T(v1 * v2.z), T(v1 * v2.w)};
+        if constexpr (n == 2) return {T(T(v1) * T(v2.x)), T(T(v1) * T(v2.y))};
+        if constexpr (n == 3) return {T(T(v1) * T(v2.x)), T(T(v1) * T(v2.y)), T(T(v1) * T(v2.z))};
+        if constexpr (n == 4) return {T(T(v1) * T(v2.x)), T(T(v1) * T(v2.y)), T(T(v1) * T(v2.z)), T(T(v1) * T(v2.w))};
     }
 
     template <Numeric T1, Numeric T2, int n>
     forceinline constexpr vec<Common<T1, T2>, n> operator/(const vec<T1, n> & v1, const vec<T2, n> & v2)
     {
         using T = Common<T1, T2>;
-        if constexpr (n == 2) return {T(v1.x / v2.x), T(v1.y / v2.y)};
-        if constexpr (n == 3) return {T(v1.x / v2.x), T(v1.y / v2.y), T(v1.z / v2.z)};
-        if constexpr (n == 4) return {T(v1.x / v2.x), T(v1.y / v2.y), T(v1.z / v2.z), T(v1.w / v2.w)};
+        if constexpr (n == 2) return {T(T(v1.x) / T(v2.x)), T(T(v1.y) / T(v2.y))};
+        if constexpr (n == 3) return {T(T(v1.x) / T(v2.x)), T(T(v1.y) / T(v2.y)), T(T(v1.z) / T(v2.z))};
+        if constexpr (n == 4) return {T(T(v1.x) / T(v2.x)), T(T(v1.y) / T(v2.y)), T(T(v1.z) / T(v2.z)), T(T(v1.w) / T(v2.w))};
     }
 
     template <Numeric T1, Numeric T2, int n>
@@ -1238,9 +1238,9 @@ namespace qc
         }
         else
         {
-            if constexpr (n == 2) return {T(v1.x / v2), T(v1.y / v2)};
-            if constexpr (n == 3) return {T(v1.x / v2), T(v1.y / v2), T(v1.z / v2)};
-            if constexpr (n == 4) return {T(v1.x / v2), T(v1.y / v2), T(v1.z / v2), T(v1.w / v2)};
+            if constexpr (n == 2) return {T(T(v1.x) / T(v2)), T(T(v1.y) / T(v2))};
+            if constexpr (n == 3) return {T(T(v1.x) / T(v2)), T(T(v1.y) / T(v2)), T(T(v1.z) / T(v2))};
+            if constexpr (n == 4) return {T(T(v1.x) / T(v2)), T(T(v1.y) / T(v2)), T(T(v1.z) / T(v2)), T(T(v1.w) / T(v2))};
         }
     }
 
@@ -1248,9 +1248,9 @@ namespace qc
     forceinline constexpr vec<Common<T1, T2>, n> operator/(const T1 v1, const vec<T2, n> & v2)
     {
         using T = Common<T1, T2>;
-        if constexpr (n == 2) return {T(v1 / v2.x), T(v1 / v2.y)};
-        if constexpr (n == 3) return {T(v1 / v2.x), T(v1 / v2.y), T(v1 / v2.z)};
-        if constexpr (n == 4) return {T(v1 / v2.x), T(v1 / v2.y), T(v1 / v2.z), T(v1 / v2.w)};
+        if constexpr (n == 2) return {T(T(v1) / T(v2.x)), T(T(v1) / T(v2.y))};
+        if constexpr (n == 3) return {T(T(v1) / T(v2.x)), T(T(v1) / T(v2.y)), T(T(v1) / T(v2.z))};
+        if constexpr (n == 4) return {T(T(v1) / T(v2.x)), T(T(v1) / T(v2.y)), T(T(v1) / T(v2.z)), T(T(v1) / T(v2.w))};
     }
 
     template <Numeric T1, Numeric T2, int n>

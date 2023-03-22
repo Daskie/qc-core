@@ -28,7 +28,7 @@ namespace qc
                 ::GetSystemInfo(&sSysInfo);
                 return sSysInfo.dwPageSize;
             #else
-                return ::getpagesize();
+                return u64(::getpagesize());
             #endif
         }
 

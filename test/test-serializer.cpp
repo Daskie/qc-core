@@ -96,7 +96,7 @@ TEST(Serializer, primitives)
         qc::Deserializer deserializer{file};
         ASSERT_TRUE(deserializer);
         {
-            u8 v1; u16 v2; u32 v3; u64 v4;
+            u8 v1{}; u16 v2{}; u32 v3{}; u64 v4{};
             deserializer >> v1 >> v2 >> v3 >> v4;
             ASSERT_EQ(v1, 1u);
             ASSERT_EQ(v2, 2u);
@@ -104,7 +104,7 @@ TEST(Serializer, primitives)
             ASSERT_EQ(v4, 4u);
         }
         {
-            s8 v1; s16 v2; s32 v3; s64 v4;
+            s8 v1{}; s16 v2{}; s32 v3{}; s64 v4{};
             deserializer >> v1 >> v2 >> v3 >> v4;
             ASSERT_EQ(v1, 1);
             ASSERT_EQ(v2, 2);
@@ -112,124 +112,124 @@ TEST(Serializer, primitives)
             ASSERT_EQ(v4, 4);
         }
         {
-            float v1; double v2;
+            float v1{}; double v2{};
             deserializer >> v1 >> v2;
             ASSERT_EQ(v1, 1.0f);
             ASSERT_EQ(v2, 2.0);
         }
         {
-            bool v;
+            bool v{};
             deserializer >> v;
             ASSERT_EQ(v, true);
         }
         {
-            CustomEnum v;
+            CustomEnum v{};
             deserializer >> v;
             ASSERT_EQ(v, CustomEnum::b);
         }
         {
-            ucvec2 v1; ucvec3 v2; ucvec4 v3;
+            ucvec2 v1{}; ucvec3 v2{}; ucvec4 v3{};
             deserializer >> v1 >> v2 >> v3;
             ASSERT_EQ(v1, (ucvec2{1u, 2u}));
             ASSERT_EQ(v2, (ucvec3{3u, 4u, 5u}));
             ASSERT_EQ(v3, (ucvec4{6u, 7u, 8u, 9u}));
         }
         {
-            usvec2 v1; usvec3 v2; usvec4 v3;
+            usvec2 v1{}; usvec3 v2{}; usvec4 v3{};
             deserializer >> v1 >> v2 >> v3;
             ASSERT_EQ(v1, (usvec2{1u, 2u}));
             ASSERT_EQ(v2, (usvec3{3u, 4u, 5u}));
             ASSERT_EQ(v3, (usvec4{6u, 7u, 8u, 9u}));
         }
         {
-            uivec2 v1; uivec3 v2; uivec4 v3;
+            uivec2 v1{}; uivec3 v2{}; uivec4 v3{};
             deserializer >> v1 >> v2 >> v3;
             ASSERT_EQ(v1, (uivec2{1u, 2u}));
             ASSERT_EQ(v2, (uivec3{3u, 4u, 5u}));
             ASSERT_EQ(v3, (uivec4{6u, 7u, 8u, 9u}));
         }
         {
-            ulvec2 v1; ulvec3 v2; ulvec4 v3;
+            ulvec2 v1{}; ulvec3 v2{}; ulvec4 v3{};
             deserializer >> v1 >> v2 >> v3;
             ASSERT_EQ(v1, (ulvec2{1u, 2u}));
             ASSERT_EQ(v2, (ulvec3{3u, 4u, 5u}));
             ASSERT_EQ(v3, (ulvec4{6u, 7u, 8u, 9u}));
         }
         {
-            cvec2 v1; cvec3 v2; cvec4 v3;
+            cvec2 v1{}; cvec3 v2{}; cvec4 v3{};
             deserializer >> v1 >> v2 >> v3;
             ASSERT_EQ(v1, (cvec2{1, 2}));
             ASSERT_EQ(v2, (cvec3{3, 4, 5}));
             ASSERT_EQ(v3, (cvec4{6, 7, 8, 9}));
         }
         {
-            svec2 v1; svec3 v2; svec4 v3;
+            svec2 v1{}; svec3 v2{}; svec4 v3{};
             deserializer >> v1 >> v2 >> v3;
             ASSERT_EQ(v1, (svec2{1, 2}));
             ASSERT_EQ(v2, (svec3{3, 4, 5}));
             ASSERT_EQ(v3, (svec4{6, 7, 8, 9}));
         }
         {
-            ivec2 v1; ivec3 v2; ivec4 v3;
+            ivec2 v1{}; ivec3 v2{}; ivec4 v3{};
             deserializer >> v1 >> v2 >> v3;
             ASSERT_EQ(v1, (ivec2{1, 2}));
             ASSERT_EQ(v2, (ivec3{3, 4, 5}));
             ASSERT_EQ(v3, (ivec4{6, 7, 8, 9}));
         }
         {
-            lvec2 v1; lvec3 v2; lvec4 v3;
+            lvec2 v1{}; lvec3 v2{}; lvec4 v3{};
             deserializer >> v1 >> v2 >> v3;
             ASSERT_EQ(v1, (lvec2{1, 2}));
             ASSERT_EQ(v2, (lvec3{3, 4, 5}));
             ASSERT_EQ(v3, (lvec4{6, 7, 8, 9}));
         }
         {
-            fvec2 v1; fvec3 v2; fvec4 v3;
+            fvec2 v1{}; fvec3 v2{}; fvec4 v3{};
             deserializer >> v1 >> v2 >> v3;
             ASSERT_EQ(v1, (fvec2{1.0f, 2.0f}));
             ASSERT_EQ(v2, (fvec3{3.0f, 4.0f, 5.0f}));
             ASSERT_EQ(v3, (fvec4{6.0f, 7.0f, 8.0f, 9.0f}));
         }
         {
-            dvec2 v1; dvec3 v2; dvec4 v3;
+            dvec2 v1{}; dvec3 v2{}; dvec4 v3{};
             deserializer >> v1 >> v2 >> v3;
             ASSERT_EQ(v1, (dvec2{1.0, 2.0}));
             ASSERT_EQ(v2, (dvec3{3.0, 4.0, 5.0}));
             ASSERT_EQ(v3, (dvec4{6.0, 7.0, 8.0, 9.0}));
         }
         {
-            bvec2 v1; bvec3 v2; bvec4 v3;
+            bvec2 v1{}; bvec3 v2{}; bvec4 v3{};
             deserializer >> v1 >> v2 >> v3;
             ASSERT_EQ(v1, (bvec2{true, false}));
             ASSERT_EQ(v2, (bvec3{true, false, true}));
             ASSERT_EQ(v3, (bvec4{false, true, false, true}));
         }
         {
-            fmat2 v1; fmat3 v2; fmat4 v3;
+            fmat2 v1{}; fmat3 v2{}; fmat4 v3{};
             deserializer >> v1 >> v2 >> v3;
             ASSERT_EQ(v1, (fmat2{1.0f, 2.0f, 3.0f, 4.0f}));
             ASSERT_EQ(v2, (fmat3{1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f}));
             ASSERT_EQ(v3, (fmat4{1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f}));
         }
         {
-            dmat2 v1; dmat3 v2; dmat4 v3;
+            dmat2 v1{}; dmat3 v2{}; dmat4 v3{};
             deserializer >> v1 >> v2 >> v3;
             ASSERT_EQ(v1, (dmat2{1.0, 2.0, 3.0, 4.0}));
             ASSERT_EQ(v2, (dmat3{1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0}));
             ASSERT_EQ(v3, (dmat4{1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0}));
         }
         {
-            fquat v;
+            fquat v{};
             deserializer >> v;
             ASSERT_EQ(v, (fquat{fvec3{1.0f, 2.0f, 3.0f}, 4.0f}));
         }
         {
-            dquat v;
+            dquat v{};
             deserializer >> v;
             ASSERT_EQ(v, (dquat{dvec3{1.0, 2.0, 3.0}, 4.0}));
         }
         {
-            ispan1 v1; ispan2 v2; ispan3 v3; ispan4 v4;
+            ispan1 v1{}; ispan2 v2{}; ispan3 v3{}; ispan4 v4{};
             deserializer >> v1 >> v2 >> v3 >> v4;
             ASSERT_EQ(v1, (ispan1{1, 2}));
             ASSERT_EQ(v2, (ispan2{ivec2{3, 4}, ivec2{5, 6}}));
@@ -252,7 +252,7 @@ TEST(Serializer, fields)
         qc::Deserializer deserializer{file};
         ASSERT_TRUE(deserializer);
         {
-            CustomB v;
+            CustomB v{};
             deserializer >> v;
             ASSERT_EQ(v.a().a, (ivec2{1, 2}));
             ASSERT_EQ(v.a().b, true);
@@ -272,7 +272,7 @@ TEST(Serializer, fields)
         qc::Deserializer deserializer{file};
         ASSERT_TRUE(deserializer);
         {
-            CustomC v;
+            CustomC v{};
             deserializer >> v;
             ASSERT_EQ(v.a, 1);
             ASSERT_EQ(v.b, (qc::List<int>{2, 3}));
@@ -321,7 +321,7 @@ TEST(Serializer, stdString)
         qc::Deserializer deserializer{file};
         ASSERT_TRUE(deserializer);
         {
-            std::string v;
+            std::string v{};
             deserializer >> v;
             ASSERT_EQ(v, "oh wow, super cool");
         }
@@ -341,7 +341,7 @@ TEST(Serializer, stdMap)
         qc::Deserializer deserializer{file};
         ASSERT_TRUE(deserializer);
         {
-            std::map<std::string, int> v;
+            std::map<std::string, int> v{};
             deserializer >> v;
             ASSERT_EQ(v, (std::map<std::string, int>{{"a", 1}, {"b", 2}, {"c", 3}}));
         }
@@ -362,8 +362,8 @@ TEST(Serializer, list)
         qc::Deserializer deserializer{file};
         ASSERT_TRUE(deserializer);
         {
-            qc::List<int> v1;
-            qc::List<std::string> v2;
+            qc::List<int> v1{};
+            qc::List<std::string> v2{};
             deserializer >> v1 >> v2;
             ASSERT_EQ(v1, (qc::List<int>{1, 2, 3}));
             ASSERT_EQ(v2, (qc::List<std::string>{"1", "2", "3"}));

@@ -10,7 +10,14 @@ TEST(Pool, standard)
     // Assumes page size is 4096
     // Each BigInt is 2400 bytes, so 5 would fit into three pages
     ASSERT_EQ(4096u, qc::pageSize);
-    struct BigInt { int x; u8 padding[2400u - sizeof(int)]; };
+    struct BigInt
+    {
+        int x;
+        u8 padding[2400u - sizeof(int)];
+
+        BigInt() = default;
+        BigInt(int x_) : x{x_} {}
+    };
 
     // [_|_|_|_|_]
     qc::Pool<BigInt> pool{5u};
@@ -76,7 +83,6 @@ TEST(Pool, standard)
     ASSERT_EQ(pool.end(), ++it);
 
     // [0|1|2|3|4]
-    #pragma warning(suppress: 4834)
     ASSERT_DEATH(static_cast<void>(pool.create(5)), "");
 
     // [0|1|2|3|_]
@@ -299,7 +305,6 @@ TEST(FixedPool, standard)
     ASSERT_EQ(pool.end(), ++it);
 
     // [0|1|2|3|4]
-    #pragma warning(suppress: 4834)
     ASSERT_DEATH(static_cast<void>(pool.create(5)), "");
 
     // [0|1|2|3|_]
@@ -704,7 +709,7 @@ TEST(Pool, shrinkToFit)
     pool.shrinkToFit();
     ASSERT_EQ(4u, pool.pageCount());
 
-    for (int i{int(1)}; i < int(intsPerPage * 4u) - 1; ++i)
+    for (int i{1}; i < int(intsPerPage * 4u) - 1; ++i)
     {
         pool.destroy(ints[i]);
     }

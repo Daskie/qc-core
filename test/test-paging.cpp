@@ -14,7 +14,6 @@ using namespace qc::primitives;
 
 TEST(Paging, allocate)
 {
-    #pragma warning(suppress: 4834)
     ASSERT_EQ(qc::allocatePages(0u), nullptr);
 
     const u64 pageCount{3u};
@@ -40,7 +39,6 @@ TEST(Paging, reserveCommit)
 {
     const u64 n{qc::pageSize / sizeof(u64)};
 
-    #pragma warning(suppress: 4834)
     ASSERT_EQ(qc::reservePages(0u), nullptr);
 
     u64 * const mem{static_cast<u64 *>(qc::reservePages(3u))};
