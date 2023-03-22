@@ -21,13 +21,9 @@
 
 #define ABORT_IF(condition) if (condition) [[unlikely]] ::std::abort()
 
-#ifdef QC_DEBUG
-    #define DEBUG_ABORT() ABORT()
-    #define DEBUG_ABORT_IF(condition) ABORT_IF(condition)
-#else
-    #define DEBUG_ABORT() static_cast<void>(0)
-    #define DEBUG_ABORT_IF(condition) static_cast<void>(condition)
-#endif
+#define DEBUG_ABORT() if constexpr (::qc::debug) ABORT()
+
+#define DEBUG_ABORT_IF(condition) if constexpr (::qc::debug) ABORT_IF(condition)
 
 #define FAIL() do { if constexpr (::qc::debug) ::qc::failBreak(); return {}; } while (false)
 
@@ -81,9 +77,9 @@
 namespace qc
 {
     #ifdef QC_DEBUG
-        constexpr bool debug{false};
-    #else
         constexpr bool debug{true};
+    #else
+        constexpr bool debug{false};
     #endif
 
     /// Only support 64 bit, little endian platforms
