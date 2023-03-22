@@ -7,62 +7,67 @@
 #include <limits>
 #include <utility>
 
-#ifndef forceinline
-    #ifdef QC_MSVC
-        #define forceinline __forceinline
-    #elif QC_GCC
-        #define forceinline __attribute__((always_inline)) inline
-    #else
-        #error "Unsupported compiler"
-    #endif
+#ifdef QC_MSVC
+    #define forceinline __forceinline
+#elif QC_GCC
+    #define forceinline __attribute__((always_inline)) inline
 #else
-    #error "`forceinline` already defined"
+    #error "Unsupported compiler"
 #endif
 
-#ifndef nodisc
-    #define nodisc [[nodiscard]]
+#define nodisc [[nodiscard]]
+
+#define ABORT() ::std::abort()
+
+#define ABORT_IF(condition) if (condition) [[unlikely]] ::std::abort()
+
+#define FAIL() do { if constexpr (::qc::debug) ::qc::failBreak(); return {}; } while (false)
+
+#define FAIL_IF(condition) if (condition) [[unlikely]] FAIL()
+
+#define SERIALIZABLE(n) friend class ::qc::Serializer; friend class ::qc::Deserializer; static constexpr ::qc::u32 _serializableN{n}
+
+#ifdef QC_MSVC
+    #define MSVC_WARNING_PUSH __pragma(warning(push))
 #else
-    #error "`nodisc` already defined"
+    #define MSVC_WARNING_PUSH
 #endif
 
-#ifndef ABORT
-    #define ABORT() ::std::abort()
+#ifdef QC_MSVC
+    #define MSVC_WARNING_POP __pragma(warning(pop))
 #else
-    #error "`ABORT` already defined"
+    #define MSVC_WARNING_POP
 #endif
 
-#ifndef ABORT_IF
-    #define ABORT_IF(condition) if (condition) [[unlikely]] ::std::abort()
+#ifdef QC_MSVC
+    #define MSVC_WARNING_DISABLE(code) __pragma(warning(disable: code))
 #else
-    #error "`ABORT_IF` already defined"
+    #define MSVC_WARNING_DISABLE(code)
 #endif
 
-#ifndef FAIL
-    #define FAIL() do { if constexpr (::qc::debug) ::qc::failBreak(); return {}; } while (false)
+#ifdef QC_MSVC
+    #define MSVC_WARNING_SUPPRESS(code) __pragma(warning(suppress: code))
 #else
-    #error "`FAIL` already defined"
+    #define MSVC_WARNING_SUPPRESS(code)
 #endif
 
-#ifndef FAIL_IF
-    #define FAIL_IF(condition) if (condition) [[unlikely]] FAIL()
+#ifdef QC_GCC
+    #define GCC_DIAGNOSTIC_PUSH _Pragma("GCC diagnostic push")
 #else
-    #error "`FAIL_IF` already defined"
+    #define GCC_DIAGNOSTIC_PUSH
 #endif
 
-#ifndef SERIALIZABLE
-    #define SERIALIZABLE(n) friend class ::qc::Serializer; friend class ::qc::Deserializer; static constexpr ::qc::u32 _serializableN{n}
+#ifdef QC_GCC
+    #define GCC_DIAGNOSTIC_POP _Pragma("GCC diagnostic pop")
 #else
-    #error "`SERIALIZABLE` already defined"
+    #define GCC_DIAGNOSTIC_POP
 #endif
 
-#ifndef SUPPRESS_MSVC_WARNING
-    #ifdef QC_MSVC
-        #define SUPPRESS_MSVC_WARNING(code) __pragma(warning(suppress: code))
-    #else
-        #define SUPPRESS_MSVC_WARNING(code)
-    #endif
+#ifdef QC_GCC
+    #define STRINGIFY(x) #x
+    #define GCC_DIAGNOSTIC_IGNORED(code) _Pragma(STRINGIFY(GCC diagnostic ignored code))
 #else
-    #error "`SUPPRESS_MSVC_WARNING` already defined"
+    #define GCC_DIAGNOSTIC_IGNORED(code)
 #endif
 
 namespace qc
@@ -357,7 +362,7 @@ namespace qc
     template <typename T>
     forceinline Result<T>::Result() :
         _success{false}
-    SUPPRESS_MSVC_WARNING(4582)
+    MSVC_WARNING_SUPPRESS(4582)
     {}
 
     template <typename T>
@@ -368,7 +373,7 @@ namespace qc
 
     template <typename T>
     forceinline Result<T>::~Result()
-    SUPPRESS_MSVC_WARNING(4583)
+    MSVC_WARNING_SUPPRESS(4583)
     {
         if (_success)
         {
