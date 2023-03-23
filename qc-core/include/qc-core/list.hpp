@@ -286,16 +286,16 @@ namespace qc
     {
         clear();
 
-        const u64 count{u64(std::distance(first, last))};
+        const u64 n{u64(std::distance(first, last))};
 
-        reserve(count);
+        reserve(n);
 
         for (T * dst{_data}; first != last; ++first, ++dst)
         {
             new (dst) T{*first};
         }
 
-        _size = count;
+        _size = n;
     }
 
     template <typename T>

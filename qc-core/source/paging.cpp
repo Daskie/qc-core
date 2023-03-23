@@ -42,11 +42,11 @@ namespace qc
         }
     }
 
-    void * allocatePages(const u64 pageCount)
+    void * allocatePages(const u64 pageN)
     {
         _verifyPageSize();
 
-        if (!pageCount)
+        if (!pageN)
         {
             return nullptr;
         }
@@ -55,13 +55,13 @@ namespace qc
         #ifdef QC_MSVC
             baseAddress = ::VirtualAlloc(
                 nullptr, // System selects base address
-                pageCount * pageSize, // Size of allocation
+                pageN * pageSize, // Size of allocation
                 MEM_RESERVE | MEM_COMMIT, // Immediately pin pages in physical swap memory
                 PAGE_READWRITE); // Grant read/write access
         #else
             baseAddress = ::mmap(
                 nullptr, // System selects base address
-                pageCount * pageSize,  // Size of allocation
+                pageN * pageSize,  // Size of allocation
                 PROT_READ | PROT_WRITE, // Allow memory to be used immediately
                 MAP_PRIVATE | MAP_ANONYMOUS, // Mapping private memory, not a file
                 -1, // Anonymous mapping must use -1 for file descriptor
@@ -74,11 +74,11 @@ namespace qc
         return baseAddress;
     }
 
-    void * reservePages(const u64 pageCount)
+    void * reservePages(const u64 pageN)
     {
         _verifyPageSize();
 
-        if (!pageCount)
+        if (!pageN)
         {
             return nullptr;
         }
@@ -87,13 +87,13 @@ namespace qc
         #ifdef QC_MSVC
             baseAddress = ::VirtualAlloc(
                 nullptr, // System selects base address
-                pageCount * pageSize, // Size of allocation
+                pageN * pageSize, // Size of allocation
                 MEM_RESERVE, // Only reserve pages, do not pin physical swap space
                 PAGE_NOACCESS); // No access for uncommitted memory
         #else
             baseAddress = ::mmap(
                 nullptr, // System selects base address
-                pageCount * pageSize, // Size of allocation
+                pageN * pageSize, // Size of allocation
                 PROT_NONE, // Prevents the memory from being used until its been committed
                 MAP_PRIVATE | MAP_ANONYMOUS, // Mapping private memory, not a file
                 -1, // Anonymous mapping must use -1 for file descriptor
@@ -106,9 +106,9 @@ namespace qc
         return baseAddress;
     }
 
-    void commitPages(void * const pageStart, const u64 pageCount)
+    void commitPages(void * const pageStart, const u64 pageN)
     {
-        if (!pageStart || !pageCount)
+        if (!pageStart || !pageN)
         {
             return;
         }
@@ -119,18 +119,18 @@ namespace qc
         #ifdef QC_MSVC
             ABORT_IF(!::VirtualAlloc(
                 pageStart, // Base page address
-                pageCount * pageSize, // Size of commit
+                pageN * pageSize, // Size of commit
                 MEM_COMMIT, // Actually pin the pages in physical swap space
                 PAGE_READWRITE)); // Grant read/write access
         #else
             // Make already mapped memory read/writable
-            ABORT_IF(::mprotect(pageStart, pageCount * pageSize, PROT_READ | PROT_WRITE));
+            ABORT_IF(::mprotect(pageStart, pageN * pageSize, PROT_READ | PROT_WRITE));
         #endif
     }
 
-    void decommitPages(void * const pageStart, const u64 pageCount)
+    void decommitPages(void * const pageStart, const u64 pageN)
     {
-        if (!pageStart || !pageCount)
+        if (!pageStart || !pageN)
         {
             return;
         }
@@ -139,16 +139,16 @@ namespace qc
         ABORT_IF(std::bit_cast<u64>(pageStart) & (pageSize - 1u));
 
         #ifdef QC_MSVC
-            ABORT_IF(!::VirtualFree(pageStart, pageCount * pageSize, MEM_DECOMMIT));
+            ABORT_IF(!::VirtualFree(pageStart, pageN * pageSize, MEM_DECOMMIT));
         #else
             // Make already mapped memory unread/unwritable
-            ABORT_IF(::mprotect(pageStart, pageCount * pageSize, PROT_NONE));
+            ABORT_IF(::mprotect(pageStart, pageN * pageSize, PROT_NONE));
         #endif
     }
 
-    void freePages(void * const pages, const u64 pageCount)
+    void freePages(void * const pages, const u64 pageN)
     {
-        if (!pages || !pageCount)
+        if (!pages || !pageN)
         {
             return;
         }
@@ -159,7 +159,7 @@ namespace qc
         #ifdef QC_MSVC
             ABORT_IF(!::VirtualFree(pages, 0u, MEM_RELEASE));
         #else
-            ABORT_IF(::munmap(pages, pageCount * pageSize));
+            ABORT_IF(::munmap(pages, pageN * pageSize));
         #endif
     }
 }

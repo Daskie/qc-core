@@ -16,7 +16,7 @@ namespace qc
     namespace
     {
         static_assert(_BinaryStreamCommon::bufferSize % pageSize == 0u);
-        constexpr u64 _bufferPageCount{_BinaryStreamCommon::bufferSize / pageSize};
+        constexpr u64 _bufferPageN{_BinaryStreamCommon::bufferSize / pageSize};
 
         // Keep one buffer per thread around for reuse
         thread_local std::byte * _availableBuffer{};
@@ -29,7 +29,7 @@ namespace qc
             }
             else
             {
-                return static_cast<std::byte *>(allocatePages(_bufferPageCount));
+                return static_cast<std::byte *>(allocatePages(_bufferPageN));
             }
         }
 
@@ -37,7 +37,7 @@ namespace qc
         {
             if (_availableBuffer)
             {
-                freePages(buffer, _bufferPageCount);
+                freePages(buffer, _bufferPageN);
             }
             else
             {

@@ -14,7 +14,7 @@ namespace qc
         std::is_unsigned_v<std::underlying_type_t<E>> &&
         requires { E::_n; };
 
-    template <CountableEnum E> constexpr u64 enumCount{u64(E::_n)};
+    template <CountableEnum E> constexpr u64 enumN{u64(E::_n)};
 
     // Don't think we need this, but keeping it around for a little while just in case
     #if 0
@@ -83,9 +83,9 @@ namespace qc
     namespace _internal
     {
         template <CountableEnum E>
-        constexpr std::array<E, enumCount<E>> makeEnumArray()
+        constexpr std::array<E, enumN<E>> makeEnumArray()
         {
-            std::array<E, enumCount<E>> array{};
+            std::array<E, enumN<E>> array{};
             for (E v{}; v != E::_n; v = E(underlyingVal(v) + 1u))
             {
                 array[underlyingVal(v)] = v;
@@ -94,5 +94,5 @@ namespace qc
         }
     }
 
-    template <CountableEnum E> constexpr std::array<E, enumCount<E>> enumArray{_internal::makeEnumArray<E>()};
+    template <CountableEnum E> constexpr std::array<E, enumN<E>> enumArray{_internal::makeEnumArray<E>()};
 }

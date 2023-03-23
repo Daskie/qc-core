@@ -13,20 +13,20 @@ namespace qc
     ///
     /// Equivalent to `reservePages` + `commitPages`
     ///
-    /// @param pageCount the number of pages to allocate
-    /// @return the start of the allocated memory, or null if `pageCount` is 0
+    /// @param pageN the number of pages to allocate
+    /// @return the start of the allocated memory, or null if `pageN` is 0
     ///
-    nodisc void * allocatePages(u64 pageCount);
+    nodisc void * allocatePages(u64 pageN);
 
     ///
     /// Reserve a contiguous block of virtual memory without actually allocating any physical memory
     ///
     /// This memory cannot be used before being committed, see `commitPages`
     ///
-    /// @param pageCount the number of pages to reserve
-    /// @return the base of the reserved memory, or null if `pageCount` is 0
+    /// @param pageN the number of pages to reserve
+    /// @return the base of the reserved memory, or null if `pageN` is 0
     ///
-    nodisc void * reservePages(u64 pageCount);
+    nodisc void * reservePages(u64 pageN);
 
     ///
     /// Commit a range of previously reserved pages to physical memory, allowing them to be used
@@ -34,9 +34,9 @@ namespace qc
     /// Committing the same page(s) multiple times has no effect
     ///
     /// @param pageStart the first page in the range to commit; pages must be currently reserved; no-op if null
-    /// @param pageCount the number of pages to commit; no-op if zero
+    /// @param pageN the number of pages to commit; no-op if zero
     ///
-    void commitPages(void * pageStart, u64 pageCount);
+    void commitPages(void * pageStart, u64 pageN);
 
     ///
     /// Decommit a range of previously committed pages, freeing the associated physical memory back to the system
@@ -44,9 +44,9 @@ namespace qc
     /// Decommitting the same page(s) multiple times has no effect
     ///
     /// @param pageStart the first page in the range to decommit; pages must be currently reserved; no-op if null
-    /// @param pageCount the number of pages to decommit; no-op if zero
+    /// @param pageN the number of pages to decommit; no-op if zero
     ///
-    void decommitPages(void * pageStart, u64 pageCount);
+    void decommitPages(void * pageStart, u64 pageN);
 
     ///
     /// Frees a previously allocated/reserved memory block both physically and virtually
@@ -54,7 +54,7 @@ namespace qc
     /// Pages can be committed or not, the memory is freed regardless
     ///
     /// @param pages must be the base page returned by `allocatePages`/`reservePages`; no-op if null
-    /// @param pageCount must be the number of pages returned by `allocatePages`/`reservePages`; no-op if zero
+    /// @param pageN must be the number of pages returned by `allocatePages`/`reservePages`; no-op if zero
     ///
-    void freePages(void * pages, u64 pageCount);
+    void freePages(void * pages, u64 pageN);
 }

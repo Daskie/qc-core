@@ -50,7 +50,7 @@ namespace qc
 
         inline static List<Arena *> _arenas{};
 
-        static u64 _pageCount(u64 capacity);
+        static u64 _pageN(u64 capacity);
 
         template <typename T> static void _destroy(T & v);
 
@@ -106,7 +106,7 @@ namespace qc
                 ABORT_IF(bubble.pos != _memory || u64(bubble.size) * 8u != _capacity);
             }
 
-            freePages(_memory, _pageCount(_capacity));
+            freePages(_memory, _pageN(_capacity));
 
             // Remove self from sorted arena list
             auto it{_arenas.begin()};
@@ -131,9 +131,9 @@ namespace qc
             return;
         }
 
-        const u64 pageCount{_pageCount(capacity)};
-        _capacity = pageCount * pageSize;
-        _memory = static_cast<u64 *>(reservePages(pageCount));
+        const u64 pageN{_pageN(capacity)};
+        _capacity = pageN * pageSize;
+        _memory = static_cast<u64 *>(reservePages(pageN));
         _bubbles.add(_memory, s64(_capacity / 8u));
 
         // Insert self into sorted arena list
@@ -147,13 +147,13 @@ namespace qc
     {
         static_assert(alignof(T) <= 8u);
 
-        const u64 wordCount{1u + (sizeof(T) + 7u) / 8u};
-        const auto [wasSpace, ptr]{_bubbles.remove(wordCount)};
+        const u64 wordN{1u + (sizeof(T) + 7u) / 8u};
+        const auto [wasSpace, ptr]{_bubbles.remove(wordN)};
 
         // Arena is full
         ABORT_IF(!wasSpace);
 
-        const u64 requiredSize{(u64(ptr - _memory) + wordCount) * 8u};
+        const u64 requiredSize{(u64(ptr - _memory) + wordN) * 8u};
         if (requiredSize > _size)
         {
             _expand(requiredSize);
@@ -186,8 +186,8 @@ namespace qc
 
         u64 * const ptr{reinterpret_cast<u64 *>(&v) - 1};
         const u32 valSize{u32(*ptr & 0xFFFFFFFFu)};
-        const u64 wordCount{1u + (valSize + 7u) / 8u};
-        _bubbles.add(ptr, s64(wordCount));
+        const u64 wordN{1u + (valSize + 7u) / 8u};
+        _bubbles.add(ptr, s64(wordN));
     }
 
     inline void Arena::shrinkToFit()
@@ -200,24 +200,24 @@ namespace qc
             return;
         }
 
-        u64 necessaryPageCount{(_capacity - freeTailSize + (pageSize - 1u)) / pageSize};
-        if (necessaryPageCount) necessaryPageCount = std::bit_ceil(necessaryPageCount);
-        const u64 currentPageCount{(_size + (pageSize - 1u)) / pageSize};
-        const u64 unnecessaryPageCount{currentPageCount - necessaryPageCount};
+        u64 necessaryPageN{(_capacity - freeTailSize + (pageSize - 1u)) / pageSize};
+        if (necessaryPageN) necessaryPageN = std::bit_ceil(necessaryPageN);
+        const u64 currentPageN{(_size + (pageSize - 1u)) / pageSize};
+        const u64 unnecessaryPageN{currentPageN - necessaryPageN};
 
         // Free tail is smaller than hald the current size
-        if (!unnecessaryPageCount)
+        if (!unnecessaryPageN)
         {
             return;
         }
 
         // Decommit uneccessary pages
-        decommitPages(reinterpret_cast<std::byte *>(_memory) + necessaryPageCount * pageSize, unnecessaryPageCount);
+        decommitPages(reinterpret_cast<std::byte *>(_memory) + necessaryPageN * pageSize, unnecessaryPageN);
 
-        _size = necessaryPageCount * pageSize;
+        _size = necessaryPageN * pageSize;
     }
 
-    inline u64 Arena::_pageCount(const u64 capacity)
+    inline u64 Arena::_pageN(const u64 capacity)
     {
         return std::bit_ceil((capacity + (pageSize - 1u)) / pageSize);
     }
@@ -247,16 +247,16 @@ namespace qc
 
     inline void Arena::_expand(u64 newSize)
     {
-        const u64 newPageCount{std::bit_ceil((newSize + (pageSize - 1u)) / pageSize)};
-        newSize = newPageCount * pageSize;
+        const u64 newPageN{std::bit_ceil((newSize + (pageSize - 1u)) / pageSize)};
+        newSize = newPageN * pageSize;
 
         // Ensure we have sufficient reserved memory
         ABORT_IF(newSize > _capacity);
 
         // Commit new pages
-        const u64 currentPageCount{_size / pageSize};
+        const u64 currentPageN{_size / pageSize};
         std::byte * const pages{reinterpret_cast<std::byte *>(_memory)};
-        commitPages(pages + currentPageCount * pageSize, newPageCount - currentPageCount);
+        commitPages(pages + currentPageN * pageSize, newPageN - currentPageN);
 
         _size = newSize;
     }

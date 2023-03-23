@@ -22,10 +22,10 @@ TEST(EnumUtils, countableEnum)
     static_assert(!qc::CountableEnum<Enum5>);
 }
 
-TEST(EnumUtils, enumCount)
+TEST(EnumUtils, enumN)
 {
-    ASSERT_EQ(3u, qc::enumCount<Enum3>);
-    ASSERT_EQ(0u, qc::enumCount<Enum4>);
+    ASSERT_EQ(3u, qc::enumN<Enum3>);
+    ASSERT_EQ(0u, qc::enumN<Enum4>);
 }
 
 #if 0
@@ -52,15 +52,15 @@ TEST(enumIterator, compiles)
 TEST(enumIterator, forLoop)
 {
     Enum3 ref{Enum3::a};
-    uint count{0u};
+    uint n{0u};
 
     for (qc::EnumIterator<Enum3> it{Enum3::a}; it != qc::EnumIterator<Enum3>{Enum3::_n}; ++it) {
         ASSERT_EQ(ref, *it);
         ++reinterpret_cast<uint &>(ref);
-        ++count;
+        ++n;
     }
 
-    ASSERT_EQ(static_cast<uint>(Enum3::_n), count);
+    ASSERT_EQ(static_cast<uint>(Enum3::_n), n);
 }
 
 TEST(enumIterator, forLoopEmpty)
@@ -72,15 +72,15 @@ TEST(enumIterator, forLoopEmpty)
 TEST(enumIterator, forEach)
 {
     Enum3 ref{Enum3::a};
-    uint count{0u};
+    uint n{0u};
 
     for (const Enum3 e : qc::iterateEnum<Enum3>) {
         ASSERT_EQ(ref, e);
         ++reinterpret_cast<uint &>(ref);
-        ++count;
+        ++n;
     }
 
-    ASSERT_EQ(static_cast<uint>(Enum3::_n), count);
+    ASSERT_EQ(static_cast<uint>(Enum3::_n), n);
 }
 
 #pragma warning(suppress: 4702)

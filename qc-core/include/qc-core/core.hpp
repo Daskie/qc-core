@@ -7,9 +7,9 @@
 #include <limits>
 #include <utility>
 
-#ifdef QC_MSVC
+#if defined QC_MSVC
     #define forceinline __forceinline
-#elif QC_GCC
+#elif defined QC_GCC
     #define forceinline __attribute__((always_inline)) inline
 #else
     #error "Unsupported compiler"

@@ -123,72 +123,72 @@ namespace qc
         }
 
         // Select median point along alpha axis
-        const u64 lowerACount{orderedA.size() / 2u};
-        const u32 medianPointI{orderedA[lowerACount]};
+        const u64 lowerAN{orderedA.size() / 2u};
+        const u32 medianPointI{orderedA[lowerAN]};
         const fvec2 medianPoint{points[medianPointI]};
 
-        const std::span<u32> lowerOrderedA{orderedA.subspan(0u, lowerACount)};
-        const std::span<u32> upperOrderedA{orderedA.subspan(lowerACount + 1u)};
+        const std::span<u32> lowerOrderedA{orderedA.subspan(0u, lowerAN)};
+        const std::span<u32> upperOrderedA{orderedA.subspan(lowerAN + 1u)};
 
         node->point = medianPoint;
         node->lowerOffset = 1u;
         node->upperOffset = node->lowerOffset + u32(lowerOrderedA.size());
 
         // Split ordered beta span into two ordered subspans
-        u64 lowerBCount{0u};
-        u64 upperBCount{0u};
+        u64 lowerBN{0u};
+        u64 upperBN{0u};
         for (const u32 pointI: orderedB)
         {
             const fvec2 point{points[pointI]};
 
             if (point.at<alpha>() < medianPoint.at<alpha>())
             {
-                orderedB[lowerBCount] = pointI;
-                ++lowerBCount;
+                orderedB[lowerBN] = pointI;
+                ++lowerBN;
             }
             else if (point.at<alpha>() > medianPoint.at<alpha>())
             {
-                scratch[upperBCount] = pointI;
-                ++upperBCount;
+                scratch[upperBN] = pointI;
+                ++upperBN;
             }
             else
             {
                 if (point.at<beta>() < medianPoint.at<beta>())
                 {
-                    orderedB[lowerBCount] = pointI;
-                    ++lowerBCount;
+                    orderedB[lowerBN] = pointI;
+                    ++lowerBN;
                 }
                 else if (point.at<beta>() > medianPoint.at<beta>())
                 {
-                    scratch[upperBCount] = pointI;
-                    ++upperBCount;
+                    scratch[upperBN] = pointI;
+                    ++upperBN;
                 }
                 else
                 {
                     if (pointI < medianPointI)
                     {
-                        orderedB[lowerBCount] = pointI;
-                        ++lowerBCount;
+                        orderedB[lowerBN] = pointI;
+                        ++lowerBN;
                     }
                     else if (pointI > medianPointI)
                     {
-                        scratch[upperBCount] = pointI;
-                        ++upperBCount;
+                        scratch[upperBN] = pointI;
+                        ++upperBN;
                     }
                 }
             }
         }
 
         // Define the ordered beta subspans
-        const std::span<u32> lowerOrderedB{orderedB.subspan(0u, lowerBCount)};
-        const std::span<u32> upperOrderedB{orderedB.subspan(lowerBCount + 1u)};
+        const std::span<u32> lowerOrderedB{orderedB.subspan(0u, lowerBN)};
+        const std::span<u32> upperOrderedB{orderedB.subspan(lowerBN + 1u)};
 
         // Sanity check
         assert(lowerOrderedA.size() == lowerOrderedB.size());
         assert(upperOrderedA.size() == upperOrderedB.size());
 
         // Copy upper subspan from scratch back into main span
-        std::copy_n(scratch.begin(), upperBCount, upperOrderedB.begin());
+        std::copy_n(scratch.begin(), upperBN, upperOrderedB.begin());
 
         // Recurse along the other axis
         _constructRecursive<beta>(points, lowerOrderedB, lowerOrderedA, scratch, node + node->lowerOffset);

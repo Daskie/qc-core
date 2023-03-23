@@ -16,11 +16,11 @@ TEST(Paging, allocate)
 {
     ASSERT_EQ(qc::allocatePages(0u), nullptr);
 
-    const u64 pageCount{3u};
-    u64 * const mem{static_cast<u64 *>(qc::allocatePages(pageCount))};
+    const u64 pageN{3u};
+    u64 * const mem{static_cast<u64 *>(qc::allocatePages(pageN))};
     ASSERT_TRUE(mem);
 
-    const u64 n{pageCount * qc::pageSize / sizeof(u64)};
+    const u64 n{pageN * qc::pageSize / sizeof(u64)};
     for (u64 i{0u}; i < n; ++i)
     {
         mem[i] = i;
@@ -29,10 +29,10 @@ TEST(Paging, allocate)
     qc::freePages(nullptr, 0u);
     qc::freePages(nullptr, 1u);
     qc::freePages(mem, 0u);
-    ASSERT_DEATH(qc::freePages(mem + 1, pageCount), "");
-    ASSERT_DEATH_IF_MSVC(qc::freePages(mem + qc::pageSize * pageCount, 1u), "");
-    qc::freePages(mem, pageCount);
-    ASSERT_DEATH_IF_MSVC(qc::freePages(mem, pageCount), "");
+    ASSERT_DEATH(qc::freePages(mem + 1, pageN), "");
+    ASSERT_DEATH_IF_MSVC(qc::freePages(mem + qc::pageSize * pageN, 1u), "");
+    qc::freePages(mem, pageN);
+    ASSERT_DEATH_IF_MSVC(qc::freePages(mem, pageN), "");
 }
 
 TEST(Paging, reserveCommit)

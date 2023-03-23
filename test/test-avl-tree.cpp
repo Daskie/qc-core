@@ -149,13 +149,13 @@ class qc::_internal::AvlTreeFriend
 
         //--- Add value line ---
 
-        const int leftDashCount{qc::max(valPos - leftHeadPos - 3, 0)};
-        const int rightDashCount{qc::max(rightHeadPos - (valPos + valStrLength) - 2, 0)};
-        const int valLineLength{valPos + valStrLength + bool(rightDashCount) + rightDashCount};
+        const int leftDashN{qc::max(valPos - leftHeadPos - 3, 0)};
+        const int rightDashN{qc::max(rightHeadPos - (valPos + valStrLength) - 2, 0)};
+        const int valLineLength{valPos + valStrLength + bool(rightDashN) + rightDashN};
         std::string & valLine{lines.push(u64(valLineLength), ' ')};
-        if (leftDashCount) std::fill_n(valLine.begin() + valPos - 1 - leftDashCount, u64(leftDashCount), '_');
+        if (leftDashN) std::fill_n(valLine.begin() + valPos - 1 - leftDashN, u64(leftDashN), '_');
         std::copy(valStr.cbegin(), valStr.cend(), valLine.begin() + valPos);
-        if (rightDashCount) std::fill_n(valLine.begin() + valPos + valStrLength + 1, u64(rightDashCount), '_');
+        if (rightDashN) std::fill_n(valLine.begin() + valPos + valStrLength + 1, u64(rightDashN), '_');
 
         //--- Add slash line ---
 

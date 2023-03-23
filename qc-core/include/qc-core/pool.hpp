@@ -32,14 +32,14 @@ namespace qc
 
         void shrinkToFit();
 
-        nodisc u32 maxPageCount() const { return _maxPageCount; }
+        nodisc u32 maxPageN() const { return _maxPageN; }
 
-        nodisc u32 pageCount() const { return _pageCount; }
+        nodisc u32 pageN() const { return _pageN; }
 
       protected:
 
-        u32 _maxPageCount{};
-        u32 _pageCount{};
+        u32 _maxPageN{};
+        u32 _pageN{};
         u64 _maxCapacity{};
 
         _PoolExtra() = default;
@@ -219,7 +219,7 @@ namespace qc
             }
             else
             {
-                freePages(_slotRange.start, this->_maxPageCount);
+                freePages(_slotRange.start, this->_maxPageN);
             }
         }
 
@@ -255,8 +255,8 @@ namespace qc
         }
         else
         {
-            this->_maxPageCount = u32((capacity * sizeof(T) + pageSize - 1) / pageSize);
-            this->_maxCapacity = this->_maxPageCount * pageSize / sizeof(T);
+            this->_maxPageN = u32((capacity * sizeof(T) + pageSize - 1) / pageSize);
+            this->_maxCapacity = this->_maxPageN * pageSize / sizeof(T);
         }
     }
 
@@ -440,32 +440,32 @@ namespace qc
         if (!_slotRange.start)
         {
             // Max capacity must have been set by this point
-            ABORT_IF(!this->_maxPageCount);
+            ABORT_IF(!this->_maxPageN);
 
-            _slotRange.start = static_cast<T *>(reservePages(this->_maxPageCount));
+            _slotRange.start = static_cast<T *>(reservePages(this->_maxPageN));
             _slotRange.end = _slotRange.start;
         }
 
         // Ensure we still have more reserved pages
-        ABORT_IF(this->_pageCount >= this->_maxPageCount);
+        ABORT_IF(this->_pageN >= this->_maxPageN);
 
         // Double the number of committed pages
-        const u32 minPageCount{u32((sizeof(T) + pageSize - 1u) / pageSize)};
-        u32 newPageCount{qc::max(this->_pageCount * 2u, minPageCount)};
+        const u32 minPageN{u32((sizeof(T) + pageSize - 1u) / pageSize)};
+        u32 newPageN{qc::max(this->_pageN * 2u, minPageN)};
 
         // Round up and reserve all pages if within +50% of new page count
-        if (newPageCount + newPageCount / 2 >= this->_maxPageCount)
+        if (newPageN + newPageN / 2 >= this->_maxPageN)
         {
-            newPageCount = this->_maxPageCount;
+            newPageN = this->_maxPageN;
         }
 
         // Commit new pages
         std::byte * const pages{reinterpret_cast<std::byte *>(_slotRange.start)};
-        commitPages(pages + this->_pageCount * pageSize, newPageCount - this->_pageCount);
-        this->_pageCount = newPageCount;
+        commitPages(pages + this->_pageN * pageSize, newPageN - this->_pageN);
+        this->_pageN = newPageN;
 
         // Update full range
-        const u64 newCapacity{this->_pageCount * pageSize / sizeof(T)};
+        const u64 newCapacity{this->_pageN * pageSize / sizeof(T)};
         T * const currentRangeEnd{_slotRange.end};
         _slotRange.end = _slotRange.start + newCapacity;
 
@@ -500,21 +500,21 @@ namespace qc
         }
 
         const u64 necessaryCapacity{u64(highRange.start - _slotRange.start)};
-        const u32 necessaryPageCount{u32((necessaryCapacity * sizeof(T) + pageSize - 1u) / pageSize)};
-        const u32 unnecessaryPageCount{this->_pageCount - necessaryPageCount};
+        const u32 necessaryPageN{u32((necessaryCapacity * sizeof(T) + pageSize - 1u) / pageSize)};
+        const u32 unnecessaryPageN{this->_pageN - necessaryPageN};
 
         // Not enough free tail slots to make up a page
-        if (!unnecessaryPageCount)
+        if (!unnecessaryPageN)
         {
             return;
         }
 
         // Decommit uneccessary pages
-        decommitPages(reinterpret_cast<std::byte *>(_slotRange.start) + necessaryPageCount * pageSize, unnecessaryPageCount);
+        decommitPages(reinterpret_cast<std::byte *>(_slotRange.start) + necessaryPageN * pageSize, unnecessaryPageN);
 
         // Update state
-        this->_pageCount = necessaryPageCount;
-        const u64 newCapacity{this->_pageCount * pageSize / sizeof(T)};
+        this->_pageN = necessaryPageN;
+        const u64 newCapacity{this->_pageN * pageSize / sizeof(T)};
         _slotRange.end = _slotRange.start + newCapacity;
         highRange.end = _slotRange.end;
         if (highRange.end == highRange.start)
