@@ -99,15 +99,6 @@ namespace qc
         using s64 = int64_t;
         using u64 = uint64_t;
         using f64 = double;
-
-        using schar = signed char;
-        using uchar = unsigned char;
-        using ushort = unsigned short;
-        using uint = unsigned int;
-        using ulong = unsigned long;
-        using llong = long long;
-        using ullong = unsigned long long;
-        using ldouble = long double;
     }
 
     inline namespace types
@@ -131,11 +122,11 @@ namespace qc
         template <typename T> concept IntegralOrPointer = Integral<T> || Pointer<T>;
         template <typename T> concept TriviallyCopyable = std::is_trivially_copyable_v<T>;
 
-        template <int size> struct Sized;
-        template <> struct Sized<1> { using S =  s8; using U =  u8; };
-        template <> struct Sized<2> { using S = s16; using U = u16; };
-        template <> struct Sized<4> { using S = s32; using U = u32; using F = f32; };
-        template <> struct Sized<8> { using S = s64; using U = u64; using F = f64; };
+        template <u32 size> struct Sized;
+        template <> struct Sized<1u> { using S =  s8; using U =  u8; };
+        template <> struct Sized<2u> { using S = s16; using U = u16; };
+        template <> struct Sized<4u> { using S = s32; using U = u32; using F = f32; };
+        template <> struct Sized<8u> { using S = s64; using U = u64; using F = f64; };
 
         template <typename T, u64 n> using CArray = T[n];
 

@@ -99,8 +99,8 @@ namespace qc
     // ...
     // ~2.15x faster than std::pow
     //
-    template <Floating T> nodisc T pow(T v, int e);
-    template <Floating T> nodisc T pow(T v, uint e);
+    template <Floating T> nodisc T pow(T v, s32 e);
+    template <Floating T> nodisc T pow(T v, u32 e);
 
     //
     // ...
@@ -399,20 +399,20 @@ namespace qc
     }
 
     template <Floating T>
-    forceinline T pow(const T v, const int e)
+    forceinline T pow(const T v, const s32 e)
     {
         if (e >= 0)
         {
-            return pow(v, uint(e));
+            return pow(v, u32(e));
         }
         else
         {
-            return pow(T(1.0) / v, uint(-e));
+            return pow(T(1.0) / v, u32(-e));
         }
     }
 
     template <Floating T>
-    inline T pow(T v, uint e)
+    inline T pow(T v, u32 e)
     {
         T r{T(1.0)};
 
@@ -432,16 +432,16 @@ namespace qc
         // Old, non-std way of doing it
         //static_assert(sizeof(T) <= 8u);
         //
-        //int log{0};
-        //if constexpr (sizeof(T) >= 8u) if (v & 0xFFFFFFFF00000000) { v >>= 32; log += 32; }
-        //if constexpr (sizeof(T) >= 4u) if (v & 0x00000000FFFF0000) { v >>= 16; log += 16; }
-        //if constexpr (sizeof(T) >= 2u) if (v & 0x000000000000FF00) { v >>=  8; log +=  8; }
-        //                               if (v & 0x00000000000000F0) { v >>=  4; log +=  4; }
-        //                               if (v & 0x000000000000000C) { v >>=  2; log +=  2; }
-        //                               if (v & 0x0000000000000002) {           log +=  1; }
+        //T log{0u};
+        //if constexpr (sizeof(T) >= 8u) if (v & 0xFFFFFFFF00000000) { v >>= 32; log += 32u; }
+        //if constexpr (sizeof(T) >= 4u) if (v & 0x00000000FFFF0000) { v >>= 16; log += 16u; }
+        //if constexpr (sizeof(T) >= 2u) if (v & 0x000000000000FF00) { v >>=  8; log +=  8u; }
+        //                               if (v & 0x00000000000000F0) { v >>=  4; log +=  4u; }
+        //                               if (v & 0x000000000000000C) { v >>=  2; log +=  2u; }
+        //                               if (v & 0x0000000000000002) {           log +=  1u; }
         //return log;
 
-        return v ? T(std::bit_width(v) - 1u) : T(0u);
+        return v ? T(std::bit_width(v) - 1u) : 0u;
     }
 
     template <UnsignedIntegral T>

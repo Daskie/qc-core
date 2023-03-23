@@ -12,11 +12,11 @@ TEST(Pool, standard)
     ASSERT_EQ(4096u, qc::pageSize);
     struct BigInt
     {
-        int x;
-        u8 padding[2400u - sizeof(int)];
+        s32 x;
+        u8 padding[2400u - sizeof(s32)];
 
         BigInt() = default;
-        BigInt(int x_) : x{x_} {}
+        BigInt(s32 x_) : x{x_} {}
     };
 
     // [_|_|_|_|_]
@@ -244,14 +244,14 @@ TEST(Pool, standard)
 TEST(FixedPool, standard)
 {
     // [_|_|_|_|_]
-    qc::FixedPool<int> pool{5u};
+    qc::FixedPool<s32> pool{5u};
     ASSERT_EQ(5u, pool.capacity());
     ASSERT_EQ(0u, pool.size());
     auto it{pool.begin()};
     ASSERT_EQ(pool.end(), it);
 
     // [0|_|_|_|_]
-    int & e0{pool.create(0)};
+    s32 & e0{pool.create(0)};
     ASSERT_EQ(5u, pool.capacity());
     ASSERT_EQ(1u, pool.size());
     it = pool.begin();
@@ -259,7 +259,7 @@ TEST(FixedPool, standard)
     ASSERT_EQ(pool.end(), ++it);
 
     // [0|1|_|_|_]
-    int & e1{pool.create(1)};
+    s32 & e1{pool.create(1)};
     ASSERT_EQ(&e0 + 1, &e1);
     ASSERT_EQ(5u, pool.capacity());
     ASSERT_EQ(2u, pool.size());
@@ -269,7 +269,7 @@ TEST(FixedPool, standard)
     ASSERT_EQ(pool.end(), ++it);
 
     // [0|1|2|_|_]
-    int & e2{pool.create(2)};
+    s32 & e2{pool.create(2)};
     ASSERT_EQ(&e1 + 1, &e2);
     ASSERT_EQ(5u, pool.capacity());
     ASSERT_EQ(3u, pool.size());
@@ -280,7 +280,7 @@ TEST(FixedPool, standard)
     ASSERT_EQ(pool.end(), ++it);
 
     // [0|1|2|3|_]
-    int & e3{pool.create(3)};
+    s32 & e3{pool.create(3)};
     ASSERT_EQ(&e2 + 1, &e3);
     ASSERT_EQ(5u, pool.capacity());
     ASSERT_EQ(4u, pool.size());
@@ -292,7 +292,7 @@ TEST(FixedPool, standard)
     ASSERT_EQ(pool.end(), ++it);
 
     // [0|1|2|3|4]
-    int & e4{pool.create(4)};
+    s32 & e4{pool.create(4)};
     ASSERT_EQ(&e3 + 1, &e4);
     ASSERT_EQ(5u, pool.capacity());
     ASSERT_EQ(5u, pool.size());
@@ -329,8 +329,8 @@ TEST(FixedPool, standard)
     ASSERT_EQ(pool.end(), ++it);
 
     // [0|1|2|5|6]
-    int & e5{pool.create(5)};
-    int & e6{pool.create(6)};
+    s32 & e5{pool.create(5)};
+    s32 & e6{pool.create(6)};
     ASSERT_EQ(&e2 + 1, &e5);
     ASSERT_EQ(&e5 + 1, &e6);
     ASSERT_EQ(5u, pool.capacity());
@@ -365,7 +365,7 @@ TEST(FixedPool, standard)
     ASSERT_EQ(pool.end(), ++it);
 
     // [7|_|2|5|6]
-    int & e7{pool.create(7)};
+    s32 & e7{pool.create(7)};
     ASSERT_EQ(&e2 - 2, &e7);
     ASSERT_EQ(5u, pool.capacity());
     ASSERT_EQ(4u, pool.size());
@@ -396,9 +396,9 @@ TEST(FixedPool, standard)
     ASSERT_EQ(pool.end(), ++it);
 
     // [7|8|9|10|6]
-    int & e8{pool.create(8)};
-    int & e9{pool.create(9)};
-    int & e10{pool.create(10)};
+    s32 & e8{pool.create(8)};
+    s32 & e9{pool.create(9)};
+    s32 & e10{pool.create(10)};
     ASSERT_EQ(&e7 + 1, &e8);
     ASSERT_EQ(&e7 + 2, &e9);
     ASSERT_EQ(&e7 + 3, &e10);
@@ -437,7 +437,7 @@ TEST(FixedPool, standard)
     ASSERT_EQ(pool.end(), ++it);
 
     // [11|_|_|_|6]
-    int & e11{pool.create(11)};
+    s32 & e11{pool.create(11)};
     ASSERT_EQ(&e6 - 4, &e11);
     ASSERT_EQ(5u, pool.capacity());
     ASSERT_EQ(2u, pool.size());
@@ -465,15 +465,15 @@ TEST(FixedPool, standard)
 
 TEST(Pool, single)
 {
-    qc::Pool<int> pool{1u};
-    const u64 maxCapacity{qc::pageSize / sizeof(int)};
+    qc::Pool<s32> pool{1u};
+    const u64 maxCapacity{qc::pageSize / sizeof(s32)};
     ASSERT_EQ(1u, pool.maxPageN());
     ASSERT_EQ(maxCapacity, pool.capacity());
     ASSERT_EQ(0u, pool.pageN());
     ASSERT_EQ(0u, pool.size());
     ASSERT_EQ(pool.end(), pool.begin());
 
-    int & e0{pool.create(0)};
+    s32 & e0{pool.create(0)};
     ASSERT_EQ(maxCapacity, pool.capacity());
     ASSERT_EQ(1u, pool.pageN());
     ASSERT_EQ(1u, pool.size());
@@ -490,12 +490,12 @@ TEST(Pool, single)
 
 TEST(FixedPool, single)
 {
-    qc::FixedPool<int> pool{1u};
+    qc::FixedPool<s32> pool{1u};
     ASSERT_EQ(1u, pool.capacity());
     ASSERT_EQ(0u, pool.size());
     ASSERT_EQ(pool.end(), pool.begin());
 
-    int & e0{pool.create(0)};
+    s32 & e0{pool.create(0)};
     ASSERT_EQ(1u, pool.size());
     auto it{pool.begin()};
     ASSERT_EQ(0, *it);
@@ -623,7 +623,7 @@ TEST(Pool, biggerThanPageVal)
 
 TEST(Pool, setCapacity)
 {
-    qc::Pool<int> pool{};
+    qc::Pool<s32> pool{};
     ASSERT_EQ(0u, pool.maxPageN());
     ASSERT_EQ(0u, pool.capacity());
     ASSERT_EQ(0u, pool.pageN());
@@ -632,7 +632,7 @@ TEST(Pool, setCapacity)
 
     pool.setCapacity(1u);
     ASSERT_EQ(1u, pool.maxPageN());
-    ASSERT_EQ(qc::pageSize / sizeof(int), pool.capacity());
+    ASSERT_EQ(qc::pageSize / sizeof(s32), pool.capacity());
     ASSERT_EQ(0u, pool.pageN());
 
     pool.setCapacity(0u);
@@ -642,27 +642,27 @@ TEST(Pool, setCapacity)
 
     ASSERT_DEATH(static_cast<void>(pool.create(0)), "");
 
-    pool.setCapacity(qc::pageSize / sizeof(int) * 2u);
+    pool.setCapacity(qc::pageSize / sizeof(s32) * 2u);
     ASSERT_EQ(2u, pool.maxPageN());
-    ASSERT_EQ(qc::pageSize / sizeof(int) * 2u, pool.capacity());
+    ASSERT_EQ(qc::pageSize / sizeof(s32) * 2u, pool.capacity());
     ASSERT_EQ(0u, pool.pageN());
 
     pool.setCapacity(1u);
     ASSERT_EQ(1u, pool.maxPageN());
-    ASSERT_EQ(qc::pageSize / sizeof(int), pool.capacity());
+    ASSERT_EQ(qc::pageSize / sizeof(s32), pool.capacity());
     ASSERT_EQ(0u, pool.pageN());
 
-    [[maybe_unused]] int & v{pool.create(0)};
+    [[maybe_unused]] s32 & v{pool.create(0)};
 
     ASSERT_DEBUG_DEATH(pool.setCapacity(pool.capacity()), "");
-    ASSERT_DEBUG_DEATH(pool.setCapacity(qc::pageSize / sizeof(int) * 3u), "");
+    ASSERT_DEBUG_DEATH(pool.setCapacity(qc::pageSize / sizeof(s32) * 3u), "");
     ASSERT_DEBUG_DEATH(pool.setCapacity(1u), "");
     ASSERT_DEBUG_DEATH(pool.setCapacity(0u), "");
 }
 
 TEST(FixedPool, setCapacity)
 {
-    qc::FixedPool<int> pool{};
+    qc::FixedPool<s32> pool{};
     ASSERT_EQ(0u, pool.capacity());
 
     ASSERT_DEATH(static_cast<void>(pool.create(0)), "");
@@ -676,16 +676,16 @@ TEST(FixedPool, setCapacity)
 
 TEST(Pool, shrinkToFit)
 {
-    const u64 intsPerPage{qc::pageSize / sizeof(int)};
-    qc::Pool<int> pool{5u * intsPerPage};
+    const u64 intsPerPage{qc::pageSize / sizeof(s32)};
+    qc::Pool<s32> pool{5u * intsPerPage};
     ASSERT_EQ(5u, pool.maxPageN());
     ASSERT_EQ(5u * intsPerPage, pool.capacity());
     ASSERT_EQ(0u, pool.pageN());
 
     pool.shrinkToFit();
 
-    int * const ints{&pool.create(0)};
-    for (int i{1}; i < int(intsPerPage * 5u); ++i)
+    s32 * const ints{&pool.create(0)};
+    for (s32 i{1}; i < s32(intsPerPage * 5u); ++i)
     {
         static_cast<void>(pool.create(i));
     }
@@ -694,7 +694,7 @@ TEST(Pool, shrinkToFit)
     pool.shrinkToFit();
     ASSERT_EQ(5u, pool.pageN());
 
-    for (int i{int(intsPerPage * 4u) + 1}; i < int(intsPerPage * 5u); ++i)
+    for (s32 i{s32(intsPerPage * 4u) + 1}; i < s32(intsPerPage * 5u); ++i)
     {
         pool.destroy(ints[i]);
     }
@@ -709,7 +709,7 @@ TEST(Pool, shrinkToFit)
     pool.shrinkToFit();
     ASSERT_EQ(4u, pool.pageN());
 
-    for (int i{1}; i < int(intsPerPage * 4u) - 1; ++i)
+    for (s32 i{1}; i < s32(intsPerPage * 4u) - 1; ++i)
     {
         pool.destroy(ints[i]);
     }
@@ -736,26 +736,26 @@ TEST(Pool, shrinkToFit)
 
 TEST(Pool, iteratorAssignability)
 {
-    static_assert(std::is_assignable_v<qc::Pool<int>::iterator, qc::Pool<int>::iterator>);
-    static_assert(std::is_assignable_v<qc::Pool<int>::const_iterator, qc::Pool<int>::iterator>);
-    static_assert(!std::is_assignable_v<qc::Pool<int>::iterator, qc::Pool<int>::const_iterator>);
-    static_assert(std::is_assignable_v<qc::Pool<int>::const_iterator, qc::Pool<int>::const_iterator>);
+    static_assert(std::is_assignable_v<qc::Pool<s32>::iterator, qc::Pool<s32>::iterator>);
+    static_assert(std::is_assignable_v<qc::Pool<s32>::const_iterator, qc::Pool<s32>::iterator>);
+    static_assert(!std::is_assignable_v<qc::Pool<s32>::iterator, qc::Pool<s32>::const_iterator>);
+    static_assert(std::is_assignable_v<qc::Pool<s32>::const_iterator, qc::Pool<s32>::const_iterator>);
 }
 
 TEST(FixedPool, iteratorAssignability)
 {
-    static_assert(std::is_assignable_v<qc::FixedPool<int>::iterator, qc::FixedPool<int>::iterator>);
-    static_assert(std::is_assignable_v<qc::FixedPool<int>::const_iterator, qc::FixedPool<int>::iterator>);
-    static_assert(!std::is_assignable_v<qc::FixedPool<int>::iterator, qc::FixedPool<int>::const_iterator>);
-    static_assert(std::is_assignable_v<qc::FixedPool<int>::const_iterator, qc::FixedPool<int>::const_iterator>);
+    static_assert(std::is_assignable_v<qc::FixedPool<s32>::iterator, qc::FixedPool<s32>::iterator>);
+    static_assert(std::is_assignable_v<qc::FixedPool<s32>::const_iterator, qc::FixedPool<s32>::iterator>);
+    static_assert(!std::is_assignable_v<qc::FixedPool<s32>::iterator, qc::FixedPool<s32>::const_iterator>);
+    static_assert(std::is_assignable_v<qc::FixedPool<s32>::const_iterator, qc::FixedPool<s32>::const_iterator>);
 }
 
 TEST(Pool, baseClassNonconstructible)
 {
-    static_assert(!std::is_default_constructible_v<qc::_PoolExtra<int, false>>);
+    static_assert(!std::is_default_constructible_v<qc::_PoolExtra<s32, false>>);
 }
 
 TEST(FixedPool, baseClassNonconstructible)
 {
-    static_assert(!std::is_default_constructible_v<qc::_PoolExtra<int, true>>);
+    static_assert(!std::is_default_constructible_v<qc::_PoolExtra<s32, true>>);
 }

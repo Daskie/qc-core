@@ -23,15 +23,6 @@ TEST(Core, primitives)
     [[maybe_unused]] s64 s64_;
     [[maybe_unused]] u64 u64_;
     [[maybe_unused]] f64 f64_;
-
-    [[maybe_unused]] schar schar_;
-    [[maybe_unused]] uchar uchar_;
-    [[maybe_unused]] ushort ushort_;
-    [[maybe_unused]] uint uint_;
-    [[maybe_unused]] ulong ulong_;
-    [[maybe_unused]] llong llong_;
-    [[maybe_unused]] ullong ullong_;
-    [[maybe_unused]] ldouble ldouble_;
 }
 
 template <Floating T>
@@ -55,7 +46,7 @@ TEST(Core, numbers)
 
 TEST(Core, classes)
 {
-    qc::Duo<int> d1;
+    qc::Duo<s32> d1;
     static_cast<void>(d1.a);
     static_cast<void>(d1.b);
     static_cast<void>(d1[0u]);
@@ -64,14 +55,14 @@ TEST(Core, classes)
     static_cast<void>(d1[1]);
     static_cast<void>(d1[false]);
     static_cast<void>(d1[true]);
-    for ([[maybe_unused]] int & v : d1) {}
+    for ([[maybe_unused]] s32 & v : d1) {}
     ASSERT_EQ(std::distance(d1.begin(), d1.end()), 2);
 
-    qc::Duo<int, std::string> d2;
+    qc::Duo<s32, std::string> d2;
     static_cast<void>(d2.a);
     static_cast<void>(d2.b);
 
-    qc::Trio<int> t1;
+    qc::Trio<s32> t1;
     static_cast<void>(t1.a);
     static_cast<void>(t1.b);
     static_cast<void>(t1.c);
@@ -81,15 +72,15 @@ TEST(Core, classes)
     static_cast<void>(d1[0]);
     static_cast<void>(d1[1]);
     static_cast<void>(d1[2]);
-    for ([[maybe_unused]] int & v : t1) {}
+    for ([[maybe_unused]] s32 & v : t1) {}
     ASSERT_EQ(std::distance(t1.begin(), t1.end()), 3);
 
-    qc::Trio<int, std::string> t2;
+    qc::Trio<s32, std::string> t2;
     static_cast<void>(t2.a);
     static_cast<void>(t2.b);
     static_cast<void>(t2.b);
 
-    qc::Trio<int, std::string, TestEnum> t3;
+    qc::Trio<s32, std::string, TestEnum> t3;
     static_cast<void>(t3.a);
     static_cast<void>(t3.b);
     static_cast<void>(t3.b);
@@ -539,18 +530,18 @@ TEST(Core, transnorm)
 
 TEST(Core, binarySearch)
 {
-    qc::List<int> v0{};
-    qc::List<int> v1{1};
-    qc::List<int> v2{1, 3};
-    qc::List<int> v3{1, 3, 5};
-    qc::List<int> v4{1, 3, 5, 7};
-    qc::List<int> v5{1, 3, 5, 7, 9};
+    qc::List<s32> v0{};
+    qc::List<s32> v1{1};
+    qc::List<s32> v2{1, 3};
+    qc::List<s32> v3{1, 3, 5};
+    qc::List<s32> v4{1, 3, 5, 7};
+    qc::List<s32> v5{1, 3, 5, 7, 9};
 
-    qc::List<int> vv4{1, 3, 3, 5};
-    qc::List<int> vv5{1, 3, 3, 3, 5};
+    qc::List<s32> vv4{1, 3, 3, 5};
+    qc::List<s32> vv5{1, 3, 3, 3, 5};
 
-    qc::List<int> vvv2{1, 1};
-    qc::List<int> vvv3{1, 1, 1};
+    qc::List<s32> vvv2{1, 1};
+    qc::List<s32> vvv3{1, 1, 1};
 
     ASSERT_EQ(0, qc::lowerBound(v0.begin(), v0.end(), 0) - v0.begin());
     ASSERT_EQ(0, qc::upperBound(v0.begin(), v0.end(), 0) - v0.begin());
@@ -680,7 +671,7 @@ TEST(Core, types)
     struct Dummy {};
 
     static_assert(std::same_as<qc::LargerOf<s16, s8>, s16>);
-    static_assert(std::same_as<qc::LargerOf<int, double>, double>);
+    static_assert(std::same_as<qc::LargerOf<s32, double>, double>);
 
     static_assert(std::same_as<qc::Common<s8, s8>, s8>);
     static_assert(std::same_as<qc::Common<s8, s64>, s64>);
@@ -726,14 +717,14 @@ TEST(Core, types)
 
     static_assert(OneOf<Dummy, Dummy>);
     static_assert(OneOf<Dummy, const Dummy>);
-    static_assert(!OneOf<Dummy, int>);
+    static_assert(!OneOf<Dummy, void>);
     static_assert(OneOf<const Dummy, Dummy>);
     static_assert(OneOf<Dummy, Dummy, Dummy>);
-    static_assert(OneOf<Dummy, Dummy, int>);
-    static_assert(OneOf<Dummy, int, Dummy>);
-    static_assert(!OneOf<Dummy, int, int>);
-    static_assert(OneOf<Dummy, int, int, Dummy, int, int>);
-    static_assert(!OneOf<Dummy, int, int, int, int, int>);
+    static_assert(OneOf<Dummy, Dummy, void>);
+    static_assert(OneOf<Dummy, void, Dummy>);
+    static_assert(!OneOf<Dummy, void, void>);
+    static_assert(OneOf<Dummy, void, void, Dummy, void, void>);
+    static_assert(!OneOf<Dummy, void, void, void, void, void>);
 
     static_assert(Same<Dummy, Dummy>);
     static_assert(Same<Dummy, const Dummy>);
@@ -748,10 +739,10 @@ TEST(Core, types)
     static_assert(!Same<Dummy &&, const Dummy &&>);
 
     static_assert(Void<void>);
-    static_assert(!Void<int>);
+    static_assert(!Void<s32>);
 
     static_assert(Boolean<bool>);
-    static_assert(!Boolean<int>);
+    static_assert(!Boolean<s32>);
 
     static_assert(Integral<s8>);
     static_assert(Integral<s16>);
@@ -875,7 +866,7 @@ TEST(Core, types)
 
     static_assert(EnumOrBoolean<TestEnum>);
     static_assert(EnumOrBoolean<bool>);
-    static_assert(!EnumOrBoolean<int>);
+    static_assert(!EnumOrBoolean<s32>);
 
     static_assert(qc::CommonExists<s8, s64>);
     static_assert(qc::CommonExists<u8, u64>);

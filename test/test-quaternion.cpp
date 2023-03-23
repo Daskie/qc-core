@@ -194,5 +194,5 @@ TEST(Quaternion, types)
 {
     static_assert(Quaternion<fquat>);
     static_assert(Quaternion<dquat>);
-    static_assert(!Quaternion<int>);
+    static_assert(!Quaternion<float>);
 }

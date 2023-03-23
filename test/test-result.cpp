@@ -2,6 +2,8 @@
 
 #include <gtest/gtest.h>
 
+using namespace qc::primitives;
+
 TEST(Result, value)
 {
     const qc::Result<std::string> box{"hi"};
@@ -50,7 +52,7 @@ TEST(Result, destruction)
 
 TEST(Result, noDefaultConstructor)
 {
-    struct Dummy { int x; Dummy(const int x_) : x{x_} {} };
+    struct Dummy { s32 x; Dummy(const s32 x_) : x{x_} {} };
 
     const qc::Result<Dummy> b1{7};
     ASSERT_TRUE(b1);

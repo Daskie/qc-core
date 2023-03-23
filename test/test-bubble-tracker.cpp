@@ -198,9 +198,9 @@ TEST(BubbleTracker, signedInteger)
 
 TEST(BubbleTracker, pointer)
 {
-    int * p{};
+    s32 * p{};
 
-    qc::BubbleTracker<int *> bubbles{};
+    qc::BubbleTracker<s32 *> bubbles{};
 
     bubbles.add(p + 1, 1);
     bubbles.add(p + 3, 1);
@@ -221,9 +221,9 @@ TEST(BubbleTracker, pointer)
     ASSERT_EQ(p + 6, bubbles.bubbles().back().pos);
     ASSERT_EQ(2, bubbles.bubbles().back().size);
 
-    ASSERT_EQ((std::pair<bool, int *>{true, p + 6}), bubbles.remove(1));
-    ASSERT_EQ((std::pair<bool, int *>{true, p + 7}), bubbles.remove(1));
-    ASSERT_EQ((std::pair<bool, int *>{true, p + 0}), bubbles.remove(5));
+    ASSERT_EQ((std::pair<bool, s32 *>{true, p + 6}), bubbles.remove(1));
+    ASSERT_EQ((std::pair<bool, s32 *>{true, p + 7}), bubbles.remove(1));
+    ASSERT_EQ((std::pair<bool, s32 *>{true, p + 0}), bubbles.remove(5));
     ASSERT_TRUE(bubbles.bubbles().empty());
 }
 

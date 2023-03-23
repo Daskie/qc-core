@@ -54,8 +54,8 @@ struct CustomC
 {
     SERIALIZABLE(2);
 
-    int a;
-    qc::List<int> b;
+    s32 a;
+    qc::List<s32> b;
 };
 
 const std::filesystem::path file{"qc-serializer-test.bin"};
@@ -265,7 +265,7 @@ TEST(Serializer, fields)
     {
         qc::Serializer serializer{file};
         ASSERT_TRUE(serializer);
-        serializer << CustomC{1, qc::List<int>{2, 3}};
+        serializer << CustomC{1, qc::List<s32>{2, 3}};
         ASSERT_TRUE(serializer.close());
     }
     {
@@ -275,7 +275,7 @@ TEST(Serializer, fields)
             CustomC v{};
             deserializer >> v;
             ASSERT_EQ(v.a, 1);
-            ASSERT_EQ(v.b, (qc::List<int>{2, 3}));
+            ASSERT_EQ(v.b, (qc::List<s32>{2, 3}));
         }
         ASSERT_TRUE(deserializer.close());
     }
@@ -286,18 +286,18 @@ TEST(Serializer, span)
     {
         qc::Serializer serializer{file};
         ASSERT_TRUE(serializer);
-        const int arr1[3u]{1, 2, 3};
+        const s32 arr1[3u]{1, 2, 3};
         const std::string arr2[3u]{"a", "b", "c"};
-        ASSERT_TRUE((serializer << qc::StreamSpan<const int>{arr1, 3u}));
+        ASSERT_TRUE((serializer << qc::StreamSpan<const s32>{arr1, 3u}));
         ASSERT_TRUE((serializer << qc::StreamSpan<const std::string>{arr2, 3u}));
         ASSERT_TRUE(serializer.close());
     }
     {
         qc::Deserializer deserializer{file};
         ASSERT_TRUE(deserializer);
-        int arr1[3u]{};
+        s32 arr1[3u]{};
         std::string arr2[3u]{};
-        ASSERT_TRUE((deserializer >> qc::StreamSpan<int>{arr1, 3u}));
+        ASSERT_TRUE((deserializer >> qc::StreamSpan<s32>{arr1, 3u}));
         ASSERT_EQ(arr1[0], 1);
         ASSERT_EQ(arr1[1], 2);
         ASSERT_EQ(arr1[2], 3);
@@ -334,16 +334,16 @@ TEST(Serializer, stdMap)
     {
         qc::Serializer serializer{file};
         ASSERT_TRUE(serializer);
-        serializer << std::map<std::string, int>{{"a", 1}, {"b", 2}, {"c", 3}};
+        serializer << std::map<std::string, s32>{{"a", 1}, {"b", 2}, {"c", 3}};
         ASSERT_TRUE(serializer.close());
     }
     {
         qc::Deserializer deserializer{file};
         ASSERT_TRUE(deserializer);
         {
-            std::map<std::string, int> v{};
+            std::map<std::string, s32> v{};
             deserializer >> v;
-            ASSERT_EQ(v, (std::map<std::string, int>{{"a", 1}, {"b", 2}, {"c", 3}}));
+            ASSERT_EQ(v, (std::map<std::string, s32>{{"a", 1}, {"b", 2}, {"c", 3}}));
         }
         ASSERT_TRUE(deserializer.close());
     }
@@ -354,7 +354,7 @@ TEST(Serializer, list)
     {
         qc::Serializer serializer{file};
         ASSERT_TRUE(serializer);
-        serializer << qc::List<int>{1, 2, 3};
+        serializer << qc::List<s32>{1, 2, 3};
         serializer << qc::List<std::string>{"1", "2", "3"};
         ASSERT_TRUE(serializer.close());
     }
@@ -362,10 +362,10 @@ TEST(Serializer, list)
         qc::Deserializer deserializer{file};
         ASSERT_TRUE(deserializer);
         {
-            qc::List<int> v1{};
+            qc::List<s32> v1{};
             qc::List<std::string> v2{};
             deserializer >> v1 >> v2;
-            ASSERT_EQ(v1, (qc::List<int>{1, 2, 3}));
+            ASSERT_EQ(v1, (qc::List<s32>{1, 2, 3}));
             ASSERT_EQ(v2, (qc::List<std::string>{"1", "2", "3"}));
         }
         ASSERT_TRUE(deserializer.close());
@@ -381,8 +381,8 @@ TEST(Serializer, unserializable)
     static_assert(Unserializable<char *>);
     static_assert(Unserializable<const char *>);
 
-    static_assert(Unserializable<int *>);
-    static_assert(Unserializable<const int *>);
+    static_assert(Unserializable<s32 *>);
+    static_assert(Unserializable<const s32 *>);
 
     static_assert(Unserializable<void *>);
     static_assert(Unserializable<const void *>);

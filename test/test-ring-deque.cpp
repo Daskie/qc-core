@@ -12,7 +12,7 @@ template <typename T> using Deque = qc::RingDeque<T>;
 
 TEST(RingDeque, general)
 {
-    Deque<int> deque{};
+    Deque<s32> deque{};
     ASSERT_EQ(0u, deque.size());
     ASSERT_TRUE(deque.empty());
     ASSERT_EQ(deque.begin(), deque.end());
@@ -56,14 +56,14 @@ TEST(RingDeque, general)
     deque.pop_back();
     ASSERT_EQ(0u, deque.size());
 
-    for (int i{0}; i < 16; ++i)
+    for (s32 i{0}; i < 16; ++i)
     {
         deque.push_back(i);
     }
     ASSERT_EQ(16u, deque.size());
     ASSERT_EQ(16u, deque.capacity());
-    int expected{0};
-    for (int v : deque)
+    s32 expected{0};
+    for (s32 v : deque)
     {
         ASSERT_EQ(expected, v);
         ++expected;
@@ -73,14 +73,14 @@ TEST(RingDeque, general)
     ASSERT_EQ(17u, deque.size());
     ASSERT_EQ(32u, deque.capacity());
 
-    for (int i{-2}; i >= -16; --i)
+    for (s32 i{-2}; i >= -16; --i)
     {
         deque.push_front(i);
     }
     ASSERT_EQ(32u, deque.size());
     ASSERT_EQ(32u, deque.capacity());
     expected = -16;
-    for (int v : deque)
+    for (s32 v : deque)
     {
         ASSERT_EQ(expected, v);
         ++expected;
@@ -90,7 +90,7 @@ TEST(RingDeque, general)
     ASSERT_EQ(0u, deque.size());
     ASSERT_EQ(32u, deque.capacity());
 
-    for (int i{0}; i < 32; ++i)
+    for (s32 i{0}; i < 32; ++i)
     {
         ASSERT_EQ(i, deque.push_back(i));
         ASSERT_EQ(i + 1, deque.size());
@@ -103,10 +103,10 @@ TEST(RingDeque, general)
 
 TEST(RingDeque, iteratorAssignability)
 {
-    static_assert(std::is_assignable_v<Deque<int>::iterator, Deque<int>::iterator>);
-    static_assert(std::is_assignable_v<Deque<int>::const_iterator, Deque<int>::iterator>);
-    static_assert(!std::is_assignable_v<Deque<int>::iterator, Deque<int>::const_iterator>);
-    static_assert(std::is_assignable_v<Deque<int>::const_iterator, Deque<int>::const_iterator>);
+    static_assert(std::is_assignable_v<Deque<s32>::iterator, Deque<s32>::iterator>);
+    static_assert(std::is_assignable_v<Deque<s32>::const_iterator, Deque<s32>::iterator>);
+    static_assert(!std::is_assignable_v<Deque<s32>::iterator, Deque<s32>::const_iterator>);
+    static_assert(std::is_assignable_v<Deque<s32>::const_iterator, Deque<s32>::const_iterator>);
 }
 
 TEST(RingDeque, stress)
@@ -120,15 +120,15 @@ TEST(RingDeque, stress)
         qc::Random random{};
         const u32 size{random.next<u32>(minSize, maxSize + 1u)};
 
-        std::deque<int> stdDeque{};
-        Deque<int> deque{};
+        std::deque<s32> stdDeque{};
+        Deque<s32> deque{};
 
         while (stdDeque.size() < size)
         {
             const bool add{stdDeque.empty() || random.next<u32>(3u)};
             if (add)
             {
-                const int v{random.next<int>(1000)};
+                const s32 v{random.next<s32>(1000)};
                 if (random.next<bool>())
                 {
                     stdDeque.push_back(v);

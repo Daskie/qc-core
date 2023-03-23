@@ -103,15 +103,16 @@ namespace qc::color
     /// Converts from sRGB to HSL
     /// @param srgb sRGB value to convert
     /// @return converted HSL value
+    ///
     template <Floating T>
     nodisc inline vec3<T> srgbToHsl(const vec3<T> & srgb)
     {
         vec3<T> hsl{};
 
-        int maxI{srgb.y > srgb.x};
-        int minI{1 - maxI};
-        if (srgb.z > srgb[maxI]) maxI = 2;
-        else if (srgb.z < srgb[minI]) minI = 2;
+        u32 maxI{srgb.y > srgb.x};
+        u32 minI{1u - maxI};
+        if (srgb.z > srgb[maxI]) maxI = 2u;
+        else if (srgb.z < srgb[minI]) minI = 2u;
         const T maxComp{srgb[maxI]};
         const T minComp{srgb[minI]};
 
@@ -137,8 +138,8 @@ namespace qc::color
                 // Hue
                 // TODO: Test if this is acually faster than the two `% 3`s
                 const T overflowRgb[5]{srgb.x, srgb.y, srgb.z, srgb.x, srgb.y};
-                hsl.x = T(maxI * 2 + 6);
-                hsl.x += (overflowRgb[maxI + 1] - overflowRgb[maxI + 2]) / compRange;
+                hsl.x = T(maxI * 2u + 6u);
+                hsl.x += (overflowRgb[maxI + 1] - overflowRgb[maxI + 2u]) / compRange;
                 hsl.x = fract(hsl.x * T(1.0 / 6.0));
             }
         }
@@ -216,8 +217,8 @@ namespace qc::color
             transnorm<T>(ucvec3{255u, 255u, 255u}),
             transnorm<T>(ucvec3{255u, 255u, 255u})};
 
-        const auto [t, i]{qc::fract_i<int>(v * T(10.0))};
-        return mix(palette[i], palette[i + 1u], t);
+        const auto [t, i]{qc::fract_i<s32>(v * T(10.0))};
+        return mix(palette[i], palette[i + 1], t);
     }
 
     ///

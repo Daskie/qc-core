@@ -2,21 +2,23 @@
 
 #include <gtest/gtest.h>
 
+using namespace qc::primitives;
+
 using qc::Unq;
 using qc::Shr;
 
 struct Obj
 {
-    inline static int destructCount{0};
+    inline static u32 destructCount{0};
 
-    int v{0};
+    s32 v{0};
 
     ~Obj() { ++destructCount; }
 };
 
 TEST(SmartPointer, unique)
 {
-    Obj::destructCount = 0;
+    Obj::destructCount = 0u;
 
     qc::Unq<Obj> o0{};
     ASSERT_EQ(nullptr, o0.get());
@@ -30,28 +32,28 @@ TEST(SmartPointer, unique)
 
     qc::Unq<Obj> o2{std::move(o1)};
     ASSERT_EQ(1, o2->v);
-    ASSERT_EQ(0, Obj::destructCount);
+    ASSERT_EQ(0u, Obj::destructCount);
 
     o1 = std::move(o2);
     ASSERT_EQ(1, o1->v);
-    ASSERT_EQ(0, Obj::destructCount);
+    ASSERT_EQ(0u, Obj::destructCount);
 
     o1 = {};
     ASSERT_EQ(nullptr, o0.get());
     ASSERT_FALSE(o1);
-    ASSERT_EQ(1, Obj::destructCount);
+    ASSERT_EQ(1u, Obj::destructCount);
 
     {
         qc::Unq<Obj> o3{qc::makeUnique<Obj>(2)};
         ASSERT_EQ(2, o3->v);
     }
 
-    ASSERT_EQ(2, Obj::destructCount);
+    ASSERT_EQ(2u, Obj::destructCount);
 }
 
 TEST(SmartPointer, shared)
 {
-    Obj::destructCount = 0;
+    Obj::destructCount = 0u;
 
     qc::Shr<Obj> o0{};
     ASSERT_EQ(nullptr, o0.get());
@@ -65,28 +67,28 @@ TEST(SmartPointer, shared)
 
     qc::Shr<Obj> o2{std::move(o1)};
     ASSERT_EQ(1, o2->v);
-    ASSERT_EQ(0, Obj::destructCount);
+    ASSERT_EQ(0u, Obj::destructCount);
 
     o1 = std::move(o2);
     ASSERT_EQ(1, o1->v);
 
     o1 = {};
     ASSERT_FALSE(o1);
-    ASSERT_EQ(1, Obj::destructCount);
+    ASSERT_EQ(1u, Obj::destructCount);
 
     o1 = qc::makeShared<Obj>(2);
     ASSERT_EQ(2, o1->v);
 
     o2 = o1;
     ASSERT_EQ(2, o2->v);
-    ASSERT_EQ(1, Obj::destructCount);
+    ASSERT_EQ(1u, Obj::destructCount);
 
     o1 = {};
     ASSERT_EQ(2, o2->v);
-    ASSERT_EQ(1, Obj::destructCount);
+    ASSERT_EQ(1u, Obj::destructCount);
 
     o2 = {};
-    ASSERT_EQ(2, Obj::destructCount);
+    ASSERT_EQ(2u, Obj::destructCount);
 
     o1 = qc::makeShared<Obj>(3);
     ASSERT_EQ(3, o1->v);
@@ -97,7 +99,7 @@ TEST(SmartPointer, shared)
     }
 
     ASSERT_EQ(3, o1->v);
-    ASSERT_EQ(2, Obj::destructCount);
+    ASSERT_EQ(2u, Obj::destructCount);
 
     {
         qc::Shr<Obj> o3{o1};
@@ -105,18 +107,18 @@ TEST(SmartPointer, shared)
 
         o1 = {};
         ASSERT_EQ(3, o3->v);
-        ASSERT_EQ(2, Obj::destructCount);
+        ASSERT_EQ(2u, Obj::destructCount);
     }
 
-    ASSERT_EQ(3, Obj::destructCount);
+    ASSERT_EQ(3u, Obj::destructCount);
 }
 
 TEST(Arena, polymorphismUnique)
 {
-    int x{0};
+    s32 x{0};
 
-    struct A { int & x; A(int & x_) : x{x_} {}; virtual ~A() { ++x; } };
-    struct B : A { int y{}; B(int & x_) : A{x_} {}; ~B() override { x += 10; } };
+    struct A { s32 & x; A(s32 & x_) : x{x_} {}; virtual ~A() { ++x; } };
+    struct B : A { s32 y{}; B(s32 & x_) : A{x_} {}; ~B() override { x += 10; } };
 
     {
         qc::Unq<A> a{qc::makeUnique<A>(x)};
@@ -167,10 +169,10 @@ TEST(Arena, polymorphismUnique)
 
 TEST(Arena, polymorphismShared)
 {
-    int x{0};
+    s32 x{0};
 
-    struct A { int & x; A(int & x_) : x{x_} {}; virtual ~A() { ++x; } };
-    struct B : A { int y{}; B(int & x_) : A{x_} {}; ~B() override { x += 10; } };
+    struct A { s32 & x; A(s32 & x_) : x{x_} {}; virtual ~A() { ++x; } };
+    struct B : A { s32 y{}; B(s32 & x_) : A{x_} {}; ~B() override { x += 10; } };
 
     {
         qc::Shr<A> a{qc::makeShared<A>(x)};

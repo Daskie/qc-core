@@ -42,9 +42,9 @@ namespace qc
 
         List<_Node> _nodes{};
 
-        template <int axis> void _constructRecursive(const fvec2 * points, std::span<u32> orderedA, std::span<u32> orderedB, std::span<u32> scratch, _Node * node);
+        template <bool axis> void _constructRecursive(const fvec2 * points, std::span<u32> orderedA, std::span<u32> orderedB, std::span<u32> scratch, _Node * node);
 
-        template <int axis> void _nearestRecursive(fvec2 point, const _Node * node, fvec2 & nearestPoint, float & minDist2) const;
+        template <bool axis> void _nearestRecursive(fvec2 point, const _Node * node, fvec2 & nearestPoint, float & minDist2) const;
     };
 }
 
@@ -94,10 +94,10 @@ namespace qc
         return nearestPoint;
     }
 
-    template <int alpha>
+    template <bool alpha>
     inline void KdTree::_constructRecursive(const fvec2 * const points, const std::span<u32> orderedA, const std::span<u32> orderedB, const std::span<u32> scratch, _Node * const node)
     {
-        static constexpr int beta{1 - alpha};
+        static constexpr bool beta{!alpha};
 
         // Terminal case
         if (orderedA.size() <= 3u)
@@ -195,7 +195,7 @@ namespace qc
         _constructRecursive<beta>(points, upperOrderedB, upperOrderedA, scratch, node + node->upperOffset);
     }
 
-    template <int axis>
+    template <bool axis>
     inline void KdTree::_nearestRecursive(const fvec2 point, const _Node * const node, fvec2 & nearestPoint, float & minDist2) const
     {
         const fvec2 delta{point - node->point};
@@ -225,12 +225,12 @@ namespace qc
         // Search down the primary branch
         if (primaryChildNodeOffset)
         {
-            _nearestRecursive<1 - axis>(point, node + primaryChildNodeOffset, nearestPoint, minDist2);
+            _nearestRecursive<!axis>(point, node + primaryChildNodeOffset, nearestPoint, minDist2);
 
             // The boundary is within our current best range, so we must search down the secondary branch for a closer point
             if (secondaryChildNodeOffset && dists2.at<axis>() <= minDist2)
             {
-                _nearestRecursive<1 - axis>(point, node + secondaryChildNodeOffset, nearestPoint, minDist2);
+                _nearestRecursive<!axis>(point, node + secondaryChildNodeOffset, nearestPoint, minDist2);
             }
         }
     }

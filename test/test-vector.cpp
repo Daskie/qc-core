@@ -835,7 +835,7 @@ static void compileFunctionsBT()
     static_cast<void>(qc::any(b4));
 }
 
-template <int n>
+template <u32 n>
 static void compileNonMatching()
 {
     u8 _u8{};
@@ -1181,7 +1181,7 @@ static void compileFunctions()
     compileNonMatching<4>();
 }
 
-template <typename T, int n>
+template <typename T, u32 n>
 static void testPropertiesTN()
 {
     static_assert(std::is_standard_layout_v<vec<T, n>>);
@@ -1220,7 +1220,7 @@ static void testProperties()
     testPropertiesT<u64>();
 }
 
-template <typename T1, typename T2, int n>
+template <typename T1, typename T2, u32 n>
 static constexpr void compileVecCastsTTN()
 {
     vec2<T1> v2{};
@@ -1386,7 +1386,7 @@ TEST(Vector, types)
     testVectorConceptT<s64>();
     testVectorConceptT<u64>();
     testVectorConceptT<bool>();
-    static_assert(!Vector<int>);
+    static_assert(!Vector<float>);
 
     testFloaterVectorConceptT<f32>();
     testFloaterVectorConceptT<f64>();

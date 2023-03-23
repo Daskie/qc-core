@@ -88,7 +88,7 @@ namespace qc
             _Node * parent;
             _Node * left;
             _Node * right;
-            int balance; // NOCOMMIT
+            s32 balance; // NOCOMMIT
         };
 
         static void _rotateLeft(_Node * & node);

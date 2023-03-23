@@ -136,7 +136,7 @@ TEST(BinaryFStream, close)
     {
         qc::BinaryIFStream ifs{file};
         ASSERT_TRUE(ifs);
-        int v;
+        s32 v;
         ifs >> v;
         ASSERT_EQ(v, 777);
         ASSERT_TRUE(ifs);
@@ -162,7 +162,7 @@ TEST(BinaryFStream, multipleStreamsSameFile)
     qc::BinaryIFStream ifs2{file};
     ASSERT_TRUE(ifs2);
 
-    int v1, v2;
+    s32 v1, v2;
     ASSERT_TRUE(ifs1 >> v1);
     ASSERT_EQ(v1, 123);
     ASSERT_TRUE(ifs2 >> v2);

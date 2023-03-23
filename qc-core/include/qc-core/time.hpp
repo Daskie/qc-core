@@ -42,7 +42,7 @@ namespace qc
         //
         // the integral number or cycles since the clock started
         //
-        nodisc int cycles() const;
+        nodisc u64 cycles() const;
 
         //
         // the fractional part of the current cycle
@@ -99,15 +99,15 @@ namespace qc
         return std::chrono::duration<double>(std::chrono::steady_clock::now() - _start).count() * _frequency;
     }
 
-    forceinline int Clock::cycles() const
+    forceinline u64 Clock::cycles() const
     {
-        return int(age());
+        return u64(age());
     }
 
     forceinline double Clock::time() const
     {
         const double a(age());
-        return a - double(int(a));
+        return a - double(s64(a));
     }
 
     forceinline double Clock::period() const

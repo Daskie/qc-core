@@ -8,49 +8,49 @@ namespace qc
     //
     // ...
     //
-    template <typename T, int n> std::ostream & operator<<(std::ostream & os, const mat<T, n> & m);
+    template <typename T, u32 n> std::ostream & operator<<(std::ostream & os, const mat<T, n> & m);
 
     //
     // ...
     //
-    template <typename T, int n> nodisc bool isIdentity(const mat<T, n> & m);
+    template <typename T, u32 n> nodisc bool isIdentity(const mat<T, n> & m);
 
     //
     // ...
     //
-    template <typename T, int n> nodisc mat<T, n> transpose(const mat<T, n> & m);
+    template <typename T, u32 n> nodisc mat<T, n> transpose(const mat<T, n> & m);
 
     //
     // ...
     //
-    template <typename T, int n> nodisc mat<T, n> cofactor(const mat<T, n> & m);
+    template <typename T, u32 n> nodisc mat<T, n> cofactor(const mat<T, n> & m);
 
     //
     // ...
     //
-    template <typename T, int n> nodisc mat<T, n> adjoint(const mat<T, n> & m);
+    template <typename T, u32 n> nodisc mat<T, n> adjoint(const mat<T, n> & m);
 
     //
     // ...
     //
-    template <typename T, int n> nodisc T determinant(const mat<T, n> & m);
+    template <typename T, u32 n> nodisc T determinant(const mat<T, n> & m);
 
     //
     // ...
     //
-    template <typename T, int n> nodisc mat<T, n> inverse(const mat<T, n> & m);
+    template <typename T, u32 n> nodisc mat<T, n> inverse(const mat<T, n> & m);
 
     //
     // ...
     //
-    template <typename T, int n> nodisc mat<T, n + 1> translate(const vec<T, n> & delta);
-    template <typename T, int mn, int vn> requires (mn == vn + 1) mat<T, mn> & translate(mat<T, mn> & mat, const vec<T, vn> & delta);
+    template <typename T, u32 n> nodisc mat<T, n + 1> translate(const vec<T, n> & delta);
+    template <typename T, u32 mn, u32 vn> requires (mn == vn + 1) mat<T, mn> & translate(mat<T, mn> & mat, const vec<T, vn> & delta);
 
     //
     // ...
     //
-    template <typename T, int n> nodisc mat<T, n> scale(const vec<T, n> & scale);
-    template <typename T, int mn, int vn> mat<T, mn> & scale(mat<T, mn> & mat, const vec<T, vn> & scale);
+    template <typename T, u32 n> nodisc mat<T, n> scale(const vec<T, n> & scale);
+    template <typename T, u32 mn, u32 vn> mat<T, mn> & scale(mat<T, mn> & mat, const vec<T, vn> & scale);
 
     //
     // ...
@@ -88,8 +88,8 @@ namespace qc
     //
     // ...
     //
-    template <typename T, int n> nodisc mat<T, n> align(const vec<T, n> & v1, const vec<T, n> & v2);
-    template <typename T, int n> nodisc mat<T, n> align_n(const vec<T, n> & v1, const vec<T, n> & v2);
+    template <typename T, u32 n> nodisc mat<T, n> align(const vec<T, n> & v1, const vec<T, n> & v2);
+    template <typename T, u32 n> nodisc mat<T, n> align_n(const vec<T, n> & v1, const vec<T, n> & v2);
 
     //
     // ...
@@ -158,7 +158,7 @@ namespace qc
 
 namespace qc
 {
-    template <typename T, int n>
+    template <typename T, u32 n>
     inline std::ostream & operator<<(std::ostream & os, const mat<T, n> & m)
     {
         os << '[';
@@ -170,7 +170,7 @@ namespace qc
         return os;
     }
 
-    template <typename T, int n>
+    template <typename T, u32 n>
     inline bool isIdentity(const mat<T, n> & m)
     {
         if constexpr (n == 2) return
@@ -192,7 +192,7 @@ namespace qc
             m.c3.x == T(0.0) && m.c3.y == T(0.0) && m.c3.w == T(0.0);
     }
 
-    template <typename T, int n>
+    template <typename T, u32 n>
     forceinline mat<T, n> transpose(const mat<T, n> & m)
     {
         if constexpr (n == 2) return {m.template row<0>(), m.template row<1>()};
@@ -200,7 +200,7 @@ namespace qc
         if constexpr (n == 4) return {m.template row<0>(), m.template row<1>(), m.template row<2>(), m.template row<3>()};
     }
 
-    template <typename T, int n>
+    template <typename T, u32 n>
     inline mat<T, n> cofactor(const mat<T, n> & m)
     {
         if constexpr (n == 2) return {
@@ -258,13 +258,13 @@ namespace qc
         }
     }
 
-    template <typename T, int n>
+    template <typename T, u32 n>
     inline mat<T, n> adjoint(const mat<T, n> & m)
     {
         return transpose(cofactor(m));
     }
 
-    template <typename T, int n>
+    template <typename T, u32 n>
     inline T determinant(const mat<T, n> & m)
     {
         if constexpr (n == 2) return
@@ -290,7 +290,7 @@ namespace qc
         }
     }
 
-    template <typename T, int n>
+    template <typename T, u32 n>
     inline mat<T, n> inverse(const mat<T, n> & m)
     {
         const T det{determinant(m)};
@@ -302,7 +302,7 @@ namespace qc
         return adjoint(m) / determinant(m);
     }
 
-    template <typename T, int n>
+    template <typename T, u32 n>
     inline mat<T, n + 1> translate(const vec<T, n> & delta)
     {
         if constexpr (n == 2) return {
@@ -317,7 +317,7 @@ namespace qc
             delta.x, delta.y, delta.z, T(1.0)};
     }
 
-    template <typename T, int mn, int vn>
+    template <typename T, u32 mn, u32 vn>
     requires (mn == vn + 1)
     inline mat<T, mn> & translate(mat<T, mn> & m, const vec<T, vn> & delta)
     {
@@ -351,7 +351,7 @@ namespace qc
         }
     }
 
-    template <typename T, int n>
+    template <typename T, u32 n>
     inline mat<T, n> scale(const vec<T, n> & scale)
     {
         if constexpr (n == 2) return {
@@ -370,7 +370,7 @@ namespace qc
              T(0.0),  T(0.0),  T(0.0), scale.w};
     }
 
-    template <typename T, int mn, int vn>
+    template <typename T, u32 mn, u32 vn>
     inline mat<T, mn> & scale(mat<T, mn> & m, const vec<T, vn> & scale)
     {
         if constexpr (vn == 2 && mn == 2)
@@ -522,7 +522,7 @@ namespace qc
         return rotate_n(up, theta) * rotate_n(cross(forward, up), phi) * rotate_n(forward, psi);
     }
 
-    template <typename T, int n>
+    template <typename T, u32 n>
     inline mat<T, n> align(const vec<T, n> & v1, const vec<T, n> & v2)
     {
         return align_n(normalize(v1), normalize(v2));

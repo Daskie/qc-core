@@ -11,19 +11,19 @@ namespace qc
     //
     // ...
     //
-    template <Numeric R, Numeric T, int n> nodisc span<R, n> round(const span<T, n> & s);
+    template <Numeric R, Numeric T, u32 n> nodisc span<R, n> round(const span<T, n> & s);
 
     //
     // ...
     //
-    template <NumericOrPointer T, int n> std::ostream & operator<<(std::ostream & os, const span<T, n> & s);
+    template <NumericOrPointer T, u32 n> std::ostream & operator<<(std::ostream & os, const span<T, n> & s);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 namespace qc
 {
-    template <Numeric R, Numeric T, int n>
+    template <Numeric R, Numeric T, u32 n>
     forceinline span<R, n> round(const span<T, n> & s)
     {
         if constexpr (Integral<T>)
@@ -43,7 +43,7 @@ namespace qc
         }
     }
 
-    template <NumericOrPointer T, int n>
+    template <NumericOrPointer T, u32 n>
     inline std::ostream & operator<<(std::ostream & os, const span<T, n> & s)
     {
         os << "[";

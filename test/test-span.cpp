@@ -440,7 +440,7 @@ static void compileFunctionsPT()
     qc::maxify(s, p);
 }
 
-template <int n>
+template <u32 n>
 static void compileNonMatching()
 {
     u8 _u8{};
@@ -821,7 +821,7 @@ static void compileFunctions()
     compileFunctionsFT<f32>();
     compileFunctionsFT<f64>();
 
-    compileFunctionsPT<int>();
+    compileFunctionsPT<s32>();
 
     compileNonMatching<1>();
     compileNonMatching<2>();
@@ -829,7 +829,7 @@ static void compileFunctions()
     compileNonMatching<4>();
 }
 
-template <typename T, int n>
+template <typename T, u32 n>
 static void testPropertiesTN()
 {
     static_assert(std::is_standard_layout_v<span<T, n>>);
@@ -869,8 +869,8 @@ static void testProperties()
     testPropertiesT<u64>();
 }
 
-template <typename T1, typename T2, int n>
-static void compileCastsTTN()
+template <typename T1, typename T2>
+static void compileCastsTT()
 {
     span1<T1> s1{};
     span2<T1> s2{};
@@ -881,15 +881,6 @@ static void compileCastsTTN()
     static_cast<void>(static_cast<bool>(s2));
     static_cast<void>(static_cast<bool>(s3));
     static_cast<void>(static_cast<bool>(s4));
-}
-
-template <typename T1, typename T2>
-static void compileCastsTT()
-{
-    compileCastsTTN<T1, T2, 1>();
-    compileCastsTTN<T1, T2, 2>();
-    compileCastsTTN<T1, T2, 3>();
-    compileCastsTTN<T1, T2, 4>();
 }
 
 template <typename T>
@@ -1031,7 +1022,7 @@ TEST(Span, types)
     testSpanConceptT<f64>();
     testSpanConceptT<s64>();
     testSpanConceptT<u64>();
-    static_assert(!Span<int>);
+    static_assert(!Span<s32>);
 
     testFloaterSpanConceptT<f32>();
     testFloaterSpanConceptT<f64>();
@@ -1059,9 +1050,9 @@ TEST(Span, types)
     testUnsignedIntegerSpanConceptT<u64>();
     static_assert(!UnsignedIntegralSpan<ivec2>);
 
-    static_assert(PointerSpan<span1<int *>>);
-    static_assert(PointerSpan<span1<const int *>>);
-    static_assert(Span1<span1<int *>>);
-    static_assert(Span1<span1<const int *>>);
+    static_assert(PointerSpan<span1<s32 *>>);
+    static_assert(PointerSpan<span1<const s32 *>>);
+    static_assert(Span1<span1<s32 *>>);
+    static_assert(Span1<span1<const s32 *>>);
     static_assert(!PointerSpan<ispan1>);
 }

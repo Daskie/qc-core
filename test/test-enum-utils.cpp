@@ -5,12 +5,12 @@
 using namespace qc::types;
 using namespace qc::primitives;
 
-enum class Enum0 : int { a, b, c };
-enum class Enum1 : int { a, b, c, _n };
-enum class Enum2 : uint { a, b, c };
-enum class Enum3 : uint { a, b, c, _n };
-enum class Enum4 : uint { _n };
-enum class Enum5 : uint {};
+enum class Enum0 : s32 { a, b, c };
+enum class Enum1 : s32 { a, b, c, _n };
+enum class Enum2 : u32 { a, b, c };
+enum class Enum3 : u32 { a, b, c, _n };
+enum class Enum4 : u32 { _n };
+enum class Enum5 : u32 {};
 
 TEST(EnumUtils, countableEnum)
 {
@@ -52,15 +52,15 @@ TEST(enumIterator, compiles)
 TEST(enumIterator, forLoop)
 {
     Enum3 ref{Enum3::a};
-    uint n{0u};
+    u32 n{0u};
 
     for (qc::EnumIterator<Enum3> it{Enum3::a}; it != qc::EnumIterator<Enum3>{Enum3::_n}; ++it) {
         ASSERT_EQ(ref, *it);
-        ++reinterpret_cast<uint &>(ref);
+        ++reinterpret_cast<u32 &>(ref);
         ++n;
     }
 
-    ASSERT_EQ(static_cast<uint>(Enum3::_n), n);
+    ASSERT_EQ(static_cast<u32>(Enum3::_n), n);
 }
 
 TEST(enumIterator, forLoopEmpty)
@@ -72,15 +72,15 @@ TEST(enumIterator, forLoopEmpty)
 TEST(enumIterator, forEach)
 {
     Enum3 ref{Enum3::a};
-    uint n{0u};
+    u32 n{0u};
 
     for (const Enum3 e : qc::iterateEnum<Enum3>) {
         ASSERT_EQ(ref, e);
-        ++reinterpret_cast<uint &>(ref);
+        ++reinterpret_cast<u32 &>(ref);
         ++n;
     }
 
-    ASSERT_EQ(static_cast<uint>(Enum3::_n), n);
+    ASSERT_EQ(static_cast<u32>(Enum3::_n), n);
 }
 
 #pragma warning(suppress: 4702)

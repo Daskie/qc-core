@@ -211,16 +211,16 @@ namespace qc
     }
 
     template <Floating T>
-    nodisc inline vec2<T> circlePointFibonacci(const int i, const int n)
+    nodisc inline vec2<T> circlePointFibonacci(const u32 i, const u32 n)
     {
-        const T p{T(i + 1) / T(n + 1)};
+        const T p{T(i + 1u) / T(n + 1u)};
         return circlePoint(vec2<T>{p, phi<T> * T(i)});
     }
 
     template <Floating T>
-    nodisc inline vec3<T> spherePointFibonacci(const int i, const int n)
+    nodisc inline vec3<T> spherePointFibonacci(const u32 i, const u32 n)
     {
-        const T p{T(i + 1) / T(n + 1)};
+        const T p{T(i + 1u) / T(n + 1u)};
         return spherePoint(vec2<T>{phi<T> * T(i), p});
     }
 
@@ -261,7 +261,7 @@ namespace qc
         }
     }
 
-    template <Floating T, int n>
+    template <Floating T, u32 n>
     nodisc inline T distance2ToLine(const vec<T, n> & p1, const vec<T, n> & p2, const vec<T, n> & p)
     {
         const vec<T, n> a{p2 - p1};

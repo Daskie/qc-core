@@ -218,6 +218,6 @@ namespace qc
         _state.d = 1u;
 
         // Warm up generator
-        for (int i{0}; i < 12; ++i) static_cast<void>((*this)());
+        for (u32 i{0u}; i < 12u; ++i) static_cast<void>((*this)());
     }
 }

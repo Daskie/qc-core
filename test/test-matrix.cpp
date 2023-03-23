@@ -37,10 +37,6 @@ static void compileClassesT()
     m2 = m2;
     m2 = std::move(m2);
 
-    // conversion
-
-    static_cast<void>(static_cast<bool>(m2));
-
     // access
 
     static_cast<void>(m2.col(0));
@@ -107,10 +103,6 @@ static void compileClassesT()
     m3 = m3;
     m3 = std::move(m3);
     m3 = m2;
-
-    // conversion
-
-    static_cast<void>(static_cast<bool>(m3));
 
     // access
 
@@ -180,10 +172,6 @@ static void compileClassesT()
     m4 = std::move(m4);
     m4 = m2;
     m4 = m3;
-
-    // conversion
-
-    static_cast<void>(static_cast<bool>(m4));
 
     // access
 
@@ -325,7 +313,7 @@ static void compileFunctionsT()
     static_cast<void>(qc::view_on(v3, v3, v3, v3));
 }
 
-template <int n>
+template <u32 n>
 static void compileNonMatching()
 {
     float _f{};
@@ -407,7 +395,7 @@ static void compileFunctions()
     compileNonMatching<4>();
 }
 
-template <typename T, int n>
+template <typename T, u32 n>
 static void testPropertiesTN()
 {
     static_assert(std::is_standard_layout_v<mat<T, n>>);
@@ -490,5 +478,5 @@ TEST(Matrix, types)
 {
     testMatrixConceptT<f32>();
     testMatrixConceptT<f64>();
-    static_assert(!Matrix<int>);
+    static_assert(!Matrix<float>);
 }
