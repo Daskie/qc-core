@@ -104,6 +104,12 @@ namespace qc
 
         template <typename Pred> u64 eraseIf(Pred && pred);
 
+        T * find(const T & v);
+        const T * find(const T & v) const;
+
+        template <typename Pred> T * findIf(Pred && pred);
+        template <typename Pred> const T * findIf(Pred && pred) const;
+
         nodisc T & operator[](const u64 i);
         nodisc const T & operator[](const u64 i) const;
 
@@ -622,6 +628,40 @@ namespace qc
         const u64 n{u64(end - dst)};
         pop(n);
         return n;
+    }
+
+    template <typename T>
+    inline T * List<T>::find(const T & v)
+    {
+        return const_cast<T *>(static_cast<const List &>(*this).find(v));
+    }
+
+    template <typename T>
+    inline const T * List<T>::find(const T & v) const
+    {
+        return findIf([&v](const T & a) { return a == v; });
+    }
+
+    template <typename T>
+    template <typename Pred>
+    inline T * List<T>::findIf(Pred && pred)
+    {
+        return const_cast<T *>(static_cast<const List &>(*this).findIf(std::forward<Pred>(pred)));
+    }
+
+    template <typename T>
+    template <typename Pred>
+    inline const T * List<T>::findIf(Pred && pred) const
+    {
+        for (const T & v : *this)
+        {
+            if (pred(v))
+            {
+                return &v;
+            }
+        }
+
+        return end();
     }
 
     template <typename T>

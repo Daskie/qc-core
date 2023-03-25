@@ -1924,6 +1924,66 @@ TEST(List, eraseIf)
     }
 }
 
+TEST(List, find)
+{
+    {
+        qc::List<s32> list{};
+        ASSERT_EQ(list.find(7), list.end());
+    }
+    {
+        qc::List<s32> list{1};
+        ASSERT_EQ(list.find(7), list.end());
+    }
+    {
+        qc::List<s32> list{7};
+        ASSERT_EQ(list.find(7), list.begin());
+    }
+    {
+        qc::List<s32> list{1, 2, 3};
+        ASSERT_EQ(list.find(7), list.end());
+    }
+    {
+        qc::List<s32> list{7, 2, 3};
+        ASSERT_EQ(list.find(7), list.begin());
+    }
+    {
+        qc::List<s32> list{1, 7, 3};
+        ASSERT_EQ(list.find(7), list.begin() + 1);
+    }
+    {
+        qc::List<s32> list{1, 2, 7};
+        ASSERT_EQ(list.find(7), list.begin() + 2);
+    }
+    {
+        qc::List<s32> list{7, 7, 7};
+        ASSERT_EQ(list.find(7), list.begin());
+    }
+}
+
+TEST(List, findIf)
+{
+    {
+        qc::List<s32> list{};
+        ASSERT_EQ(list.findIf([](s32) { return true; }), list.end());
+    }
+    {
+        qc::List<s32> list{1};
+        ASSERT_EQ(list.findIf([](s32) { return true; }), list.begin());
+    }
+    {
+        qc::List<s32> list{7};
+        ASSERT_EQ(list.findIf([](s32 v) { return v % 2 == 0; }), list.end());
+    }
+    {
+        qc::List<s32> list{1, 2, 3};
+        ASSERT_EQ(list.findIf([](s32 v) { return v % 2 == 0; }), list.begin() + 1);
+    }
+    {
+        qc::List<s32> list{1, 2, 3};
+        ASSERT_EQ(list.findIf([](s32) { return false; }), list.end());
+    }
+}
+
 TEST(List, subscript)
 {
     {
