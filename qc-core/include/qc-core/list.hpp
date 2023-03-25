@@ -110,6 +110,14 @@ namespace qc
         template <typename Pred> T * findIf(Pred && pred);
         template <typename Pred> const T * findIf(Pred && pred) const;
 
+        u64 count(const T & v) const;
+
+        template <typename Pred> u64 countIf(Pred && pred) const;
+
+        bool contains(const T & v) const;
+
+        template <typename Pred> bool containsIf(Pred && pred) const;
+
         nodisc T & operator[](const u64 i);
         nodisc const T & operator[](const u64 i) const;
 
@@ -662,6 +670,39 @@ namespace qc
         }
 
         return end();
+    }
+
+    template <typename T>
+    inline u64 List<T>::count(const T & v) const
+    {
+        return countIf([&v](const T & a) { return a == v; });
+    }
+
+    template <typename T>
+    template <typename Pred>
+    inline u64 List<T>::countIf(Pred && pred) const
+    {
+        u64 n{0u};
+
+        for (const T & v : *this)
+        {
+            n += pred(v);
+        }
+
+        return n;
+    }
+
+    template <typename T>
+    inline bool List<T>::contains(const T & v) const
+    {
+        return count(v);
+    }
+
+    template <typename T>
+    template <typename Pred>
+    inline bool List<T>::containsIf(Pred && pred) const
+    {
+        return countIf(pred);
     }
 
     template <typename T>

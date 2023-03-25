@@ -1967,7 +1967,7 @@ TEST(List, findIf)
         ASSERT_EQ(list.findIf([](s32) { return true; }), list.end());
     }
     {
-        qc::List<s32> list{1};
+        qc::List<s32> list{1, 2, 3};
         ASSERT_EQ(list.findIf([](s32) { return true; }), list.begin());
     }
     {
@@ -1981,6 +1981,90 @@ TEST(List, findIf)
     {
         qc::List<s32> list{1, 2, 3};
         ASSERT_EQ(list.findIf([](s32) { return false; }), list.end());
+    }
+}
+
+TEST(List, count)
+{
+    {
+        qc::List<s32> list{};
+        ASSERT_EQ(list.count(7), 0u);
+    }
+    {
+        qc::List<s32> list{1};
+        ASSERT_EQ(list.count(7), 0u);
+    }
+    {
+        qc::List<s32> list{7};
+        ASSERT_EQ(list.count(7), 1u);
+    }
+    {
+        qc::List<s32> list{1, 2, 3};
+        ASSERT_EQ(list.count(7), 0u);
+    }
+    {
+        qc::List<s32> list{7, 2, 3};
+        ASSERT_EQ(list.count(7), 1u);
+    }
+    {
+        qc::List<s32> list{1, 7, 3};
+        ASSERT_EQ(list.count(7), 1u);
+    }
+    {
+        qc::List<s32> list{1, 2, 7};
+        ASSERT_EQ(list.count(7), 1u);
+    }
+    {
+        qc::List<s32> list{7, 7, 7};
+        ASSERT_EQ(list.count(7), 3u);
+    }
+}
+
+TEST(List, countIf)
+{
+    {
+        qc::List<s32> list{};
+        ASSERT_EQ(list.countIf([](s32) { return true; }), 0u);
+    }
+    {
+        qc::List<s32> list{1, 2, 3};
+        ASSERT_EQ(list.countIf([](s32) { return true; }), 3u);
+    }
+    {
+        qc::List<s32> list{7};
+        ASSERT_EQ(list.countIf([](s32 v) { return v % 2 == 0; }), 0u);
+    }
+    {
+        qc::List<s32> list{1, 2, 3};
+        ASSERT_EQ(list.countIf([](s32 v) { return v % 2 == 0; }), 1u);
+    }
+    {
+        qc::List<s32> list{1, 2, 3};
+        ASSERT_EQ(list.countIf([](s32) { return false; }), 0u);
+    }
+}
+
+TEST(List, contains)
+{
+    {
+        qc::List<s32> list{5};
+        ASSERT_FALSE(list.contains(7));
+    }
+    {
+        qc::List<s32> list{7};
+        ASSERT_TRUE(list.contains(7));
+    }
+}
+
+TEST(List, containsIf)
+{
+    {
+        qc::List<s32> list{7};
+        ASSERT_FALSE(list.containsIf([](s32 v) { return v % 2 == 0; }));
+    }
+    {
+        qc::List<s32> list{8};
+        ASSERT_TRUE(list.containsIf([](s32 v) { return v % 2 == 0; }));
     }
 }
 
