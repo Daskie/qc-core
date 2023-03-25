@@ -100,6 +100,7 @@ namespace qc
 
         T * erase(T * pos);
         T * erase(T * first, T * last);
+        u64 erase(const T & v);
 
         template <typename Pred> u64 eraseIf(Pred && pred);
 
@@ -589,6 +590,12 @@ namespace qc
 
         _size -= u64(last - first);
         return first;
+    }
+
+    template <typename T>
+    inline u64 List<T>::erase(const T & v)
+    {
+        return eraseIf([&v](const T & a) { return a == v; });
     }
 
     template <typename T>

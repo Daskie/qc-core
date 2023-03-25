@@ -1831,6 +1831,30 @@ TEST(List, erase)
         ASSERT_EQ(list.size(), 2u);
         ASSERT_EQ(list, (IL<NonTrivial>{2, 7}));
     }
+    {
+        qc::List<s32> list{};
+        ASSERT_EQ(list.erase(7), 0u);
+    }
+    {
+        qc::List<s32> list{7};
+        ASSERT_EQ(list.erase(7), 1u);
+        ASSERT_TRUE(list.empty());
+    }
+    {
+        qc::List<s32> list{1, 2, 3, 4, 1, 2, 3, 1, 2, 1};
+        ASSERT_EQ(list.erase(2), 3u);
+        ASSERT_EQ(list, (IL<s32>{1, 3, 4, 1, 3, 1, 1}));
+    }
+    {
+        qc::List<s32> list{7, 7, 3, 7, 7};
+        ASSERT_EQ(list.erase(7), 4u);
+        ASSERT_EQ(list, (IL<s32>{3}));
+    }
+    {
+        qc::List<s32> list{1, 2, 3, 4, 5};
+        ASSERT_EQ(list.erase(7), 0u);
+        ASSERT_EQ(list, (IL<s32>{1, 2, 3, 4, 5}));
+    }
 }
 
 TEST(List, eraseIf)
