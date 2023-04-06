@@ -34,7 +34,7 @@ static void compileClassesT()
 
     // assignment
 
-    m2 = m2;
+    m2 = m2_1;
     m2 = std::move(m2);
 
     // access
@@ -53,7 +53,7 @@ static void compileClassesT()
     m2 += v;
     m2 += m2;
     m2 -= v;
-    m2 -= m2;
+    m2 -= m2_1;
     m2 *= v;
     m2 *= m2;
     v2 *= m2;
@@ -100,9 +100,8 @@ static void compileClassesT()
 
     // assignment
 
-    m3 = m3;
+    m3 = m3_1;
     m3 = std::move(m3);
-    m3 = m2;
 
     // access
 
@@ -122,7 +121,7 @@ static void compileClassesT()
     m3 += v;
     m3 += m3;
     m3 -= v;
-    m3 -= m3;
+    m3 -= m3_1;
     m3 *= v;
     m3 *= m3;
     v3 *= m3;
@@ -168,10 +167,8 @@ static void compileClassesT()
 
     // assignment
 
-    m4 = m4;
+    m4 = m4_1;
     m4 = std::move(m4);
-    m4 = m2;
-    m4 = m3;
 
     // access
 
@@ -193,7 +190,7 @@ static void compileClassesT()
     m4 += v;
     m4 += m4;
     m4 -= v;
-    m4 -= m4;
+    m4 -= m4_1;
     m4 *= v;
     m4 *= m4;
     v4 *= m4;
@@ -260,12 +257,12 @@ static void compileFunctionsT()
     static_cast<void>(qc::inverse(m2));
     static_cast<void>(qc::inverse(m3));
     static_cast<void>(qc::inverse(m4));
-    qc::fullMat<T, 2>(v);
-    qc::fullMat<T, 3>(v);
-    qc::fullMat<T, 4>(v);
-    qc::nullMat<T, 2>();
-    qc::nullMat<T, 3>();
-    qc::nullMat<T, 4>();
+    static_cast<void>(qc::fullMat<T, 2>(v));
+    static_cast<void>(qc::fullMat<T, 3>(v));
+    static_cast<void>(qc::fullMat<T, 4>(v));
+    static_cast<void>(qc::nullMat<T, 2>());
+    static_cast<void>(qc::nullMat<T, 3>());
+    static_cast<void>(qc::nullMat<T, 4>());
 
     static_cast<void>(qc::translate(v2));
     static_cast<void>(qc::translate(v3));

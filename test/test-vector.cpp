@@ -61,7 +61,6 @@ static void compileClassesT()
     v3 = v;
     v3 = v3;
     v3 = std::move(v3);
-    v3 = v2;
 
     // Conversion
     static_cast<void>(static_cast<bool>(v3));
@@ -100,8 +99,6 @@ static void compileClassesT()
     v4 = v;
     v4 = v4;
     v4 = std::move(v4);
-    v4 = v2;
-    v4 = v3;
 
     // Conversion
     static_cast<void>(static_cast<bool>(v4));

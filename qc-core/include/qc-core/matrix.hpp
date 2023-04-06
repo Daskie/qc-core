@@ -54,12 +54,12 @@ namespace qc
         vec2<T> c2{T(0.0), T(1.0)};
 
         constexpr mat() = default;
-        template <FloatingSubOf<T> U> constexpr mat(const vec2<U> & c1, const vec2<U> & c2);
-        template <FloatingSubOf<T> U> constexpr mat(
+        template <InclusiveFloatingSubOf<T> U> constexpr mat(const vec2<U> & c1, const vec2<U> & c2);
+        template <InclusiveFloatingSubOf<T> U> constexpr mat(
             U x1, U y1,
             U x2, U y2);
-        template <FloatingSubOf<T> U> constexpr mat(const mat2<U> & m);
-        template <Floating U> requires (!FloatingSubOf<U, T>) constexpr explicit mat(const mat2<U> & m);
+        template <ExclusiveFloatingSubOf<T> U> constexpr mat(const mat2<U> & m);
+        template <ExclusiveFloatingSuperOf<T> U> constexpr explicit mat(const mat2<U> & m);
         template <Floating U> constexpr explicit mat(const mat3<U> & m);
         template <Floating U> constexpr explicit mat(const mat4<U> & m);
 
@@ -69,7 +69,7 @@ namespace qc
         mat & operator=(const mat & m) = default;
         mat & operator=(mat && m) = default;
 
-        template <FloatingSubOf<T> U> mat & operator=(const mat2<U> & m);
+        template <ExclusiveFloatingSubOf<T> U> mat & operator=(const mat2<U> & m);
 
         ~mat() = default;
 
@@ -98,14 +98,14 @@ namespace qc
         vec3<T> c3{T(0.0), T(0.0), T(1.0)};
 
         constexpr mat() = default;
-        template <FloatingSubOf<T> U> constexpr mat(const vec3<U> & c1, const vec3<U> & c2, const vec3<U> & c3);
-        template <FloatingSubOf<T> U> constexpr mat(
+        template <InclusiveFloatingSubOf<T> U> constexpr mat(const vec3<U> & c1, const vec3<U> & c2, const vec3<U> & c3);
+        template <InclusiveFloatingSubOf<T> U> constexpr mat(
             U x1, U y1, U z1,
             U x2, U y2, U z2,
             U x3, U y3, U z3);
         template <Floating U> constexpr explicit mat(const mat2<U> & m);
-        template <FloatingSubOf<T> U> constexpr mat(const mat3<U> & m);
-        template <Floating U> requires (!FloatingSubOf<U, T>) constexpr explicit mat(const mat3<U> & m);
+        template <ExclusiveFloatingSubOf<T> U> constexpr mat(const mat3<U> & m);
+        template <ExclusiveFloatingSuperOf<T> U> constexpr explicit mat(const mat3<U> & m);
         template <Floating U> constexpr explicit mat(const mat4<U> & m);
 
         constexpr mat(const mat & m) = default;
@@ -114,8 +114,7 @@ namespace qc
         mat & operator=(const mat & m) = default;
         mat & operator=(mat && m) = default;
 
-        template <FloatingSubOf<T> U> mat & operator=(const mat2<U> & m);
-        template <FloatingSubOf<T> U> mat & operator=(const mat3<U> & m);
+        template <ExclusiveFloatingSubOf<T> U> mat & operator=(const mat3<U> & m);
 
         ~mat() = default;
 
@@ -145,16 +144,16 @@ namespace qc
         vec4<T> c4{T(0.0), T(0.0), T(0.0), T(1.0)};
 
         constexpr mat() = default;
-        template <FloatingSubOf<T> U> constexpr mat(const vec4<U> & c1, const vec4<U> & c2, const vec4<U> & c3, const vec4<U> & c4);
-        template <FloatingSubOf<T> U> constexpr mat(
+        template <InclusiveFloatingSubOf<T> U> constexpr mat(const vec4<U> & c1, const vec4<U> & c2, const vec4<U> & c3, const vec4<U> & c4);
+        template <InclusiveFloatingSubOf<T> U> constexpr mat(
             U x1, U y1, U z1, U w1,
             U x2, U y2, U z2, U w2,
             U x3, U y3, U z3, U w3,
             U x4, U y4, U z4, U w4);
         template <Floating U> constexpr explicit mat(const mat2<U> & m);
         template <Floating U> constexpr explicit mat(const mat3<U> & m);
-        template <FloatingSubOf<T> U> constexpr mat(const mat4<U> & m);
-        template <Floating U> requires (!FloatingSubOf<U, T>) constexpr explicit mat(const mat4<U> & m);
+        template <ExclusiveFloatingSubOf<T> U> constexpr mat(const mat4<U> & m);
+        template <ExclusiveFloatingSuperOf<T> U> constexpr explicit mat(const mat4<U> & m);
 
         constexpr mat(const mat & m) = default;
         constexpr mat(mat && m) = default;
@@ -162,9 +161,7 @@ namespace qc
         mat & operator=(const mat & m) = default;
         mat & operator=(mat && m) = default;
 
-        template <FloatingSubOf<T> U> mat & operator=(const mat2<U> & m);
-        template <FloatingSubOf<T> U> mat & operator=(const mat3<U> & m);
-        template <FloatingSubOf<T> U> mat & operator=(const mat4<U> & m);
+        template <ExclusiveFloatingSubOf<T> U> mat & operator=(const mat4<U> & m);
 
         ~mat() = default;
 
@@ -180,17 +177,17 @@ namespace qc
         nodisc constexpr bool operator==(const mat &) const = default;
     };
 
-    template <Floating T1, FloatingSubOf<T1> T2, u32 n> mat<T1, n> & operator+=(mat<T1, n> & m, T2 v);
-    template <Floating T1, FloatingSubOf<T1> T2, u32 n> mat<T1, n> & operator+=(mat<T1, n> & m1, const mat<T2, n> & m2);
+    template <Floating T1, InclusiveFloatingSubOf<T1> T2, u32 n> mat<T1, n> & operator+=(mat<T1, n> & m, T2 v);
+    template <Floating T1, InclusiveFloatingSubOf<T1> T2, u32 n> mat<T1, n> & operator+=(mat<T1, n> & m1, const mat<T2, n> & m2);
 
-    template <Floating T1, FloatingSubOf<T1> T2, u32 n> mat<T1, n> & operator-=(mat<T1, n> & m, T2 v);
-    template <Floating T1, FloatingSubOf<T1> T2, u32 n> mat<T1, n> & operator-=(mat<T1, n> & m1, const mat<T2, n> & m2);
+    template <Floating T1, InclusiveFloatingSubOf<T1> T2, u32 n> mat<T1, n> & operator-=(mat<T1, n> & m, T2 v);
+    template <Floating T1, InclusiveFloatingSubOf<T1> T2, u32 n> mat<T1, n> & operator-=(mat<T1, n> & m1, const mat<T2, n> & m2);
 
-    template <Floating T1, FloatingSubOf<T1> T2, u32 n> mat<T1, n> & operator*=(mat<T1, n> & m, T2 v);
-    template <Floating T1, FloatingSubOf<T1> T2, u32 n> mat<T1, n> & operator*=(mat<T1, n> & m1, const mat<T2, n> & m2); // THIS IS EQUIVALENT TO m1 = m2 * m1 !!!
-    template <Floating T1, FloatingSubOf<T1> T2, u32 n> vec<T1, n> & operator*=(vec<T1, n> & v, const mat<T2, n> & m); // THIS IS EQUIVALENT TO v = m * v !!!
+    template <Floating T1, InclusiveFloatingSubOf<T1> T2, u32 n> mat<T1, n> & operator*=(mat<T1, n> & m, T2 v);
+    template <Floating T1, InclusiveFloatingSubOf<T1> T2, u32 n> mat<T1, n> & operator*=(mat<T1, n> & m1, const mat<T2, n> & m2); // THIS IS EQUIVALENT TO m1 = m2 * m1 !!!
+    template <Floating T1, InclusiveFloatingSubOf<T1> T2, u32 n> vec<T1, n> & operator*=(vec<T1, n> & v, const mat<T2, n> & m); // THIS IS EQUIVALENT TO v = m * v !!!
 
-    template <Floating T1, FloatingSubOf<T1> T2, u32 n> mat<T1, n> & operator/=(mat<T1, n> & m, T2 v);
+    template <Floating T1, InclusiveFloatingSubOf<T1> T2, u32 n> mat<T1, n> & operator/=(mat<T1, n> & m, T2 v);
 
     template <typename T, u32 n> nodisc constexpr mat<T, n> operator+(const mat<T, n> & m);
 
@@ -215,12 +212,12 @@ namespace qc
     //
     // ...
     //
-    template <typename T, u32 n> nodisc constexpr mat<T, n> fullMat(T v);
+    template <Floating T, u32 n> nodisc constexpr mat<T, n> fullMat(T v);
 
     //
     // ...
     //
-    template <typename T, u32 n> nodisc constexpr mat<T, n> nullMat();
+    template <Floating T, u32 n> nodisc constexpr mat<T, n> nullMat();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -228,14 +225,14 @@ namespace qc
 namespace qc
 {
     template <Floating T>
-    template <FloatingSubOf<T> U>
+    template <InclusiveFloatingSubOf<T> U>
     forceinline constexpr mat<T, 2>::mat(const vec2<U> & c1_, const vec2<U> & c2_) :
         c1{c1_},
         c2{c2_}
     {}
 
     template <Floating T>
-    template <FloatingSubOf<T> U>
+    template <InclusiveFloatingSubOf<T> U>
     forceinline constexpr mat<T, 2>::mat(
         const U x1, const U y1,
         const U x2, const U y2
@@ -245,14 +242,14 @@ namespace qc
     {}
 
     template <Floating T>
-    template <FloatingSubOf<T> U>
+    template <ExclusiveFloatingSubOf<T> U>
     forceinline constexpr mat<T, 2>::mat(const mat2<U> & m) :
         c1{m.c1},
         c2{m.c2}
     {}
 
     template <Floating T>
-    template <Floating U> requires (!FloatingSubOf<U, T>)
+    template <ExclusiveFloatingSuperOf<T> U>
     forceinline constexpr mat<T, 2>::mat(const mat2<U> & m) :
         c1{m.c1},
         c2{m.c2}
@@ -273,7 +270,7 @@ namespace qc
     {}
 
     template <Floating T>
-    template <FloatingSubOf<T> U>
+    template <ExclusiveFloatingSubOf<T> U>
     forceinline mat2<T> & mat<T, 2>::operator=(const mat2<U> & m)
     {
         c1 = m.c1;
@@ -316,7 +313,7 @@ namespace qc
     }
 
     template <Floating T>
-    template <FloatingSubOf<T> U>
+    template <InclusiveFloatingSubOf<T> U>
     forceinline constexpr mat<T, 3>::mat(const vec3<U> & c1_, const vec3<U> & c2_, const vec3<U> & c3_) :
         c1{c1_},
         c2{c2_},
@@ -324,7 +321,7 @@ namespace qc
     {}
 
     template <Floating T>
-    template <FloatingSubOf<T> U>
+    template <InclusiveFloatingSubOf<T> U>
     forceinline constexpr mat<T, 3>::mat(
         const U x1, const U y1, const U z1,
         const U x2, const U y2, const U z2,
@@ -344,7 +341,7 @@ namespace qc
     {}
 
     template <Floating T>
-    template <FloatingSubOf<T> U>
+    template <ExclusiveFloatingSubOf<T> U>
     forceinline constexpr mat<T, 3>::mat(const mat3<U> & m) :
         c1{m.c1},
         c2{m.c2},
@@ -352,7 +349,7 @@ namespace qc
     {}
 
     template <Floating T>
-    template <Floating U> requires (!FloatingSubOf<U, T>)
+    template <ExclusiveFloatingSuperOf<T> U>
     forceinline constexpr mat<T, 3>::mat(const mat3<U> & m) :
         c1{m.c1},
         c2{m.c2},
@@ -368,18 +365,7 @@ namespace qc
     {}
 
     template <Floating T>
-    template <FloatingSubOf<T> U>
-    forceinline mat3<T> & mat<T, 3>::operator=(const mat2<U> & m)
-    {
-        c1 = m.c1;
-        c2 = m.c2;
-        c3 = {T(0), T(0), T(1)};
-
-        return *this;
-    }
-
-    template <Floating T>
-    template <FloatingSubOf<T> U>
+    template <ExclusiveFloatingSubOf<T> U>
     forceinline mat3<T> & mat<T, 3>::operator=(const mat3<U> & m)
     {
         c1 = m.c1;
@@ -424,7 +410,7 @@ namespace qc
     }
 
     template <Floating T>
-    template <FloatingSubOf<T> U>
+    template <InclusiveFloatingSubOf<T> U>
     forceinline constexpr mat<T, 4>::mat(const vec4<U> & c1_, const vec4<U> & c2_, const vec4<U> & c3_, const vec4<U> & c4_) :
         c1{c1_},
         c2{c2_},
@@ -433,7 +419,7 @@ namespace qc
     {}
 
     template <Floating T>
-    template <FloatingSubOf<T> U>
+    template <InclusiveFloatingSubOf<T> U>
     forceinline constexpr mat<T, 4>::mat(
         const U x1, const U y1, const U z1, const U w1,
         const U x2, const U y2, const U z2, const U w2,
@@ -465,7 +451,7 @@ namespace qc
     {}
 
     template <Floating T>
-    template <FloatingSubOf<T> U>
+    template <ExclusiveFloatingSubOf<T> U>
     forceinline constexpr mat<T, 4>::mat(const mat4<U> & m) :
         c1{m.c1},
         c2{m.c2},
@@ -474,7 +460,7 @@ namespace qc
     {}
 
     template <Floating T>
-    template <Floating U> requires (!FloatingSubOf<U, T>)
+    template <ExclusiveFloatingSuperOf<T> U>
     forceinline constexpr mat<T, 4>::mat(const mat4<U> & m) :
         c1{m.c1},
         c2{m.c2},
@@ -483,31 +469,7 @@ namespace qc
     {}
 
     template <Floating T>
-    template <FloatingSubOf<T> U>
-    forceinline mat4<T> & mat<T, 4>::operator=(const mat2<U> & m)
-    {
-        c1 = m.c1;
-        c2 = m.c2;
-        c3 = {T(0), T(0), T(1), T(0)};
-        c4 = {T(0), T(0), T(0), T(1)};
-
-        return *this;
-    }
-
-    template <Floating T>
-    template <FloatingSubOf<T> U>
-    forceinline mat4<T> & mat<T, 4>::operator=(const mat3<U> & m)
-    {
-        c1 = m.c1;
-        c2 = m.c2;
-        c3 = m.c3;
-        c4 = {T(0), T(0), T(0), T(1)};
-
-        return *this;
-    }
-
-    template <Floating T>
-    template <FloatingSubOf<T> U>
+    template <ExclusiveFloatingSubOf<T> U>
     forceinline mat4<T> & mat<T, 4>::operator=(const mat4<U> & m)
     {
         c1 = m.c1;
@@ -553,7 +515,7 @@ namespace qc
         return {c1.template at<i>(), c2.template at<i>(), c3.template at<i>(), c4.template at<i>()};
     }
 
-    template <Floating T1, FloatingSubOf<T1> T2, u32 n>
+    template <Floating T1, InclusiveFloatingSubOf<T1> T2, u32 n>
     forceinline mat<T1, n> & operator+=(mat<T1, n> & m, const T2 v)
     {
         if constexpr (n >= 1) m.c1 += v;
@@ -564,7 +526,7 @@ namespace qc
         return m;
     }
 
-    template <Floating T1, FloatingSubOf<T1> T2, u32 n>
+    template <Floating T1, InclusiveFloatingSubOf<T1> T2, u32 n>
     forceinline mat<T1, n> & operator+=(mat<T1, n> & m1, const mat<T2, n> & m2)
     {
         if constexpr (n >= 1) m1.c1 += m2.c1;
@@ -575,7 +537,7 @@ namespace qc
         return m1;
     }
 
-    template <Floating T1, FloatingSubOf<T1> T2, u32 n>
+    template <Floating T1, InclusiveFloatingSubOf<T1> T2, u32 n>
     forceinline mat<T1, n> & operator-=(mat<T1, n> & m, const T2 v)
     {
         if constexpr (n >= 1) m.c1 -= v;
@@ -586,7 +548,7 @@ namespace qc
         return m;
     }
 
-    template <Floating T1, FloatingSubOf<T1> T2, u32 n>
+    template <Floating T1, InclusiveFloatingSubOf<T1> T2, u32 n>
     forceinline mat<T1, n> & operator-=(mat<T1, n> & m1, const mat<T2, n> & m2)
     {
         if constexpr (n >= 1) m1.c1 -= m2.c1;
@@ -597,7 +559,7 @@ namespace qc
         return m1;
     }
 
-    template <Floating T1, FloatingSubOf<T1> T2, u32 n>
+    template <Floating T1, InclusiveFloatingSubOf<T1> T2, u32 n>
     forceinline mat<T1, n> & operator*=(mat<T1, n> & m, const T2 v)
     {
         if constexpr (n >= 1) m.c1 *= v;
@@ -608,7 +570,7 @@ namespace qc
         return m;
     }
 
-    template <Floating T1, FloatingSubOf<T1> T2, u32 n>
+    template <Floating T1, InclusiveFloatingSubOf<T1> T2, u32 n>
     forceinline mat<T1, n> & operator*=(mat<T1, n> & m1, const mat<T2, n> & m2)
     {
         if constexpr (n >= 1) m1.c1 *= m2;
@@ -619,13 +581,13 @@ namespace qc
         return m1;
     }
 
-    template <Floating T1, FloatingSubOf<T1> T2, u32 n>
+    template <Floating T1, InclusiveFloatingSubOf<T1> T2, u32 n>
     forceinline vec<T1, n> & operator*=(vec<T1, n> & v, const mat<T2, n> & m)
     {
         return v = m * v;
     }
 
-    template <Floating T1, FloatingSubOf<T1> T2, u32 n>
+    template <Floating T1, InclusiveFloatingSubOf<T1> T2, u32 n>
     forceinline mat<T1, n> & operator/=(mat<T1, n> & m, const T2 v)
     {
         return m *= T2(1.0) / v;

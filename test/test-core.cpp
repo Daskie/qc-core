@@ -887,77 +887,165 @@ TEST(Core, types)
     static_assert(qc::CommonExists<s64, u32>);
     static_assert(!qc::CommonExists<s64, u64>);
 
-    static_assert(qc::SuperOf<s64, s64>);
-    static_assert(qc::SuperOf<s64, s8>);
-    static_assert(!qc::SuperOf<s8, s64>);
-    static_assert(qc::SuperOf<u64, u64>);
-    static_assert(qc::SuperOf<u64, u8>);
-    static_assert(!qc::SuperOf<u8, u64>);
-    static_assert(qc::SuperOf<f64, f64>);
-    static_assert(qc::SuperOf<f64, f32>);
-    static_assert(!qc::SuperOf<f32, f64>);
+    static_assert(qc::InclusiveSuperOf<s64, s64>);
+    static_assert(qc::InclusiveSuperOf<u64, u64>);
+    static_assert(qc::InclusiveSuperOf<f64, f64>);
 
-    static_assert(qc::SuperOf<s16, u8>);
-    static_assert(qc::SuperOf<s32, u16>);
-    static_assert(qc::SuperOf<s64, u32>);
-    static_assert(!qc::SuperOf<u8, s8>);
-    static_assert(!qc::SuperOf<u16, s16>);
-    static_assert(!qc::SuperOf<u32, s32>);
-    static_assert(!qc::SuperOf<u64, s64>);
+    static_assert(!qc::ExclusiveSuperOf<s64, s64>);
+    static_assert(!qc::ExclusiveSuperOf<u64, u64>);
+    static_assert(!qc::ExclusiveSuperOf<f64, f64>);
 
-    static_assert(qc::SubOf<s64, s64>);
-    static_assert(qc::SubOf<s8, s64>);
-    static_assert(!qc::SubOf<s64, s8>);
-    static_assert(qc::SubOf<u64, u64>);
-    static_assert(qc::SubOf<u8, u64>);
-    static_assert(!qc::SubOf<u64, u8>);
-    static_assert(qc::SubOf<f64, f64>);
-    static_assert(qc::SubOf<f32, f64>);
-    static_assert(!qc::SubOf<f64, f32>);
+    static_assert(qc::InclusiveSuperOf<s64, s64>);
+    static_assert(qc::InclusiveSuperOf<s64, s8>);
+    static_assert(!qc::InclusiveSuperOf<s8, s64>);
+    static_assert(qc::InclusiveSuperOf<u64, u64>);
+    static_assert(qc::InclusiveSuperOf<u64, u8>);
+    static_assert(!qc::InclusiveSuperOf<u8, u64>);
+    static_assert(qc::InclusiveSuperOf<f64, f64>);
+    static_assert(qc::InclusiveSuperOf<f64, f32>);
+    static_assert(!qc::InclusiveSuperOf<f32, f64>);
 
-    static_assert(qc::SubOf<u8, s16>);
-    static_assert(qc::SubOf<u16, s32>);
-    static_assert(qc::SubOf<u32, s64>);
-    static_assert(!qc::SubOf<s8, u8>);
-    static_assert(!qc::SubOf<s16, u16>);
-    static_assert(!qc::SubOf<s32, u32>);
-    static_assert(!qc::SubOf<s64, u64>);
+    static_assert(!qc::ExclusiveSuperOf<s64, s64>);
+    static_assert(qc::ExclusiveSuperOf<s64, s8>);
+    static_assert(!qc::ExclusiveSuperOf<s8, s64>);
+    static_assert(!qc::ExclusiveSuperOf<u64, u64>);
+    static_assert(qc::ExclusiveSuperOf<u64, u8>);
+    static_assert(!qc::ExclusiveSuperOf<u8, u64>);
+    static_assert(!qc::ExclusiveSuperOf<f64, f64>);
+    static_assert(qc::ExclusiveSuperOf<f64, f32>);
+    static_assert(!qc::ExclusiveSuperOf<f32, f64>);
 
-    static_assert(qc::SignedSuperOf<s64, s64>);
-    static_assert(qc::SignedSuperOf<s64, s32>);
-    static_assert(!qc::SignedSuperOf<s32, s64>);
-    static_assert(!qc::SignedSuperOf<s64, u8>);
-    static_assert(!qc::SignedSuperOf<s64, f32>);
+    static_assert(qc::InclusiveSuperOf<s16, u8>);
+    static_assert(qc::InclusiveSuperOf<s32, u16>);
+    static_assert(qc::InclusiveSuperOf<s64, u32>);
+    static_assert(!qc::InclusiveSuperOf<u8, s8>);
+    static_assert(!qc::InclusiveSuperOf<u16, s16>);
+    static_assert(!qc::InclusiveSuperOf<u32, s32>);
+    static_assert(!qc::InclusiveSuperOf<u64, s64>);
 
-    static_assert(qc::SignedSubOf<s64, s64>);
-    static_assert(qc::SignedSubOf<s32, s64>);
-    static_assert(!qc::SignedSubOf<s64, s32>);
-    static_assert(!qc::SignedSubOf<u8, s64>);
-    static_assert(!qc::SignedSubOf<f32, s64>);
+    static_assert(qc::ExclusiveSuperOf<s16, u8>);
+    static_assert(qc::ExclusiveSuperOf<s32, u16>);
+    static_assert(qc::ExclusiveSuperOf<s64, u32>);
+    static_assert(!qc::ExclusiveSuperOf<u8, s8>);
+    static_assert(!qc::ExclusiveSuperOf<u16, s16>);
+    static_assert(!qc::ExclusiveSuperOf<u32, s32>);
+    static_assert(!qc::ExclusiveSuperOf<u64, s64>);
 
-    static_assert(qc::UnsignedSuperOf<u64, u64>);
-    static_assert(qc::UnsignedSuperOf<u64, u32>);
-    static_assert(!qc::UnsignedSuperOf<u32, u64>);
-    static_assert(!qc::UnsignedSuperOf<u64, s8>);
-    static_assert(!qc::UnsignedSuperOf<u64, f32>);
+    static_assert(qc::InclusiveSubOf<s64, s64>);
+    static_assert(qc::InclusiveSubOf<u64, u64>);
+    static_assert(qc::InclusiveSubOf<f64, f64>);
 
-    static_assert(qc::UnsignedSubOf<u64, u64>);
-    static_assert(qc::UnsignedSubOf<u32, u64>);
-    static_assert(!qc::UnsignedSubOf<u64, u32>);
-    static_assert(!qc::UnsignedSubOf<s8, u64>);
-    static_assert(!qc::UnsignedSubOf<f32, u64>);
+    static_assert(!qc::ExclusiveSubOf<s64, s64>);
+    static_assert(!qc::ExclusiveSubOf<u64, u64>);
+    static_assert(!qc::ExclusiveSubOf<f64, f64>);
 
-    static_assert(qc::FloatingSuperOf<f64, f64>);
-    static_assert(qc::FloatingSuperOf<f64, f32>);
-    static_assert(!qc::FloatingSuperOf<f32, f64>);
-    static_assert(!qc::FloatingSuperOf<f32, u8>);
-    static_assert(!qc::FloatingSuperOf<f32, s8>);
+    static_assert(qc::InclusiveSubOf<s64, s64>);
+    static_assert(qc::InclusiveSubOf<s8, s64>);
+    static_assert(!qc::InclusiveSubOf<s64, s8>);
+    static_assert(qc::InclusiveSubOf<u64, u64>);
+    static_assert(qc::InclusiveSubOf<u8, u64>);
+    static_assert(!qc::InclusiveSubOf<u64, u8>);
+    static_assert(qc::InclusiveSubOf<f64, f64>);
+    static_assert(qc::InclusiveSubOf<f32, f64>);
+    static_assert(!qc::InclusiveSubOf<f64, f32>);
 
-    static_assert(qc::FloatingSubOf<f64, f64>);
-    static_assert(qc::FloatingSubOf<f32, f64>);
-    static_assert(!qc::FloatingSubOf<f64, f32>);
-    static_assert(!qc::FloatingSubOf<u8, f32>);
-    static_assert(!qc::FloatingSubOf<s8, f32>);
+    static_assert(!qc::ExclusiveSubOf<s64, s64>);
+    static_assert(qc::ExclusiveSubOf<s8, s64>);
+    static_assert(!qc::ExclusiveSubOf<s64, s8>);
+    static_assert(!qc::ExclusiveSubOf<u64, u64>);
+    static_assert(qc::ExclusiveSubOf<u8, u64>);
+    static_assert(!qc::ExclusiveSubOf<u64, u8>);
+    static_assert(!qc::ExclusiveSubOf<f64, f64>);
+    static_assert(qc::ExclusiveSubOf<f32, f64>);
+    static_assert(!qc::ExclusiveSubOf<f64, f32>);
+
+    static_assert(qc::InclusiveSubOf<u8, s16>);
+    static_assert(qc::InclusiveSubOf<u16, s32>);
+    static_assert(qc::InclusiveSubOf<u32, s64>);
+    static_assert(!qc::InclusiveSubOf<s8, u8>);
+    static_assert(!qc::InclusiveSubOf<s16, u16>);
+    static_assert(!qc::InclusiveSubOf<s32, u32>);
+    static_assert(!qc::InclusiveSubOf<s64, u64>);
+
+    static_assert(qc::ExclusiveSubOf<u8, s16>);
+    static_assert(qc::ExclusiveSubOf<u16, s32>);
+    static_assert(qc::ExclusiveSubOf<u32, s64>);
+    static_assert(!qc::ExclusiveSubOf<s8, u8>);
+    static_assert(!qc::ExclusiveSubOf<s16, u16>);
+    static_assert(!qc::ExclusiveSubOf<s32, u32>);
+    static_assert(!qc::ExclusiveSubOf<s64, u64>);
+
+    static_assert(qc::InclusiveSignedSuperOf<s64, s64>);
+    static_assert(qc::InclusiveSignedSuperOf<s64, s32>);
+    static_assert(!qc::InclusiveSignedSuperOf<s32, s64>);
+    static_assert(!qc::InclusiveSignedSuperOf<s64, u8>);
+    static_assert(!qc::InclusiveSignedSuperOf<s64, f32>);
+
+    static_assert(!qc::ExclusiveSignedSuperOf<s64, s64>);
+    static_assert(qc::ExclusiveSignedSuperOf<s64, s32>);
+    static_assert(!qc::ExclusiveSignedSuperOf<s32, s64>);
+    static_assert(!qc::ExclusiveSignedSuperOf<s64, u8>);
+    static_assert(!qc::ExclusiveSignedSuperOf<s64, f32>);
+
+    static_assert(qc::InclusiveSignedSubOf<s64, s64>);
+    static_assert(qc::InclusiveSignedSubOf<s32, s64>);
+    static_assert(!qc::InclusiveSignedSubOf<s64, s32>);
+    static_assert(!qc::InclusiveSignedSubOf<u8, s64>);
+    static_assert(!qc::InclusiveSignedSubOf<f32, s64>);
+
+    static_assert(!qc::ExclusiveSignedSubOf<s64, s64>);
+    static_assert(qc::ExclusiveSignedSubOf<s32, s64>);
+    static_assert(!qc::ExclusiveSignedSubOf<s64, s32>);
+    static_assert(!qc::ExclusiveSignedSubOf<u8, s64>);
+    static_assert(!qc::ExclusiveSignedSubOf<f32, s64>);
+
+    static_assert(qc::InclusiveUnsignedSuperOf<u64, u64>);
+    static_assert(qc::InclusiveUnsignedSuperOf<u64, u32>);
+    static_assert(!qc::InclusiveUnsignedSuperOf<u32, u64>);
+    static_assert(!qc::InclusiveUnsignedSuperOf<u64, s8>);
+    static_assert(!qc::InclusiveUnsignedSuperOf<u64, f32>);
+
+    static_assert(!qc::ExclusiveUnsignedSuperOf<u64, u64>);
+    static_assert(qc::ExclusiveUnsignedSuperOf<u64, u32>);
+    static_assert(!qc::ExclusiveUnsignedSuperOf<u32, u64>);
+    static_assert(!qc::ExclusiveUnsignedSuperOf<u64, s8>);
+    static_assert(!qc::ExclusiveUnsignedSuperOf<u64, f32>);
+
+    static_assert(qc::InclusiveUnsignedSubOf<u64, u64>);
+    static_assert(qc::InclusiveUnsignedSubOf<u32, u64>);
+    static_assert(!qc::InclusiveUnsignedSubOf<u64, u32>);
+    static_assert(!qc::InclusiveUnsignedSubOf<s8, u64>);
+    static_assert(!qc::InclusiveUnsignedSubOf<f32, u64>);
+
+    static_assert(!qc::ExclusiveUnsignedSubOf<u64, u64>);
+    static_assert(qc::ExclusiveUnsignedSubOf<u32, u64>);
+    static_assert(!qc::ExclusiveUnsignedSubOf<u64, u32>);
+    static_assert(!qc::ExclusiveUnsignedSubOf<s8, u64>);
+    static_assert(!qc::ExclusiveUnsignedSubOf<f32, u64>);
+
+    static_assert(qc::InclusiveFloatingSuperOf<f64, f64>);
+    static_assert(qc::InclusiveFloatingSuperOf<f64, f32>);
+    static_assert(!qc::InclusiveFloatingSuperOf<f32, f64>);
+    static_assert(!qc::InclusiveFloatingSuperOf<f32, u8>);
+    static_assert(!qc::InclusiveFloatingSuperOf<f32, s8>);
+
+    static_assert(!qc::ExclusiveFloatingSuperOf<f64, f64>);
+    static_assert(qc::ExclusiveFloatingSuperOf<f64, f32>);
+    static_assert(!qc::ExclusiveFloatingSuperOf<f32, f64>);
+    static_assert(!qc::ExclusiveFloatingSuperOf<f32, u8>);
+    static_assert(!qc::ExclusiveFloatingSuperOf<f32, s8>);
+
+    static_assert(qc::InclusiveFloatingSubOf<f64, f64>);
+    static_assert(qc::InclusiveFloatingSubOf<f32, f64>);
+    static_assert(!qc::InclusiveFloatingSubOf<f64, f32>);
+    static_assert(!qc::InclusiveFloatingSubOf<u8, f32>);
+    static_assert(!qc::InclusiveFloatingSubOf<s8, f32>);
+
+    static_assert(!qc::ExclusiveFloatingSubOf<f64, f64>);
+    static_assert(qc::ExclusiveFloatingSubOf<f32, f64>);
+    static_assert(!qc::ExclusiveFloatingSubOf<f64, f32>);
+    static_assert(!qc::ExclusiveFloatingSubOf<u8, f32>);
+    static_assert(!qc::ExclusiveFloatingSubOf<s8, f32>);
 }
 
 TEST(Core, abort)
