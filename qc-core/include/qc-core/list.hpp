@@ -138,8 +138,10 @@ namespace qc
 
         nodisc std::span<T> span();
         nodisc std::span<const T> span() const;
+        nodisc std::span<const T> cspan() const;
         nodisc std::span<T> span(const u64 i, const u64 n);
         nodisc std::span<const T> span(const u64 i, const u64 n) const;
+        nodisc std::span<const T> cspan(const u64 i, const u64 n) const;
 
         nodisc T * begin();
         nodisc const T * begin() const;
@@ -250,8 +252,6 @@ namespace qc
     {
         if constexpr (std::is_trivially_copyable_v<T>)
         {
-            clear();
-
             reserve(vs.size());
 
             std::memcpy(_data, vs.data(), vs.size() * sizeof(T));
@@ -788,6 +788,12 @@ namespace qc
     }
 
     template <typename T>
+    forceinline std::span<const T> List<T>::cspan() const
+    {
+        return span();
+    }
+
+    template <typename T>
     forceinline std::span<T> List<T>::span(const u64 i, const u64 n)
     {
         return {_data + i, n};
@@ -797,6 +803,12 @@ namespace qc
     forceinline std::span<const T> List<T>::span(const u64 i, const u64 n) const
     {
         return {_data + i, n};
+    }
+
+    template <typename T>
+    forceinline std::span<const T> List<T>::cspan(const u64 i, const u64 n) const
+    {
+        return span();
     }
 
     template <typename T>
