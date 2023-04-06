@@ -18,6 +18,10 @@ static void compileClassesT()
     span2<T> s2{};
     span3<T> s3{};
     span4<T> s4{};
+    span1<T> s1_{};
+    span2<T> s2_{};
+    span3<T> s3_{};
+    span4<T> s4_{};
 
     //--------------------------------------------------------------------------
     // Span1
@@ -29,7 +33,7 @@ static void compileClassesT()
     span<T, 1> s1_4{v, v};
 
     // assignment operators
-    s1 = s1;
+    s1 = s1_;
     s1 = std::move(s1);
 
     // other
@@ -50,7 +54,7 @@ static void compileClassesT()
     span<T, 2> s2_8{s1, s1};
 
     // assignment operators
-    s2 = s2;
+    s2 = s2_;
     s2 = std::move(s2);
 
     // other
@@ -74,7 +78,7 @@ static void compileClassesT()
     span<T, 3> s3_10{s1, s2};
 
     // assignment operators
-    s3 = s3;
+    s3 = s3_;
     s3 = std::move(s3);
 
     // other
@@ -106,7 +110,7 @@ static void compileClassesT()
     span<T, 4> s4_14{s1, s3};
 
     // assignment operators
-    s4 = s4;
+    s4 = s4_;
     s4 = std::move(s4);
 
     // other
@@ -131,6 +135,8 @@ static void compileClassesPT()
     CP cp{};
     span1<P> s1{};
     span1<CP> cs1{};
+    span1<P> s1_{};
+    span1<CP> cs1_{};
 
     // constructors
     {
@@ -152,12 +158,12 @@ static void compileClassesPT()
 
     // assignment operators
     {
-        s1 = s1;
+        s1 = s1_;
         s1 = std::move(s1);
     }
     // const assignment operators
     {
-        cs1 = cs1;
+        cs1 = cs1_;
         cs1 = s1;
         cs1 = std::move(cs1);
         cs1 = std::move(s1);
@@ -187,13 +193,17 @@ template <typename T>
 static void compileFunctionsT()
 {
     T v{1};
-    vec2<T> v2{v};
-    vec3<T> v3{v};
-    vec4<T> v4{v};
-    span1<T> s1{v, v};
-    span2<T> s2{v, v};
-    span3<T> s3{v, v};
-    span4<T> s4{v, v};
+    vec2<T> v2{T(1)};
+    vec3<T> v3{T(1)};
+    vec4<T> v4{T(1)};
+    span1<T> s1{};
+    span2<T> s2{};
+    span3<T> s3{};
+    span4<T> s4{};
+    span1<T> s1_{};
+    span2<T> s2_{};
+    span3<T> s3_{};
+    span4<T> s4_{};
     std::stringstream os;
 
     s1 += v;
@@ -232,15 +242,15 @@ static void compileFunctionsT()
     s3 /= v3;
     s4 /= v4;
 
-    s1 &= s1;
-    s2 &= s2;
-    s3 &= s3;
-    s4 &= s4;
+    s1 &= s1_;
+    s2 &= s2_;
+    s3 &= s3_;
+    s4 &= s4_;
 
-    s1 |= s1;
-    s2 |= s2;
-    s3 |= s3;
-    s4 |= s4;
+    s1 |= s1_;
+    s2 |= s2_;
+    s3 |= s3_;
+    s4 |= s4_;
 
     static_cast<void>(s1 + v);
     static_cast<void>(s2 + v);
@@ -367,14 +377,14 @@ static void compileFunctionsT()
     static_cast<void>(qc::round<T>(s3));
     static_cast<void>(qc::round<T>(s4));
 
-    qc::clamp(s1, v, v);
-    qc::clamp(s2, v, v);
-    qc::clamp(s3, v, v);
-    qc::clamp(s4, v, v);
+    static_cast<void>(qc::clamp(s1, v, v));
+    static_cast<void>(qc::clamp(s2, v, v));
+    static_cast<void>(qc::clamp(s3, v, v));
+    static_cast<void>(qc::clamp(s4, v, v));
     static_cast<void>(qc::clamp(s2, v2, v2));
     static_cast<void>(qc::clamp(s3, v3, v3));
     static_cast<void>(qc::clamp(s4, v4, v4));
-    qc::clamp(v, s1);
+    static_cast<void>(qc::clamp(v, s1));
     static_cast<void>(qc::clamp(v2, s2));
     static_cast<void>(qc::clamp(v3, s3));
     static_cast<void>(qc::clamp(v4, s4));
@@ -468,26 +478,26 @@ static void compileNonMatching()
     span<f64, n> _span_f64{};
 
     {
-        span<u64, n> s1{_u8, _u8};
-        span<u64, n> s2{_vec_u8, _u8};
-        span<u64, n> s3{_u8, _vec_u8};
-        span<u64, n> s4{_vec_u8, _vec_u8};
-        span<u64, n> s5{_span_u8};
-        span<s64, n> s6{_s8, _s8};
-        span<s64, n> s7{_vec_s8, _s8};
-        span<s64, n> s8{_s8, _vec_s8};
-        span<s64, n> s9{_vec_s8, _vec_s8};
-        span<s64, n> s10{_span_s8};
-        span<f64, n> s11{_f32, _f32};
-        span<f64, n> s12{_vec_f32, _f32};
-        span<f64, n> s13{_f32, _vec_f32};
-        span<f64, n> s14{_vec_f32, _vec_f32};
-        span<f64, n> s15{_span_f32};
+        [[maybe_unused]] span<u64, n> s1{_u8, _u8};
+        [[maybe_unused]] span<u64, n> s2{_vec_u8, _u8};
+        [[maybe_unused]] span<u64, n> s3{_u8, _vec_u8};
+        [[maybe_unused]] span<u64, n> s4{_vec_u8, _vec_u8};
+        [[maybe_unused]] span<u64, n> s5{_span_u8};
+        [[maybe_unused]] span<s64, n> s6{_s8, _s8};
+        [[maybe_unused]] span<s64, n> s7{_vec_s8, _s8};
+        [[maybe_unused]] span<s64, n> s8{_s8, _vec_s8};
+        [[maybe_unused]] span<s64, n> s9{_vec_s8, _vec_s8};
+        [[maybe_unused]] span<s64, n> s10{_span_s8};
+        [[maybe_unused]] span<f64, n> s11{_f32, _f32};
+        [[maybe_unused]] span<f64, n> s12{_vec_f32, _f32};
+        [[maybe_unused]] span<f64, n> s13{_f32, _vec_f32};
+        [[maybe_unused]] span<f64, n> s14{_vec_f32, _vec_f32};
+        [[maybe_unused]] span<f64, n> s15{_span_f32};
     }
     {
-        span<u8, n> s1{_span_u64};
-        span<s8, n> s2{_span_s64};
-        span<f32, n> s3{_span_f64};
+        [[maybe_unused]] span<u8, n> s1{_span_u64};
+        [[maybe_unused]] span<s8, n> s2{_span_s64};
+        [[maybe_unused]] span<f32, n> s3{_span_f64};
     }
 
     _span_u64 = _span_u8;
@@ -686,17 +696,17 @@ void compileNonMatching<1>()
     span1<f64> _span_f64{};
 
     {
-        span1<u64> s1{_u8, _u8};
-        span1<u64> s3{_span_u8};
-        span1<s64> s4{_s8, _s8};
-        span1<s64> s6{_span_s8};
-        span1<f64> s7{_f32, _f32};
-        span1<f64> s9{_span_f32};
+        [[maybe_unused]] span1<u64> s1{_u8, _u8};
+        [[maybe_unused]] span1<u64> s3{_span_u8};
+        [[maybe_unused]] span1<s64> s4{_s8, _s8};
+        [[maybe_unused]] span1<s64> s6{_span_s8};
+        [[maybe_unused]] span1<f64> s7{_f32, _f32};
+        [[maybe_unused]] span1<f64> s9{_span_f32};
     }
     {
-        span1<u8> s1{_span_u64};
-        span1<s8> s2{_span_s64};
-        span1<f32> s3{_span_f64};
+        [[maybe_unused]] span1<u8> s1{_span_u64};
+        [[maybe_unused]] span1<s8> s2{_span_s64};
+        [[maybe_unused]] span1<f32> s3{_span_f64};
     }
 
     _span_u64 += _u8;

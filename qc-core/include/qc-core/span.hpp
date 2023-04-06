@@ -1270,7 +1270,7 @@ namespace qc
         return s;
     }
 
-    template <Numeric T, u32 n>
+    template <NumericOrPointer T, u32 n>
     forceinline constexpr span<T, n> clamp(const span<T, n> & s, const T min, const T max)
     {
         return {clamp(s.min, min, max), clamp(s.max, min, max)};
@@ -1282,7 +1282,7 @@ namespace qc
         return {clamp(s.min, min, max), clamp(s.max, min, max)};
     }
 
-    template <Numeric T>
+    template <NumericOrPointer T>
     forceinline constexpr T clamp(const T v, const span1<T> & s)
     {
         return clamp(v, s.min, s.max);
@@ -1294,7 +1294,7 @@ namespace qc
         return clamp(v, s.min, s.max);
     }
 
-    template <Numeric T, u32 n>
+    template <NumericOrPointer T, u32 n>
     forceinline span<T, n> & clampify(span<T, n> & s, const T min, const T max)
     {
         clampify(s.min, min, max);
@@ -1310,7 +1310,7 @@ namespace qc
         return s;
     }
 
-    template <Numeric T>
+    template <NumericOrPointer T>
     forceinline T & clampify(T & v, const span1<T> & s)
     {
         return clampify(v, s.min, s.max);

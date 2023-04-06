@@ -14,6 +14,9 @@ static void compileClassesT()
     vec2<T> v2{};
     vec3<T> v3{};
     vec4<T> v4{};
+    vec2<T> v2_{T(1)};
+    vec3<T> v3_{T(1)};
+    vec4<T> v4_{T(1)};
 
     //--------------------------------------------------------------------------
     // Vec2
@@ -29,7 +32,7 @@ static void compileClassesT()
 
     // assignment
     v2 = v;
-    v2 = v2;
+    v2 = v2_;
     v2 = std::move(v2);
 
     // Conversion
@@ -59,7 +62,7 @@ static void compileClassesT()
 
     // assignment
     v3 = v;
-    v3 = v3;
+    v3 = v3_;
     v3 = std::move(v3);
 
     // Conversion
@@ -97,7 +100,7 @@ static void compileClassesT()
 
     // assignment
     v4 = v;
-    v4 = v4;
+    v4 = v4_;
     v4 = std::move(v4);
 
     // Conversion
@@ -155,6 +158,9 @@ static void compileFunctionsT()
     vec2<T> v2{};
     vec3<T> v3{};
     vec4<T> v4{};
+    vec2<T> v2_{T(1)};
+    vec3<T> v3_{T(1)};
+    vec4<T> v4_{T(1)};
     std::stringstream os{};
 
     // arithmetic
@@ -166,9 +172,9 @@ static void compileFunctionsT()
     v3 += v;
     v4 += v;
 
-    v2 -= v2;
-    v3 -= v3;
-    v4 -= v4;
+    v2 -= v2_;
+    v3 -= v3_;
+    v4 -= v4_;
     v2 -= v;
     v3 -= v;
     v4 -= v;
@@ -180,16 +186,16 @@ static void compileFunctionsT()
     v3 *= v;
     v4 *= v;
 
-    v2 /= vec2<T>{T(1)};
-    v3 /= vec3<T>{T(1)};
-    v4 /= vec4<T>{T(1)};
+    v2 /= v2_;
+    v3 /= v3_;
+    v4 /= v4_;
     v2 /= T(1);
     v3 /= T(1);
     v4 /= T(1);
 
-    v2 %= vec2<T>{T(1)};
-    v3 %= vec3<T>{T(1)};
-    v4 %= vec4<T>{T(1)};
+    v2 %= v2_;
+    v3 %= v3_;
+    v4 %= v4_;
     v2 %= T(1);
     v3 %= T(1);
     v4 %= T(1);
@@ -692,26 +698,29 @@ static void compileFunctionsUIT()
 {
     T v{};
     vec2<T> v2{};
+    vec2<T> v2_{};
     vec3<T> v3{};
+    vec3<T> v3_{};
     vec4<T> v4{};
+    vec4<T> v4_{};
 
-    v2 &= v2;
-    v3 &= v3;
-    v4 &= v4;
+    v2 &= v2_;
+    v3 &= v3_;
+    v4 &= v4_;
     v2 &= v;
     v3 &= v;
     v4 &= v;
 
-    v2 |= v2;
-    v3 |= v3;
-    v4 |= v4;
+    v2 |= v2_;
+    v3 |= v3_;
+    v4 |= v4_;
     v2 |= v;
     v3 |= v;
     v4 |= v;
 
-    v2 ^= v2;
-    v3 ^= v3;
-    v4 ^= v4;
+    v2 ^= v2_;
+    v3 ^= v3_;
+    v4 ^= v4_;
     v2 ^= v;
     v3 ^= v;
     v4 ^= v;
@@ -792,10 +801,10 @@ static void compileFunctionsUIT()
 
 static void compileFunctionsBT()
 {
-    bool b1{};
-    bvec2 b2{};
-    bvec3 b3{};
-    bvec4 b4{};
+    bool b1{rand() % 2 == 0};
+    bvec2 b2{rand() % 2 == 0};
+    bvec3 b3{rand() % 2 == 0};
+    bvec4 b4{rand() % 2 == 0};
 
     static_cast<void>(b1 && b2);
     static_cast<void>(b2 && b1);

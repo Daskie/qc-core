@@ -17,6 +17,9 @@ static void compileClassesT()
     mat2<T> m2{};
     mat3<T> m3{};
     mat4<T> m4{};
+    mat2<T> m2_{};
+    mat3<T> m3_{};
+    mat4<T> m4_{};
     std::stringstream os{};
 
     //--------------------------------------------------------------------------
@@ -34,7 +37,7 @@ static void compileClassesT()
 
     // assignment
 
-    m2 = m2_1;
+    m2 = m2_;
     m2 = std::move(m2);
 
     // access
@@ -53,7 +56,7 @@ static void compileClassesT()
     m2 += v;
     m2 += m2;
     m2 -= v;
-    m2 -= m2_1;
+    m2 -= m2_;
     m2 *= v;
     m2 *= m2;
     v2 *= m2;
@@ -100,7 +103,7 @@ static void compileClassesT()
 
     // assignment
 
-    m3 = m3_1;
+    m3 = m3_;
     m3 = std::move(m3);
 
     // access
@@ -121,7 +124,7 @@ static void compileClassesT()
     m3 += v;
     m3 += m3;
     m3 -= v;
-    m3 -= m3_1;
+    m3 -= m3_;
     m3 *= v;
     m3 *= m3;
     v3 *= m3;
@@ -167,7 +170,7 @@ static void compileClassesT()
 
     // assignment
 
-    m4 = m4_1;
+    m4 = m4_;
     m4 = std::move(m4);
 
     // access
@@ -190,7 +193,7 @@ static void compileClassesT()
     m4 += v;
     m4 += m4;
     m4 -= v;
-    m4 -= m4_1;
+    m4 -= m4_;
     m4 *= v;
     m4 *= m4;
     v4 *= m4;
@@ -320,34 +323,34 @@ static void compileNonMatching()
     dmat<n> _dmat{};
 
     {
-        dmat<n> m{_fmat};
+        [[maybe_unused]] dmat<n> m{_fmat};
     }
     if constexpr (n == 2u)
     {
-        dmat<n> m1{
+        [[maybe_unused]] dmat<n> m1{
             _f, _f,
             _f, _f};
-        dmat<n> m2{_fvec, _fvec};
+        [[maybe_unused]] dmat<n> m2{_fvec, _fvec};
     }
     if constexpr (n == 3u)
     {
-        dmat<n> m1{
+        [[maybe_unused]] dmat<n> m1{
             _f, _f, _f,
             _f, _f, _f,
             _f, _f, _f};
-        dmat<n> m2{_fvec, _fvec, _fvec};
+        [[maybe_unused]] dmat<n> m2{_fvec, _fvec, _fvec};
     }
     if constexpr (n == 4u)
     {
-        dmat<n> m1{
+        [[maybe_unused]] dmat<n> m1{
             _f, _f, _f, _f,
             _f, _f, _f, _f,
             _f, _f, _f, _f,
             _f, _f, _f, _f};
-        dmat<n> m2{_fvec, _fvec, _fvec, _fvec};
+        [[maybe_unused]] dmat<n> m2{_fvec, _fvec, _fvec, _fvec};
     }
     {
-        fmat<n> m{_dmat};
+        [[maybe_unused]] fmat<n> m{_dmat};
     }
 
     _dmat = _fmat;

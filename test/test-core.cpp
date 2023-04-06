@@ -716,9 +716,7 @@ TEST(Core, types)
     static_assert(std::same_as<qc::Common<f64, f64>, f64>);
 
     static_assert(OneOf<Dummy, Dummy>);
-    static_assert(OneOf<Dummy, const Dummy>);
     static_assert(!OneOf<Dummy, void>);
-    static_assert(OneOf<const Dummy, Dummy>);
     static_assert(OneOf<Dummy, Dummy, Dummy>);
     static_assert(OneOf<Dummy, Dummy, void>);
     static_assert(OneOf<Dummy, void, Dummy>);
@@ -727,7 +725,6 @@ TEST(Core, types)
     static_assert(!OneOf<Dummy, void, void, void, void, void>);
 
     static_assert(Same<Dummy, Dummy>);
-    static_assert(Same<Dummy, const Dummy>);
     static_assert(Same<Dummy &, Dummy &>);
     static_assert(Same<Dummy *, Dummy *>);
     static_assert(Same<Dummy &&, Dummy &&>);
@@ -737,6 +734,12 @@ TEST(Core, types)
     static_assert(!Same<Dummy &, const Dummy &>);
     static_assert(!Same<Dummy *, const Dummy *>);
     static_assert(!Same<Dummy &&, const Dummy &&>);
+
+    static_assert(Sameish<Dummy, Dummy>);
+    static_assert(Sameish<const Dummy, Dummy>);
+    static_assert(Sameish<Dummy &, Dummy>);
+    static_assert(Sameish<const Dummy &, Dummy>);
+    static_assert(Sameish<qc::CArray<Dummy, 8u>, Dummy *>);
 
     static_assert(Void<void>);
     static_assert(!Void<s32>);

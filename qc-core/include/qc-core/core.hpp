@@ -103,7 +103,8 @@ namespace qc
 
     inline namespace types
     {
-        template <typename T1, typename T2> concept Same = std::is_same_v<std::remove_cv_t<T1>, std::remove_cv_t<T2>>;
+        template <typename T1, typename T2> concept Same = std::is_same_v<T1, T2>;
+        template <typename T1, typename T2> concept Sameish = Same<std::decay_t<T1>, std::decay_t<T2>>;
         template <typename T, typename... Ts> concept OneOf = (Same<T, Ts> || ...);
         template <typename T> concept Void = Same<T, void>;
         template <typename T> concept Boolean = Same<T, bool>;
@@ -145,9 +146,9 @@ namespace qc
         template <typename T1, typename T2> using Common = _CommonHelper<T1, T2>::Type;
         template <typename T1, typename T2> concept CommonExists = requires { typename Common<T1, T2>; };
 
-        template <typename T1, typename T2> concept InclusiveSuperOf = std::is_same_v<T1, Common<T1, T2>>;
+        template <typename T1, typename T2> concept InclusiveSuperOf = Same<T1, Common<T1, T2>>;
         template <typename T1, typename T2> concept ExclusiveSuperOf = InclusiveSuperOf<T1, T2> && !Same<T1, T2>;
-        template <typename T1, typename T2> concept InclusiveSubOf = std::is_same_v<T2, Common<T1, T2>>;
+        template <typename T1, typename T2> concept InclusiveSubOf = Same<T2, Common<T1, T2>>;
         template <typename T1, typename T2> concept ExclusiveSubOf = InclusiveSubOf<T1, T2> && !Same<T1, T2>;
         template <typename T1, typename T2> concept InclusiveUnsignedSuperOf = UnsignedIntegral<T1> && UnsignedIntegral<T2> && sizeof(T1) >= sizeof(T2);
         template <typename T1, typename T2> concept ExclusiveUnsignedSuperOf = UnsignedIntegral<T1> && UnsignedIntegral<T2> && sizeof(T1) > sizeof(T2);
@@ -484,7 +485,7 @@ namespace qc
         return minify(minify(min, v1), v2, vs...);
     }
 
-    template <typename T, Same<T>... Ts>
+    template <typename T, typename... Ts>
     forceinline T * & minify(T * & min, T * const v1, T * const v2, Ts... vs)
     {
         return minify(minify(min, v1), v2, vs...);

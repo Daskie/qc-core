@@ -10,11 +10,12 @@ using namespace qc::primitives;
 template <typename T>
 static void compileClassesT()
 {
-    T v{1.0};
-    vec3<T> v3{v};
-    vec4<T> v4{v};
-    mat3<T> m3{v3, v3, v3};
-    quat<T> q{v4};
+    T v{};
+    vec3<T> v3{};
+    vec4<T> v4{};
+    mat3<T> m3{};
+    quat<T> q{};
+    quat<T> q_{};
     std::stringstream os{};
 
     //--------------------------------------------------------------------------
@@ -29,7 +30,7 @@ static void compileClassesT()
     quat<T> q_7{v4};
 
     // assignment
-    q = q;
+    q = q_;
     q = std::move(q);
 
     // conversion
@@ -37,7 +38,7 @@ static void compileClassesT()
 
     // arithmetic assignment
     q += q;
-    q -= q;
+    q -= q_;
     q *= q;
     q *= v;
     v3 *= q;
@@ -106,13 +107,13 @@ static void compileNonMatching()
     dquat _dquat{};
 
     {
-        dquat q1{_fquat};
-        dquat q2{_fvec};
-        dquat q3{_fvec, _f};
-        dquat q4{fvec4{}};
+        [[maybe_unused]] dquat q1{_fquat};
+        [[maybe_unused]] dquat q2{_fvec};
+        [[maybe_unused]] dquat q3{_fvec, _f};
+        [[maybe_unused]] dquat q4{fvec4{}};
     }
     {
-        fquat q{_dquat};
+        [[maybe_unused]] fquat q{_dquat};
     }
 
     _dquat = _fquat;
