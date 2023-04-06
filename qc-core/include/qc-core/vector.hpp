@@ -75,6 +75,8 @@ namespace qc
         template <typename T> concept Vector2 = Vector<T> && T::n == 2;
         template <typename T> concept Vector3 = Vector<T> && T::n == 3;
         template <typename T> concept Vector4 = Vector<T> && T::n == 4;
+
+        template <typename T1, typename T2> concept BooleanOrInclusiveSub = Boolean<T1> || InclusiveSubOf<T1, T2>;
     }
 
     template <NumericOrBoolean T>
@@ -89,12 +91,12 @@ namespace qc
         T y;
 
         constexpr vec() = default;
-        template <typename U> requires (Boolean<U> || InclusiveSubOf<U, T>) constexpr vec(U v);
+        template <BooleanOrInclusiveSub<T> U> constexpr vec(U v);
         template <ExclusiveSubOf<T> U> constexpr vec(const vec2<U> & v);
-        template <NumericOrBoolean U> requires (!InclusiveSubOf<U, T>)  constexpr explicit vec(const vec2<U> & v);
+        template <NumericOrBoolean U> requires (!InclusiveSubOf<U, T>) constexpr explicit vec(const vec2<U> & v);
         template <NumericOrBoolean U> constexpr explicit vec(const vec3<U> & v);
         template <NumericOrBoolean U> constexpr explicit vec(const vec4<U> & v);
-        constexpr vec(T v1, T v2);
+        template <BooleanOrInclusiveSub<T> U1, BooleanOrInclusiveSub<T> U2> constexpr vec(U1 v1, U2 v2);
 
         constexpr vec(const vec & v) = default;
         constexpr vec(vec && v) = default;
@@ -131,14 +133,14 @@ namespace qc
         T z;
 
         constexpr vec() = default;
-        template <typename U> requires (Boolean<U> || InclusiveSubOf<U, T>) constexpr vec(U v);
+        template <BooleanOrInclusiveSub<T> U> constexpr vec(U v);
         template <NumericOrBoolean U> constexpr explicit vec(const vec2<U> & v);
         template <ExclusiveSubOf<T> U> constexpr vec(const vec3<U> & v);
         template <NumericOrBoolean U> requires (!InclusiveSubOf<U, T>) constexpr explicit vec(const vec3<U> & v);
         template <NumericOrBoolean U> constexpr explicit vec(const vec4<U> & v);
-        constexpr vec(T v1, T v2, T v3);
-        constexpr vec(vec2<T> v1, T v2);
-        constexpr vec(T v1, vec2<T> v2);
+        template <BooleanOrInclusiveSub<T> U1, BooleanOrInclusiveSub<T> U2, BooleanOrInclusiveSub<T> U3> constexpr vec(U1 v1, U2 v2, U3 v3);
+        template <BooleanOrInclusiveSub<T> U1, BooleanOrInclusiveSub<T> U2> constexpr vec(vec2<U1> v1, U2 v2);
+        template <BooleanOrInclusiveSub<T> U1, BooleanOrInclusiveSub<T> U2> constexpr vec(U1 v1, vec2<U2> v2);
 
         constexpr vec(const vec & v) = default;
         constexpr vec(vec && v) = default;
@@ -182,18 +184,18 @@ namespace qc
         T w;
 
         constexpr vec() = default;
-        template <typename U> requires (Boolean<U> || InclusiveSubOf<U, T>) constexpr vec(U v);
+        template <BooleanOrInclusiveSub<T> U> constexpr vec(U v);
         template <NumericOrBoolean U> constexpr explicit vec(const vec2<U> & v);
         template <NumericOrBoolean U> constexpr explicit vec(const vec3<U> & v);
         template <ExclusiveSubOf<T> U> constexpr vec(const vec4<U> & v);
         template <NumericOrBoolean U> requires (!InclusiveSubOf<U, T>)  constexpr explicit vec(const vec4<U> & v);
-        constexpr vec(T v1, T v2, T v3, T v4);
-        constexpr vec(vec2<T> v1, T v2, T v3);
-        constexpr vec(T v1, vec2<T> v2, T v3);
-        constexpr vec(T v1, T v2, vec2<T> v3);
-        constexpr vec(vec2<T> v1, vec2<T> v2);
-        constexpr vec(vec3<T> v1, T v2);
-        constexpr vec(T v1, vec3<T> v2);
+        template <BooleanOrInclusiveSub<T> U1, BooleanOrInclusiveSub<T> U2, BooleanOrInclusiveSub<T> U3, BooleanOrInclusiveSub<T> U4> constexpr vec(U1 v1, U2 v2, U3 v3, U4 v4);
+        template <BooleanOrInclusiveSub<T> U1, BooleanOrInclusiveSub<T> U2, BooleanOrInclusiveSub<T> U3> constexpr vec(vec2<U1> v1, U2 v2, U3 v3);
+        template <BooleanOrInclusiveSub<T> U1, BooleanOrInclusiveSub<T> U2, BooleanOrInclusiveSub<T> U3> constexpr vec(U1 v1, vec2<U2> v2, U3 v3);
+        template <BooleanOrInclusiveSub<T> U1, BooleanOrInclusiveSub<T> U2, BooleanOrInclusiveSub<T> U3> constexpr vec(U1 v1, U2 v2, vec2<U3> v3);
+        template <BooleanOrInclusiveSub<T> U1, BooleanOrInclusiveSub<T> U2> constexpr vec(vec2<U1> v1, vec2<U2> v2);
+        template <BooleanOrInclusiveSub<T> U1, BooleanOrInclusiveSub<T> U2> constexpr vec(vec3<U1> v1, U2 v2);
+        template <BooleanOrInclusiveSub<T> U1, BooleanOrInclusiveSub<T> U2> constexpr vec(U1 v1, vec3<U2> v2);
 
         constexpr vec(const vec & v) = default;
         constexpr vec(vec && v) = default;
@@ -418,7 +420,7 @@ namespace qc
 namespace qc
 {
     template <NumericOrBoolean T>
-    template <typename U> requires (Boolean<U> || InclusiveSubOf<U, T>)
+    template <BooleanOrInclusiveSub<T> U>
     forceinline constexpr vec<T, 2>::vec(const U v) :
         x{v},
         y{v}
@@ -453,7 +455,8 @@ namespace qc
     {}
 
     template <NumericOrBoolean T>
-    forceinline constexpr vec<T, 2>::vec(const T v1, const T v2) :
+    template <BooleanOrInclusiveSub<T> U1, BooleanOrInclusiveSub<T> U2>
+    forceinline constexpr vec<T, 2>::vec(const U1 v1, const U2 v2) :
         x{v1},
         y{v2}
     {}
@@ -515,7 +518,7 @@ namespace qc
     }
 
     template <NumericOrBoolean T>
-    template <typename U> requires (Boolean<U> || InclusiveSubOf<U, T>)
+    template <BooleanOrInclusiveSub<T> U>
     forceinline constexpr vec<T, 3>::vec(const U v) :
         x{v},
         y{v},
@@ -555,21 +558,24 @@ namespace qc
     {}
 
     template <NumericOrBoolean T>
-    forceinline constexpr vec<T, 3>::vec(const T v1, const T v2, const T v3) :
+    template <BooleanOrInclusiveSub<T> U1, BooleanOrInclusiveSub<T> U2, BooleanOrInclusiveSub<T> U3>
+    forceinline constexpr vec<T, 3>::vec(const U1 v1, const U2 v2, const U3 v3) :
         x{v1},
         y{v2},
         z{v3}
     {}
 
     template <NumericOrBoolean T>
-    forceinline constexpr vec<T, 3>::vec(const vec2<T> v1, const T v2) :
+    template <BooleanOrInclusiveSub<T> U1, BooleanOrInclusiveSub<T> U2>
+    forceinline constexpr vec<T, 3>::vec(const vec2<U1> v1, const U2 v2) :
         x{v1.x},
         y{v1.y},
         z{v2}
     {}
 
     template <NumericOrBoolean T>
-    forceinline constexpr vec<T, 3>::vec(const T v1, const vec2<T> v2) :
+    template <BooleanOrInclusiveSub<T> U1, BooleanOrInclusiveSub<T> U2>
+    forceinline constexpr vec<T, 3>::vec(const U1 v1, const vec2<U2> v2) :
         x{v1},
         y{v2.x},
         z{v2.y}
@@ -660,7 +666,7 @@ namespace qc
     }
 
     template <NumericOrBoolean T>
-    template <typename U> requires (Boolean<U> || InclusiveSubOf<U, T>)
+    template <BooleanOrInclusiveSub<T> U>
     forceinline constexpr vec<T, 4>::vec(const U v) :
         x{v},
         y{v},
@@ -705,7 +711,8 @@ namespace qc
     {}
 
     template <NumericOrBoolean T>
-    forceinline constexpr vec<T, 4>::vec(const T v1, const T v2, const T v3, const T v4) :
+    template <BooleanOrInclusiveSub<T> U1, BooleanOrInclusiveSub<T> U2, BooleanOrInclusiveSub<T> U3, BooleanOrInclusiveSub<T> U4>
+    forceinline constexpr vec<T, 4>::vec(const U1 v1, const U2 v2, const U3 v3, const U4 v4) :
         x{v1},
         y{v2},
         z{v3},
@@ -713,7 +720,8 @@ namespace qc
     {}
 
     template <NumericOrBoolean T>
-    forceinline constexpr vec<T, 4>::vec(const vec2<T> v1, const T v2, const T v3) :
+    template <BooleanOrInclusiveSub<T> U1, BooleanOrInclusiveSub<T> U2, BooleanOrInclusiveSub<T> U3>
+    forceinline constexpr vec<T, 4>::vec(const vec2<U1> v1, const U2 v2, const U3 v3) :
         x{v1.x},
         y{v1.y},
         z{v2},
@@ -721,7 +729,8 @@ namespace qc
     {}
 
     template <NumericOrBoolean T>
-    forceinline constexpr vec<T, 4>::vec(const T v1, const vec2<T> v2, const T v3) :
+    template <BooleanOrInclusiveSub<T> U1, BooleanOrInclusiveSub<T> U2, BooleanOrInclusiveSub<T> U3>
+    forceinline constexpr vec<T, 4>::vec(const U1 v1, const vec2<U2> v2, const U3 v3) :
         x{v1},
         y{v2.x},
         z{v2.y},
@@ -729,7 +738,8 @@ namespace qc
     {}
 
     template <NumericOrBoolean T>
-    forceinline constexpr vec<T, 4>::vec(const T v1, const T v2, const vec2<T> v3) :
+    template <BooleanOrInclusiveSub<T> U1, BooleanOrInclusiveSub<T> U2, BooleanOrInclusiveSub<T> U3>
+    forceinline constexpr vec<T, 4>::vec(const U1 v1, const U2 v2, const vec2<U3> v3) :
         x{v1},
         y{v2},
         z{v3.x},
@@ -737,7 +747,8 @@ namespace qc
     {}
 
     template <NumericOrBoolean T>
-    forceinline constexpr vec<T, 4>::vec(const vec2<T> v1, const vec2<T> v2) :
+    template <BooleanOrInclusiveSub<T> U1, BooleanOrInclusiveSub<T> U2>
+    forceinline constexpr vec<T, 4>::vec(const vec2<U1> v1, const vec2<U2> v2) :
         x{v1.x},
         y{v1.y},
         z{v2.x},
@@ -745,7 +756,8 @@ namespace qc
     {}
 
     template <NumericOrBoolean T>
-    forceinline constexpr vec<T, 4>::vec(const vec3<T> v1, const T v2) :
+    template <BooleanOrInclusiveSub<T> U1, BooleanOrInclusiveSub<T> U2>
+    forceinline constexpr vec<T, 4>::vec(const vec3<U1> v1, const U2 v2) :
         x{v1.x},
         y{v1.y},
         z{v1.z},
@@ -753,7 +765,8 @@ namespace qc
     {}
 
     template <NumericOrBoolean T>
-    forceinline constexpr vec<T, 4>::vec(const T v1, const vec3<T> v2) :
+    template <BooleanOrInclusiveSub<T> U1, BooleanOrInclusiveSub<T> U2>
+    forceinline constexpr vec<T, 4>::vec(const U1 v1, const vec3<U2> v2) :
         x{v1},
         y{v2.x},
         z{v2.y},
