@@ -31,7 +31,10 @@ namespace qc
         using dmat2 = mat<double, 2>;
         using dmat3 = mat<double, 3>;
         using dmat4 = mat<double, 4>;
+    }
 
+    inline namespace types
+    {
         template <typename T> concept Matrix = Same<T, mat<typename T::Type, T::n>>;
 
         template <typename T> concept Matrix2 = Matrix<T> && T::n == 2;
@@ -55,7 +58,8 @@ namespace qc
         template <FloatingSubOf<T> U> constexpr mat(
             U x1, U y1,
             U x2, U y2);
-        template <Floating U> constexpr explicit mat(const mat2<U> & m);
+        template <FloatingSubOf<T> U> constexpr mat(const mat2<U> & m);
+        template <Floating U> requires (!FloatingSubOf<U, T>) constexpr explicit mat(const mat2<U> & m);
         template <Floating U> constexpr explicit mat(const mat3<U> & m);
         template <Floating U> constexpr explicit mat(const mat4<U> & m);
 
@@ -100,7 +104,8 @@ namespace qc
             U x2, U y2, U z2,
             U x3, U y3, U z3);
         template <Floating U> constexpr explicit mat(const mat2<U> & m);
-        template <Floating U> constexpr explicit mat(const mat3<U> & m);
+        template <FloatingSubOf<T> U> constexpr mat(const mat3<U> & m);
+        template <Floating U> requires (!FloatingSubOf<U, T>) constexpr explicit mat(const mat3<U> & m);
         template <Floating U> constexpr explicit mat(const mat4<U> & m);
 
         constexpr mat(const mat & m) = default;
@@ -148,7 +153,8 @@ namespace qc
             U x4, U y4, U z4, U w4);
         template <Floating U> constexpr explicit mat(const mat2<U> & m);
         template <Floating U> constexpr explicit mat(const mat3<U> & m);
-        template <Floating U> constexpr explicit mat(const mat4<U> & m);
+        template <FloatingSubOf<T> U> constexpr mat(const mat4<U> & m);
+        template <Floating U> requires (!FloatingSubOf<U, T>) constexpr explicit mat(const mat4<U> & m);
 
         constexpr mat(const mat & m) = default;
         constexpr mat(mat && m) = default;
@@ -239,7 +245,14 @@ namespace qc
     {}
 
     template <Floating T>
-    template <Floating U>
+    template <FloatingSubOf<T> U>
+    forceinline constexpr mat<T, 2>::mat(const mat2<U> & m) :
+        c1{m.c1},
+        c2{m.c2}
+    {}
+
+    template <Floating T>
+    template <Floating U> requires (!FloatingSubOf<U, T>)
     forceinline constexpr mat<T, 2>::mat(const mat2<U> & m) :
         c1{m.c1},
         c2{m.c2}
@@ -331,7 +344,15 @@ namespace qc
     {}
 
     template <Floating T>
-    template <Floating U>
+    template <FloatingSubOf<T> U>
+    forceinline constexpr mat<T, 3>::mat(const mat3<U> & m) :
+        c1{m.c1},
+        c2{m.c2},
+        c3{m.c3}
+    {}
+
+    template <Floating T>
+    template <Floating U> requires (!FloatingSubOf<U, T>)
     forceinline constexpr mat<T, 3>::mat(const mat3<U> & m) :
         c1{m.c1},
         c2{m.c2},
@@ -444,7 +465,16 @@ namespace qc
     {}
 
     template <Floating T>
-    template <Floating U>
+    template <FloatingSubOf<T> U>
+    forceinline constexpr mat<T, 4>::mat(const mat4<U> & m) :
+        c1{m.c1},
+        c2{m.c2},
+        c3{m.c3},
+        c4{m.c4}
+    {}
+
+    template <Floating T>
+    template <Floating U> requires (!FloatingSubOf<U, T>)
     forceinline constexpr mat<T, 4>::mat(const mat4<U> & m) :
         c1{m.c1},
         c2{m.c2},

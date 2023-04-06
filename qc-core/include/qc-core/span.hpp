@@ -15,58 +15,61 @@ namespace qc
         template <Numeric          T> using span3 = span<T, 3>;
         template <Numeric          T> using span4 = span<T, 4>;
 
-        template <u32 n> using  fspan = span< f32, n>;
-        template <u32 n> using  dspan = span< f64, n>;
-        template <u32 n> using  cspan = span<  s8, n>;
-        template <u32 n> using ucspan = span<  u8, n>;
-        template <u32 n> using  sspan = span< s16, n>;
-        template <u32 n> using usspan = span< u16, n>;
-        template <u32 n> using  ispan = span< s32, n>;
-        template <u32 n> using uispan = span< u32, n>;
-        template <u32 n> using  lspan = span< s64, n>;
-        template <u32 n> using ulspan = span< u64, n>;
+        template <u32 n> using fspan = span<f32, n>;
+        template <u32 n> using dspan = span<f64, n>;
+        template <u32 n> using cspan = span<s8, n>;
+        template <u32 n> using ucspan = span<u8, n>;
+        template <u32 n> using sspan = span<s16, n>;
+        template <u32 n> using usspan = span<u16, n>;
+        template <u32 n> using ispan = span<s32, n>;
+        template <u32 n> using uispan = span<u32, n>;
+        template <u32 n> using lspan = span<s64, n>;
+        template <u32 n> using ulspan = span<u64, n>;
 
-        using  fspan1 = span< f32, 1>;
-        using  fspan2 = span< f32, 2>;
-        using  fspan3 = span< f32, 3>;
-        using  fspan4 = span< f32, 4>;
-        using  dspan1 = span< f64, 1>;
-        using  dspan2 = span< f64, 2>;
-        using  dspan3 = span< f64, 3>;
-        using  dspan4 = span< f64, 4>;
-        using  cspan1 = span<  s8, 1>;
-        using  cspan2 = span<  s8, 2>;
-        using  cspan3 = span<  s8, 3>;
-        using  cspan4 = span<  s8, 4>;
-        using ucspan1 = span<  u8, 1>;
-        using ucspan2 = span<  u8, 2>;
-        using ucspan3 = span<  u8, 3>;
-        using ucspan4 = span<  u8, 4>;
-        using  sspan1 = span< s16, 1>;
-        using  sspan2 = span< s16, 2>;
-        using  sspan3 = span< s16, 3>;
-        using  sspan4 = span< s16, 4>;
-        using usspan1 = span< u16, 1>;
-        using usspan2 = span< u16, 2>;
-        using usspan3 = span< u16, 3>;
-        using usspan4 = span< u16, 4>;
-        using  ispan1 = span< s32, 1>;
-        using  ispan2 = span< s32, 2>;
-        using  ispan3 = span< s32, 3>;
-        using  ispan4 = span< s32, 4>;
-        using uispan1 = span< u32, 1>;
-        using uispan2 = span< u32, 2>;
-        using uispan3 = span< u32, 3>;
-        using uispan4 = span< u32, 4>;
-        using  lspan1 = span< s64, 1>;
-        using  lspan2 = span< s64, 2>;
-        using  lspan3 = span< s64, 3>;
-        using  lspan4 = span< s64, 4>;
-        using ulspan1 = span< u64, 1>;
-        using ulspan2 = span< u64, 2>;
-        using ulspan3 = span< u64, 3>;
-        using ulspan4 = span< u64, 4>;
+        using fspan1 = span<f32, 1>;
+        using fspan2 = span<f32, 2>;
+        using fspan3 = span<f32, 3>;
+        using fspan4 = span<f32, 4>;
+        using dspan1 = span<f64, 1>;
+        using dspan2 = span<f64, 2>;
+        using dspan3 = span<f64, 3>;
+        using dspan4 = span<f64, 4>;
+        using cspan1 = span<s8, 1>;
+        using cspan2 = span<s8, 2>;
+        using cspan3 = span<s8, 3>;
+        using cspan4 = span<s8, 4>;
+        using ucspan1 = span<u8, 1>;
+        using ucspan2 = span<u8, 2>;
+        using ucspan3 = span<u8, 3>;
+        using ucspan4 = span<u8, 4>;
+        using sspan1 = span<s16, 1>;
+        using sspan2 = span<s16, 2>;
+        using sspan3 = span<s16, 3>;
+        using sspan4 = span<s16, 4>;
+        using usspan1 = span<u16, 1>;
+        using usspan2 = span<u16, 2>;
+        using usspan3 = span<u16, 3>;
+        using usspan4 = span<u16, 4>;
+        using ispan1 = span<s32, 1>;
+        using ispan2 = span<s32, 2>;
+        using ispan3 = span<s32, 3>;
+        using ispan4 = span<s32, 4>;
+        using uispan1 = span<u32, 1>;
+        using uispan2 = span<u32, 2>;
+        using uispan3 = span<u32, 3>;
+        using uispan4 = span<u32, 4>;
+        using lspan1 = span<s64, 1>;
+        using lspan2 = span<s64, 2>;
+        using lspan3 = span<s64, 3>;
+        using lspan4 = span<s64, 4>;
+        using ulspan1 = span<u64, 1>;
+        using ulspan2 = span<u64, 2>;
+        using ulspan3 = span<u64, 3>;
+        using ulspan4 = span<u64, 4>;
+    }
 
+    inline namespace types
+    {
         template <typename T> concept Span = Same<T, span<typename T::Type, T::n>>;
 
         template <typename T> concept FloatingSpan = Span<T> && Floating<typename T::Type>;
@@ -125,7 +128,8 @@ namespace qc
 
         constexpr span() = default;
         template <SubOf<T> U> constexpr span(U v1, U v2);
-        template <Numeric U> constexpr explicit span(const span1<U> & s);
+        template <SubOf<T> U> constexpr span(const span1<U> & s);
+        template <Numeric U> requires (!SubOf<U, T>) constexpr explicit span(const span1<U> & s);
 
         constexpr span(const span & s) = default;
         constexpr span(span && s) = default;
@@ -163,7 +167,8 @@ namespace qc
         template <SubOf<T> U> constexpr span(U v1, const vec2<U> & v2);
         template <SubOf<T> U> constexpr span(const vec2<U> & v1, const vec2<U> & v2);
         template <SubOf<T> U> constexpr span(const span1<U> & s1, const span1<U> & s2);
-        template <Numeric U> constexpr explicit span(const span2<U> & s);
+        template <SubOf<T> U> constexpr span(const span2<U> & s);
+        template <Numeric U> requires (!SubOf<U, T>) constexpr explicit span(const span2<U> & s);
 
         constexpr span(const span & s) = default;
         constexpr span(span && s) = default;
@@ -206,7 +211,8 @@ namespace qc
         template <SubOf<T> U> constexpr span(const span1<U> & s1, const span1<U> & s2, const span1<U> & s3);
         template <SubOf<T> U> constexpr span(const span2<U> & s1, const span1<U> & s2);
         template <SubOf<T> U> constexpr span(const span1<U> & s1, const span2<U> & s2);
-        template <Numeric U> constexpr explicit span(const span3<U> & s);
+        template <SubOf<T> U> constexpr span(const span3<U> & s);
+        template <Numeric U> requires (!SubOf<U, T>) constexpr explicit span(const span3<U> & s);
 
         constexpr span(const span & s) = default;
         constexpr span(span && s) = default;
@@ -257,7 +263,8 @@ namespace qc
         template <SubOf<T> U> constexpr span(const span2<U> & s1, const span2<U> & s2);
         template <SubOf<T> U> constexpr span(const span3<U> & s1, const span1<U> & s2);
         template <SubOf<T> U> constexpr span(const span1<U> & s1, const span3<U> & s2);
-        template <Numeric U> constexpr explicit span(const span4<U> & s);
+        template <SubOf<T> U> constexpr span(const span4<U> & s);
+        template <Numeric U> requires (!SubOf<U, T>) constexpr explicit span(const span4<U> & s);
 
         constexpr span(const span & s) = default;
         constexpr span(span && s) = default;
@@ -423,7 +430,14 @@ namespace qc
     }
 
     template <Numeric T>
-    template <Numeric U>
+    template <SubOf<T> U>
+    forceinline constexpr span<T, 1>::span(const span1<U> & s) :
+        min{s.min},
+        max{s.max}
+    {}
+
+    template <Numeric T>
+    template <Numeric U> requires (!SubOf<U, T>)
     forceinline constexpr span<T, 1>::span(const span1<U> & s) :
         min{T(s.min)},
         max{T(s.max)}
@@ -506,7 +520,14 @@ namespace qc
     {}
 
     template <Numeric T>
-    template <Numeric U>
+    template <SubOf<T> U>
+    forceinline constexpr span<T, 2>::span(const span2<U> & s) :
+        min{s.min},
+        max{s.max}
+    {}
+
+    template <Numeric T>
+    template <Numeric U> requires (!SubOf<U, T>)
     forceinline constexpr span<T, 2>::span(const span2<U> & s) :
         min{s.min},
         max{s.max}
@@ -610,7 +631,14 @@ namespace qc
     {}
 
     template <Numeric T>
-    template <Numeric U>
+    template <SubOf<T> U>
+    forceinline constexpr span<T, 3>::span(const span3<U> & s) :
+        min{s.min},
+        max{s.max}
+    {}
+
+    template <Numeric T>
+    template <Numeric U> requires (!SubOf<U, T>)
     forceinline constexpr span<T, 3>::span(const span3<U> & s) :
         min{s.min},
         max{s.max}
@@ -760,7 +788,14 @@ namespace qc
     {}
 
     template <Numeric T>
-    template <Numeric U>
+    template <SubOf<T> U>
+    forceinline constexpr span<T, 4>::span(const span4<U> & s) :
+        min{s.min},
+        max{s.max}
+    {}
+
+    template <Numeric T>
+    template <Numeric U> requires (!SubOf<U, T>)
     forceinline constexpr span<T, 4>::span(const span4<U> & s) :
         min{s.min},
         max{s.max}

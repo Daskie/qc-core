@@ -855,19 +855,19 @@ static void compileNonMatching()
     vec<f64, n> _vec_f64{};
 
     {
-        vec<u64, n> v1{_u8};
-        vec<u64, n> v2{_vec_u8};
-        vec<s64, n> v3{_s8};
-        vec<s64, n> v4{_vec_s8};
-        vec<s64, n> v5{_u32};
-        vec<s64, n> v6{_vec_u32};
-        vec<f64, n> v7{_f32};
-        vec<f64, n> v8{_vec_f32};
+        [[maybe_unused]] vec<u64, n> v1{_u8};
+        [[maybe_unused]] vec<u64, n> v2{_vec_u8};
+        [[maybe_unused]] vec<s64, n> v3{_s8};
+        [[maybe_unused]] vec<s64, n> v4{_vec_s8};
+        [[maybe_unused]] vec<s64, n> v5{_u32};
+        [[maybe_unused]] vec<s64, n> v6{_vec_u32};
+        [[maybe_unused]] vec<f64, n> v7{_f32};
+        [[maybe_unused]] vec<f64, n> v8{_vec_f32};
     }
     {
-        vec<u8, n> v1{_vec_u64};
-        vec<s8, n> v2{_vec_s64};
-        vec<f32, n> v3{_vec_f64};
+        [[maybe_unused]] vec<u8, n> v1{_vec_u64};
+        [[maybe_unused]] vec<s8, n> v2{_vec_s64};
+        [[maybe_unused]] vec<f32, n> v3{_vec_f64};
     }
 
     _vec_u64 = _u8;
@@ -907,22 +907,22 @@ static void compileNonMatching()
     _vec_f64 *= _vec_f32;
 
     _vec_u64 /= u8{1u};
-    _vec_u64 /= vec<u8, n>{1u};
+    _vec_u64 /= vec<u8, n>{u8(1u)};
     _vec_s64 /= s8{1};
-    _vec_s64 /= vec<s8, n>{1};
+    _vec_s64 /= vec<s8, n>{s8(1)};
     _vec_s64 /= u32{1u};
     _vec_s64 /= vec<u32, n>{1u};
     _vec_f64 /= f32{1.0f};
-    _vec_f64 /= vec<f32, n>{1.0};
+    _vec_f64 /= vec<f32, n>{1.0f};
 
     _vec_u64 %= u8{1u};
-    _vec_u64 %= vec<u8, n>{1u};
+    _vec_u64 %= vec<u8, n>{u8(1u)};
     _vec_s64 %= s8{1};
-    _vec_s64 %= vec<s8, n>{1};
+    _vec_s64 %= vec<s8, n>{s8(1)};
     _vec_s64 %= u32{1u};
     _vec_s64 %= vec<u32, n>{1u};
     _vec_f64 %= f32{1.0f};
-    _vec_f64 %= vec<f32, n>{1.0};
+    _vec_f64 %= vec<f32, n>{1.0f};
 
     _vec_u64 &= _u8;
     _vec_u64 &= _vec_u8;
@@ -1227,9 +1227,9 @@ static constexpr void compileVecCastsTTN()
     vec2<T1> v3{};
     vec2<T1> v4{};
 
-    { vec<T2, n> v{v2}; }
-    { vec<T2, n> v{v3}; }
-    { vec<T2, n> v{v4}; }
+    static_cast<void>(vec<T2, n>{v2});
+    static_cast<void>(vec<T2, n>{v3});
+    static_cast<void>(vec<T2, n>{v4});
 
     static_cast<void>(static_cast<vec<T2, n>>(v2));
     static_cast<void>(static_cast<vec<T2, n>>(v3));
@@ -1273,6 +1273,55 @@ static void compileCasts()
     compileCastsT<u32>();
     compileCastsT<u64>();
     compileCastsT<bool>();
+}
+
+template <u32 n>
+static void testCastExplicitnessN()
+{
+    static_assert(std::is_convertible_v<s8, cvec<n>>);
+    static_assert(std::is_convertible_v<cvec2, cvec<n>> == (n == 2u));
+    static_assert(std::is_convertible_v<cvec3, cvec<n>> == (n == 3u));
+    static_assert(std::is_convertible_v<cvec4, cvec<n>> == (n == 4u));
+    static_assert(!std::is_convertible_v<u8, cvec<n>>);
+    static_assert(!std::is_convertible_v<s16, cvec<n>>);
+    static_assert(!std::is_convertible_v<svec<n>, cvec<n>>);
+
+    static_assert(std::is_convertible_v<s64, lvec<n>>);
+    static_assert(std::is_convertible_v<lvec2, lvec<n>> == (n == 2u));
+    static_assert(std::is_convertible_v<lvec3, lvec<n>> == (n == 3u));
+    static_assert(std::is_convertible_v<lvec4, lvec<n>> == (n == 4u));
+    static_assert(std::is_convertible_v<s32, lvec<n>>);
+    static_assert(std::is_convertible_v<u32, lvec<n>>);
+    static_assert(!std::is_convertible_v<u64, lvec<n>>);
+    static_assert(std::is_convertible_v<ivec<n>, lvec<n>>);
+    static_assert(std::is_convertible_v<uivec<n>, lvec<n>>);
+    static_assert(!std::is_convertible_v<ulvec<n>, lvec<n>>);
+
+    static_assert(std::is_convertible_v<float, fvec<n>>);
+    static_assert(std::is_convertible_v<fvec2, fvec<n>> == (n == 2u));
+    static_assert(std::is_convertible_v<fvec3, fvec<n>> == (n == 3u));
+    static_assert(std::is_convertible_v<fvec4, fvec<n>> == (n == 4u));
+    static_assert(!std::is_convertible_v<double, fvec<n>>);
+    static_assert(!std::is_convertible_v<dvec<n>, fvec<n>>);
+
+    static_assert(std::is_convertible_v<double, dvec<n>>);
+    static_assert(std::is_convertible_v<dvec2, dvec<n>> == (n == 2u));
+    static_assert(std::is_convertible_v<dvec3, dvec<n>> == (n == 3u));
+    static_assert(std::is_convertible_v<dvec4, dvec<n>> == (n == 4u));
+    static_assert(std::is_convertible_v<float, dvec<n>>);
+    static_assert(std::is_convertible_v<fvec<n>, dvec<n>>);
+
+    static_assert(!std::is_convertible_v<float, lvec<n>>);
+    static_assert(!std::is_convertible_v<fvec<n>, lvec<n>>);
+    static_assert(!std::is_convertible_v<s8, dvec<n>>);
+    static_assert(!std::is_convertible_v<svec<n>, dvec<n>>);
+}
+
+TEST(Vector, castExplicitness)
+{
+    testCastExplicitnessN<2u>();
+    testCastExplicitnessN<3u>();
+    testCastExplicitnessN<4u>();
 }
 
 template <typename T>

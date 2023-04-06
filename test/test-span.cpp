@@ -525,8 +525,8 @@ static void compileNonMatching()
     _span_s64 /= s8{1};
     _span_s64 /= u32{1u};
     _span_f64 /= f32{1.0f};
-    _span_u64 /= vec<u8, n>{1u};
-    _span_s64 /= vec<s8, n>{1};
+    _span_u64 /= vec<u8, n>{u8(1u)};
+    _span_s64 /= vec<s8, n>{s8(1)};
     _span_s64 /= vec<u32, n>{1u};
     _span_f64 /= vec<f32, n>{1.0f};
 
@@ -600,9 +600,9 @@ static void compileNonMatching()
     static_cast<void>(_span_f32 / f64{1.0f});
     static_cast<void>(_span_f64 / f32{1.0f});
     static_cast<void>(_span_u8 / vec<u64, n>{1u});
-    static_cast<void>(_span_u64 / vec<u8, n>{1u});
+    static_cast<void>(_span_u64 / vec<u8, n>{u8(1u)});
     static_cast<void>(_span_s8 / vec<s64, n>{1});
-    static_cast<void>(_span_s64 / vec<s8, n>{1});
+    static_cast<void>(_span_s64 / vec<s8, n>{s8(1)});
     static_cast<void>(_span_s8 / vec<u32, n>{1u});
     static_cast<void>(_span_s64 / vec<u32, n>{1u});
     static_cast<void>(_span_f32 / vec<f64, n>{1.0f});
@@ -910,6 +910,29 @@ static void compileCasts()
     compileCastsT<u16>();
     compileCastsT<u32>();
     compileCastsT<u64>();
+}
+
+template <u32 n>
+static void testCastExplicitnessN()
+{
+    static_assert(std::is_convertible_v<fspan<n>, dspan<n>>);
+    static_assert(!std::is_convertible_v<dspan<n>, fspan<n>>);
+
+    static_assert(std::is_convertible_v<ispan<n>, lspan<n>>);
+    static_assert(std::is_convertible_v<uispan<n>, lspan<n>>);
+    static_assert(std::is_convertible_v<uispan<n>, ulspan<n>>);
+    static_assert(!std::is_convertible_v<ispan<n>, ulspan<n>>);
+
+    static_assert(!std::is_convertible_v<cspan<n>, fspan<n>>);
+    static_assert(!std::is_convertible_v<fspan<n>, lspan<n>>);
+}
+
+TEST(Span, castExplicitness)
+{
+    testCastExplicitnessN<1u>();
+    testCastExplicitnessN<2u>();
+    testCastExplicitnessN<3u>();
+    testCastExplicitnessN<4u>();
 }
 
 template <typename T>

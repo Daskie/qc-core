@@ -12,7 +12,10 @@ namespace qc
 
         using fquat = quat<float>;
         using dquat = quat<double>;
+    }
 
+    inline namespace types
+    {
         template <typename T> concept Quaternion = Same<T, quat<typename T::Type>>;
     }
 
@@ -30,7 +33,8 @@ namespace qc
         template <FloatingSubOf<T> U> constexpr quat(const vec3<U> & a, U w);
         template <FloatingSubOf<T> U> constexpr explicit quat(const vec3<U> & v);
         template <FloatingSubOf<T> U> constexpr explicit quat(const vec4<U> & v);
-        template <Floating U> constexpr explicit quat(const quat<U> & q);
+        template <FloatingSubOf<T> U> constexpr quat(const quat<U> & q);
+        template <Floating U> requires (!FloatingSubOf<U, T>) constexpr explicit quat(const quat<U> & q);
 
         constexpr quat(const quat & q) = default;
         constexpr quat(quat && q) = default;
@@ -98,7 +102,14 @@ namespace qc
     {}
 
     template <Floating T>
-    template <Floating U>
+    template <FloatingSubOf<T> U>
+    forceinline constexpr quat<T>::quat(const quat<U> & q) :
+        a{q.a},
+        w{q.w}
+    {}
+
+    template <Floating T>
+    template <Floating U> requires (!FloatingSubOf<U, T>)
     forceinline constexpr quat<T>::quat(const quat<U> & q) :
         a{q.a},
         w{T(q.w)}

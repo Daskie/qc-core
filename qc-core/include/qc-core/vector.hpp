@@ -14,52 +14,55 @@ namespace qc
         template <typename T> using vec3 = vec<T, 3>;
         template <typename T> using vec4 = vec<T, 4>;
 
-        template <u32 n> using  fvec = vec< f32, n>;
-        template <u32 n> using  dvec = vec< f64, n>;
-        template <u32 n> using  cvec = vec<  s8, n>;
-        template <u32 n> using ucvec = vec<  u8, n>;
-        template <u32 n> using  svec = vec< s16, n>;
-        template <u32 n> using usvec = vec< u16, n>;
-        template <u32 n> using  ivec = vec< s32, n>;
-        template <u32 n> using uivec = vec< u32, n>;
-        template <u32 n> using  lvec = vec< s64, n>;
-        template <u32 n> using ulvec = vec< u64, n>;
-        template <u32 n> using  bvec = vec<bool, n>;
+        template <u32 n> using fvec = vec<f32, n>;
+        template <u32 n> using dvec = vec<f64, n>;
+        template <u32 n> using cvec = vec<s8, n>;
+        template <u32 n> using ucvec = vec<u8, n>;
+        template <u32 n> using svec = vec<s16, n>;
+        template <u32 n> using usvec = vec<u16, n>;
+        template <u32 n> using ivec = vec<s32, n>;
+        template <u32 n> using uivec = vec<u32, n>;
+        template <u32 n> using lvec = vec<s64, n>;
+        template <u32 n> using ulvec = vec<u64, n>;
+        template <u32 n> using bvec = vec<bool, n>;
 
-        using  fvec2 = vec< f32, 2>;
-        using  fvec3 = vec< f32, 3>;
-        using  fvec4 = vec< f32, 4>;
-        using  dvec2 = vec< f64, 2>;
-        using  dvec3 = vec< f64, 3>;
-        using  dvec4 = vec< f64, 4>;
-        using  cvec2 = vec<  s8, 2>;
-        using  cvec3 = vec<  s8, 3>;
-        using  cvec4 = vec<  s8, 4>;
-        using ucvec2 = vec<  u8, 2>;
-        using ucvec3 = vec<  u8, 3>;
-        using ucvec4 = vec<  u8, 4>;
-        using  svec2 = vec< s16, 2>;
-        using  svec3 = vec< s16, 3>;
-        using  svec4 = vec< s16, 4>;
-        using usvec2 = vec< u16, 2>;
-        using usvec3 = vec< u16, 3>;
-        using usvec4 = vec< u16, 4>;
-        using  ivec2 = vec< s32, 2>;
-        using  ivec3 = vec< s32, 3>;
-        using  ivec4 = vec< s32, 4>;
-        using uivec2 = vec< u32, 2>;
-        using uivec3 = vec< u32, 3>;
-        using uivec4 = vec< u32, 4>;
-        using  lvec2 = vec< s64, 2>;
-        using  lvec3 = vec< s64, 3>;
-        using  lvec4 = vec< s64, 4>;
-        using ulvec2 = vec< u64, 2>;
-        using ulvec3 = vec< u64, 3>;
-        using ulvec4 = vec< u64, 4>;
-        using  bvec2 = vec<bool, 2>;
-        using  bvec3 = vec<bool, 3>;
-        using  bvec4 = vec<bool, 4>;
+        using fvec2 = vec<f32, 2>;
+        using fvec3 = vec<f32, 3>;
+        using fvec4 = vec<f32, 4>;
+        using dvec2 = vec<f64, 2>;
+        using dvec3 = vec<f64, 3>;
+        using dvec4 = vec<f64, 4>;
+        using cvec2 = vec<s8, 2>;
+        using cvec3 = vec<s8, 3>;
+        using cvec4 = vec<s8, 4>;
+        using ucvec2 = vec<u8, 2>;
+        using ucvec3 = vec<u8, 3>;
+        using ucvec4 = vec<u8, 4>;
+        using svec2 = vec<s16, 2>;
+        using svec3 = vec<s16, 3>;
+        using svec4 = vec<s16, 4>;
+        using usvec2 = vec<u16, 2>;
+        using usvec3 = vec<u16, 3>;
+        using usvec4 = vec<u16, 4>;
+        using ivec2 = vec<s32, 2>;
+        using ivec3 = vec<s32, 3>;
+        using ivec4 = vec<s32, 4>;
+        using uivec2 = vec<u32, 2>;
+        using uivec3 = vec<u32, 3>;
+        using uivec4 = vec<u32, 4>;
+        using lvec2 = vec<s64, 2>;
+        using lvec3 = vec<s64, 3>;
+        using lvec4 = vec<s64, 4>;
+        using ulvec2 = vec<u64, 2>;
+        using ulvec3 = vec<u64, 3>;
+        using ulvec4 = vec<u64, 4>;
+        using bvec2 = vec<bool, 2>;
+        using bvec3 = vec<bool, 3>;
+        using bvec4 = vec<bool, 4>;
+    }
 
+    inline namespace types
+    {
         template <typename T> concept Vector = Same<T, vec<typename T::Type, T::n>>;
 
         template <typename T> concept NumericVector = Vector<T> && Numeric<typename T::Type>;
@@ -86,10 +89,11 @@ namespace qc
         T y;
 
         constexpr vec() = default;
-        constexpr vec(T v);
-        template <NumericOrBoolean U> constexpr explicit vec(vec2<U> v);
-        template <NumericOrBoolean U> constexpr explicit vec(vec3<U> v);
-        template <NumericOrBoolean U> constexpr explicit vec(vec4<U> v);
+        template <typename U> requires (Boolean<U> || SubOf<U, T>) constexpr vec(U v);
+        template <SubOf<T> U> constexpr vec(const vec2<U> & v);
+        template <NumericOrBoolean U> requires (!SubOf<U, T>) constexpr explicit vec(const vec2<U> & v);
+        template <NumericOrBoolean U> constexpr explicit vec(const vec3<U> & v);
+        template <NumericOrBoolean U> constexpr explicit vec(const vec4<U> & v);
         constexpr vec(T v1, T v2);
 
         constexpr vec(const vec & v) = default;
@@ -127,10 +131,11 @@ namespace qc
         T z;
 
         constexpr vec() = default;
-        constexpr vec(T v);
-        template <NumericOrBoolean U> constexpr explicit vec(vec2<U> v);
-        template <NumericOrBoolean U> constexpr explicit vec(vec3<U> v);
-        template <NumericOrBoolean U> constexpr explicit vec(vec4<U> v);
+        template <typename U> requires (Boolean<U> || SubOf<U, T>) constexpr vec(U v);
+        template <NumericOrBoolean U> constexpr explicit vec(const vec2<U> & v);
+        template <SubOf<T> U> constexpr vec(const vec3<U> & v);
+        template <NumericOrBoolean U> requires (!SubOf<U, T>) constexpr explicit vec(const vec3<U> & v);
+        template <NumericOrBoolean U> constexpr explicit vec(const vec4<U> & v);
         constexpr vec(T v1, T v2, T v3);
         constexpr vec(vec2<T> v1, T v2);
         constexpr vec(T v1, vec2<T> v2);
@@ -178,10 +183,11 @@ namespace qc
         T w;
 
         constexpr vec() = default;
-        constexpr vec(T v);
-        template <NumericOrBoolean U> constexpr explicit vec(vec2<U> v);
-        template <NumericOrBoolean U> constexpr explicit vec(vec3<U> v);
-        template <NumericOrBoolean U> constexpr explicit vec(vec4<U> v);
+        template <typename U> requires (Boolean<U> || SubOf<U, T>) constexpr vec(U v);
+        template <NumericOrBoolean U> constexpr explicit vec(const vec2<U> & v);
+        template <NumericOrBoolean U> constexpr explicit vec(const vec3<U> & v);
+        template <SubOf<T> U> constexpr vec(const vec4<U> & v);
+        template <NumericOrBoolean U> requires (!SubOf<U, T>) constexpr explicit vec(const vec4<U> & v);
         constexpr vec(T v1, T v2, T v3, T v4);
         constexpr vec(vec2<T> v1, T v2, T v3);
         constexpr vec(T v1, vec2<T> v2, T v3);
@@ -415,28 +421,36 @@ namespace qc
 namespace qc
 {
     template <NumericOrBoolean T>
-    forceinline constexpr vec<T, 2>::vec(const T v) :
+    template <typename U> requires (Boolean<U> || SubOf<U, T>)
+    forceinline constexpr vec<T, 2>::vec(const U v) :
         x{v},
         y{v}
     {}
 
     template <NumericOrBoolean T>
-    template <NumericOrBoolean U>
-    forceinline constexpr vec<T, 2>::vec(const vec2<U> v) :
+    template <SubOf<T> U>
+    forceinline constexpr vec<T, 2>::vec(const vec2<U> & v) :
+        x{v.x},
+        y{v.y}
+    {}
+
+    template <NumericOrBoolean T>
+    template <NumericOrBoolean U> requires (!SubOf<U, T>)
+    forceinline constexpr vec<T, 2>::vec(const vec2<U> & v) :
         x{T(v.x)},
         y{T(v.y)}
     {}
 
     template <NumericOrBoolean T>
     template <NumericOrBoolean U>
-    forceinline constexpr vec<T, 2>::vec(const vec3<U> v) :
+    forceinline constexpr vec<T, 2>::vec(const vec3<U> & v) :
         x{T(v.x)},
         y{T(v.y)}
     {}
 
     template <NumericOrBoolean T>
     template <NumericOrBoolean U>
-    forceinline constexpr vec<T, 2>::vec(const vec4<U> v) :
+    forceinline constexpr vec<T, 2>::vec(const vec4<U> & v) :
         x{T(v.x)},
         y{T(v.y)}
     {}
@@ -504,7 +518,8 @@ namespace qc
     }
 
     template <NumericOrBoolean T>
-    forceinline constexpr vec<T, 3>::vec(const T v) :
+    template <typename U> requires (Boolean<U> || SubOf<U, T>)
+    forceinline constexpr vec<T, 3>::vec(const U v) :
         x{v},
         y{v},
         z{v}
@@ -512,15 +527,23 @@ namespace qc
 
     template <NumericOrBoolean T>
     template <NumericOrBoolean U>
-    forceinline constexpr vec<T, 3>::vec(const vec2<U> v) :
+    forceinline constexpr vec<T, 3>::vec(const vec2<U> & v) :
         x{T(v.x)},
         y{T(v.y)},
         z{}
     {}
 
     template <NumericOrBoolean T>
-    template <NumericOrBoolean U>
-    forceinline constexpr vec<T, 3>::vec(const vec3<U> v) :
+    template <SubOf<T> U>
+    forceinline constexpr vec<T, 3>::vec(const vec3<U> & v) :
+        x{v.x},
+        y{v.y},
+        z{v.z}
+    {}
+
+    template <NumericOrBoolean T>
+    template <NumericOrBoolean U> requires (!SubOf<U, T>)
+    forceinline constexpr vec<T, 3>::vec(const vec3<U> & v) :
         x{T(v.x)},
         y{T(v.y)},
         z{T(v.z)}
@@ -528,7 +551,7 @@ namespace qc
 
     template <NumericOrBoolean T>
     template <NumericOrBoolean U>
-    forceinline constexpr vec<T, 3>::vec(const vec4<U> v) :
+    forceinline constexpr vec<T, 3>::vec(const vec4<U> & v) :
         x{T(v.x)},
         y{T(v.y)},
         z{T(v.z)}
@@ -651,7 +674,8 @@ namespace qc
     }
 
     template <NumericOrBoolean T>
-    forceinline constexpr vec<T, 4>::vec(const T v) :
+    template <typename U> requires (Boolean<U> || SubOf<U, T>)
+    forceinline constexpr vec<T, 4>::vec(const U v) :
         x{v},
         y{v},
         z{v},
@@ -660,7 +684,7 @@ namespace qc
 
     template <NumericOrBoolean T>
     template <NumericOrBoolean U>
-    forceinline constexpr vec<T, 4>::vec(const vec2<U> v) :
+    forceinline constexpr vec<T, 4>::vec(const vec2<U> & v) :
         x{T(v.x)},
         y{T(v.y)},
         z{},
@@ -669,7 +693,7 @@ namespace qc
 
     template <NumericOrBoolean T>
     template <NumericOrBoolean U>
-    forceinline constexpr vec<T, 4>::vec(const vec3<U> v) :
+    forceinline constexpr vec<T, 4>::vec(const vec3<U> & v) :
         x{T(v.x)},
         y{T(v.y)},
         z{T(v.z)},
@@ -677,8 +701,17 @@ namespace qc
     {}
 
     template <NumericOrBoolean T>
-    template <NumericOrBoolean U>
-    forceinline constexpr vec<T, 4>::vec(const vec4<U> v) :
+    template <SubOf<T> U>
+    forceinline constexpr vec<T, 4>::vec(const vec4<U> & v) :
+        x{v.x},
+        y{v.y},
+        z{v.z},
+        w{v.w}
+    {}
+
+    template <NumericOrBoolean T>
+    template <NumericOrBoolean U> requires (!SubOf<U, T>)
+    forceinline constexpr vec<T, 4>::vec(const vec4<U> & v) :
         x{T(v.x)},
         y{T(v.y)},
         z{T(v.z)},

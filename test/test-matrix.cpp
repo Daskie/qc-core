@@ -446,6 +446,20 @@ static void compileCasts()
     compileCastsT<double>();
 }
 
+template <u32 n>
+static void testCastExplicitnessN()
+{
+    static_assert(std::is_convertible_v<fmat<n>, dmat<n>>);
+    static_assert(!std::is_convertible_v<dmat<n>, fmat<n>>);
+}
+
+TEST(Matrix, castExplicitness)
+{
+    testCastExplicitnessN<2u>();
+    testCastExplicitnessN<3u>();
+    testCastExplicitnessN<4u>();
+}
+
 TEST(Matrix, compilation)
 {
     compileClasses();

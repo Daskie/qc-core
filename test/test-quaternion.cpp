@@ -11,8 +11,8 @@ template <typename T>
 static void compileClassesT()
 {
     T v{1.0};
-    vec3<T> v3{1.0};
-    vec4<T> v4{1.0};
+    vec3<T> v3{v};
+    vec4<T> v4{v};
     mat3<T> m3{v3, v3, v3};
     quat<T> q{v4};
     std::stringstream os{};
@@ -69,8 +69,8 @@ template <typename T>
 static void compileFunctionsT()
 {
     T v{1.0};
-    vec3<T> v3{1.0};
-    vec4<T> v4{1.0};
+    vec3<T> v3{v};
+    vec4<T> v4{v};
     mat3<T> m3{v3, v3, v3};
     quat<T> q{v4};
 
@@ -180,6 +180,12 @@ static void compileCasts()
 {
     compileCastsT<float>();
     compileCastsT<double>();
+}
+
+TEST(Quaternion, castExplicitness)
+{
+    static_assert(std::is_convertible_v<fquat, dquat>);
+    static_assert(!std::is_convertible_v<dquat, fquat>);
 }
 
 TEST(Quaternion, compilation)
