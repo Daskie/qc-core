@@ -948,15 +948,15 @@ TEST(Span, castExplicitness)
 template <typename T>
 static void compileConstantsT()
 {
-    constexpr span1<T> is1{qc::fullSpan<T, 1>};
-    constexpr span2<T> is2{qc::fullSpan<T, 2>};
-    constexpr span3<T> is3{qc::fullSpan<T, 3>};
-    constexpr span4<T> is4{qc::fullSpan<T, 4>};
+    constexpr span1<T> fulls1{qc::fullSpan1<T>};
+    constexpr span2<T> fulls2{qc::fullSpan2<T>};
+    constexpr span3<T> fulls3{qc::fullSpan3<T>};
+    constexpr span4<T> fulls4{qc::fullSpan4<T>};
 
-    constexpr span1<T> nulls1{qc::nullSpan<T, 1>};
-    constexpr span2<T> nulls2{qc::nullSpan<T, 2>};
-    constexpr span3<T> nulls3{qc::nullSpan<T, 3>};
-    constexpr span4<T> nulls4{qc::nullSpan<T, 4>};
+    constexpr span1<T> nulls1{qc::nullSpan1<T>};
+    constexpr span2<T> nulls2{qc::nullSpan2<T>};
+    constexpr span3<T> nulls3{qc::nullSpan3<T>};
+    constexpr span4<T> nulls4{qc::nullSpan4<T>};
 }
 
 static void compileConstants()

@@ -297,28 +297,18 @@ namespace qc
         nodisc constexpr bool operator==(const span &) const = default;
     };
 
-    namespace _internal
-    {
-        // Prevents warnings for using a negative sign in a ternary for unsigned types
-        template <typename T> struct FullSpanHelper;
+    MSVC_WARNING_SUPPRESS(4146)
+    template <Numeric T, u32 n> constexpr span<T, n> fullSpan{Floating<T> ? T(-std::numeric_limits<T>::infinity()) : std::numeric_limits<T>::min(), Floating<T> ? std::numeric_limits<T>::infinity() : std::numeric_limits<T>::max()};
+    template <Numeric T> constexpr span1<T> fullSpan1{fullSpan<T, 1>};
+    template <Numeric T> constexpr span2<T> fullSpan2{fullSpan<T, 2>};
+    template <Numeric T> constexpr span3<T> fullSpan3{fullSpan<T, 3>};
+    template <Numeric T> constexpr span4<T> fullSpan4{fullSpan<T, 4>};
 
-        template <Floating T>
-        struct FullSpanHelper<T>
-        {
-            static constexpr T minimum{-std::numeric_limits<T>::infinity()};
-            static constexpr T maximum{+std::numeric_limits<T>::infinity()};
-        };
-
-        template <Integral T>
-        struct FullSpanHelper<T>
-        {
-            static constexpr T minimum{std::numeric_limits<T>::min()};
-            static constexpr T maximum{std::numeric_limits<T>::max()};
-        };
-    }
-
-    template <Numeric T, u32 n> constexpr span<T, n> fullSpan{_internal::FullSpanHelper<T>::minimum, _internal::FullSpanHelper<T>::maximum};
     template <Numeric T, u32 n> constexpr span<T, n> nullSpan{fullSpan<T, n>.max, fullSpan<T, n>.min};
+    template <Numeric T> constexpr span1<T> nullSpan1{nullSpan<T, 1>};
+    template <Numeric T> constexpr span2<T> nullSpan2{nullSpan<T, 2>};
+    template <Numeric T> constexpr span3<T> nullSpan3{nullSpan<T, 3>};
+    template <Numeric T> constexpr span4<T> nullSpan4{nullSpan<T, 4>};
 
     template <Numeric T1, InclusiveSubOf<T1> T2, u32 n> span<T1, n> & operator+=(span<T1, n> & s, T2 v);
     template <Pointer T, u32 n> span<T, n> & operator+=(span<T, n> & s, s64 v);
