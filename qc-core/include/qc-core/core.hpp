@@ -200,8 +200,6 @@ namespace qc
         else return std::forward<T2>(v2);
     }
 
-    template <Enum E> nodisc constexpr std::underlying_type_t<E> underlyingVal(const E e) { return std::underlying_type_t<E>(e); }
-
     inline void failBreak() {};
 
     template <typename T1, typename T2 = T1>
