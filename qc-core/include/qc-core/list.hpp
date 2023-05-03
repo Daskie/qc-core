@@ -1,5 +1,15 @@
 #pragma once
 
+///
+/// Insertion: O(n) general, or O(1) at back
+/// Erasure: O(n) general, or O(1) at back
+/// Access: O(1)
+/// Reference stable: No
+/// Index stable: No
+/// Order stable: Yes
+/// Contiguous elements: Yes
+///
+
 #include <cstring>
 
 #include <iterator>
@@ -47,17 +57,15 @@ namespace qc
         using const_pointer = const T *;
         using iterator = T *;
         using const_iterator = const T *;
-        using reverse_iterator = T *;
-        using const_reverse_iterator = const T *;
 
         static constexpr u64 max_size() { return u64{1u} << 63; }
 
         List() = default;
-        List(u64 n);
+        explicit List(u64 n);
         List(u64 n, const T & v);
         template <typename It> List(It first, It last);
         List(std::initializer_list<T> vs);
-        List(std::span<const T> vs);
+        explicit List(std::span<const T> vs);
 
         List(const List &) = delete;
         List(List && other);
@@ -96,6 +104,7 @@ namespace qc
         template <typename... Args> T * emplace(T * pos, Args &&... args);
 
         void pop();
+        void pop(T & dst);
         void pop(u64 n);
 
         T * erase(T * pos);
@@ -154,7 +163,7 @@ namespace qc
         nodisc PushIterator<T> pushIterator();
 
         nodisc bool operator==(const List & other) const;
-        nodisc bool operator==(std::initializer_list<T> other) const;
+        nodisc bool operator==(std::initializer_list<T> vs) const;
 
       private:
 
@@ -207,7 +216,7 @@ namespace qc
 
     template <typename T>
     template <typename It>
-    forceinline List<T>::List(It first, const It last)
+    forceinline List<T>::List(const It first, const It last)
     {
         assign(first, last);
     }
@@ -545,6 +554,16 @@ namespace qc
     }
 
     template <typename T>
+    forceinline void List<T>::pop(T & dst)
+    {
+        assert(_size);
+
+        T & src{_data[--_size]};
+        dst = std::move(src);
+        src.~T();
+    }
+
+    template <typename T>
     inline void List<T>::pop(const u64 n)
     {
         assert(_size >= n);
@@ -607,7 +626,7 @@ namespace qc
     }
 
     template <typename T>
-    inline u64 List<T>::erase(const T & v)
+    forceinline u64 List<T>::erase(const T & v)
     {
         return eraseIf([&v](const T & a) { return a == v; });
     }
@@ -639,20 +658,20 @@ namespace qc
     }
 
     template <typename T>
-    inline T * List<T>::find(const T & v)
+    forceinline T * List<T>::find(const T & v)
     {
         return const_cast<T *>(static_cast<const List &>(*this).find(v));
     }
 
     template <typename T>
-    inline const T * List<T>::find(const T & v) const
+    forceinline const T * List<T>::find(const T & v) const
     {
         return findIf([&v](const T & a) { return a == v; });
     }
 
     template <typename T>
     template <typename Pred>
-    inline T * List<T>::findIf(Pred && pred)
+    forceinline T * List<T>::findIf(Pred && pred)
     {
         return const_cast<T *>(static_cast<const List &>(*this).findIf(std::forward<Pred>(pred)));
     }
@@ -673,7 +692,7 @@ namespace qc
     }
 
     template <typename T>
-    inline u64 List<T>::count(const T & v) const
+    forceinline u64 List<T>::count(const T & v) const
     {
         return countIf([&v](const T & a) { return a == v; });
     }
@@ -693,16 +712,16 @@ namespace qc
     }
 
     template <typename T>
-    inline bool List<T>::contains(const T & v) const
+    forceinline bool List<T>::contains(const T & v) const
     {
         return count(v);
     }
 
     template <typename T>
     template <typename Pred>
-    inline bool List<T>::containsIf(Pred && pred) const
+    forceinline bool List<T>::containsIf(Pred && pred) const
     {
-        return countIf(pred);
+        return countIf(std::forward<Pred>(pred));
     }
 
     template <typename T>
@@ -808,7 +827,7 @@ namespace qc
     template <typename T>
     forceinline std::span<const T> List<T>::cspan(const u64 i, const u64 n) const
     {
-        return span();
+        return span(i, n);
     }
 
     template <typename T>
@@ -881,14 +900,14 @@ namespace qc
     }
 
     template <typename T>
-    inline bool List<T>::operator==(const std::initializer_list<T> other) const
+    inline bool List<T>::operator==(const std::initializer_list<T> vs) const
     {
-        if (_size != other.size())
+        if (_size != vs.size())
         {
             return false;
         }
 
-        const T * otherV{other.begin()};
+        const T * otherV{vs.begin()};
         for (const T & v : *this)
         {
             if (v != *otherV)
