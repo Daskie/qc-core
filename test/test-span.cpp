@@ -34,7 +34,7 @@ static void compileClassesT()
 
     // assignment operators
     s1 = s1_;
-    s1 = std::move(s1);
+    s1 = std::move(s1_);
 
     // other
     static_cast<void>(s1.size());
@@ -55,7 +55,7 @@ static void compileClassesT()
 
     // assignment operators
     s2 = s2_;
-    s2 = std::move(s2);
+    s2 = std::move(s2_);
 
     // other
     static_cast<void>(s2.size());
@@ -79,7 +79,7 @@ static void compileClassesT()
 
     // assignment operators
     s3 = s3_;
-    s3 = std::move(s3);
+    s3 = std::move(s3_);
 
     // other
     static_cast<void>(s3.size());
@@ -111,7 +111,7 @@ static void compileClassesT()
 
     // assignment operators
     s4 = s4_;
-    s4 = std::move(s4);
+    s4 = std::move(s4_);
 
     // other
     static_cast<void>(s4.size());
@@ -159,14 +159,14 @@ static void compileClassesPT()
     // assignment operators
     {
         s1 = s1_;
-        s1 = std::move(s1);
+        s1 = std::move(s1_);
     }
     // const assignment operators
     {
         cs1 = cs1_;
-        cs1 = s1;
-        cs1 = std::move(cs1);
-        cs1 = std::move(s1);
+        cs1 = s1_;
+        cs1 = std::move(cs1_);
+        cs1 = std::move(s1_);
     }
 
     // other

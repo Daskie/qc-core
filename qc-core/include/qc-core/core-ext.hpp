@@ -441,7 +441,7 @@ namespace qc
         //                               if (v & 0x0000000000000002) {           log +=  1u; }
         //return log;
 
-        return v ? T(std::bit_width(v) - 1u) : 0u;
+        return v ? T(std::bit_width(v) - 1) : 0u;
     }
 
     template <UnsignedIntegral T>

@@ -31,7 +31,7 @@ static void compileClassesT()
 
     // assignment
     q = q_;
-    q = std::move(q);
+    q = std::move(q_);
 
     // conversion
     static_cast<void>(static_cast<bool>(q));

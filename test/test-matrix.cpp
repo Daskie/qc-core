@@ -38,7 +38,7 @@ static void compileClassesT()
     // assignment
 
     m2 = m2_;
-    m2 = std::move(m2);
+    m2 = std::move(m2_);
 
     // access
 
@@ -104,7 +104,7 @@ static void compileClassesT()
     // assignment
 
     m3 = m3_;
-    m3 = std::move(m3);
+    m3 = std::move(m3_);
 
     // access
 
@@ -171,7 +171,7 @@ static void compileClassesT()
     // assignment
 
     m4 = m4_;
-    m4 = std::move(m4);
+    m4 = std::move(m4_);
 
     // access
 

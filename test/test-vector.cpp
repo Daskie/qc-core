@@ -33,7 +33,7 @@ static void compileClassesT()
     // assignment
     v2 = v;
     v2 = v2_;
-    v2 = std::move(v2);
+    v2 = std::move(v2_);
 
     // Conversion
     static_cast<void>(static_cast<bool>(v2));
@@ -63,7 +63,7 @@ static void compileClassesT()
     // assignment
     v3 = v;
     v3 = v3_;
-    v3 = std::move(v3);
+    v3 = std::move(v3_);
 
     // Conversion
     static_cast<void>(static_cast<bool>(v3));
@@ -101,7 +101,7 @@ static void compileClassesT()
     // assignment
     v4 = v;
     v4 = v4_;
-    v4 = std::move(v4);
+    v4 = std::move(v4_);
 
     // Conversion
     static_cast<void>(static_cast<bool>(v4));
