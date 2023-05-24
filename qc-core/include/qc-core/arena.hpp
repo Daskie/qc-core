@@ -31,17 +31,11 @@ namespace qc
 
         nodisc explicit operator bool() const { return _ptr; }
 
-        nodisc T & operator*() { return *_ptr; }
+        nodisc T & operator*() const { return *_ptr; }
 
-        nodisc const T & operator*() const { return *_ptr; }
+        nodisc T * operator->() const { return _ptr; }
 
-        nodisc T * operator->() { return _ptr; }
-
-        nodisc const T * operator->() const { return _ptr; }
-
-        nodisc T * get() { return _ptr; }
-
-        nodisc const T * get() const { return _ptr; }
+        nodisc T * get() const { return _ptr; }
 
         nodisc bool operator==(const Unq & other) const { return _ptr == other._ptr; }
         nodisc friend bool operator==(const Unq & a, const T * b) { return a._ptr == b; }
@@ -81,17 +75,11 @@ namespace qc
 
         nodisc explicit operator bool() const { return _ptr; }
 
-        nodisc T & operator*() { return *_ptr; }
+        nodisc T & operator*() const { return *_ptr; }
 
-        nodisc const T & operator*() const { return *_ptr; }
+        nodisc T * operator->() const { return _ptr; }
 
-        nodisc T * operator->() { return _ptr; }
-
-        nodisc const T * operator->() const { return _ptr; }
-
-        nodisc T * get() { return _ptr; }
-
-        nodisc const T * get() const { return _ptr; }
+        nodisc T * get() const { return _ptr; }
 
         nodisc bool operator==(const Shr & other) const { return _ptr == other._ptr; }
         nodisc friend bool operator==(const Shr & a, const T * b) { return a._ptr == b; }
