@@ -43,6 +43,10 @@ namespace qc
 
         nodisc const T * get() const { return _ptr; }
 
+        nodisc bool operator==(const Unq & other) const { return _ptr == other._ptr; }
+        nodisc friend bool operator==(const Unq & a, const T * b) { return a._ptr == b; }
+        nodisc friend bool operator==(const T * a, const Unq & b) { return a == b._ptr; }
+
       private:
 
         T * _ptr{};
@@ -88,6 +92,10 @@ namespace qc
         nodisc T * get() { return _ptr; }
 
         nodisc const T * get() const { return _ptr; }
+
+        nodisc bool operator==(const Shr & other) const { return _ptr == other._ptr; }
+        nodisc friend bool operator==(const Shr & a, const T * b) { return a._ptr == b; }
+        nodisc friend bool operator==(const T * a, const Shr & b) { return a == b._ptr; }
 
       private:
 

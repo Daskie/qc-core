@@ -181,8 +181,16 @@ TEST(Arena, unique)
     ASSERT_EQ(&*o1, o1.get());
     ASSERT_TRUE(o1);
 
+    ASSERT_EQ(o1, o1);
+    ASSERT_EQ(o1, o1.get());
+    ASSERT_EQ(o1.get(), o1);
+
     qc::Unq<Obj> o2{std::move(o1)};
     ASSERT_EQ(1, o2->v);
+
+    ASSERT_NE(o2, o1);
+    ASSERT_NE(o2, o1.get());
+    ASSERT_NE(o2.get(), o1);
 
     o1 = std::move(o2);
     ASSERT_EQ(1, o1->v);
@@ -216,8 +224,16 @@ TEST(Arena, shared)
 
     ASSERT_EQ(1, o1->v);
 
+    ASSERT_EQ(o1, o1);
+    ASSERT_EQ(o1, o1.get());
+    ASSERT_EQ(o1.get(), o1);
+
     qc::Shr<Obj> o2{std::move(o1)};
     ASSERT_EQ(1, o2->v);
+
+    ASSERT_NE(o2, o1);
+    ASSERT_NE(o2, o1.get());
+    ASSERT_NE(o2.get(), o1);
 
     o1 = std::move(o2);
     ASSERT_EQ(1, o1->v);
@@ -232,6 +248,8 @@ TEST(Arena, shared)
 
     o2 = o1;
     ASSERT_EQ(2, o2->v);
+
+    ASSERT_EQ(o1, o2);
 
     destructed = false;
     o1 = {};
