@@ -283,7 +283,10 @@ namespace qc
         {
             if constexpr (!std::is_trivially_destructible_v<T>)
             {
-                for (T & v: *this) v.~T();
+                for (T & v : *this)
+                {
+                    v.~T();
+                }
             }
 
             ::operator delete(_data, std::align_val_t{alignof(T)});

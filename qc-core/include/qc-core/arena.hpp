@@ -229,10 +229,13 @@ namespace qc
     {
         if (_ptr)
         {
-            _arena->_destroy(_ptr);
-
+            // Ensure this object's state is reset first in case of cyclical ownership
+            T * const ptr{_ptr};
             _ptr = nullptr;
+            Arena * const arena{_arena};
             _arena = nullptr;
+
+            arena->_destroy(ptr);
         }
     }
 
@@ -336,13 +339,19 @@ namespace qc
     {
         if (_ptr)
         {
-            if (!--_refCount())
-            {
-                _arena->_destroy(_ptr);
-            }
+            u32 & refCount{_refCount()};
+            assert(refCount >= 1u);
 
+            // Ensure this object's state is reset first in case of cyclical ownership
+            T * const ptr{_ptr};
             _ptr = nullptr;
+            Arena * const arena{_arena};
             _arena = nullptr;
+
+            if (!--refCount)
+            {
+                arena->_destroy(ptr);
+            }
         }
     }
 
