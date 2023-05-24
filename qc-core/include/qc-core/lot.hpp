@@ -1,19 +1,20 @@
 #pragma once
 
-///
-/// Insertion: O(1)
-/// Erasure: O(1)
-/// Access: O(1)
-/// Reference stable: No
-/// Index stable: No
-/// Order stable: No
-/// Contiguous elements: Yes
-///
-
 #include <qc-core/list.hpp>
 
 namespace qc
 {
+    ///
+    /// ...
+    /// Properties:
+    ///   Insertion: O(1)
+    ///   Erasure: O(1)
+    ///   Access: O(1)
+    ///   Reference stable: No
+    ///   Index stable: No
+    ///   Order stable: No
+    ///   Contiguous elements: Yes
+    ///
     template <typename T>
     class Lot
     {

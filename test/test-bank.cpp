@@ -91,6 +91,25 @@ TEST(Bank, generalNontrivial)
     ASSERT_TRUE(bank.empty());
 }
 
+TEST(Bank, constructors)
+{
+    {
+        qc::Bank<u32> bank{};
+        ASSERT_EQ(bank.capacity(), 0u);
+        ASSERT_TRUE(bank.empty());
+    }
+    {
+        qc::Bank<u32> bank{7u};
+        ASSERT_EQ(bank.capacity(), 16u);
+        ASSERT_TRUE(bank.empty());
+    }
+    {
+        qc::Bank<u32> bank{64u};
+        ASSERT_EQ(bank.capacity(), 64u);
+        ASSERT_TRUE(bank.empty());
+    }
+}
+
 TEST(Bank, reserve)
 {
     qc::Bank<u32> bank{};

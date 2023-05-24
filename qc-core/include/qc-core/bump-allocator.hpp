@@ -1,78 +1,13 @@
 #pragma once
 
-#include <utility>
-
-#include <qc-core/core-ext.hpp>
-#include <qc-core/list.hpp>
 #include <qc-core/paging.hpp>
 
 namespace qc
 {
-    template <typename T, bool fixed = false> class Pool;
-    template <typename T> using FixedPool = Pool<T, true>;
-
-    template <typename T, bool fixed> class _PoolExtra;
-
     template <typename T>
-    class _PoolExtra<T, true>
+    class BumpAllocator
     {
-        friend class Pool<T, true>;
-
-      protected:
-
-        _PoolExtra() = default;
-    };
-
-    template <typename T>
-    class _PoolExtra<T, false>
-    {
-        friend class Pool<T, false>;
-
       public:
-
-        void shrinkToFit();
-
-        nodisc u32 maxPageN() const { return _maxPageN; }
-
-        nodisc u32 pageN() const { return _pageN; }
-
-      protected:
-
-        u32 _maxPageN{};
-        u32 _pageN{};
-        u64 _maxCapacity{};
-
-        _PoolExtra() = default;
-    };
-
-    ///
-    /// ...
-    /// Properties:
-    ///   Create: O(1)
-    ///   Destroy: O(log(m)), where `m` is the number of free ranges
-    ///   Reference stable: Yes
-    ///   Index stable: Yes
-    ///   Order stable: Yes
-    ///   Contiguous elements: No
-    ///
-    template <typename T, bool fixed>
-    class Pool : public _PoolExtra<T, fixed>
-    {
-        friend class _PoolExtra<T, fixed>;
-
-        using _Extra = _PoolExtra<T, fixed>;
-
-        template <bool constant> class _Iterator;
-
-      public:
-
-        using value_type = T;
-        using reference = T &;
-        using const_reference = const T &;
-        using difference_type = s64;
-        using size_type = u64;
-        using iterator = _Iterator<false>;
-        using const_iterator = _Iterator<true>;
 
         Pool() = default;
         explicit Pool(u64 capacity);
@@ -121,7 +56,9 @@ namespace qc
 
         _Range _slotRange{};
         u64 _size{};
-        List<_Range> _freeRanges{};
+        u32 _maxPageN{};
+        u32 _pageN{};
+        u64 _maxCapacity{};
 
         nodisc _Range * _find(const T * slot);
 

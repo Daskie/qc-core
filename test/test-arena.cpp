@@ -5,32 +5,6 @@
 using namespace qc::types;
 using namespace qc::primitives;
 
-TEST(Arena, setCapacity)
-{
-    {
-        qc::Arena arena{};
-        ASSERT_EQ(0u, arena.capacity());
-
-        ASSERT_DEATH(static_cast<void>(arena.create<int>(0)), "");
-
-        arena.setCapacity(1u);
-        ASSERT_EQ(qc::pageSize, arena.capacity());
-
-        ASSERT_DEBUG_DEATH(arena.setCapacity(qc::pageSize * 2u), "");
-        ASSERT_DEBUG_DEATH(arena.setCapacity(1u), "");
-        ASSERT_DEBUG_DEATH(arena.setCapacity(0u), "");
-    }
-
-    {
-        qc::Arena arena{1u};
-        ASSERT_EQ(qc::pageSize, arena.capacity());
-
-        ASSERT_DEBUG_DEATH(arena.setCapacity(qc::pageSize * 2u), "");
-        ASSERT_DEBUG_DEATH(arena.setCapacity(1u), "");
-        ASSERT_DEBUG_DEATH(arena.setCapacity(0u), "");
-    }
-}
-
 TEST(Arena, growth)
 {
     struct Page { std::byte bytes[qc::pageSize - 8u]; };
@@ -39,38 +13,38 @@ TEST(Arena, growth)
     ASSERT_EQ(qc::pageSize * 8u, arena.capacity());
     ASSERT_EQ(0u, arena.size());
 
-    Page & p1{arena.create<Page>()};
+    qc::Unq<Page> p1{arena.unq<Page>()};
     ASSERT_EQ(qc::pageSize, arena.size());
 
-    Page & p2{arena.create<Page>()};
+    qc::Unq<Page> p2{arena.unq<Page>()};
     ASSERT_EQ(qc::pageSize * 2u, arena.size());
 
-    Page & p3{arena.create<Page>()};
+    qc::Unq<Page> p3{arena.unq<Page>()};
     ASSERT_EQ(qc::pageSize * 4u, arena.size());
 
-    Page & p4{arena.create<Page>()};
+    qc::Unq<Page> p4{arena.unq<Page>()};
     ASSERT_EQ(qc::pageSize * 4u, arena.size());
 
-    Page & p5{arena.create<Page>()};
+    qc::Unq<Page> p5{arena.unq<Page>()};
     ASSERT_EQ(qc::pageSize * 8u, arena.size());
 
-    Page & p6{arena.create<Page>()};
+    qc::Unq<Page> p6{arena.unq<Page>()};
     ASSERT_EQ(qc::pageSize * 8u, arena.size());
 
-    Page & p7{arena.create<Page>()};
+    qc::Unq<Page> p7{arena.unq<Page>()};
     ASSERT_EQ(qc::pageSize * 8u, arena.size());
 
-    Page & p8{arena.create<Page>()};
+    qc::Unq<Page> p8{arena.unq<Page>()};
     ASSERT_EQ(qc::pageSize * 8u, arena.size());
 
-    arena.destroy(p1);
-    arena.destroy(p2);
-    arena.destroy(p3);
-    arena.destroy(p4);
-    arena.destroy(p5);
-    arena.destroy(p6);
-    arena.destroy(p7);
-    arena.destroy(p8);
+    p1.reset();
+    p2.reset();
+    p3.reset();
+    p4.reset();
+    p5.reset();
+    p6.reset();
+    p7.reset();
+    p8.reset();
     ASSERT_EQ(qc::pageSize * 8u, arena.size());
 }
 
@@ -86,64 +60,64 @@ TEST(Arena, shrinkToFit)
     ASSERT_EQ(qc::pageSize * 8u, arena.capacity());
     ASSERT_EQ(0u, arena.size());
 
-    Page & p1{arena.create<Page>()};
+    qc::Unq<Page> p1{arena.unq<Page>()};
     ASSERT_EQ(qc::pageSize, arena.size());
 
     arena.shrinkToFit();
     ASSERT_EQ(qc::pageSize, arena.size());
 
-    Page & p2{arena.create<Page>()};
+    qc::Unq<Page> p2{arena.unq<Page>()};
     ASSERT_EQ(qc::pageSize * 2u, arena.size());
 
     arena.shrinkToFit();
     ASSERT_EQ(qc::pageSize * 2u, arena.size());
 
-    Page & p3{arena.create<Page>()};
+    qc::Unq<Page> p3{arena.unq<Page>()};
     ASSERT_EQ(qc::pageSize * 4u, arena.size());
 
     arena.shrinkToFit();
     ASSERT_EQ(qc::pageSize * 4u, arena.size());
 
-    Page & p4{arena.create<Page>()};
+    qc::Unq<Page> p4{arena.unq<Page>()};
     ASSERT_EQ(qc::pageSize * 4u, arena.size());
 
     arena.shrinkToFit();
     ASSERT_EQ(qc::pageSize * 4u, arena.size());
 
-    Page & p5{arena.create<Page>()};
+    qc::Unq<Page> p5{arena.unq<Page>()};
     ASSERT_EQ(qc::pageSize * 8u, arena.size());
 
     arena.shrinkToFit();
     ASSERT_EQ(qc::pageSize * 8u, arena.size());
 
-    Page & p6{arena.create<Page>()};
-    Page & p7{arena.create<Page>()};
-    Page & p8{arena.create<Page>()};
+    qc::Unq<Page> p6{arena.unq<Page>()};
+    qc::Unq<Page> p7{arena.unq<Page>()};
+    qc::Unq<Page> p8{arena.unq<Page>()};
     ASSERT_EQ(qc::pageSize * 8u, arena.size());
 
     arena.shrinkToFit();
     ASSERT_EQ(qc::pageSize * 8u, arena.size());
 
-    arena.destroy(p8);
-    arena.destroy(p7);
-    arena.destroy(p6);
+    p8.reset();
+    p7.reset();
+    p6.reset();
     arena.shrinkToFit();
     ASSERT_EQ(qc::pageSize * 8u, arena.size());
 
-    arena.destroy(p4);
+    p4.reset();
     arena.shrinkToFit();
     ASSERT_EQ(qc::pageSize * 8u, arena.size());
 
-    arena.destroy(p5);
+    p5.reset();
     arena.shrinkToFit();
     ASSERT_EQ(qc::pageSize * 4u, arena.size());
 
-    arena.destroy(p3);
+    p3.reset();
     arena.shrinkToFit();
     ASSERT_EQ(qc::pageSize * 2u, arena.size());
 
-    arena.destroy(p2);
-    arena.destroy(p1);
+    p2.reset();
+    p1.reset();
     arena.shrinkToFit();
     ASSERT_EQ(qc::pageSize * 0u, arena.size());
 }
@@ -152,31 +126,25 @@ TEST(Arena, alignment)
 {
     qc::Arena arena{100u};
 
-    u64 & v1{arena.create<u64>(u64(1u))};
-    ASSERT_EQ(0u, std::bit_cast<u64>(&v1) & 0b111u);
-    ASSERT_EQ(1u, v1);
+    qc::Unq<u64> v1{arena.unq<u64>(u64(1u))};
+    ASSERT_EQ(0u, std::bit_cast<u64>(&*v1) & 0b111u);
+    ASSERT_EQ(1u, *v1);
 
-    u32 & v2{arena.create<u32>(2u)};
-    ASSERT_EQ(0u, std::bit_cast<u64>(&v2) & 0b111u);
-    ASSERT_EQ(2u, v2);
+    qc::Unq<u32> v2{arena.unq<u32>(2u)};
+    ASSERT_EQ(0u, std::bit_cast<u64>(&*v2) & 0b111u);
+    ASSERT_EQ(2u, *v2);
 
-    u16 & v3{arena.create<u16>(u16(3u))};
-    ASSERT_EQ(0u, std::bit_cast<u64>(&v3) & 0b111u);
-    ASSERT_EQ(3u, v3);
+    qc::Unq<u16> v3{arena.unq<u16>(u16(3u))};
+    ASSERT_EQ(0u, std::bit_cast<u64>(&*v3) & 0b111u);
+    ASSERT_EQ(3u, *v3);
 
-    u8 & v4{arena.create<u8>(u8(4u))};
-    ASSERT_EQ(0u, std::bit_cast<u64>(&v4) & 0b111u);
-    ASSERT_EQ(4u, v4);
+    qc::Unq<u8> v4{arena.unq<u8>(u8(4u))};
+    ASSERT_EQ(0u, std::bit_cast<u64>(&*v4) & 0b111u);
+    ASSERT_EQ(4u, *v4);
 
     struct Eleven { std::byte bytes[11u]; };
-    Eleven & v5{arena.create<Eleven>()};
-    ASSERT_EQ(0u, std::bit_cast<u64>(&v5) & 0b111u);
-
-    arena.destroy(v1);
-    arena.destroy(v2);
-    arena.destroy(v3);
-    arena.destroy(v4);
-    arena.destroy(v5);
+    qc::Unq<Eleven> v5{arena.unq<Eleven>()};
+    ASSERT_EQ(0u, std::bit_cast<u64>(&*v5) & 0b111u);
 }
 
 TEST(Arena, largeValue)
@@ -185,21 +153,18 @@ TEST(Arena, largeValue)
 
     qc::Arena arena{qc::pageSize * 4u};
 
-    Large & l1{arena.create<Large>()};
+    qc::Unq<Large> l1{arena.unq<Large>()};
     ASSERT_EQ(qc::pageSize * 2u, arena.size());
 
-    Large & l2{arena.create<Large>()};
+    qc::Unq<Large> l2{arena.unq<Large>()};
     ASSERT_EQ(qc::pageSize * 4u, arena.size());
 
-    ASSERT_DEATH(static_cast<void>(arena.create<Large>()), "");
+    ASSERT_DEATH(static_cast<void>(arena.unq<Large>()), "");
 
-    arena.destroy(l1);
+    l1.reset();
 
-    Large & l3{arena.create<Large>()};
+    qc::Unq<Large>l3{arena.unq<Large>()};
     ASSERT_EQ(qc::pageSize * 4u, arena.size());
-
-    arena.destroy(l2);
-    arena.destroy(l3);
 }
 
 TEST(Arena, unique)
@@ -210,7 +175,7 @@ TEST(Arena, unique)
 
     qc::Arena arena{100};
 
-    qc::Unq<Obj> o1{arena.createUnique<Obj>(1)};
+    qc::Unq<Obj> o1{arena.unq<Obj>(1)};
     ASSERT_EQ(1, (*o1).v);
     ASSERT_EQ(1, o1->v);
     ASSERT_EQ(&*o1, o1.get());
@@ -229,7 +194,7 @@ TEST(Arena, unique)
 
     destructed = false;
     {
-        qc::Unq<Obj> o3{arena.createUnique<Obj>(2)};
+        qc::Unq<Obj> o3{arena.unq<Obj>(2)};
         ASSERT_EQ(2, o3->v);
     }
     ASSERT_TRUE(destructed);
@@ -243,7 +208,7 @@ TEST(Arena, shared)
 
     qc::Arena arena{100};
 
-    qc::Shr<Obj> o1{arena.createShared<Obj>(1)};
+    qc::Shr<Obj> o1{arena.shr<Obj>(1)};
     ASSERT_EQ(1, (*o1).v);
     ASSERT_EQ(1, o1->v);
     ASSERT_EQ(&*o1, o1.get());
@@ -262,7 +227,7 @@ TEST(Arena, shared)
     ASSERT_TRUE(destructed);
     ASSERT_FALSE(o1);
 
-    o1 = arena.createShared<Obj>(2);
+    o1 = arena.shr<Obj>(2);
     ASSERT_EQ(2, o1->v);
 
     o2 = o1;
@@ -276,7 +241,7 @@ TEST(Arena, shared)
     o2 = {};
     ASSERT_TRUE(destructed);
 
-    o1 = arena.createShared<Obj>(3);
+    o1 = arena.shr<Obj>(3);
     ASSERT_EQ(3, o1->v);
 
     {
@@ -297,40 +262,120 @@ TEST(Arena, shared)
     ASSERT_TRUE(destructed);
 }
 
-TEST(Arena, polymorphism)
+TEST(Arena, polymorphismUnique)
 {
-    static thread_local bool aDestructed{false};
-    static thread_local bool bDestructed{false};
+    qc::Arena arena{1000u};
+    s32 x{0};
 
-    struct A { virtual ~A() { aDestructed = true; } };
-    struct B : A { ~B() override { bDestructed = true; } };
-
-    qc::Arena arena{100};
+    struct A { s32 & x; A(s32 & x_) : x{x_} {}; virtual ~A() { ++x; } };
+    struct B : A { s32 y{}; B(s32 & x_) : A{x_} {}; ~B() override { x += 10; } };
 
     {
-        A & a{arena.create<A>()};
-        aDestructed = false;
-        bDestructed = false;
-        arena.destroy(a);
-        ASSERT_TRUE(aDestructed);
-        ASSERT_FALSE(bDestructed);
+        qc::Unq<A> a{arena.unq<A>(x)};
+        ASSERT_EQ(0, x);
+
+        a = {};
+        ASSERT_EQ(1, x);
+
+        a = arena.unq<A>(x);
+        ASSERT_EQ(1, x);
+
+        a = {};
+        ASSERT_EQ(2, x);
     }
 
-    {
-        B & b{arena.create<B>()};
-        aDestructed = false;
-        bDestructed = false;
-        arena.destroy(b);
-        ASSERT_TRUE(aDestructed);
-        ASSERT_TRUE(bDestructed);
-    }
+    x = 0;
 
     {
-        A & a{arena.create<B>()};
-        aDestructed = false;
-        bDestructed = false;
-        arena.destroy(a);
-        ASSERT_TRUE(aDestructed);
-        ASSERT_TRUE(bDestructed);
+        qc::Unq<B> b{arena.unq<B>(x)};
+        ASSERT_EQ(0, x);
+
+        b = {};
+        ASSERT_EQ(11, x);
+
+        b = arena.unq<B>(x);
+        ASSERT_EQ(11, x);
+
+        b = {};
+        ASSERT_EQ(22, x);
+    }
+
+    x = 0;
+
+    {
+        qc::Unq<A> a{arena.unq<B>(x)};
+        ASSERT_EQ(0, x);
+
+        a = {};
+        ASSERT_EQ(11, x);
+
+        a = arena.unq<B>(x);
+        ASSERT_EQ(11, x);
+
+        a = {};
+        ASSERT_EQ(22, x);
+    }
+}
+
+TEST(Arena, polymorphismShared)
+{
+    qc::Arena arena{1000u};
+    s32 x{0};
+
+    struct A { s32 & x; A(s32 & x_) : x{x_} {}; virtual ~A() { ++x; } };
+    struct B : A { s32 y{}; B(s32 & x_) : A{x_} {}; ~B() override { x += 10; } };
+
+    {
+        qc::Shr<A> a{arena.shr<A>(x)};
+        ASSERT_EQ(0, x);
+
+        a = {};
+        ASSERT_EQ(1, x);
+
+        a = arena.shr<A>(x);
+        ASSERT_EQ(1, x);
+
+        a = {};
+        ASSERT_EQ(2, x);
+    }
+
+    x = 0;
+
+    {
+        qc::Shr<B> b{arena.shr<B>(x)};
+        ASSERT_EQ(0, x);
+
+        b = {};
+        ASSERT_EQ(11, x);
+
+        b = arena.shr<B>(x);
+        ASSERT_EQ(11, x);
+
+        b = {};
+        ASSERT_EQ(22, x);
+    }
+
+    x = 0;
+
+    {
+        qc::Shr<A> a{arena.shr<B>(x)};
+        ASSERT_EQ(0, x);
+
+        a = {};
+        ASSERT_EQ(11, x);
+
+        a = arena.shr<B>(x);
+        ASSERT_EQ(11, x);
+
+        a = {};
+        ASSERT_EQ(22, x);
+    }
+
+    x = 0;
+
+    {
+        qc::Shr<A> a{arena.shr<A>(x)};
+        qc::Shr<B> b{arena.shr<B>(x)};
+        a = b;
     }
 }

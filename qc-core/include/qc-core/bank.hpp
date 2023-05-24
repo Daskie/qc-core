@@ -7,6 +7,17 @@
 
 namespace qc
 {
+    ///
+    /// ...
+    /// Properties:
+    ///   Create: O(1)
+    ///   Destroy: O(1)
+    ///   Access: O(1)
+    ///   Reference stable: No
+    ///   Index stable: Yes
+    ///   Order stable: Yes
+    ///   Contiguous elements: No
+    ///
     template <typename T>
     class Bank
     {
@@ -15,6 +26,7 @@ namespace qc
       public:
 
         Bank() = default;
+        explicit Bank(u32 capacity);
 
         Bank(const Bank &) = delete;
         Bank(Bank && other);
@@ -74,6 +86,12 @@ namespace qc
 
 namespace qc
 {
+    template <typename T>
+    inline Bank<T>::Bank(const u32 capacity)
+    {
+        reserve(capacity);
+    }
+
     template <typename T>
     inline Bank<T>::Bank(Bank && other) :
         _slots{std::exchange(other._slots, nullptr)},

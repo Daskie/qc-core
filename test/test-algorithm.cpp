@@ -8,7 +8,7 @@ using namespace qc::primitives;
 
 TEST(Algorithm, median)
 {
-    if constexpr (qc::debug) { ASSERT_DEATH(qc::median(qc::List<s32>{}.cspan()), ""); }
+    if constexpr (qc::debug) { ASSERT_DEBUG_DEATH(qc::median(qc::List<s32>{}.cspan()), ""); }
     ASSERT_EQ(qc::median(qc::List<s32>{1}.cspan()), 1);
     ASSERT_EQ(qc::median(qc::List<s32>{1, 1}.cspan()), 1);
     ASSERT_EQ(qc::median(qc::List<s32>{1, 2}.cspan()), 1);
@@ -27,7 +27,7 @@ TEST(Algorithm, median)
 
 TEST(Algorithm, medianOrdered)
 {
-    if constexpr (qc::debug) { ASSERT_DEATH(qc::medianOrdered(qc::List<s32>{}.cspan()), ""); }
+    if constexpr (qc::debug) { ASSERT_DEBUG_DEATH(qc::medianOrdered(qc::List<s32>{}.cspan()), ""); }
     ASSERT_EQ(qc::medianOrdered(qc::List<s32>{1}.cspan()), 1);
     ASSERT_EQ(qc::medianOrdered(qc::List<s32>{1, 1}.cspan()), 1);
     ASSERT_EQ(qc::medianOrdered(qc::List<s32>{1, 2}.cspan()), 1);

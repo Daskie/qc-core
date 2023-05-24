@@ -1,15 +1,5 @@
 #pragma once
 
-///
-/// Insertion: O(n) general, or O(1) at back
-/// Erasure: O(n) general, or O(1) at back
-/// Access: O(1)
-/// Reference stable: No
-/// Index stable: No
-/// Order stable: Yes
-/// Contiguous elements: Yes
-///
-
 #include <cstring>
 
 #include <iterator>
@@ -41,6 +31,17 @@ namespace qc
         List<T> * _list;
     };
 
+    ///
+    /// ...
+    /// Properties:
+    ///   Insertion: O(n) general, or O(1) at back
+    ///   Erasure: O(n) general, or O(1) at back
+    ///   Access: O(1)
+    ///   Reference stable: No
+    ///   Index stable: No
+    ///   Order stable: Yes
+    ///   Contiguous elements: Yes
+    ///
     template <typename T>
     class List
     {
