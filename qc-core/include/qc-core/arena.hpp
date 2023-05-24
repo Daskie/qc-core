@@ -141,6 +141,12 @@ namespace qc
 
         template <typename T, typename... Args> nodisc Shr<T> shr(Args && ... args);
 
+        ///
+        /// @param ptr an existing shared value of the arena
+        /// @return another shr of the given pointer
+        ///
+        template <typename T> nodisc Shr<T> shr(T * ptr);
+
         void shrinkToFit();
 
         nodisc u64 capacity() const { return _capacity; }
@@ -389,6 +395,19 @@ namespace qc
     inline Shr<T> Arena::shr(Args &&... args)
     {
         return Shr<T>{_create<T>(std::forward<Args>(args)...), this};
+    }
+
+    template <typename T>
+    inline Shr<T> Arena::shr(T * const ptr)
+    {
+        if constexpr (debug)
+        {
+            ABORT_IF(static_cast<void *>(ptr) < _memory || static_cast<void *>(ptr) >= _memory + _size);
+            _Header & header{reinterpret_cast<_Header *>(ptr)[-1]};
+            ABORT_IF(!header.refCount);
+        }
+
+        return Shr<T>{ptr, this};
     }
 
     inline void Arena::shrinkToFit()

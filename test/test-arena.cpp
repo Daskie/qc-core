@@ -278,6 +278,25 @@ TEST(Arena, shared)
         ASSERT_FALSE(destructed);
     }
     ASSERT_TRUE(destructed);
+
+    {
+        destructed = false;
+        qc::Shr<Obj> o4{arena.shr<Obj>(4)};
+        {
+            qc::Shr<Obj> o5{arena.shr(o4.get())};
+            ASSERT_FALSE(destructed);
+            ASSERT_EQ(o5->v, 4);
+        }
+        ASSERT_FALSE(destructed);
+        ASSERT_EQ(o4->v, 4);
+    }
+    ASSERT_TRUE(destructed);
+
+    if constexpr (qc::debug)
+    {
+        qc::Unq<Obj> o6{arena.unq<Obj>(6)};
+        EXPECT_DEATH(static_cast<void>(arena.shr(o6.get())), "");
+    }
 }
 
 TEST(Arena, polymorphismUnique)
