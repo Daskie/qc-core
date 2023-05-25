@@ -5,9 +5,14 @@
 using namespace qc::types;
 using namespace qc::primitives;
 
+namespace
+{
+    constexpr u64 _headerSize{16u};
+}
+
 TEST(Arena, growth)
 {
-    struct Page { std::byte bytes[qc::pageSize - 8u]; };
+    struct Page { std::byte bytes[qc::pageSize - _headerSize]; };
 
     qc::Arena arena{qc::pageSize * 8u};
     ASSERT_EQ(qc::pageSize * 8u, arena.capacity());
@@ -50,7 +55,7 @@ TEST(Arena, growth)
 
 TEST(Arena, shrinkToFit)
 {
-    struct Page { std::byte bytes[qc::pageSize - 8u]; };
+    struct Page { std::byte bytes[qc::pageSize - _headerSize]; };
 
     qc::Arena arena{qc::pageSize * 8u};
     ASSERT_EQ(qc::pageSize * 8u, arena.capacity());
@@ -149,7 +154,7 @@ TEST(Arena, alignment)
 
 TEST(Arena, largeValue)
 {
-    struct Large { std::byte bytes[qc::pageSize + qc::pageSize / 2u - 8u]; };
+    struct Large { std::byte bytes[qc::pageSize + qc::pageSize / 2u - _headerSize]; };
 
     qc::Arena arena{qc::pageSize * 4u};
 
@@ -295,7 +300,7 @@ TEST(Arena, shared)
     if constexpr (qc::debug)
     {
         qc::Unq<Obj> o6{arena.unq<Obj>(6)};
-        EXPECT_DEATH(static_cast<void>(arena.shr(o6.get())), "");
+        EXPECT_DEBUG_DEATH(static_cast<void>(arena.shr(o6.get())), "");
     }
 }
 
