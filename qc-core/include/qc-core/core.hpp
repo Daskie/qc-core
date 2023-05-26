@@ -178,6 +178,8 @@ namespace qc
         template <Floating T> inline constexpr T sqrt5{T(2.236067977499790)};
     }
 
+    struct IKnowWhatImDoing {};
+
     enum Platform { other, windows, linux };
 
     constexpr Platform platform{

@@ -2,95 +2,10 @@
 
 #include <qc-core/bubble-tracker.hpp>
 #include <qc-core/paging.hpp>
+#include <qc-core/smart-pointer.hpp>
 
 namespace qc
 {
-    class Arena;
-
-    template <typename T>
-    class Unq
-    {
-        template <typename T_> friend class Unq;
-        friend class Arena;
-
-      public:
-
-        Unq() = default;
-
-        Unq(const Unq &) = delete;
-        Unq(Unq && other);
-        template <typename T_> requires std::derived_from<T_, T> Unq(Unq<T_> && other);
-
-        Unq & operator=(const Unq &) = delete;
-        Unq & operator=(Unq && other);
-        template <typename T_> requires std::derived_from<T_, T> Unq & operator=(Unq<T_> && other);
-
-        ~Unq();
-
-        void reset();
-
-        nodisc forceinline explicit operator bool() const { return _ptr; }
-
-        nodisc forceinline T & operator*() const { return *_ptr; }
-
-        nodisc forceinline T * operator->() const { return _ptr; }
-
-        nodisc forceinline T * get() const { return _ptr; }
-
-        nodisc forceinline bool operator==(const Unq & other) const { return _ptr == other._ptr; }
-        nodisc forceinline friend bool operator==(const Unq & a, const T * b) { return a._ptr == b; }
-        nodisc forceinline friend bool operator==(const T * a, const Unq & b) { return a == b._ptr; }
-
-      private:
-
-        T * _ptr{};
-
-        explicit Unq(T * ptr);
-    };
-
-    template <typename T>
-    class Shr
-    {
-        template <typename T_> friend class Shr;
-        friend class Arena;
-
-      public:
-
-        Shr() = default;
-
-        Shr(const Shr & other);
-        template <typename T_> requires std::derived_from<T_, T> Shr(const Shr<T_> & other);
-        Shr(Shr && other);
-        template <typename T_> requires std::derived_from<T_, T> Shr(Shr<T_> && other);
-
-        Shr & operator=(const Shr & other);
-        template <typename T_> requires std::derived_from<T_, T> Shr & operator=(const Shr<T_> & other);
-        Shr & operator=(Shr && other);
-        template <typename T_> requires std::derived_from<T_, T> Shr & operator=(Shr<T_> && other);
-
-        ~Shr();
-
-        void reset();
-
-        nodisc forceinline explicit operator bool() const { return _ptr; }
-
-        nodisc forceinline T & operator*() const { return *_ptr; }
-
-        nodisc forceinline T * operator->() const { return _ptr; }
-
-        nodisc forceinline T * get() const { return _ptr; }
-
-        nodisc forceinline bool operator==(const Shr & other) const { return _ptr == other._ptr; }
-        nodisc forceinline friend bool operator==(const Shr & a, const T * b) { return a._ptr == b; }
-        nodisc forceinline friend bool operator==(const T * a, const Shr & b) { return a == b._ptr; }
-
-      private:
-
-        T * _ptr{};
-
-        explicit Shr(T * ptr);
-    };
-
     ///
     /// ...
     /// Each element in the arena is stored with a leading 16 byte header. Of this, the lower 8 bytes are used for a
@@ -106,10 +21,15 @@ namespace qc
     ///
     class Arena
     {
-        template <typename> friend class Unq;
-        template <typename> friend class Shr;
-
       public:
+
+        struct Deallocator
+        {
+            void operator()(void * ptr) const;
+        };
+
+        template <typename T> using Unq = Unq<T, Deallocator>;
+        template <typename T> using Shr = Shr<T, Deallocator>;
 
         explicit Arena(u64 capacity);
 
@@ -162,7 +82,6 @@ namespace qc
         void _expand(u64 newSize);
 
         template <typename T, typename... Args> nodisc T * _create(Args && ... args);
-        template <typename T> void _destroy(T * v);
     };
 }
 
@@ -170,169 +89,10 @@ namespace qc
 
 namespace qc
 {
-    template <typename T>
-    forceinline Unq<T>::Unq(T * const ptr) :
-        _ptr{ptr}
-    {}
-
-    template <typename T>
-    forceinline Unq<T>::Unq(Unq && other) :
-        _ptr{std::exchange(other._ptr, nullptr)}
-    {}
-
-    template <typename T>
-    template <typename T_> requires std::derived_from<T_, T>
-    forceinline Unq<T>::Unq(Unq<T_> && other) :
-        _ptr{std::exchange(other._ptr, nullptr)}
-    {}
-
-    template <typename T>
-    forceinline Unq<T> & Unq<T>::operator=(Unq && other)
+    inline void Arena::Deallocator::operator()(void * const ptr) const
     {
-        return this->operator=<T>(std::move(other));
-    }
-
-    template <typename T>
-    template <typename T_> requires std::derived_from<T_, T>
-    inline Unq<T> & Unq<T>::operator=(Unq<T_> && other)
-    {
-        if (static_cast<void *>(&other) == this)
-        {
-            return *this;
-        }
-
-        reset();
-
-        _ptr = std::exchange(other._ptr, nullptr);
-
-        return *this;
-    }
-
-    template <typename T>
-    forceinline Unq<T>::~Unq()
-    {
-        reset();
-    }
-
-    template <typename T>
-    inline void Unq<T>::reset()
-    {
-        if (_ptr)
-        {
-            // Ensure this object's state is reset first in case of cyclical ownership
-            T * const ptr{_ptr};
-            _ptr = nullptr;
-
-            Arena * const arena{Arena::_header(ptr).arena};
-            arena->_destroy(ptr);
-        }
-    }
-
-    template <typename T>
-    forceinline Shr<T>::Shr(T * const ptr) :
-        _ptr{ptr}
-    {
-        ++Arena::_header(_ptr).refN;
-    }
-
-    template <typename T>
-    forceinline Shr<T>::Shr(const Shr & other) :
-        _ptr{other._ptr}
-    {
-        ++Arena::_header(_ptr).refN;
-    }
-
-    template <typename T>
-    template <typename T_> requires std::derived_from<T_, T>
-    forceinline Shr<T>::Shr(const Shr<T_> & other) :
-        _ptr{other._ptr}
-    {
-        ++Arena::_header(_ptr).refN;
-    }
-
-    template <typename T>
-    forceinline Shr<T>::Shr(Shr && other) :
-        _ptr{std::exchange(other._ptr, nullptr)}
-    {}
-
-    template <typename T>
-    template <typename T_> requires std::derived_from<T_, T>
-    forceinline Shr<T>::Shr(Shr<T_> && other) :
-        _ptr{std::exchange(other._ptr, nullptr)}
-    {}
-
-    template <typename T>
-    forceinline Shr<T> & Shr<T>::operator=(const Shr & other)
-    {
-        return this->operator=<T>(other);
-    }
-
-    template <typename T>
-    template <typename T_> requires std::derived_from<T_, T>
-    inline Shr<T> & Shr<T>::operator=(const Shr<T_> & other)
-    {
-        if (static_cast<const void *>(&other) == this)
-        {
-            return *this;
-        }
-
-        reset();
-
-        _ptr = other._ptr;
-
-        if (_ptr)
-        {
-            ++Arena::_header(_ptr).refN;
-        }
-
-        return *this;
-    }
-
-    template <typename T>
-    forceinline Shr<T> & Shr<T>::operator=(Shr && other)
-    {
-        return this->operator=<T>(std::move(other));
-    }
-
-    template <typename T>
-    template <typename T_> requires std::derived_from<T_, T>
-    inline Shr<T> & Shr<T>::operator=(Shr<T_> && other)
-    {
-        if (static_cast<void *>(&other) == this)
-        {
-            return *this;
-        }
-
-        reset();
-
-        _ptr = std::exchange(other._ptr, nullptr);
-
-        return *this;
-    }
-
-    template <typename T>
-    forceinline Shr<T>::~Shr()
-    {
-        reset();
-    }
-
-    template <typename T>
-    inline void Shr<T>::reset()
-    {
-        if (_ptr)
-        {
-            Arena::_Chunk & header{Arena::_header(_ptr)};
-            assert(header.refN >= 1u);
-
-            // Ensure this object's state is reset first in case of cyclical ownership
-            T * const ptr{_ptr};
-            _ptr = nullptr;
-
-            if (!--header.refN)
-            {
-                header.arena->_destroy(ptr);
-            }
-        }
+        _Chunk & header{Arena::_header(ptr)};
+        header.arena->_bubbles.add(&header, 1 + header.valChunkN);
     }
 
     inline Arena::Arena(const u64 capacity)
@@ -357,19 +117,19 @@ namespace qc
     }
 
     template <typename T, typename... Args>
-    forceinline Unq<T> Arena::unq(Args &&... args)
+    forceinline auto Arena::unq(Args &&... args) -> Unq<T>
     {
-        return Unq<T>{_create<T>(std::forward<Args>(args)...)};
+        return Unq<T>{IKnowWhatImDoing{}, _create<T>(std::forward<Args>(args)...)};
     }
 
     template <typename T, typename... Args>
-    forceinline Shr<T> Arena::shr(Args &&... args)
+    forceinline auto Arena::shr(Args &&... args) -> Shr<T>
     {
-        return Shr<T>{_create<T>(std::forward<Args>(args)...)};
+        return Shr<T>{IKnowWhatImDoing{}, _create<T>(std::forward<Args>(args)...)};
     }
 
     template <typename T>
-    forceinline Shr<T> Arena::shr(T * const ptr)
+    forceinline auto Arena::shr(T * const ptr) -> Shr<T>
     {
         if constexpr (debug)
         {
@@ -378,7 +138,7 @@ namespace qc
             ABORT_IF(!header.refN);
         }
 
-        return Shr<T>{ptr};
+        return Shr<T>{IKnowWhatImDoing{}, ptr};
     }
 
     inline void Arena::shrinkToFit()
@@ -457,14 +217,5 @@ namespace qc
         header->valChunkN = valChunkN;
         header->refN = 0u;
         return new (header + 1) T{std::forward<Args>(args)...};
-    }
-
-    template <typename T>
-    inline void Arena::_destroy(T * const v)
-    {
-        v->~T();
-
-        _Chunk & header{_header(v)};
-        _bubbles.add(&header, 1 + header.valChunkN);
     }
 }

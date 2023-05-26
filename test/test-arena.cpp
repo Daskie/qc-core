@@ -5,6 +5,9 @@
 using namespace qc::types;
 using namespace qc::primitives;
 
+template <typename T> using Unq = qc::Arena::Unq<T>;
+template <typename T> using Shr = qc::Arena::Shr<T>;
+
 namespace
 {
     constexpr u64 _headerSize{16u};
@@ -18,28 +21,28 @@ TEST(Arena, growth)
     ASSERT_EQ(qc::pageSize * 8u, arena.capacity());
     ASSERT_EQ(0u, arena.size());
 
-    qc::Unq<Page> p1{arena.unq<Page>()};
+    Unq<Page> p1{arena.unq<Page>()};
     ASSERT_EQ(qc::pageSize, arena.size());
 
-    qc::Unq<Page> p2{arena.unq<Page>()};
+    Unq<Page> p2{arena.unq<Page>()};
     ASSERT_EQ(qc::pageSize * 2u, arena.size());
 
-    qc::Unq<Page> p3{arena.unq<Page>()};
+    Unq<Page> p3{arena.unq<Page>()};
     ASSERT_EQ(qc::pageSize * 4u, arena.size());
 
-    qc::Unq<Page> p4{arena.unq<Page>()};
+    Unq<Page> p4{arena.unq<Page>()};
     ASSERT_EQ(qc::pageSize * 4u, arena.size());
 
-    qc::Unq<Page> p5{arena.unq<Page>()};
+    Unq<Page> p5{arena.unq<Page>()};
     ASSERT_EQ(qc::pageSize * 8u, arena.size());
 
-    qc::Unq<Page> p6{arena.unq<Page>()};
+    Unq<Page> p6{arena.unq<Page>()};
     ASSERT_EQ(qc::pageSize * 8u, arena.size());
 
-    qc::Unq<Page> p7{arena.unq<Page>()};
+    Unq<Page> p7{arena.unq<Page>()};
     ASSERT_EQ(qc::pageSize * 8u, arena.size());
 
-    qc::Unq<Page> p8{arena.unq<Page>()};
+    Unq<Page> p8{arena.unq<Page>()};
     ASSERT_EQ(qc::pageSize * 8u, arena.size());
 
     p1.reset();
@@ -65,39 +68,39 @@ TEST(Arena, shrinkToFit)
     ASSERT_EQ(qc::pageSize * 8u, arena.capacity());
     ASSERT_EQ(0u, arena.size());
 
-    qc::Unq<Page> p1{arena.unq<Page>()};
+    Unq<Page> p1{arena.unq<Page>()};
     ASSERT_EQ(qc::pageSize, arena.size());
 
     arena.shrinkToFit();
     ASSERT_EQ(qc::pageSize, arena.size());
 
-    qc::Unq<Page> p2{arena.unq<Page>()};
+    Unq<Page> p2{arena.unq<Page>()};
     ASSERT_EQ(qc::pageSize * 2u, arena.size());
 
     arena.shrinkToFit();
     ASSERT_EQ(qc::pageSize * 2u, arena.size());
 
-    qc::Unq<Page> p3{arena.unq<Page>()};
+    Unq<Page> p3{arena.unq<Page>()};
     ASSERT_EQ(qc::pageSize * 4u, arena.size());
 
     arena.shrinkToFit();
     ASSERT_EQ(qc::pageSize * 4u, arena.size());
 
-    qc::Unq<Page> p4{arena.unq<Page>()};
+    Unq<Page> p4{arena.unq<Page>()};
     ASSERT_EQ(qc::pageSize * 4u, arena.size());
 
     arena.shrinkToFit();
     ASSERT_EQ(qc::pageSize * 4u, arena.size());
 
-    qc::Unq<Page> p5{arena.unq<Page>()};
+    Unq<Page> p5{arena.unq<Page>()};
     ASSERT_EQ(qc::pageSize * 8u, arena.size());
 
     arena.shrinkToFit();
     ASSERT_EQ(qc::pageSize * 8u, arena.size());
 
-    qc::Unq<Page> p6{arena.unq<Page>()};
-    qc::Unq<Page> p7{arena.unq<Page>()};
-    qc::Unq<Page> p8{arena.unq<Page>()};
+    Unq<Page> p6{arena.unq<Page>()};
+    Unq<Page> p7{arena.unq<Page>()};
+    Unq<Page> p8{arena.unq<Page>()};
     ASSERT_EQ(qc::pageSize * 8u, arena.size());
 
     arena.shrinkToFit();
@@ -131,24 +134,24 @@ TEST(Arena, alignment)
 {
     qc::Arena arena{100u};
 
-    qc::Unq<u64> v1{arena.unq<u64>(u64(1u))};
+    Unq<u64> v1{arena.unq<u64>(u64(1u))};
     ASSERT_EQ(0u, std::bit_cast<u64>(&*v1) & 0b111u);
     ASSERT_EQ(1u, *v1);
 
-    qc::Unq<u32> v2{arena.unq<u32>(2u)};
+    Unq<u32> v2{arena.unq<u32>(2u)};
     ASSERT_EQ(0u, std::bit_cast<u64>(&*v2) & 0b111u);
     ASSERT_EQ(2u, *v2);
 
-    qc::Unq<u16> v3{arena.unq<u16>(u16(3u))};
+    Unq<u16> v3{arena.unq<u16>(u16(3u))};
     ASSERT_EQ(0u, std::bit_cast<u64>(&*v3) & 0b111u);
     ASSERT_EQ(3u, *v3);
 
-    qc::Unq<u8> v4{arena.unq<u8>(u8(4u))};
+    Unq<u8> v4{arena.unq<u8>(u8(4u))};
     ASSERT_EQ(0u, std::bit_cast<u64>(&*v4) & 0b111u);
     ASSERT_EQ(4u, *v4);
 
     struct Eleven { std::byte bytes[11u]; };
-    qc::Unq<Eleven> v5{arena.unq<Eleven>()};
+    Unq<Eleven> v5{arena.unq<Eleven>()};
     ASSERT_EQ(0u, std::bit_cast<u64>(&*v5) & 0b111u);
 }
 
@@ -158,17 +161,17 @@ TEST(Arena, largeValue)
 
     qc::Arena arena{qc::pageSize * 4u};
 
-    qc::Unq<Large> l1{arena.unq<Large>()};
+    Unq<Large> l1{arena.unq<Large>()};
     ASSERT_EQ(qc::pageSize * 2u, arena.size());
 
-    qc::Unq<Large> l2{arena.unq<Large>()};
+    Unq<Large> l2{arena.unq<Large>()};
     ASSERT_EQ(qc::pageSize * 4u, arena.size());
 
     ASSERT_DEATH(static_cast<void>(arena.unq<Large>()), "");
 
     l1.reset();
 
-    qc::Unq<Large>l3{arena.unq<Large>()};
+    Unq<Large>l3{arena.unq<Large>()};
     ASSERT_EQ(qc::pageSize * 4u, arena.size());
 }
 
@@ -180,7 +183,7 @@ TEST(Arena, unique)
 
     qc::Arena arena{100};
 
-    qc::Unq<Obj> o1{arena.unq<Obj>(1)};
+    Unq<Obj> o1{arena.unq<Obj>(1)};
     ASSERT_EQ(1, (*o1).v);
     ASSERT_EQ(1, o1->v);
     ASSERT_EQ(&*o1, o1.get());
@@ -190,7 +193,7 @@ TEST(Arena, unique)
     ASSERT_EQ(o1, o1.get());
     ASSERT_EQ(o1.get(), o1);
 
-    qc::Unq<Obj> o2{std::move(o1)};
+    Unq<Obj> o2{std::move(o1)};
     ASSERT_EQ(1, o2->v);
 
     ASSERT_NE(o2, o1);
@@ -207,7 +210,7 @@ TEST(Arena, unique)
 
     destructed = false;
     {
-        qc::Unq<Obj> o3{arena.unq<Obj>(2)};
+        Unq<Obj> o3{arena.unq<Obj>(2)};
         ASSERT_EQ(2, o3->v);
     }
     ASSERT_TRUE(destructed);
@@ -221,7 +224,7 @@ TEST(Arena, shared)
 
     qc::Arena arena{100};
 
-    qc::Shr<Obj> o1{arena.shr<Obj>(1)};
+    Shr<Obj> o1{arena.shr<Obj>(1)};
     ASSERT_EQ(1, (*o1).v);
     ASSERT_EQ(1, o1->v);
     ASSERT_EQ(&*o1, o1.get());
@@ -233,7 +236,7 @@ TEST(Arena, shared)
     ASSERT_EQ(o1, o1.get());
     ASSERT_EQ(o1.get(), o1);
 
-    qc::Shr<Obj> o2{std::move(o1)};
+    Shr<Obj> o2{std::move(o1)};
     ASSERT_EQ(1, o2->v);
 
     ASSERT_NE(o2, o1);
@@ -268,14 +271,14 @@ TEST(Arena, shared)
     ASSERT_EQ(3, o1->v);
 
     {
-        qc::Shr<Obj> o3{o1};
+        Shr<Obj> o3{o1};
         ASSERT_EQ(3, o3->v);
     }
 
     ASSERT_EQ(3, o1->v);
 
     {
-        qc::Shr<Obj> o3{o1};
+        Shr<Obj> o3{o1};
         ASSERT_EQ(3, o3->v);
 
         destructed = false;
@@ -286,9 +289,9 @@ TEST(Arena, shared)
 
     {
         destructed = false;
-        qc::Shr<Obj> o4{arena.shr<Obj>(4)};
+        Shr<Obj> o4{arena.shr<Obj>(4)};
         {
-            qc::Shr<Obj> o5{arena.shr(o4.get())};
+            Shr<Obj> o5{arena.shr(o4.get())};
             ASSERT_FALSE(destructed);
             ASSERT_EQ(o5->v, 4);
         }
@@ -299,7 +302,7 @@ TEST(Arena, shared)
 
     if constexpr (qc::debug)
     {
-        qc::Unq<Obj> o6{arena.unq<Obj>(6)};
+        Unq<Obj> o6{arena.unq<Obj>(6)};
         EXPECT_DEBUG_DEATH(static_cast<void>(arena.shr(o6.get())), "");
     }
 }
@@ -313,7 +316,7 @@ TEST(Arena, polymorphismUnique)
     struct B : A { s32 y{}; B(s32 & x_) : A{x_} {}; ~B() override { x += 10; } };
 
     {
-        qc::Unq<A> a{arena.unq<A>(x)};
+        Unq<A> a{arena.unq<A>(x)};
         ASSERT_EQ(0, x);
 
         a = {};
@@ -329,7 +332,7 @@ TEST(Arena, polymorphismUnique)
     x = 0;
 
     {
-        qc::Unq<B> b{arena.unq<B>(x)};
+        Unq<B> b{arena.unq<B>(x)};
         ASSERT_EQ(0, x);
 
         b = {};
@@ -345,7 +348,7 @@ TEST(Arena, polymorphismUnique)
     x = 0;
 
     {
-        qc::Unq<A> a{arena.unq<B>(x)};
+        Unq<A> a{arena.unq<B>(x)};
         ASSERT_EQ(0, x);
 
         a = {};
@@ -368,7 +371,7 @@ TEST(Arena, polymorphismShared)
     struct B : A { s32 y{}; B(s32 & x_) : A{x_} {}; ~B() override { x += 10; } };
 
     {
-        qc::Shr<A> a{arena.shr<A>(x)};
+        Shr<A> a{arena.shr<A>(x)};
         ASSERT_EQ(0, x);
 
         a = {};
@@ -384,7 +387,7 @@ TEST(Arena, polymorphismShared)
     x = 0;
 
     {
-        qc::Shr<B> b{arena.shr<B>(x)};
+        Shr<B> b{arena.shr<B>(x)};
         ASSERT_EQ(0, x);
 
         b = {};
@@ -400,7 +403,7 @@ TEST(Arena, polymorphismShared)
     x = 0;
 
     {
-        qc::Shr<A> a{arena.shr<B>(x)};
+        Shr<A> a{arena.shr<B>(x)};
         ASSERT_EQ(0, x);
 
         a = {};
@@ -416,8 +419,8 @@ TEST(Arena, polymorphismShared)
     x = 0;
 
     {
-        qc::Shr<A> a{arena.shr<A>(x)};
-        qc::Shr<B> b{arena.shr<B>(x)};
+        Shr<A> a{arena.shr<A>(x)};
+        Shr<B> b{arena.shr<B>(x)};
         a = b;
     }
 }
