@@ -8,43 +8,6 @@
 
 namespace qc
 {
-    template <typename T, bool fixed = false> class Pool;
-    template <typename T> using FixedPool = Pool<T, true>;
-
-    template <typename T, bool fixed> class _PoolExtra;
-
-    template <typename T>
-    class _PoolExtra<T, true>
-    {
-        friend class Pool<T, true>;
-
-      protected:
-
-        _PoolExtra() = default;
-    };
-
-    template <typename T>
-    class _PoolExtra<T, false>
-    {
-        friend class Pool<T, false>;
-
-      public:
-
-        void shrinkToFit();
-
-        nodisc u32 maxPageN() const { return _maxPageN; }
-
-        nodisc u32 pageN() const { return _pageN; }
-
-      protected:
-
-        u32 _maxPageN{};
-        u32 _pageN{};
-        u64 _maxCapacity{};
-
-        _PoolExtra() = default;
-    };
-
     ///
     /// ...
     /// Properties:
@@ -55,13 +18,9 @@ namespace qc
     ///   Order stable: Yes
     ///   Contiguous elements: No
     ///
-    template <typename T, bool fixed>
-    class Pool : public _PoolExtra<T, fixed>
+    template <typename T>
+    class Pool
     {
-        friend class _PoolExtra<T, fixed>;
-
-        using _Extra = _PoolExtra<T, fixed>;
-
         template <bool constant> class _Iterator;
 
       public:
@@ -87,6 +46,8 @@ namespace qc
 
         void setCapacity(u64 capacity);
 
+        void shrinkToFit();
+
         template <typename... Args> nodisc T & create(Args &&... args);
 
         void destroy(T & v);
@@ -100,6 +61,10 @@ namespace qc
         nodisc bool empty() const { return _size == 0u; }
 
         nodisc bool full() const { return _size >= capacity(); }
+
+        nodisc u32 maxPageN() const { return _maxPageN; }
+
+        nodisc u32 pageN() const { return _pageN; }
 
         nodisc iterator begin();
         nodisc const_iterator begin() const;
@@ -122,19 +87,20 @@ namespace qc
         _Range _slotRange{};
         u64 _size{};
         List<_Range> _freeRanges{};
+        u32 _maxPageN{};
+        u32 _pageN{};
+        u64 _maxCapacity{};
 
         nodisc _Range * _find(const T * slot);
 
-        void _expand() requires (!fixed);
-
-        void _shrinkToFit() requires (!fixed);
+        void _expand();
     };
 
-    template <typename T, bool fixed>
+    template <typename T>
     template <bool constant>
-    class Pool<T, fixed>::_Iterator
+    class Pool<T>::_Iterator
     {
-        friend class Pool<T, fixed>;
+        friend class Pool<T>;
 
         using _T_ = std::conditional_t<constant, const T, T>;
         using _Range_ = std::conditional_t<constant, const _Range, _Range>;
@@ -175,44 +141,41 @@ namespace qc
 namespace qc
 {
     template <typename T>
-    inline void _PoolExtra<T, false>::shrinkToFit()
-    {
-        // Doing this weird little redirect so `shrinkToFit` doesn't show up in `FixedPool`'s intellisense
-        static_cast<Pool<T, false> &>(*this)._shrinkToFit();
-    }
-
-    template <typename T, bool fixed>
-    inline Pool<T, fixed>::Pool(const u64 capacity)
+    inline Pool<T>::Pool(const u64 capacity)
     {
         setCapacity(capacity);
     }
 
-    template <typename T, bool fixed>
-    inline Pool<T, fixed>::Pool(Pool && other) :
-        _PoolExtra<T, fixed>{std::exchange(static_cast<_Extra &>(other), {})},
+    template <typename T>
+    inline Pool<T>::Pool(Pool && other) :
         _slotRange{std::exchange(other._slotRange, {})},
         _size{std::exchange(other._size, 0u)},
-        _freeRanges{std::move(other._freeRanges)}
+        _freeRanges{std::move(other._freeRanges)},
+        _maxPageN{std::exchange(other._maxPageN, 0u)},
+        _pageN{std::exchange(other._pageN, 0u)},
+        _maxCapacity{std::exchange(other._maxCapacity, 0u)}
     {}
 
-    template <typename T, bool fixed>
-    inline auto Pool<T, fixed>::operator=(Pool && other) -> Pool &
+    template <typename T>
+    inline auto Pool<T>::operator=(Pool && other) -> Pool &
     {
         if (&other == this)
         {
             return *this;
         }
 
-        static_cast<_Extra &>(*this) = std::exchange(static_cast<_Extra &>(other), {});
         _slotRange = std::exchange(other._slotRange, {});
         _size = std::exchange(other._size, 0u);
         _freeRanges = std::move(other._freeRanges);
+        _maxPageN = std::exchange(other._maxPageN, 0u);
+        _pageN = std::exchange(other._pageN, 0u);
+        _maxCapacity = std::exchange(other._maxCapacity, 0u);
 
         return *this;
     }
 
-    template <typename T, bool fixed>
-    inline Pool<T, fixed>::~Pool()
+    template <typename T>
+    inline Pool<T>::~Pool()
     {
         if (_slotRange.start)
         {
@@ -223,26 +186,21 @@ namespace qc
             }
 
             // Free memory
-            if constexpr (fixed)
-            {
-                ::operator delete(_slotRange.start, std::align_val_t{alignof(T)});
-            }
-            else
-            {
-                freePages(_slotRange.start, this->_maxPageN);
-            }
+            freePages(_slotRange.start, this->_maxPageN);
         }
 
         if constexpr (debug)
         {
-            static_cast<_Extra &>(*this) = {};
             _slotRange = {};
             _size = 0u;
+            _maxPageN = 0u;
+            _pageN = 0u;
+            _maxCapacity = 0u;
         }
     }
 
-    template <typename T, bool fixed>
-    inline void Pool<T, fixed>::setCapacity(const u64 capacity)
+    template <typename T>
+    inline void Pool<T>::setCapacity(const u64 capacity)
     {
         // May only be called before memory is reserved
         if (_slotRange.start)
@@ -251,39 +209,58 @@ namespace qc
             return;
         }
 
-        if constexpr (fixed)
-        {
-            // Ignore zero call
-            if (capacity == 0u)
-            {
-                return;
-            }
+        this->_maxPageN = u32((capacity * sizeof(T) + pageSize - 1) / pageSize);
+        this->_maxCapacity = this->_maxPageN * pageSize / sizeof(T);
+    }
 
-            _slotRange.start = static_cast<T *>(::operator new(capacity * sizeof(T), std::align_val_t{alignof(T)}));
-            _slotRange.end = _slotRange.start + capacity;
-            _freeRanges.push(_slotRange);
-        }
-        else
+    template <typename T>
+    inline void Pool<T>::shrinkToFit()
+    {
+        // Pool is full or unallocated
+        if (_freeRanges.empty())
         {
-            this->_maxPageN = u32((capacity * sizeof(T) + pageSize - 1) / pageSize);
-            this->_maxCapacity = this->_maxPageN * pageSize / sizeof(T);
+            return;
+        }
+
+        _Range & highRange{_freeRanges.front()};
+
+        // The tail of the allocated memory is in use
+        if (highRange.end != _slotRange.end)
+        {
+            return;
+        }
+
+        const u64 necessaryCapacity{u64(highRange.start - _slotRange.start)};
+        const u32 necessaryPageN{u32((necessaryCapacity * sizeof(T) + pageSize - 1u) / pageSize)};
+        const u32 unnecessaryPageN{this->_pageN - necessaryPageN};
+
+        // Not enough free tail slots to make up a page
+        if (!unnecessaryPageN)
+        {
+            return;
+        }
+
+        // Decommit uneccessary pages
+        decommitPages(reinterpret_cast<std::byte *>(_slotRange.start) + necessaryPageN * pageSize, unnecessaryPageN);
+
+        // Update state
+        this->_pageN = necessaryPageN;
+        const u64 newCapacity{this->_pageN * pageSize / sizeof(T)};
+        _slotRange.end = _slotRange.start + newCapacity;
+        highRange.end = _slotRange.end;
+        if (highRange.end == highRange.start)
+        {
+            _freeRanges.erase(_freeRanges.begin());
         }
     }
 
-    template <typename T, bool fixed>
+    template <typename T>
     template <typename... Args>
-    inline T & Pool<T, fixed>::create(Args &&... args)
+    inline T & Pool<T>::create(Args &&... args)
     {
         if (_freeRanges.empty()) [[unlikely]]
         {
-            if constexpr (fixed)
-            {
-                abort();
-            }
-            else
-            {
-                _expand();
-            }
+            _expand();
         }
 
         _Range & lowRange{_freeRanges.back()};
@@ -297,8 +274,8 @@ namespace qc
         return *(new (lowSlot) T{std::forward<Args>(args)...});
     }
 
-    template <typename T, bool fixed>
-    inline void Pool<T, fixed>::destroy(T & v)
+    template <typename T>
+    inline void Pool<T>::destroy(T & v)
     {
         // Ensure the slot is in the pool
         if (!contains(&v))
@@ -375,34 +352,27 @@ namespace qc
         --_size;
     }
 
-    template <typename T, bool fixed>
-    inline bool Pool<T, fixed>::contains(const T * const v) const
+    template <typename T>
+    inline bool Pool<T>::contains(const T * const v) const
     {
         return v >= _slotRange.start && v < _slotRange.end;
     }
 
-    template <typename T, bool fixed>
-    inline u64 Pool<T, fixed>::capacity() const
+    template <typename T>
+    inline u64 Pool<T>::capacity() const
     {
-        if constexpr (fixed)
-        {
-            return u64(_slotRange.end - _slotRange.start);
-        }
-        else
-        {
-            return this->_maxCapacity;
-        }
+        return this->_maxCapacity;
     }
 
-    template <typename T, bool fixed>
-    inline auto Pool<T, fixed>::begin() -> iterator
+    template <typename T>
+    inline auto Pool<T>::begin() -> iterator
     {
         const const_iterator it{const_cast<const Pool *>(this)->begin()};
         return {const_cast<T *>(it._slot), const_cast<_Range *>(it._nextFreeRange)};
     }
 
-    template <typename T, bool fixed>
-    inline auto Pool<T, fixed>::begin() const -> const_iterator
+    template <typename T>
+    inline auto Pool<T>::begin() const -> const_iterator
     {
         if (_freeRanges.empty())
         {
@@ -425,26 +395,26 @@ namespace qc
         }
     }
 
-    template <typename T, bool fixed>
-    inline auto Pool<T, fixed>::end() -> iterator
+    template <typename T>
+    inline auto Pool<T>::end() -> iterator
     {
         return iterator{_slotRange.end, nullptr};
     }
 
-    template <typename T, bool fixed>
-    inline auto Pool<T, fixed>::end() const -> const_iterator
+    template <typename T>
+    inline auto Pool<T>::end() const -> const_iterator
     {
         return const_iterator{_slotRange.end, nullptr};
     }
 
-    template <typename T, bool fixed>
-    inline auto Pool<T, fixed>::_find(const T * const slot) -> _Range *
+    template <typename T>
+    inline auto Pool<T>::_find(const T * const slot) -> _Range *
     {
         return lowerBound(_freeRanges.begin(), _freeRanges.end(), slot, [](const _Range & range, const T * const slot_) -> bool { return range.start <= slot_; });
     }
 
-    template <typename T, bool fixed>
-    inline void Pool<T, fixed>::_expand() requires (!fixed)
+    template <typename T>
+    inline void Pool<T>::_expand()
     {
         // Reserve virtual memory if haven't done so already
         if (!_slotRange.start)
@@ -492,64 +462,23 @@ namespace qc
         }
     }
 
-    template <typename T, bool fixed>
-    inline void Pool<T, fixed>::_shrinkToFit() requires (!fixed)
-    {
-        // Pool is full or unallocated
-        if (_freeRanges.empty())
-        {
-            return;
-        }
-
-        _Range & highRange{_freeRanges.front()};
-
-        // The tail of the allocated memory is in use
-        if (highRange.end != _slotRange.end)
-        {
-            return;
-        }
-
-        const u64 necessaryCapacity{u64(highRange.start - _slotRange.start)};
-        const u32 necessaryPageN{u32((necessaryCapacity * sizeof(T) + pageSize - 1u) / pageSize)};
-        const u32 unnecessaryPageN{this->_pageN - necessaryPageN};
-
-        // Not enough free tail slots to make up a page
-        if (!unnecessaryPageN)
-        {
-            return;
-        }
-
-        // Decommit uneccessary pages
-        decommitPages(reinterpret_cast<std::byte *>(_slotRange.start) + necessaryPageN * pageSize, unnecessaryPageN);
-
-        // Update state
-        this->_pageN = necessaryPageN;
-        const u64 newCapacity{this->_pageN * pageSize / sizeof(T)};
-        _slotRange.end = _slotRange.start + newCapacity;
-        highRange.end = _slotRange.end;
-        if (highRange.end == highRange.start)
-        {
-            _freeRanges.erase(_freeRanges.begin());
-        }
-    }
-
-    template <typename T, bool fixed>
+    template <typename T>
     template <bool constant>
-    inline Pool<T, fixed>::_Iterator<constant>::_Iterator(const _Iterator<false> & other) requires (constant) :
+    inline Pool<T>::_Iterator<constant>::_Iterator(const _Iterator<false> & other) requires (constant) :
         _slot{other._slot},
         _nextFreeRange{other._nextFreeRange}
     {}
 
-    template <typename T, bool fixed>
+    template <typename T>
     template <bool constant>
-    inline Pool<T, fixed>::_Iterator<constant>::_Iterator(_T_ * const slot, _Range_ * const nextFreeRange) :
+    inline Pool<T>::_Iterator<constant>::_Iterator(_T_ * const slot, _Range_ * const nextFreeRange) :
         _slot{slot},
         _nextFreeRange{nextFreeRange}
     {}
 
-    template <typename T, bool fixed>
+    template <typename T>
     template <bool constant>
-    inline auto Pool<T, fixed>::_Iterator<constant>::operator++() -> _Iterator &
+    inline auto Pool<T>::_Iterator<constant>::operator++() -> _Iterator &
     {
         ++_slot;
 
@@ -562,18 +491,18 @@ namespace qc
         return *this;
     }
 
-    template <typename T, bool fixed>
+    template <typename T>
     template <bool constant>
-    inline auto Pool<T, fixed>::_Iterator<constant>::operator++(int) -> _Iterator
+    inline auto Pool<T>::_Iterator<constant>::operator++(int) -> _Iterator
     {
         const _Iterator tmp{*this};
         ++*this;
         return tmp;
     }
 
-    template <typename T, bool fixed>
+    template <typename T>
     template <bool constant>
-    inline bool Pool<T, fixed>::_Iterator<constant>::operator==(const _Iterator & other) const
+    inline bool Pool<T>::_Iterator<constant>::operator==(const _Iterator & other) const
     {
         return _slot == other._slot;
     }
