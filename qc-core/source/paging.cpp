@@ -19,91 +19,81 @@ namespace qc
 {
     namespace
     {
-        std::atomic_flag _pageSizeChecked{};
+        std::atomic_flag _pageInfoChecked{};
 
-        u64 _getPageSize()
-        {
-            #ifdef QC_MSVC
-                SYSTEM_INFO sSysInfo;
-                ::GetSystemInfo(&sSysInfo);
-                return sSysInfo.dwPageSize;
-            #else
-                return u64(::getpagesize());
-            #endif
-        }
-
-        void _verifyPageSize()
+        void _verifyPageInfo()
         {
             // Only do this once
-            if (!_pageSizeChecked.test_and_set()) [[unlikely]]
+            if (!_pageInfoChecked.test_and_set()) [[unlikely]]
             {
-                ABORT_IF(pageSize != _getPageSize());
+                #ifdef QC_MSVC
+                    SYSTEM_INFO sSysInfo;
+                    ::GetSystemInfo(&sSysInfo);
+                    ABORT_IF(pageSize != sSysInfo.dwPageSize || pageGranularity != sSysInfo.dwAllocationGranularity);
+                #else
+                    ABORT_IF(pageSize != ::getpagesize());
+                #endif
             }
+        }
+
+        void * _mapPages(const u64 pageN, const bool commit)
+        {
+            _verifyPageInfo();
+
+            if (!pageN)
+            {
+                return nullptr;
+            }
+
+            #ifdef QC_MSVC
+                void * const baseAddress{::VirtualAlloc(
+                    nullptr, // System selects base address
+                    pageN * pageSize,
+                    commit ? (u32(MEM_RESERVE) | u32(MEM_COMMIT)) : u32(MEM_RESERVE),
+                    commit ? u32(PAGE_READWRITE) : u32(PAGE_NOACCESS))};
+                ABORT_IF(!baseAddress);
+                return baseAddress;
+            #else
+                // Overallocate to match Window's 64k granularity
+                const u64 allocatedSize{pageN * pageSize + pageGranularity - pageSize};
+                void * const baseAddress{::mmap(
+                    nullptr, // System selects base address
+                    allocatedSize, // Size of allocation
+                    commit ? (PROT_READ | PROT_WRITE) : PROT_NONE,
+                    MAP_PRIVATE | MAP_ANONYMOUS, // Mapping private memory, not a file
+                    -1, // Anonymous mapping must use -1 for file descriptor
+                    0)}; // No offset
+                ABORT_IF(baseAddress == MAP_FAILED);
+
+                // Determine excess
+                std::byte * const unalignedStart{static_cast<std::byte *>(baseAddress)};
+                std::byte * const alignedStart{std::bit_cast<std::byte *>((std::bit_cast<u64>(unalignedStart) + (pageGranularity - 1u)) & ~u64{pageGranularity - 1u})};
+                std::byte * const alignedEnd{alignedStart + pageN * pageSize};
+                std::byte * const unalignedEnd{unalignedStart + allocatedSize};
+
+                // Unmap excess
+                if (alignedStart != unalignedStart)
+                {
+                    ABORT_IF(::munmap(unalignedStart, u64(alignedStart - unalignedStart)));
+                }
+                if (alignedEnd != unalignedEnd)
+                {
+                    ABORT_IF(::munmap(alignedEnd, u64(unalignedEnd - alignedEnd)));
+                }
+
+                return alignedStart;
+            #endif
         }
     }
 
     void * allocatePages(const u64 pageN)
     {
-        _verifyPageSize();
-
-        if (!pageN)
-        {
-            return nullptr;
-        }
-
-        void * baseAddress;
-        #ifdef QC_MSVC
-            baseAddress = ::VirtualAlloc(
-                nullptr, // System selects base address
-                pageN * pageSize, // Size of allocation
-                MEM_RESERVE | MEM_COMMIT, // Immediately pin pages in physical swap memory
-                PAGE_READWRITE); // Grant read/write access
-        #else
-            baseAddress = ::mmap(
-                nullptr, // System selects base address
-                pageN * pageSize,  // Size of allocation
-                PROT_READ | PROT_WRITE, // Allow memory to be used immediately
-                MAP_PRIVATE | MAP_ANONYMOUS, // Mapping private memory, not a file
-                -1, // Anonymous mapping must use -1 for file descriptor
-                0); // No offset
-            ABORT_IF(baseAddress == MAP_FAILED);
-        #endif
-
-        ABORT_IF(!baseAddress);
-
-        return baseAddress;
+        return _mapPages(pageN, true);
     }
 
     void * reservePages(const u64 pageN)
     {
-        _verifyPageSize();
-
-        if (!pageN)
-        {
-            return nullptr;
-        }
-
-        void * baseAddress;
-        #ifdef QC_MSVC
-            baseAddress = ::VirtualAlloc(
-                nullptr, // System selects base address
-                pageN * pageSize, // Size of allocation
-                MEM_RESERVE, // Only reserve pages, do not pin physical swap space
-                PAGE_NOACCESS); // No access for uncommitted memory
-        #else
-            baseAddress = ::mmap(
-                nullptr, // System selects base address
-                pageN * pageSize, // Size of allocation
-                PROT_NONE, // Prevents the memory from being used until its been committed
-                MAP_PRIVATE | MAP_ANONYMOUS, // Mapping private memory, not a file
-                -1, // Anonymous mapping must use -1 for file descriptor
-                0); // No offset
-            ABORT_IF(baseAddress == MAP_FAILED);
-        #endif
-
-        ABORT_IF(!baseAddress);
-
-        return baseAddress;
+        return _mapPages(pageN, false);
     }
 
     void commitPages(void * const pageStart, const u64 pageN)

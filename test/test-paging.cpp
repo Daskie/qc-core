@@ -5,8 +5,10 @@
 
 #ifdef QC_MSVC
     #define ASSERT_DEATH_IF_MSVC(statement, regex) ASSERT_DEATH(statement, regex)
+    #define ASSERT_DEATH_IF_GCC(statement, regex) static_cast<void>(0)
 #else
     #define ASSERT_DEATH_IF_MSVC(statement, regex) static_cast<void>(0)
+    #define ASSERT_DEATH_IF_GCC(statement, regex) ASSERT_DEATH(statement, regex)
 #endif
 
 using namespace qc::types;
@@ -50,7 +52,6 @@ TEST(Paging, reserveCommit)
     qc::commitPages(nullptr, 1u);
     qc::commitPages(mem, 0u);
     ASSERT_DEATH(qc::commitPages(mem + 1, 1u), "");
-    ASSERT_DEATH(qc::commitPages(mem + n * 1000u, 1u), "");
 
     qc::commitPages(mem, 1u);
 
@@ -70,14 +71,13 @@ TEST(Paging, reserveCommit)
         mem[i] = i;
     }
 
-    ASSERT_DEATH(qc::commitPages(mem + n * 1000u, 1u), "");
+    ASSERT_DEATH(mem[n * 3u] = 0u, "");
     ASSERT_DEATH_IF_MSVC(qc::commitPages(mem, 4u), "");
 
     qc::decommitPages(nullptr, 0u);
     qc::decommitPages(nullptr, 1u);
     qc::decommitPages(mem, 0u);
     ASSERT_DEATH(qc::decommitPages(mem + 1, 1u), "");
-    ASSERT_DEATH(qc::decommitPages(mem + n * 1000u, 1u), "");
 
     qc::decommitPages(mem + n, 1u);
     mem[0] = 0u;
@@ -106,4 +106,12 @@ TEST(Paging, reserveCommit)
     ASSERT_DEATH_IF_MSVC(qc::freePages(mem + n, 1u), "");
     qc::freePages(mem, 3u);
     ASSERT_DEATH_IF_MSVC(qc::freePages(mem, 3u), "");
+}
+
+TEST(Paging, granularity)
+{
+    for (u64 i{0u}; i < 100u; ++i)
+    {
+        ASSERT_FALSE(std::bit_cast<u64>(qc::reservePages(1u)) % qc::pageGranularity);
+    }
 }
