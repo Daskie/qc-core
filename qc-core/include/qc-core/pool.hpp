@@ -4,7 +4,6 @@
 
 #include <qc-core/core-ext.hpp>
 #include <qc-core/paging.hpp>
-#include <qc-core/smart-pointer.hpp>
 
 namespace qc
 {
@@ -127,6 +126,12 @@ namespace qc
 
         template <typename... Args> nodisc Shr shr(Args &&... args);
 
+        ///
+        /// @param ptr an existing shared value of the pool
+        /// @return another shr of the given pointer
+        ///
+        nodisc Shr shrOf(T * ptr);
+
         nodisc u64 capacity() const;
 
         nodisc u64 size() const { return _size; }
@@ -162,6 +167,8 @@ namespace qc
                 T val;
                 _Chunk * nextFreeChunk;
             };
+
+            MSVC_WARNING_SUPPRESS(4624) // This type is never destructed
         };
 
         // Chunks must be contiguous with head and tail
@@ -484,6 +491,24 @@ namespace qc
     inline auto Pool<T>::shr(Args &&... args) -> Shr
     {
         return Shr{_create(std::forward<Args>(args)...)};
+    }
+
+    template <typename T>
+    forceinline auto Pool<T>::shrOf(T * const ptr) -> Shr
+    {
+        if (!ptr)
+        {
+            return {};
+        }
+
+        if constexpr (debug)
+        {
+            _Chunk & chunk{static_cast<_Chunk &>(reinterpret_cast<_ChunkMeta *>(ptr)[-1])};
+            ABORT_IF(&chunk < _chunksStart || &chunk >= _chunksEnd);
+            ABORT_IF(chunk.refN == 0u || chunk.refN == ~u32{});
+        }
+
+        return Shr{*ptr};
     }
 
     template <typename T>

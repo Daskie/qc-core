@@ -420,3 +420,135 @@ TEST(Pool, moveability)
     }
     ASSERT_EQ(*v, 7u);
 }
+
+TEST(Pool, unique)
+{
+    static thread_local bool destructed{false};
+
+    struct Obj { int v{0}; ~Obj() { destructed = true; } };
+
+    qc::Pool<Obj> pool{100};
+
+    Unq<Obj> o1{pool.unq(1)};
+    ASSERT_EQ(1, (*o1).v);
+    ASSERT_EQ(1, o1->v);
+    ASSERT_EQ(&*o1, o1.get());
+    ASSERT_TRUE(o1);
+
+    ASSERT_EQ(o1, o1);
+    ASSERT_EQ(o1, o1.get());
+    ASSERT_EQ(o1.get(), o1);
+
+    Unq<Obj> o2{std::move(o1)};
+    ASSERT_EQ(1, o2->v);
+
+    ASSERT_NE(o2, o1);
+    ASSERT_NE(o2, o1.get());
+    ASSERT_NE(o2.get(), o1);
+
+    o1 = std::move(o2);
+    ASSERT_EQ(1, o1->v);
+
+    destructed = false;
+    o1 = {};
+    ASSERT_TRUE(destructed);
+    ASSERT_FALSE(o1);
+
+    destructed = false;
+    {
+        Unq<Obj> o3{pool.unq(2)};
+        ASSERT_EQ(2, o3->v);
+    }
+    ASSERT_TRUE(destructed);
+}
+
+TEST(Pool, shared)
+{
+    static thread_local bool destructed{false};
+
+    struct Obj { int v{0}; ~Obj() { destructed = true; } };
+
+    qc::Pool<Obj> arena{100};
+
+    Shr<Obj> o1{arena.shr(1)};
+    ASSERT_EQ(1, (*o1).v);
+    ASSERT_EQ(1, o1->v);
+    ASSERT_EQ(&*o1, o1.get());
+    ASSERT_TRUE(o1);
+
+    ASSERT_EQ(1, o1->v);
+
+    ASSERT_EQ(o1, o1);
+    ASSERT_EQ(o1, o1.get());
+    ASSERT_EQ(o1.get(), o1);
+
+    Shr<Obj> o2{std::move(o1)};
+    ASSERT_EQ(1, o2->v);
+
+    ASSERT_NE(o2, o1);
+    ASSERT_NE(o2, o1.get());
+    ASSERT_NE(o2.get(), o1);
+
+    o1 = std::move(o2);
+    ASSERT_EQ(1, o1->v);
+
+    destructed = false;
+    o1 = {};
+    ASSERT_TRUE(destructed);
+    ASSERT_FALSE(o1);
+
+    o1 = arena.shr(2);
+    ASSERT_EQ(2, o1->v);
+
+    o2 = o1;
+    ASSERT_EQ(2, o2->v);
+
+    ASSERT_EQ(o1, o2);
+
+    destructed = false;
+    o1 = {};
+    ASSERT_FALSE(destructed);
+
+    destructed = false;
+    o2 = {};
+    ASSERT_TRUE(destructed);
+
+    o1 = arena.shr(3);
+    ASSERT_EQ(3, o1->v);
+
+    {
+        Shr<Obj> o3{o1};
+        ASSERT_EQ(3, o3->v);
+    }
+
+    ASSERT_EQ(3, o1->v);
+
+    {
+        Shr<Obj> o3{o1};
+        ASSERT_EQ(3, o3->v);
+
+        destructed = false;
+        o1 = {};
+        ASSERT_FALSE(destructed);
+    }
+    ASSERT_TRUE(destructed);
+
+    {
+        destructed = false;
+        Shr<Obj> o4{arena.shr(4)};
+        {
+            Shr<Obj> o5{arena.shrOf(o4.get())};
+            ASSERT_FALSE(destructed);
+            ASSERT_EQ(o5->v, 4);
+        }
+        ASSERT_FALSE(destructed);
+        ASSERT_EQ(o4->v, 4);
+    }
+    ASSERT_TRUE(destructed);
+
+    if constexpr (qc::debug)
+    {
+        Unq<Obj> o6{arena.unq(6)};
+        EXPECT_DEBUG_DEATH(static_cast<void>(arena.shrOf(o6.get())), "");
+    }
+}

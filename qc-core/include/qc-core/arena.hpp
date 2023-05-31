@@ -2,7 +2,6 @@
 
 #include <qc-core/bubble-tracker.hpp>
 #include <qc-core/paging.hpp>
-#include <qc-core/smart-pointer.hpp>
 
 namespace qc
 {
@@ -23,13 +22,91 @@ namespace qc
     {
       public:
 
-        struct Deallocator
+        template <typename T>
+        class Unq
         {
-            void operator()(void * ptr) const;
+            friend Arena;
+
+          public:
+
+            Unq() = default;
+
+            Unq(const Unq &) = delete;
+            Unq(Unq && other);
+            template <typename T_> requires std::is_base_of_v<T, T_> Unq(Unq<T_> && other);
+
+            Unq & operator=(const Unq &) = delete;
+            Unq & operator=(Unq && other);
+            template <typename T_> requires std::is_base_of_v<T, T_> Unq & operator=(Unq<T_> && other);
+
+            ~Unq();
+
+            void reset();
+
+            nodisc forceinline explicit operator bool() const { return _ptr; }
+
+            nodisc forceinline T & operator*() const { return *_ptr; }
+
+            nodisc forceinline T * operator->() const { return _ptr; }
+
+            nodisc forceinline T * get() const { return _ptr; }
+
+            nodisc forceinline bool operator==(const Unq & other) const { return _ptr == other._ptr; }
+            nodisc forceinline friend bool operator==(const Unq & a, const T * b) { return a._ptr == b; }
+            nodisc forceinline friend bool operator==(const T * a, const Unq & b) { return a == b._ptr; }
+
+          private:
+
+            T * _ptr{};
+
+            explicit Unq(T & v);
+
+            nodisc u32 & _refN();
         };
 
-        template <typename T> using Unq = Unq<T, Deallocator, true>;
-        template <typename T> using Shr = Shr<T, Deallocator, true>;
+        template <typename T>
+        class Shr
+        {
+            friend Arena;
+
+          public:
+
+            Shr() = default;
+
+            Shr(const Shr & other);
+            template <typename T_> requires std::is_base_of_v<T, T_> Shr(const Shr<T_> & other);
+            Shr(Shr && other);
+            template <typename T_> requires std::is_base_of_v<T, T_> Shr(Shr<T_> && other);
+
+            Shr & operator=(const Shr & other);
+            template <typename T_> requires std::is_base_of_v<T, T_> Shr & operator=(const Shr<T_> & other);
+            Shr & operator=(Shr && other);
+            template <typename T_> requires std::is_base_of_v<T, T_> Shr & operator=(Shr<T_> && other);
+
+            ~Shr();
+
+            void reset();
+
+            nodisc forceinline explicit operator bool() const { return _ptr; }
+
+            nodisc forceinline T & operator*() const { return *_ptr; }
+
+            nodisc forceinline T * operator->() const { return _ptr; }
+
+            nodisc forceinline T * get() const { return _ptr; }
+
+            nodisc forceinline bool operator==(const Shr & other) const { return _ptr == other._ptr; }
+            nodisc forceinline friend bool operator==(const Shr & a, const T * b) { return a._ptr == b; }
+            nodisc forceinline friend bool operator==(const T * a, const Shr & b) { return a == b._ptr; }
+
+          private:
+
+            T * _ptr{};
+
+            explicit Shr(T & ptr);
+
+            nodisc u32 & _refN();
+        };
 
         explicit Arena(u64 capacity);
 
@@ -49,7 +126,7 @@ namespace qc
         /// @param ptr an existing shared value of the arena
         /// @return another shr of the given pointer
         ///
-        template <typename T> nodisc Shr<T> shr(T * ptr);
+        template <typename T> nodisc Shr<T> shrOf(T * ptr);
 
         void shrinkToFit();
 
@@ -74,6 +151,8 @@ namespace qc
 
         static _Chunk & _header(void * valPtr);
 
+        template <typename T> static void _destroy(T & v);
+
         u64 _capacity;
         u64 _size{};
         _Chunk * _memory;
@@ -81,7 +160,7 @@ namespace qc
 
         void _expand(u64 newSize);
 
-        template <typename T, typename... Args> nodisc T * _create(Args && ... args);
+        template <typename T, typename... Args> nodisc T & _create(Args &&... args);
     };
 }
 
@@ -89,11 +168,181 @@ namespace qc
 
 namespace qc
 {
-    inline void Arena::Deallocator::operator()(void * const ptr) const
+    template <typename T>
+    forceinline Arena::Unq<T>::Unq(T & v) :
+        _ptr{&v}
     {
-        _Chunk & header{Arena::_header(ptr)};
-        assert(!header.refN);
-        header.arena->_bubbles.add(&header, 1 + header.valChunkN);
+        u32 & refN{_refN()};
+        assert(!refN);
+        refN = ~u32{};
+    }
+
+    template <typename T>
+    forceinline Arena::Unq<T>::Unq(Unq && other) :
+        _ptr{std::exchange(other._ptr, nullptr)}
+    {}
+
+    template <typename T>
+    template <typename T_> requires std::is_base_of_v<T, T_>
+    forceinline Arena::Unq<T>::Unq(Unq<T_> && other) :
+        _ptr{std::exchange(other._ptr, nullptr)}
+    {}
+
+    template <typename T>
+    inline auto Arena::Unq<T>::operator=(Unq && other) -> Unq &
+    {
+        if (&other == this)
+        {
+            return *this;
+        }
+
+        reset();
+
+        _ptr = std::exchange(other._ptr, nullptr);
+
+        return *this;
+    }
+
+    template <typename T>
+    template <typename T_> requires std::is_base_of_v<T, T_>
+    forceinline auto Arena::Unq<T>::operator=(Unq<T_> && other) -> Unq &
+    {
+        return *this = reinterpret_cast<Unq &&>(other);
+    }
+
+    template <typename T>
+    forceinline Arena::Unq<T>::Unq::~Unq()
+    {
+        reset();
+    }
+
+    template <typename T>
+    inline void Arena::Unq<T>::reset()
+    {
+        if (_ptr)
+        {
+            u32 & refN{_refN()};
+            assert(refN);
+            refN = 0u;
+            _destroy(*std::exchange(_ptr, nullptr));
+        }
+    }
+
+    template <typename T>
+    forceinline u32 & Arena::Unq<T>::_refN()
+    {
+        return reinterpret_cast<u32 *>(_ptr)[-1];
+    }
+
+    template <typename T>
+    forceinline Arena::Shr<T>::Shr(T & v) :
+        _ptr{&v}
+    {
+        u32 & refN{_refN()};
+        assert(refN != ~u32{});
+        ++refN;
+    }
+
+    template <typename T>
+    forceinline Arena::Shr<T>::Shr(const Shr & other) :
+        _ptr{other._ptr}
+    {
+        ++_refN();
+    }
+
+    template <typename T>
+    template <typename T_> requires std::is_base_of_v<T, T_>
+    forceinline Arena::Shr<T>::Shr(const Shr<T_> & other) :
+        _ptr{other._ptr}
+    {
+        ++_refN();
+    }
+
+    template <typename T>
+    forceinline Arena::Shr<T>::Shr(Shr && other) :
+        _ptr{std::exchange(other._ptr, nullptr)}
+    {}
+
+    template <typename T>
+    template <typename T_> requires std::is_base_of_v<T, T_>
+    forceinline Arena::Shr<T>::Shr(Shr<T_> && other) :
+        _ptr{std::exchange(other._ptr, nullptr)}
+    {}
+
+    template <typename T>
+    inline auto Arena::Shr<T>::operator=(const Shr & other) -> Shr &
+    {
+        if (&other == this)
+        {
+            return *this;
+        }
+
+        reset();
+
+        _ptr = other._ptr;
+
+        if (_ptr)
+        {
+            ++_refN();
+        }
+
+        return *this;
+    }
+
+    template <typename T>
+    template <typename T_> requires std::is_base_of_v<T, T_>
+    forceinline auto Arena::Shr<T>::operator=(const Shr<T_> & other) -> Shr &
+    {
+        return *this = reinterpret_cast<const Shr &>(other);
+    }
+
+    template <typename T>
+    inline auto Arena::Shr<T>::operator=(Shr && other) -> Shr &
+    {
+        if (&other == this)
+        {
+            return *this;
+        }
+
+        reset();
+
+        _ptr = std::exchange(other._ptr, nullptr);
+
+        return *this;
+    }
+
+    template <typename T>
+    template <typename T_> requires std::is_base_of_v<T, T_>
+    forceinline auto Arena::Shr<T>::operator=(Shr<T_> && other) -> Shr &
+    {
+        return *this = reinterpret_cast<Shr &&>(other);
+    }
+
+    template <typename T>
+    forceinline Arena::Shr<T>::Shr::~Shr()
+    {
+        reset();
+    }
+
+    template <typename T>
+    inline void Arena::Shr<T>::reset()
+    {
+        if (_ptr)
+        {
+            u32 & refN{_refN()};
+            assert(refN >= 1u);
+
+            if (!--refN)
+            {
+                _destroy(*std::exchange(_ptr, nullptr));
+            }
+        }
+    }
+
+    template <typename T>
+    forceinline u32 & Arena::Shr<T>::_refN()
+    {
+        return reinterpret_cast<u32 *>(_ptr)[-1];
     }
 
     inline Arena::Arena(const u64 capacity)
@@ -120,26 +369,31 @@ namespace qc
     template <typename T, typename... Args>
     forceinline auto Arena::unq(Args &&... args) -> Unq<T>
     {
-        return Unq<T>{IKnowWhatImDoing{}, _create<T>(std::forward<Args>(args)...)};
+        return Unq<T>{_create<T>(std::forward<Args>(args)...)};
     }
 
     template <typename T, typename... Args>
     forceinline auto Arena::shr(Args &&... args) -> Shr<T>
     {
-        return Shr<T>{IKnowWhatImDoing{}, _create<T>(std::forward<Args>(args)...)};
+        return Shr<T>{_create<T>(std::forward<Args>(args)...)};
     }
 
     template <typename T>
-    forceinline auto Arena::shr(T * const ptr) -> Shr<T>
+    forceinline auto Arena::shrOf(T * const ptr) -> Shr<T>
     {
+        if (!ptr)
+        {
+            return {};
+        }
+
         if constexpr (debug)
         {
             _Chunk & header{_header(ptr)};
-            ABORT_IF(header.arena != this);
-            ABORT_IF(!header.refN);
+            ABORT_IF(&header < _memory || &header >= _memory + _capacity);
+            ABORT_IF(header.refN == 0u || header.refN == ~u32{});
         }
 
-        return Shr<T>{IKnowWhatImDoing{}, ptr};
+        return Shr<T>{*ptr};
     }
 
     inline void Arena::shrinkToFit()
@@ -180,6 +434,15 @@ namespace qc
         return reinterpret_cast<_Chunk *>(valPtr)[-1];
     }
 
+    template <typename T>
+    inline void Arena::_destroy(T & v)
+    {
+        _Chunk & header{Arena::_header(&v)};
+        assert(!header.refN);
+        v.~T();
+        header.arena->_bubbles.add(&header, 1 + header.valChunkN);
+    }
+
     inline void Arena::_expand(u64 newSize)
     {
         const u64 newPageN{std::bit_ceil((newSize + (pageSize - 1u)) / pageSize)};
@@ -197,7 +460,7 @@ namespace qc
     }
 
     template <typename T, typename... Args>
-    inline T * Arena::_create(Args &&... args)
+    inline T & Arena::_create(Args &&... args)
     {
         static constexpr u64 valChunkN{(sizeof(T) + sizeof(_Chunk) - 1u) / sizeof(_Chunk)};
         static_assert(valChunkN <= _maxValChunkN);
@@ -217,6 +480,6 @@ namespace qc
         header->arena = this;
         header->valChunkN = valChunkN;
         header->refN = 0u;
-        return new (header + 1) T{std::forward<Args>(args)...};
+        return *(new (header + 1) T{std::forward<Args>(args)...});
     }
 }

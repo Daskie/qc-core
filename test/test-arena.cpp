@@ -291,7 +291,7 @@ TEST(Arena, shared)
         destructed = false;
         Shr<Obj> o4{arena.shr<Obj>(4)};
         {
-            Shr<Obj> o5{arena.shr(o4.get())};
+            Shr<Obj> o5{arena.shrOf(o4.get())};
             ASSERT_FALSE(destructed);
             ASSERT_EQ(o5->v, 4);
         }
@@ -303,7 +303,7 @@ TEST(Arena, shared)
     if constexpr (qc::debug)
     {
         Unq<Obj> o6{arena.unq<Obj>(6)};
-        EXPECT_DEBUG_DEATH(static_cast<void>(arena.shr(o6.get())), "");
+        EXPECT_DEBUG_DEATH(static_cast<void>(arena.shrOf(o6.get())), "");
     }
 }
 
