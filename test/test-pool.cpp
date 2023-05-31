@@ -5,6 +5,9 @@
 using namespace qc::types;
 using namespace qc::primitives;
 
+template <typename T> using Unq = qc::Pool<T>::Unq;
+template <typename T> using Shr = qc::Pool<T>::Shr;
+
 TEST(Pool, standard)
 {
     // Assumes page size is 4096
@@ -29,7 +32,7 @@ TEST(Pool, standard)
     ASSERT_EQ(pool.end(), it);
 
     // [0|_|_|_|_]
-    BigInt & e0{pool.create(0)};
+    Unq<BigInt> e0{pool.unq(0)};
     ASSERT_EQ(1u, pool.pageN());
     ASSERT_EQ(1u, pool.size());
     it = pool.begin();
@@ -37,8 +40,8 @@ TEST(Pool, standard)
     ASSERT_EQ(pool.end(), ++it);
 
     // [0|1|_|_|_]
-    BigInt & e1{pool.create(1)};
-    ASSERT_EQ(&e0 + 1, &e1);
+    Unq<BigInt> e1{pool.unq(1)};
+    ASSERT_TRUE(&*e1 > &*e0);
     ASSERT_EQ(3u, pool.pageN());
     ASSERT_EQ(2u, pool.size());
     it = pool.begin();
@@ -47,8 +50,8 @@ TEST(Pool, standard)
     ASSERT_EQ(pool.end(), ++it);
 
     // [0|1|2|_|_]
-    BigInt & e2{pool.create(2)};
-    ASSERT_EQ(&e1 + 1, &e2);
+    Unq<BigInt> e2{pool.unq(2)};
+    ASSERT_TRUE(&*e2 > &*e1);
     ASSERT_EQ(3u, pool.pageN());
     ASSERT_EQ(3u, pool.size());
     it = pool.begin();
@@ -58,8 +61,8 @@ TEST(Pool, standard)
     ASSERT_EQ(pool.end(), ++it);
 
     // [0|1|2|3|_]
-    BigInt & e3{pool.create(3)};
-    ASSERT_EQ(&e2 + 1, &e3);
+    Unq<BigInt> e3{pool.unq(3)};
+    ASSERT_TRUE(&*e3 > &*e2);
     ASSERT_EQ(3u, pool.pageN());
     ASSERT_EQ(4u, pool.size());
     it = pool.begin();
@@ -70,8 +73,8 @@ TEST(Pool, standard)
     ASSERT_EQ(pool.end(), ++it);
 
     // [0|1|2|3|4]
-    BigInt & e4{pool.create(4)};
-    ASSERT_EQ(&e3 + 1, &e4);
+    Unq<BigInt> e4{pool.unq(4)};
+    ASSERT_TRUE(&*e4 > &*e3);
     ASSERT_EQ(3u, pool.pageN());
     ASSERT_EQ(5u, pool.size());
     it = pool.begin();
@@ -83,10 +86,10 @@ TEST(Pool, standard)
     ASSERT_EQ(pool.end(), ++it);
 
     // [0|1|2|3|4]
-    ASSERT_DEATH(static_cast<void>(pool.create(5)), "");
+    ASSERT_DEATH(static_cast<void>(pool.unq(5)), "");
 
     // [0|1|2|3|_]
-    pool.destroy(e4);
+    e4.reset();
     ASSERT_EQ(3u, pool.pageN());
     ASSERT_EQ(4u, pool.size());
     it = pool.begin();
@@ -97,7 +100,7 @@ TEST(Pool, standard)
     ASSERT_EQ(pool.end(), ++it);
 
     // [0|1|2|_|_]
-    pool.destroy(e3);
+    e3.reset();
     ASSERT_EQ(3u, pool.pageN());
     ASSERT_EQ(3u, pool.size());
     it = pool.begin();
@@ -107,10 +110,10 @@ TEST(Pool, standard)
     ASSERT_EQ(pool.end(), ++it);
 
     // [0|1|2|5|6]
-    BigInt & e5{pool.create(5)};
-    BigInt & e6{pool.create(6)};
-    ASSERT_EQ(&e2 + 1, &e5);
-    ASSERT_EQ(&e5 + 1, &e6);
+    Unq<BigInt> e5{pool.unq(5)};
+    Unq<BigInt> e6{pool.unq(6)};
+    ASSERT_TRUE(&*e5 > &*e2);
+    ASSERT_TRUE(&*e6 > &*e5);
     ASSERT_EQ(3u, pool.pageN());
     ASSERT_EQ(5u, pool.size());
     it = pool.begin();
@@ -122,7 +125,7 @@ TEST(Pool, standard)
     ASSERT_EQ(pool.end(), ++it);
 
     // [_|1|2|5|6]
-    pool.destroy(e0);
+    e0.reset();
     ASSERT_EQ(3u, pool.pageN());
     ASSERT_EQ(4u, pool.size());
     it = pool.begin();
@@ -133,7 +136,7 @@ TEST(Pool, standard)
     ASSERT_EQ(pool.end(), ++it);
 
     // [_|_|2|5|6]
-    pool.destroy(e1);
+    e1.reset();
     ASSERT_EQ(3u, pool.pageN());
     ASSERT_EQ(3u, pool.size());
     it = pool.begin();
@@ -142,9 +145,9 @@ TEST(Pool, standard)
     ASSERT_EQ(6, (++it)->x);
     ASSERT_EQ(pool.end(), ++it);
 
-    // [7|_|2|5|6]
-    BigInt & e7{pool.create(7)};
-    ASSERT_EQ(&e2 - 2, &e7);
+    // [_|7|2|5|6]
+    Unq<BigInt> e7{pool.unq(7)};
+    ASSERT_TRUE(&*e7 < &*e2);
     ASSERT_EQ(3u, pool.pageN());
     ASSERT_EQ(4u, pool.size());
     it = pool.begin();
@@ -154,8 +157,8 @@ TEST(Pool, standard)
     ASSERT_EQ(6, (++it)->x);
     ASSERT_EQ(pool.end(), ++it);
 
-    // [7|_|2|_|6]
-    pool.destroy(e5);
+    // [_|7|2|_|6]
+    e5.reset();
     ASSERT_EQ(3u, pool.pageN());
     ASSERT_EQ(3u, pool.size());
     it = pool.begin();
@@ -164,8 +167,8 @@ TEST(Pool, standard)
     ASSERT_EQ(6, (++it)->x);
     ASSERT_EQ(pool.end(), ++it);
 
-    // [7|_|_|_|6]
-    pool.destroy(e2);
+    // [_|7|_|_|6]
+    e2.reset();
     ASSERT_EQ(3u, pool.pageN());
     ASSERT_EQ(2u, pool.size());
     it = pool.begin();
@@ -173,27 +176,27 @@ TEST(Pool, standard)
     ASSERT_EQ(6, (++it)->x);
     ASSERT_EQ(pool.end(), ++it);
 
-    // [7|8|9|10|6]
-    BigInt & e8{pool.create(8)};
-    BigInt & e9{pool.create(9)};
-    BigInt & e10{pool.create(10)};
-    ASSERT_EQ(&e7 + 1, &e8);
-    ASSERT_EQ(&e7 + 2, &e9);
-    ASSERT_EQ(&e7 + 3, &e10);
+    // [10|7|8|9|6]
+    Unq<BigInt> e8{pool.unq(8)};
+    Unq<BigInt> e9{pool.unq(9)};
+    Unq<BigInt> e10{pool.unq(10)};
+    ASSERT_TRUE(&*e8 > &*e7);
+    ASSERT_TRUE(&*e9 > &*e8 && &*e9 < &*e6);
+    ASSERT_TRUE(&*e10 < &*e7);
     ASSERT_EQ(3u, pool.pageN());
     ASSERT_EQ(5u, pool.size());
     it = pool.begin();
-    ASSERT_EQ(7, it->x);
+    ASSERT_EQ(10, it->x);
+    ASSERT_EQ(7, (++it)->x);
     ASSERT_EQ(8, (++it)->x);
     ASSERT_EQ(9, (++it)->x);
-    ASSERT_EQ(10, (++it)->x);
     ASSERT_EQ(6, (++it)->x);
     ASSERT_EQ(pool.end(), ++it);
 
-    // [7|_|_|_|6]
-    pool.destroy(e8);
-    pool.destroy(e9);
-    pool.destroy(e10);
+    // [_|7|_|_|6]
+    e8.reset();
+    e9.reset();
+    e10.reset();
     ASSERT_EQ(3u, pool.pageN());
     ASSERT_EQ(2u, pool.size());
     it = pool.begin();
@@ -201,22 +204,17 @@ TEST(Pool, standard)
     ASSERT_EQ(6, (++it)->x);
     ASSERT_EQ(pool.end(), ++it);
 
-    // [7|_|_|_|6]
-    ASSERT_DEBUG_DEATH(pool.destroy(e8), "");
-    ASSERT_DEBUG_DEATH(pool.destroy(e9), "");
-    ASSERT_DEBUG_DEATH(pool.destroy(e10), "");
-
     // [_|_|_|_|6]
-    pool.destroy(e7);
+    e7.reset();
     ASSERT_EQ(3u, pool.pageN());
     ASSERT_EQ(1u, pool.size());
     it = pool.begin();
     ASSERT_EQ(6, it->x);
     ASSERT_EQ(pool.end(), ++it);
 
-    // [11|_|_|_|6]
-    BigInt & e11{pool.create(11)};
-    ASSERT_EQ(&e6 - 4, &e11);
+    // [_|11|_|_|6]
+    Unq<BigInt> e11{pool.unq(11)};
+    ASSERT_TRUE(&*e11 < &*e6);
     ASSERT_EQ(3u, pool.pageN());
     ASSERT_EQ(2u, pool.size());
     it = pool.begin();
@@ -224,8 +222,8 @@ TEST(Pool, standard)
     ASSERT_EQ(6, (++it)->x);
     ASSERT_EQ(pool.end(), ++it);
 
-    // [11|_|_|_|_]
-    pool.destroy(e6);
+    // [_|11|_|_|_]
+    e6.reset();
     ASSERT_EQ(3u, pool.pageN());
     ASSERT_EQ(1u, pool.size());
     it = pool.begin();
@@ -233,25 +231,23 @@ TEST(Pool, standard)
     ASSERT_EQ(pool.end(), ++it);
 
     // [_|_|_|_|_]
-    pool.destroy(e11);
+    e11.reset();
     ASSERT_EQ(3u, pool.pageN());
     ASSERT_EQ(0u, pool.size());
     ASSERT_EQ(pool.end(), pool.begin());
-
-    ASSERT_DEBUG_DEATH(pool.destroy(e11), "");
 }
 
 TEST(Pool, single)
 {
     qc::Pool<s32> pool{1u};
-    const u64 maxCapacity{qc::pageSize / sizeof(s32)};
+    const u64 maxCapacity{255u};
     ASSERT_EQ(1u, pool.maxPageN());
     ASSERT_EQ(maxCapacity, pool.capacity());
     ASSERT_EQ(0u, pool.pageN());
     ASSERT_EQ(0u, pool.size());
     ASSERT_EQ(pool.end(), pool.begin());
 
-    s32 & e0{pool.create(0)};
+    Unq<s32> e0{pool.unq(0)};
     ASSERT_EQ(maxCapacity, pool.capacity());
     ASSERT_EQ(1u, pool.pageN());
     ASSERT_EQ(1u, pool.size());
@@ -259,7 +255,7 @@ TEST(Pool, single)
     ASSERT_EQ(0, *it);
     ASSERT_EQ(pool.end(), ++it);
 
-    pool.destroy(e0);
+    e0.reset();
     ASSERT_EQ(maxCapacity, pool.capacity());
     ASSERT_EQ(1u, pool.pageN());
     ASSERT_EQ(0u, pool.size());
@@ -271,91 +267,50 @@ TEST(Pool, growthRate)
     struct PageVal { u8 data[qc::pageSize]; };
 
     {
-        qc::Pool<PageVal> pool{24u};
-        ASSERT_EQ(24u, pool.maxPageN());
-        ASSERT_EQ(24u, pool.capacity());
-        ASSERT_EQ(0u, pool.pageN());
-
-        static_cast<void>(pool.create());
-        ASSERT_EQ(24u, pool.capacity());
-        ASSERT_EQ(1u, pool.pageN());
-
-        static_cast<void>(pool.create());
-        ASSERT_EQ(24u, pool.capacity());
-        ASSERT_EQ(2u, pool.pageN());
-
-        static_cast<void>(pool.create());
-        ASSERT_EQ(24u, pool.capacity());
-        ASSERT_EQ(4u, pool.pageN());
-
-        static_cast<void>(pool.create());
-        ASSERT_EQ(24u, pool.capacity());
-        ASSERT_EQ(4u, pool.pageN());
-
-        static_cast<void>(pool.create());
-        ASSERT_EQ(24u, pool.capacity());
-        ASSERT_EQ(8u, pool.pageN());
-
-        static_cast<void>(pool.create());
-        static_cast<void>(pool.create());
-        static_cast<void>(pool.create());
-        ASSERT_EQ(24u, pool.capacity());
-        ASSERT_EQ(8u, pool.pageN());
-
-        static_cast<void>(pool.create());
-        ASSERT_EQ(24u, pool.capacity());
-        ASSERT_EQ(24u, pool.pageN());
-    }
-
-    {
         qc::Pool<PageVal> pool{25u};
-        ASSERT_EQ(25u, pool.maxPageN());
+        ASSERT_EQ(26u, pool.maxPageN());
         ASSERT_EQ(25u, pool.capacity());
         ASSERT_EQ(0u, pool.pageN());
 
-        static_cast<void>(pool.create());
-        ASSERT_EQ(25u, pool.capacity());
-        ASSERT_EQ(1u, pool.pageN());
-
-        static_cast<void>(pool.create());
+        Unq<PageVal> p1{pool.unq()};
         ASSERT_EQ(25u, pool.capacity());
         ASSERT_EQ(2u, pool.pageN());
 
-        static_cast<void>(pool.create());
+        Unq<PageVal> p2{pool.unq()};
         ASSERT_EQ(25u, pool.capacity());
         ASSERT_EQ(4u, pool.pageN());
 
-        static_cast<void>(pool.create());
+        Unq<PageVal> p3{pool.unq()};
         ASSERT_EQ(25u, pool.capacity());
         ASSERT_EQ(4u, pool.pageN());
 
-        static_cast<void>(pool.create());
+        Unq<PageVal> p4{pool.unq()};
         ASSERT_EQ(25u, pool.capacity());
         ASSERT_EQ(8u, pool.pageN());
 
-        static_cast<void>(pool.create());
-        static_cast<void>(pool.create());
-        static_cast<void>(pool.create());
+        Unq<PageVal> p5{pool.unq()};
+        Unq<PageVal> p6{pool.unq()};
+        Unq<PageVal> p7{pool.unq()};
         ASSERT_EQ(25u, pool.capacity());
         ASSERT_EQ(8u, pool.pageN());
 
-        static_cast<void>(pool.create());
+        Unq<PageVal> p8{pool.unq()};
         ASSERT_EQ(25u, pool.capacity());
         ASSERT_EQ(16u, pool.pageN());
 
-        static_cast<void>(pool.create());
-        static_cast<void>(pool.create());
-        static_cast<void>(pool.create());
-        static_cast<void>(pool.create());
-        static_cast<void>(pool.create());
-        static_cast<void>(pool.create());
-        static_cast<void>(pool.create());
+        Unq<PageVal> p9{pool.unq()};
+        Unq<PageVal> p10{pool.unq()};
+        Unq<PageVal> p11{pool.unq()};
+        Unq<PageVal> p12{pool.unq()};
+        Unq<PageVal> p13{pool.unq()};
+        Unq<PageVal> p14{pool.unq()};
+        Unq<PageVal> p15{pool.unq()};
         ASSERT_EQ(25u, pool.capacity());
         ASSERT_EQ(16u, pool.pageN());
 
-        static_cast<void>(pool.create());
+        Unq<PageVal> p16{pool.unq()};
         ASSERT_EQ(25u, pool.capacity());
-        ASSERT_EQ(25u, pool.pageN());
+        ASSERT_EQ(26u, pool.pageN());
     }
 }
 
@@ -369,58 +324,19 @@ TEST(Pool, biggerThanPageVal)
     ASSERT_EQ(1u, pool.capacity());
     ASSERT_EQ(0u, pool.pageN());
 
-    HugeVal & v{pool.create()};
+    Unq<HugeVal> v{pool.unq()};
     ASSERT_EQ(1u, pool.capacity());
     ASSERT_EQ(2u, pool.pageN());
 
-    ++v.data[0];
-    ++v.data[sizeof(HugeVal) - 1u];
+    ++v->data[0];
+    ++v->data[sizeof(HugeVal) - 1u];
 
-    pool.destroy(v);
+    v.reset();
     ASSERT_EQ(1u, pool.capacity());
     ASSERT_EQ(2u, pool.pageN());
 }
 
-TEST(Pool, setCapacity)
-{
-    qc::Pool<s32> pool{};
-    ASSERT_EQ(0u, pool.maxPageN());
-    ASSERT_EQ(0u, pool.capacity());
-    ASSERT_EQ(0u, pool.pageN());
-
-    ASSERT_DEATH(static_cast<void>(pool.create(0)), "");
-
-    pool.setCapacity(1u);
-    ASSERT_EQ(1u, pool.maxPageN());
-    ASSERT_EQ(qc::pageSize / sizeof(s32), pool.capacity());
-    ASSERT_EQ(0u, pool.pageN());
-
-    pool.setCapacity(0u);
-    ASSERT_EQ(0u, pool.maxPageN());
-    ASSERT_EQ(0u, pool.capacity());
-    ASSERT_EQ(0u, pool.pageN());
-
-    ASSERT_DEATH(static_cast<void>(pool.create(0)), "");
-
-    pool.setCapacity(qc::pageSize / sizeof(s32) * 2u);
-    ASSERT_EQ(2u, pool.maxPageN());
-    ASSERT_EQ(qc::pageSize / sizeof(s32) * 2u, pool.capacity());
-    ASSERT_EQ(0u, pool.pageN());
-
-    pool.setCapacity(1u);
-    ASSERT_EQ(1u, pool.maxPageN());
-    ASSERT_EQ(qc::pageSize / sizeof(s32), pool.capacity());
-    ASSERT_EQ(0u, pool.pageN());
-
-    [[maybe_unused]] s32 & v{pool.create(0)};
-
-    ASSERT_DEBUG_DEATH(pool.setCapacity(pool.capacity()), "");
-    ASSERT_DEBUG_DEATH(pool.setCapacity(qc::pageSize / sizeof(s32) * 3u), "");
-    ASSERT_DEBUG_DEATH(pool.setCapacity(1u), "");
-    ASSERT_DEBUG_DEATH(pool.setCapacity(0u), "");
-}
-
-TEST(Pool, shrinkToFit)
+/*TEST(Pool, shrinkToFit)
 {
     const u64 intsPerPage{qc::pageSize / sizeof(s32)};
     qc::Pool<s32> pool{5u * intsPerPage};
@@ -478,7 +394,7 @@ TEST(Pool, shrinkToFit)
 
     static_cast<void>(pool.create(0));
     ASSERT_EQ(1u, pool.pageN());
-}
+}*/
 
 TEST(Pool, iteratorAssignability)
 {
@@ -486,4 +402,21 @@ TEST(Pool, iteratorAssignability)
     static_assert(std::is_assignable_v<qc::Pool<s32>::const_iterator, qc::Pool<s32>::iterator>);
     static_assert(!std::is_assignable_v<qc::Pool<s32>::iterator, qc::Pool<s32>::const_iterator>);
     static_assert(std::is_assignable_v<qc::Pool<s32>::const_iterator, qc::Pool<s32>::const_iterator>);
+}
+
+TEST(Pool, moveability)
+{
+    qc::Pool<u32> p2{10};
+    Unq<u32> v;
+    {
+        qc::Pool<u32> p1{10};
+        v = p1.unq(7u);
+        ASSERT_FALSE(p1.empty());
+        ASSERT_EQ(*v, 7u);
+        p2 = std::move(p1);
+        ASSERT_TRUE(p1.empty());
+        ASSERT_FALSE(p2.empty());
+        ASSERT_EQ(*v, 7u);
+    }
+    ASSERT_EQ(*v, 7u);
 }

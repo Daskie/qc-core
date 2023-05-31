@@ -28,8 +28,8 @@ namespace qc
             void operator()(void * ptr) const;
         };
 
-        template <typename T> using Unq = Unq<T, Deallocator>;
-        template <typename T> using Shr = Shr<T, Deallocator>;
+        template <typename T> using Unq = Unq<T, Deallocator, true>;
+        template <typename T> using Shr = Shr<T, Deallocator, true>;
 
         explicit Arena(u64 capacity);
 
@@ -92,6 +92,7 @@ namespace qc
     inline void Arena::Deallocator::operator()(void * const ptr) const
     {
         _Chunk & header{Arena::_header(ptr)};
+        assert(!header.refN);
         header.arena->_bubbles.add(&header, 1 + header.valChunkN);
     }
 
@@ -99,7 +100,7 @@ namespace qc
     {
         const u64 pageN{_pageN(capacity)};
         _capacity = pageN * pageSize;
-        _memory = static_cast<_Chunk *>(reservePages(pageN));
+        _memory = static_cast<_Chunk *>(reservePages(pageN)); // TODO: Don't reserve pages until first expansion
         _bubbles.add(_memory, s64(_capacity / sizeof(_Chunk)));
     }
 
