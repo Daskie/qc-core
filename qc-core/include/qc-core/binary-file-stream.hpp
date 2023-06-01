@@ -22,7 +22,7 @@ namespace qc
     {
       public:
 
-        static constexpr u64 bufferSize{4096u * 4u};
+        static constexpr u64 bufferSize{64u * 1024u};
 
       protected:
 

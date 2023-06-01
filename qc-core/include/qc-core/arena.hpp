@@ -136,13 +136,13 @@ namespace qc
 
         struct alignas(8u) _Chunk
         {
-            u16 pageBlockI;
+            u16 pageI;
             u16 valChunkN;
             u32 refN;
         };
 
-        static constexpr u64 _maxPageBlockN{u64(1u) << 16};
-        static constexpr u64 _maxCapacity{_maxPageBlockN * pageGranularity - sizeof(_Chunk)};
+        static constexpr u64 _maxPageN{u64(1u) << 16};
+        static constexpr u64 _maxCapacity{_maxPageN * pageSize - sizeof(_Chunk)};
         static constexpr u64 _maxValChunkN{(u64(1u) << 16) - 1u};
 
         static u64 _pageN(u64 capacity);
@@ -494,8 +494,8 @@ namespace qc
         v.~T();
 
         // Get arena pointer
-        const u64 startOfPageBlockAddr{std::bit_cast<u64>(&header) & ~u64(pageGranularity - 1u)};
-        const u64 firstPageAddr{startOfPageBlockAddr - header.pageBlockI * pageGranularity};
+        const u64 startOfPageAddr{std::bit_cast<u64>(&header) & ~u64(pageSize - 1u)};
+        const u64 firstPageAddr{startOfPageAddr - header.pageI * pageSize};
         Arena & arena{**std::bit_cast<Arena * *>(firstPageAddr)};
 
         // Add bubble
@@ -542,7 +542,7 @@ namespace qc
             _expand(requiredSize);
         }
 
-        header->pageBlockI = u16(u64(header - (_memory - 1)) / pageGranularity);
+        header->pageI = u16(u64(header - (_memory - 1)) * sizeof(_Chunk) / pageSize);
         header->valChunkN = valChunkN;
         header->refN = 0u;
         return *(new (header + 1) T{std::forward<Args>(args)...});

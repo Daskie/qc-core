@@ -10,13 +10,13 @@ template <typename T> using Shr = qc::Pool<T>::Shr;
 
 TEST(Pool, standard)
 {
-    // Assumes page size is 4096
-    // Each BigInt is 2400 bytes, so 5 would fit into three pages
-    ASSERT_EQ(4096u, qc::pageSize);
+    // Assumes page size is 64k
+    // Each BigInt is 39300 bytes, so 5 would fit into three pages
+    ASSERT_EQ(64u * 1024u, qc::pageSize);
     struct BigInt
     {
         s32 x;
-        u8 padding[2400u - sizeof(s32)];
+        u8 padding[39300u - sizeof(s32)];
 
         BigInt() = default;
         BigInt(s32 x_) : x{x_} {}
@@ -240,7 +240,7 @@ TEST(Pool, standard)
 TEST(Pool, single)
 {
     qc::Pool<s32> pool{1u};
-    const u64 maxCapacity{255u};
+    const u64 maxCapacity{4095u};
     ASSERT_EQ(1u, pool.maxPageN());
     ASSERT_EQ(maxCapacity, pool.capacity());
     ASSERT_EQ(0u, pool.pageN());
@@ -316,8 +316,8 @@ TEST(Pool, growthRate)
 
 TEST(Pool, biggerThanPageVal)
 {
-    ASSERT_EQ(4096u, qc::pageSize);
-    struct HugeVal { u8 data[5000u]; };
+    ASSERT_EQ(1u << 16, qc::pageSize);
+    struct HugeVal { u8 data[66'000u]; };
 
     qc::Pool<HugeVal> pool{1u};
     ASSERT_EQ(2u, pool.maxPageN());

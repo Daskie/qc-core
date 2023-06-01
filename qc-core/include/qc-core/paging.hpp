@@ -4,65 +4,60 @@
 
 namespace qc
 {
-    /// Assume pages are 4096 bytes for better compile-time optimization
-    /// This is checked the first time pages are reserved, and the program will abort if the actual page size differs
-    constexpr u64 pageSize{4096u};
-
-    /// TODO: Make all page allocations a multiple of this
-    /// New page allocations will be aligned to this number of bytes
-    /// Hardcoded for compile-time optimization
-    /// This is checked the first time pages are reserved, and the program will abort if the actual granularity differs
-    constexpr u64 pageGranularity{64u * 1024u};
-
-    static_assert(pageGranularity % pageSize == 0u);
+    /// The actual page size on modern operating systems is 4k, but on Windows all page allocations are aligned to 64k.
+    ///   For this reason, we may as well always allocate multiples of 64k, so we're pretending a page is actually 64k.
+    ///   Unix does not have this property, but we can easily simulate it
+    /// Hardcoded for compile-time optimization; it is checked the first time pages are reserved and the program will
+    ///   abort if the actual value differs
+    constexpr u64 pageSize{64u * 1024u};
 
     ///
-    /// Allocate a contiguous block of memory in page multiples
+    /// Allocate a contiguous block of memory
     ///
     /// Equivalent to `reservePages` + `commitPages`
     ///
-    /// @param pageN the number of pages to allocate
-    /// @return the start of the allocated memory, or null if `pageN` is 0
+    /// @param n number of pages to allocate
+    /// @return start of the allocated memory, or null if `n` is 0
     ///
-    nodisc void * allocatePages(u64 pageN);
+    nodisc void * allocatePages(u64 n);
 
     ///
     /// Reserve a contiguous block of virtual memory without actually allocating any physical memory
     ///
     /// This memory cannot be used before being committed, see `commitPages`
     ///
-    /// @param pageN the number of pages to reserve
-    /// @return the base of the reserved memory, or null if `pageN` is 0
+    /// @param n number of pages to reserve
+    /// @return base of the reserved memory, or null if `n` is 0
     ///
-    nodisc void * reservePages(u64 pageN);
+    nodisc void * reservePages(u64 n);
 
     ///
     /// Commit a range of previously reserved pages to physical memory, allowing them to be used
     ///
     /// Committing the same page(s) multiple times has no effect
     ///
-    /// @param pageStart the first page in the range to commit; pages must be currently reserved; no-op if null
-    /// @param pageN the number of pages to commit; no-op if zero
+    /// @param start first page in the range to commit; pages must be currently reserved; no-op if null
+    /// @param n number of pages to commit; no-op if zero
     ///
-    void commitPages(void * pageStart, u64 pageN);
+    void commitPages(void * start, u64 n);
 
     ///
     /// Decommit a range of previously committed pages, freeing the associated physical memory back to the system
     ///
     /// Decommitting the same page(s) multiple times has no effect
     ///
-    /// @param pageStart the first page in the range to decommit; pages must be currently reserved; no-op if null
-    /// @param pageN the number of pages to decommit; no-op if zero
+    /// @param start first page in the range to decommit; pages must be currently reserved; no-op if null
+    /// @param n number of pages to decommit; no-op if zero
     ///
-    void decommitPages(void * pageStart, u64 pageN);
+    void decommitPages(void * start, u64 n);
 
     ///
     /// Frees a previously allocated/reserved memory block both physically and virtually
     ///
     /// Pages can be committed or not, the memory is freed regardless
     ///
-    /// @param pages must be the base page returned by `allocatePages`/`reservePages`; no-op if null
-    /// @param pageN must be the number of pages returned by `allocatePages`/`reservePages`; no-op if zero
+    /// @param start must be the base page returned by `allocatePages`/`reservePages`; no-op if null
+    /// @param n must be the number of pages returned by `allocatePages`/`reservePages`; no-op if zero
     ///
-    void freePages(void * pages, u64 pageN);
+    void freePages(void * start, u64 n);
 }

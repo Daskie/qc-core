@@ -112,6 +112,6 @@ TEST(Paging, granularity)
 {
     for (u64 i{0u}; i < 100u; ++i)
     {
-        ASSERT_FALSE(std::bit_cast<u64>(qc::reservePages(1u)) % qc::pageGranularity);
+        ASSERT_FALSE(std::bit_cast<u64>(qc::reservePages(1u)) % qc::pageSize);
     }
 }
