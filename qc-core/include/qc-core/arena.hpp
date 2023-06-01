@@ -107,10 +107,10 @@ namespace qc
         explicit Arena(u64 capacity);
 
         Arena(const Arena &) = delete;
-        Arena(Arena &&) = delete;
+        Arena(Arena && other);
 
         Arena & operator=(const Arena &) = delete;
-        Arena & operator=(Arena &&) = delete;
+        Arena & operator=(Arena && other);
 
         ~Arena();
 
@@ -130,13 +130,13 @@ namespace qc
 
         nodisc forceinline u64 size() const { return _size; }
 
-        nodisc forceinline bool empty() const { return !_size; }
+        nodisc bool empty() const;
 
       private:
 
         struct _Chunk
         {
-            Arena * arena;
+            Arena * * arena;
             u32 valChunkN;
             u32 refN;
         };
@@ -344,23 +344,50 @@ namespace qc
 
     inline Arena::Arena(const u64 capacity)
     {
-        const u64 pageN{_pageN(capacity)};
-        _capacity = pageN * pageSize;
-        _memory = static_cast<_Chunk *>(reservePages(pageN)); // TODO: Don't reserve pages until first expansion
+        const u64 pageN{_pageN(sizeof(_Chunk) + capacity)};
+        _capacity = pageN * pageSize - sizeof(_Chunk);
+        _memory = static_cast<_Chunk *>(reservePages(pageN)) + 1; // TODO: Don't reserve pages until first expansion
         _bubbles.add(_memory, s64(_capacity / sizeof(_Chunk)));
+    }
+
+    inline Arena::Arena(Arena && other) :
+        _capacity{std::exchange(other._capacity, 0u)},
+        _size{std::exchange(other._size, 0u)},
+        _memory{std::exchange(other._memory, nullptr)},
+        _bubbles{std::move(other._bubbles)}
+    {
+        // Update self pointer
+        if (_memory)
+        {
+            *reinterpret_cast<Arena * *>(_memory - 1) = this;
+        }
+    }
+
+    inline Arena & Arena::operator=(Arena && other)
+    {
+        _capacity = std::exchange(other._capacity, 0u);
+        _size = std::exchange(other._size, 0u);
+        _memory = std::exchange(other._memory, nullptr);
+        _bubbles = std::move(other._bubbles);
+
+        // Update self pointer
+        if (_memory)
+        {
+            *reinterpret_cast<Arena * *>(_memory - 1) = this;
+        }
+
+        return *this;
     }
 
     inline Arena::~Arena()
     {
-        // Check for dangling references
-        if constexpr (debug)
+        if (_capacity)
         {
-            ABORT_IF(_bubbles.bubbles().size() != 1u);
-            const auto & bubble{_bubbles.bubbles().front()};
-            ABORT_IF(bubble.pos != _memory || u64(bubble.size) * sizeof(_Chunk) != _capacity);
-        }
+            // Check for dangling references
+            assert(empty());
 
-        freePages(_memory, _pageN(_capacity));
+            freePages(_memory - 1, (sizeof(_Chunk) + _capacity) / pageSize);
+        }
     }
 
     template <typename T, typename... Args>
@@ -386,7 +413,7 @@ namespace qc
         if constexpr (debug)
         {
             _Chunk & header{_header(ptr)};
-            ABORT_IF(&header < _memory || &header >= _memory + _capacity);
+            ABORT_IF(&header < _memory || &header >= _memory + _size / sizeof(_Chunk));
             ABORT_IF(!header.refN);
         }
 
@@ -395,6 +422,11 @@ namespace qc
 
     inline void Arena::shrinkToFit()
     {
+        if (!_size)
+        {
+            return;
+        }
+
         const u64 freeTailSize{u64(_bubbles.tail(_memory + _capacity / sizeof(_Chunk))) * sizeof(_Chunk)};
 
         // Arena is unallocated or full
@@ -403,9 +435,9 @@ namespace qc
             return;
         }
 
-        u64 necessaryPageN{(_capacity - freeTailSize + (pageSize - 1u)) / pageSize};
-        if (necessaryPageN) necessaryPageN = std::bit_ceil(necessaryPageN);
-        const u64 currentPageN{(_size + (pageSize - 1u)) / pageSize};
+        const u64 necessarySize{_capacity - freeTailSize};
+        const u64 necessaryPageN{necessarySize ? _pageN(sizeof(_Chunk) + necessarySize) : 0u};
+        const u64 currentPageN{(sizeof(_Chunk) + _size) / pageSize};
         const u64 unnecessaryPageN{currentPageN - necessaryPageN};
 
         // Free tail is smaller than hald the current size
@@ -415,9 +447,25 @@ namespace qc
         }
 
         // Decommit uneccessary pages
-        decommitPages(reinterpret_cast<std::byte *>(_memory) + necessaryPageN * pageSize, unnecessaryPageN);
+        decommitPages(reinterpret_cast<std::byte *>(_memory - 1) + necessaryPageN * pageSize, unnecessaryPageN);
 
-        _size = necessaryPageN * pageSize;
+        _size = necessaryPageN ? necessaryPageN * pageSize - sizeof(_Chunk) : 0u;
+    }
+
+    inline bool Arena::empty() const
+    {
+        if (!_capacity)
+        {
+            return true;
+        }
+
+        if (_bubbles.bubbles().size() != 1u)
+        {
+            return false;
+        }
+
+        const auto & bubble{_bubbles.bubbles().front()};
+        return bubble.pos == _memory && u64(bubble.size) * sizeof(_Chunk) == _capacity;
     }
 
     // TODO: Move to paging.hpp
@@ -437,21 +485,27 @@ namespace qc
         _Chunk & header{Arena::_header(&v)};
         assert(!header.refN);
         v.~T();
-        header.arena->_bubbles.add(&header, 1 + header.valChunkN);
+        (*header.arena)->_bubbles.add(&header, 1 + header.valChunkN);
     }
 
     inline void Arena::_expand(u64 newSize)
     {
-        const u64 newPageN{std::bit_ceil((newSize + (pageSize - 1u)) / pageSize)};
-        newSize = newPageN * pageSize;
+        const u64 newPageN{_pageN(sizeof(_Chunk) + newSize)};
+        newSize = newPageN * pageSize - sizeof(_Chunk);
 
         // Ensure we have sufficient reserved memory
         ABORT_IF(newSize > _capacity);
 
         // Commit new pages
-        const u64 currentPageN{_size / pageSize};
-        std::byte * const pages{reinterpret_cast<std::byte *>(_memory)};
+        const u64 currentPageN{(sizeof(_Chunk) + _size) / pageSize};
+        std::byte * const pages{reinterpret_cast<std::byte *>(_memory - 1)};
         commitPages(pages + currentPageN * pageSize, newPageN - currentPageN);
+
+        // Set self pointer if this is the first commit
+        if (!_size)
+        {
+            *reinterpret_cast<Arena * *>(_memory - 1) = this;
+        }
 
         _size = newSize;
     }
@@ -474,7 +528,7 @@ namespace qc
             _expand(requiredSize);
         }
 
-        header->arena = this;
+        header->arena = reinterpret_cast<Arena * *>(_memory - 1);
         header->valChunkN = valChunkN;
         header->refN = 0u;
         return *(new (header + 1) T{std::forward<Args>(args)...});

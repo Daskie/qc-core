@@ -419,6 +419,8 @@ TEST(Pool, moveability)
         ASSERT_EQ(*v, 7u);
     }
     ASSERT_EQ(*v, 7u);
+    v.reset();
+    ASSERT_TRUE(p2.empty());
 }
 
 TEST(Pool, unique)

@@ -365,7 +365,6 @@ namespace qc
         _chunksEnd{std::exchange(other._chunksEnd, nullptr)},
         _firstFreeChunk{std::exchange(other._firstFreeChunk)}
     {
-
         _setHead();
     }
 
@@ -399,17 +398,6 @@ namespace qc
         if (_chunksStart)
         {
             freePages(reinterpret_cast<std::byte *>(_chunksStart) - sizeof(Pool *), _maxPageN);
-        }
-
-        if constexpr (debug)
-        {
-            _maxPageN = 0u;
-            _maxCapacity = 0u;
-            _pageN = 0u;
-            _size = 0u;
-            _chunksStart = nullptr;
-            _chunksEnd = nullptr;
-            _firstFreeChunk = nullptr;
         }
     }
 

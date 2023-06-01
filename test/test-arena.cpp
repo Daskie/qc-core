@@ -17,33 +17,30 @@ TEST(Arena, growth)
 {
     struct Page { std::byte bytes[qc::pageSize - _headerSize]; };
 
-    qc::Arena arena{qc::pageSize * 8u};
-    ASSERT_EQ(qc::pageSize * 8u, arena.capacity());
+    qc::Arena arena{qc::pageSize * 8u - _headerSize};
+    ASSERT_EQ(qc::pageSize * 8u - _headerSize, arena.capacity());
     ASSERT_EQ(0u, arena.size());
 
     Unq<Page> p1{arena.unq<Page>()};
-    ASSERT_EQ(qc::pageSize, arena.size());
+    ASSERT_EQ(qc::pageSize * 2u - _headerSize, arena.size());
 
     Unq<Page> p2{arena.unq<Page>()};
-    ASSERT_EQ(qc::pageSize * 2u, arena.size());
+    ASSERT_EQ(qc::pageSize * 4u - _headerSize, arena.size());
 
     Unq<Page> p3{arena.unq<Page>()};
-    ASSERT_EQ(qc::pageSize * 4u, arena.size());
+    ASSERT_EQ(qc::pageSize * 4u - _headerSize, arena.size());
 
     Unq<Page> p4{arena.unq<Page>()};
-    ASSERT_EQ(qc::pageSize * 4u, arena.size());
+    ASSERT_EQ(qc::pageSize * 8u - _headerSize, arena.size());
 
     Unq<Page> p5{arena.unq<Page>()};
-    ASSERT_EQ(qc::pageSize * 8u, arena.size());
+    ASSERT_EQ(qc::pageSize * 8u - _headerSize, arena.size());
 
     Unq<Page> p6{arena.unq<Page>()};
-    ASSERT_EQ(qc::pageSize * 8u, arena.size());
+    ASSERT_EQ(qc::pageSize * 8u - _headerSize, arena.size());
 
     Unq<Page> p7{arena.unq<Page>()};
-    ASSERT_EQ(qc::pageSize * 8u, arena.size());
-
-    Unq<Page> p8{arena.unq<Page>()};
-    ASSERT_EQ(qc::pageSize * 8u, arena.size());
+    ASSERT_EQ(qc::pageSize * 8u - _headerSize, arena.size());
 
     p1.reset();
     p2.reset();
@@ -52,82 +49,82 @@ TEST(Arena, growth)
     p5.reset();
     p6.reset();
     p7.reset();
-    p8.reset();
-    ASSERT_EQ(qc::pageSize * 8u, arena.size());
+    ASSERT_EQ(qc::pageSize * 8u - _headerSize, arena.size());
 }
 
 TEST(Arena, shrinkToFit)
 {
     struct Page { std::byte bytes[qc::pageSize - _headerSize]; };
 
-    qc::Arena arena{qc::pageSize * 8u};
-    ASSERT_EQ(qc::pageSize * 8u, arena.capacity());
+    qc::Arena arena{qc::pageSize * 8u - _headerSize};
+    ASSERT_EQ(qc::pageSize * 8u - _headerSize, arena.capacity());
     ASSERT_EQ(0u, arena.size());
 
     arena.shrinkToFit();
-    ASSERT_EQ(qc::pageSize * 8u, arena.capacity());
+    ASSERT_EQ(qc::pageSize * 8u - _headerSize, arena.capacity());
     ASSERT_EQ(0u, arena.size());
 
     Unq<Page> p1{arena.unq<Page>()};
-    ASSERT_EQ(qc::pageSize, arena.size());
+    ASSERT_EQ(qc::pageSize * 2u - _headerSize, arena.size());
 
     arena.shrinkToFit();
-    ASSERT_EQ(qc::pageSize, arena.size());
+    ASSERT_EQ(qc::pageSize * 2u - _headerSize, arena.size());
 
     Unq<Page> p2{arena.unq<Page>()};
-    ASSERT_EQ(qc::pageSize * 2u, arena.size());
+    ASSERT_EQ(qc::pageSize * 4u - _headerSize, arena.size());
 
     arena.shrinkToFit();
-    ASSERT_EQ(qc::pageSize * 2u, arena.size());
+    ASSERT_EQ(qc::pageSize * 4u - _headerSize, arena.size());
 
     Unq<Page> p3{arena.unq<Page>()};
-    ASSERT_EQ(qc::pageSize * 4u, arena.size());
+    ASSERT_EQ(qc::pageSize * 4u - _headerSize, arena.size());
 
     arena.shrinkToFit();
-    ASSERT_EQ(qc::pageSize * 4u, arena.size());
+    ASSERT_EQ(qc::pageSize * 4u - _headerSize, arena.size());
 
     Unq<Page> p4{arena.unq<Page>()};
-    ASSERT_EQ(qc::pageSize * 4u, arena.size());
+    ASSERT_EQ(qc::pageSize * 8u - _headerSize, arena.size());
 
     arena.shrinkToFit();
-    ASSERT_EQ(qc::pageSize * 4u, arena.size());
+    ASSERT_EQ(qc::pageSize * 8u - _headerSize, arena.size());
 
     Unq<Page> p5{arena.unq<Page>()};
-    ASSERT_EQ(qc::pageSize * 8u, arena.size());
+    ASSERT_EQ(qc::pageSize * 8u - _headerSize, arena.size());
 
     arena.shrinkToFit();
-    ASSERT_EQ(qc::pageSize * 8u, arena.size());
+    ASSERT_EQ(qc::pageSize * 8u - _headerSize, arena.size());
 
     Unq<Page> p6{arena.unq<Page>()};
     Unq<Page> p7{arena.unq<Page>()};
-    Unq<Page> p8{arena.unq<Page>()};
-    ASSERT_EQ(qc::pageSize * 8u, arena.size());
+    ASSERT_EQ(qc::pageSize * 8u - _headerSize, arena.size());
 
     arena.shrinkToFit();
-    ASSERT_EQ(qc::pageSize * 8u, arena.size());
+    ASSERT_EQ(qc::pageSize * 8u - _headerSize, arena.size());
 
-    p8.reset();
     p7.reset();
     p6.reset();
     arena.shrinkToFit();
-    ASSERT_EQ(qc::pageSize * 8u, arena.size());
-
-    p4.reset();
-    arena.shrinkToFit();
-    ASSERT_EQ(qc::pageSize * 8u, arena.size());
+    ASSERT_EQ(qc::pageSize * 8u - _headerSize, arena.size());
 
     p5.reset();
     arena.shrinkToFit();
-    ASSERT_EQ(qc::pageSize * 4u, arena.size());
+    ASSERT_EQ(qc::pageSize * 8u - _headerSize, arena.size());
+
+    p4.reset();
+    arena.shrinkToFit();
+    ASSERT_EQ(qc::pageSize * 4u - _headerSize, arena.size());
 
     p3.reset();
     arena.shrinkToFit();
-    ASSERT_EQ(qc::pageSize * 2u, arena.size());
+    ASSERT_EQ(qc::pageSize * 4u - _headerSize, arena.size());
 
     p2.reset();
+    arena.shrinkToFit();
+    ASSERT_EQ(qc::pageSize * 2u - _headerSize, arena.size());
+
     p1.reset();
     arena.shrinkToFit();
-    ASSERT_EQ(qc::pageSize * 0u, arena.size());
+    ASSERT_EQ(0u, arena.size());
 }
 
 TEST(Arena, alignment)
@@ -159,20 +156,20 @@ TEST(Arena, largeValue)
 {
     struct Large { std::byte bytes[qc::pageSize + qc::pageSize / 2u - _headerSize]; };
 
-    qc::Arena arena{qc::pageSize * 4u};
+    qc::Arena arena{qc::pageSize * 4u - _headerSize};
 
     Unq<Large> l1{arena.unq<Large>()};
-    ASSERT_EQ(qc::pageSize * 2u, arena.size());
+    ASSERT_EQ(qc::pageSize * 2u - _headerSize, arena.size());
 
     Unq<Large> l2{arena.unq<Large>()};
-    ASSERT_EQ(qc::pageSize * 4u, arena.size());
+    ASSERT_EQ(qc::pageSize * 4u - _headerSize, arena.size());
 
     ASSERT_DEATH(static_cast<void>(arena.unq<Large>()), "");
 
     l1.reset();
 
     Unq<Large>l3{arena.unq<Large>()};
-    ASSERT_EQ(qc::pageSize * 4u, arena.size());
+    ASSERT_EQ(qc::pageSize * 4u - _headerSize, arena.size());
 }
 
 TEST(Arena, unique)
@@ -422,4 +419,23 @@ TEST(Arena, polymorphismShared)
         Shr<B> b{arena.shr<B>(x)};
         a = b;
     }
+}
+
+TEST(Arena, moveability)
+{
+    qc::Arena a2{1000};
+    Unq<u32> v;
+    {
+        qc::Arena a1{1000};
+        v = a1.unq<u32>(7u);
+        ASSERT_FALSE(a1.empty());
+        ASSERT_EQ(*v, 7u);
+        a2 = std::move(a1);
+        ASSERT_TRUE(a1.empty());
+        ASSERT_FALSE(a2.empty());
+        ASSERT_EQ(*v, 7u);
+    }
+    ASSERT_EQ(*v, 7u);
+    v.reset();
+    ASSERT_TRUE(a2.empty());
 }
