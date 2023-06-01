@@ -8,6 +8,7 @@ namespace qc
     /// This is checked the first time pages are reserved, and the program will abort if the actual page size differs
     constexpr u64 pageSize{4096u};
 
+    /// TODO: Make all page allocations a multiple of this
     /// New page allocations will be aligned to this number of bytes
     /// Hardcoded for compile-time optimization
     /// This is checked the first time pages are reserved, and the program will abort if the actual granularity differs

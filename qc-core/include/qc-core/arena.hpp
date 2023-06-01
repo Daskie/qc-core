@@ -49,8 +49,6 @@ namespace qc
 
             nodisc forceinline T * operator->() const { return _ptr; }
 
-            nodisc forceinline T * get() const { return _ptr; }
-
             nodisc forceinline bool operator==(const Unq & other) const { return _ptr == other._ptr; }
             nodisc forceinline friend bool operator==(const Unq & a, const T * b) { return a._ptr == b; }
             nodisc forceinline friend bool operator==(const T * a, const Unq & b) { return a == b._ptr; }
@@ -92,8 +90,6 @@ namespace qc
             nodisc forceinline T & operator*() const { return *_ptr; }
 
             nodisc forceinline T * operator->() const { return _ptr; }
-
-            nodisc forceinline T * get() const { return _ptr; }
 
             nodisc forceinline bool operator==(const Shr & other) const { return _ptr == other._ptr; }
             nodisc forceinline friend bool operator==(const Shr & a, const T * b) { return a._ptr == b; }
@@ -174,7 +170,7 @@ namespace qc
     {
         u32 & refN{_refN()};
         assert(!refN);
-        refN = ~u32{};
+        refN = 1u;
     }
 
     template <typename T>
@@ -222,7 +218,7 @@ namespace qc
         if (_ptr)
         {
             u32 & refN{_refN()};
-            assert(refN);
+            assert(refN == 1u);
             refN = 0u;
             _destroy(*std::exchange(_ptr, nullptr));
         }
@@ -238,16 +234,17 @@ namespace qc
     forceinline Arena::Shr<T>::Shr(T & v) :
         _ptr{&v}
     {
-        u32 & refN{_refN()};
-        assert(refN != ~u32{});
-        ++refN;
+        ++_refN();
     }
 
     template <typename T>
     forceinline Arena::Shr<T>::Shr(const Shr & other) :
         _ptr{other._ptr}
     {
-        ++_refN();
+        if (_ptr)
+        {
+            ++_refN();
+        }
     }
 
     template <typename T>
@@ -390,7 +387,7 @@ namespace qc
         {
             _Chunk & header{_header(ptr)};
             ABORT_IF(&header < _memory || &header >= _memory + _capacity);
-            ABORT_IF(header.refN == 0u || header.refN == ~u32{});
+            ABORT_IF(!header.refN);
         }
 
         return Shr<T>{*ptr};

@@ -22,6 +22,26 @@ namespace qc
     {
         template <bool constant> class _Iterator;
 
+        struct alignas(8u) _ChunkMeta
+        {
+            u32 pageI;
+            u32 refN;
+        };
+
+        struct _Chunk : _ChunkMeta
+        {
+            union
+            {
+                T val;
+                _Chunk * nextFreeChunk;
+            };
+
+            MSVC_WARNING_SUPPRESS(4624) // This type is never destructed
+        };
+
+        // Chunks must be contiguous with head and tail
+        static_assert(alignof(_Chunk) <= 8u);
+
       public:
 
         using value_type = T;
@@ -50,25 +70,21 @@ namespace qc
 
             void reset();
 
-            nodisc forceinline explicit operator bool() const { return _ptr; }
+            nodisc forceinline explicit operator bool() const { return bool(_chunk); }
 
-            nodisc forceinline T & operator*() const { return *_ptr; }
+            nodisc forceinline T & operator*() const { return _chunk->val; }
 
-            nodisc forceinline T * operator->() const { return _ptr; }
+            nodisc forceinline T * operator->() const { return &_chunk->val; }
 
-            nodisc forceinline T * get() const { return _ptr; }
-
-            nodisc forceinline bool operator==(const Unq & other) const { return _ptr == other._ptr; }
-            nodisc forceinline friend bool operator==(const Unq & a, const T * b) { return a._ptr == b; }
-            nodisc forceinline friend bool operator==(const T * a, const Unq & b) { return a == b._ptr; }
+            nodisc forceinline bool operator==(const Unq & other) const { return _chunk == other._chunk; }
+            nodisc forceinline friend bool operator==(const Unq & a, const T * b) { return &a._chunk->val == b; }
+            nodisc forceinline friend bool operator==(const T * a, const Unq & b) { return a == &b._chunk->val; }
 
           private:
 
-            T * _ptr{};
+            _Chunk * _chunk{};
 
-            explicit Unq(T & v);
-
-            nodisc u32 & _refN();
+            explicit Unq(_Chunk * chunk);
         };
 
         class Shr
@@ -89,25 +105,21 @@ namespace qc
 
             void reset();
 
-            nodisc forceinline explicit operator bool() const { return _ptr; }
+            nodisc forceinline explicit operator bool() const { return bool(_chunk); }
 
-            nodisc forceinline T & operator*() const { return *_ptr; }
+            nodisc forceinline T & operator*() const { return _chunk->val; }
 
-            nodisc forceinline T * operator->() const { return _ptr; }
+            nodisc forceinline T * operator->() const { return &_chunk->val; }
 
-            nodisc forceinline T * get() const { return _ptr; }
-
-            nodisc forceinline bool operator==(const Shr & other) const { return _ptr == other._ptr; }
-            nodisc forceinline friend bool operator==(const Shr & a, const T * b) { return a._ptr == b; }
-            nodisc forceinline friend bool operator==(const T * a, const Shr & b) { return a == b._ptr; }
+            nodisc forceinline bool operator==(const Shr & other) const { return _chunk == other._chunk; }
+            nodisc forceinline friend bool operator==(const Shr & a, const T * b) { return &a._chunk->val == b; }
+            nodisc forceinline friend bool operator==(const T * a, const Shr & b) { return a == &b._chunk->val; }
 
           private:
 
-            T * _ptr{};
+            _Chunk * _chunk{};
 
-            explicit Shr(T & v);
-
-            nodisc u32 & _refN();
+            explicit Shr(_Chunk * chunk);
         };
 
         explicit Pool(u64 capacity);
@@ -154,27 +166,7 @@ namespace qc
 
       private:
 
-        struct alignas(8u) _ChunkMeta
-        {
-            u32 pageI;
-            u32 refN;
-        };
-
-        struct _Chunk : _ChunkMeta
-        {
-            union
-            {
-                T val;
-                _Chunk * nextFreeChunk;
-            };
-
-            MSVC_WARNING_SUPPRESS(4624) // This type is never destructed
-        };
-
-        // Chunks must be contiguous with head and tail
-        static_assert(alignof(_Chunk) <= 8u);
-
-        static void _destroy(T & v);
+        static void _destroy(_Chunk * chunk);
 
         u64 _maxPageN{};
         u64 _maxCapacity{};
@@ -184,7 +176,7 @@ namespace qc
         _Chunk * _chunksEnd{};
         _Chunk * _firstFreeChunk{};
 
-        template <typename... Args> nodisc T & _create(Args &&... args);
+        template <typename... Args> nodisc _Chunk * _create(Args &&... args);
 
         void _expand();
 
@@ -235,17 +227,16 @@ namespace qc
 namespace qc
 {
     template <typename T>
-    forceinline Pool<T>::Unq::Unq(T & v) :
-        _ptr{&v}
+    forceinline Pool<T>::Unq::Unq(_Chunk * const chunk) :
+        _chunk{chunk}
     {
-        u32 & refN{_refN()};
-        assert(!refN);
-        refN = ~u32{};
+        assert(!_chunk->refN);
+        _chunk->refN = 1u;
     }
 
     template <typename T>
     forceinline Pool<T>::Unq::Unq(Unq && other) :
-        _ptr{std::exchange(other._ptr, nullptr)}
+        _chunk{std::exchange(other._chunk, nullptr)}
     {}
 
     template <typename T>
@@ -258,7 +249,7 @@ namespace qc
 
         reset();
 
-        _ptr = std::exchange(other._ptr, nullptr);
+        _chunk = std::exchange(other._chunk, nullptr);
 
         return *this;
     }
@@ -272,40 +263,34 @@ namespace qc
     template <typename T>
     inline void Pool<T>::Unq::reset()
     {
-        if (_ptr)
+        if (_chunk)
         {
-            u32 & refN{_refN()};
-            assert(refN == ~u32{});
-            refN = 0u;
-            _destroy(*std::exchange(_ptr, nullptr));
+            assert(_chunk->refN == 1u);
+            _chunk->refN = 0u;
+            _destroy(std::exchange(_chunk, nullptr));
         }
     }
 
     template <typename T>
-    forceinline u32 & Pool<T>::Unq::_refN()
+    forceinline Pool<T>::Shr::Shr(_Chunk * const chunk) :
+        _chunk{chunk}
     {
-        return reinterpret_cast<u32 *>(_ptr)[-1];
-    }
-
-    template <typename T>
-    forceinline Pool<T>::Shr::Shr(T & v) :
-        _ptr{&v}
-    {
-        u32 & refN{_refN()};
-        assert(refN != ~u32{});
-        ++_refN();
+        ++_chunk->refN;
     }
 
     template <typename T>
     forceinline Pool<T>::Shr::Shr(const Shr & other) :
-        _ptr{other._ptr}
+        _chunk{other._chunk}
     {
-        ++_refN();
+        if (_chunk)
+        {
+            ++_chunk->refN;
+        }
     }
 
     template <typename T>
     forceinline Pool<T>::Shr::Shr(Shr && other) :
-        _ptr{std::exchange(other._ptr, nullptr)}
+        _chunk{std::exchange(other._chunk, nullptr)}
     {}
 
     template <typename T>
@@ -318,11 +303,11 @@ namespace qc
 
         reset();
 
-        _ptr = other._ptr;
+        _chunk = other._chunk;
 
-        if (_ptr)
+        if (_chunk)
         {
-            ++_refN();
+            ++_chunk->refN;
         }
 
         return *this;
@@ -338,7 +323,7 @@ namespace qc
 
         reset();
 
-        _ptr = std::exchange(other._ptr, nullptr);
+        _chunk = std::exchange(other._chunk, nullptr);
 
         return *this;
     }
@@ -352,22 +337,15 @@ namespace qc
     template <typename T>
     inline void Pool<T>::Shr::reset()
     {
-        if (_ptr)
+        if (_chunk)
         {
-            u32 & refN{_refN()};
-            assert(refN >= 1u);
+            assert(_chunk->refN >= 1u);
 
-            if (!--refN)
+            if (!--_chunk->refN)
             {
-                _destroy(*std::exchange(_ptr, nullptr));
+                _destroy(std::exchange(_chunk, nullptr));
             }
         }
-    }
-
-    template <typename T>
-    forceinline u32 & Pool<T>::Shr::_refN()
-    {
-        return reinterpret_cast<u32 *>(_ptr)[-1];
     }
 
     template <typename T>
@@ -501,14 +479,12 @@ namespace qc
             return {};
         }
 
-        if constexpr (debug)
-        {
-            _Chunk & chunk{static_cast<_Chunk &>(reinterpret_cast<_ChunkMeta *>(ptr)[-1])};
-            ABORT_IF(&chunk < _chunksStart || &chunk >= _chunksEnd);
-            ABORT_IF(chunk.refN == 0u || chunk.refN == ~u32{});
-        }
+        _Chunk * const chunk{static_cast<_Chunk *>(reinterpret_cast<_ChunkMeta *>(ptr) - 1)};
 
-        return Shr{*ptr};
+        assert(chunk >= _chunksStart && chunk < _chunksEnd);
+        assert(chunk->refN);
+
+        return Shr{chunk};
     }
 
     template <typename T>
@@ -522,7 +498,7 @@ namespace qc
     {
         if (_chunksStart)
         {
-            return  ++iterator{_chunksStart - 1};
+            return ++iterator{_chunksStart - 1};
         }
         else
         {
@@ -549,45 +525,44 @@ namespace qc
     }
 
     template <typename T>
-    inline void Pool<T>::_destroy(T & v)
+    inline void Pool<T>::_destroy(_Chunk * const chunk)
     {
-        // Get chunk of value
-        _Chunk & chunk{static_cast<_Chunk &>(reinterpret_cast<_ChunkMeta *>(&v)[-1])};
-
-        assert(!chunk.refN);
+        assert(!chunk->refN);
 
         // Destruct value
-        v.~T();
+        chunk->val.~T();
 
         // Get pool pointer
-        const u64 startOfPageAddr{std::bit_cast<u64>(&chunk) & ~u64(pageSize - 1u)};
-        const u64 firstPageAddr{startOfPageAddr - chunk.pageI * pageSize};
+        const u64 startOfPageAddr{std::bit_cast<u64>(chunk) & ~u64(pageSize - 1u)};
+        const u64 firstPageAddr{startOfPageAddr - chunk->pageI * pageSize};
         Pool & pool{**std::bit_cast<Pool * *>(firstPageAddr)};
 
         // Update free chunk chain
-        chunk.nextFreeChunk = pool._firstFreeChunk;
-        pool._firstFreeChunk = &chunk;
+        chunk->nextFreeChunk = pool._firstFreeChunk;
+        pool._firstFreeChunk = chunk;
 
         --pool._size;
     }
 
     template <typename T>
     template <typename... Args>
-    inline T & Pool<T>::_create(Args &&... args)
+    inline auto Pool<T>::_create(Args &&... args) -> _Chunk *
     {
         if (!_firstFreeChunk) [[unlikely]]
         {
             _expand();
         }
 
-        _Chunk & chunk{*_firstFreeChunk};
+        _Chunk * const chunk{_firstFreeChunk};
 
-        assert(!chunk.refN);
+        assert(!chunk->refN);
 
-        _firstFreeChunk = chunk.nextFreeChunk;
+        _firstFreeChunk = chunk->nextFreeChunk;
         ++_size;
 
-        return *(new (&chunk.val) T{std::forward<Args>(args)...});
+        new (&chunk->val) T{std::forward<Args>(args)...};
+
+        return chunk;
     }
 
     template <typename T>

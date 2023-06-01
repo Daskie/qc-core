@@ -432,19 +432,18 @@ TEST(Pool, unique)
     Unq<Obj> o1{pool.unq(1)};
     ASSERT_EQ(1, (*o1).v);
     ASSERT_EQ(1, o1->v);
-    ASSERT_EQ(&*o1, o1.get());
     ASSERT_TRUE(o1);
 
     ASSERT_EQ(o1, o1);
-    ASSERT_EQ(o1, o1.get());
-    ASSERT_EQ(o1.get(), o1);
+    ASSERT_EQ(o1, &*o1);
+    ASSERT_EQ(&*o1, o1);
 
     Unq<Obj> o2{std::move(o1)};
     ASSERT_EQ(1, o2->v);
 
     ASSERT_NE(o2, o1);
-    ASSERT_NE(o2, o1.get());
-    ASSERT_NE(o2.get(), o1);
+    ASSERT_NE(o2, &*o1);
+    ASSERT_NE(&*o2, o1);
 
     o1 = std::move(o2);
     ASSERT_EQ(1, o1->v);
@@ -473,21 +472,20 @@ TEST(Pool, shared)
     Shr<Obj> o1{arena.shr(1)};
     ASSERT_EQ(1, (*o1).v);
     ASSERT_EQ(1, o1->v);
-    ASSERT_EQ(&*o1, o1.get());
     ASSERT_TRUE(o1);
 
     ASSERT_EQ(1, o1->v);
 
     ASSERT_EQ(o1, o1);
-    ASSERT_EQ(o1, o1.get());
-    ASSERT_EQ(o1.get(), o1);
+    ASSERT_EQ(o1, &*o1);
+    ASSERT_EQ(&*o1, o1);
 
     Shr<Obj> o2{std::move(o1)};
     ASSERT_EQ(1, o2->v);
 
     ASSERT_NE(o2, o1);
-    ASSERT_NE(o2, o1.get());
-    ASSERT_NE(o2.get(), o1);
+    ASSERT_NE(o2, &*o1);
+    ASSERT_NE(&*o2, o1);
 
     o1 = std::move(o2);
     ASSERT_EQ(1, o1->v);
@@ -537,7 +535,7 @@ TEST(Pool, shared)
         destructed = false;
         Shr<Obj> o4{arena.shr(4)};
         {
-            Shr<Obj> o5{arena.shrOf(o4.get())};
+            Shr<Obj> o5{arena.shrOf(&*o4)};
             ASSERT_FALSE(destructed);
             ASSERT_EQ(o5->v, 4);
         }
@@ -549,6 +547,7 @@ TEST(Pool, shared)
     if constexpr (qc::debug)
     {
         Unq<Obj> o6{arena.unq(6)};
-        EXPECT_DEBUG_DEATH(static_cast<void>(arena.shrOf(o6.get())), "");
+        Shr<Obj> o7{arena.shrOf(&*o6)};
+        EXPECT_DEBUG_DEATH(o6.reset(), "");
     }
 }
