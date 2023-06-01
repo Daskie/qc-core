@@ -134,14 +134,16 @@ namespace qc
 
       private:
 
-        struct _Chunk
+        struct alignas(8u) _Chunk
         {
-            Arena * * arena;
-            u32 valChunkN;
+            u16 pageBlockI;
+            u16 valChunkN;
             u32 refN;
         };
 
-        static constexpr u64 _maxValChunkN{(u64(1u) << 32) - 1u};
+        static constexpr u64 _maxPageBlockN{u64(1u) << 16};
+        static constexpr u64 _maxCapacity{_maxPageBlockN * pageGranularity - sizeof(_Chunk)};
+        static constexpr u64 _maxValChunkN{(u64(1u) << 16) - 1u};
 
         static u64 _pageN(u64 capacity);
 
@@ -344,6 +346,8 @@ namespace qc
 
     inline Arena::Arena(const u64 capacity)
     {
+        ABORT_IF(capacity > _maxCapacity);
+
         const u64 pageN{_pageN(sizeof(_Chunk) + capacity)};
         _capacity = pageN * pageSize - sizeof(_Chunk);
         _memory = static_cast<_Chunk *>(reservePages(pageN)) + 1; // TODO: Don't reserve pages until first expansion
@@ -483,9 +487,19 @@ namespace qc
     inline void Arena::_destroy(T & v)
     {
         _Chunk & header{Arena::_header(&v)};
+
         assert(!header.refN);
+
+        // Destruct value
         v.~T();
-        (*header.arena)->_bubbles.add(&header, 1 + header.valChunkN);
+
+        // Get arena pointer
+        const u64 startOfPageBlockAddr{std::bit_cast<u64>(&header) & ~u64(pageGranularity - 1u)};
+        const u64 firstPageAddr{startOfPageBlockAddr - header.pageBlockI * pageGranularity};
+        Arena & arena{**std::bit_cast<Arena * *>(firstPageAddr)};
+
+        // Add bubble
+        arena._bubbles.add(&header, 1 + header.valChunkN);
     }
 
     inline void Arena::_expand(u64 newSize)
@@ -528,7 +542,7 @@ namespace qc
             _expand(requiredSize);
         }
 
-        header->arena = reinterpret_cast<Arena * *>(_memory - 1);
+        header->pageBlockI = u16(u64(header - (_memory - 1)) / pageGranularity);
         header->valChunkN = valChunkN;
         header->refN = 0u;
         return *(new (header + 1) T{std::forward<Args>(args)...});

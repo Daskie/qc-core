@@ -10,7 +10,7 @@ template <typename T> using Shr = qc::Arena::Shr<T>;
 
 namespace
 {
-    constexpr u64 _headerSize{16u};
+    constexpr u64 _headerSize{8u};
 }
 
 TEST(Arena, growth)
