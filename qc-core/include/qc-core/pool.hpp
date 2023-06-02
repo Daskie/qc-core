@@ -8,10 +8,12 @@
 namespace qc
 {
     ///
-    /// ...
+    /// Provides a reference-stable supply of a specific type of object
+    ///
     /// Properties:
     ///   Create: O(1)
-    ///   Destroy: O(log(m)), where `m` is the number of free ranges
+    ///   Destroy: O(1)
+    ///   Iteration: O(1) per increment
     ///   Reference stable: Yes
     ///   Index stable: Yes
     ///   Order stable: Yes
@@ -20,12 +22,22 @@ namespace qc
     template <typename T>
     class Pool
     {
+        friend struct PoolFriend;
+
         template <bool constant> class _Iterator;
 
         struct alignas(8u) _ChunkMeta
         {
-            u32 pageI;
             u32 refN;
+            u32 pageI;
+        };
+
+        struct _BubbleInfo
+        {
+            u32 ordinal; // Indicates the relative position of a bubble in the chain, descending
+            u32 headTailOffset; // Size of bubble minus one
+            s32 prevOffset; // Offset from bubble head to previous bubble head
+            s32 nextOffset; // Offset from bubble head to next bubble head
         };
 
         struct _Chunk : _ChunkMeta
@@ -33,14 +45,20 @@ namespace qc
             union
             {
                 T val;
-                _Chunk * nextFreeChunk;
+                _BubbleInfo bubble;
+                Pool * poolPtr; // Only set for head chunk
             };
 
-            MSVC_WARNING_SUPPRESS(4624) // This type is never destructed
-        };
+            ~_Chunk() = delete; // Prevents warnings about union not being destructed properly
 
-        // Chunks must be contiguous with head and tail
-        static_assert(alignof(_Chunk) <= 8u);
+            nodisc Pool & pool();
+
+            nodisc forceinline _Chunk * bubbleHead() { return this - bubble.headTailOffset; }
+            nodisc forceinline _Chunk * bubbleTail() { return this + bubble.headTailOffset; }
+
+            nodisc forceinline _Chunk * prevBubble() { return this + bubble.prevOffset; }
+            nodisc forceinline _Chunk * nextBubble() { return this + bubble.nextOffset; }
+        };
 
       public:
 
@@ -152,9 +170,9 @@ namespace qc
 
         nodisc bool full() const { return _size >= capacity(); }
 
-        nodisc u64 maxPageN() const { return _maxPageN; }
+        nodisc u64 reservedPageN() const { return _reservedPageN; }
 
-        nodisc u64 pageN() const { return _pageN; }
+        nodisc u64 committedPageN() const { return _committedPageN; }
 
         nodisc iterator begin();
         nodisc const_iterator begin() const;
@@ -166,21 +184,25 @@ namespace qc
 
       private:
 
+        // Limited by max `prevOffset`/`nextOffset` values
+        static constexpr u64 _maxBubbleSize{u64(1u) << 31};
+
         static void _destroy(_Chunk * chunk);
 
-        u64 _maxPageN{};
-        u64 _maxCapacity{};
-        u64 _pageN{};
+        u64 _reservedPageN{};
+        u64 _committedPageN{};
         u64 _size{};
         _Chunk * _chunksStart{};
         _Chunk * _chunksEnd{};
-        _Chunk * _firstFreeChunk{};
+        _Chunk * _firstBubble{};
 
         template <typename... Args> nodisc _Chunk * _create(Args &&... args);
 
         void _expand();
 
-        void _setHead();
+        void _setupHeadChunk();
+
+        void _setupTailChunk();
     };
 
     template <typename T>
@@ -227,10 +249,19 @@ namespace qc
 namespace qc
 {
     template <typename T>
+    forceinline Pool<T> & Pool<T>::_Chunk::pool()
+    {
+        const u64 startOfPageAddr{std::bit_cast<u64>(this) & ~u64(pageSize - 1u)};
+        const u64 firstPageAddr{startOfPageAddr - this->pageI * pageSize};
+        return *std::bit_cast<_Chunk *>(firstPageAddr)->poolPtr;
+    }
+
+    template <typename T>
     forceinline Pool<T>::Unq::Unq(_Chunk * const chunk) :
         _chunk{chunk}
     {
         assert(!_chunk->refN);
+
         _chunk->refN = 1u;
     }
 
@@ -351,21 +382,25 @@ namespace qc
     template <typename T>
     inline Pool<T>::Pool(const u64 capacity)
     {
-        _maxPageN = (sizeof(Pool *) + capacity * sizeof(_Chunk) + sizeof(_ChunkMeta) + (pageSize - 1u)) / pageSize;
-        _maxCapacity = (_maxPageN * pageSize - sizeof(Pool *) - sizeof(_ChunkMeta)) / sizeof(_Chunk);
+        _reservedPageN = ((capacity + 2u) * sizeof(_Chunk) + (pageSize - 1u)) / pageSize;
+
+        // Limited by max bubble size
+        ABORT_IF(this->capacity() > _maxBubbleSize);
     }
 
     template <typename T>
     inline Pool<T>::Pool(Pool && other) :
-        _maxPageN{std::exchange(other._maxPageN, 0u)},
-        _maxCapacity{std::exchange(other._maxCapacity, 0u)},
-        _pageN{std::exchange(other._pageN, 0u)},
+        _reservedPageN{std::exchange(other._reservedPageN, 0u)},
+        _committedPageN{std::exchange(other._committedPageN, 0u)},
         _size{std::exchange(other._size, 0u)},
         _chunksStart{std::exchange(other._chunksStart, nullptr)},
         _chunksEnd{std::exchange(other._chunksEnd, nullptr)},
-        _firstFreeChunk{std::exchange(other._firstFreeChunk)}
+        _firstBubble{std::exchange(other._firstBubble)}
     {
-        _setHead();
+        if (_chunksStart)
+        {
+            _chunksStart[-1].poolPtr = this;
+        }
     }
 
     template <typename T>
@@ -376,15 +411,17 @@ namespace qc
             return *this;
         }
 
-        _maxPageN = std::exchange(other._maxPageN, 0u);
-        _maxCapacity = std::exchange(other._maxCapacity, 0u);
-        _pageN = std::exchange(other._pageN, 0u);
+        _reservedPageN = std::exchange(other._reservedPageN, 0u);
+        _committedPageN = std::exchange(other._committedPageN, 0u);
         _size = std::exchange(other._size, 0u);
         _chunksStart = std::exchange(other._chunksStart, nullptr);
         _chunksEnd = std::exchange(other._chunksEnd, nullptr);
-        _firstFreeChunk = std::exchange(other._firstFreeChunk, nullptr);
+        _firstBubble = std::exchange(other._firstBubble, nullptr);
 
-        _setHead();
+        if (_chunksStart)
+        {
+            _chunksStart[-1].poolPtr = this;
+        }
 
         return *this;
     }
@@ -397,52 +434,97 @@ namespace qc
         // Free memory
         if (_chunksStart)
         {
-            freePages(reinterpret_cast<std::byte *>(_chunksStart) - sizeof(Pool *), _maxPageN);
+            freePages(_chunksStart - 1, _reservedPageN);
         }
     }
 
     template <typename T>
     inline void Pool<T>::shrinkToFit()
     {
-        // NOCOMMIT
-        /*
-        // Pool is full or unallocated
-        if (_freeRanges.empty())
+        // Definitely no room to shrink
+        if (!_firstBubble)
         {
             return;
         }
 
-        _Range & highRange{_freeRanges.front()};
+        // Can completely decommit memory
+        if (!_size)
+        {
+            if (_committedPageN)
+            {
+                decommitPages(_chunksStart - 1, _committedPageN);
+                _committedPageN = 0u;
+                _chunksEnd = _chunksStart;
+                _firstBubble = nullptr;
+            }
 
-        // The tail of the allocated memory is in use
-        if (highRange.end != _slotRange.end)
+            return;
+        }
+
+        // Find last bubble
+        _Chunk * bubble{_firstBubble};
+        for (_Chunk * b{bubble}; b->bubble.nextOffset; )
+        {
+            b = b->nextBubble();
+            maxify(bubble, b);
+        }
+
+        // Bubble must be adjacent to end of memory
+        if (bubble->bubbleTail() + 1 < _chunksEnd)
         {
             return;
         }
 
-        const u64 necessaryCapacity{u64(highRange.start - _slotRange.start)};
-        const u64 necessaryPageN{(necessaryCapacity * sizeof(T) + pageSize - 1u) / pageSize};
-        const u64 unnecessaryPageN{_pageN - necessaryPageN};
+        const u64 neededPageN{bubble->pageI + 1u};
+        const u64 excessPageN{_committedPageN - neededPageN};
 
-        // Not enough free tail slots to make up a page
-        if (!unnecessaryPageN)
+        // Must be able to free at least one page
+        if (!excessPageN)
         {
             return;
         }
 
-        // Decommit uneccessary pages
-        decommitPages(reinterpret_cast<std::byte *>(_slotRange.start) + necessaryPageN * pageSize, unnecessaryPageN);
+        // Decommit excess pages
+        const u64 newMemSize{neededPageN * pageSize};
+        decommitPages(reinterpret_cast<std::byte *>(_chunksStart - 1) + newMemSize, excessPageN);
+        _committedPageN = neededPageN;
+        const u64 newChunksN{newMemSize / sizeof(_Chunk)};
+        _chunksEnd = _chunksStart + newChunksN - 2u;
 
-        // Update state
-        _pageN = necessaryPageN;
-        const u64 newCapacity{_pageN * pageSize / sizeof(T)};
-        _slotRange.end = _slotRange.start + newCapacity;
-        highRange.end = _slotRange.end;
-        if (highRange.end == highRange.start)
+        // Fix bubble
+        // Bubble should shrink
+        if (bubble < _chunksEnd)
         {
-            _freeRanges.erase(_freeRanges.begin());
+            bubble->bubble.headTailOffset = u32((_chunksEnd - 1) - bubble);
         }
-         */
+        // Bubble should be removed
+        else
+        {
+            if (bubble->bubble.prevOffset && bubble->bubble.nextOffset)
+            {
+                _Chunk * const prevBubble{bubble->prevBubble()};
+                _Chunk * const nextBubble{bubble->nextBubble()};
+                prevBubble->bubble.nextOffset = s32(nextBubble - prevBubble);
+                nextBubble->bubble.prevOffset = -prevBubble->bubble.nextOffset;
+            }
+            else if (bubble->bubble.prevOffset)
+            {
+                bubble->prevBubble()->bubble.nextOffset = 0;
+            }
+            else if (bubble->bubble.nextOffset)
+            {
+                _Chunk * const nextBubble{bubble->nextBubble()};
+                nextBubble->bubble.prevOffset = 0;
+                _firstBubble = nextBubble;
+            }
+            else
+            {
+                _firstBubble = nullptr;
+            }
+        }
+
+        // Setup tail chunk (must happen last, would overwrite bubble if it's fully erased)
+        _setupTailChunk();
     }
 
     template <typename T>
@@ -478,7 +560,7 @@ namespace qc
     template <typename T>
     inline u64 Pool<T>::capacity() const
     {
-        return _maxCapacity;
+        return _reservedPageN * pageSize / sizeof(_Chunk) - 2u;
     }
 
     template <typename T>
@@ -517,17 +599,139 @@ namespace qc
     {
         assert(!chunk->refN);
 
+        Pool & pool{chunk->pool()};
+
         // Destruct value
         chunk->val.~T();
 
-        // Get pool pointer
-        const u64 startOfPageAddr{std::bit_cast<u64>(chunk) & ~u64(pageSize - 1u)};
-        const u64 firstPageAddr{startOfPageAddr - chunk->pageI * pageSize};
-        Pool & pool{**std::bit_cast<Pool * *>(firstPageAddr)};
+        // Update bubbles
+        _Chunk * const prevChunk{chunk - 1};
+        _Chunk * const nextChunk{chunk + 1};
 
-        // Update free chunk chain
-        chunk->nextFreeChunk = pool._firstFreeChunk;
-        pool._firstFreeChunk = chunk;
+        // If adjacent to two existing bubbles, combine
+        if (!prevChunk->refN && !nextChunk->refN)
+        {
+            _Chunk * const bubble{prevChunk->bubbleHead()};
+            _Chunk * const bubbleAlt{nextChunk};
+
+            // Update head and tail
+            bubble->bubble.headTailOffset += bubbleAlt->bubble.headTailOffset + 2u;
+            bubble->bubbleTail()->bubble.headTailOffset = bubble->bubble.headTailOffset;
+
+            // Bubbles A - F are laid out logically in chain order, left to right, highest ordinal to lowest
+            // Memory sequence and bubble sequence are opposite; naive merge would result in a loop in the chain
+            const bool inOrder{bubble->bubble.ordinal > bubbleAlt->bubble.ordinal};
+            _Chunk * const bubbleB{inOrder ? bubble : bubbleAlt};
+            _Chunk * const bubbleE{inOrder ? bubbleAlt : bubble};
+
+            _Chunk * const bubbleA{bubbleB->bubble.prevOffset ? bubbleB->prevBubble() : nullptr};
+            _Chunk * const bubbleC{bubbleB->bubble.nextOffset ? bubbleB->nextBubble() : nullptr};
+            _Chunk * const bubbleD{bubbleE->bubble.prevOffset ? bubbleE->prevBubble() : nullptr};
+            _Chunk * const bubbleF{bubbleE->bubble.nextOffset ? bubbleE->nextBubble() : nullptr};
+
+            // Update ordinal
+            bubble->bubble.ordinal = bubbleE->bubble.ordinal;
+
+            // Update bubble chain
+
+            if (bubbleC != bubbleE)
+            {
+                if (bubbleA)
+                {
+                    bubbleA->bubble.nextOffset = s32(bubbleC - bubbleA);
+                    bubbleC->bubble.prevOffset = -bubbleA->bubble.nextOffset;
+                }
+                else
+                {
+                    pool._firstBubble = bubbleC;
+                    bubbleC->bubble.prevOffset = 0;
+                }
+
+                bubbleD->bubble.nextOffset = s32(bubble - bubbleD);
+                bubble->bubble.prevOffset = -bubbleD->bubble.nextOffset;
+            }
+            else
+            {
+                if (bubbleA)
+                {
+                    bubbleA->bubble.nextOffset = s32(bubble - bubbleA);
+                    bubble->bubble.prevOffset = -bubbleA->bubble.nextOffset;
+                }
+                else
+                {
+                    pool._firstBubble = bubble;
+                    bubble->bubble.prevOffset = 0;
+                }
+            }
+
+            if (bubbleF)
+            {
+                bubble->bubble.nextOffset = s32(bubbleF - bubble);
+                bubbleF->bubble.prevOffset = -bubble->bubble.nextOffset;
+            }
+            else
+            {
+                bubble->bubble.nextOffset = 0;
+            }
+        }
+        // Otherwise if adjacent only to bubble tail, expand it
+        else if (!prevChunk->refN)
+        {
+            // Update head
+            _Chunk * const bubbleHead{prevChunk->bubbleHead()};
+            ++bubbleHead->bubble.headTailOffset;
+
+            // Update tail
+            chunk->bubble.headTailOffset = bubbleHead->bubble.headTailOffset;
+        }
+        // Otherwise if adjacent only to bubble head, expand it
+        else if (!nextChunk->refN)
+        {
+            // Update head
+            chunk->bubble = nextChunk->bubble;
+            ++chunk->bubble.headTailOffset;
+
+            // Update tail
+            chunk->bubbleTail()->bubble.headTailOffset = chunk->bubble.headTailOffset;
+
+            // Update previous bubble
+            if (chunk->bubble.prevOffset)
+            {
+                ++chunk->bubble.prevOffset;
+                --chunk->prevBubble()->bubble.nextOffset;
+            }
+            else
+            {
+                pool._firstBubble = chunk;
+            }
+
+            // Update next bubble
+            if (chunk->bubble.nextOffset)
+            {
+                ++chunk->bubble.nextOffset;
+                --chunk->nextBubble()->bubble.prevOffset;
+            }
+        }
+        // Otherwise create new bubble
+        else
+        {
+            // Update bubble chain
+            if (pool._firstBubble)
+            {
+                chunk->bubble.nextOffset = s32(pool._firstBubble - chunk);
+                pool._firstBubble->bubble.prevOffset = -chunk->bubble.nextOffset;
+                chunk->bubble.ordinal = pool._firstBubble->bubble.ordinal + 1u;
+            }
+            else
+            {
+                chunk->bubble.nextOffset = 0;
+                chunk->bubble.ordinal = 0u;
+            }
+
+            chunk->bubble.headTailOffset = 0u;
+            chunk->bubble.prevOffset = 0;
+            pool._firstBubble = chunk;
+        }
 
         --pool._size;
     }
@@ -536,19 +740,50 @@ namespace qc
     template <typename... Args>
     inline auto Pool<T>::_create(Args &&... args) -> _Chunk *
     {
-        if (!_firstFreeChunk) [[unlikely]]
+        if (!_firstBubble) [[unlikely]]
         {
             _expand();
         }
 
-        _Chunk * const chunk{_firstFreeChunk};
+        _Chunk * const chunk{_firstBubble};
 
         assert(!chunk->refN);
 
-        _firstFreeChunk = chunk->nextFreeChunk;
-        ++_size;
+        // If bubble has at least two slots, push head back
+        if (_firstBubble->bubble.headTailOffset)
+        {
+            ++_firstBubble;
+
+            // Update head/tail
+            _firstBubble->bubble = chunk->bubble;
+            --_firstBubble->bubble.headTailOffset;
+            _firstBubble->bubbleTail()->bubble.headTailOffset = _firstBubble->bubble.headTailOffset;
+
+            // Update bubble chain
+            if (_firstBubble->bubble.nextOffset)
+            {
+                --_firstBubble->bubble.nextOffset;
+                ++_firstBubble->nextBubble()->bubble.prevOffset;
+            }
+        }
+        // Otherwise, this bubble is done
+        else
+        {
+            // Update bubble chain
+            if (_firstBubble->bubble.nextOffset)
+            {
+                _firstBubble = _firstBubble->nextBubble();
+                _firstBubble->bubble.prevOffset = 0;
+            }
+            else
+            {
+                _firstBubble = nullptr;
+            }
+        }
 
         new (&chunk->val) T{std::forward<Args>(args)...};
+
+        ++_size;
 
         return chunk;
     }
@@ -559,61 +794,73 @@ namespace qc
         // Reserve virtual memory if haven't done so already
         if (!_chunksStart)
         {
-            assert(_maxPageN);
+            assert(_reservedPageN);
 
-            _chunksStart = static_cast<_Chunk *>(static_cast<_ChunkMeta *>(reservePages(_maxPageN)) + 1);
+            _chunksStart = static_cast<_Chunk *>(reservePages(_reservedPageN)) + 1;
             _chunksEnd = _chunksStart;
         }
 
         // Ensure we still have more reserved pages
-        ABORT_IF(_pageN >= _maxPageN);
+        ABORT_IF(_committedPageN >= _reservedPageN);
 
         // Double the number of committed pages
-        static constexpr u64 minPageN{(sizeof(Pool *) + sizeof(_Chunk) + sizeof(_ChunkMeta) + (pageSize - 1u)) / pageSize};
-        u64 newPageN{qc::max(_pageN * 2u, minPageN)};
+        static constexpr u64 minPageN{(sizeof(_Chunk) * 3u + (pageSize - 1u)) / pageSize};
+        u64 newPageN{qc::max(_committedPageN * 2u, minPageN)};
 
         // Round up and reserve all pages if within +50% of new page count
-        if (newPageN + newPageN / 2 >= _maxPageN)
+        if (newPageN + newPageN / 2u >= _reservedPageN)
         {
-            newPageN = _maxPageN;
+            newPageN = _reservedPageN;
         }
 
         _Chunk * const newChunksStart{_chunksEnd};
 
         // Commit new pages
-        std::byte * const pages{reinterpret_cast<std::byte *>(_chunksStart) - sizeof(Pool *)};
-        commitPages(pages + _pageN * pageSize, newPageN - _pageN);
-        _pageN = newPageN;
-        const u64 newCapacity{(_pageN * pageSize - sizeof(Pool *) - sizeof(_ChunkMeta)) / sizeof(_Chunk)};
+        std::byte * const pages{reinterpret_cast<std::byte *>(_chunksStart - 1)};
+        commitPages(pages + _committedPageN * pageSize, newPageN - _committedPageN);
+        _committedPageN = newPageN;
+        const u64 newCapacity{_committedPageN * pageSize / sizeof(_Chunk) - 2u};
         _chunksEnd = _chunksStart + newCapacity;
 
         // Setup head
         if (newChunksStart == _chunksStart)
         {
-            _setHead();
+            _setupHeadChunk();
         }
 
         // Setup chunks
         for (_Chunk * chunk{newChunksStart}; chunk < _chunksEnd; ++chunk)
         {
-            chunk->pageI = u32(u64(reinterpret_cast<std::byte *>(chunk) - pages) / pageSize);
             chunk->refN = 0u;
-            chunk->nextFreeChunk = chunk + 1;
+            chunk->pageI = u32(u64(chunk - (_chunksStart - 1)) * sizeof(_Chunk) / pageSize);
         }
 
         // Setup tail
-        _chunksEnd->pageI = u32(_pageN - 1u);
-        _chunksEnd->refN = ~u32{};
+        _setupTailChunk();
 
-        // Update next free chunk
-        _chunksEnd[-1].nextFreeChunk = _firstFreeChunk;
-        _firstFreeChunk = newChunksStart;
+        // Setup bubble
+        assert(!_firstBubble); // Should only be expanding if no empty slots
+        _firstBubble = newChunksStart;
+        newChunksStart->bubble.ordinal = 0u;
+        newChunksStart->bubble.headTailOffset = u32(_chunksEnd - 1 - newChunksStart);
+        newChunksStart->bubble.prevOffset = 0;
+        newChunksStart->bubble.nextOffset = 0;
+        newChunksStart->bubbleTail()->bubble.headTailOffset = newChunksStart->bubble.headTailOffset;
     }
 
     template <typename T>
-    inline void Pool<T>::_setHead()
+    inline void Pool<T>::_setupHeadChunk()
     {
-        reinterpret_cast<Pool * *>(_chunksStart)[-1] = this;
+        _chunksStart[-1].refN = ~u32{};
+        _chunksStart[-1].pageI = 0u;
+        _chunksStart[-1].poolPtr = this;
+    }
+
+    template <typename T>
+    inline void Pool<T>::_setupTailChunk()
+    {
+        _chunksEnd->refN = ~u32{};
+        _chunksEnd->pageI = u32(_committedPageN - 1u);
     }
 
     template <typename T>
@@ -632,8 +879,12 @@ namespace qc
     template <bool constant>
     inline auto Pool<T>::_Iterator<constant>::operator++() -> _Iterator &
     {
-        // NOCOMMIT: Change strategy to store ranges of free chunks
-        while (!(++_chunk)->refN);
+        ++_chunk;
+
+        if (!_chunk->refN)
+        {
+            _chunk += s64(_chunk->bubble.headTailOffset) + 1;
+        }
 
         return *this;
     }
