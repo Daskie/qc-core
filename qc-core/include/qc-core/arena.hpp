@@ -6,10 +6,9 @@
 namespace qc
 {
     ///
-    /// ...
-    /// Each element in the arena is stored with a leading 16 byte header. Of this, the lower 8 bytes are used for a
-    ///   pointer to the arena, the next four bytes are used for the size of the value (necessary for polymorphism), and
-    ///   the upper four bytes are used for the reference count (used by `Shr`)
+    /// Efficient allocator supporting very fast shared pointer reference tracking and polymorphism
+    /// Each element in the arena is stored with an eight byte header. Additionally, one additional eight byte pointer
+    ///   is stored at the very start of the allocated memory to track the arena for the purposes of value deletion
     /// Properties:
     ///   Create: O(m), where `m` is number of unallocated bubbles
     ///   Destroy: O(log(m)), where `m` is number of unallocated bubbles
@@ -151,10 +150,10 @@ namespace qc
 
         template <typename T> static void _destroy(T & v);
 
-        u64 _capacity;
+        u64 _capacity{};
         u64 _size{};
-        _Chunk * _memory;
-        BubbleTracker<_Chunk *> _bubbles{};
+        _Chunk * _memory{};
+        BubbleTracker<u32> _bubbles{};
 
         void _expand(u64 newSize);
 
@@ -350,8 +349,7 @@ namespace qc
 
         const u64 pageN{_pageN(sizeof(_Chunk) + capacity)};
         _capacity = pageN * pageSize - sizeof(_Chunk);
-        _memory = static_cast<_Chunk *>(reservePages(pageN)) + 1; // TODO: Don't reserve pages until first expansion
-        _bubbles.add(_memory, s64(_capacity / sizeof(_Chunk)));
+        _bubbles.add(0u, u32(_capacity / sizeof(_Chunk)));
     }
 
     inline Arena::Arena(Arena && other) :
@@ -431,7 +429,7 @@ namespace qc
             return;
         }
 
-        const u64 freeTailSize{u64(_bubbles.tail(_memory + _capacity / sizeof(_Chunk))) * sizeof(_Chunk)};
+        const u64 freeTailSize{_bubbles.tail(u32(_capacity / sizeof(_Chunk))) * sizeof(_Chunk)};
 
         // Arena is unallocated or full
         if (!freeTailSize)
@@ -469,10 +467,9 @@ namespace qc
         }
 
         const auto & bubble{_bubbles.bubbles().front()};
-        return bubble.pos == _memory && u64(bubble.size) * sizeof(_Chunk) == _capacity;
+        return bubble.pos == 0u && bubble.size * sizeof(_Chunk) == _capacity;
     }
 
-    // TODO: Move to paging.hpp
     forceinline u64 Arena::_pageN(const u64 capacity)
     {
         return std::bit_ceil((capacity + (pageSize - 1u)) / pageSize);
@@ -499,7 +496,7 @@ namespace qc
         Arena & arena{**std::bit_cast<Arena * *>(firstPageAddr)};
 
         // Add bubble
-        arena._bubbles.add(&header, 1 + header.valChunkN);
+        arena._bubbles.add(u32(&header - arena._memory), 1u + header.valChunkN);
     }
 
     inline void Arena::_expand(u64 newSize)
@@ -507,11 +504,17 @@ namespace qc
         const u64 newPageN{_pageN(sizeof(_Chunk) + newSize)};
         newSize = newPageN * pageSize - sizeof(_Chunk);
 
-        // Ensure we have sufficient reserved memory
+        // Larger than maximum capacity
         ABORT_IF(newSize > _capacity);
 
+        // Reserve memory if this is the first time
+        if (!_memory)
+        {
+            _memory = static_cast<_Chunk *>(reservePages(_pageN((1u + _capacity) * sizeof(_Chunk)))) + 1;
+        }
+
         // Commit new pages
-        const u64 currentPageN{(sizeof(_Chunk) + _size) / pageSize};
+        const u64 currentPageN{_size ? (sizeof(_Chunk) + _size) / pageSize : 0u};
         std::byte * const pages{reinterpret_cast<std::byte *>(_memory - 1)};
         commitPages(pages + currentPageN * pageSize, newPageN - currentPageN);
 
@@ -531,20 +534,21 @@ namespace qc
         static_assert(valChunkN <= _maxValChunkN);
         static_assert(alignof(T) <= sizeof(_Chunk));
 
-        const auto [wasSpace, header]{_bubbles.remove(1u + valChunkN)};
+        const auto [wasSpace, headerPos]{_bubbles.remove(1u + valChunkN)};
 
         // Arena is full
         ABORT_IF(!wasSpace);
 
-        const u64 requiredSize{(u64(header - _memory) + 1u + valChunkN) * sizeof(_Chunk)};
+        const u64 requiredSize{(headerPos + 1u + valChunkN) * sizeof(_Chunk)};
         if (requiredSize > _size)
         {
             _expand(requiredSize);
         }
 
-        header->pageI = u16(u64(header - (_memory - 1)) * sizeof(_Chunk) / pageSize);
-        header->valChunkN = valChunkN;
-        header->refN = 0u;
-        return *(new (header + 1) T{std::forward<Args>(args)...});
+        _Chunk & header{_memory[headerPos]};
+        header.pageI = u16((1u + headerPos) * sizeof(_Chunk) / pageSize);
+        header.valChunkN = valChunkN;
+        header.refN = 0u;
+        return *(new (&header + 1) T{std::forward<Args>(args)...});
     }
 }

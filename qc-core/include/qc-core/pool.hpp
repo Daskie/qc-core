@@ -9,7 +9,9 @@ namespace qc
 {
     ///
     /// Provides a reference-stable supply of a specific type of object
-    ///
+    /// Very fast shared pointer reference counting
+    /// Stores each element along with an eight byte header, plus an extra element's worth of memory is reserved at the
+    ///   start and end of the allocated memory for the purposes of pool object pointer tracking and iteration
     /// Properties:
     ///   Create: O(1)
     ///   Destroy: O(1)
