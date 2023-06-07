@@ -11,7 +11,9 @@ namespace
     using namespace qc::primitives;
 
     template <typename T> using Unq = qc::Pool<T>::Unq;
+    template <typename T> using CUnq = qc::Pool<T>::CUnq;
     template <typename T> using Shr = qc::Pool<T>::Shr;
+    template <typename T> using CShr = qc::Pool<T>::CShr;
 
     constexpr u64 _metaSize{8u};
 
@@ -722,6 +724,32 @@ TEST(Pool, shared)
         Shr<Obj> o7{arena.shrOf(&*o6)};
         EXPECT_DEBUG_DEATH(o6.reset(), "");
     }
+}
+
+TEST(Pool, uniqueConst)
+{
+    qc::Pool<s32> pool{100u};
+
+    Unq<s32> v1{pool.unq(1)};
+    CUnq<s32> v2{pool.cunq(2)};
+    CUnq<s32> v3{std::move(v1)};
+    v2 = std::move(v1);
+    static_cast<void>(v1 == v2);
+    static_assert(std::is_const_v<std::remove_reference_t<decltype(*v2)>>);
+}
+
+TEST(Pool, sharedConst)
+{
+    qc::Pool<s32> pool{100u};
+
+    Shr<s32> v1{pool.shr(1)};
+    CShr<s32> v2{pool.cshr(2)};
+    CShr<s32> v3{v1};
+    CShr<s32> v4{std::move(v1)};
+    v2 = v1;
+    v2 = std::move(v1);
+    static_cast<void>(v1 == v2);
+    static_assert(std::is_const_v<std::remove_reference_t<decltype(*v2)>>);
 }
 
 TEST(Pool, shrinkToFit)

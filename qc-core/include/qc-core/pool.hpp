@@ -72,75 +72,93 @@ namespace qc
         using iterator = _Iterator<false>;
         using const_iterator = _Iterator<true>;
 
-        class Unq
+        template <bool constant>
+        class UnqT
         {
             friend Pool;
 
+            using _T = std::conditional_t<constant, const T, T>;
+
           public:
 
-            Unq() = default;
+            UnqT() = default;
 
-            Unq(const Unq &) = delete;
-            Unq(Unq && other);
+            UnqT(const UnqT &) = delete;
+            UnqT(UnqT && other);
+            UnqT(UnqT<false> && other) requires (constant);
 
-            Unq & operator=(const Unq &) = delete;
-            Unq & operator=(Unq && other);
+            UnqT & operator=(const UnqT &) = delete;
+            UnqT & operator=(UnqT && other);
+            UnqT & operator=(UnqT<false> && other) requires (constant);
 
-            ~Unq();
+            ~UnqT();
 
             void reset();
 
             nodisc forceinline explicit operator bool() const { return bool(_chunk); }
 
-            nodisc forceinline T & operator*() const { return _chunk->val; }
+            nodisc forceinline _T & operator*() const { return _chunk->val; }
 
-            nodisc forceinline T * operator->() const { return &_chunk->val; }
+            nodisc forceinline _T * operator->() const { return &_chunk->val; }
 
-            nodisc forceinline bool operator==(const Unq & other) const { return _chunk == other._chunk; }
-            nodisc forceinline friend bool operator==(const Unq & a, const T * b) { return &a._chunk->val == b; }
-            nodisc forceinline friend bool operator==(const T * a, const Unq & b) { return a == &b._chunk->val; }
+            template <bool constant_> nodisc forceinline bool operator==(const UnqT<constant_> & other) const { return _chunk == other._chunk; }
+            nodisc forceinline friend bool operator==(const UnqT & a, const T * b) { return &a._chunk->val == b; }
+            nodisc forceinline friend bool operator==(const T * a, const UnqT & b) { return a == &b._chunk->val; }
 
           private:
 
             _Chunk * _chunk{};
 
-            explicit Unq(_Chunk * chunk);
+            explicit UnqT(_Chunk * chunk);
         };
 
-        class Shr
+        using Unq = UnqT<false>;
+        using CUnq = UnqT<true>;
+
+        template <bool constant>
+        class ShrT
         {
             friend Pool;
 
+            using _T = std::conditional_t<constant, const T, T>;
+
           public:
 
-            Shr() = default;
+            ShrT() = default;
 
-            Shr(const Shr & other);
-            Shr(Shr && other);
+            ShrT(const ShrT & other);
+            ShrT(const ShrT<false> & other) requires (constant);
+            ShrT(ShrT && other);
+            ShrT(ShrT<false> && other) requires (constant);
 
-            Shr & operator=(const Shr & other);
-            Shr & operator=(Shr && other);
+            ShrT & operator=(const ShrT & other);
+            ShrT & operator=(const ShrT<false> & other) requires (constant);
+            ShrT & operator=(ShrT && other);
+            ShrT & operator=(ShrT<false> && other) requires (constant);
 
-            ~Shr();
+            ~ShrT();
 
             void reset();
 
             nodisc forceinline explicit operator bool() const { return bool(_chunk); }
 
-            nodisc forceinline T & operator*() const { return _chunk->val; }
+            nodisc forceinline _T & operator*() const { return _chunk->val; }
 
-            nodisc forceinline T * operator->() const { return &_chunk->val; }
+            nodisc forceinline _T * operator->() const { return &_chunk->val; }
 
-            nodisc forceinline bool operator==(const Shr & other) const { return _chunk == other._chunk; }
-            nodisc forceinline friend bool operator==(const Shr & a, const T * b) { return &a._chunk->val == b; }
-            nodisc forceinline friend bool operator==(const T * a, const Shr & b) { return a == &b._chunk->val; }
+            template <bool constant_> nodisc forceinline bool operator==(const ShrT<constant_> & other) const { return _chunk == other._chunk; }
+            nodisc forceinline friend bool operator==(const ShrT & a, const T * b) { return &a._chunk->val == b; }
+            nodisc forceinline friend bool operator==(const T * a, const ShrT & b) { return a == &b._chunk->val; }
 
           private:
 
             _Chunk * _chunk{};
 
-            explicit Shr(_Chunk * chunk);
+            explicit ShrT(_Chunk * chunk);
         };
+
+        using Shr = ShrT<false>;
+        using CShr = ShrT<true>;
 
         explicit Pool(u64 capacity);
 
@@ -155,8 +173,10 @@ namespace qc
         void shrinkToFit();
 
         template <typename... Args> nodisc Unq unq(Args &&... args);
+        template <typename... Args> nodisc CUnq cunq(Args &&... args);
 
         template <typename... Args> nodisc Shr shr(Args &&... args);
+        template <typename... Args> nodisc CShr cshr(Args &&... args);
 
         ///
         /// @param ptr an existing shared value of the pool
@@ -213,15 +233,15 @@ namespace qc
     {
         friend class Pool<T>;
 
-        using _T_ = std::conditional_t<constant, const T, T>;
-        using _Chunk_ = std::conditional_t<constant, const _Chunk, _Chunk>;
+        using _T = std::conditional_t<constant, const T, T>;
+        using _Chunk = std::conditional_t<constant, const _Chunk, _Chunk>;
 
       public:
 
         using iterator_category = std::forward_iterator_tag;
-        using value_type = _T_;
-        using reference = _T_ &;
-        using pointer = _T_ *;
+        using value_type = _T;
+        using reference = _T &;
+        using pointer = _T *;
         using difference_type = s64;
 
         _Iterator(const _Iterator &) = default;
@@ -240,9 +260,9 @@ namespace qc
 
       private:
 
-        _Chunk_ * _chunk{};
+        _Chunk * _chunk{};
 
-        explicit _Iterator(_Chunk_ * chunk);
+        explicit _Iterator(_Chunk * chunk);
     };
 }
 
@@ -259,7 +279,8 @@ namespace qc
     }
 
     template <typename T>
-    forceinline Pool<T>::Unq::Unq(_Chunk * const chunk) :
+    template <bool constant>
+    forceinline Pool<T>::UnqT<constant>::UnqT(_Chunk * const chunk) :
         _chunk{chunk}
     {
         assert(!_chunk->refN);
@@ -268,12 +289,20 @@ namespace qc
     }
 
     template <typename T>
-    forceinline Pool<T>::Unq::Unq(Unq && other) :
+    template <bool constant>
+    forceinline Pool<T>::UnqT<constant>::UnqT(UnqT && other) :
         _chunk{std::exchange(other._chunk, nullptr)}
     {}
 
     template <typename T>
-    inline auto Pool<T>::Unq::operator=(Unq && other) -> Unq &
+    template <bool constant>
+    forceinline Pool<T>::UnqT<constant>::UnqT(UnqT<false> && other) requires (constant) :
+        _chunk{std::exchange(other._chunk, nullptr)}
+    {}
+
+    template <typename T>
+    template <bool constant>
+    inline auto Pool<T>::UnqT<constant>::operator=(UnqT && other) -> UnqT &
     {
         if (&other == this)
         {
@@ -288,13 +317,22 @@ namespace qc
     }
 
     template <typename T>
-    forceinline Pool<T>::Unq::~Unq()
+    template <bool constant>
+    inline auto Pool<T>::UnqT<constant>::operator=(UnqT<false> && other) -> UnqT & requires (constant)
+    {
+        return *this = reinterpret_cast<UnqT &&>(other);
+    }
+
+    template <typename T>
+    template <bool constant>
+    forceinline Pool<T>::UnqT<constant>::~UnqT()
     {
         reset();
     }
 
     template <typename T>
-    inline void Pool<T>::Unq::reset()
+    template <bool constant>
+    inline void Pool<T>::UnqT<constant>::reset()
     {
         if (_chunk)
         {
@@ -305,14 +343,16 @@ namespace qc
     }
 
     template <typename T>
-    forceinline Pool<T>::Shr::Shr(_Chunk * const chunk) :
+    template <bool constant>
+    forceinline Pool<T>::ShrT<constant>::ShrT(_Chunk * const chunk) :
         _chunk{chunk}
     {
         ++_chunk->refN;
     }
 
     template <typename T>
-    forceinline Pool<T>::Shr::Shr(const Shr & other) :
+    template <bool constant>
+    forceinline Pool<T>::ShrT<constant>::ShrT(const ShrT & other) :
         _chunk{other._chunk}
     {
         if (_chunk)
@@ -322,12 +362,31 @@ namespace qc
     }
 
     template <typename T>
-    forceinline Pool<T>::Shr::Shr(Shr && other) :
+    template <bool constant>
+    forceinline Pool<T>::ShrT<constant>::ShrT(const ShrT<false> & other) requires (constant) :
+        _chunk{other._chunk}
+    {
+        if (_chunk)
+        {
+            ++_chunk->refN;
+        }
+    }
+
+    template <typename T>
+    template <bool constant>
+    forceinline Pool<T>::ShrT<constant>::ShrT(ShrT && other) :
         _chunk{std::exchange(other._chunk, nullptr)}
     {}
 
     template <typename T>
-    inline auto Pool<T>::Shr::operator=(const Shr & other) -> Shr &
+    template <bool constant>
+    forceinline Pool<T>::ShrT<constant>::ShrT(ShrT<false> && other) requires (constant) :
+        _chunk{std::exchange(other._chunk, nullptr)}
+    {}
+
+    template <typename T>
+    template <bool constant>
+    inline auto Pool<T>::ShrT<constant>::operator=(const ShrT & other) -> ShrT &
     {
         if (&other == this)
         {
@@ -347,7 +406,15 @@ namespace qc
     }
 
     template <typename T>
-    inline auto Pool<T>::Shr::operator=(Shr && other) -> Shr &
+    template <bool constant>
+    forceinline auto Pool<T>::ShrT<constant>::operator=(const ShrT<false> & other) -> ShrT & requires (constant)
+    {
+        return *this = reinterpret_cast<const ShrT &>(other);
+    }
+
+    template <typename T>
+    template <bool constant>
+    inline auto Pool<T>::ShrT<constant>::operator=(ShrT && other) -> ShrT &
     {
         if (&other == this)
         {
@@ -362,13 +429,22 @@ namespace qc
     }
 
     template <typename T>
-    forceinline Pool<T>::Shr::~Shr()
+    template <bool constant>
+    forceinline auto Pool<T>::ShrT<constant>::operator=(ShrT<false> && other) -> ShrT & requires (constant)
+    {
+        return *this = reinterpret_cast<ShrT &&>(other);
+    }
+
+    template <typename T>
+    template <bool constant>
+    forceinline Pool<T>::ShrT<constant>::~ShrT()
     {
         reset();
     }
 
     template <typename T>
-    inline void Pool<T>::Shr::reset()
+    template <bool constant>
+    inline void Pool<T>::ShrT<constant>::reset()
     {
         if (_chunk)
         {
@@ -538,9 +614,23 @@ namespace qc
 
     template <typename T>
     template <typename... Args>
+    inline auto Pool<T>::cunq(Args &&... args) -> CUnq
+    {
+        return CUnq{_create(std::forward<Args>(args)...)};
+    }
+
+    template <typename T>
+    template <typename... Args>
     inline auto Pool<T>::shr(Args &&... args) -> Shr
     {
         return Shr{_create(std::forward<Args>(args)...)};
+    }
+
+    template <typename T>
+    template <typename... Args>
+    inline auto Pool<T>::cshr(Args &&... args) -> CShr
+    {
+        return CShr{_create(std::forward<Args>(args)...)};
     }
 
     template <typename T>
@@ -873,7 +963,7 @@ namespace qc
 
     template <typename T>
     template <bool constant>
-    inline Pool<T>::_Iterator<constant>::_Iterator(_Chunk_ * const chunk) :
+    inline Pool<T>::_Iterator<constant>::_Iterator(_Chunk * const chunk) :
         _chunk{chunk}
     {}
 
