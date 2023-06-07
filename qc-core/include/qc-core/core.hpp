@@ -123,6 +123,7 @@ namespace qc
         template <typename T> concept NumericOrPointer = Numeric<T> || Pointer<T>;
         template <typename T> concept IntegralOrPointer = Integral<T> || Pointer<T>;
         template <typename T> concept TriviallyCopyable = std::is_trivially_copyable_v<T>;
+        template <typename T1, typename T2> concept EqualityComparable = requires (T1 v1, T2 v2) { { v1 == v2 } -> Boolean; };
 
         template <u32 size> struct Sized;
         template <> struct Sized<1u> { using S =  s8; using U =  u8; };
@@ -163,7 +164,6 @@ namespace qc
         template <typename T1, typename T2> concept ExclusiveFloatingSuperOf = Floating<T1> && Floating<T2> && sizeof(T1) > sizeof(T2);
         template <typename T1, typename T2> concept InclusiveFloatingSubOf = Floating<T1> && Floating<T2> && sizeof(T1) <= sizeof(T2);
         template <typename T1, typename T2> concept ExclusiveFloatingSubOf = Floating<T1> && Floating<T2> && sizeof(T1) < sizeof(T2);
-
     }
 
     inline namespace numbers

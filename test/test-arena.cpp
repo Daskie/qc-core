@@ -356,6 +356,23 @@ TEST(Arena, polymorphismUnique)
         a = {};
         ASSERT_EQ(22, x);
     }
+
+    x = 0;
+
+    {
+        Unq<A> a{arena.unq<A>(x)};
+        Unq<B> b{arena.unq<B>(x)};
+        Unq<const A> c{arena.unq<const A>(x)};
+        Unq<const B> d{arena.unq<const B>(x)};
+        static_cast<void>(a == b);
+        static_cast<void>(b == a);
+        static_cast<void>(c == d);
+        static_cast<void>(d == c);
+        static_cast<void>(a == d);
+        static_cast<void>(d == a);
+        static_cast<void>(b == c);
+        static_cast<void>(c == b);
+    }
 }
 
 TEST(Arena, polymorphismShared)
@@ -419,6 +436,32 @@ TEST(Arena, polymorphismShared)
         Shr<B> b{arena.shr<B>(x)};
         a = b;
     }
+}
+
+TEST(Arena, uniqueConst)
+{
+    qc::Arena pool{100u};
+
+    Unq<s32> v1{pool.unq<s32>(1)};
+    Unq<const s32> v2{pool.unq<const s32>(2)};
+    Unq<const s32> v3{std::move(v1)};
+    v2 = std::move(v1);
+    static_cast<void>(v1 == v2);
+    static_assert(std::is_const_v<std::remove_reference_t<decltype(*v2)>>);
+}
+
+TEST(Arena, sharedConst)
+{
+    qc::Arena pool{100u};
+
+    Shr<s32> v1{pool.shr<s32>(1)};
+    Shr<const s32> v2{pool.shr<const s32>(2)};
+    Shr<const s32> v3{v1};
+    Shr<const s32> v4{std::move(v1)};
+    v2 = v1;
+    v2 = std::move(v1);
+    static_cast<void>(v1 == v2);
+    static_assert(std::is_const_v<std::remove_reference_t<decltype(*v2)>>);
 }
 
 TEST(Arena, moveability)

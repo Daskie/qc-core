@@ -1049,6 +1049,13 @@ TEST(Core, types)
     static_assert(!qc::ExclusiveFloatingSubOf<f64, f32>);
     static_assert(!qc::ExclusiveFloatingSubOf<u8, f32>);
     static_assert(!qc::ExclusiveFloatingSubOf<s8, f32>);
+
+    static_assert(qc::EqualityComparable<int, int>);
+    static_assert(qc::EqualityComparable<int, double>);
+    static_assert(qc::EqualityComparable<int *, int *>);
+    static_assert(qc::EqualityComparable<int *, const int *>);
+    static_assert(qc::EqualityComparable<int *, void *>);
+    static_assert(!qc::EqualityComparable<int, int *>);
 }
 
 TEST(Core, abort)

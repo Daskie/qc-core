@@ -26,16 +26,20 @@ namespace qc
         {
             friend Arena;
 
+            using _T = std::remove_const_t<T>;
+
           public:
 
             Unq() = default;
 
             Unq(const Unq &) = delete;
             Unq(Unq && other);
+            Unq(Unq<_T> && other) requires (std::is_const_v<T>);
             template <typename T_> requires std::is_base_of_v<T, T_> Unq(Unq<T_> && other);
 
             Unq & operator=(const Unq &) = delete;
             Unq & operator=(Unq && other);
+            Unq & operator=(Unq<_T> && other) requires (std::is_const_v<T>);
             template <typename T_> requires std::is_base_of_v<T, T_> Unq & operator=(Unq<T_> && other);
 
             ~Unq();
@@ -48,15 +52,15 @@ namespace qc
 
             nodisc forceinline T * operator->() const { return _ptr; }
 
-            nodisc forceinline bool operator==(const Unq & other) const { return _ptr == other._ptr; }
+            template <typename T_> requires (EqualityComparable<T *, T_ *>) nodisc forceinline bool operator==(const Unq<T_> & other) const { return _ptr == other._ptr; }
             nodisc forceinline friend bool operator==(const Unq & a, const T * b) { return a._ptr == b; }
             nodisc forceinline friend bool operator==(const T * a, const Unq & b) { return a == b._ptr; }
 
           private:
 
-            T * _ptr{};
+            _T * _ptr{};
 
-            explicit Unq(T & v);
+            explicit Unq(_T & v);
 
             nodisc u32 & _refN();
         };
@@ -66,18 +70,24 @@ namespace qc
         {
             friend Arena;
 
+            using _T = std::remove_const_t<T>;
+
           public:
 
             Shr() = default;
 
             Shr(const Shr & other);
+            Shr(const Shr<_T> & other) requires (std::is_const_v<T>);
             template <typename T_> requires std::is_base_of_v<T, T_> Shr(const Shr<T_> & other);
             Shr(Shr && other);
+            Shr(Shr<_T> && other) requires (std::is_const_v<T>);
             template <typename T_> requires std::is_base_of_v<T, T_> Shr(Shr<T_> && other);
 
             Shr & operator=(const Shr & other);
+            Shr & operator=(const Shr<_T> & other) requires (std::is_const_v<T>);
             template <typename T_> requires std::is_base_of_v<T, T_> Shr & operator=(const Shr<T_> & other);
             Shr & operator=(Shr && other);
+            Shr & operator=(Shr<_T> && other) requires (std::is_const_v<T>);
             template <typename T_> requires std::is_base_of_v<T, T_> Shr & operator=(Shr<T_> && other);
 
             ~Shr();
@@ -90,15 +100,15 @@ namespace qc
 
             nodisc forceinline T * operator->() const { return _ptr; }
 
-            nodisc forceinline bool operator==(const Shr & other) const { return _ptr == other._ptr; }
+            template <typename T_> requires (EqualityComparable<T *, T_ *>) nodisc forceinline bool operator==(const Shr<T_> & other) const { return _ptr == other._ptr; }
             nodisc forceinline friend bool operator==(const Shr & a, const T * b) { return a._ptr == b; }
             nodisc forceinline friend bool operator==(const T * a, const Shr & b) { return a == b._ptr; }
 
           private:
 
-            T * _ptr{};
+            _T * _ptr{};
 
-            explicit Shr(T & ptr);
+            explicit Shr(_T & ptr);
 
             nodisc u32 & _refN();
         };
@@ -166,7 +176,7 @@ namespace qc
 namespace qc
 {
     template <typename T>
-    forceinline Arena::Unq<T>::Unq(T & v) :
+    forceinline Arena::Unq<T>::Unq(_T & v) :
         _ptr{&v}
     {
         u32 & refN{_refN()};
@@ -182,7 +192,12 @@ namespace qc
     template <typename T>
     template <typename T_> requires std::is_base_of_v<T, T_>
     forceinline Arena::Unq<T>::Unq(Unq<T_> && other) :
-        _ptr{std::exchange(other._ptr, nullptr)}
+        Unq{reinterpret_cast<Unq &&>(other)}
+    {}
+
+    template <typename T>
+    forceinline Arena::Unq<T>::Unq(Unq<_T> && other) requires (std::is_const_v<T>) :
+        Unq{reinterpret_cast<Unq &&>(other)}
     {}
 
     template <typename T>
@@ -203,6 +218,12 @@ namespace qc
     template <typename T>
     template <typename T_> requires std::is_base_of_v<T, T_>
     forceinline auto Arena::Unq<T>::operator=(Unq<T_> && other) -> Unq &
+    {
+        return *this = reinterpret_cast<Unq &&>(other);
+    }
+
+    template <typename T>
+    forceinline auto Arena::Unq<T>::operator=(Unq<_T> && other) -> Unq & requires (std::is_const_v<T>)
     {
         return *this = reinterpret_cast<Unq &&>(other);
     }
@@ -232,7 +253,7 @@ namespace qc
     }
 
     template <typename T>
-    forceinline Arena::Shr<T>::Shr(T & v) :
+    forceinline Arena::Shr<T>::Shr(_T & v) :
         _ptr{&v}
     {
         ++_refN();
@@ -251,10 +272,13 @@ namespace qc
     template <typename T>
     template <typename T_> requires std::is_base_of_v<T, T_>
     forceinline Arena::Shr<T>::Shr(const Shr<T_> & other) :
-        _ptr{other._ptr}
-    {
-        ++_refN();
-    }
+        Shr{reinterpret_cast<const Shr &>(other)}
+    {}
+
+    template <typename T>
+    forceinline Arena::Shr<T>::Shr(const Shr<_T> & other) requires (std::is_const_v<T>) :
+        Shr{reinterpret_cast<const Shr &>(other)}
+    {}
 
     template <typename T>
     forceinline Arena::Shr<T>::Shr(Shr && other) :
@@ -264,7 +288,12 @@ namespace qc
     template <typename T>
     template <typename T_> requires std::is_base_of_v<T, T_>
     forceinline Arena::Shr<T>::Shr(Shr<T_> && other) :
-        _ptr{std::exchange(other._ptr, nullptr)}
+        Shr{reinterpret_cast<Shr &&>(other)}
+    {}
+
+    template <typename T>
+    forceinline Arena::Shr<T>::Shr(Shr<_T> && other) requires (std::is_const_v<T>) :
+        Shr{reinterpret_cast<Shr &&>(other)}
     {}
 
     template <typename T>
@@ -295,6 +324,12 @@ namespace qc
     }
 
     template <typename T>
+    forceinline auto Arena::Shr<T>::operator=(const Shr<_T> & other) -> Shr & requires (std::is_const_v<T>)
+    {
+        return *this = reinterpret_cast<const Shr &>(other);
+    }
+
+    template <typename T>
     inline auto Arena::Shr<T>::operator=(Shr && other) -> Shr &
     {
         if (&other == this)
@@ -312,6 +347,12 @@ namespace qc
     template <typename T>
     template <typename T_> requires std::is_base_of_v<T, T_>
     forceinline auto Arena::Shr<T>::operator=(Shr<T_> && other) -> Shr &
+    {
+        return *this = reinterpret_cast<Shr &&>(other);
+    }
+
+    template <typename T>
+    forceinline auto Arena::Shr<T>::operator=(Shr<_T> && other) -> Shr & requires (std::is_const_v<T>)
     {
         return *this = reinterpret_cast<Shr &&>(other);
     }
@@ -395,13 +436,13 @@ namespace qc
     template <typename T, typename... Args>
     forceinline auto Arena::unq(Args &&... args) -> Unq<T>
     {
-        return Unq<T>{_create<T>(std::forward<Args>(args)...)};
+        return Unq<T>{_create<std::remove_const_t<T>>(std::forward<Args>(args)...)};
     }
 
     template <typename T, typename... Args>
     forceinline auto Arena::shr(Args &&... args) -> Shr<T>
     {
-        return Shr<T>{_create<T>(std::forward<Args>(args)...)};
+        return Shr<T>{_create<std::remove_const_t<T>>(std::forward<Args>(args)...)};
     }
 
     template <typename T>
