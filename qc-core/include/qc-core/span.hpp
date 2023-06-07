@@ -129,7 +129,7 @@ namespace qc
         constexpr span() = default;
         template <InclusiveSubOf<T> U1, InclusiveSubOf<T> U2> constexpr span(U1 v1, U2 v2);
         template <ExclusiveSubOf<T> U> constexpr span(const span1<U> & s);
-        template <Numeric U> requires (!InclusiveSubOf<U, T>)  constexpr explicit span(const span1<U> & s);
+        template <Numeric U> requires (!InclusiveSubOf<U, T>) constexpr explicit span(const span1<U> & s);
 
         constexpr span(const span & s) = default;
         constexpr span(span && s) = default;
@@ -168,7 +168,7 @@ namespace qc
         template <InclusiveSubOf<T> U1, InclusiveSubOf<T> U2> constexpr span(const vec2<U1> & v1, const vec2<U2> & v2);
         template <InclusiveSubOf<T> U1, InclusiveSubOf<T> U2> constexpr span(const span1<U1> & s1, const span1<U2> & s2);
         template <ExclusiveSubOf<T> U> constexpr span(const span2<U> & s);
-        template <Numeric U> requires (!InclusiveSubOf<U, T>)  constexpr explicit span(const span2<U> & s);
+        template <Numeric U> requires (!InclusiveSubOf<U, T>) constexpr explicit span(const span2<U> & s);
 
         constexpr span(const span & s) = default;
         constexpr span(span && s) = default;
@@ -212,7 +212,7 @@ namespace qc
         template <InclusiveSubOf<T> U1, InclusiveSubOf<T> U2> constexpr span(const span2<U1> & s1, const span1<U2> & s2);
         template <InclusiveSubOf<T> U1, InclusiveSubOf<T> U2> constexpr span(const span1<U1> & s1, const span2<U2> & s2);
         template <ExclusiveSubOf<T> U> constexpr span(const span3<U> & s);
-        template <Numeric U> requires (!InclusiveSubOf<U, T>)  constexpr explicit span(const span3<U> & s);
+        template <Numeric U> requires (!InclusiveSubOf<U, T>) constexpr explicit span(const span3<U> & s);
 
         constexpr span(const span & s) = default;
         constexpr span(span && s) = default;
@@ -264,7 +264,7 @@ namespace qc
         template <InclusiveSubOf<T> U1, InclusiveSubOf<T> U2> constexpr span(const span3<U1> & s1, const span1<U2> & s2);
         template <InclusiveSubOf<T> U1, InclusiveSubOf<T> U2> constexpr span(const span1<U1> & s1, const span3<U2> & s2);
         template <ExclusiveSubOf<T> U> constexpr span(const span4<U> & s);
-        template <Numeric U> requires (!InclusiveSubOf<U, T>)  constexpr explicit span(const span4<U> & s);
+        template <Numeric U> requires (!InclusiveSubOf<U, T>) constexpr explicit span(const span4<U> & s);
 
         constexpr span(const span & s) = default;
         constexpr span(span && s) = default;
@@ -389,6 +389,7 @@ namespace qc
         min{v1},
         max{v2}
     {}
+
     template <typename T>
     forceinline constexpr span<T *, 1>::span(std::remove_const_t<T> * const v1, std::remove_const_t<T> * const v2) requires (std::is_const_v<T>) :
         min{v1},

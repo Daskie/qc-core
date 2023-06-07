@@ -85,13 +85,16 @@ namespace qc
 
             UnqT(const UnqT &) = delete;
             UnqT(UnqT && other);
-            UnqT(UnqT<false> && other) requires (constant);
+            forceinline UnqT(UnqT<false> && other) requires (constant) : UnqT{reinterpret_cast<UnqT &&>(other)} {}
 
             UnqT & operator=(const UnqT &) = delete;
             UnqT & operator=(UnqT && other);
-            UnqT & operator=(UnqT<false> && other) requires (constant);
+            forceinline UnqT & operator=(UnqT<false> && other) requires constant { return *this = reinterpret_cast<UnqT &&>(other); }
 
             ~UnqT();
+
+            nodisc forceinline operator UnqT<true> &() & requires (!constant) { return reinterpret_cast<UnqT<true> &>(*this); }
+            nodisc forceinline operator const UnqT<true> &() const & requires (!constant) { return reinterpret_cast<const UnqT<true> &>(*this); }
 
             void reset();
 
@@ -101,7 +104,7 @@ namespace qc
 
             nodisc forceinline _T * operator->() const { return &_chunk->val; }
 
-            template <bool constant_> nodisc forceinline bool operator==(const UnqT<constant_> & other) const { return _chunk == other._chunk; }
+            bool operator==(const UnqT &) const = default;
             nodisc forceinline friend bool operator==(const UnqT & a, const T * b) { return &a._chunk->val == b; }
             nodisc forceinline friend bool operator==(const T * a, const UnqT & b) { return a == &b._chunk->val; }
 
@@ -127,16 +130,17 @@ namespace qc
             ShrT() = default;
 
             ShrT(const ShrT & other);
-            ShrT(const ShrT<false> & other) requires (constant);
             ShrT(ShrT && other);
-            ShrT(ShrT<false> && other) requires (constant);
+            forceinline ShrT(ShrT<false> && other) requires (constant) : ShrT{reinterpret_cast<ShrT &&>(other)} {}
 
             ShrT & operator=(const ShrT & other);
-            ShrT & operator=(const ShrT<false> & other) requires (constant);
             ShrT & operator=(ShrT && other);
-            ShrT & operator=(ShrT<false> && other) requires (constant);
+            forceinline ShrT & operator=(ShrT<false> && other) requires constant { return *this = reinterpret_cast<ShrT &&>(other); }
 
             ~ShrT();
+
+            nodisc forceinline operator ShrT<true> &() & requires (!constant) { return reinterpret_cast<ShrT<true> &>(*this); }
+            nodisc forceinline operator const ShrT<true> &() const & requires (!constant) { return reinterpret_cast<const ShrT<true> &>(*this); }
 
             void reset();
 
@@ -146,7 +150,7 @@ namespace qc
 
             nodisc forceinline _T * operator->() const { return &_chunk->val; }
 
-            template <bool constant_> nodisc forceinline bool operator==(const ShrT<constant_> & other) const { return _chunk == other._chunk; }
+            bool operator==(const ShrT &) const = default;
             nodisc forceinline friend bool operator==(const ShrT & a, const T * b) { return &a._chunk->val == b; }
             nodisc forceinline friend bool operator==(const T * a, const ShrT & b) { return a == &b._chunk->val; }
 
@@ -296,12 +300,6 @@ namespace qc
 
     template <typename T>
     template <bool constant>
-    forceinline Pool<T>::UnqT<constant>::UnqT(UnqT<false> && other) requires (constant) :
-        _chunk{std::exchange(other._chunk, nullptr)}
-    {}
-
-    template <typename T>
-    template <bool constant>
     inline auto Pool<T>::UnqT<constant>::operator=(UnqT && other) -> UnqT &
     {
         if (&other == this)
@@ -314,13 +312,6 @@ namespace qc
         _chunk = std::exchange(other._chunk, nullptr);
 
         return *this;
-    }
-
-    template <typename T>
-    template <bool constant>
-    inline auto Pool<T>::UnqT<constant>::operator=(UnqT<false> && other) -> UnqT & requires (constant)
-    {
-        return *this = reinterpret_cast<UnqT &&>(other);
     }
 
     template <typename T>
@@ -363,24 +354,7 @@ namespace qc
 
     template <typename T>
     template <bool constant>
-    forceinline Pool<T>::ShrT<constant>::ShrT(const ShrT<false> & other) requires (constant) :
-        _chunk{other._chunk}
-    {
-        if (_chunk)
-        {
-            ++_chunk->refN;
-        }
-    }
-
-    template <typename T>
-    template <bool constant>
     forceinline Pool<T>::ShrT<constant>::ShrT(ShrT && other) :
-        _chunk{std::exchange(other._chunk, nullptr)}
-    {}
-
-    template <typename T>
-    template <bool constant>
-    forceinline Pool<T>::ShrT<constant>::ShrT(ShrT<false> && other) requires (constant) :
         _chunk{std::exchange(other._chunk, nullptr)}
     {}
 
@@ -407,13 +381,6 @@ namespace qc
 
     template <typename T>
     template <bool constant>
-    forceinline auto Pool<T>::ShrT<constant>::operator=(const ShrT<false> & other) -> ShrT & requires (constant)
-    {
-        return *this = reinterpret_cast<const ShrT &>(other);
-    }
-
-    template <typename T>
-    template <bool constant>
     inline auto Pool<T>::ShrT<constant>::operator=(ShrT && other) -> ShrT &
     {
         if (&other == this)
@@ -426,13 +393,6 @@ namespace qc
         _chunk = std::exchange(other._chunk, nullptr);
 
         return *this;
-    }
-
-    template <typename T>
-    template <bool constant>
-    forceinline auto Pool<T>::ShrT<constant>::operator=(ShrT<false> && other) -> ShrT & requires (constant)
-    {
-        return *this = reinterpret_cast<ShrT &&>(other);
     }
 
     template <typename T>
