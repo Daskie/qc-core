@@ -29,7 +29,7 @@ namespace qc
 
         nodisc fvec2 nearest(fvec2 point) const;
 
-        nodisc u64 size() const { return _nodes.size(); }
+        nodisc u32 size() const { return _nodes.size(); }
 
       private:
 
@@ -52,18 +52,21 @@ namespace qc
 
 namespace qc
 {
-    inline KdTree::KdTree(const std::span<const fvec2> points) :
-        _nodes(points.size())
+    inline KdTree::KdTree(const std::span<const fvec2> points)
     {
-        assert(points.size() <= 1'000'000'000);
+        // TODO: Checked cast
+        assert(points.size() <= std::numeric_limits<u32>::max());
+        const u32 n{u32(points.size())};
 
-        if (points.empty())
+        if (!n)
         {
             return;
         }
 
+        _nodes.resize(n);
+
         // Fill two arrays with increasing indices [0, 1, 2, ... , N]
-        List<u32> orderedX(points.size());
+        List<u32> orderedX(n);
         for (u32 i{0u}; i < orderedX.size(); ++i) orderedX[i] = i;
         List<u32> orderedY(orderedX.begin(), orderedX.end());
 
@@ -123,7 +126,7 @@ namespace qc
         }
 
         // Select median point along alpha axis
-        const u64 lowerAN{orderedA.size() / 2u};
+        const u32 lowerAN{u32(orderedA.size()) / 2u};
         const u32 medianPointI{orderedA[lowerAN]};
         const fvec2 medianPoint{points[medianPointI]};
 
@@ -135,8 +138,8 @@ namespace qc
         node->upperOffset = node->lowerOffset + u32(lowerOrderedA.size());
 
         // Split ordered beta span into two ordered subspans
-        u64 lowerBN{0u};
-        u64 upperBN{0u};
+        u32 lowerBN{0u};
+        u32 upperBN{0u};
         for (const u32 pointI: orderedB)
         {
             const fvec2 point{points[pointI]};

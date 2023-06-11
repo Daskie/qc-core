@@ -25,7 +25,7 @@ namespace qc
     template <typename T>
     inline Deserializer & operator>>(Deserializer & ds, List<T> & list)
     {
-        u64 size;
+        typename List<T>::size_type size;
         if (ds >> size)
         {
             list.resize(size);

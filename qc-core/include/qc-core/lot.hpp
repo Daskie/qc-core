@@ -24,7 +24,7 @@ namespace qc
 
         using value_type = T;
         using reference = T &;
-        using size_type = u64;
+        using size_type = u32;
         using difference_type = s64;
         using const_reference = const T &;
         using pointer = T *;
@@ -32,11 +32,11 @@ namespace qc
         using iterator = T *;
         using const_iterator = const T *;
 
-        static constexpr u64 max_size() { return List<T>::max_size(); }
+        static constexpr u32 max_size() { return List<T>::max_size(); }
 
         Lot() = default;
-        forceinline explicit Lot(const u64 n) : _list(n) {}
-        forceinline Lot(const u64 n, const T & v) : _list(n, v) {}
+        forceinline explicit Lot(const u32 n) : _list(n) {}
+        forceinline Lot(const u32 n, const T & v) : _list(n, v) {}
         template <typename It> forceinline Lot(const It first, const It last) : _list(first, last) {}
         forceinline Lot(const std::initializer_list<T> vs) : _list(vs) {}
         forceinline explicit Lot(const std::span<const T> vs) : _list(vs) {}
@@ -52,13 +52,13 @@ namespace qc
 
         ~Lot() = default;
 
-        forceinline void assign(const u64 n, const T & v) { _list.assign(n, v); }
+        forceinline void assign(const u32 n, const T & v) { _list.assign(n, v); }
         template <typename It> forceinline void assign(const It first, const It last) { _list.assign(first, last); }
 
-        forceinline void reserve(const u64 capacity) { _list.reserve(capacity); }
+        forceinline void reserve(const u32 capacity) { _list.reserve(capacity); }
 
-        forceinline void resize(const u64 n) { _list.resize(n); }
-        forceinline void resize(const u64 n, const T & v) { _list.resize(n, v); }
+        forceinline void resize(const u32 n) { _list.resize(n); }
+        forceinline void resize(const u32 n, const T & v) { _list.resize(n, v); }
 
         forceinline void shrink() { _list.shrink(); }
 
@@ -67,12 +67,12 @@ namespace qc
         template <typename... Args> forceinline T & push(Args &&... args) { return _list.push(std::forward<Args>(args)...); }
 
         forceinline T & bump() requires std::is_trivially_default_constructible_v<T> { return _list.bump(); }
-        forceinline std::span<T> bump(const u64 n) requires std::is_trivially_default_constructible_v<T> { return _list.bump(n); }
+        forceinline std::span<T> bump(const u32 n) requires std::is_trivially_default_constructible_v<T> { return _list.bump(n); }
 
         T * erase(T * pos);
-        u64 erase(const T & v);
+        u32 erase(const T & v);
 
-        template <typename Pred> u64 eraseIf(Pred && pred);
+        template <typename Pred> u32 eraseIf(Pred && pred);
 
         forceinline T * find(const T & v) { return _list.find(v); }
         forceinline const T * find(const T & v) const { return _list.find(v); }
@@ -80,20 +80,20 @@ namespace qc
         template <typename Pred> forceinline T * findIf(Pred && pred) { return _list.findIf(std::forward<Pred>(pred)); }
         template <typename Pred> forceinline const T * findIf(Pred && pred) const { return _list.findIf(std::forward<Pred>(pred)); }
 
-        forceinline u64 count(const T & v) const { return _list.count(v); }
+        forceinline u32 count(const T & v) const { return _list.count(v); }
 
-        template <typename Pred> forceinline u64 countIf(Pred && pred) const { return _list.countIf(std::forward<Pred>(pred)); }
+        template <typename Pred> forceinline u32 countIf(Pred && pred) const { return _list.countIf(std::forward<Pred>(pred)); }
 
         forceinline bool contains(const T & v) const { return _list.contains(v); }
 
         template <typename Pred> forceinline bool containsIf(Pred && pred) const { return _list.containsIf(std::forward<Pred>(pred)); }
 
-        nodisc forceinline T & operator[](const u64 i) { return _list[i]; }
-        nodisc forceinline const T & operator[](const u64 i) const { return _list[i]; }
+        nodisc forceinline T & operator[](const u32 i) { return _list[i]; }
+        nodisc forceinline const T & operator[](const u32 i) const { return _list[i]; }
 
-        nodisc forceinline u64 capacity() const { return _list.capacity(); }
+        nodisc forceinline u32 capacity() const { return _list.capacity(); }
 
-        nodisc forceinline u64 size() const { return _list.size(); }
+        nodisc forceinline u32 size() const { return _list.size(); }
 
         nodisc forceinline bool empty() const { return _list.empty(); }
 
@@ -133,16 +133,16 @@ namespace qc
     }
 
     template <typename T>
-    forceinline u64 Lot<T>::erase(const T & v)
+    forceinline u32 Lot<T>::erase(const T & v)
     {
         return eraseIf([&v](const T & a) { return a == v; });
     }
 
     template <typename T>
     template <typename Pred>
-    u64 Lot<T>::eraseIf(Pred && pred)
+    u32 Lot<T>::eraseIf(Pred && pred)
     {
-        u64 n{0u};
+        u32 n{0u};
 
         for (T * pos{begin()}, * end{this->end()}; pos < end; ++pos)
         {

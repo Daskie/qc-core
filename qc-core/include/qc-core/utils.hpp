@@ -24,6 +24,7 @@ namespace qc::utils
     }
 
     // TODO: Version that maps file to memory for bulk transfers, non-sequential access, or both reading and writing
+    // TODO: Once have our own string class, return some kind of dynamic array result instead to avoid 4GB list limit
     template <typename DstContainer>
     nodisc inline Result<DstContainer> _readFile(const std::filesystem::path & path)
     {
@@ -40,7 +41,7 @@ namespace qc::utils
         // Failed to open file
         FAIL_IF(!ifs.good());
 
-        dst.resize(size); // TODO: string version initializes its memory - potential performance concern for large files
+        dst.resize(typename DstContainer::size_type(size)); // TODO: string version initializes its memory - potential performance concern for large files
 
         ifs.read(std::bit_cast<char *>(dst.data()), std::streamsize(size));
 

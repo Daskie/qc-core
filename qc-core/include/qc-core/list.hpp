@@ -51,7 +51,7 @@ namespace qc
 
         using value_type = T;
         using reference = T &;
-        using size_type = u64;
+        using size_type = u32;
         using difference_type = s64;
         using const_reference = const T &;
         using pointer = T *;
@@ -59,11 +59,11 @@ namespace qc
         using iterator = T *;
         using const_iterator = const T *;
 
-        static constexpr u64 max_size() { return u64{1u} << 63; }
+        static constexpr u32 max_size() { return _maxCapacity; }
 
         List() = default;
-        explicit List(u64 n);
-        List(u64 n, const T & v);
+        explicit List(u32 n);
+        List(u32 n, const T & v);
         template <typename It> List(It first, It last);
         List(std::initializer_list<T> vs);
         explicit List(std::span<const T> vs);
@@ -79,13 +79,13 @@ namespace qc
 
         ~List();
 
-        void assign(u64 n, const T & v);
+        void assign(u32 n, const T & v);
         template <typename It> void assign(It first, It last);
 
-        void reserve(u64 capacity);
+        void reserve(u32 capacity);
 
-        void resize(u64 n);
-        void resize(u64 n, const T & v);
+        void resize(u32 n);
+        void resize(u32 n, const T & v);
 
         void shrink();
 
@@ -94,11 +94,11 @@ namespace qc
         template <typename... Args> T & push(Args &&... args);
 
         T & bump() requires std::is_trivially_default_constructible_v<T>;
-        std::span<T> bump(u64 n) requires std::is_trivially_default_constructible_v<T>;
+        std::span<T> bump(u32 n) requires std::is_trivially_default_constructible_v<T>;
 
         T * insert(T * pos, const T & v);
         T * insert(T * pos, T && v);
-        T * insert(T * pos, u64 n, const T & v);
+        T * insert(T * pos, u32 n, const T & v);
         template <typename It> T * insert(T * pos, It first, It last);
         T * insert(T * pos, std::initializer_list<T> vs);
 
@@ -106,13 +106,13 @@ namespace qc
 
         void pop();
         void pop(T & dst);
-        void pop(u64 n);
+        void pop(u32 n);
 
         T * erase(T * pos);
         T * erase(T * first, T * last);
-        u64 erase(const T & v);
+        u32 erase(const T & v);
 
-        template <typename Pred> u64 eraseIf(Pred && pred);
+        template <typename Pred> u32 eraseIf(Pred && pred);
 
         T * find(const T & v);
         const T * find(const T & v) const;
@@ -120,16 +120,16 @@ namespace qc
         template <typename Pred> T * findIf(Pred && pred);
         template <typename Pred> const T * findIf(Pred && pred) const;
 
-        u64 count(const T & v) const;
+        u32 count(const T & v) const;
 
-        template <typename Pred> u64 countIf(Pred && pred) const;
+        template <typename Pred> u32 countIf(Pred && pred) const;
 
         bool contains(const T & v) const;
 
         template <typename Pred> bool containsIf(Pred && pred) const;
 
-        nodisc T & operator[](const u64 i);
-        nodisc const T & operator[](const u64 i) const;
+        nodisc T & operator[](const u32 i);
+        nodisc const T & operator[](const u32 i) const;
 
         nodisc T & front();
         nodisc const T & front() const;
@@ -137,9 +137,9 @@ namespace qc
         nodisc T & back();
         nodisc const T & back() const;
 
-        nodisc u64 capacity() const;
+        nodisc u32 capacity() const;
 
-        nodisc u64 size() const;
+        nodisc u32 size() const;
 
         nodisc bool empty() const;
 
@@ -149,9 +149,9 @@ namespace qc
         nodisc std::span<T> span();
         nodisc std::span<const T> span() const;
         nodisc std::span<const T> cspan() const;
-        nodisc std::span<T> span(const u64 i, const u64 n);
-        nodisc std::span<const T> span(const u64 i, const u64 n) const;
-        nodisc std::span<const T> cspan(const u64 i, const u64 n) const;
+        nodisc std::span<T> span(const u32 i, const u32 n);
+        nodisc std::span<const T> span(const u32 i, const u32 n) const;
+        nodisc std::span<const T> cspan(const u32 i, const u32 n) const;
 
         nodisc T * begin();
         nodisc const T * begin() const;
@@ -168,16 +168,19 @@ namespace qc
 
       private:
 
-        static constexpr u64 _defaultMinCapacity{16u};
+        static constexpr u32 _autoInitCapacity{16u};
+        static constexpr u32 _maxCapacity{std::numeric_limits<u32>::max()};
 
-        u64 _capacity{};
-        u64 _size{};
+        u32 _capacity{};
+        u32 _size{};
         T * _data{};
 
-        void _newMemory(u64 capacity, u64 gapI, u64 gapN);
+        void _expand(u32 minNewCapacity, u32 gapI, u32 gapN);
+
+        void _newMemory(u32 capacity, u32 gapI, u32 gapN);
 
         void _shift(T * & pos);
-        template <bool destruct> T * _shift(T * & pos, u64 n);
+        template <bool destruct> T * _shift(T * & pos, u32 n);
     };
 
     template <typename T> concept ConstructableByInitializerList = std::is_constructible_v<T, std::initializer_list<typename T::value_type>>;
@@ -204,13 +207,13 @@ namespace qc
     }
 
     template <typename T>
-    forceinline List<T>::List(const u64 n)
+    forceinline List<T>::List(const u32 n)
     {
         resize(n);
     }
 
     template <typename T>
-    forceinline List<T>::List(const u64 n, const T & v)
+    forceinline List<T>::List(const u32 n, const T & v)
     {
         assign(n, v);
     }
@@ -262,11 +265,15 @@ namespace qc
     {
         if constexpr (std::is_trivially_copyable_v<T>)
         {
-            reserve(vs.size());
+            // TODO: Checked cast
+            assert(vs.size() <= std::numeric_limits<u32>::max());
+            const u32 n{u32(vs.size())};
 
-            std::memcpy(_data, vs.data(), vs.size() * sizeof(T));
+            reserve(n);
 
-            _size = vs.size();
+            std::memcpy(_data, vs.data(), n * sizeof(T));
+
+            _size = n;
         }
         else
         {
@@ -301,7 +308,7 @@ namespace qc
     }
 
     template <typename T>
-    forceinline void List<T>::assign(const u64 n, const T & v)
+    forceinline void List<T>::assign(const u32 n, const T & v)
     {
         clear();
 
@@ -314,7 +321,10 @@ namespace qc
     {
         clear();
 
-        const u64 n{u64(std::distance(first, last))};
+        // TODO: Checked cast
+        const s64 dist{std::distance(first, last)};
+        assert(dist >= 0 || dist <= std::numeric_limits<u32>::max());
+        const u32 n{u32(dist)};
 
         reserve(n);
 
@@ -327,7 +337,7 @@ namespace qc
     }
 
     template <typename T>
-    forceinline void List<T>::reserve(const u64 capacity)
+    forceinline void List<T>::reserve(const u32 capacity)
     {
         if (capacity > _capacity)
         {
@@ -336,7 +346,7 @@ namespace qc
     }
 
     template <typename T>
-    inline void List<T>::resize(const u64 n)
+    inline void List<T>::resize(const u32 n)
     {
         if (n > _size)
         {
@@ -365,7 +375,7 @@ namespace qc
     }
 
     template <typename T>
-    inline void List<T>::resize(const u64 n, const T & v)
+    inline void List<T>::resize(const u32 n, const T & v)
     {
         if (n > _size)
         {
@@ -426,7 +436,7 @@ namespace qc
     {
         if (_size == _capacity) [[unlikely]]
         {
-            _newMemory(max(_capacity * 2u, _defaultMinCapacity), 0u, 0u);
+            _expand(_size + 1u, 0u, 0u);
         }
 
         T * const pos{_data + _size};
@@ -451,18 +461,18 @@ namespace qc
     {
         if (_size == _capacity) [[unlikely]]
         {
-            _newMemory(max(_capacity * 2u, _defaultMinCapacity), 0u, 0u);
+            _expand(_size + 1u, 0u, 0u);
         }
 
         return _data[_size++];
     }
 
     template <typename T>
-    forceinline std::span<T> List<T>::bump(const u64 n) requires std::is_trivially_default_constructible_v<T>
+    forceinline std::span<T> List<T>::bump(const u32 n) requires std::is_trivially_default_constructible_v<T>
     {
         if (_size + n > _capacity) [[unlikely]]
         {
-            _newMemory(max(_capacity + max(_capacity, n), _defaultMinCapacity), 0u, 0u);
+            _expand(_size + n, 0u, 0u);
         }
 
         T * pos{_data + _size};
@@ -485,12 +495,12 @@ namespace qc
     }
 
     template <typename T>
-    inline T * List<T>::insert(T * pos, const u64 n, const T & v)
+    inline T * List<T>::insert(T * pos, const u32 n, const T & v)
     {
         static_assert(std::is_copy_constructible_v<T>);
         static constexpr bool destruct{!std::is_trivially_destructible_v<T> && !std::is_copy_assignable_v<T>};
 
-        assert(u64(pos - _data) <= _size);
+        assert(u64(pos - _data) <= _size); // Handles negative case
 
         T * const constructedEnd{_shift<destruct>(pos, n)};
         T * const unconstructedEnd{pos + n};
@@ -509,9 +519,13 @@ namespace qc
         static_assert(std::is_copy_constructible_v<T>);
         static constexpr bool destruct{!std::is_trivially_destructible_v<T> && !std::is_copy_assignable_v<T>};
 
-        assert(u64(pos - _data) <= _size);
+        assert(u64(pos - _data) <= _size); // Handles negative case
 
-        const u64 n{u64(std::distance(first, last))};
+        // TODO: Checked cast
+        const s64 dist{std::distance(first, last)};
+        assert(dist >= 0 && dist <= std::numeric_limits<u32>::max());
+        const u32 n{u32(dist)};
+
         T * const constructedEnd{_shift<destruct>(pos, n)};
         T * const unconstructedEnd{pos + n};
 
@@ -532,7 +546,7 @@ namespace qc
     template <typename... Args>
     inline T * List<T>::emplace(T * pos, Args &&... args)
     {
-        assert(u64(pos - _data) <= _size);
+        assert(u64(pos - _data) <= _size); // Handles negative case
 
         _shift(pos);
 
@@ -568,7 +582,7 @@ namespace qc
     }
 
     template <typename T>
-    inline void List<T>::pop(const u64 n)
+    inline void List<T>::pop(const u32 n)
     {
         assert(_size >= n);
 
@@ -625,19 +639,19 @@ namespace qc
             }
         }
 
-        _size -= u64(last - first);
+        _size -= u32(last - first);
         return first;
     }
 
     template <typename T>
-    forceinline u64 List<T>::erase(const T & v)
+    forceinline u32 List<T>::erase(const T & v)
     {
         return eraseIf([&v](const T & a) { return a == v; });
     }
 
     template <typename T>
     template <typename Pred>
-    inline u64 List<T>::eraseIf(Pred && pred)
+    inline u32 List<T>::eraseIf(Pred && pred)
     {
         T * const end{_data + _size};
         T * dst{_data};
@@ -656,7 +670,7 @@ namespace qc
             *dst = std::move(*src);
         }
 
-        const u64 n{u64(end - dst)};
+        const u32 n{u32(end - dst)};
         pop(n);
         return n;
     }
@@ -696,16 +710,16 @@ namespace qc
     }
 
     template <typename T>
-    forceinline u64 List<T>::count(const T & v) const
+    forceinline u32 List<T>::count(const T & v) const
     {
         return countIf([&v](const T & a) { return a == v; });
     }
 
     template <typename T>
     template <typename Pred>
-    inline u64 List<T>::countIf(Pred && pred) const
+    inline u32 List<T>::countIf(Pred && pred) const
     {
-        u64 n{0u};
+        u32 n{0u};
 
         for (const T & v : *this)
         {
@@ -729,7 +743,7 @@ namespace qc
     }
 
     template <typename T>
-    forceinline T & List<T>::operator[](const u64 i)
+    forceinline T & List<T>::operator[](const u32 i)
     {
         assert(i < _size);
 
@@ -737,7 +751,7 @@ namespace qc
     }
 
     template <typename T>
-    forceinline const T & List<T>::operator[](const u64 i) const
+    forceinline const T & List<T>::operator[](const u32 i) const
     {
         assert(i < _size);
 
@@ -769,13 +783,13 @@ namespace qc
     }
 
     template <typename T>
-    forceinline u64 List<T>::capacity() const
+    forceinline u32 List<T>::capacity() const
     {
         return _capacity;
     }
 
     template <typename T>
-    forceinline u64 List<T>::size() const
+    forceinline u32 List<T>::size() const
     {
         return _size;
     }
@@ -817,19 +831,19 @@ namespace qc
     }
 
     template <typename T>
-    forceinline std::span<T> List<T>::span(const u64 i, const u64 n)
+    forceinline std::span<T> List<T>::span(const u32 i, const u32 n)
     {
         return {_data + i, n};
     }
 
     template <typename T>
-    forceinline std::span<const T> List<T>::span(const u64 i, const u64 n) const
+    forceinline std::span<const T> List<T>::span(const u32 i, const u32 n) const
     {
         return {_data + i, n};
     }
 
     template <typename T>
-    forceinline std::span<const T> List<T>::cspan(const u64 i, const u64 n) const
+    forceinline std::span<const T> List<T>::cspan(const u32 i, const u32 n) const
     {
         return span(i, n);
     }
@@ -926,12 +940,26 @@ namespace qc
     }
 
     template <typename T>
-    inline void List<T>::_newMemory(const u64 newCapacity, const u64 gapI, const u64 gapN)
+    inline void List<T>::_expand(const u32 minNewCapacity, const u32 gapI, const u32 gapN)
+    {
+        u64 newCapacity{max(u64(minNewCapacity), u64(_capacity) * 2u, u64(_autoInitCapacity))};
+
+        // If new capacity is within 50% of max capacity, just expand up to max capacity
+        if (newCapacity + newCapacity / 2u >= _maxCapacity)
+        {
+            newCapacity = _maxCapacity;
+        }
+
+        _newMemory(u32(newCapacity), gapI, gapN);
+    }
+
+    template <typename T>
+    inline void List<T>::_newMemory(const u32 newCapacity, const u32 gapI, const u32 gapN)
     {
         T * const newData{static_cast<T *>(::operator new (newCapacity * sizeof(T), std::align_val_t{alignof(T)}))};
         T * dst{newData};
 
-        const u64 headN{gapN ? gapI : _size};
+        const u32 headN{gapN ? gapI : _size};
 
         // Move over the head
         if constexpr (std::is_trivially_copyable_v<T> && std::is_trivially_destructible_v<T>)
@@ -954,7 +982,7 @@ namespace qc
         // Move over the tail
         if constexpr (std::is_trivially_copyable_v<T> && std::is_trivially_destructible_v<T>)
         {
-            const u64 tailN{_size - headN};
+            const u32 tailN{_size - headN};
             std::memcpy(dst, _data + headN, tailN * sizeof(T));
             dst += tailN;
         }
@@ -978,8 +1006,8 @@ namespace qc
     {
         if (_size == _capacity) [[unlikely]]
         {
-            const u64 i{u64(pos - _data)};
-            _newMemory(max(_capacity * 2u, _defaultMinCapacity), i, 1u);
+            const u32 i{u32(pos - _data)};
+            _expand(_size + 1u, i, 1u);
             pos = _data + i;
         }
         else
@@ -1033,7 +1061,7 @@ namespace qc
 
     template <typename T>
     template <bool destruct>
-    inline T * List<T>::_shift(T * & pos, const u64 n)
+    inline T * List<T>::_shift(T * & pos, const u32 n)
     {
         if (n == 0u)
         {
@@ -1045,8 +1073,8 @@ namespace qc
 
         if (_size + n > _capacity) [[unlikely]]
         {
-            const u64 i{u64(pos - _data)};
-            _newMemory(max(_capacity + max(_capacity, n), _defaultMinCapacity), i, n);
+            const u32 i{u32(pos - _data)};
+            _expand(_size + n, i, n);
             pos = _data + i;
             constructedEnd = pos;
         }

@@ -31,7 +31,7 @@ struct NonTrivial
 TEST(List, max_size)
 {
     qc::List<s32> list{};
-    ASSERT_EQ(list.max_size(), (u64{1u} << 63));
+    ASSERT_EQ(list.max_size(), std::numeric_limits<u32>::max());
     ASSERT_EQ(qc::List<s32>::max_size(), list.max_size());
 }
 

@@ -9,7 +9,7 @@ using namespace qc::primitives;
 TEST(Lot, max_size)
 {
     qc::Lot<s32> lot{};
-    ASSERT_EQ(lot.max_size(), (u64{1u} << 63));
+    ASSERT_EQ(lot.max_size(), std::numeric_limits<u32>::max());
     ASSERT_EQ(qc::Lot<s32>::max_size(), lot.max_size());
 }
 
