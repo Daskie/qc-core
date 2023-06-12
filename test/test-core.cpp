@@ -11,6 +11,54 @@ using namespace qc::primitives;
 
 enum TestEnum { a, b, c };
 
+TEST(Core, debugRelease)
+{
+    #if defined QC_DEBUG
+        static_assert(qc::debug);
+        static_assert(!qc::release);
+    #elif defined QC_RELEASE
+        static_assert(!qc::debug);
+        static_assert(qc::release);
+    #else
+        static_assert(false);
+    #endif
+
+}
+
+TEST(Core, compiler)
+{
+    #if defined QC_MSVC
+        static_assert(qc::compiler == qc::Compiler::msvc);
+        static_assert(qc::msvc);
+        static_assert(!qc::gcc);
+    #elif defined QC_GCC
+        static_assert(qc::compiler == qc::Compiler::gcc);
+        static_assert(!qc::msvc);
+        static_assert(qc::gcc);
+    #else
+        static_assert(qc::compiler == qc::Clatform::other);
+        static_assert(!qc::msvc);
+        static_assert(!qc::gcc);
+    #endif
+}
+
+TEST(Core, platform)
+{
+    #if defined QC_WINDOWS
+        static_assert(qc::platform == qc::Platform::windows);
+        static_assert(qc::windows);
+        static_assert(!qc::linux);
+    #elif defined QC_LINUX
+        static_assert(qc::platform == qc::Platform::linux);
+        static_assert(!qc::windows);
+        static_assert(qc::linux);
+    #else
+        static_assert(qc::platform == qc::Platform::other);
+        static_assert(!qc::windows);
+        static_assert(!qc::linux);
+    #endif
+}
+
 TEST(Core, primitives)
 {
     [[maybe_unused]] s8 s08_;
@@ -1310,4 +1358,384 @@ TEST(Core, ceil)
 
     testCeil<double, s64>(s64(1) << 49);
     testCeil<double, s64>(-(s64(1) << 49));
+}
+
+GCC_DIAGNOSTIC_PUSH
+GCC_DIAGNOSTIC_IGNORED("-Wuseless-cast")
+TEST(Core, checkedCast)
+{
+    using qc::checkedCast;
+
+    // To f32
+    {
+        ASSERT_EQ(checkedCast<f32>(std::numeric_limits<f32>::min()), std::numeric_limits<f32>::min());
+
+        ASSERT_DEATH(static_cast<void>(checkedCast<f32>(std::numeric_limits<f64>::min())), "");
+
+        ASSERT_EQ(checkedCast<f32>(std::numeric_limits<s8>::max()), 127.0f);
+
+        ASSERT_EQ(checkedCast<f32>(std::numeric_limits<s16>::max()), 32767.0f);
+
+        ASSERT_EQ(checkedCast<f32>(s32(16777216)), 16777216.0f);
+        ASSERT_DEATH(static_cast<void>(checkedCast<f32>(s32(16777217))), "");
+
+        ASSERT_EQ(checkedCast<f32>(s64(16777216)), 16777216.0f);
+        ASSERT_DEATH(static_cast<void>(checkedCast<f32>(s64(16777217))), "");
+
+        ASSERT_EQ(checkedCast<f32>(std::numeric_limits<u8>::max()), 255.0f);
+
+        ASSERT_EQ(checkedCast<f32>(std::numeric_limits<u16>::max()), 65535.0f);
+
+        ASSERT_EQ(checkedCast<f32>(u32(16777216u)), 16777216.0f);
+        ASSERT_DEATH(static_cast<void>(checkedCast<f32>(u32(16777217u))), "");
+
+        ASSERT_EQ(checkedCast<f32>(s64(16777216u)), 16777216.0f);
+        ASSERT_DEATH(static_cast<void>(checkedCast<f32>(u64(16777217u))), "");
+    }
+
+    // To f64
+    {
+        ASSERT_EQ(checkedCast<f64>(std::numeric_limits<f32>::min()), std::numeric_limits<f32>::min());
+
+        ASSERT_EQ(checkedCast<f64>(std::numeric_limits<f64>::min()), std::numeric_limits<f64>::min());
+
+        ASSERT_EQ(checkedCast<f64>(std::numeric_limits<s8>::max()), 127.0);
+
+        ASSERT_EQ(checkedCast<f64>(std::numeric_limits<s16>::max()), 32767.0);
+
+        ASSERT_EQ(checkedCast<f64>(std::numeric_limits<s32>::max()), 2147483647.0);
+
+        ASSERT_EQ(checkedCast<f64>(s64(9007199254740992)), 9007199254740992.0);
+        ASSERT_DEATH(static_cast<void>(checkedCast<f64>(s64(9007199254740993))), "");
+
+        ASSERT_EQ(checkedCast<f64>(std::numeric_limits<u8>::max()), 255.0);
+
+        ASSERT_EQ(checkedCast<f64>(std::numeric_limits<u16>::max()), 65535.0);
+
+        ASSERT_EQ(checkedCast<f64>(std::numeric_limits<u32>::max()), 4294967295.0);
+
+        ASSERT_EQ(checkedCast<f64>(u64(9007199254740992u)), 9007199254740992.0);
+        ASSERT_DEATH(static_cast<void>(checkedCast<f64>(u64(9007199254740993u))), "");
+    }
+
+    // To s8
+    {
+        ASSERT_EQ(checkedCast<s8>(127.0f), s8(127));
+        ASSERT_DEATH(static_cast<void>(checkedCast<s8>(128.0f)), "");
+        ASSERT_EQ(checkedCast<s8>(-128.0f), s8(-128));
+        ASSERT_DEATH(static_cast<void>(checkedCast<s8>(-129.0f)), "");
+        ASSERT_DEATH(static_cast<void>(checkedCast<s8>(0.5f)), "");
+
+        ASSERT_EQ(checkedCast<s8>(127.0), s8(127));
+        ASSERT_DEATH(static_cast<void>(checkedCast<s8>(128.0)), "");
+        ASSERT_EQ(checkedCast<s8>(-128.0), s8(-128));
+        ASSERT_DEATH(static_cast<void>(checkedCast<s8>(-129.0)), "");
+        ASSERT_DEATH(static_cast<void>(checkedCast<s8>(0.5)), "");
+
+        ASSERT_EQ(checkedCast<s8>(s8(127)), s8(127));
+        ASSERT_EQ(checkedCast<s8>(s8(-128)), s8(-128));
+
+        ASSERT_EQ(checkedCast<s8>(s16(127)), s8(127));
+        ASSERT_DEATH(static_cast<void>(checkedCast<s8>(s16(128))), "");
+        ASSERT_EQ(checkedCast<s8>(s16(-128)), s8(-128));
+        ASSERT_DEATH(static_cast<void>(checkedCast<s8>(s16(-129))), "");
+
+        ASSERT_EQ(checkedCast<s8>(s32(127)), s8(127));
+        ASSERT_DEATH(static_cast<void>(checkedCast<s8>(s32(128))), "");
+        ASSERT_EQ(checkedCast<s8>(s32(-128)), s8(-128));
+        ASSERT_DEATH(static_cast<void>(checkedCast<s8>(s32(-129))), "");
+
+        ASSERT_EQ(checkedCast<s8>(s64(127)), s8(127));
+        ASSERT_DEATH(static_cast<void>(checkedCast<s8>(s64(128))), "");
+        ASSERT_EQ(checkedCast<s8>(s64(-128)), s8(-128));
+        ASSERT_DEATH(static_cast<void>(checkedCast<s8>(s64(-129))), "");
+
+        ASSERT_EQ(checkedCast<s8>(u8(127u)), s8(127));
+        ASSERT_DEATH(static_cast<void>(checkedCast<s8>(u8(128u))), "");
+
+        ASSERT_EQ(checkedCast<s8>(u16(127u)), s8(127));
+        ASSERT_DEATH(static_cast<void>(checkedCast<s8>(u16(128u))), "");
+
+        ASSERT_EQ(checkedCast<s8>(u32(127u)), s8(127));
+        ASSERT_DEATH(static_cast<void>(checkedCast<s8>(u32(128u))), "");
+
+        ASSERT_EQ(checkedCast<s8>(u64(127u)), s8(127));
+        ASSERT_DEATH(static_cast<void>(checkedCast<s8>(u64(128u))), "");
+    }
+
+    // To s16
+    {
+        ASSERT_EQ(checkedCast<s16>(32767.0f), s16(32767));
+        ASSERT_DEATH(static_cast<void>(checkedCast<s16>(32768.0f)), "");
+        ASSERT_EQ(checkedCast<s16>(-32768.0f), s16(-32768));
+        ASSERT_DEATH(static_cast<void>(checkedCast<s16>(-32769.0f)), "");
+        ASSERT_DEATH(static_cast<void>(checkedCast<s16>(0.5f)), "");
+
+        ASSERT_EQ(checkedCast<s16>(32767.0), s16(32767));
+        ASSERT_DEATH(static_cast<void>(checkedCast<s16>(32768.0)), "");
+        ASSERT_EQ(checkedCast<s16>(-32768.0), s16(-32768));
+        ASSERT_DEATH(static_cast<void>(checkedCast<s16>(-32769.0)), "");
+        ASSERT_DEATH(static_cast<void>(checkedCast<s16>(0.5)), "");
+
+        ASSERT_EQ(checkedCast<s16>(s8(127)), s16(127));
+        ASSERT_EQ(checkedCast<s16>(s8(-128)), s16(-128));
+
+        ASSERT_EQ(checkedCast<s16>(s16(32767)), s16(32767));
+        ASSERT_EQ(checkedCast<s16>(s16(-32768)), s16(-32768));
+
+        ASSERT_EQ(checkedCast<s16>(s32(32767)), s16(32767));
+        ASSERT_DEATH(static_cast<void>(checkedCast<s16>(s32(32768))), "");
+        ASSERT_EQ(checkedCast<s16>(s32(-32768)), s16(-32768));
+        ASSERT_DEATH(static_cast<void>(checkedCast<s16>(s32(-32769))), "");
+
+        ASSERT_EQ(checkedCast<s16>(s64(32767)), s16(32767));
+        ASSERT_DEATH(static_cast<void>(checkedCast<s16>(s64(32768))), "");
+        ASSERT_EQ(checkedCast<s16>(s64(-32768)), s16(-32768));
+        ASSERT_DEATH(static_cast<void>(checkedCast<s16>(s64(-32769))), "");
+
+        ASSERT_EQ(checkedCast<s16>(u8(255u)), s16(255));
+
+        ASSERT_EQ(checkedCast<s16>(u16(32767u)), s16(32767));
+        ASSERT_DEATH(static_cast<void>(checkedCast<s16>(u16(32768u))), "");
+
+        ASSERT_EQ(checkedCast<s16>(u32(32767u)), s16(32767));
+        ASSERT_DEATH(static_cast<void>(checkedCast<s16>(u32(32768u))), "");
+
+        ASSERT_EQ(checkedCast<s16>(u64(32767u)), s16(32767));
+        ASSERT_DEATH(static_cast<void>(checkedCast<s16>(u64(32768u))), "");
+    }
+
+    // To s32
+    {
+        ASSERT_EQ(checkedCast<s32>(2147483520.0f), s32(2147483520));
+        ASSERT_DEATH(static_cast<void>(checkedCast<s32>(qc::gcc ? 2147483904.0f : 2147483648.0f)), "");
+        ASSERT_EQ(checkedCast<s32>(-2147483648.0f), s32(-2147483648));
+        ASSERT_DEATH(static_cast<void>(checkedCast<s32>(-2147483777.0f)), "");
+        ASSERT_DEATH(static_cast<void>(checkedCast<s32>(0.5f)), "");
+
+        ASSERT_EQ(checkedCast<s32>(2147483647.0), s32(2147483647));
+        ASSERT_DEATH(static_cast<void>(checkedCast<s32>(2147483648.0)), "");
+        ASSERT_EQ(checkedCast<s32>(-2147483648.0), s32(-2147483648));
+        ASSERT_DEATH(static_cast<void>(checkedCast<s32>(-2147483649.0)), "");
+        ASSERT_DEATH(static_cast<void>(checkedCast<s32>(0.5)), "");
+
+        ASSERT_EQ(checkedCast<s32>(s8(127)), s32(127));
+        ASSERT_EQ(checkedCast<s32>(s8(-128)), s32(-128));
+
+        ASSERT_EQ(checkedCast<s32>(s16(32767)), s32(32767));
+        ASSERT_EQ(checkedCast<s32>(s16(-32768)), s32(-32768));
+
+        ASSERT_EQ(checkedCast<s32>(s32(2147483647)), s32(2147483647));
+        ASSERT_EQ(checkedCast<s32>(s32(-2147483648)), s32(-2147483648));
+
+        ASSERT_EQ(checkedCast<s32>(s64(2147483647)), s32(2147483647));
+        ASSERT_DEATH(static_cast<void>(checkedCast<s32>(s64(2147483648))), "");
+        ASSERT_EQ(checkedCast<s32>(s64(-2147483648)), s32(-2147483648));
+        ASSERT_DEATH(static_cast<void>(checkedCast<s32>(s64(-2147483649))), "");
+
+        ASSERT_EQ(checkedCast<s32>(u8(255u)), s32(255));
+
+        ASSERT_EQ(checkedCast<s32>(u16(65535u)), s32(65535));
+
+        ASSERT_EQ(checkedCast<s32>(u32(2147483647u)), s32(2147483647));
+        ASSERT_DEATH(static_cast<void>(checkedCast<s32>(u32(2147483648u))), "");
+
+        ASSERT_EQ(checkedCast<s32>(u64(2147483647u)), s32(2147483647));
+        ASSERT_DEATH(static_cast<void>(checkedCast<s32>(u64(2147483648u))), "");
+    }
+
+    // To s64
+    {
+        ASSERT_EQ(checkedCast<s64>(9223371487098961920.0f), s64(9223371487098961920));
+        ASSERT_DEATH(static_cast<void>(checkedCast<s64>(qc::gcc ? 9223373136366403584.0f : 9223372036854775808.0f)), "");
+        ASSERT_EQ(checkedCast<s64>(-9223372036854775808.0f), std::numeric_limits<s64>::min());
+        ASSERT_DEATH(static_cast<void>(checkedCast<s64>(-9223372586610589697.0f)), "");
+        ASSERT_DEATH(static_cast<void>(checkedCast<s64>(0.5f)), "");
+
+        ASSERT_EQ(checkedCast<s64>(9223372036854774784.0), s64(9223372036854774784));
+        ASSERT_DEATH(static_cast<void>(checkedCast<s64>(qc::gcc ? 9223372036854777856.0 : 9223372036854775808.0)), "");
+        ASSERT_EQ(checkedCast<s64>(-9223372036854775808.0), std::numeric_limits<s64>::min());
+        ASSERT_DEATH(static_cast<void>(checkedCast<s64>(-9223372036854776833.0)), "");
+        ASSERT_DEATH(static_cast<void>(checkedCast<s64>(0.5)), "");
+
+        ASSERT_EQ(checkedCast<s64>(s8(127)), s64(127));
+        ASSERT_EQ(checkedCast<s64>(s8(-128)), s64(-128));
+
+        ASSERT_EQ(checkedCast<s64>(s16(32767)), s64(32767));
+        ASSERT_EQ(checkedCast<s64>(s16(-32768)), s64(-32768));
+
+        ASSERT_EQ(checkedCast<s64>(s32(2147483647)), s64(2147483647));
+        ASSERT_EQ(checkedCast<s64>(s32(-2147483648)), s64(-2147483648));
+
+        ASSERT_EQ(checkedCast<s64>(std::numeric_limits<s64>::max()), std::numeric_limits<s64>::max());
+        ASSERT_EQ(checkedCast<s64>(std::numeric_limits<s64>::min()), std::numeric_limits<s64>::min());
+
+        ASSERT_EQ(checkedCast<s64>(u8(255u)), s64(255));
+
+        ASSERT_EQ(checkedCast<s64>(u16(65535u)), s64(65535));
+
+        ASSERT_EQ(checkedCast<s64>(u32(4294967295u)), s64(4294967295));
+
+        ASSERT_EQ(checkedCast<s64>(u64(9223372036854775807u)), std::numeric_limits<s64>::max());
+        ASSERT_DEATH(static_cast<void>(checkedCast<s64>(u64(9223372036854775808u))), "");
+    }
+
+    // To u8
+    {
+        ASSERT_EQ(checkedCast<u8>(255.0f), u8(255u));
+        ASSERT_DEATH(static_cast<void>(checkedCast<u8>(256.0f)), "");
+        ASSERT_DEATH(static_cast<void>(checkedCast<u8>(-1.0f)), "");
+        ASSERT_DEATH(static_cast<void>(checkedCast<u8>(0.5f)), "");
+
+        ASSERT_EQ(checkedCast<u8>(255.0), u8(255u));
+        ASSERT_DEATH(static_cast<void>(checkedCast<u8>(256.0)), "");
+        ASSERT_DEATH(static_cast<void>(checkedCast<u8>(-1.0)), "");
+        ASSERT_DEATH(static_cast<void>(checkedCast<u8>(0.5)), "");
+
+        ASSERT_EQ(checkedCast<u8>(s8(127)), u8(127u));
+        ASSERT_DEATH(static_cast<void>(checkedCast<u8>(s8(-1))), "");
+
+        ASSERT_EQ(checkedCast<u8>(s16(255)), u8(255u));
+        ASSERT_DEATH(static_cast<void>(checkedCast<u8>(s16(256))), "");
+        ASSERT_DEATH(static_cast<void>(checkedCast<u8>(s16(-1))), "");
+
+        ASSERT_EQ(checkedCast<u8>(s32(255)), u8(255u));
+        ASSERT_DEATH(static_cast<void>(checkedCast<u8>(s32(256))), "");
+        ASSERT_DEATH(static_cast<void>(checkedCast<u8>(s32(-1))), "");
+
+        ASSERT_EQ(checkedCast<u8>(s64(255)), u8(255u));
+        ASSERT_DEATH(static_cast<void>(checkedCast<u8>(s64(256))), "");
+        ASSERT_DEATH(static_cast<void>(checkedCast<u8>(s64(-1))), "");
+
+        ASSERT_EQ(checkedCast<u8>(u8(255u)), u8(255u));
+
+        ASSERT_EQ(checkedCast<u8>(u16(255u)), u8(255u));
+        ASSERT_DEATH(static_cast<void>(checkedCast<u8>(u16(256u))), "");
+
+        ASSERT_EQ(checkedCast<u8>(u32(255u)), u8(255u));
+        ASSERT_DEATH(static_cast<void>(checkedCast<u8>(u32(256u))), "");
+
+        ASSERT_EQ(checkedCast<u8>(u64(255u)), u8(255u));
+        ASSERT_DEATH(static_cast<void>(checkedCast<u8>(u64(256u))), "");
+    }
+
+    // To u16
+    {
+        ASSERT_EQ(checkedCast<u16>(65535.0f), u16(65535u));
+        ASSERT_DEATH(static_cast<void>(checkedCast<u16>(65536.0f)), "");
+        ASSERT_DEATH(static_cast<void>(checkedCast<u16>(-1.0f)), "");
+        ASSERT_DEATH(static_cast<void>(checkedCast<u16>(0.5f)), "");
+
+        ASSERT_EQ(checkedCast<u16>(65535.0), u16(65535u));
+        ASSERT_DEATH(static_cast<void>(checkedCast<u16>(65536.0)), "");
+        ASSERT_DEATH(static_cast<void>(checkedCast<u16>(-1.0)), "");
+        ASSERT_DEATH(static_cast<void>(checkedCast<u16>(0.5)), "");
+
+        ASSERT_EQ(checkedCast<u16>(s8(127)), u16(127u));
+        ASSERT_DEATH(static_cast<void>(checkedCast<u16>(s8(-1))), "");
+
+        ASSERT_EQ(checkedCast<u16>(s16(32767)), u16(32767u));
+        ASSERT_DEATH(static_cast<void>(checkedCast<u16>(s16(-1))), "");
+
+        ASSERT_EQ(checkedCast<u16>(s32(65535)), u16(65535u));
+        ASSERT_DEATH(static_cast<void>(checkedCast<u16>(s32(65536))), "");
+        ASSERT_DEATH(static_cast<void>(checkedCast<u16>(s32(-1))), "");
+
+        ASSERT_EQ(checkedCast<u16>(s64(65535)), u16(65535u));
+        ASSERT_DEATH(static_cast<void>(checkedCast<u16>(s64(65536))), "");
+        ASSERT_DEATH(static_cast<void>(checkedCast<u16>(s64(-1))), "");
+
+        ASSERT_EQ(checkedCast<u16>(u8(255u)), u16(255u));
+
+        ASSERT_EQ(checkedCast<u16>(u16(65535u)), u16(65535u));
+
+        ASSERT_EQ(checkedCast<u16>(u32(65535u)), u16(65535u));
+        ASSERT_DEATH(static_cast<void>(checkedCast<u16>(u32(65536u))), "");
+
+        ASSERT_EQ(checkedCast<u16>(u64(65535u)), u16(65535u));
+        ASSERT_DEATH(static_cast<void>(checkedCast<u16>(u64(65536u))), "");
+    }
+
+    // To u32
+    {
+        ASSERT_EQ(checkedCast<u32>(4294967040.0f), u32(4294967040u));
+        ASSERT_DEATH(static_cast<void>(checkedCast<u32>(qc::gcc ? 4294967808.0f : 4294967296.0f)), "");
+        ASSERT_DEATH(static_cast<void>(checkedCast<u32>(-1.0f)), "");
+        ASSERT_DEATH(static_cast<void>(checkedCast<u32>(0.5f)), "");
+
+        ASSERT_EQ(checkedCast<u32>(4294967295.0), u32(4294967295u));
+        ASSERT_DEATH(static_cast<void>(checkedCast<u32>(4294967296.0)), "");
+        ASSERT_DEATH(static_cast<void>(checkedCast<u32>(-1.0)), "");
+        ASSERT_DEATH(static_cast<void>(checkedCast<u32>(0.5)), "");
+
+        ASSERT_EQ(checkedCast<u32>(s8(127)), u32(127u));
+        ASSERT_DEATH(static_cast<void>(checkedCast<u32>(s8(-1))), "");
+
+        ASSERT_EQ(checkedCast<u32>(s16(32767)), u32(32767u));
+        ASSERT_DEATH(static_cast<void>(checkedCast<u32>(s16(-1))), "");
+
+        ASSERT_EQ(checkedCast<u32>(s32(2147483647)), u32(2147483647u));
+        ASSERT_DEATH(static_cast<void>(checkedCast<u32>(s32(-1))), "");
+
+        ASSERT_EQ(checkedCast<u32>(s64(4294967295)), u32(4294967295u));
+        ASSERT_DEATH(static_cast<void>(checkedCast<u32>(s64(4294967296))), "");
+        ASSERT_DEATH(static_cast<void>(checkedCast<u32>(s64(-1))), "");
+
+        ASSERT_EQ(checkedCast<u32>(u8(255u)), u32(255u));
+
+        ASSERT_EQ(checkedCast<u32>(u16(65535u)), u32(65535u));
+
+        ASSERT_EQ(checkedCast<u32>(u32(4294967295u)), u32(4294967295u));
+
+        ASSERT_EQ(checkedCast<u32>(u64(4294967295u)), u32(4294967295u));
+        ASSERT_DEATH(static_cast<void>(checkedCast<u32>(u64(4294967296u))), "");
+    }
+
+    // To u64
+    {
+        ASSERT_EQ(checkedCast<u64>(18446742974197923840.0f), u64(18446742974197923840u));
+        ASSERT_DEATH(static_cast<void>(checkedCast<u64>(qc::gcc ? 18446746272732807168.0f : 18446744073709551616.0f)), "");
+        ASSERT_DEATH(static_cast<void>(checkedCast<u64>(-1.0f)), "");
+        ASSERT_DEATH(static_cast<void>(checkedCast<u64>(0.5f)), "");
+
+        ASSERT_EQ(checkedCast<u64>(18446744073709549568.0), u64(18446744073709549568u));
+        ASSERT_DEATH(static_cast<void>(checkedCast<u64>(qc::gcc ? 18446744073709555712.0 : 18446744073709551616.0)), "");
+        ASSERT_DEATH(static_cast<void>(checkedCast<u64>(-1.0)), "");
+        ASSERT_DEATH(static_cast<void>(checkedCast<u64>(0.5)), "");
+
+        ASSERT_EQ(checkedCast<u64>(s8(127)), u64(127u));
+        ASSERT_DEATH(static_cast<void>(checkedCast<u64>(s8(-1))), "");
+
+        ASSERT_EQ(checkedCast<u64>(s16(32767)), u64(32767u));
+        ASSERT_DEATH(static_cast<void>(checkedCast<u64>(s16(-1))), "");
+
+        ASSERT_EQ(checkedCast<u64>(s32(2147483647)), u64(2147483647u));
+        ASSERT_DEATH(static_cast<void>(checkedCast<u64>(s32(-1))), "");
+
+        ASSERT_EQ(checkedCast<u64>(s64(9223372036854775807)), u64(9223372036854775807u));
+        ASSERT_DEATH(static_cast<void>(checkedCast<u64>(s64(-1))), "");
+
+        ASSERT_EQ(checkedCast<u64>(u8(255u)), u64(255u));
+
+        ASSERT_EQ(checkedCast<u64>(u16(65535u)), u64(65535u));
+
+        ASSERT_EQ(checkedCast<u64>(u32(4294967295u)), u64(4294967295u));
+
+        ASSERT_EQ(checkedCast<u64>(u64(18446744073709551615u)), u64(18446744073709551615u));
+    }
+}
+GCC_DIAGNOSTIC_POP
+
+TEST(Core, assertCast)
+{
+    ASSERT_EQ(qc::assertCast<u8>(1.0f), 1u);
+
+    if constexpr (qc::debug)
+    {
+        ASSERT_DEBUG_DEATH(qc::assertCast<u8>(-1.0f), "");
+    }
+    else
+    {
+        ASSERT_EQ(qc::assertCast<u8>(-1.0f), qc::msvc ? 255u : 0u);
+    }
 }

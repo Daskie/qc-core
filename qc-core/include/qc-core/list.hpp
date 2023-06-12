@@ -273,9 +273,7 @@ namespace qc
     {
         if constexpr (std::is_trivially_copyable_v<T>)
         {
-            // TODO: Checked cast
-            assert(vs.size() <= std::numeric_limits<u32>::max());
-            const u32 n{u32(vs.size())};
+            const u32 n{assertCast<u32>(vs.size())};
 
             reserve(n);
 
@@ -329,10 +327,7 @@ namespace qc
     {
         clear();
 
-        // TODO: Checked cast
-        const s64 dist{std::distance(first, last)};
-        assert(dist >= 0 || dist <= std::numeric_limits<u32>::max());
-        const u32 n{u32(dist)};
+        const u32 n{assertCast<u32>(std::distance(first, last))};
 
         reserve(n);
 
@@ -529,10 +524,7 @@ namespace qc
 
         assert(u64(pos - _data) <= _size); // Handles negative case
 
-        // TODO: Checked cast
-        const s64 dist{std::distance(first, last)};
-        assert(dist >= 0 && dist <= std::numeric_limits<u32>::max());
-        const u32 n{u32(dist)};
+        const u32 n{assertCast<u32>(std::distance(first, last))};
 
         T * const constructedEnd{_shift<destruct>(pos, n)};
         T * const unconstructedEnd{pos + n};

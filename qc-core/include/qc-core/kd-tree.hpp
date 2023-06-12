@@ -54,9 +54,7 @@ namespace qc
 {
     inline KdTree::KdTree(const std::span<const fvec2> points)
     {
-        // TODO: Checked cast
-        assert(points.size() <= std::numeric_limits<u32>::max());
-        const u32 n{u32(points.size())};
+        const u32 n{assertCast<u32>(points.size())};
 
         if (!n)
         {

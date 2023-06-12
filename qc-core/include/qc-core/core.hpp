@@ -77,16 +77,50 @@
 
 namespace qc
 {
-    #ifdef QC_DEBUG
-        constexpr bool debug{true};
-    #else
-        constexpr bool debug{false};
-    #endif
-
     /// Only support 64 bit, little endian platforms
     static_assert(std::is_same_v<std::size_t, uint64_t>);
     static_assert(std::is_same_v<std::intptr_t, int64_t>);
     static_assert(std::endian::native == std::endian::little);
+
+    #ifdef QC_DEBUG
+        constexpr bool debug{true};
+        constexpr bool release{false};
+    #else
+        constexpr bool debug{false};
+        constexpr bool release{true};
+    #endif
+
+    enum class Compiler { other, msvc, gcc };
+
+    #if defined QC_MSVC
+        constexpr Compiler compiler{Compiler::msvc};
+        constexpr bool msvc{true};
+        constexpr bool gcc{false};
+    #elif defined QC_GCC
+        constexpr Compiler compiler{Compiler::gcc};
+        constexpr bool msvc{false};
+        constexpr bool gcc{true};
+    #else
+        constexpr Compiler compiler{Compiler::other};
+        constexpr bool msvc{false};
+        constexpr bool gcc{false};
+    #endif
+
+    enum class Platform { other, windows, linux };
+
+    #if defined QC_WINDOWS
+        constexpr Platform platform{Platform::windows};
+        constexpr bool windows{true};
+        constexpr bool linux{false};
+    #elif defined QC_LINUX
+        constexpr Platform platform{Platform::linux};
+        constexpr bool windows{false};
+        constexpr bool linux{true};
+    #else
+        constexpr Platform platform{Platform::other};
+        constexpr bool msvc{false};
+        constexpr bool gcc{false};
+    #endif
 
     inline namespace primitives
     {
@@ -179,18 +213,6 @@ namespace qc
     }
 
     struct IKnowWhatImDoing {};
-
-    enum Platform { other, windows, linux };
-
-    constexpr Platform platform{
-        #if defined QC_WINDOWS
-            Platform::windows
-        #elif defined QC_LINUX
-            Platform::linux
-        #else
-            Platform::other
-        #endif
-    };
 
     // Forward declarations
     class Serializer;
@@ -319,6 +341,8 @@ namespace qc
         bool _success;
     };
 
+    template <Numeric To, Numeric From> nodisc To checkedCast(From v);
+
     //
     // ...
     //
@@ -414,6 +438,85 @@ namespace qc
     {
         assert(_success);
         return &this->_val;
+    }
+
+    template <Numeric To, Numeric From>
+    forceinline To checkedCast(const From v)
+    {
+        if constexpr (Floating<To>)
+        {
+            const To v_{To(v)};
+            if constexpr (!Floating<From> || sizeof(From) > sizeof(To))
+            {
+                ABORT_IF(From(v_) != v);
+            }
+            return v_;
+        }
+        else if constexpr (SignedIntegral<To>)
+        {
+            if constexpr (Floating<From>)
+            {
+                const To v_{To(v)};
+                const From v__{From(v_)};
+                ABORT_IF(v__ != v);
+                return v_;
+            }
+            else if constexpr (SignedIntegral<From>)
+            {
+                if constexpr (sizeof(From) > sizeof(To))
+                {
+                    ABORT_IF(v < std::numeric_limits<To>::min() || v > std::numeric_limits<To>::max());
+                }
+                return To(v);
+            }
+            else if constexpr (UnsignedIntegral<From>)
+            {
+                if constexpr (sizeof(From) >= sizeof(To))
+                {
+                    ABORT_IF(v > From(std::numeric_limits<To>::max()));
+                }
+                return To(v);
+            }
+        }
+        else if constexpr (UnsignedIntegral<To>)
+        {
+            if constexpr (Floating<From>)
+            {
+                const To v_{To(v)};
+                ABORT_IF(From(v_) != v);
+                return v_;
+            }
+            else if constexpr (SignedIntegral<From>)
+            {
+                ABORT_IF(v < 0);
+                if constexpr (sizeof(From) > sizeof(To))
+                {
+                    ABORT_IF(v > From(std::numeric_limits<To>::max()));
+                }
+                return To(v);
+            }
+            else if constexpr (UnsignedIntegral<From>)
+            {
+                if constexpr (sizeof(From) > sizeof(To))
+                {
+                    ABORT_IF(v > std::numeric_limits<To>::max());
+                }
+                return To(v);
+            }
+        }
+    }
+
+    template <Numeric To, Numeric From>
+    forceinline To assertCast(const From v)
+    {
+        if constexpr (release)
+        {
+            return To(v);
+        }
+        else
+        {
+            return checkedCast<To>(v);
+        }
     }
 
     template <Numeric T1, Numeric T2>
