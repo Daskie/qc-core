@@ -173,9 +173,12 @@ namespace qc
     template <typename T>
     inline SemiStableDeque<T>::SemiStableDeque(SemiStableDeque && other) :
         _elements{std::move(other._elements)},
-        _headI{std::exchange(other._headI, _invalidI)},
-        _tailI{std::exchange(other._tailI, _invalidI)}
-    {}
+        _headI{other._headI},
+        _tailI{other._tailI}
+    {
+        other._headI = _invalidI;
+        other._tailI = _invalidI;
+    }
 
     template <typename T>
     inline SemiStableDeque<T> & SemiStableDeque<T>::operator=(SemiStableDeque && other)
@@ -186,8 +189,11 @@ namespace qc
         }
 
         _elements = std::move(other._elements);
-        _headI = std::exchange(other._headI, _invalidI);
-        _tailI = std::exchange(other._tailI, _invalidI);
+        _headI = other._headI;
+        _tailI = other._tailI;
+
+        other._headI = _invalidI;
+        other._tailI = _invalidI;
 
         return *this;
     }

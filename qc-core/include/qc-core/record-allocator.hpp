@@ -51,8 +51,10 @@ namespace qc::memory
         {}
 
         RecordAllocator(RecordAllocator && other) :
-            _listI{std::exchange(other._listI, 0u)}
-        {}
+            _listI{other._listI}
+        {
+            other._listI = 0u;
+        }
 
         RecordAllocator & operator=(const RecordAllocator &) = default;
 
@@ -63,7 +65,9 @@ namespace qc::memory
                 return *this;
             }
 
-            _listI = std::exchange(other._listI, 0u);
+            _listI = other._listI;
+            other._listI = 0u;
+
             return *this;
         }
 

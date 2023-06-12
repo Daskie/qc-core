@@ -239,17 +239,25 @@ namespace qc
 
     template <typename T>
     forceinline List<T>::List(List && other) :
-        _capacity{std::exchange(other._capacity, 0u)},
-        _size{std::exchange(other._size, 0u)},
-        _data{std::exchange(other._data, nullptr)}
-    {}
+        _capacity{other._capacity},
+        _size{other._size},
+        _data{other._data}
+    {
+        other._capacity = 0u;
+        other._size = 0u;
+        other._data = nullptr;
+    }
 
     template <typename T>
     forceinline List<T> & List<T>::operator=(List<T> && other)
     {
-        _capacity = std::exchange(other._capacity, 0u);
-        _size = std::exchange(other._size, 0u);
-        _data = std::exchange(other._data, nullptr);
+        _capacity = other._capacity;
+        _size = other._size;
+        _data = other._data;
+
+        other._capacity = 0u;
+        other._size = 0u;
+        other._data = nullptr;
 
         return *this;
     }

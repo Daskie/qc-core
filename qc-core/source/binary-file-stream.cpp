@@ -25,7 +25,9 @@ namespace qc
         {
             if (_availableBuffer)
             {
-                return std::exchange(_availableBuffer, nullptr);
+                std::byte * const tmp{_availableBuffer};
+                _availableBuffer = nullptr;
+                return tmp;
             }
             else
             {

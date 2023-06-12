@@ -192,8 +192,10 @@ namespace qc
 
     template <typename T>
     forceinline Arena::Unq<T>::Unq(Unq && other) :
-        _ptr{std::exchange(other._ptr, nullptr)}
-    {}
+        _ptr{other._ptr}
+    {
+        other._ptr = nullptr;
+    }
 
     template <typename T>
     inline auto Arena::Unq<T>::operator=(Unq && other) -> Unq &
@@ -205,7 +207,8 @@ namespace qc
 
         reset();
 
-        _ptr = std::exchange(other._ptr, nullptr);
+        _ptr = other._ptr;
+        other._ptr = nullptr;
 
         return *this;
     }
@@ -224,7 +227,8 @@ namespace qc
             u32 & refN{_refN()};
             assert(refN == 1u);
             refN = 0u;
-            _destroy(*std::exchange(_ptr, nullptr));
+            _destroy(*_ptr);
+            _ptr = nullptr;
         }
     }
 
@@ -253,8 +257,10 @@ namespace qc
 
     template <typename T>
     forceinline Arena::Shr<T>::Shr(Shr && other) :
-        _ptr{std::exchange(other._ptr, nullptr)}
-    {}
+        _ptr{other._ptr}
+    {
+        other._ptr = nullptr;
+    }
 
     template <typename T>
     inline auto Arena::Shr<T>::operator=(const Shr & other) -> Shr &
@@ -286,7 +292,8 @@ namespace qc
 
         reset();
 
-        _ptr = std::exchange(other._ptr, nullptr);
+        _ptr = other._ptr;
+        other._ptr = nullptr;
 
         return *this;
     }
@@ -307,7 +314,8 @@ namespace qc
 
             if (!--refN)
             {
-                _destroy(*std::exchange(_ptr, nullptr));
+                _destroy(*_ptr);
+                _ptr = nullptr;
             }
         }
     }
@@ -328,11 +336,15 @@ namespace qc
     }
 
     inline Arena::Arena(Arena && other) :
-        _capacity{std::exchange(other._capacity, 0u)},
-        _size{std::exchange(other._size, 0u)},
-        _memory{std::exchange(other._memory, nullptr)},
+        _capacity{other._capacity},
+        _size{other._size},
+        _memory{other._memory},
         _bubbles{std::move(other._bubbles)}
     {
+        other._capacity = 0u;
+        other._size = 0u;
+        other._memory = nullptr;
+
         // Update self pointer
         if (_memory)
         {
@@ -342,10 +354,14 @@ namespace qc
 
     inline Arena & Arena::operator=(Arena && other)
     {
-        _capacity = std::exchange(other._capacity, 0u);
-        _size = std::exchange(other._size, 0u);
-        _memory = std::exchange(other._memory, nullptr);
+        _capacity = other._capacity;
+        _size = other._size;
+        _memory = other._memory;
         _bubbles = std::move(other._bubbles);
+
+        other._capacity = 0u;
+        other._size = 0u;
+        other._memory = nullptr;
 
         // Update self pointer
         if (_memory)

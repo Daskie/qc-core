@@ -94,11 +94,16 @@ namespace qc
 
     template <typename T>
     inline Bank<T>::Bank(Bank && other) :
-        _slots{std::exchange(other._slots, nullptr)},
-        _capacity{std::exchange(other._capacity, 0u)},
-        _size{std::exchange(other._size, 0u)},
-        _headFreeI{std::exchange(other._headFreeI, _invalidI)}
-    {}
+        _slots{other._slots},
+        _capacity{other._capacity},
+        _size{other._size},
+        _headFreeI{other._headFreeI}
+    {
+        other._slots = nullptr;
+        other._capacity = 0u;
+        other._size = 0u;
+        other._headFreeI = _invalidI;
+    }
 
     template <typename T>
     inline Bank<T> & Bank<T>::operator=(Bank && other)
@@ -108,10 +113,15 @@ namespace qc
             return *this;
         }
 
-        _slots = std::exchange(other._slots, nullptr);
-        _capacity = std::exchange(other._capacity, 0u);
-        _size = std::exchange(other._size, 0u);
-        _headFreeI = std::exchange(other._headFreeI, _invalidI);
+        _slots = other._slots;
+        _capacity = other._capacity;
+        _size = other._size;
+        _headFreeI = other._headFreeI;
+
+        other._slots = nullptr;
+        other._capacity = 0u;
+        other._size = 0u;
+        other._headFreeI = _invalidI;
 
         return *this;
     }

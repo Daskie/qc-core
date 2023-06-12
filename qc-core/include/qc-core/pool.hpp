@@ -295,8 +295,10 @@ namespace qc
     template <typename T>
     template <bool constant>
     forceinline Pool<T>::UnqT<constant>::UnqT(UnqT && other) :
-        _chunk{std::exchange(other._chunk, nullptr)}
-    {}
+        _chunk{other._chunk}
+    {
+        other._chunk = nullptr;
+    }
 
     template <typename T>
     template <bool constant>
@@ -309,7 +311,8 @@ namespace qc
 
         reset();
 
-        _chunk = std::exchange(other._chunk, nullptr);
+        _chunk = other._chunk;
+        other._chunk = nullptr;
 
         return *this;
     }
@@ -329,7 +332,8 @@ namespace qc
         {
             assert(_chunk->refN == 1u);
             _chunk->refN = 0u;
-            _destroy(std::exchange(_chunk, nullptr));
+            _destroy(_chunk);
+            _chunk = nullptr;
         }
     }
 
@@ -355,8 +359,10 @@ namespace qc
     template <typename T>
     template <bool constant>
     forceinline Pool<T>::ShrT<constant>::ShrT(ShrT && other) :
-        _chunk{std::exchange(other._chunk, nullptr)}
-    {}
+        _chunk{other._chunk}
+    {
+        other._chunk = nullptr;
+    }
 
     template <typename T>
     template <bool constant>
@@ -390,7 +396,8 @@ namespace qc
 
         reset();
 
-        _chunk = std::exchange(other._chunk, nullptr);
+        _chunk = other._chunk;
+        other._chunk = nullptr;
 
         return *this;
     }
@@ -412,7 +419,8 @@ namespace qc
 
             if (!--_chunk->refN)
             {
-                _destroy(std::exchange(_chunk, nullptr));
+                _destroy(_chunk);
+                _chunk = nullptr;
             }
         }
     }
@@ -428,13 +436,20 @@ namespace qc
 
     template <typename T>
     inline Pool<T>::Pool(Pool && other) :
-        _reservedPageN{std::exchange(other._reservedPageN, 0u)},
-        _committedPageN{std::exchange(other._committedPageN, 0u)},
-        _size{std::exchange(other._size, 0u)},
-        _chunksStart{std::exchange(other._chunksStart, nullptr)},
-        _chunksEnd{std::exchange(other._chunksEnd, nullptr)},
-        _firstBubble{std::exchange(other._firstBubble)}
+        _reservedPageN{other._reservedPageN},
+        _committedPageN{other._committedPageN},
+        _size{other._size},
+        _chunksStart{other._chunksStart},
+        _chunksEnd{other._chunksEnd},
+        _firstBubble{other._firstBubble}
     {
+        other._reservedPageN = 0u;
+        other._committedPageN = 0u;
+        other._size = 0u;
+        other._chunksStart = nullptr;
+        other._chunksEnd = nullptr;
+        other._firstBubble = nullptr;
+
         if (_chunksStart)
         {
             _chunksStart[-1].poolPtr = this;
@@ -449,12 +464,19 @@ namespace qc
             return *this;
         }
 
-        _reservedPageN = std::exchange(other._reservedPageN, 0u);
-        _committedPageN = std::exchange(other._committedPageN, 0u);
-        _size = std::exchange(other._size, 0u);
-        _chunksStart = std::exchange(other._chunksStart, nullptr);
-        _chunksEnd = std::exchange(other._chunksEnd, nullptr);
-        _firstBubble = std::exchange(other._firstBubble, nullptr);
+        _reservedPageN = other._reservedPageN;
+        _committedPageN = other._committedPageN;
+        _size = other._size;
+        _chunksStart = other._chunksStart;
+        _chunksEnd = other._chunksEnd;
+        _firstBubble = other._firstBubble;
+
+        other._reservedPageN = 0u;
+        other._committedPageN = 0u;
+        other._size = 0u;
+        other._chunksStart = nullptr;
+        other._chunksEnd = nullptr;
+        other._firstBubble = nullptr;
 
         if (_chunksStart)
         {

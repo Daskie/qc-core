@@ -138,12 +138,18 @@ namespace qc
 {
     template <typename T>
     inline RingDeque<T>::RingDeque(RingDeque && other) :
-        _slots{std::exchange(other._slots, nullptr)},
-        _capacity{std::exchange(other._capacity, 0u)},
-        _size{std::exchange(other._size, 0u)},
-        _front{std::exchange(other._front, nullptr)},
-        _back{std::exchange(other._back, nullptr)}
-    {}
+        _slots{other._slots},
+        _capacity{other._capacity},
+        _size{other._size},
+        _front{other._front},
+        _back{other._back}
+    {
+        other._lots = nullptr;
+        other._capacity = 0u;
+        other._size = 0u;
+        other._front = nullptr;
+        other._back = nullptr;
+    }
 
     template <typename T>
     inline RingDeque<T> & RingDeque<T>::operator=(RingDeque && other)
@@ -153,11 +159,17 @@ namespace qc
             return *this;
         }
 
-        _slots = std::exchange(other._slots, nullptr);
-        _capacity = std::exchange(other._capacity, 0u);
-        _size = std::exchange(other._size, 0u);
-        _front = std::exchange(other._front, nullptr);
-        _back = std::exchange(other._back, nullptr);
+        _slots = other._slots;
+        _capacity = other._capacity;
+        _size = other._size;
+        _front = other._front;
+        _back = other._back;
+
+        other._slots = nullptr;
+        other._capacity = 0u;
+        other._size = 0u;
+        other._front = nullptr;
+        other._back = nullptr;
 
         return *this;
     }
