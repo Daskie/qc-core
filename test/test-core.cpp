@@ -919,6 +919,26 @@ TEST(Core, types)
     static_assert(EnumOrBoolean<bool>);
     static_assert(!EnumOrBoolean<s32>);
 
+    static_assert(qc::EqualityComparable<int, int>);
+    static_assert(qc::EqualityComparable<int, double>);
+    static_assert(qc::EqualityComparable<int *, int *>);
+    static_assert(qc::EqualityComparable<int *, const int *>);
+    static_assert(qc::EqualityComparable<int *, void *>);
+    static_assert(!qc::EqualityComparable<int, int *>);
+
+    static_assert(qc::ImplicitlyConvertibleTo<u32, u64>);
+    static_assert(!qc::ImplicitlyConvertibleTo<u64, u32>);
+    static_assert(!qc::ImplicitlyConvertibleTo<float, u32>);
+    static_assert(qc::ImplicitlyConvertibleTo<float *, void *>);
+    static_assert(!qc::ImplicitlyConvertibleTo<void *, float *>);
+
+    static_assert(qc::ExplicitlyConvertibleTo<u32, u64>);
+    static_assert(qc::ExplicitlyConvertibleTo<u64, u32>);
+    static_assert(qc::ExplicitlyConvertibleTo<float, u32>);
+    static_assert(!qc::ExplicitlyConvertibleTo<float, float *>);
+    static_assert(qc::ExplicitlyConvertibleTo<float *, void *>);
+    static_assert(qc::ExplicitlyConvertibleTo<void *, float *>);
+
     static_assert(qc::CommonExists<s8, s64>);
     static_assert(qc::CommonExists<u8, u64>);
     static_assert(qc::CommonExists<s8, u8>);
@@ -1097,13 +1117,6 @@ TEST(Core, types)
     static_assert(!qc::ExclusiveFloatingSubOf<f64, f32>);
     static_assert(!qc::ExclusiveFloatingSubOf<u8, f32>);
     static_assert(!qc::ExclusiveFloatingSubOf<s8, f32>);
-
-    static_assert(qc::EqualityComparable<int, int>);
-    static_assert(qc::EqualityComparable<int, double>);
-    static_assert(qc::EqualityComparable<int *, int *>);
-    static_assert(qc::EqualityComparable<int *, const int *>);
-    static_assert(qc::EqualityComparable<int *, void *>);
-    static_assert(!qc::EqualityComparable<int, int *>);
 }
 
 TEST(Core, abort)

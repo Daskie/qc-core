@@ -171,6 +171,8 @@ namespace qc
         template <typename T> concept IntegralOrPointer = Integral<T> || Pointer<T>;
         template <typename T> concept TriviallyCopyable = std::is_trivially_copyable_v<T>;
         template <typename T1, typename T2> concept EqualityComparable = requires (T1 v1, T2 v2) { { v1 == v2 } -> Boolean; };
+        template <typename From, typename To> concept ImplicitlyConvertibleTo = requires (From from, To to) { new (&to) To{from}; }; // Should just be able to say `To{from}`; some kind of MSVC bug
+        template <typename From, typename To> concept ExplicitlyConvertibleTo = requires (From from) { static_cast<To>(from); };
 
         template <u32 size> struct Sized;
         template <> struct Sized<1u> { using S =  s8; using U =  u8; };
