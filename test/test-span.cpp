@@ -531,12 +531,12 @@ static void compileNonMatching()
     _span_s64 *= _vec_u32;
     _span_f64 *= _vec_f32;
 
-    _span_u64 /= u8{1u};
-    _span_s64 /= s8{1};
-    _span_s64 /= u32{1u};
-    _span_f64 /= f32{1.0f};
-    _span_u64 /= vec<u8, n>{u8(1u)};
-    _span_s64 /= vec<s8, n>{s8(1)};
+    _span_u64 /= 1_u8;
+    _span_s64 /= 1_s8;
+    _span_s64 /= 1_u32;
+    _span_f64 /= 1.0f;
+    _span_u64 /= vec<u8, n>{1_u8};
+    _span_s64 /= vec<s8, n>{1_s8};
     _span_s64 /= vec<u32, n>{1u};
     _span_f64 /= vec<f32, n>{1.0f};
 
@@ -601,18 +601,18 @@ static void compileNonMatching()
     static_cast<void>(_span_f32 * _vec_f64);
     static_cast<void>(_span_f64 * _vec_f32);
 
-    static_cast<void>(_span_u8 / u64{1u});
-    static_cast<void>(_span_u64 / u8{1u});
-    static_cast<void>(_span_s8 / s64{1});
-    static_cast<void>(_span_s64 / s8{1});
-    static_cast<void>(_span_s8 / u32{1u});
-    static_cast<void>(_span_s64 / u32{1u});
-    static_cast<void>(_span_f32 / f64{1.0f});
-    static_cast<void>(_span_f64 / f32{1.0f});
+    static_cast<void>(_span_u8 / 1_u64);
+    static_cast<void>(_span_u64 / 1_u8);
+    static_cast<void>(_span_s8 / 1_s64);
+    static_cast<void>(_span_s64 / 1_s8);
+    static_cast<void>(_span_s8 / 1_u32);
+    static_cast<void>(_span_s64 / 1_u32);
+    static_cast<void>(_span_f32 / 1.0);
+    static_cast<void>(_span_f64 / 1.0f);
     static_cast<void>(_span_u8 / vec<u64, n>{1u});
-    static_cast<void>(_span_u64 / vec<u8, n>{u8(1u)});
+    static_cast<void>(_span_u64 / vec<u8, n>{1_u8});
     static_cast<void>(_span_s8 / vec<s64, n>{1});
-    static_cast<void>(_span_s64 / vec<s8, n>{s8(1)});
+    static_cast<void>(_span_s64 / vec<s8, n>{1_s8});
     static_cast<void>(_span_s8 / vec<u32, n>{1u});
     static_cast<void>(_span_s64 / vec<u32, n>{1u});
     static_cast<void>(_span_f32 / vec<f64, n>{1.0f});
@@ -724,10 +724,10 @@ void compileNonMatching<1>()
     _span_s64 *= _u32;
     _span_f64 *= _f32;
 
-    _span_u64 /= u8{1u};
-    _span_s64 /= s8{1};
-    _span_s64 /= u32{1u};
-    _span_f64 /= f32{1.0f};
+    _span_u64 /= 1_u8;
+    _span_s64 /= 1_s8;
+    _span_s64 /= 1_u32;
+    _span_f64 /= 1.0f;
 
     _span_u64 &= _span_u8;
     _span_s64 &= _span_s8;
@@ -766,14 +766,14 @@ void compileNonMatching<1>()
     static_cast<void>(_span_f32 * _f64);
     static_cast<void>(_span_f64 * _f32);
 
-    static_cast<void>(_span_u8 / u64{1u});
-    static_cast<void>(_span_u64 / u8{1u});
-    static_cast<void>(_span_s8 / s64{1});
-    static_cast<void>(_span_s64 / s8{1});
-    static_cast<void>(_span_s8 / u32{1u});
-    static_cast<void>(_span_s64 / u32{1u});
-    static_cast<void>(_span_f32 / f64{1.0f});
-    static_cast<void>(_span_f64 / f32{1.0f});
+    static_cast<void>(_span_u8 / 1_u64);
+    static_cast<void>(_span_u64 / 1_u8);
+    static_cast<void>(_span_s8 / 1_s64);
+    static_cast<void>(_span_s64 / 1_s8);
+    static_cast<void>(_span_s8 / 1_u32);
+    static_cast<void>(_span_s64 / 1_u32);
+    static_cast<void>(_span_f32 / 1.0);
+    static_cast<void>(_span_f64 / 1.0f);
 
     static_cast<void>(_span_u8 & _span_u64);
     static_cast<void>(_span_u64 & _span_u8);

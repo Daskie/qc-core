@@ -15,7 +15,7 @@ TEST(BinaryFStream, general)
     {
         qc::BinaryOFStream ofs{file};
         ASSERT_TRUE(ofs);
-        ofs << u8{1u} << u16{2u} << u32{3u} << u64{4u};
+        ofs << 1_u8 << 2_u16 << 3_u32 << 4_u64;
         ofs << dmat4{1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0};
         ASSERT_TRUE(ofs.close());
     }

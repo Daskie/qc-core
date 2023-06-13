@@ -211,7 +211,7 @@ namespace qc
       private:
 
         // Limited by max `prevOffset`/`nextOffset` values
-        static constexpr u64 _maxBubbleSize{u64(1u) << 31};
+        static constexpr u64 _maxBubbleSize{1u << 31};
 
         static void _destroy(_Chunk * chunk);
 

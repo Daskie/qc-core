@@ -204,18 +204,18 @@ namespace qc::color
     nodisc inline vec3<T> thermalToSrgb(const T v)
     {
         static constexpr vec3<T> palette[12u]{
-            transnorm<T>(ucvec3{u8(  0u), u8(  0u), u8(  0u)}),
-            transnorm<T>(ucvec3{u8( 33u), u8(  0u), u8(133u)}),
-            transnorm<T>(ucvec3{u8(110u), u8(  0u), u8(156u)}),
-            transnorm<T>(ucvec3{u8(175u), u8(  1u), u8(152u)}),
-            transnorm<T>(ucvec3{u8(208u), u8( 26u), u8(121u)}),
-            transnorm<T>(ucvec3{u8(231u), u8( 72u), u8( 20u)}),
-            transnorm<T>(ucvec3{u8(243u), u8(113u), u8(  1u)}),
-            transnorm<T>(ucvec3{u8(252u), u8(159u), u8(  0u)}),
-            transnorm<T>(ucvec3{u8(254u), u8(205u), u8(  2u)}),
-            transnorm<T>(ucvec3{u8(255u), u8(239u), u8(102u)}),
-            transnorm<T>(ucvec3{u8(255u), u8(255u), u8(255u)}),
-            transnorm<T>(ucvec3{u8(255u), u8(255u), u8(255u)})};
+            transnorm<T>(ucvec3{  0_u8,   0_u8,   0_u8}),
+            transnorm<T>(ucvec3{ 33_u8,   0_u8, 133_u8}),
+            transnorm<T>(ucvec3{110_u8,   0_u8, 156_u8}),
+            transnorm<T>(ucvec3{175_u8,   1_u8, 152_u8}),
+            transnorm<T>(ucvec3{208_u8,  26_u8, 121_u8}),
+            transnorm<T>(ucvec3{231_u8,  72_u8,  20_u8}),
+            transnorm<T>(ucvec3{243_u8, 113_u8,   1_u8}),
+            transnorm<T>(ucvec3{252_u8, 159_u8,   0_u8}),
+            transnorm<T>(ucvec3{254_u8, 205_u8,   2_u8}),
+            transnorm<T>(ucvec3{255_u8, 239_u8, 102_u8}),
+            transnorm<T>(ucvec3{255_u8, 255_u8, 255_u8}),
+            transnorm<T>(ucvec3{255_u8, 255_u8, 255_u8})};
 
         const auto [t, i]{qc::fract_i<s32>(v * T(10.0))};
         return mix(palette[i], palette[i + 1], t);

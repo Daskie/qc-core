@@ -65,17 +65,17 @@ TEST(Serializer, primitives)
     {
         qc::Serializer serializer{file};
         ASSERT_TRUE(serializer);
-        serializer << u8{1u} << u16{2u} << u32{3u} << u64{4u};
-        serializer << s8{1} << s16{2} << s32{3} << s64{4};
+        serializer << 1_u8 << 2_u16 << 3_u32 << 4_u64;
+        serializer << 1_s8 << 2_s16 << 3_s32 << 4_s64;
         serializer << 1.0f << 2.0;
         serializer << true;
         serializer << CustomEnum::b;
-        serializer << ucvec2{u8(1u), u8(2u)} << ucvec3{u8(3u), u8(4u), u8(5u)} << ucvec4{u8(6u), u8(7u), u8(8u), u8(9u)};
-        serializer << usvec2{u16(1u), u16(2u)} << usvec3{u16(3u), u16(4u), u16(5u)} << usvec4{u16(6u), u16(7u), u16(8u), u16(9u)};
+        serializer << ucvec2{1_u8, 2_u8} << ucvec3{3_u8, 4_u8, 5_u8} << ucvec4{6_u8, 7_u8, 8_u8, 9_u8};
+        serializer << usvec2{1_u16, 2_u16} << usvec3{3_u16, 4_u16, 5_u16} << usvec4{6_u16, 7_u16, 8_u16, 9_u16};
         serializer << uivec2{1u, 2u} << uivec3{3u, 4u, 5u} << uivec4{6u, 7u, 8u, 9u};
         serializer << ulvec2{1u, 2u} << ulvec3{3u, 4u, 5u} << ulvec4{6u, 7u, 8u, 9u};
-        serializer << cvec2{s8(1), s8(2)} << cvec3{s8(3), s8(4), s8(5)} << cvec4{s8(6), s8(7), s8(8), s8(9)};
-        serializer << svec2{s16(1), s16(2)} << svec3{s16(3), s16(4), s16(5)} << svec4{s16(6), s16(7), s16(8), s16(9)};
+        serializer << cvec2{1_s8, 2_s8} << cvec3{3_s8, 4_s8, 5_s8} << cvec4{6_s8, 7_s8, 8_s8, 9_s8};
+        serializer << svec2{1_s16, 2_s16} << svec3{3_s16, 4_s16, 5_s16} << svec4{6_s16, 7_s16, 8_s16, 9_s16};
         serializer << ivec2{1, 2} << ivec3{3, 4, 5} << ivec4{6, 7, 8, 9};
         serializer << lvec2{1, 2} << lvec3{3, 4, 5} << lvec4{6, 7, 8, 9};
         serializer << fvec2{1.0f, 2.0f} << fvec3{3.0f, 4.0f, 5.0f} << fvec4{6.0f, 7.0f, 8.0f, 9.0f};
@@ -130,16 +130,16 @@ TEST(Serializer, primitives)
         {
             ucvec2 v1{}; ucvec3 v2{}; ucvec4 v3{};
             deserializer >> v1 >> v2 >> v3;
-            ASSERT_EQ(v1, (ucvec2{u8(1u), u8(2u)}));
-            ASSERT_EQ(v2, (ucvec3{u8(3u), u8(4u), u8(5u)}));
-            ASSERT_EQ(v3, (ucvec4{u8(6u), u8(7u), u8(8u), u8(9u)}));
+            ASSERT_EQ(v1, (ucvec2{1_u8, 2_u8}));
+            ASSERT_EQ(v2, (ucvec3{3_u8, 4_u8, 5_u8}));
+            ASSERT_EQ(v3, (ucvec4{6_u8, 7_u8, 8_u8, 9_u8}));
         }
         {
             usvec2 v1{}; usvec3 v2{}; usvec4 v3{};
             deserializer >> v1 >> v2 >> v3;
-            ASSERT_EQ(v1, (usvec2{u16(1u), u16(2u)}));
-            ASSERT_EQ(v2, (usvec3{u16(3u), u16(4u), u16(5u)}));
-            ASSERT_EQ(v3, (usvec4{u16(6u), u16(7u), u16(8u), u16(9u)}));
+            ASSERT_EQ(v1, (usvec2{1_u16, 2_u16}));
+            ASSERT_EQ(v2, (usvec3{3_u16, 4_u16, 5_u16}));
+            ASSERT_EQ(v3, (usvec4{6_u16, 7_u16, 8_u16, 9_u16}));
         }
         {
             uivec2 v1{}; uivec3 v2{}; uivec4 v3{};
@@ -158,16 +158,16 @@ TEST(Serializer, primitives)
         {
             cvec2 v1{}; cvec3 v2{}; cvec4 v3{};
             deserializer >> v1 >> v2 >> v3;
-            ASSERT_EQ(v1, (cvec2{s8(1), s8(2)}));
-            ASSERT_EQ(v2, (cvec3{s8(3), s8(4), s8(5)}));
-            ASSERT_EQ(v3, (cvec4{s8(6), s8(7), s8(8), s8(9)}));
+            ASSERT_EQ(v1, (cvec2{1_s8, 2_s8}));
+            ASSERT_EQ(v2, (cvec3{3_s8, 4_s8, 5_s8}));
+            ASSERT_EQ(v3, (cvec4{6_s8, 7_s8, 8_s8, 9_s8}));
         }
         {
             svec2 v1{}; svec3 v2{}; svec4 v3{};
             deserializer >> v1 >> v2 >> v3;
-            ASSERT_EQ(v1, (svec2{s16(1), s16(2)}));
-            ASSERT_EQ(v2, (svec3{s16(3), s16(4), s16(5)}));
-            ASSERT_EQ(v3, (svec4{s16(6), s16(7), s16(8), s16(9)}));
+            ASSERT_EQ(v1, (svec2{1_s16, 2_s16}));
+            ASSERT_EQ(v2, (svec3{3_s16, 4_s16, 5_s16}));
+            ASSERT_EQ(v3, (svec4{6_s16, 7_s16, 8_s16, 9_s16}));
         }
         {
             ivec2 v1{}; ivec3 v2{}; ivec4 v3{};

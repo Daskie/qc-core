@@ -61,15 +61,15 @@ TEST(Core, platform)
 
 TEST(Core, primitives)
 {
-    [[maybe_unused]] s8 s08_;
-    [[maybe_unused]] u8 u08_;
-    [[maybe_unused]] s16 s16_;
-    [[maybe_unused]] u16 u16_;
-    [[maybe_unused]] s32 s32_;
-    [[maybe_unused]] u32 u32_;
+    [[maybe_unused]] s8 s08_{0_s8};
+    [[maybe_unused]] u8 u08_{0_u8};
+    [[maybe_unused]] s16 s16_{0_s16};
+    [[maybe_unused]] u16 u16_{0_u16};
+    [[maybe_unused]] s32 s32_{0_s32};
+    [[maybe_unused]] u32 u32_{0_u32};
     [[maybe_unused]] f32 f32_;
-    [[maybe_unused]] s64 s64_;
-    [[maybe_unused]] u64 u64_;
+    [[maybe_unused]] s64 s64_{0_s64};
+    [[maybe_unused]] u64 u64_{0_u64};
     [[maybe_unused]] f64 f64_;
 }
 
@@ -1222,8 +1222,8 @@ TEST(Core, round)
     testRound<double, s32>(std::numeric_limits<s32>::max() - 1);
     testRound<double, s32>(std::numeric_limits<s32>::min() + 1);
 
-    testRound<double, s64>((s64(1) << 50) - 2);
-    testRound<double, s64>(-((s64(1) << 50) - 2));
+    testRound<double, s64>((1_s64 << 50) - 2);
+    testRound<double, s64>(-((1_s64 << 50) - 2));
 }
 
 template <Floating F, SignedIntegral I>
@@ -1289,8 +1289,8 @@ TEST(Core, floor)
     testFloor<double, s32>(std::numeric_limits<s32>::max() - 1);
     testFloor<double, s32>(std::numeric_limits<s32>::min() + 1);
 
-    testFloor<double, s64>(s64(1) << 49);
-    testFloor<double, s64>(-(s64(1) << 49));
+    testFloor<double, s64>(1_s64 << 49);
+    testFloor<double, s64>(-(1_s64 << 49));
 }
 
 template <Floating F, SignedIntegral I>
@@ -1356,8 +1356,8 @@ TEST(Core, ceil)
     testCeil<double, s32>(std::numeric_limits<s32>::max() - 1);
     testCeil<double, s32>(std::numeric_limits<s32>::min() + 1);
 
-    testCeil<double, s64>(s64(1) << 49);
-    testCeil<double, s64>(-(s64(1) << 49));
+    testCeil<double, s64>(1_s64 << 49);
+    testCeil<double, s64>(-(1_s64 << 49));
 }
 
 GCC_DIAGNOSTIC_PUSH

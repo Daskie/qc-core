@@ -912,22 +912,22 @@ static void compileNonMatching()
     _vec_f64 *= _f32;
     _vec_f64 *= _vec_f32;
 
-    _vec_u64 /= u8{1u};
-    _vec_u64 /= vec<u8, n>{u8(1u)};
-    _vec_s64 /= s8{1};
-    _vec_s64 /= vec<s8, n>{s8(1)};
-    _vec_s64 /= u32{1u};
+    _vec_u64 /= 1_u8;
+    _vec_u64 /= vec<u8, n>{1_u8};
+    _vec_s64 /= 1_s8;
+    _vec_s64 /= vec<s8, n>{1_s8};
+    _vec_s64 /= 1_u32;
     _vec_s64 /= vec<u32, n>{1u};
-    _vec_f64 /= f32{1.0f};
+    _vec_f64 /= 1.0f;
     _vec_f64 /= vec<f32, n>{1.0f};
 
-    _vec_u64 %= u8{1u};
-    _vec_u64 %= vec<u8, n>{u8(1u)};
-    _vec_s64 %= s8{1};
-    _vec_s64 %= vec<s8, n>{s8(1)};
-    _vec_s64 %= u32{1u};
+    _vec_u64 %= 1_u8;
+    _vec_u64 %= vec<u8, n>{1_u8};
+    _vec_s64 %= 1_s8;
+    _vec_s64 %= vec<s8, n>{1_s8};
+    _vec_s64 %= 1_u32;
     _vec_s64 %= vec<u32, n>{1u};
-    _vec_f64 %= f32{1.0f};
+    _vec_f64 %= 1.0f;
     _vec_f64 %= vec<f32, n>{1.0f};
 
     _vec_u64 &= _u8;
@@ -966,19 +966,19 @@ static void compileNonMatching()
     static_cast<void>(_u32 * _vec_s64);
     static_cast<void>(_f32 * _vec_f64);
 
-    static_cast<void>(_vec_u64 / u8{1u});
-    static_cast<void>(_vec_s64 / s8{1});
-    static_cast<void>(_vec_s64 / u32{1u});
-    static_cast<void>(_vec_f64 / f32{1.0f});
+    static_cast<void>(_vec_u64 / 1_u8);
+    static_cast<void>(_vec_s64 / 1_s8);
+    static_cast<void>(_vec_s64 / 1_u32);
+    static_cast<void>(_vec_f64 / 1.0f);
     static_cast<void>(_u8 / vec<u64, n>{1u});
     static_cast<void>(_s8 / vec<s64, n>{1});
     static_cast<void>(_u32 / vec<s64, n>{1});
     static_cast<void>(_f32 / vec<f64, n>{1.0});
 
-    static_cast<void>(_vec_u64 % u8{1u});
-    static_cast<void>(_vec_s64 % s8{1});
-    static_cast<void>(_vec_s64 % u32{1u});
-    static_cast<void>(_vec_f64 % f32{1.0f});
+    static_cast<void>(_vec_u64 % 1_u8);
+    static_cast<void>(_vec_s64 % 1_s8);
+    static_cast<void>(_vec_s64 % 1_u32);
+    static_cast<void>(_vec_f64 % 1.0f);
     static_cast<void>(_u8 % vec<u64, n>{1u});
     static_cast<void>(_s8 % vec<s64, n>{1});
     static_cast<void>(_u32 % vec<s64, n>{1});

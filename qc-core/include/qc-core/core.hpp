@@ -134,6 +134,19 @@ namespace qc
         using s64 = int64_t;
         using u64 = uint64_t;
         using f64 = double;
+
+        ///
+        /// Literal suffixes for primitive types
+        /// Divide by zero when literal is out of range to force compile-time error
+        ///
+        consteval  s8 operator "" _s8(const unsigned long long v) { return  s8(v / static_cast<unsigned long long>(v <= u64(std::numeric_limits< s8>::max()))); }
+        consteval s16 operator ""_s16(const unsigned long long v) { return s16(v / static_cast<unsigned long long>(v <= u64(std::numeric_limits<s16>::max()))); }
+        consteval s32 operator ""_s32(const unsigned long long v) { return s32(v / static_cast<unsigned long long>(v <= u64(std::numeric_limits<s32>::max()))); }
+        consteval s64 operator ""_s64(const unsigned long long v) { return s64(v / static_cast<unsigned long long>(v <= u64(std::numeric_limits<s64>::max()))); }
+        consteval  u8 operator "" _u8(const unsigned long long v) { return  u8(v / static_cast<unsigned long long>(v <= std::numeric_limits< u8>::max())); }
+        consteval u16 operator ""_u16(const unsigned long long v) { return u16(v / static_cast<unsigned long long>(v <= std::numeric_limits<u16>::max())); }
+        consteval u32 operator ""_u32(const unsigned long long v) { return u32(v / static_cast<unsigned long long>(v <= std::numeric_limits<u32>::max())); }
+        consteval u64 operator ""_u64(const unsigned long long v) { return u64(v / static_cast<unsigned long long>(v <= std::numeric_limits<u64>::max())); }
     }
 
     inline namespace types

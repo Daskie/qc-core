@@ -114,7 +114,7 @@ namespace qc
             _Element & operator=(_Element && other) = default;
         };
 
-        inline constexpr static u32 _invalidI{~u32(0u)};
+        inline constexpr static u32 _invalidI{~0_u32};
 
         Bank<_Element> _elements{};
         u32 _headI{_invalidI};

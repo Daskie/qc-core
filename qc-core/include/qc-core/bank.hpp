@@ -68,7 +68,7 @@ namespace qc
         static_assert(sizeof(_Slot) == sizeof(T)); // Necessary for backing array values to be contiguous
 
         inline constexpr static u32 _minCapacity{16u}; // Must be power of two
-        inline constexpr static u32 _invalidI{~u32(0u)};
+        inline constexpr static u32 _invalidI{~0_u32};
 
         _Slot * _slots{};
         u32 _capacity{};
