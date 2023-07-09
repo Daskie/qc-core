@@ -16,9 +16,9 @@ namespace qc::memory
         u64 deallocations{};
     };
 
-    namespace _minutia
+    namespace _private::recordAllocator
     {
-        inline List<RecordAllocatorStats> recordAllocatorStatsList(1u);
+        inline List<RecordAllocatorStats> statsList(1u);
     }
 
     //
@@ -38,9 +38,9 @@ namespace qc::memory
         using is_always_equal = std::false_type;
 
         RecordAllocator() :
-            _listI{_minutia::recordAllocatorStatsList.size()}
+            _listI{_private::recordAllocator::statsList.size()}
         {
-            _minutia::recordAllocatorStatsList.push();
+            _private::recordAllocator::statsList.push();
         }
 
         RecordAllocator(const RecordAllocator &) = default;
@@ -94,12 +94,12 @@ namespace qc::memory
 
         RecordAllocatorStats & stats()
         {
-            return _minutia::recordAllocatorStatsList[_listI];
+            return _private::recordAllocator::statsList[_listI];
         }
 
         const RecordAllocatorStats & stats() const
         {
-            return _minutia::recordAllocatorStatsList[_listI];
+            return _private::recordAllocator::statsList[_listI];
         }
 
         bool operator==(const RecordAllocator &) const = default;

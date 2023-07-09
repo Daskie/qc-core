@@ -184,20 +184,23 @@ namespace qc
 
         template <typename T1, typename T2> using LargerOf = std::conditional_t<sizeof(T1) >= sizeof(T2), T1, T2>;
 
-        template <typename T, bool constant> using ConstIf = std::conditional_t<constant, std::add_const_t<T>, std::remove_const_t<T>>;
+        template <typename T, bool constant> using ConstIf = std::conditional_t<constant, const T, std::remove_const_t<T>>;
         template <typename T, typename U> using ConstAs = ConstIf<T, std::is_const_v<U>>;
     }
 
-    template <Numeric T1, Numeric T2> struct _CommonHelper;
-    template <Floating T1, Floating T2> struct _CommonHelper<T1, T2> { using Type = LargerOf<T1, T2>; };
-    template <SignedIntegral T1, SignedIntegral T2> struct _CommonHelper<T1, T2> { using Type = LargerOf<T1, T2>; };
-    template <UnsignedIntegral T1, UnsignedIntegral T2> struct _CommonHelper<T1, T2> { using Type = LargerOf<T1, T2>; };
-    template <SignedIntegral T1, UnsignedIntegral T2> requires (sizeof(T2) <= 4u) struct _CommonHelper<T1, T2> { using Type = typename Sized<sizeof(T2) >= sizeof(T1) ? sizeof(T2) * 2u : sizeof(T1)>::S; };
-    template <UnsignedIntegral T1, SignedIntegral T2> requires (sizeof(T1) <= 4u) struct _CommonHelper<T1, T2> { using Type = typename Sized<sizeof(T1) >= sizeof(T2) ? sizeof(T1) * 2u : sizeof(T2)>::S; };
+    namespace _private::core
+    {
+        template <Numeric T1, Numeric T2> struct CommonHelper;
+        template <Floating T1, Floating T2> struct CommonHelper<T1, T2> { using Type = LargerOf<T1, T2>; };
+        template <SignedIntegral T1, SignedIntegral T2> struct CommonHelper<T1, T2> { using Type = LargerOf<T1, T2>; };
+        template <UnsignedIntegral T1, UnsignedIntegral T2> struct CommonHelper<T1, T2> { using Type = LargerOf<T1, T2>; };
+        template <SignedIntegral T1, UnsignedIntegral T2> requires (sizeof(T2) <= 4u) struct CommonHelper<T1, T2> { using Type = typename Sized<sizeof(T2) >= sizeof(T1) ? sizeof(T2) * 2u : sizeof(T1)>::S; };
+        template <UnsignedIntegral T1, SignedIntegral T2> requires (sizeof(T1) <= 4u) struct CommonHelper<T1, T2> { using Type = typename Sized<sizeof(T1) >= sizeof(T2) ? sizeof(T1) * 2u : sizeof(T2)>::S; };
+    }
 
     inline namespace types
     {
-        template <typename T1, typename T2> using Common = _CommonHelper<T1, T2>::Type;
+        template <typename T1, typename T2> using Common = _private::core::CommonHelper<T1, T2>::Type;
         template <typename T1, typename T2> concept CommonExists = requires { typename Common<T1, T2>; };
 
         template <typename T1, typename T2> concept InclusiveSuperOf = Same<T1, Common<T1, T2>>;

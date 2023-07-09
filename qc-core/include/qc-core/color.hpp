@@ -147,7 +147,7 @@ namespace qc::color
         return hsl;
     }
 
-    namespace _minutia
+    namespace _private::color
     {
         template <Floating T>
         nodisc inline vec3<T> hueToSrgb(const T hue, const T minComp, const T maxComp)
@@ -174,7 +174,7 @@ namespace qc::color
     template <Floating T>
     nodisc inline vec3<T> hueToSrgb(const T hue)
     {
-        return _minutia::hueToSrgb(hue, T(0.0), T(1.0));
+        return _private::color::hueToSrgb(hue, T(0.0), T(1.0));
     }
 
     ///
@@ -190,7 +190,7 @@ namespace qc::color
         const T spread{maxSpread * hsl.y};
         const T minComp{hsl.z - spread};
         const T maxComp{hsl.z + spread};
-        return _minutia::hueToSrgb(hsl.x, minComp, maxComp);
+        return _private::color::hueToSrgb(hsl.x, minComp, maxComp);
     }
 
     ///

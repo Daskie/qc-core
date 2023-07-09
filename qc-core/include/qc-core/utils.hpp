@@ -23,32 +23,35 @@ namespace qc::utils
         return pairwiseSum(n >> 1, vals) + pairwiseSum((n + 1u) >> 1, vals + (n >> 1));
     }
 
-    // TODO: Version that maps file to memory for bulk transfers, non-sequential access, or both reading and writing
-    // TODO: Once have our own string class, return some kind of dynamic array result instead to avoid 4GB list limit
-    template <typename DstContainer>
-    nodisc inline Result<DstContainer> _readFile(const std::filesystem::path & path)
+    namespace _private::utils
     {
-        DstContainer dst{};
+        // TODO: Version that maps file to memory for bulk transfers, non-sequential access, or both reading and writing
+        // TODO: Once have our own string class, return some kind of dynamic array result instead to avoid 4GB list limit
+        template <typename DstContainer>
+        nodisc inline Result<DstContainer> readFile(const std::filesystem::path & path)
+        {
+            DstContainer dst{};
 
-        std::error_code ec{};
-        const u64 size{std::filesystem::file_size(path, ec)};
+            std::error_code ec{};
+            const u64 size{std::filesystem::file_size(path, ec)};
 
-        // Issue with file, or file too large
-        FAIL_IF(ec || size > dst.max_size() || size > u64(std::numeric_limits<std::streamsize>::max()));
+            // Issue with file, or file too large
+            FAIL_IF(ec || size > dst.max_size() || size > u64(std::numeric_limits<std::streamsize>::max()));
 
-        std::ifstream ifs{path, std::ios::binary};
+            std::ifstream ifs{path, std::ios::binary};
 
-        // Failed to open file
-        FAIL_IF(!ifs.good());
+            // Failed to open file
+            FAIL_IF(!ifs.good());
 
-        dst.resize(typename DstContainer::size_type(size)); // TODO: string version initializes its memory - potential performance concern for large files
+            dst.resize(typename DstContainer::size_type(size)); // TODO: string version initializes its memory - potential performance concern for large files
 
-        ifs.read(std::bit_cast<char *>(dst.data()), std::streamsize(size));
+            ifs.read(std::bit_cast<char *>(dst.data()), std::streamsize(size));
 
-        // Failed to read file
-        FAIL_IF(!ifs.good());
+            // Failed to read file
+            FAIL_IF(!ifs.good());
 
-        return dst;
+            return dst;
+        }
     }
 
     ///
@@ -56,7 +59,7 @@ namespace qc::utils
     ///
     nodisc inline Result<List<u8>> readFile(const std::filesystem::path & path)
     {
-        return _readFile<List<u8>>(path);
+        return _private::utils::readFile<List<u8>>(path);
     }
 
     ///
@@ -64,7 +67,7 @@ namespace qc::utils
     ///
     nodisc inline Result<std::string> readTextFile(const std::filesystem::path & path)
     {
-        return _readFile<std::string>(path);
+        return _private::utils::readFile<std::string>(path);
     }
 
     /// @return whether the file was successfully written
