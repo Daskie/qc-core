@@ -127,8 +127,8 @@ namespace qc
     {
         friend SemiStableDeque;
 
-        using _T = std::conditional_t<constant, const T, T>;
-        using _Element = std::conditional_t<constant, const _Element, _Element>;
+        using _T = ConstIf<T, constant>;
+        using _Element = ConstIf<_Element, constant>;
 
       public:
 

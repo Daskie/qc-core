@@ -67,7 +67,7 @@ namespace qc
 
         StrideIter & operator++()
         {
-            using Byte = std::conditional_t<std::is_const_v<value_type>, const std::byte, std::byte>;
+            using Byte = ConstAs<std::byte, value_type>;
             reinterpret_cast<Byte * &>(_ptr) += _stride;
             return *this;
         }

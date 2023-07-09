@@ -77,7 +77,7 @@ namespace qc
         {
             friend Pool;
 
-            using _T = std::conditional_t<constant, const T, T>;
+            using _T = ConstIf<T, constant>;
 
           public:
 
@@ -123,7 +123,7 @@ namespace qc
         {
             friend Pool;
 
-            using _T = std::conditional_t<constant, const T, T>;
+            using _T = ConstIf<T, constant>;
 
           public:
 
@@ -237,8 +237,8 @@ namespace qc
     {
         friend class Pool<T>;
 
-        using _T = std::conditional_t<constant, const T, T>;
-        using _Chunk = std::conditional_t<constant, const _Chunk, _Chunk>;
+        using _T = ConstIf<T, constant>;
+        using _Chunk = ConstIf<_Chunk, constant>;
 
       public:
 

@@ -939,6 +939,16 @@ TEST(Core, types)
     static_assert(qc::ExplicitlyConvertibleTo<float *, void *>);
     static_assert(qc::ExplicitlyConvertibleTo<void *, float *>);
 
+    static_assert(std::is_same_v<qc::ConstIf<int, true>, const int>);
+    static_assert(std::is_same_v<qc::ConstIf<int, false>, int>);
+    static_assert(std::is_same_v<qc::ConstIf<const int, true>, const int>);
+    static_assert(std::is_same_v<qc::ConstIf<const int, false>, int>);
+
+    static_assert(std::is_same_v<qc::ConstAs<int, float>, int>);
+    static_assert(std::is_same_v<qc::ConstAs<int, const float>, const int>);
+    static_assert(std::is_same_v<qc::ConstAs<const int, float>, int>);
+    static_assert(std::is_same_v<qc::ConstAs<const int, const float>, const int>);
+
     static_assert(qc::CommonExists<s8, s64>);
     static_assert(qc::CommonExists<u8, u64>);
     static_assert(qc::CommonExists<s8, u8>);

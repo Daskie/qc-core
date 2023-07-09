@@ -104,7 +104,7 @@ namespace qc
       public:
 
         using iterator_category = std::forward_iterator_tag;
-        using value_type = std::conditional_t<constant, const T, T>;
+        using value_type = ConstIf<T, constant>;
         using reference = value_type &;
         using pointer = value_type *;
         using difference_type = s64;

@@ -146,7 +146,7 @@ namespace qc
         consteval  u8 operator "" _u8(const unsigned long long v) { return  u8(v / static_cast<unsigned long long>(v <= std::numeric_limits< u8>::max())); }
         consteval u16 operator ""_u16(const unsigned long long v) { return u16(v / static_cast<unsigned long long>(v <= std::numeric_limits<u16>::max())); }
         consteval u32 operator ""_u32(const unsigned long long v) { return u32(v / static_cast<unsigned long long>(v <= std::numeric_limits<u32>::max())); }
-        consteval u64 operator ""_u64(const unsigned long long v) { return u64(v / static_cast<unsigned long long>(v <= std::numeric_limits<u64>::max())); }
+        consteval u64 operator ""_u64(const unsigned long long v) { return v; }
     }
 
     inline namespace types
@@ -183,6 +183,9 @@ namespace qc
         template <typename T, u64 n> using CArray = T[n];
 
         template <typename T1, typename T2> using LargerOf = std::conditional_t<sizeof(T1) >= sizeof(T2), T1, T2>;
+
+        template <typename T, bool constant> using ConstIf = std::conditional_t<constant, std::add_const_t<T>, std::remove_const_t<T>>;
+        template <typename T, typename U> using ConstAs = ConstIf<T, std::is_const_v<U>>;
     }
 
     template <Numeric T1, Numeric T2> struct _CommonHelper;
