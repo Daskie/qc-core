@@ -15,7 +15,7 @@ namespace qc
 
     template <CountableEnum E> constexpr u64 enumN{u64(E::_n)};
 
-    namespace _private::enumUtils
+    namespace _private::enum_utils
     {
         template <CountableEnum E>
         constexpr std::array<E, enumN<E>> makeEnumArray()
@@ -29,5 +29,5 @@ namespace qc
         }
     }
 
-    template <CountableEnum E> constexpr std::array<E, enumN<E>> enumArray{_private::enumUtils::makeEnumArray<E>()};
+    template <CountableEnum E> constexpr std::array<E, enumN<E>> enumArray{_private::enum_utils::makeEnumArray<E>()};
 }
