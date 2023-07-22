@@ -4,12 +4,7 @@
 #include <bit>
 
 #ifdef QC_MSVC
-    #pragma warning(push)
-    #pragma warning(disable: 5039)
-    #define WIN32_LEAN_AND_MEAN
-    #define NOMINMAX
-    #include <windows.h>
-    #pragma warning(pop)
+    #include <qc-core/windows-header.hpp>
 #else
     #include <sys/mman.h>
     #include <unistd.h>

@@ -3,9 +3,7 @@
 #include <qc-core/paging.hpp>
 
 #ifdef QC_MSVC
-    #define WIN32_LEAN_AND_MEAN
-    #define NOMINMAX
-    #include <windows.h>
+    #include <qc-core/windows-header.hpp>
 #else
     #include <fcntl.h>
     #include <unistd.h>
