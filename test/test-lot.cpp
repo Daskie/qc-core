@@ -98,8 +98,8 @@ TEST(Lot, assignment)
         lot = {1, 2, 3, 4};
         ASSERT_EQ(lot, (IL<s32>{1, 2, 3, 4}));
 
-        std::vector<s32> vs{3, 2, 1};
-        lot = std::span<s32>{vs.data(), vs.size()};
+        s32 vs[]{3, 2, 1};
+        lot = qc::View<s32>{vs};
         ASSERT_EQ(lot, (IL<s32>{3, 2, 1}));
     }
 }
@@ -114,6 +114,23 @@ TEST(Lot, operatorBool)
 
     lot.clear();
     ASSERT_FALSE(lot);
+}
+
+TEST(Lot, operatorView)
+{
+    qc::Lot<s32> lot{1, 2, 3};
+
+    {
+        const qc::View<s32> view{lot};
+        ASSERT_EQ(view.data, lot.data());
+        ASSERT_EQ(view.size, lot.size());
+    }
+
+    {
+        const qc::CView<s32> view{lot};
+        ASSERT_EQ(view.data, lot.data());
+        ASSERT_EQ(view.size, lot.size());
+    }
 }
 
 TEST(Lot, assign)

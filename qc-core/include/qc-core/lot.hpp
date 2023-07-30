@@ -39,7 +39,7 @@ namespace qc
         forceinline Lot(const u32 n, const T & v) : _list(n, v) {}
         template <typename It> forceinline Lot(const It first, const It last) : _list(first, last) {}
         forceinline Lot(const std::initializer_list<T> vs) : _list(vs) {}
-        forceinline explicit Lot(const std::span<const T> vs) : _list(vs) {}
+        forceinline explicit Lot(const CView<T> vs) : _list(vs) {}
 
         Lot(const Lot &) = delete;
         Lot(Lot &&) = default;
@@ -48,11 +48,14 @@ namespace qc
         Lot & operator=(Lot &&) = default;
 
         forceinline Lot & operator=(const std::initializer_list<T> vs) { _list = vs; return *this; }
-        forceinline Lot & operator=(const std::span<const T> vs) { _list = vs; return *this; }
+        forceinline Lot & operator=(const CView<T> vs) { _list = vs; return *this; }
 
         ~Lot() = default;
 
         nodisc forceinline explicit operator bool() const { return bool(_list); }
+
+        nodisc forceinline operator View<T>() { return _list; }
+        nodisc forceinline operator CView<T>() const { return _list; }
 
         forceinline void assign(const u32 n, const T & v) { _list.assign(n, v); }
         template <typename It> forceinline void assign(const It first, const It last) { _list.assign(first, last); }
@@ -69,7 +72,7 @@ namespace qc
         template <typename... Args> forceinline T & push(Args &&... args) { return _list.push(std::forward<Args>(args)...); }
 
         forceinline T & bump() requires std::is_trivially_default_constructible_v<T> { return _list.bump(); }
-        forceinline std::span<T> bump(const u32 n) requires std::is_trivially_default_constructible_v<T> { return _list.bump(n); }
+        forceinline View<T> bump(const u32 n) requires std::is_trivially_default_constructible_v<T> { return _list.bump(n); }
 
         T * erase(T * pos);
         u32 erase(const T & v);
@@ -102,9 +105,9 @@ namespace qc
         nodisc forceinline T * data() { return _list.data(); }
         nodisc forceinline const T * data() const { return _list.data(); }
 
-        nodisc forceinline std::span<T> span() { return _list.span(); }
-        nodisc forceinline std::span<const T> span() const { return _list.span(); }
-        nodisc forceinline std::span<const T> cspan() const { return _list.cspan(); }
+        nodisc forceinline View<T> span() { return _list.span(); }
+        nodisc forceinline CView<T> span() const { return _list.span(); }
+        nodisc forceinline CView<T> cspan() const { return _list.cspan(); }
 
         nodisc forceinline T * begin() { return _list.begin(); }
         nodisc forceinline const T * begin() const { return _list.begin(); }

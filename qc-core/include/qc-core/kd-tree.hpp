@@ -3,7 +3,6 @@
 #include <cassert>
 
 #include <algorithm>
-#include <span>
 
 #include <qc-core/list.hpp>
 #include <qc-core/vector.hpp>
@@ -17,7 +16,7 @@ namespace qc
       public:
 
         KdTree() = default;
-        explicit KdTree(std::span<const fvec2> points);
+        explicit KdTree(CView<fvec2> points);
 
         KdTree(const KdTree &) = delete;
         KdTree(KdTree &&) = default;
@@ -42,7 +41,7 @@ namespace qc
 
         List<_Node> _nodes{};
 
-        template <bool axis> void _constructRecursive(const fvec2 * points, std::span<u32> orderedA, std::span<u32> orderedB, std::span<u32> scratch, _Node * node);
+        template <bool axis> void _constructRecursive(const fvec2 * points, View<u32> orderedA, View<u32> orderedB, View<u32> scratch, _Node * node);
 
         template <bool axis> void _nearestRecursive(fvec2 point, const _Node * node, fvec2 & nearestPoint, float & minDist2) const;
     };
@@ -52,19 +51,17 @@ namespace qc
 
 namespace qc
 {
-    inline KdTree::KdTree(const std::span<const fvec2> points)
+    inline KdTree::KdTree(const CView<fvec2> points)
     {
-        const u32 n{assertCast<u32>(points.size())};
-
-        if (!n)
+        if (!points)
         {
             return;
         }
 
-        _nodes.resize(n);
+        _nodes.resize(points.size);
 
         // Fill two arrays with increasing indices [0, 1, 2, ... , N]
-        List<u32> orderedX(n);
+        List<u32> orderedX(points.size);
         for (u32 i{0u}; i < orderedX.size(); ++i) orderedX[i] = i;
         List<u32> orderedY(orderedX.begin(), orderedX.end());
 
@@ -80,7 +77,7 @@ namespace qc
         List<u32> scratch(_nodes.size() / 2u);
 
         // Recursively construct tree
-        _constructRecursive<0>(points.data(), orderedX, orderedY, scratch, &_nodes.front());
+        _constructRecursive<0>(points.data, orderedX, orderedY, scratch, &_nodes.front());
     }
 
     inline fvec2 KdTree::nearest(const fvec2 point) const
@@ -96,14 +93,14 @@ namespace qc
     }
 
     template <bool alpha>
-    inline void KdTree::_constructRecursive(const fvec2 * const points, const std::span<u32> orderedA, const std::span<u32> orderedB, const std::span<u32> scratch, _Node * const node)
+    inline void KdTree::_constructRecursive(const fvec2 * const points, const View<u32> orderedA, const View<u32> orderedB, const View<u32> scratch, _Node * const node)
     {
         static constexpr bool beta{!alpha};
 
         // Terminal case
-        if (orderedA.size() <= 3u)
+        if (orderedA.size <= 3u)
         {
-            if (orderedA.size() == 1u)
+            if (orderedA.size == 1u)
             {
                 node->point = points[orderedA.front()];
             }
@@ -113,7 +110,7 @@ namespace qc
                 node->lowerOffset = 1u;
                 node[1].point = points[orderedA[0]];
 
-                if (orderedA.size() == 3u)
+                if (orderedA.size == 3u)
                 {
                     node->upperOffset = 2u;
                     node[2].point = points[orderedA[2]];
@@ -124,16 +121,16 @@ namespace qc
         }
 
         // Select median point along alpha axis
-        const u32 lowerAN{u32(orderedA.size()) / 2u};
+        const u32 lowerAN{u32(orderedA.size) / 2u};
         const u32 medianPointI{orderedA[lowerAN]};
         const fvec2 medianPoint{points[medianPointI]};
 
-        const std::span<u32> lowerOrderedA{orderedA.subspan(0u, lowerAN)};
-        const std::span<u32> upperOrderedA{orderedA.subspan(lowerAN + 1u)};
+        const View<u32> lowerOrderedA{orderedA.viewFirst(lowerAN)};
+        const View<u32> upperOrderedA{orderedA.view(lowerAN + 1u)};
 
         node->point = medianPoint;
         node->lowerOffset = 1u;
-        node->upperOffset = node->lowerOffset + u32(lowerOrderedA.size());
+        node->upperOffset = node->lowerOffset + u32(lowerOrderedA.size);
 
         // Split ordered beta span into two ordered subspans
         u32 lowerBN{0u};
@@ -181,12 +178,12 @@ namespace qc
         }
 
         // Define the ordered beta subspans
-        const std::span<u32> lowerOrderedB{orderedB.subspan(0u, lowerBN)};
-        const std::span<u32> upperOrderedB{orderedB.subspan(lowerBN + 1u)};
+        const View<u32> lowerOrderedB{orderedB.viewFirst(lowerBN)};
+        const View<u32> upperOrderedB{orderedB.view(lowerBN + 1u)};
 
         // Sanity check
-        assert(lowerOrderedA.size() == lowerOrderedB.size());
-        assert(upperOrderedA.size() == upperOrderedB.size());
+        assert(lowerOrderedA.size == lowerOrderedB.size);
+        assert(upperOrderedA.size == upperOrderedB.size);
 
         // Copy upper subspan from scratch back into main span
         std::copy_n(scratch.begin(), upperBN, upperOrderedB.begin());

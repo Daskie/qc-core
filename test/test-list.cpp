@@ -218,8 +218,8 @@ TEST(List, assignment)
         list = {1, 2, 3, 4};
         ASSERT_EQ(list, (IL<s32>{1, 2, 3, 4}));
 
-        std::vector<s32> vs{3, 2, 1};
-        list = std::span<s32>{vs.data(), vs.size()};
+        s32 vs[]{3, 2, 1};
+        list = qc::View<s32>{vs};
         ASSERT_EQ(list, (IL<s32>{3, 2, 1}));
     }
     {
@@ -255,9 +255,9 @@ TEST(List, assignment)
         ASSERT_EQ(NonTrivial::destructions, 6u);
         ASSERT_EQ(list, (IL<NonTrivial>{1, 2, 3}));
 
-        std::vector<NonTrivial> vs{2, 2, 2, 2};
+        NonTrivial vs[]{2, 2, 2, 2};
         NonTrivial::reset();
-        list = std::span<const NonTrivial>{vs.cbegin(), vs.cend()};
+        list = qc::CView<NonTrivial>{vs};
         ASSERT_EQ(NonTrivial::contructions, 4u);
         ASSERT_EQ(NonTrivial::assignments, 0u);
         ASSERT_EQ(NonTrivial::copies, 4u);
@@ -271,8 +271,8 @@ TEST(List, assignment)
         list = {1, 2, 3};
         ASSERT_EQ(list, (IL<NonTrivial>{1, 2, 3}));
 
-        std::vector<NonTrivial> vs{2, 2, 2, 2};
-        list = std::span<const NonTrivial>{vs.cbegin(), vs.cend()};
+        NonTrivial vs[]{2, 2, 2, 2};
+        list = qc::CView<NonTrivial>{vs};
         ASSERT_EQ(list, (IL<NonTrivial>{2, 2, 2, 2}));
     }
     {
@@ -307,7 +307,7 @@ TEST(List, assignment)
         ASSERT_EQ(list, (IL<NonTrivial>{1, 2, 3, 4}));
 
         NonTrivial::reset();
-        list = std::span<NonTrivial>{vs.data(), vs.size()};
+        list = qc::View<NonTrivial>{vs.data(), u32(vs.size())};
         ASSERT_EQ(NonTrivial::contructions, 3u);
         ASSERT_EQ(NonTrivial::assignments, 0u);
         ASSERT_EQ(NonTrivial::copies, 3u);
@@ -347,6 +347,23 @@ TEST(List, operatorBool)
 
     list.clear();
     ASSERT_FALSE(list);
+}
+
+TEST(List, operatorView)
+{
+    qc::List<s32> list{1, 2, 3};
+
+    {
+        const qc::View<s32> view{list};
+        ASSERT_EQ(view.data, list.data());
+        ASSERT_EQ(view.size, list.size());
+    }
+
+    {
+        const qc::CView<s32> view{list};
+        ASSERT_EQ(view.data, list.data());
+        ASSERT_EQ(view.size, list.size());
+    }
 }
 
 TEST(List, assign)

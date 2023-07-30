@@ -28,3 +28,20 @@ TEST(Array, fillConstructor)
     ASSERT_EQ(arr[1u], 7);
     ASSERT_EQ(arr[2u], 7);
 }
+
+TEST(Array, operatorView)
+{
+    qc::Array<s32, 3u> arr{1, 2, 3};
+
+    {
+        const qc::View<s32> view{arr};
+        ASSERT_EQ(view.data, arr.data());
+        ASSERT_EQ(view.size, arr.size());
+    }
+
+    {
+        const qc::CView<s32> view{arr};
+        ASSERT_EQ(view.data, arr.data());
+        ASSERT_EQ(view.size, arr.size());
+    }
+}

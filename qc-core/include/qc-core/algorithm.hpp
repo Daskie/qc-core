@@ -1,7 +1,6 @@
 #pragma once
 
 #include <algorithm>
-#include <span>
 
 #include <qc-core/core.hpp>
 #include <qc-core/list.hpp>
@@ -9,11 +8,11 @@
 namespace qc
 {
     template <Numeric T>
-    T median(const std::span<const T> vs)
+    T median(const CView<T> vs)
     {
         static thread_local List<T> buffer{};
 
-        assert(!vs.empty());
+        assert(vs);
 
         buffer = vs;
 
@@ -41,13 +40,13 @@ namespace qc
     }
 
     template <Numeric T>
-    T medianOrdered(const std::span<const T> vs)
+    T medianOrdered(const CView<T> vs)
     {
-        assert(!vs.empty());
+        assert(vs);
 
-        const T * mid{vs.data() + vs.size() / 2u};
+        const T * mid{vs.data + vs.size / 2u};
 
-        if (vs.size() % 2u)
+        if (vs.size % 2u)
         {
             return *mid;
         }

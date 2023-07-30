@@ -3,9 +3,8 @@
 #include <cstring>
 
 #include <iterator>
-#include <span>
 
-#include <qc-core/core.hpp>
+#include <qc-core/view.hpp>
 
 namespace qc
 {
@@ -66,7 +65,7 @@ namespace qc
         List(u32 n, const T & v);
         template <typename It> List(It first, It last);
         List(std::initializer_list<T> vs);
-        explicit List(std::span<const T> vs);
+        explicit List(CView<T> vs);
 
         List(const List &) = delete;
         List(List && other);
@@ -75,11 +74,14 @@ namespace qc
         List & operator=(List && other);
 
         List & operator=(std::initializer_list<T> vs);
-        List & operator=(std::span<const T> vs);
+        List & operator=(CView<T> vs);
 
         ~List();
 
         nodisc forceinline explicit operator bool() const { return _size; }
+
+        nodisc forceinline operator View<T>() { return {_data, _size}; }
+        nodisc forceinline operator CView<T>() const { return {_data, _size}; }
 
         void assign(u32 n, const T & v);
         template <typename It> void assign(It first, It last);
@@ -96,7 +98,7 @@ namespace qc
         template <typename... Args> T & push(Args &&... args);
 
         T & bump() requires std::is_trivially_default_constructible_v<T>;
-        std::span<T> bump(u32 n) requires std::is_trivially_default_constructible_v<T>;
+        View<T> bump(u32 n) requires std::is_trivially_default_constructible_v<T>;
 
         T * insert(T * pos, const T & v);
         T * insert(T * pos, T && v);
@@ -148,12 +150,12 @@ namespace qc
         nodisc forceinline T * data() { return _data; }
         nodisc forceinline const T * data() const { return _data; }
 
-        nodisc forceinline std::span<T> span() { return {_data, _size}; }
-        nodisc forceinline std::span<const T> span() const { return {_data, _size}; }
-        nodisc forceinline std::span<const T> cspan() const { return span(); }
-        nodisc forceinline std::span<T> span(const u32 i, const u32 n) { return {_data + i, n}; }
-        nodisc forceinline std::span<const T> span(const u32 i, const u32 n) const { return {_data + i, n}; }
-        nodisc forceinline std::span<const T> cspan(const u32 i, const u32 n) const { return span(i, n); }
+        nodisc forceinline View<T> view() { return {_data, _size}; }
+        nodisc forceinline CView<T> view() const { return {_data, _size}; }
+        nodisc forceinline CView<T> cview() const { return view(); }
+        nodisc forceinline View<T> view(const u32 i, const u32 n) { return {_data + i, n}; }
+        nodisc forceinline CView<T> view(const u32 i, const u32 n) const { return {_data + i, n}; }
+        nodisc forceinline CView<T> cview(const u32 i, const u32 n) const { return view(i, n); }
 
         nodisc forceinline T * begin() { return _data; }
         nodisc forceinline const T * begin() const { return _data; }
@@ -234,7 +236,7 @@ namespace qc
     }
 
     template <typename T>
-    forceinline List<T>::List(const std::span<const T> vs)
+    forceinline List<T>::List(const CView<T> vs)
     {
         *this = vs;
     }
@@ -267,21 +269,21 @@ namespace qc
     template <typename T>
     forceinline List<T> & List<T>::operator=(const std::initializer_list<T> vs)
     {
-        return *this = std::span<const T>{std::data(vs), vs.size()};
+        assert(vs.size() <= std::numeric_limits<u32>::max());
+
+        return *this = CView<T>{std::data(vs), u32(vs.size())};
     }
 
     template <typename T>
-    inline List<T> & List<T>::operator=(const std::span<const T> vs)
+    inline List<T> & List<T>::operator=(const CView<T> vs)
     {
         if constexpr (std::is_trivially_copyable_v<T>)
         {
-            const u32 n{assertCast<u32>(vs.size())};
+            reserve(vs.size);
 
-            reserve(n);
+            std::memcpy(_data, vs.data, vs.size * sizeof(T));
 
-            std::memcpy(_data, vs.data(), n * sizeof(T));
-
-            _size = n;
+            _size = vs.size;
         }
         else
         {
@@ -473,7 +475,7 @@ namespace qc
     }
 
     template <typename T>
-    forceinline std::span<T> List<T>::bump(const u32 n) requires std::is_trivially_default_constructible_v<T>
+    forceinline View<T> List<T>::bump(const u32 n) requires std::is_trivially_default_constructible_v<T>
     {
         if (_size + n > _capacity) [[unlikely]]
         {
