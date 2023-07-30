@@ -32,6 +32,8 @@ namespace qc
 
         nodisc View viewLast(const u32 n) const { assert(n <= size); return {data + size - n, n}; }
 
+        nodisc forceinline View<const std::byte> bytes() const { return {reinterpret_cast<const std::byte *>(data), size * u32(sizeof(T))}; }
+
         nodisc forceinline T & operator[](const u32 i) const { assert(i < size); return data[i]; }
 
         nodisc forceinline T & front() const { return *data; }

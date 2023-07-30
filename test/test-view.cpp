@@ -170,6 +170,14 @@ TEST(View, viewLast)
     }
 }
 
+TEST(View, bytes)
+{
+    const View<s32> view{arr};
+    const CView<std::byte> bytes{view.bytes()};
+    ASSERT_EQ(static_cast<const void *>(bytes.data), static_cast<const void *>(view.data));
+    ASSERT_EQ(bytes.size, view.size * sizeof(s32));
+}
+
 TEST(View, indexOperator)
 {
     const CView<s32> view{arr};
