@@ -402,6 +402,17 @@ TEST(List, assign)
     }
 }
 
+TEST(List, fill)
+{
+    qc::List<s32> list{};
+    list.fill(7);
+    ASSERT_FALSE(list);
+
+    list.resize(17u);
+    list.fill(8);
+    for (const s32 v : list) ASSERT_EQ(v, 8);
+}
+
 TEST(List, reserve)
 {
     {

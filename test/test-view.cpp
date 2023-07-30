@@ -68,7 +68,6 @@ TEST(View, construction)
 
 TEST(View, assignment)
 {
-
     // Copy
     {
         View<s32> view1{};

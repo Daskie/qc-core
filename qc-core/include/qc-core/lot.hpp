@@ -60,6 +60,8 @@ namespace qc
         forceinline void assign(const u32 n, const T & v) { _list.assign(n, v); }
         template <typename It> forceinline void assign(const It first, const It last) { _list.assign(first, last); }
 
+        forceinline void fill(const T & v) { _list.fill(v); }
+
         forceinline void reserve(const u32 capacity) { _list.reserve(capacity); }
 
         forceinline void resize(const u32 n) { _list.resize(n); }

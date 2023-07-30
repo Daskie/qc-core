@@ -1,46 +1,94 @@
 #pragma once
 
-#include <array>
-
 #include <qc-core/view.hpp>
 
 namespace qc
 {
     struct FillTag {};
 
-    constexpr FillTag fill{};
+    template <typename T, u32 n>
+    struct Array
+    {
+        static_assert(n > 0u);
+
+        static constexpr u32 size{n};
+
+        T data[n];
+
+        constexpr Array() = default;
+        template <typename T_> requires (n == 1u) constexpr Array(T_ && val);
+        template <typename First, typename Second, typename... Rest> requires (sizeof...(Rest) == n - 2u) constexpr Array(First && first, Second && second, Rest &&... rest);
+        constexpr Array(FillTag, const T & v);
+
+        constexpr Array(const Array &) = default;
+        constexpr Array(Array &&) = default;
+
+        Array & operator=(const Array &) = default;
+        Array & operator=(Array &&) = default;
+
+        nodisc forceinline operator View<T>() { return {data, n}; }
+        nodisc forceinline operator CView<T>() const { return {data, n}; }
+
+        constexpr void fill(const T & v);
+
+        /// Necessary to enable structured bindings
+        template <u32 i> requires (i < n) nodisc forceinline constexpr       T &  get()       &  { return data[i]; }
+        template <u32 i> requires (i < n) nodisc forceinline constexpr const T &  get() const &  { return data[i]; }
+        template <u32 i> requires (i < n) nodisc forceinline constexpr       T && get()       && { return std::move(data[i]); }
+        template <u32 i> requires (i < n) nodisc forceinline constexpr const T && get() const && { return std::move(data[i]); }
+
+        nodisc forceinline constexpr T & operator[](const u32 i) { assert(i < n); return data[i]; }
+        nodisc forceinline constexpr const T & operator[](const u32 i) const { assert(i < n); return data[i]; }
+
+        nodisc forceinline constexpr T & front() { return *data; }
+        nodisc forceinline constexpr const T & front() const { return *data; }
+
+        nodisc forceinline constexpr T & back() { return data[n - 1u]; }
+        nodisc forceinline constexpr const T & back() const { return data[n - 1u]; }
+
+        nodisc forceinline constexpr T * begin() { return data; }
+        nodisc forceinline constexpr const T * begin() const { return data; }
+        nodisc forceinline constexpr const T * cbegin() const { return data; }
+
+        nodisc forceinline constexpr T * end() { return data + n; }
+        nodisc forceinline constexpr const T * end() const { return data + n; }
+        nodisc forceinline constexpr const T * cend() const { return data + n; }
+
+        nodisc constexpr bool operator==(const Array &) const = default;
+    };
+}
+
+/// Necessary to enable structured bindings
+template <typename T, qc::u32 n> struct std::tuple_size<qc::Array<T, n>> : std::integral_constant<std::size_t, n> {};
+
+/// Necessary to enable structured bindings
+template <std::size_t i, typename T, qc::u32 n> struct std::tuple_element<i, qc::Array<T, n>> { using type = T; };
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+namespace qc
+{
+    template <typename T, u32 n>
+    template <typename T_> requires (n == 1u)
+    constexpr Array<T, n>::Array(T_ && val) :
+        data{std::forward<T_>(val)}
+    {}
 
     template <typename T, u32 n>
-    struct Array : std::array<T, n> // TODO: Don't use std::array
+    template <typename First, typename Second, typename... Rest> requires (sizeof...(Rest) == n - 2u)
+    constexpr Array<T, n>::Array(First && first, Second && second, Rest &&... rest) :
+       data{std::forward<First>(first), std::forward<Second>(second), std::forward<Rest>(rest)...}
+    {}
+
+    template <typename T, u32 n>
+    constexpr Array<T, n>::Array(FillTag, const T & v)
     {
-        forceinline constexpr Array() = default;
+        for (T & element : *this) element = v;
+    }
 
-        template <typename T_>
-        requires (n == 1u)
-        forceinline constexpr Array(T_ && val) :
-            std::array<T, n>{std::forward<T_>(val)}
-        {}
-
-        template <typename First, typename Second, typename... Rest>
-        requires (sizeof...(Rest) == n - 2u)
-        forceinline constexpr Array(First && first, Second && second, Rest &&... rest) :
-            std::array<T, n>{std::forward<First>(first), std::forward<Second>(second), std::forward<Rest>(rest)...}
-        {}
-
-        constexpr Array(FillTag, const T & v)
-        {
-            for (T & element : *this) element = v;
-        }
-
-        forceinline constexpr Array(const std::array<T, n> & array) :
-            std::array<T, n>{array}
-        {}
-
-        forceinline constexpr Array(std::array<T, n> && array) :
-            std::array<T, n>{std::move(array)}
-        {}
-
-        nodisc forceinline operator View<T>() { return {this->data(), u32(this->size())}; }
-        nodisc forceinline operator CView<T>() const { return {this->data(), u32(this->size())}; }
-    };
+    template <typename T, u32 n>
+    constexpr void Array<T, n>::fill(const T & v)
+    {
+        for (T & element : *this) element = v;
+    }
 }

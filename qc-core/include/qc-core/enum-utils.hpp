@@ -1,16 +1,15 @@
 #pragma once
 
-#include <array>
 #include <iterator>
 #include <type_traits>
 
-#include <qc-core/core.hpp>
+#include <qc-core/array.hpp>
 
 namespace qc
 {
     inline namespace types
     {
-        template <typename E> concept CountableEnum = Enum<E> && Unsigned<std::underlying_type_t<E>> && requires { E::_n; };
+        template <typename E> concept CountableEnum = Enum<E> && Unsigned<std::underlying_type_t<E>> && std::to_underlying(E::_n) >= 1u;
     }
 
     template <CountableEnum E> constexpr u64 enumN{u64(E::_n)};
@@ -18,9 +17,9 @@ namespace qc
     namespace _private::enum_utils
     {
         template <CountableEnum E>
-        constexpr std::array<E, enumN<E>> makeEnumArray()
+        consteval Array<E, enumN<E>> makeEnumArray()
         {
-            std::array<E, enumN<E>> array{};
+            Array<E, enumN<E>> array{};
             for (E v{}; v != E::_n; v = E(std::to_underlying(v) + 1u))
             {
                 array[std::to_underlying(v)] = v;
@@ -29,5 +28,5 @@ namespace qc
         }
     }
 
-    template <CountableEnum E> constexpr std::array<E, enumN<E>> enumArray{_private::enum_utils::makeEnumArray<E>()};
+    template <CountableEnum E> constexpr Array<E, enumN<E>> enumArray{_private::enum_utils::makeEnumArray<E>()};
 }

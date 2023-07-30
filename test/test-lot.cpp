@@ -145,6 +145,17 @@ TEST(Lot, assign)
     ASSERT_EQ(lot, (IL<s32>{3, 2, 1}));
 }
 
+TEST(Lot, fill)
+{
+    qc::Lot<s32> lot{};
+    lot.fill(7);
+    ASSERT_FALSE(lot);
+
+    lot.resize(17u);
+    lot.fill(8);
+    for (const s32 v : lot) ASSERT_EQ(v, 8);
+}
+
 TEST(Lot, reserve)
 {
     qc::Lot<s32> lot{};

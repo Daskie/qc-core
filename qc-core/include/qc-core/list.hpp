@@ -86,6 +86,8 @@ namespace qc
         void assign(u32 n, const T & v);
         template <typename It> void assign(It first, It last);
 
+        void fill(const T & v);
+
         void reserve(u32 capacity);
 
         void resize(u32 n);
@@ -341,6 +343,12 @@ namespace qc
         }
 
         _size = n;
+    }
+
+    template <typename T>
+    inline void List<T>::fill(const T & v)
+    {
+        for (T & element : *this) element = v;
     }
 
     template <typename T>
