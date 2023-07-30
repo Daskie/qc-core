@@ -85,7 +85,7 @@ namespace qc
 
     inline fvec2 KdTree::nearest(const fvec2 point) const
     {
-        assert(!_nodes.empty());
+        assert(_nodes);
 
         fvec2 nearestPoint{};
         float minDist2{std::numeric_limits<float>::infinity()};

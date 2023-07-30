@@ -36,6 +36,8 @@ namespace qc
 
         ~Bank();
 
+        nodisc forceinline explicit operator bool() const { return _size; }
+
         void reserve(u32 capacity);
 
         struct NewElement { T & v; u32 i; };

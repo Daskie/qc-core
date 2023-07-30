@@ -145,7 +145,7 @@ namespace qc
     template <IntegralOrPointer P>
     inline auto BubbleTracker<P>::tail(const P memoryEnd) const -> S
     {
-        if (_bubbles.empty())
+        if (!_bubbles)
         {
             return 0u;
         }

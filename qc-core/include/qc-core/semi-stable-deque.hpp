@@ -39,6 +39,8 @@ namespace qc
 
         ~SemiStableDeque();
 
+        nodisc forceinline explicit operator bool() const { return bool(_elements); }
+
         struct NewElement { T & v; u32 i; };
 
         NewElement push_back(const T & v);

@@ -192,7 +192,7 @@ namespace qc
 
         nodisc u64 size() const { return _size; }
 
-        nodisc bool empty() const { return _size == 0u; }
+        nodisc bool empty() const { return !_size; }
 
         nodisc bool full() const { return _size >= capacity(); }
 

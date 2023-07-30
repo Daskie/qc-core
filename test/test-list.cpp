@@ -337,6 +337,18 @@ TEST(List, destruction)
     ASSERT_EQ(NonTrivial::destructions, 3u);
 }
 
+TEST(List, operatorBool)
+{
+    qc::List<s32> list{};
+    ASSERT_FALSE(list);
+
+    list.push(1);
+    ASSERT_TRUE(list);
+
+    list.clear();
+    ASSERT_FALSE(list);
+}
+
 TEST(List, assign)
 {
     {

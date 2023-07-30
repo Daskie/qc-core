@@ -104,6 +104,18 @@ TEST(Lot, assignment)
     }
 }
 
+TEST(Lot, operatorBool)
+{
+    qc::Lot<s32> lot{};
+    ASSERT_FALSE(lot);
+
+    lot.push(1);
+    ASSERT_TRUE(lot);
+
+    lot.clear();
+    ASSERT_FALSE(lot);
+}
+
 TEST(Lot, assign)
 {
     qc::Lot<s32> lot{9, 8, 7};

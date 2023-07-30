@@ -39,6 +39,8 @@ namespace qc
 
         ~RingDeque();
 
+        nodisc forceinline explicit operator bool() const { return _size; }
+
         void reserve(u64 capacity);
 
         T & push_front(const T & v);
@@ -76,11 +78,11 @@ namespace qc
 
         nodisc iterator begin();
         nodisc const_iterator begin() const;
-        nodisc const_iterator cbegin() const;
+        nodisc forceinline const_iterator cbegin() const { return begin(); }
 
         nodisc iterator end();
         nodisc const_iterator end() const;
-        nodisc const_iterator cend() const;
+        nodisc forceinline const_iterator cend() const { return end(); }
 
       private:
 
@@ -355,12 +357,6 @@ namespace qc
     }
 
     template <typename T>
-    inline auto RingDeque<T>::cbegin() const -> const_iterator
-    {
-        return begin();
-    }
-
-    template <typename T>
     inline auto RingDeque<T>::end() -> iterator
     {
         return iterator{_back, _slots, _slots + _capacity};
@@ -370,12 +366,6 @@ namespace qc
     inline auto RingDeque<T>::end() const -> const_iterator
     {
         return const_iterator{_back, _slots, _slots + _capacity};
-    }
-
-    template <typename T>
-    inline auto RingDeque<T>::cend() const -> const_iterator
-    {
-        return end();
     }
 
     template <typename T>

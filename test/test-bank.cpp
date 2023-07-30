@@ -11,12 +11,14 @@ TEST(Bank, general)
     ASSERT_EQ(0u, bank.capacity());
     ASSERT_EQ(0u, bank.size());
     ASSERT_TRUE(bank.empty());
+    ASSERT_FALSE(bank);
 
     ASSERT_EQ(0u, bank.create(0u).i);
     ASSERT_EQ(0u, bank[0u]);
     ASSERT_EQ(16u, bank.capacity());
     ASSERT_EQ(1u, bank.size());
     ASSERT_FALSE(bank.empty());
+    ASSERT_TRUE(bank);
 
     for (u32 i{1u}; i < 16u; ++i)
     {
@@ -46,6 +48,7 @@ TEST(Bank, general)
     ASSERT_EQ(32u, bank.capacity());
     ASSERT_EQ(0u, bank.size());
     ASSERT_TRUE(bank.empty());
+    ASSERT_FALSE(bank);
 }
 
 TEST(Bank, generalNontrivial)
@@ -54,12 +57,14 @@ TEST(Bank, generalNontrivial)
     ASSERT_EQ(0u, bank.capacity());
     ASSERT_EQ(0u, bank.size());
     ASSERT_TRUE(bank.empty());
+    ASSERT_FALSE(bank);
 
     ASSERT_EQ(0u, bank.create(new u32{0u}).i);
     ASSERT_EQ(0u, *bank[0u]);
     ASSERT_EQ(16u, bank.capacity());
     ASSERT_EQ(1u, bank.size());
     ASSERT_FALSE(bank.empty());
+    ASSERT_TRUE(bank);
 
     for (u32 i{1u}; i < 16u; ++i)
     {
@@ -89,6 +94,7 @@ TEST(Bank, generalNontrivial)
     ASSERT_EQ(32u, bank.capacity());
     ASSERT_EQ(0u, bank.size());
     ASSERT_TRUE(bank.empty());
+    ASSERT_FALSE(bank);
 }
 
 TEST(Bank, constructors)

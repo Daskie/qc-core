@@ -17,6 +17,7 @@ TEST(RingDeque, general)
     ASSERT_TRUE(deque.empty());
     ASSERT_EQ(deque.begin(), deque.end());
     ASSERT_EQ(0u, deque.capacity());
+    ASSERT_FALSE(deque);
 
     ASSERT_EQ(0, deque.push_back(0));
     ASSERT_EQ(0, deque.back());
@@ -24,6 +25,7 @@ TEST(RingDeque, general)
     ASSERT_EQ(1u, deque.size());
     ASSERT_FALSE(deque.empty());
     ASSERT_EQ(16u, deque.capacity());
+    ASSERT_TRUE(deque);
 
     deque.pop_back();
     ASSERT_EQ(0u, deque.size());
@@ -99,6 +101,7 @@ TEST(RingDeque, general)
     deque.clear();
     ASSERT_EQ(0u, deque.size());
     ASSERT_EQ(32u, deque.capacity());
+    ASSERT_FALSE(deque);
 }
 
 TEST(RingDeque, iteratorAssignability)

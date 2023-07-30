@@ -79,6 +79,8 @@ namespace qc
 
         ~List();
 
+        nodisc forceinline explicit operator bool() const { return _size; }
+
         void assign(u32 n, const T & v);
         template <typename It> void assign(It first, It last);
 
@@ -124,44 +126,44 @@ namespace qc
 
         template <typename Pred> u32 countIf(Pred && pred) const;
 
-        bool contains(const T & v) const;
+        nodisc forceinline bool contains(const T & v) const { return count(v); }
 
         template <typename Pred> bool containsIf(Pred && pred) const;
 
         nodisc T & operator[](const u32 i);
         nodisc const T & operator[](const u32 i) const;
 
-        nodisc T & front();
-        nodisc const T & front() const;
+        nodisc forceinline T & front() { return *_data; }
+        nodisc forceinline const T & front() const { return *_data; }
 
-        nodisc T & back();
-        nodisc const T & back() const;
+        nodisc forceinline T & back() { return _data[_size - 1u]; }
+        nodisc forceinline const T & back() const { return _data[_size - 1u]; }
 
-        nodisc u32 capacity() const;
+        nodisc forceinline u32 capacity() const { return _capacity; }
 
-        nodisc u32 size() const;
+        nodisc forceinline u32 size() const { return _size; };
 
-        nodisc bool empty() const;
+        nodisc forceinline bool empty() const { return !_size; }
 
-        nodisc T * data();
-        nodisc const T * data() const;
+        nodisc forceinline T * data() { return _data; }
+        nodisc forceinline const T * data() const { return _data; }
 
-        nodisc std::span<T> span();
-        nodisc std::span<const T> span() const;
-        nodisc std::span<const T> cspan() const;
-        nodisc std::span<T> span(const u32 i, const u32 n);
-        nodisc std::span<const T> span(const u32 i, const u32 n) const;
-        nodisc std::span<const T> cspan(const u32 i, const u32 n) const;
+        nodisc forceinline std::span<T> span() { return {_data, _size}; }
+        nodisc forceinline std::span<const T> span() const { return {_data, _size}; }
+        nodisc forceinline std::span<const T> cspan() const { return span(); }
+        nodisc forceinline std::span<T> span(const u32 i, const u32 n) { return {_data + i, n}; }
+        nodisc forceinline std::span<const T> span(const u32 i, const u32 n) const { return {_data + i, n}; }
+        nodisc forceinline std::span<const T> cspan(const u32 i, const u32 n) const { return span(i, n); }
 
-        nodisc T * begin();
-        nodisc const T * begin() const;
-        nodisc const T * cbegin() const;
+        nodisc forceinline T * begin() { return _data; }
+        nodisc forceinline const T * begin() const { return _data; }
+        nodisc forceinline const T * cbegin() const { return _data; }
 
-        nodisc T * end();
-        nodisc const T * end() const;
-        nodisc const T * cend() const;
+        nodisc forceinline T * end() { return _data + _size; }
+        nodisc forceinline const T * end() const { return _data + _size; }
+        nodisc forceinline const T * cend() const { return _data + _size; }
 
-        nodisc PushIterator<T> pushIterator();
+        nodisc forceinline PushIterator<T> pushIterator() { return PushIterator<T>{*this}; }
 
         nodisc bool operator==(const List & other) const;
         nodisc bool operator==(std::initializer_list<T> vs) const;
@@ -730,12 +732,6 @@ namespace qc
     }
 
     template <typename T>
-    forceinline bool List<T>::contains(const T & v) const
-    {
-        return count(v);
-    }
-
-    template <typename T>
     template <typename Pred>
     forceinline bool List<T>::containsIf(Pred && pred) const
     {
@@ -756,138 +752,6 @@ namespace qc
         assert(i < _size);
 
         return _data[i];
-    }
-
-    template <typename T>
-    forceinline T & List<T>::front()
-    {
-        return *_data;
-    }
-
-    template <typename T>
-    forceinline const T & List<T>::front() const
-    {
-        return *_data;
-    }
-
-    template <typename T>
-    forceinline T & List<T>::back()
-    {
-        return _data[_size - 1u];
-    }
-
-    template <typename T>
-    forceinline const T & List<T>::back() const
-    {
-        return _data[_size - 1u];
-    }
-
-    template <typename T>
-    forceinline u32 List<T>::capacity() const
-    {
-        return _capacity;
-    }
-
-    template <typename T>
-    forceinline u32 List<T>::size() const
-    {
-        return _size;
-    }
-
-    template <typename T>
-    forceinline bool List<T>::empty() const
-    {
-        return !_size;
-    }
-
-    template <typename T>
-    forceinline T * List<T>::data()
-    {
-        return _data;
-    }
-
-    template <typename T>
-    forceinline const T * List<T>::data() const
-    {
-        return _data;
-    }
-
-    template <typename T>
-    forceinline std::span<T> List<T>::span()
-    {
-        return {_data, _size};
-    }
-
-    template <typename T>
-    forceinline std::span<const T> List<T>::span() const
-    {
-        return {_data, _size};
-    }
-
-    template <typename T>
-    forceinline std::span<const T> List<T>::cspan() const
-    {
-        return span();
-    }
-
-    template <typename T>
-    forceinline std::span<T> List<T>::span(const u32 i, const u32 n)
-    {
-        return {_data + i, n};
-    }
-
-    template <typename T>
-    forceinline std::span<const T> List<T>::span(const u32 i, const u32 n) const
-    {
-        return {_data + i, n};
-    }
-
-    template <typename T>
-    forceinline std::span<const T> List<T>::cspan(const u32 i, const u32 n) const
-    {
-        return span(i, n);
-    }
-
-    template <typename T>
-    forceinline T * List<T>::begin()
-    {
-        return _data;
-    }
-
-    template <typename T>
-    forceinline const T * List<T>::begin() const
-    {
-        return _data;
-    }
-
-    template <typename T>
-    forceinline const T * List<T>::cbegin() const
-    {
-        return _data;
-    }
-
-    template <typename T>
-    forceinline T * List<T>::end()
-    {
-        return _data + _size;
-    }
-
-    template <typename T>
-    forceinline const T * List<T>::end() const
-    {
-        return _data + _size;
-    }
-
-    template <typename T>
-    forceinline const T * List<T>::cend() const
-    {
-        return _data + _size;
-    }
-
-    template <typename T>
-    forceinline PushIterator<T> List<T>::pushIterator()
-    {
-        return PushIterator<T>{*this};
     }
 
     template <typename T>

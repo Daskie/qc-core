@@ -52,6 +52,8 @@ namespace qc
 
         ~Lot() = default;
 
+        nodisc forceinline explicit operator bool() const { return bool(_list); }
+
         forceinline void assign(const u32 n, const T & v) { _list.assign(n, v); }
         template <typename It> forceinline void assign(const It first, const It last) { _list.assign(first, last); }
 

@@ -17,11 +17,13 @@ TEST(SemiStableDeque, general)
     ASSERT_TRUE(deque.empty());
     ASSERT_EQ(deque.begin(), deque.end());
     ASSERT_EQ(0u, deque.capacity());
+    ASSERT_FALSE(deque);
 
     ASSERT_EQ(0u, deque.push_back(1).i);
     ASSERT_EQ(1, deque.back());
     ASSERT_EQ(1u, deque.size());
     ASSERT_EQ(16u, deque.capacity());
+    ASSERT_TRUE(deque);
 
     // 1
     // 1, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _
@@ -175,6 +177,7 @@ TEST(SemiStableDeque, general)
     deque.clear();
     ASSERT_EQ(0u, deque.size());
     ASSERT_EQ(32u, deque.capacity());
+    ASSERT_FALSE(deque);
 }
 
 TEST(SemiStableDeque, iteratorAssignability)
