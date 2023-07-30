@@ -20,8 +20,10 @@ namespace qc
 
         template <u64 n> forceinline View(T (&arr)[n]) : data{arr}, size{n} {}
 
-        forceinline View(const View &) = default;
+        forceinline View(const View & other) = default;
         forceinline View(const View<std::remove_const_t<T>> & other) requires std::is_const_v<T> : data{other.data}, size{other.size} {}
+
+        forceinline View & operator=(const View &) = default;
 
         nodisc forceinline explicit operator bool() const { return size; }
 

@@ -3,7 +3,6 @@
 #include <gtest/gtest.h>
 
 #include <qc-core/list.hpp>
-#include <qc-core/matrix.hpp>
 #include <qc-core/quaternion.hpp>
 #include <qc-core/span.hpp>
 #include <qc-core/vector.hpp>
