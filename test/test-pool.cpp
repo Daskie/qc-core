@@ -66,7 +66,7 @@ TEST(Pool, standard)
         u8 padding[28'000u - sizeof(s32) - _metaSize];
 
         BigInt() = default;
-        BigInt(s32 x_) : x{x_} {}
+        BigInt(s32 x) : x{x} {}
     };
 
     // [_|_|_|_|_]
