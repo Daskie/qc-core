@@ -32,8 +32,6 @@ namespace qc
         using iterator = T *;
         using const_iterator = const T *;
 
-        static constexpr u32 max_size() { return List<T>::max_size(); }
-
         Lot() = default;
         forceinline explicit Lot(const u32 n) : _list(n) {}
         forceinline Lot(const u32 n, const T & v) : _list(n, v) {}
@@ -71,10 +69,13 @@ namespace qc
 
         forceinline void clear() { _list.clear(); }
 
-        template <typename... Args> forceinline T & push(Args &&... args) { return _list.push(std::forward<Args>(args)...); }
+        forceinline T & push(const T & v) { return _list.push(v); }
+        forceinline T & push(T && v) { return _list.push(std::move(v)); }
 
-        forceinline T & bump() requires std::is_trivially_default_constructible_v<T> { return _list.bump(); }
-        forceinline View<T> bump(const u32 n) requires std::is_trivially_default_constructible_v<T> { return _list.bump(n); }
+        template <typename... Args> forceinline T & empush(Args &&... args) { return _list.empush(std::forward<Args>(args)...); }
+
+        forceinline T & bump() { return _list.bump(); }
+        forceinline View<T> bump(const u32 n) { return _list.bump(n); }
 
         T * erase(T * pos);
         u32 erase(const T & v);

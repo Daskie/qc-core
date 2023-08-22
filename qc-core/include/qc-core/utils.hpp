@@ -36,14 +36,14 @@ namespace qc::utils
             const u64 size{std::filesystem::file_size(path, ec)};
 
             // Issue with file, or file too large
-            FAIL_IF(ec || size > dst.max_size() || size > u64(std::numeric_limits<std::streamsize>::max()));
+            FAIL_IF(ec || size > u64(std::numeric_limits<std::streamsize>::max()));
 
             std::ifstream ifs{path, std::ios::binary};
 
             // Failed to open file
             FAIL_IF(!ifs.good());
 
-            dst.resize(typename DstContainer::size_type(size)); // TODO: string version initializes its memory - potential performance concern for large files
+            dst.resize(checkedCast<typename DstContainer::size_type>(size)); // TODO: string version initializes its memory - potential performance concern for large files
 
             ifs.read(std::bit_cast<char *>(dst.data()), std::streamsize(size));
 

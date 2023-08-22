@@ -40,7 +40,7 @@ namespace qc::memory
         RecordAllocator() :
             _listI{_private::record_allocator::statsList.size()}
         {
-            _private::record_allocator::statsList.push();
+            _private::record_allocator::statsList.empush();
         }
 
         RecordAllocator(const RecordAllocator &) = default;

@@ -58,8 +58,6 @@ namespace qc
         using iterator = T *;
         using const_iterator = const T *;
 
-        static constexpr u32 max_size() { return _maxCapacity; }
-
         List() = default;
         explicit List(u32 n);
         List(u32 n, const T & v);
@@ -97,22 +95,31 @@ namespace qc
 
         void clear();
 
-        template <typename... Args> T & push(Args &&... args);
+        T & push(const T & v);
+        T & push(T && v);
+        View<T> push(u32 n, const T & v);
+        template <typename It> View<T> push(It first, It last);
+        View<T> push(std::initializer_list<T> vs);
+        View<T> push(CView<T> vs);
 
-        T & bump() requires std::is_trivially_default_constructible_v<T>;
-        View<T> bump(u32 n) requires std::is_trivially_default_constructible_v<T>;
+        template <typename... Args> T & empush(Args &&... args);
+
+        T & bump();
+        View<T> bump(u32 n);
 
         T * insert(T * pos, const T & v);
         T * insert(T * pos, T && v);
-        T * insert(T * pos, u32 n, const T & v);
-        template <typename It> T * insert(T * pos, It first, It last);
-        T * insert(T * pos, std::initializer_list<T> vs);
+        View<T> insert(T * pos, u32 n, const T & v);
+        template <typename It> View<T> insert(T * pos, It first, It last);
+        View<T> insert(T * pos, std::initializer_list<T> vs);
+        View<T> insert(T * pos, CView<T> vs);
 
         template <typename... Args> T * emplace(T * pos, Args &&... args);
 
         void pop();
         void pop(T & dst);
         void pop(u32 n);
+        void pop(View<T> dst);
 
         T * erase(T * pos);
         T * erase(T * first, T * last);
@@ -174,10 +181,9 @@ namespace qc
 
       private:
 
-        static constexpr u32 _autoInitCapacity{16u};
-        static constexpr u32 _maxCapacity{std::numeric_limits<u32>::max()};
+        static constexpr u32 _maxCapacity{1u << 31};
 
-        u32 _capacity{};
+        u32 _capacity{}; // Always a power of two
         u32 _size{};
         T * _data{};
 
@@ -271,9 +277,7 @@ namespace qc
     template <typename T>
     forceinline List<T> & List<T>::operator=(const std::initializer_list<T> vs)
     {
-        assert(vs.size() <= std::numeric_limits<u32>::max());
-
-        return *this = CView<T>{std::data(vs), u32(vs.size())};
+        return *this = CView<T>{std::data(vs), assertCast<u32>(vs.size())};
     }
 
     template <typename T>
@@ -282,9 +286,7 @@ namespace qc
         if constexpr (std::is_trivially_copyable_v<T>)
         {
             reserve(vs.size);
-
             std::memcpy(_data, vs.data, vs.size * sizeof(T));
-
             _size = vs.size;
         }
         else
@@ -329,7 +331,7 @@ namespace qc
 
     template <typename T>
     template <typename It>
-    inline void List<T>::assign(It first, const It last)
+    inline void List<T>::assign(const It first, const It last)
     {
         clear();
 
@@ -337,17 +339,22 @@ namespace qc
 
         reserve(n);
 
-        for (T * dst{_data}; first != last; ++first, ++dst)
+        _size = n;
+
+        It src{first};
+        for (T & dst : *this)
         {
-            new (dst) T{*first};
+            new (&dst) T{*src};
+            ++src;
         }
 
-        _size = n;
     }
 
     template <typename T>
     inline void List<T>::fill(const T & v)
     {
+        static_assert(std::is_copy_assignable_v<T>);
+
         for (T & element : *this) element = v;
     }
 
@@ -356,7 +363,7 @@ namespace qc
     {
         if (capacity > _capacity)
         {
-            _newMemory(capacity, 0u, 0u);
+            _expand(capacity, 0u, 0u);
         }
     }
 
@@ -365,28 +372,12 @@ namespace qc
     {
         if (n > _size)
         {
-            reserve(n);
-
-            if constexpr (!std::is_trivially_default_constructible_v<T>)
-            {
-                for (T * p{_data + _size}, * end{_data + _capacity}; p < end; ++p)
-                {
-                    new (p) T{};
-                }
-            }
+            bump(n - _size);
         }
-        else
+        else if (n < _size)
         {
-            if constexpr (!std::is_trivially_destructible_v<T>)
-            {
-                for (T * p{_data + n}, * end{_data + _size}; p < end; ++p)
-                {
-                    p->~T();
-                }
-            }
+            pop(_size - n);
         }
-
-        _size = n;
     }
 
     template <typename T>
@@ -394,35 +385,24 @@ namespace qc
     {
         if (n > _size)
         {
-            reserve(n);
-
-            for (T * p{_data + _size}, * end{_data + _capacity}; p < end; ++p)
-            {
-                new (p) T{v};
-            }
+            push(n - _size, v);
         }
-        else
+        else if (n < _size)
         {
-            if constexpr (!std::is_trivially_destructible_v<T>)
-            {
-                for (T * p{_data + n}, * end{_data + _size}; p < end; ++p)
-                {
-                    p->~T();
-                }
-            }
+            pop(_size - n);
         }
-
-        _size = n;
     }
 
     template <typename T>
     inline void List<T>::shrink()
     {
-        if (_size < _capacity)
+        const u32 minCapacity{_size ? max(std::bit_ceil(_size), 2u) : 0u};
+
+        if (minCapacity < _capacity)
         {
-            if (_size)
+            if (minCapacity)
             {
-                _newMemory(_size, 0u, 0u);
+                _newMemory(minCapacity, 0u, 0u);
             }
             else
             {
@@ -439,60 +419,149 @@ namespace qc
     {
         if constexpr (!std::is_trivially_destructible_v<T>)
         {
-            for (T & v: *this) v.~T();
+            for (T & v : *this) v.~T();
         }
 
         _size = 0u;
     }
 
     template <typename T>
-    template <typename... Args>
-    inline T & List<T>::push(Args &&... args)
+    forceinline T & List<T>::push(const T & v)
     {
-        if (_size == _capacity) [[unlikely]]
+        static_assert(std::is_copy_constructible_v<T>);
+
+        return empush(v);
+    }
+
+    template <typename T>
+    forceinline T & List<T>::push(T && v)
+    {
+        return empush(std::move(v));
+    }
+
+    template <typename T>
+    inline View<T> List<T>::push(const u32 n, const T & v)
+    {
+        static_assert(std::is_copy_constructible_v<T>);
+
+        reserve(_size + n);
+
+        const View<T> dstView{_data + _size, n};
+
+        for (T & dst : dstView) new (&dst) T{v};
+
+        _size += n;
+
+        return dstView;
+    }
+
+    template <typename T>
+    template <typename It>
+    inline View<T> List<T>::push(const It first, const It last)
+    {
+        static_assert(std::is_copy_constructible_v<T>);
+
+        const u32 n{assertCast<u32>(std::distance(first, last))};
+
+        reserve(_size + n);
+
+        const View<T> dstView{_data + _size, n};
+
+        It src{first};
+        for (T & dst : dstView)
         {
-            _expand(_size + 1u, 0u, 0u);
+            new (&dst) T{*src};
+            ++src;
+        };
+
+        _size += n;
+
+        return dstView;
+    }
+
+    template <typename T>
+    forceinline View<T> List<T>::push(const std::initializer_list<T> vs)
+    {
+        return push(CView<T>{std::data(vs), assertCast<u32>(vs.size())});
+    }
+
+    template <typename T>
+    inline View<T> List<T>::push(const CView<T> vs)
+    {
+        if constexpr (std::is_trivially_copy_constructible_v<T>)
+        {
+            reserve(_size + vs.size);
+
+            T * const dstFirst{_data + _size};
+            std::memcpy(dstFirst, vs.data, vs.size * sizeof(T));
+            _size += vs.size;
+            return {dstFirst, vs.size};
         }
+        else
+        {
+            return push(vs.begin(), vs.end());
+        }
+    }
+
+    template <typename T>
+    template <typename... Args>
+    inline T & List<T>::empush(Args &&... args)
+    {
+        reserve(_size + 1u);
 
         T * const pos{_data + _size};
-        if constexpr (sizeof...(Args) || !std::is_trivially_default_constructible_v<T>)
+
+        // Prefer brace initialization, unless the type has an initializer list constructor
+        if constexpr (!sizeof...(Args) || !ConstructableByInitializerList<T>)
         {
-            // Prefer brace initialization, unless the type has an initializer list constructor
-            if constexpr (!ConstructableByInitializerList<T>)
-            {
-                new (pos) T{std::forward<Args>(args)...};
-            }
-            else
-            {
-                new (pos) T(std::forward<Args>(args)...);
-            }
+            new (pos) T{std::forward<Args>(args)...};
         }
+        else
+        {
+            new (pos) T(std::forward<Args>(args)...);
+        }
+
         ++_size;
+
         return *pos;
     }
 
     template <typename T>
-    forceinline T & List<T>::bump() requires std::is_trivially_default_constructible_v<T>
+    T & List<T>::bump()
     {
-        if (_size == _capacity) [[unlikely]]
+        static_assert(std::is_default_constructible_v<T>);
+
+        reserve(_size + 1u);
+
+        T & v{_data[_size]};
+
+        if constexpr (!std::is_trivially_default_constructible_v<T>)
         {
-            _expand(_size + 1u, 0u, 0u);
+            new (&v) T{};
         }
 
-        return _data[_size++];
+        ++_size;
+
+        return v;
     }
 
     template <typename T>
-    forceinline View<T> List<T>::bump(const u32 n) requires std::is_trivially_default_constructible_v<T>
+    View<T> List<T>::bump(const u32 n)
     {
-        if (_size + n > _capacity) [[unlikely]]
+        static_assert(std::is_default_constructible_v<T>);
+
+        reserve(_size + n);
+
+        const View<T> view{_data + _size, n};
+
+        if constexpr (!std::is_trivially_default_constructible_v<T>)
         {
-            _expand(_size + n, 0u, 0u);
+            for (T & v : view) new (&v) T{};
         }
 
-        T * pos{_data + _size};
         _size += n;
-        return {pos, n};
+
+        return view;
     }
 
     template <typename T>
@@ -510,7 +579,7 @@ namespace qc
     }
 
     template <typename T>
-    inline T * List<T>::insert(T * pos, const u32 n, const T & v)
+    inline View<T> List<T>::insert(T * pos, const u32 n, const T & v)
     {
         static_assert(std::is_copy_constructible_v<T>);
         static constexpr bool destruct{!std::is_trivially_destructible_v<T> && !std::is_copy_assignable_v<T>};
@@ -524,12 +593,12 @@ namespace qc
         if constexpr (!destruct) for (; dst < constructedEnd; ++dst) *dst = v;
         for (; dst < unconstructedEnd; ++dst) new (dst) T{v};
 
-        return pos;
+        return {pos, n};
     }
 
     template <typename T>
     template <typename It>
-    inline T * List<T>::insert(T * pos, It first, const It last)
+    inline View<T> List<T>::insert(T * pos, const It first, const It last)
     {
         static_assert(std::is_copy_constructible_v<T>);
         static constexpr bool destruct{!std::is_trivially_destructible_v<T> && !std::is_copy_assignable_v<T>};
@@ -541,17 +610,33 @@ namespace qc
         T * const constructedEnd{_shift<destruct>(pos, n)};
         T * const unconstructedEnd{pos + n};
 
+        It src{first};
         T * dst{pos};
-        if constexpr (!destruct) for (; dst < constructedEnd; ++dst, ++first) *dst = *first;
-        for (; dst < unconstructedEnd; ++dst, ++first) new (dst) T{*first};
+        if constexpr (!destruct) for (; dst < constructedEnd; ++dst, ++src) *dst = *src;
+        for (; dst < unconstructedEnd; ++dst, ++src) new (dst) T{*src};
 
-        return pos;
+        return {pos, n};
     }
 
     template <typename T>
-    forceinline T * List<T>::insert(T * pos, const std::initializer_list<T> vs)
+    forceinline View<T> List<T>::insert(T * const pos, const std::initializer_list<T> vs)
     {
-        return insert(pos, vs.begin(), vs.end());
+        return insert(pos, CView<T>{std::data(vs), assertCast<u32>(vs.size())});
+    }
+
+    template <typename T>
+    inline View<T> List<T>::insert(T * pos, const CView<T> vs)
+    {
+        if constexpr (std::is_trivially_copyable_v<T>)
+        {
+            _shift<false>(pos, vs.size);
+            std::memcpy(pos, vs.data, vs.size * sizeof(T));
+            return {pos, vs.size};
+        }
+        else
+        {
+            return insert(pos, vs.begin(), vs.end());
+        }
     }
 
     template <typename T>
@@ -607,6 +692,29 @@ namespace qc
         }
 
         _size -= n;
+    }
+
+    template <typename T>
+    inline void List<T>::pop(const View<T> dst)
+    {
+        assert(dst.size <= _size);
+
+        if constexpr (std::is_trivially_copyable_v<T>)
+        {
+            std::memcpy(dst.data, _data + _size - dst.size, dst.size * sizeof(T));
+        }
+        else
+        {
+            T * src{_data + _size - dst.size};
+            for (T & dstV : dst)
+            {
+                dstV = std::move(*src);
+                src->~T();
+                ++src;
+            }
+        }
+
+        _size -= dst.size;
     }
 
     template <typename T>
@@ -816,15 +924,9 @@ namespace qc
     template <typename T>
     inline void List<T>::_expand(const u32 minNewCapacity, const u32 gapI, const u32 gapN)
     {
-        u64 newCapacity{max(u64(minNewCapacity), u64(_capacity) * 2u, u64(_autoInitCapacity))};
+        assert(minNewCapacity <= _maxCapacity);
 
-        // If new capacity is within 50% of max capacity, just expand up to max capacity
-        if (newCapacity + newCapacity / 2u >= _maxCapacity)
-        {
-            newCapacity = _maxCapacity;
-        }
-
-        _newMemory(u32(newCapacity), gapI, gapN);
+        _newMemory(max(std::bit_ceil(minNewCapacity), 2u), gapI, gapN);
     }
 
     template <typename T>
@@ -878,7 +980,7 @@ namespace qc
     template <typename T>
     inline void List<T>::_shift(T * & pos)
     {
-        if (_size == _capacity) [[unlikely]]
+        if (_size >= _capacity) [[unlikely]]
         {
             const u32 i{u32(pos - _data)};
             _expand(_size + 1u, i, 1u);
