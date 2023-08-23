@@ -106,6 +106,6 @@ namespace qc::memory
 
       private:
 
-        u64 _listI{};
+        u32 _listI{};
     };
 }
