@@ -5,5 +5,8 @@
 #define UNICODE
 #define _UNICODE
 #include <windows.h>
+#include <windowsx.h>
+#include <shellapi.h>
+#include <dwmapi.h>
 #undef near
 #undef far
