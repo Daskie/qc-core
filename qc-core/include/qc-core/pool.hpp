@@ -55,11 +55,11 @@ namespace qc
 
             nodisc Pool & pool();
 
-            nodisc forceinline _Chunk * bubbleHead() { return this - bubble.headTailOffset; }
-            nodisc forceinline _Chunk * bubbleTail() { return this + bubble.headTailOffset; }
+            nodisc finline _Chunk * bubbleHead() { return this - bubble.headTailOffset; }
+            nodisc finline _Chunk * bubbleTail() { return this + bubble.headTailOffset; }
 
-            nodisc forceinline _Chunk * prevBubble() { return this + bubble.prevOffset; }
-            nodisc forceinline _Chunk * nextBubble() { return this + bubble.nextOffset; }
+            nodisc finline _Chunk * prevBubble() { return this + bubble.prevOffset; }
+            nodisc finline _Chunk * nextBubble() { return this + bubble.nextOffset; }
         };
 
       public:
@@ -85,28 +85,28 @@ namespace qc
 
             UnqT(const UnqT &) = delete;
             UnqT(UnqT && other);
-            forceinline UnqT(UnqT<false> && other) requires (constant) : UnqT{reinterpret_cast<UnqT &&>(other)} {}
+            finline UnqT(UnqT<false> && other) requires (constant) : UnqT{reinterpret_cast<UnqT &&>(other)} {}
 
             UnqT & operator=(const UnqT &) = delete;
             UnqT & operator=(UnqT && other);
-            forceinline UnqT & operator=(UnqT<false> && other) requires constant { return *this = reinterpret_cast<UnqT &&>(other); }
+            finline UnqT & operator=(UnqT<false> && other) requires constant { return *this = reinterpret_cast<UnqT &&>(other); }
 
             ~UnqT();
 
-            nodisc forceinline operator UnqT<true> &() & requires (!constant) { return reinterpret_cast<UnqT<true> &>(*this); }
-            nodisc forceinline operator const UnqT<true> &() const & requires (!constant) { return reinterpret_cast<const UnqT<true> &>(*this); }
+            nodisc finline operator UnqT<true> &() & requires (!constant) { return reinterpret_cast<UnqT<true> &>(*this); }
+            nodisc finline operator const UnqT<true> &() const & requires (!constant) { return reinterpret_cast<const UnqT<true> &>(*this); }
 
             void reset();
 
-            nodisc forceinline explicit operator bool() const { return bool(_chunk); }
+            nodisc finline explicit operator bool() const { return bool(_chunk); }
 
-            nodisc forceinline _T & operator*() const { return _chunk->val; }
+            nodisc finline _T & operator*() const { return _chunk->val; }
 
-            nodisc forceinline _T * operator->() const { return &_chunk->val; }
+            nodisc finline _T * operator->() const { return &_chunk->val; }
 
             bool operator==(const UnqT &) const = default;
-            nodisc forceinline friend bool operator==(const UnqT & a, const T * b) { return &a._chunk->val == b; }
-            nodisc forceinline friend bool operator==(const T * a, const UnqT & b) { return a == &b._chunk->val; }
+            nodisc finline friend bool operator==(const UnqT & a, const T * b) { return &a._chunk->val == b; }
+            nodisc finline friend bool operator==(const T * a, const UnqT & b) { return a == &b._chunk->val; }
 
           private:
 
@@ -131,28 +131,28 @@ namespace qc
 
             ShrT(const ShrT & other);
             ShrT(ShrT && other);
-            forceinline ShrT(ShrT<false> && other) requires (constant) : ShrT{reinterpret_cast<ShrT &&>(other)} {}
+            finline ShrT(ShrT<false> && other) requires (constant) : ShrT{reinterpret_cast<ShrT &&>(other)} {}
 
             ShrT & operator=(const ShrT & other);
             ShrT & operator=(ShrT && other);
-            forceinline ShrT & operator=(ShrT<false> && other) requires constant { return *this = reinterpret_cast<ShrT &&>(other); }
+            finline ShrT & operator=(ShrT<false> && other) requires constant { return *this = reinterpret_cast<ShrT &&>(other); }
 
             ~ShrT();
 
-            nodisc forceinline operator ShrT<true> &() & requires (!constant) { return reinterpret_cast<ShrT<true> &>(*this); }
-            nodisc forceinline operator const ShrT<true> &() const & requires (!constant) { return reinterpret_cast<const ShrT<true> &>(*this); }
+            nodisc finline operator ShrT<true> &() & requires (!constant) { return reinterpret_cast<ShrT<true> &>(*this); }
+            nodisc finline operator const ShrT<true> &() const & requires (!constant) { return reinterpret_cast<const ShrT<true> &>(*this); }
 
             void reset();
 
-            nodisc forceinline explicit operator bool() const { return bool(_chunk); }
+            nodisc finline explicit operator bool() const { return bool(_chunk); }
 
-            nodisc forceinline _T & operator*() const { return _chunk->val; }
+            nodisc finline _T & operator*() const { return _chunk->val; }
 
-            nodisc forceinline _T * operator->() const { return &_chunk->val; }
+            nodisc finline _T * operator->() const { return &_chunk->val; }
 
             bool operator==(const ShrT &) const = default;
-            nodisc forceinline friend bool operator==(const ShrT & a, const T * b) { return &a._chunk->val == b; }
-            nodisc forceinline friend bool operator==(const T * a, const ShrT & b) { return a == &b._chunk->val; }
+            nodisc finline friend bool operator==(const ShrT & a, const T * b) { return &a._chunk->val == b; }
+            nodisc finline friend bool operator==(const T * a, const ShrT & b) { return a == &b._chunk->val; }
 
           private:
 
@@ -275,7 +275,7 @@ namespace qc
 namespace qc
 {
     template <typename T>
-    forceinline Pool<T> & Pool<T>::_Chunk::pool()
+    finline Pool<T> & Pool<T>::_Chunk::pool()
     {
         const u64 startOfPageAddr{std::bit_cast<u64>(this) & ~u64(pageSize - 1u)};
         const u64 firstPageAddr{startOfPageAddr - this->pageI * pageSize};
@@ -284,7 +284,7 @@ namespace qc
 
     template <typename T>
     template <bool constant>
-    forceinline Pool<T>::UnqT<constant>::UnqT(_Chunk * const chunk) :
+    finline Pool<T>::UnqT<constant>::UnqT(_Chunk * const chunk) :
         _chunk{chunk}
     {
         assert(!_chunk->refN);
@@ -294,7 +294,7 @@ namespace qc
 
     template <typename T>
     template <bool constant>
-    forceinline Pool<T>::UnqT<constant>::UnqT(UnqT && other) :
+    finline Pool<T>::UnqT<constant>::UnqT(UnqT && other) :
         _chunk{other._chunk}
     {
         other._chunk = nullptr;
@@ -319,7 +319,7 @@ namespace qc
 
     template <typename T>
     template <bool constant>
-    forceinline Pool<T>::UnqT<constant>::~UnqT()
+    finline Pool<T>::UnqT<constant>::~UnqT()
     {
         reset();
     }
@@ -339,7 +339,7 @@ namespace qc
 
     template <typename T>
     template <bool constant>
-    forceinline Pool<T>::ShrT<constant>::ShrT(_Chunk * const chunk) :
+    finline Pool<T>::ShrT<constant>::ShrT(_Chunk * const chunk) :
         _chunk{chunk}
     {
         ++_chunk->refN;
@@ -347,7 +347,7 @@ namespace qc
 
     template <typename T>
     template <bool constant>
-    forceinline Pool<T>::ShrT<constant>::ShrT(const ShrT & other) :
+    finline Pool<T>::ShrT<constant>::ShrT(const ShrT & other) :
         _chunk{other._chunk}
     {
         if (_chunk)
@@ -358,7 +358,7 @@ namespace qc
 
     template <typename T>
     template <bool constant>
-    forceinline Pool<T>::ShrT<constant>::ShrT(ShrT && other) :
+    finline Pool<T>::ShrT<constant>::ShrT(ShrT && other) :
         _chunk{other._chunk}
     {
         other._chunk = nullptr;
@@ -404,7 +404,7 @@ namespace qc
 
     template <typename T>
     template <bool constant>
-    forceinline Pool<T>::ShrT<constant>::~ShrT()
+    finline Pool<T>::ShrT<constant>::~ShrT()
     {
         reset();
     }
@@ -616,7 +616,7 @@ namespace qc
     }
 
     template <typename T>
-    forceinline auto Pool<T>::shrOf(T * const ptr) -> Shr
+    finline auto Pool<T>::shrOf(T * const ptr) -> Shr
     {
         if (!ptr)
         {

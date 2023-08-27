@@ -12,20 +12,20 @@ namespace qc
         T * data{};
         u32 size{};
 
-        forceinline View() = default;
+        finline View() = default;
 
-        forceinline View(T * const data_, const u32 size_) : data{data_}, size{size_} { assert(data_ || !size_); }
+        finline View(T * const data_, const u32 size_) : data{data_}, size{size_} { assert(data_ || !size_); }
 
-        forceinline View(T * const first, T * const last) : data{first}, size{u32(last - first)} { assert(u64(last - first) <= std::numeric_limits<u32>::max()); }
+        finline View(T * const first, T * const last) : data{first}, size{u32(last - first)} { assert(u64(last - first) <= std::numeric_limits<u32>::max()); }
 
-        template <u64 n> forceinline View(T (&arr)[n]) : data{arr}, size{n} {}
+        template <u64 n> finline View(T (&arr)[n]) : data{arr}, size{n} {}
 
-        forceinline View(const View & other) = default;
-        forceinline View(const View<std::remove_const_t<T>> & other) requires std::is_const_v<T> : data{other.data}, size{other.size} {}
+        finline View(const View & other) = default;
+        finline View(const View<std::remove_const_t<T>> & other) requires std::is_const_v<T> : data{other.data}, size{other.size} {}
 
-        forceinline View & operator=(const View &) = default;
+        finline View & operator=(const View &) = default;
 
-        nodisc forceinline explicit operator bool() const { return size; }
+        nodisc finline explicit operator bool() const { return size; }
 
         nodisc View view(const u32 offset) const { assert(offset <= size); return {data + offset, size - offset}; }
         nodisc View view(const u32 offset, const u32 n) const { assert(offset + n <= size); return {data + offset, n}; }
@@ -34,19 +34,19 @@ namespace qc
 
         nodisc View viewLast(const u32 n) const { assert(n <= size); return {data + size - n, n}; }
 
-        nodisc forceinline View<const std::byte> bytes() const { return {reinterpret_cast<const std::byte *>(data), size * u32(sizeof(T))}; }
+        nodisc finline View<const std::byte> bytes() const { return {reinterpret_cast<const std::byte *>(data), size * u32(sizeof(T))}; }
 
-        nodisc forceinline T & operator[](const u32 i) const { assert(i < size); return data[i]; }
+        nodisc finline T & operator[](const u32 i) const { assert(i < size); return data[i]; }
 
-        nodisc forceinline T & front() const { return *data; }
+        nodisc finline T & front() const { return *data; }
 
-        nodisc forceinline T & back() const { return data[size - 1u]; }
+        nodisc finline T & back() const { return data[size - 1u]; }
 
-        nodisc forceinline T * begin() const { return data; }
+        nodisc finline T * begin() const { return data; }
 
-        nodisc forceinline T * end() const { return data + size; }
+        nodisc finline T * end() const { return data + size; }
 
-        nodisc forceinline bool operator==(const View &) const = default;
+        nodisc finline bool operator==(const View &) const = default;
     };
 
     template <typename T> using CView = View<const T>;

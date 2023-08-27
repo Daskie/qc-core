@@ -73,60 +73,60 @@ namespace qc
 
 namespace qc
 {
-    forceinline s64 now()
+    finline s64 now()
     {
         return std::chrono::nanoseconds(std::chrono::steady_clock::now().time_since_epoch()).count();
     }
 
-    forceinline Clock::Clock(const double frequency) :
+    finline Clock::Clock(const double frequency) :
         _start(),
         _period(1.0 / frequency),
         _frequency(frequency)
     {}
 
-    forceinline void Clock::restart()
+    finline void Clock::restart()
     {
         _start = std::chrono::steady_clock::now();
     }
 
-    forceinline void Clock::restart(const s64 t)
+    finline void Clock::restart(const s64 t)
     {
         _start = std::chrono::steady_clock::time_point(std::chrono::nanoseconds(t));
     }
 
-    forceinline double Clock::age() const
+    finline double Clock::age() const
     {
         return std::chrono::duration<double>(std::chrono::steady_clock::now() - _start).count() * _frequency;
     }
 
-    forceinline u64 Clock::cycles() const
+    finline u64 Clock::cycles() const
     {
         return u64(age());
     }
 
-    forceinline double Clock::time() const
+    finline double Clock::time() const
     {
         const double a(age());
         return a - double(s64(a));
     }
 
-    forceinline double Clock::period() const
+    finline double Clock::period() const
     {
         return _period;
     }
 
-    forceinline void Clock::period(const double period)
+    finline void Clock::period(const double period)
     {
         _period = period;
         _frequency = 1.0 / period;
     }
 
-    forceinline double Clock::frequency() const
+    finline double Clock::frequency() const
     {
         return _frequency;
     }
 
-    forceinline void Clock::frequency(const double frequency)
+    finline void Clock::frequency(const double frequency)
     {
         _frequency = frequency;
         _period = 1.0 / frequency;

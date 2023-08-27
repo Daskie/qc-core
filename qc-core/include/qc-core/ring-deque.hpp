@@ -39,7 +39,7 @@ namespace qc
 
         ~RingDeque();
 
-        nodisc forceinline explicit operator bool() const { return _size; }
+        nodisc finline explicit operator bool() const { return _size; }
 
         void reserve(u64 capacity);
 
@@ -78,11 +78,11 @@ namespace qc
 
         nodisc iterator begin();
         nodisc const_iterator begin() const;
-        nodisc forceinline const_iterator cbegin() const { return begin(); }
+        nodisc finline const_iterator cbegin() const { return begin(); }
 
         nodisc iterator end();
         nodisc const_iterator end() const;
-        nodisc forceinline const_iterator cend() const { return end(); }
+        nodisc finline const_iterator cend() const { return end(); }
 
       private:
 

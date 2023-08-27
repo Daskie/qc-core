@@ -35,6 +35,8 @@ TEST(Result, defaultConstructor)
 TEST(Result, destruction)
 {
     static thread_local bool destructed;
+
+    MSVC_WARNING_SUPPRESS(5267)
     struct Dummy { ~Dummy() { destructed = true; } };
 
     destructed = false;

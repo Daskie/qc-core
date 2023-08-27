@@ -89,17 +89,17 @@ namespace qc
 
 namespace qc
 {
-    forceinline void Lock::lock()
+    finline void Lock::lock()
     {
         _semaphore.acquire();
     }
 
-    forceinline bool Lock::tryLock()
+    finline bool Lock::tryLock()
     {
         return _semaphore.try_acquire();
     }
 
-    forceinline void Lock::unlock()
+    finline void Lock::unlock()
     {
         _semaphore.release();
     }
@@ -119,27 +119,27 @@ namespace qc
         }
     }
 
-    forceinline bool SpinLock::tryLock()
+    finline bool SpinLock::tryLock()
     {
         // First do a relaxed load to check if lock is free in order to prevent
         //   unnecessary cache misses if someone does while (!try_lock())
         return !_flag.test(std::memory_order_relaxed) && !_flag.test_and_set(std::memory_order_acquire);
     }
 
-    forceinline void SpinLock::unlock()
+    finline void SpinLock::unlock()
     {
         _flag.clear(std::memory_order_release);
     }
 
     template <typename L>
-    forceinline LockGuardT<L>::LockGuardT(L & lock) :
+    finline LockGuardT<L>::LockGuardT(L & lock) :
         _lock{lock}
     {
         _lock.lock();
     }
 
     template <typename L>
-    forceinline LockGuardT<L>::~LockGuardT()
+    finline LockGuardT<L>::~LockGuardT()
     {
         _lock.unlock();
     }

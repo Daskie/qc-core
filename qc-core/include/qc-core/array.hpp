@@ -26,33 +26,33 @@ namespace qc
         Array & operator=(const Array &) = default;
         Array & operator=(Array &&) = default;
 
-        nodisc forceinline operator View<T>() { return {data, n}; }
-        nodisc forceinline operator CView<T>() const { return {data, n}; }
+        nodisc finline operator View<T>() { return {data, n}; }
+        nodisc finline operator CView<T>() const { return {data, n}; }
 
         constexpr void fill(const T & v);
 
         /// Necessary to enable structured bindings
-        template <u32 i> requires (i < n) nodisc forceinline constexpr       T &  get()       &  { return data[i]; }
-        template <u32 i> requires (i < n) nodisc forceinline constexpr const T &  get() const &  { return data[i]; }
-        template <u32 i> requires (i < n) nodisc forceinline constexpr       T && get()       && { return std::move(data[i]); }
-        template <u32 i> requires (i < n) nodisc forceinline constexpr const T && get() const && { return std::move(data[i]); }
+        template <u32 i> requires (i < n) nodisc finline constexpr       T &  get()       &  { return data[i]; }
+        template <u32 i> requires (i < n) nodisc finline constexpr const T &  get() const &  { return data[i]; }
+        template <u32 i> requires (i < n) nodisc finline constexpr       T && get()       && { return std::move(data[i]); }
+        template <u32 i> requires (i < n) nodisc finline constexpr const T && get() const && { return std::move(data[i]); }
 
-        nodisc forceinline constexpr T & operator[](const u32 i) { assert(i < n); return data[i]; }
-        nodisc forceinline constexpr const T & operator[](const u32 i) const { assert(i < n); return data[i]; }
+        nodisc finline constexpr T & operator[](const u32 i) { assert(i < n); return data[i]; }
+        nodisc finline constexpr const T & operator[](const u32 i) const { assert(i < n); return data[i]; }
 
-        nodisc forceinline constexpr T & front() { return *data; }
-        nodisc forceinline constexpr const T & front() const { return *data; }
+        nodisc finline constexpr T & front() { return *data; }
+        nodisc finline constexpr const T & front() const { return *data; }
 
-        nodisc forceinline constexpr T & back() { return data[n - 1u]; }
-        nodisc forceinline constexpr const T & back() const { return data[n - 1u]; }
+        nodisc finline constexpr T & back() { return data[n - 1u]; }
+        nodisc finline constexpr const T & back() const { return data[n - 1u]; }
 
-        nodisc forceinline constexpr T * begin() { return data; }
-        nodisc forceinline constexpr const T * begin() const { return data; }
-        nodisc forceinline constexpr const T * cbegin() const { return data; }
+        nodisc finline constexpr T * begin() { return data; }
+        nodisc finline constexpr const T * begin() const { return data; }
+        nodisc finline constexpr const T * cbegin() const { return data; }
 
-        nodisc forceinline constexpr T * end() { return data + n; }
-        nodisc forceinline constexpr const T * end() const { return data + n; }
-        nodisc forceinline constexpr const T * cend() const { return data + n; }
+        nodisc finline constexpr T * end() { return data + n; }
+        nodisc finline constexpr const T * end() const { return data + n; }
+        nodisc finline constexpr const T * cend() const { return data + n; }
 
         nodisc constexpr bool operator==(const Array &) const = default;
     };

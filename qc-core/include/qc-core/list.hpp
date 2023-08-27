@@ -76,10 +76,10 @@ namespace qc
 
         ~List();
 
-        nodisc forceinline explicit operator bool() const { return _size; }
+        nodisc finline explicit operator bool() const { return _size; }
 
-        nodisc forceinline operator View<T>() { return {_data, _size}; }
-        nodisc forceinline operator CView<T>() const { return {_data, _size}; }
+        nodisc finline operator View<T>() { return {_data, _size}; }
+        nodisc finline operator CView<T>() const { return {_data, _size}; }
 
         void assign(u32 n, const T & v);
         template <typename It> void assign(It first, It last);
@@ -137,44 +137,44 @@ namespace qc
 
         template <typename Pred> u32 countIf(Pred && pred) const;
 
-        nodisc forceinline bool contains(const T & v) const { return count(v); }
+        nodisc finline bool contains(const T & v) const { return count(v); }
 
         template <typename Pred> bool containsIf(Pred && pred) const;
 
         nodisc T & operator[](const u32 i);
         nodisc const T & operator[](const u32 i) const;
 
-        nodisc forceinline T & front() { return *_data; }
-        nodisc forceinline const T & front() const { return *_data; }
+        nodisc finline T & front() { return *_data; }
+        nodisc finline const T & front() const { return *_data; }
 
-        nodisc forceinline T & back() { return _data[_size - 1u]; }
-        nodisc forceinline const T & back() const { return _data[_size - 1u]; }
+        nodisc finline T & back() { return _data[_size - 1u]; }
+        nodisc finline const T & back() const { return _data[_size - 1u]; }
 
-        nodisc forceinline u32 capacity() const { return _capacity; }
+        nodisc finline u32 capacity() const { return _capacity; }
 
-        nodisc forceinline u32 size() const { return _size; };
+        nodisc finline u32 size() const { return _size; };
 
-        nodisc forceinline bool empty() const { return !_size; }
+        nodisc finline bool empty() const { return !_size; }
 
-        nodisc forceinline T * data() { return _data; }
-        nodisc forceinline const T * data() const { return _data; }
+        nodisc finline T * data() { return _data; }
+        nodisc finline const T * data() const { return _data; }
 
-        nodisc forceinline View<T> view() { return {_data, _size}; }
-        nodisc forceinline CView<T> view() const { return {_data, _size}; }
-        nodisc forceinline CView<T> cview() const { return view(); }
-        nodisc forceinline View<T> view(const u32 i, const u32 n) { return {_data + i, n}; }
-        nodisc forceinline CView<T> view(const u32 i, const u32 n) const { return {_data + i, n}; }
-        nodisc forceinline CView<T> cview(const u32 i, const u32 n) const { return view(i, n); }
+        nodisc finline View<T> view() { return {_data, _size}; }
+        nodisc finline CView<T> view() const { return {_data, _size}; }
+        nodisc finline CView<T> cview() const { return view(); }
+        nodisc finline View<T> view(const u32 i, const u32 n) { return {_data + i, n}; }
+        nodisc finline CView<T> view(const u32 i, const u32 n) const { return {_data + i, n}; }
+        nodisc finline CView<T> cview(const u32 i, const u32 n) const { return view(i, n); }
 
-        nodisc forceinline T * begin() { return _data; }
-        nodisc forceinline const T * begin() const { return _data; }
-        nodisc forceinline const T * cbegin() const { return _data; }
+        nodisc finline T * begin() { return _data; }
+        nodisc finline const T * begin() const { return _data; }
+        nodisc finline const T * cbegin() const { return _data; }
 
-        nodisc forceinline T * end() { return _data + _size; }
-        nodisc forceinline const T * end() const { return _data + _size; }
-        nodisc forceinline const T * cend() const { return _data + _size; }
+        nodisc finline T * end() { return _data + _size; }
+        nodisc finline const T * end() const { return _data + _size; }
+        nodisc finline const T * cend() const { return _data + _size; }
 
-        nodisc forceinline PushIterator<T> pushIterator() { return PushIterator<T>{*this}; }
+        nodisc finline PushIterator<T> pushIterator() { return PushIterator<T>{*this}; }
 
         nodisc bool operator==(const List & other) const;
         nodisc bool operator==(std::initializer_list<T> vs) const;
@@ -203,7 +203,7 @@ namespace qc
 namespace qc
 {
     template <typename T>
-    forceinline PushIterator<T> & PushIterator<T>::operator=(const T & v)
+    finline PushIterator<T> & PushIterator<T>::operator=(const T & v)
     {
         _list->push(v);
 
@@ -211,7 +211,7 @@ namespace qc
     }
 
     template <typename T>
-    forceinline PushIterator<T> & PushIterator<T>::operator=(T && v)
+    finline PushIterator<T> & PushIterator<T>::operator=(T && v)
     {
         _list->push(std::move(v));
 
@@ -219,38 +219,38 @@ namespace qc
     }
 
     template <typename T>
-    forceinline List<T>::List(const u32 n)
+    finline List<T>::List(const u32 n)
     {
         resize(n);
     }
 
     template <typename T>
-    forceinline List<T>::List(const u32 n, const T & v)
+    finline List<T>::List(const u32 n, const T & v)
     {
         assign(n, v);
     }
 
     template <typename T>
     template <typename It>
-    forceinline List<T>::List(const It first, const It last)
+    finline List<T>::List(const It first, const It last)
     {
         assign(first, last);
     }
 
     template <typename T>
-    forceinline List<T>::List(const std::initializer_list<T> vs)
+    finline List<T>::List(const std::initializer_list<T> vs)
     {
         *this = vs;
     }
 
     template <typename T>
-    forceinline List<T>::List(const CView<T> vs)
+    finline List<T>::List(const CView<T> vs)
     {
         *this = vs;
     }
 
     template <typename T>
-    forceinline List<T>::List(List && other) :
+    finline List<T>::List(List && other) :
         _capacity{other._capacity},
         _size{other._size},
         _data{other._data}
@@ -261,7 +261,7 @@ namespace qc
     }
 
     template <typename T>
-    forceinline List<T> & List<T>::operator=(List<T> && other)
+    finline List<T> & List<T>::operator=(List<T> && other)
     {
         _capacity = other._capacity;
         _size = other._size;
@@ -275,7 +275,7 @@ namespace qc
     }
 
     template <typename T>
-    forceinline List<T> & List<T>::operator=(const std::initializer_list<T> vs)
+    finline List<T> & List<T>::operator=(const std::initializer_list<T> vs)
     {
         return *this = CView<T>{std::data(vs), assertCast<u32>(vs.size())};
     }
@@ -322,7 +322,7 @@ namespace qc
     }
 
     template <typename T>
-    forceinline void List<T>::assign(const u32 n, const T & v)
+    finline void List<T>::assign(const u32 n, const T & v)
     {
         clear();
 
@@ -359,7 +359,7 @@ namespace qc
     }
 
     template <typename T>
-    forceinline void List<T>::reserve(const u32 capacity)
+    finline void List<T>::reserve(const u32 capacity)
     {
         if (capacity > _capacity)
         {
@@ -426,7 +426,7 @@ namespace qc
     }
 
     template <typename T>
-    forceinline T & List<T>::push(const T & v)
+    finline T & List<T>::push(const T & v)
     {
         static_assert(std::is_copy_constructible_v<T>);
 
@@ -434,7 +434,7 @@ namespace qc
     }
 
     template <typename T>
-    forceinline T & List<T>::push(T && v)
+    finline T & List<T>::push(T && v)
     {
         return empush(std::move(v));
     }
@@ -480,7 +480,7 @@ namespace qc
     }
 
     template <typename T>
-    forceinline View<T> List<T>::push(const std::initializer_list<T> vs)
+    finline View<T> List<T>::push(const std::initializer_list<T> vs)
     {
         return push(CView<T>{std::data(vs), assertCast<u32>(vs.size())});
     }
@@ -565,7 +565,7 @@ namespace qc
     }
 
     template <typename T>
-    forceinline T * List<T>::insert(T * const pos, const T & v)
+    finline T * List<T>::insert(T * const pos, const T & v)
     {
         static_assert(std::is_copy_constructible_v<T>);
 
@@ -573,7 +573,7 @@ namespace qc
     }
 
     template <typename T>
-    forceinline T * List<T>::insert(T * const pos, T && v)
+    finline T * List<T>::insert(T * const pos, T && v)
     {
         return emplace(pos, std::move(v));
     }
@@ -619,7 +619,7 @@ namespace qc
     }
 
     template <typename T>
-    forceinline View<T> List<T>::insert(T * const pos, const std::initializer_list<T> vs)
+    finline View<T> List<T>::insert(T * const pos, const std::initializer_list<T> vs)
     {
         return insert(pos, CView<T>{std::data(vs), assertCast<u32>(vs.size())});
     }
@@ -661,7 +661,7 @@ namespace qc
     }
 
     template <typename T>
-    forceinline void List<T>::pop()
+    finline void List<T>::pop()
     {
         assert(_size);
 
@@ -669,7 +669,7 @@ namespace qc
     }
 
     template <typename T>
-    forceinline void List<T>::pop(T & dst)
+    finline void List<T>::pop(T & dst)
     {
         assert(_size);
 
@@ -718,7 +718,7 @@ namespace qc
     }
 
     template <typename T>
-    forceinline T * List<T>::erase(T * const pos)
+    finline T * List<T>::erase(T * const pos)
     {
         return erase(pos, pos + 1);
     }
@@ -764,7 +764,7 @@ namespace qc
     }
 
     template <typename T>
-    forceinline u32 List<T>::erase(const T & v)
+    finline u32 List<T>::erase(const T & v)
     {
         return eraseIf([&v](const T & a) { return a == v; });
     }
@@ -796,20 +796,20 @@ namespace qc
     }
 
     template <typename T>
-    forceinline T * List<T>::find(const T & v)
+    finline T * List<T>::find(const T & v)
     {
         return const_cast<T *>(static_cast<const List &>(*this).find(v));
     }
 
     template <typename T>
-    forceinline const T * List<T>::find(const T & v) const
+    finline const T * List<T>::find(const T & v) const
     {
         return findIf([&v](const T & a) { return a == v; });
     }
 
     template <typename T>
     template <typename Pred>
-    forceinline T * List<T>::findIf(Pred && pred)
+    finline T * List<T>::findIf(Pred && pred)
     {
         return const_cast<T *>(static_cast<const List &>(*this).findIf(std::forward<Pred>(pred)));
     }
@@ -830,7 +830,7 @@ namespace qc
     }
 
     template <typename T>
-    forceinline u32 List<T>::count(const T & v) const
+    finline u32 List<T>::count(const T & v) const
     {
         return countIf([&v](const T & a) { return a == v; });
     }
@@ -851,13 +851,13 @@ namespace qc
 
     template <typename T>
     template <typename Pred>
-    forceinline bool List<T>::containsIf(Pred && pred) const
+    finline bool List<T>::containsIf(Pred && pred) const
     {
         return countIf(std::forward<Pred>(pred));
     }
 
     template <typename T>
-    forceinline T & List<T>::operator[](const u32 i)
+    finline T & List<T>::operator[](const u32 i)
     {
         assert(i < _size);
 
@@ -865,7 +865,7 @@ namespace qc
     }
 
     template <typename T>
-    forceinline const T & List<T>::operator[](const u32 i) const
+    finline const T & List<T>::operator[](const u32 i) const
     {
         assert(i < _size);
 

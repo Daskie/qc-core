@@ -24,7 +24,7 @@ namespace qc
 namespace qc
 {
     template <Numeric R, Numeric T, u32 n>
-    forceinline span<R, n> round(const span<T, n> & s)
+    finline span<R, n> round(const span<T, n> & s)
     {
         if constexpr (Integral<T>)
         {

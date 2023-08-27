@@ -385,65 +385,65 @@ namespace qc
 {
 
     template <typename T>
-    forceinline constexpr span<T *, 1>::span(T * const v1, T * const v2) :
+    finline constexpr span<T *, 1>::span(T * const v1, T * const v2) :
         min{v1},
         max{v2}
     {}
 
     template <typename T>
-    forceinline constexpr span<T *, 1>::span(std::remove_const_t<T> * const v1, std::remove_const_t<T> * const v2) requires (std::is_const_v<T>) :
+    finline constexpr span<T *, 1>::span(std::remove_const_t<T> * const v1, std::remove_const_t<T> * const v2) requires (std::is_const_v<T>) :
         min{v1},
         max{v2}
     {}
 
     template <typename T>
-    forceinline constexpr span<T *, 1>::span(const span<std::remove_const_t<T> *, n> & s) requires (std::is_const_v<T>) :
+    finline constexpr span<T *, 1>::span(const span<std::remove_const_t<T> *, n> & s) requires (std::is_const_v<T>) :
         min{s.min},
         max{s.max}
     {}
 
     template <typename T>
-    forceinline constexpr span<T *, 1>::operator bool() const
+    finline constexpr span<T *, 1>::operator bool() const
     {
         return bool(min) || bool(max);
     }
 
     template <typename T>
-    forceinline constexpr auto span<T *, 1>::size() const
+    finline constexpr auto span<T *, 1>::size() const
     {
         return max - min;
     }
 
     template <typename T>
-    forceinline constexpr bool span<T *, 1>::contains(const T * const v) const
+    finline constexpr bool span<T *, 1>::contains(const T * const v) const
     {
         return v >= min && v < max;
     }
 
     template <Numeric T>
     template <InclusiveSubOf<T> U1, InclusiveSubOf<T> U2>
-    forceinline constexpr span<T, 1>::span(const U1 v1, const U2 v2) :
+    finline constexpr span<T, 1>::span(const U1 v1, const U2 v2) :
         min{v1},
         max{v2}
     {}
 
     template <Numeric T>
     template <ExclusiveSubOf<T> U>
-    forceinline constexpr span<T, 1>::span(const span1<U> & s) :
+    finline constexpr span<T, 1>::span(const span1<U> & s) :
         min{s.min},
         max{s.max}
     {}
 
     template <Numeric T>
     template <Numeric U> requires (!InclusiveSubOf<U, T>)
-    forceinline constexpr span<T, 1>::span(const span1<U> & s) :
+    finline constexpr span<T, 1>::span(const span1<U> & s) :
         min{T(s.min)},
         max{T(s.max)}
     {}
 
     template <Numeric T>
     template <ExclusiveSubOf<T> U>
-    forceinline span1<T> & span<T, 1>::operator=(const span1<U> & s)
+    finline span1<T> & span<T, 1>::operator=(const span1<U> & s)
     {
         min = s.min;
         max = s.max;
@@ -451,19 +451,19 @@ namespace qc
     }
 
     template <Numeric T>
-    forceinline constexpr span<T, 1>::operator bool() const
+    finline constexpr span<T, 1>::operator bool() const
     {
         return bool(min) || bool(max);
     }
 
     template <Numeric T>
-    forceinline constexpr auto span<T, 1>::size() const
+    finline constexpr auto span<T, 1>::size() const
     {
         return max - min;
     }
 
     template <Numeric T>
-    forceinline constexpr bool span<T, 1>::contains(const T v) const
+    finline constexpr bool span<T, 1>::contains(const T v) const
     {
         if constexpr (Integral<T>)
         {
@@ -477,56 +477,56 @@ namespace qc
 
     template <Numeric T>
     template <InclusiveSubOf<T> U1, InclusiveSubOf<T> U2>
-    forceinline constexpr span<T, 2>::span(const U1 v1, const U2 v2) :
+    finline constexpr span<T, 2>::span(const U1 v1, const U2 v2) :
         min{v1},
         max{v2}
     {}
 
     template <Numeric T>
     template <InclusiveSubOf<T> U1, InclusiveSubOf<T> U2>
-    forceinline constexpr span<T, 2>::span(const vec2<U1> & v1, const U2 v2) :
+    finline constexpr span<T, 2>::span(const vec2<U1> & v1, const U2 v2) :
         min{v1},
         max{v2}
     {}
 
     template <Numeric T>
     template <InclusiveSubOf<T> U1, InclusiveSubOf<T> U2>
-    forceinline constexpr span<T, 2>::span(const U1 v1, const vec2<U2> & v2) :
+    finline constexpr span<T, 2>::span(const U1 v1, const vec2<U2> & v2) :
         min{v1},
         max{v2}
     {}
 
     template <Numeric T>
     template <InclusiveSubOf<T> U1, InclusiveSubOf<T> U2>
-    forceinline constexpr span<T, 2>::span(const vec2<U1> & v1, const vec2<U2> & v2) :
+    finline constexpr span<T, 2>::span(const vec2<U1> & v1, const vec2<U2> & v2) :
         min{v1},
         max{v2}
     {}
 
     template <Numeric T>
     template <InclusiveSubOf<T> U1, InclusiveSubOf<T> U2>
-    forceinline constexpr span<T, 2>::span(const span1<U1> & s1, const span1<U2> & s2) :
+    finline constexpr span<T, 2>::span(const span1<U1> & s1, const span1<U2> & s2) :
         min{s1.min, s2.min},
         max{s1.max, s2.max}
     {}
 
     template <Numeric T>
     template <ExclusiveSubOf<T> U>
-    forceinline constexpr span<T, 2>::span(const span2<U> & s) :
+    finline constexpr span<T, 2>::span(const span2<U> & s) :
         min{s.min},
         max{s.max}
     {}
 
     template <Numeric T>
     template <Numeric U> requires (!InclusiveSubOf<U, T>)
-    forceinline constexpr span<T, 2>::span(const span2<U> & s) :
+    finline constexpr span<T, 2>::span(const span2<U> & s) :
         min{s.min},
         max{s.max}
     {}
 
     template <Numeric T>
     template <ExclusiveSubOf<T> U>
-    forceinline span2<T> & span<T, 2>::operator=(const span2<U> & s)
+    finline span2<T> & span<T, 2>::operator=(const span2<U> & s)
     {
         min = s.min;
         max = s.max;
@@ -534,13 +534,13 @@ namespace qc
     }
 
     template <Numeric T>
-    forceinline constexpr span<T, 2>::operator bool() const
+    finline constexpr span<T, 2>::operator bool() const
     {
         return bool(min) || bool(max);
     }
 
     template <Numeric T>
-    forceinline constexpr vec2<T> span<T, 2>::size() const
+    finline constexpr vec2<T> span<T, 2>::size() const
     {
         return max - min;
     }
@@ -561,83 +561,83 @@ namespace qc
     }
 
     template <Numeric T>
-    forceinline constexpr span1<T> span<T, 2>::x() const
+    finline constexpr span1<T> span<T, 2>::x() const
     {
         return {min.x, max.x};
     }
 
     template <Numeric T>
-    forceinline constexpr span1<T> span<T, 2>::y() const
+    finline constexpr span1<T> span<T, 2>::y() const
     {
         return {min.y, max.y};
     }
 
     template <Numeric T>
     template <InclusiveSubOf<T> U1, InclusiveSubOf<T> U2>
-    forceinline constexpr span<T, 3>::span(const U1 v1, const U2 v2) :
+    finline constexpr span<T, 3>::span(const U1 v1, const U2 v2) :
         min{v1},
         max{v2}
     {}
 
     template <Numeric T>
     template <InclusiveSubOf<T> U1, InclusiveSubOf<T> U2>
-    forceinline constexpr span<T, 3>::span(const vec3<U1> & v1, const U2 v2) :
+    finline constexpr span<T, 3>::span(const vec3<U1> & v1, const U2 v2) :
         min{v1},
         max{v2}
     {}
 
     template <Numeric T>
     template <InclusiveSubOf<T> U1, InclusiveSubOf<T> U2>
-    forceinline constexpr span<T, 3>::span(const U1 v1, const vec3<U2> & v2) :
+    finline constexpr span<T, 3>::span(const U1 v1, const vec3<U2> & v2) :
         min{v1},
         max{v2}
     {}
 
     template <Numeric T>
     template <InclusiveSubOf<T> U1, InclusiveSubOf<T> U2>
-    forceinline constexpr span<T, 3>::span(const vec3<U1> & v1, const vec3<U2> & v2) :
+    finline constexpr span<T, 3>::span(const vec3<U1> & v1, const vec3<U2> & v2) :
         min{v1},
         max{v2}
     {}
 
     template <Numeric T>
     template <InclusiveSubOf<T> U1, InclusiveSubOf<T> U2, InclusiveSubOf<T> U3>
-    forceinline constexpr span<T, 3>::span(const span1<U1> & s1, const span1<U2> & s2, const span1<U3> & s3) :
+    finline constexpr span<T, 3>::span(const span1<U1> & s1, const span1<U2> & s2, const span1<U3> & s3) :
         min(s1.min, s2.min, s3.min),
         max(s1.max, s2.max, s3.max)
     {}
 
     template <Numeric T>
     template <InclusiveSubOf<T> U1, InclusiveSubOf<T> U2>
-    forceinline constexpr span<T, 3>::span(const span2<U1> & s1, const span1<U2> & s2) :
+    finline constexpr span<T, 3>::span(const span2<U1> & s1, const span1<U2> & s2) :
         min(s1.min, s2.min),
         max(s1.max, s2.max)
     {}
 
     template <Numeric T>
     template <InclusiveSubOf<T> U1, InclusiveSubOf<T> U2>
-    forceinline constexpr span<T, 3>::span(const span1<U1> & s1, const span2<U2> & s2) :
+    finline constexpr span<T, 3>::span(const span1<U1> & s1, const span2<U2> & s2) :
         min(s1.min, s2.min),
         max(s1.max, s2.max)
     {}
 
     template <Numeric T>
     template <ExclusiveSubOf<T> U>
-    forceinline constexpr span<T, 3>::span(const span3<U> & s) :
+    finline constexpr span<T, 3>::span(const span3<U> & s) :
         min{s.min},
         max{s.max}
     {}
 
     template <Numeric T>
     template <Numeric U> requires (!InclusiveSubOf<U, T>)
-    forceinline constexpr span<T, 3>::span(const span3<U> & s) :
+    finline constexpr span<T, 3>::span(const span3<U> & s) :
         min{s.min},
         max{s.max}
     {}
 
     template <Numeric T>
     template <ExclusiveSubOf<T> U>
-    forceinline span3<T> & span<T, 3>::operator=(const span3<U> & s)
+    finline span3<T> & span<T, 3>::operator=(const span3<U> & s)
     {
         min = s.min;
         max = s.max;
@@ -645,13 +645,13 @@ namespace qc
     }
 
     template <Numeric T>
-    forceinline constexpr span<T, 3>::operator bool() const
+    finline constexpr span<T, 3>::operator bool() const
     {
         return bool(min) || bool(max);
     }
 
     template <Numeric T>
-    forceinline constexpr vec3<T> span<T, 3>::size() const
+    finline constexpr vec3<T> span<T, 3>::size() const
     {
         return max - min;
     }
@@ -672,129 +672,129 @@ namespace qc
     }
 
     template <Numeric T>
-    forceinline constexpr span1<T> span<T, 3>::x() const
+    finline constexpr span1<T> span<T, 3>::x() const
     {
         return {min.x, max.x};
     }
 
     template <Numeric T>
-    forceinline constexpr span1<T> span<T, 3>::y() const
+    finline constexpr span1<T> span<T, 3>::y() const
     {
         return {min.y, max.y};
     }
 
     template <Numeric T>
-    forceinline constexpr span1<T> span<T, 3>::z() const
+    finline constexpr span1<T> span<T, 3>::z() const
     {
         return {min.z, max.z};
     }
 
     template <Numeric T>
-    forceinline constexpr span2<T> span<T, 3>::xy() const
+    finline constexpr span2<T> span<T, 3>::xy() const
     {
         return {min.xy(), max.xy()};
     }
 
     template <Numeric T>
-    forceinline constexpr span2<T> span<T, 3>::yz() const
+    finline constexpr span2<T> span<T, 3>::yz() const
     {
         return {min.yz(), max.yz()};
     }
 
     template <Numeric T>
     template <InclusiveSubOf<T> U1, InclusiveSubOf<T> U2>
-    forceinline constexpr span<T, 4>::span(const U1 v1, const U2 v2) :
+    finline constexpr span<T, 4>::span(const U1 v1, const U2 v2) :
         min{v1},
         max{v2}
     {}
 
     template <Numeric T>
     template <InclusiveSubOf<T> U1, InclusiveSubOf<T> U2>
-    forceinline constexpr span<T, 4>::span(const vec4<U1> & v1, const U2 v2) :
+    finline constexpr span<T, 4>::span(const vec4<U1> & v1, const U2 v2) :
         min{v1},
         max{v2}
     {}
 
     template <Numeric T>
     template <InclusiveSubOf<T> U1, InclusiveSubOf<T> U2>
-    forceinline constexpr span<T, 4>::span(const U1 v1, const vec4<U2> & v2) :
+    finline constexpr span<T, 4>::span(const U1 v1, const vec4<U2> & v2) :
         min{v1},
         max{v2}
     {}
 
     template <Numeric T>
     template <InclusiveSubOf<T> U1, InclusiveSubOf<T> U2>
-    forceinline constexpr span<T, 4>::span(const vec4<U1> & v1, const vec4<U2> & v2) :
+    finline constexpr span<T, 4>::span(const vec4<U1> & v1, const vec4<U2> & v2) :
         min{v1},
         max{v2}
     {}
 
     template <Numeric T>
     template <InclusiveSubOf<T> U1, InclusiveSubOf<T> U2, InclusiveSubOf<T> U3, InclusiveSubOf<T> U4>
-    forceinline constexpr span<T, 4>::span(const span1<U1> & s1, const span1<U2> & s2, const span1<U3> & s3, const span1<U4> & s4) :
+    finline constexpr span<T, 4>::span(const span1<U1> & s1, const span1<U2> & s2, const span1<U3> & s3, const span1<U4> & s4) :
         min{s1.min, s2.min, s3.min, s4.min},
         max{s1.max, s2.max, s3.max, s4.max}
     {}
 
     template <Numeric T>
     template <InclusiveSubOf<T> U1, InclusiveSubOf<T> U2, InclusiveSubOf<T> U3>
-    forceinline constexpr span<T, 4>::span(const span2<U1> & s1, const span1<U2> & s2, const span1<U3> & s3) :
+    finline constexpr span<T, 4>::span(const span2<U1> & s1, const span1<U2> & s2, const span1<U3> & s3) :
         min{s1.min, s2.min, s3.min},
         max{s1.max, s2.max, s3.max}
     {}
 
     template <Numeric T>
     template <InclusiveSubOf<T> U1, InclusiveSubOf<T> U2, InclusiveSubOf<T> U3>
-    forceinline constexpr span<T, 4>::span(const span1<U1> & s1, const span2<U2> & s2, const span1<U3> & s3) :
+    finline constexpr span<T, 4>::span(const span1<U1> & s1, const span2<U2> & s2, const span1<U3> & s3) :
         min{s1.min, s2.min, s3.min},
         max{s1.max, s2.max, s3.max}
     {}
 
     template <Numeric T>
     template <InclusiveSubOf<T> U1, InclusiveSubOf<T> U2, InclusiveSubOf<T> U3>
-    forceinline constexpr span<T, 4>::span(const span1<U1> & s1, const span1<U2> & s2, const span2<U3> & s3) :
+    finline constexpr span<T, 4>::span(const span1<U1> & s1, const span1<U2> & s2, const span2<U3> & s3) :
         min{s1.min, s2.min, s3.min},
         max{s1.max, s2.max, s3.max}
     {}
 
     template <Numeric T>
     template <InclusiveSubOf<T> U1, InclusiveSubOf<T> U2>
-    forceinline constexpr span<T, 4>::span(const span2<U1> & s1, const span2<U2> & s2) :
+    finline constexpr span<T, 4>::span(const span2<U1> & s1, const span2<U2> & s2) :
         min{s1.min, s2.min},
         max{s1.max, s2.max}
     {}
 
     template <Numeric T>
     template <InclusiveSubOf<T> U1, InclusiveSubOf<T> U2>
-    forceinline constexpr span<T, 4>::span(const span3<U1> & s1, const span1<U2> & s2) :
+    finline constexpr span<T, 4>::span(const span3<U1> & s1, const span1<U2> & s2) :
         min{s1.min, s2.min},
         max{s1.max, s2.max}
     {}
 
     template <Numeric T>
     template <InclusiveSubOf<T> U1, InclusiveSubOf<T> U2>
-    forceinline constexpr span<T, 4>::span(const span1<U1> & s1, const span3<U2> & s2) :
+    finline constexpr span<T, 4>::span(const span1<U1> & s1, const span3<U2> & s2) :
         min{s1.min, s2.min},
         max{s1.max, s2.max}
     {}
 
     template <Numeric T>
     template <ExclusiveSubOf<T> U>
-    forceinline constexpr span<T, 4>::span(const span4<U> & s) :
+    finline constexpr span<T, 4>::span(const span4<U> & s) :
         min{s.min},
         max{s.max}
     {}
 
     template <Numeric T>
     template <Numeric U> requires (!InclusiveSubOf<U, T>)
-    forceinline constexpr span<T, 4>::span(const span4<U> & s) :
+    finline constexpr span<T, 4>::span(const span4<U> & s) :
         min{s.min},
         max{s.max}
     {}
 
     template <Numeric T>
     template <ExclusiveSubOf<T> U>
-    forceinline span4<T> & span<T, 4>::operator=(const span4<U> & s)
+    finline span4<T> & span<T, 4>::operator=(const span4<U> & s)
     {
         min = s.min;
         max = s.max;
@@ -802,13 +802,13 @@ namespace qc
     }
 
     template <Numeric T>
-    forceinline constexpr span<T, 4>::operator bool() const
+    finline constexpr span<T, 4>::operator bool() const
     {
         return bool(min) || bool(max);
     }
 
     template <Numeric T>
-    forceinline constexpr vec4<T> span<T, 4>::size() const
+    finline constexpr vec4<T> span<T, 4>::size() const
     {
         return max - min;
     }
@@ -829,61 +829,61 @@ namespace qc
     }
 
     template <Numeric T>
-    forceinline constexpr span1<T> span<T, 4>::x() const
+    finline constexpr span1<T> span<T, 4>::x() const
     {
         return {min.x, max.x};
     }
 
     template <Numeric T>
-    forceinline constexpr span1<T> span<T, 4>::y() const
+    finline constexpr span1<T> span<T, 4>::y() const
     {
         return {min.y, max.y};
     }
 
     template <Numeric T>
-    forceinline constexpr span1<T> span<T, 4>::z() const
+    finline constexpr span1<T> span<T, 4>::z() const
     {
         return {min.z, max.z};
     }
 
     template <Numeric T>
-    forceinline constexpr span1<T> span<T, 4>::w() const
+    finline constexpr span1<T> span<T, 4>::w() const
     {
         return {min.w, max.w};
     }
 
     template <Numeric T>
-    forceinline constexpr span2<T> span<T, 4>::xy() const
+    finline constexpr span2<T> span<T, 4>::xy() const
     {
         return {min.xy(), max.xy()};
     }
 
     template <Numeric T>
-    forceinline constexpr span2<T> span<T, 4>::yz() const
+    finline constexpr span2<T> span<T, 4>::yz() const
     {
         return {min.yz(), max.yz()};
     }
 
     template <Numeric T>
-    forceinline constexpr span2<T> span<T, 4>::zw() const
+    finline constexpr span2<T> span<T, 4>::zw() const
     {
         return {min.zw(), max.zw()};
     }
 
     template <Numeric T>
-    forceinline constexpr span3<T> span<T, 4>::xyz() const
+    finline constexpr span3<T> span<T, 4>::xyz() const
     {
         return {min.xyz(), max.xyz()};
     }
 
     template <Numeric T>
-    forceinline constexpr span3<T> span<T, 4>::yzw() const
+    finline constexpr span3<T> span<T, 4>::yzw() const
     {
         return {min.yzw(), max.yzw()};
     }
 
     template <Numeric T1, InclusiveSubOf<T1> T2, u32 n>
-    forceinline span<T1, n> & operator+=(span<T1, n> & s, const T2 v)
+    finline span<T1, n> & operator+=(span<T1, n> & s, const T2 v)
     {
         s.min += v;
         s.max += v;
@@ -891,7 +891,7 @@ namespace qc
     }
 
     template <Pointer T, u32 n>
-    forceinline span<T, n> & operator+=(span<T, n> & s, const s64 v)
+    finline span<T, n> & operator+=(span<T, n> & s, const s64 v)
     {
         s.min += v;
         s.max += v;
@@ -899,7 +899,7 @@ namespace qc
     }
 
     template <Numeric T1, InclusiveSubOf<T1> T2, u32 n>
-    forceinline span<T1, n> & operator+=(span<T1, n> & s, const vec<T2, n> & v)
+    finline span<T1, n> & operator+=(span<T1, n> & s, const vec<T2, n> & v)
     {
         s.min += v;
         s.max += v;
@@ -907,7 +907,7 @@ namespace qc
     }
 
     template <Numeric T1, InclusiveSubOf<T1> T2, u32 n>
-    forceinline span<T1, n> & operator-=(span<T1, n> & s, const T2 v)
+    finline span<T1, n> & operator-=(span<T1, n> & s, const T2 v)
     {
         s.min -= v;
         s.max -= v;
@@ -915,7 +915,7 @@ namespace qc
     }
 
     template <Pointer T, u32 n>
-    forceinline span<T, n> & operator-=(span<T, n> & s, const s64 v)
+    finline span<T, n> & operator-=(span<T, n> & s, const s64 v)
     {
         s.min -= v;
         s.max -= v;
@@ -923,7 +923,7 @@ namespace qc
     }
 
     template <Numeric T1, InclusiveSubOf<T1> T2, u32 n>
-    forceinline span<T1, n> & operator-=(span<T1, n> & s, const vec<T2, n> & v)
+    finline span<T1, n> & operator-=(span<T1, n> & s, const vec<T2, n> & v)
     {
         s.min -= v;
         s.max -= v;
@@ -931,7 +931,7 @@ namespace qc
     }
 
     template <Numeric T1, InclusiveSubOf<T1> T2, u32 n>
-    forceinline span<T1, n> & operator*=(span<T1, n> & s, const T2 v)
+    finline span<T1, n> & operator*=(span<T1, n> & s, const T2 v)
     {
         s.min *= v;
         s.max *= v;
@@ -939,7 +939,7 @@ namespace qc
     }
 
     template <Numeric T1, InclusiveSubOf<T1> T2, u32 n>
-    forceinline span<T1, n> & operator*=(span<T1, n> & s, const vec<T2, n> & v)
+    finline span<T1, n> & operator*=(span<T1, n> & s, const vec<T2, n> & v)
     {
         s.min *= v;
         s.max *= v;
@@ -947,7 +947,7 @@ namespace qc
     }
 
     template <Numeric T1, InclusiveSubOf<T1> T2, u32 n>
-    forceinline span<T1, n> & operator/=(span<T1, n> & s, const T2 v)
+    finline span<T1, n> & operator/=(span<T1, n> & s, const T2 v)
     {
         if constexpr (Floating<T1>)
         {
@@ -962,7 +962,7 @@ namespace qc
     }
 
     template <Numeric T1, InclusiveSubOf<T1> T2, u32 n>
-    forceinline span<T1, n> & operator/=(span<T1, n> & s, const vec<T2, n> & v)
+    finline span<T1, n> & operator/=(span<T1, n> & s, const vec<T2, n> & v)
     {
         if constexpr (Floating<T1>)
         {
@@ -977,7 +977,7 @@ namespace qc
     }
 
     template <Numeric T1, InclusiveSubOf<T1> T2, u32 n>
-    forceinline span<T1, n> & operator&=(span<T1, n> & s1, const span<T2, n> & s2)
+    finline span<T1, n> & operator&=(span<T1, n> & s1, const span<T2, n> & s2)
     {
         maxify(s1.min, s2.min);
         minify(s1.max, s2.max);
@@ -985,7 +985,7 @@ namespace qc
     }
 
     template <Numeric T1, InclusiveSubOf<T1> T2, u32 n>
-    forceinline span<T1, n> & operator|=(span<T1, n> & s1, const span<T2, n> & s2)
+    finline span<T1, n> & operator|=(span<T1, n> & s1, const span<T2, n> & s2)
     {
         minify(s1.min, s2.min);
         maxify(s1.max, s2.max);
@@ -993,7 +993,7 @@ namespace qc
     }
 
     template <Numeric T1, Numeric T2, u32 n>
-    forceinline constexpr span<Common<T1, T2>, n> operator+(const span<T1, n> & s, const T2 v)
+    finline constexpr span<Common<T1, T2>, n> operator+(const span<T1, n> & s, const T2 v)
     {
         using T = Common<T1, T2>;
         if constexpr (n == 1)
@@ -1007,13 +1007,13 @@ namespace qc
     }
 
     template <Pointer T, u32 n>
-    forceinline constexpr span<T, n> operator+(const span<T, n> & s, const s64 v)
+    finline constexpr span<T, n> operator+(const span<T, n> & s, const s64 v)
     {
         return {s.min + v, s.max + v};
     }
 
     template <Numeric T1, Numeric T2, u32 n>
-    forceinline constexpr span<Common<T1, T2>, n> operator+(const T1 v, const span<T2, n> & s)
+    finline constexpr span<Common<T1, T2>, n> operator+(const T1 v, const span<T2, n> & s)
     {
         using T = Common<T1, T2>;
         if constexpr (n == 1)
@@ -1027,19 +1027,19 @@ namespace qc
     }
 
     template <Numeric T1, Numeric T2, u32 n>
-    forceinline constexpr span<Common<T1, T2>, n> operator+(const span<T1, n> & s, const vec<T2, n> & v)
+    finline constexpr span<Common<T1, T2>, n> operator+(const span<T1, n> & s, const vec<T2, n> & v)
     {
         return {s.min + v, s.max + v};
     }
 
     template <Numeric T1, Numeric T2, u32 n>
-    forceinline constexpr span<Common<T1, T2>, n> operator+(const vec<T1, n> & v, const span<T2, n> & s)
+    finline constexpr span<Common<T1, T2>, n> operator+(const vec<T1, n> & v, const span<T2, n> & s)
     {
         return {v + s.min, v + s.max};
     }
 
     template <Numeric T1, Numeric T2, u32 n>
-    forceinline constexpr span<Common<T1, T2>, n> operator-(const span<T1, n> & s, const T2 v)
+    finline constexpr span<Common<T1, T2>, n> operator-(const span<T1, n> & s, const T2 v)
     {
         using T = Common<T1, T2>;
         if constexpr (n == 1)
@@ -1053,7 +1053,7 @@ namespace qc
     }
 
     template <Pointer T, u32 n>
-    forceinline constexpr span<T, n> operator-(const span<T, n> & s, const s64 v)
+    finline constexpr span<T, n> operator-(const span<T, n> & s, const s64 v)
     {
         if constexpr (n == 1)
         {
@@ -1066,7 +1066,7 @@ namespace qc
     }
 
     template <Numeric T1, Numeric T2, u32 n>
-    forceinline constexpr span<Common<T1, T2>, n> operator-(const T1 v, const span<T2, n> & s)
+    finline constexpr span<Common<T1, T2>, n> operator-(const T1 v, const span<T2, n> & s)
     {
         using T = Common<T1, T2>;
         if constexpr (n == 1)
@@ -1080,19 +1080,19 @@ namespace qc
     }
 
     template <Numeric T1, Numeric T2, u32 n>
-    forceinline constexpr span<Common<T1, T2>, n> operator-(const span<T1, n> & s, const vec<T2, n> & v)
+    finline constexpr span<Common<T1, T2>, n> operator-(const span<T1, n> & s, const vec<T2, n> & v)
     {
         return {s.min - v, s.max - v};
     }
 
     template <Numeric T1, Numeric T2, u32 n>
-    forceinline constexpr span<Common<T1, T2>, n> operator-(const vec<T1, n> & v, const span<T2, n> & s)
+    finline constexpr span<Common<T1, T2>, n> operator-(const vec<T1, n> & v, const span<T2, n> & s)
     {
         return {v - s.min, v - s.max};
     }
 
     template <Numeric T1, Numeric T2, u32 n>
-    forceinline constexpr span<Common<T1, T2>, n> operator*(const span<T1, n> & s, const T2 v)
+    finline constexpr span<Common<T1, T2>, n> operator*(const span<T1, n> & s, const T2 v)
     {
         using T = Common<T1, T2>;
         if constexpr (n == 1)
@@ -1106,7 +1106,7 @@ namespace qc
     }
 
     template <Numeric T1, Numeric T2, u32 n>
-    forceinline constexpr span<Common<T1, T2>, n> operator*(const T1 v, const span<T2, n> & s)
+    finline constexpr span<Common<T1, T2>, n> operator*(const T1 v, const span<T2, n> & s)
     {
         using T = Common<T1, T2>;
         if constexpr (n == 1)
@@ -1120,19 +1120,19 @@ namespace qc
     }
 
     template <Numeric T1, Numeric T2, u32 n>
-    forceinline constexpr span<Common<T1, T2>, n> operator*(const span<T1, n> & s, const vec<T2, n> & v)
+    finline constexpr span<Common<T1, T2>, n> operator*(const span<T1, n> & s, const vec<T2, n> & v)
     {
         return {s.min * v, s.max * v};
     }
 
     template <Numeric T1, Numeric T2, u32 n>
-    forceinline constexpr span<Common<T1, T2>, n> operator*(const vec<T1, n> & v, const span<T2, n> & s)
+    finline constexpr span<Common<T1, T2>, n> operator*(const vec<T1, n> & v, const span<T2, n> & s)
     {
         return {v * s.min, v * s.max};
     }
 
     template <Numeric T1, Numeric T2, u32 n>
-    forceinline constexpr span<Common<T1, T2>, n> operator/(const span<T1, n> & s, const T2 v)
+    finline constexpr span<Common<T1, T2>, n> operator/(const span<T1, n> & s, const T2 v)
     {
         using T = Common<T1, T2>;
         if constexpr (Floating<T1>)
@@ -1153,7 +1153,7 @@ namespace qc
     }
 
     template <Numeric T1, Numeric T2, u32 n>
-    forceinline constexpr span<Common<T1, T2>, n> operator/(const span<T1, n> & s, const vec<T2, n> & v)
+    finline constexpr span<Common<T1, T2>, n> operator/(const span<T1, n> & s, const vec<T2, n> & v)
     {
         if constexpr (Floating<T1>)
         {
@@ -1166,55 +1166,55 @@ namespace qc
     }
 
     template <Numeric T1, Numeric T2, u32 n>
-    forceinline constexpr span<Common<T1, T2>, n> operator&(const span<T1, n> & s1, const span<T2, n> & s2)
+    finline constexpr span<Common<T1, T2>, n> operator&(const span<T1, n> & s1, const span<T2, n> & s2)
     {
         return {max(s1.min, s2.min), min(s1.max, s2.max)};
     }
 
     template <Numeric T1, Numeric T2, u32 n>
-    forceinline constexpr span<Common<T1, T2>, n> operator|(const span<T1, n> & s1, const span<T2, n> & s2)
+    finline constexpr span<Common<T1, T2>, n> operator|(const span<T1, n> & s1, const span<T2, n> & s2)
     {
         return {min(s1.min, s2.min), max(s1.max, s2.max)};
     }
 
     template <Numeric T1, Numeric T2, u32 n>
-    forceinline constexpr span<Common<T1, T2>, n> min(const span<T1, n> & s, const T2 v)
+    finline constexpr span<Common<T1, T2>, n> min(const span<T1, n> & s, const T2 v)
     {
         return {min(s.min, v), min(s.max, v)};
     }
 
     template <typename T, u32 n>
-    forceinline constexpr span<T *, n> min(const span<T *, n> & s, T * const v)
+    finline constexpr span<T *, n> min(const span<T *, n> & s, T * const v)
     {
         return {min(s.min, v), min(s.max, v)};
     }
 
     template <Numeric T1, Numeric T2, u32 n>
-    forceinline constexpr span<Common<T1, T2>, n> min(const span<T1, n> & s, const vec<T2, n> & v)
+    finline constexpr span<Common<T1, T2>, n> min(const span<T1, n> & s, const vec<T2, n> & v)
     {
         return {min(s.min, v), min(s.max, v)};
     }
 
     template <Numeric T1, Numeric T2, u32 n>
-    forceinline constexpr span<Common<T1, T2>, n> max(const span<T1, n> & s, const T2 v)
+    finline constexpr span<Common<T1, T2>, n> max(const span<T1, n> & s, const T2 v)
     {
         return {max(s.min, v), max(s.max, v)};
     }
 
     template <typename T, u32 n>
-    forceinline constexpr span<T *, n> max(const span<T *, n> & s, T * const v)
+    finline constexpr span<T *, n> max(const span<T *, n> & s, T * const v)
     {
         return {max(s.min, v), max(s.max, v)};
     }
 
     template <Numeric T1, Numeric T2, u32 n>
-    forceinline constexpr span<Common<T1, T2>, n> max(const span<T1, n> & s, const vec<T2, n> & v)
+    finline constexpr span<Common<T1, T2>, n> max(const span<T1, n> & s, const vec<T2, n> & v)
     {
         return {max(s.min, v), max(s.max, v)};
     }
 
     template <Numeric T1, InclusiveSubOf<T1> T2, u32 n>
-    forceinline span<T1, n> & minify(span<T1, n> & s, const T2 v)
+    finline span<T1, n> & minify(span<T1, n> & s, const T2 v)
     {
         minify(s.min, v);
         minify(s.max, v);
@@ -1222,7 +1222,7 @@ namespace qc
     }
 
     template <typename T, u32 n>
-    forceinline span<T *, n> & minify(span<T *, n> & s, T * const v)
+    finline span<T *, n> & minify(span<T *, n> & s, T * const v)
     {
         minify(s.min, v);
         minify(s.max, v);
@@ -1230,7 +1230,7 @@ namespace qc
     }
 
     template <Numeric T1, InclusiveSubOf<T1> T2, u32 n>
-    forceinline span<T1, n> & minify(span<T1, n> & s, const vec<T2, n> & v)
+    finline span<T1, n> & minify(span<T1, n> & s, const vec<T2, n> & v)
     {
         minify(s.min, v);
         minify(s.max, v);
@@ -1238,7 +1238,7 @@ namespace qc
     }
 
     template <Numeric T1, InclusiveSubOf<T1> T2, u32 n>
-    forceinline span<T1, n> & maxify(span<T1, n> & s, const T2 v)
+    finline span<T1, n> & maxify(span<T1, n> & s, const T2 v)
     {
         maxify(s.min, v);
         maxify(s.max, v);
@@ -1246,7 +1246,7 @@ namespace qc
     }
 
     template <typename T, u32 n>
-    forceinline span<T *, n> & maxify(span<T *, n> & s, T * const v)
+    finline span<T *, n> & maxify(span<T *, n> & s, T * const v)
     {
         maxify(s.min, v);
         maxify(s.max, v);
@@ -1254,7 +1254,7 @@ namespace qc
     }
 
     template <Numeric T1, InclusiveSubOf<T1> T2, u32 n>
-    forceinline span<T1, n> & maxify(span<T1, n> & s, const vec<T2, n> & v)
+    finline span<T1, n> & maxify(span<T1, n> & s, const vec<T2, n> & v)
     {
         maxify(s.min, v);
         maxify(s.max, v);
@@ -1262,31 +1262,31 @@ namespace qc
     }
 
     template <NumericOrPointer T, u32 n>
-    forceinline constexpr span<T, n> clamp(const span<T, n> & s, const T min, const T max)
+    finline constexpr span<T, n> clamp(const span<T, n> & s, const T min, const T max)
     {
         return {clamp(s.min, min, max), clamp(s.max, min, max)};
     }
 
     template <Numeric T, u32 n>
-    forceinline constexpr span<T, n> clamp(const span<T, n> & s, const vec<T, n> & min, const vec<T, n> & max)
+    finline constexpr span<T, n> clamp(const span<T, n> & s, const vec<T, n> & min, const vec<T, n> & max)
     {
         return {clamp(s.min, min, max), clamp(s.max, min, max)};
     }
 
     template <NumericOrPointer T>
-    forceinline constexpr T clamp(const T v, const span1<T> & s)
+    finline constexpr T clamp(const T v, const span1<T> & s)
     {
         return clamp(v, s.min, s.max);
     }
 
     template <Numeric T, u32 n>
-    forceinline constexpr vec<T, n> clamp(const vec<T, n> & v, const span<T, n> & s)
+    finline constexpr vec<T, n> clamp(const vec<T, n> & v, const span<T, n> & s)
     {
         return clamp(v, s.min, s.max);
     }
 
     template <NumericOrPointer T, u32 n>
-    forceinline span<T, n> & clampify(span<T, n> & s, const T min, const T max)
+    finline span<T, n> & clampify(span<T, n> & s, const T min, const T max)
     {
         clampify(s.min, min, max);
         clampify(s.max, min, max);
@@ -1294,7 +1294,7 @@ namespace qc
     }
 
     template <Numeric T, u32 n>
-    forceinline span<T, n> & clampify(span<T, n> & s, const vec<T, n> & min, const vec<T, n> & max)
+    finline span<T, n> & clampify(span<T, n> & s, const vec<T, n> & min, const vec<T, n> & max)
     {
         clampify(s.min, min, max);
         clampify(s.max, min, max);
@@ -1302,13 +1302,13 @@ namespace qc
     }
 
     template <NumericOrPointer T>
-    forceinline T & clampify(T & v, const span1<T> & s)
+    finline T & clampify(T & v, const span1<T> & s)
     {
         return clampify(v, s.min, s.max);
     }
 
     template <Numeric T, u32 n>
-    forceinline vec<T, n> & clampify(vec<T, n> & v, const span<T, n> & s)
+    finline vec<T, n> & clampify(vec<T, n> & v, const span<T, n> & s)
     {
         return clampify(v, s.min, s.max);
     }

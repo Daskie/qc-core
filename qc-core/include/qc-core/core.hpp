@@ -9,9 +9,9 @@
 #include <utility>
 
 #if defined QC_MSVC
-    #define forceinline __forceinline
+    #define finline __forceinline
 #elif defined QC_GCC
-    #define forceinline __attribute__((always_inline)) inline
+    #define finline __attribute__((always_inline)) inline
 #else
     #error "Unsupported compiler"
 #endif
@@ -265,14 +265,14 @@ namespace qc
         T a;
         T b;
 
-        template <std::integral I> nodisc forceinline T & operator[](const I i) { return (&a)[i]; }
-        template <std::integral I> nodisc forceinline const T & operator[](const I i) const { return (&a)[i]; }
+        template <std::integral I> nodisc finline T & operator[](const I i) { return (&a)[i]; }
+        template <std::integral I> nodisc finline const T & operator[](const I i) const { return (&a)[i]; }
 
-        nodisc forceinline T * begin() { return &a; };
-        nodisc forceinline const T * begin() const { return &a; };
+        nodisc finline T * begin() { return &a; };
+        nodisc finline const T * begin() const { return &a; };
 
-        nodisc forceinline T * end() { return &b + 1; };
-        nodisc forceinline const T * end() const { return &b + 1; };
+        nodisc finline T * end() { return &b + 1; };
+        nodisc finline const T * end() const { return &b + 1; };
     };
 
     template <typename T1, typename T2 = T1, typename T3 = T2>
@@ -294,14 +294,14 @@ namespace qc
         T b;
         T c;
 
-        template <std::integral I> nodisc forceinline T & operator[](const I i) { return (&a)[i]; }
-        template <std::integral I> nodisc forceinline const T & operator[](const I i) const { return (&a)[i]; }
+        template <std::integral I> nodisc finline T & operator[](const I i) { return (&a)[i]; }
+        template <std::integral I> nodisc finline const T & operator[](const I i) const { return (&a)[i]; }
 
-        nodisc forceinline T * begin() { return &a; };
-        nodisc forceinline const T * begin() const { return &a; };
+        nodisc finline T * begin() { return &a; };
+        nodisc finline const T * begin() const { return &a; };
 
-        nodisc forceinline T * end() { return &c + 1; };
-        nodisc forceinline const T * end() const { return &c + 1; };
+        nodisc finline T * end() { return &c + 1; };
+        nodisc finline const T * end() const { return &c + 1; };
     };
 
     ///
@@ -412,19 +412,19 @@ namespace qc
 namespace qc
 {
     template <typename T>
-    forceinline Result<T>::Result() :
+    finline Result<T>::Result() :
         _success{false}
     MSVC_WARNING_SUPPRESS(4582)
     {}
 
     template <typename T>
-    forceinline Result<T>::Result(T && v) :
+    finline Result<T>::Result(T && v) :
         _val{std::move(v)},
         _success{true}
     {}
 
     template <typename T>
-    forceinline Result<T>::~Result()
+    finline Result<T>::~Result()
     MSVC_WARNING_SUPPRESS(4583)
     {
         if (_success)
@@ -434,35 +434,35 @@ namespace qc
     }
 
     template <typename T>
-    forceinline T & Result<T>::operator*()
+    finline T & Result<T>::operator*()
     {
         assert(_success);
         return this->_val;
     }
 
     template <typename T>
-    forceinline const T & Result<T>::operator*() const
+    finline const T & Result<T>::operator*() const
     {
         assert(_success);
         return this->_val;
     }
 
     template <typename T>
-    forceinline T * Result<T>::operator->()
+    finline T * Result<T>::operator->()
     {
         assert(_success);
         return &this->_val;
     }
 
     template <typename T>
-    forceinline const T * Result<T>::operator->() const
+    finline const T * Result<T>::operator->() const
     {
         assert(_success);
         return &this->_val;
     }
 
     template <Numeric To, Numeric From>
-    forceinline To checkedCast(const From v)
+    finline To checkedCast(const From v)
     {
         if constexpr (Floating<To>)
         {
@@ -528,7 +528,7 @@ namespace qc
     }
 
     template <Numeric To, Numeric From>
-    forceinline To assertCast(const From v)
+    finline To assertCast(const From v)
     {
         if constexpr (release)
         {
@@ -541,7 +541,7 @@ namespace qc
     }
 
     template <Numeric T1, Numeric T2>
-    forceinline constexpr Common<T1, T2> min(const T1 v1, const T2 v2)
+    finline constexpr Common<T1, T2> min(const T1 v1, const T2 v2)
     {
         using T = Common<T1, T2>;
         if constexpr (Signed<T1> == Signed<T2>) return T(v2 < v1 ? v2 : v1);
@@ -549,25 +549,25 @@ namespace qc
     }
 
     template <typename T>
-    forceinline constexpr T * min(T * const v1, T * const v2)
+    finline constexpr T * min(T * const v1, T * const v2)
     {
         return v2 < v1 ? v2 : v1;
     }
 
     template <Numeric T1, Numeric T2, Numeric T3, Numeric... Ts>
-    forceinline constexpr auto min(const T1 v1, const T2 v2, const T3 v3, Ts... vs)
+    finline constexpr auto min(const T1 v1, const T2 v2, const T3 v3, Ts... vs)
     {
         return min(min(v1, v2), v3, vs...);
     }
 
     template <typename T, typename... Ts>
-    forceinline constexpr T * min(T * const v1, T * const v2, T * const v3, Ts... vs)
+    finline constexpr T * min(T * const v1, T * const v2, T * const v3, Ts... vs)
     {
         return min(min(v1, v2), v3, vs...);
     }
 
     template <Numeric T1, Numeric T2>
-    forceinline constexpr Common<T1, T2> max(const T1 v1, const T2 v2)
+    finline constexpr Common<T1, T2> max(const T1 v1, const T2 v2)
     {
         using T = Common<T1, T2>;
         if constexpr (Signed<T1> == Signed<T2>) return T(v2 > v1 ? v2 : v1);
@@ -575,79 +575,79 @@ namespace qc
     }
 
     template <typename T>
-    forceinline constexpr T * max(T * const v1, T * const v2)
+    finline constexpr T * max(T * const v1, T * const v2)
     {
         return v2 > v1 ? v2 : v1;
     }
 
     template <Numeric T1, Numeric T2, Numeric T3, Numeric... Ts>
-    forceinline constexpr auto max(const T1 v1, const T2 v2, const T3 v3, Ts... vs)
+    finline constexpr auto max(const T1 v1, const T2 v2, const T3 v3, Ts... vs)
     {
         return max(max(v1, v2), v3, vs...);
     }
 
     template <typename T, typename... Ts>
-    forceinline constexpr T * max(T * const v1, T * const v2, T * const v3, Ts... vs)
+    finline constexpr T * max(T * const v1, T * const v2, T * const v3, Ts... vs)
     {
         return max(max(v1, v2), v3, vs...);
     }
 
     template <Numeric T1, InclusiveSubOf<T1> T2>
-    forceinline T1 & minify(T1 & v1, const T2 v2)
+    finline T1 & minify(T1 & v1, const T2 v2)
     {
         return v2 < v1 ? v1 = v2 : v1;
     }
 
     template <typename T>
-    forceinline T * & minify(T * & v1, T * const v2)
+    finline T * & minify(T * & v1, T * const v2)
     {
         return v2 < v1 ? v1 = v2 : v1;
     }
 
     template <Numeric T, Numeric T1, Numeric T2, Numeric... Ts>
-    forceinline T & minify(T & min, const T1 v1, const T2 v2, Ts... vs)
+    finline T & minify(T & min, const T1 v1, const T2 v2, Ts... vs)
     {
         return minify(minify(min, v1), v2, vs...);
     }
 
     template <typename T, typename... Ts>
-    forceinline T * & minify(T * & min, T * const v1, T * const v2, Ts... vs)
+    finline T * & minify(T * & min, T * const v1, T * const v2, Ts... vs)
     {
         return minify(minify(min, v1), v2, vs...);
     }
 
     template <Numeric T1, InclusiveSubOf<T1> T2>
-    forceinline T1 & maxify(T1 & v1, const T2 v2)
+    finline T1 & maxify(T1 & v1, const T2 v2)
     {
         return v2 > v1 ? v1 = v2 : v1;
     }
 
     template <typename T>
-    forceinline T * & maxify(T * & v1, T * const v2)
+    finline T * & maxify(T * & v1, T * const v2)
     {
         return v2 > v1 ? v1 = v2 : v1;
     }
 
     template <Numeric T, Numeric T1, Numeric T2, Numeric... Ts>
-    forceinline T & maxify(T & min, const T1 v1, const T2 v2, Ts... vs)
+    finline T & maxify(T & min, const T1 v1, const T2 v2, Ts... vs)
     {
         return maxify(maxify(min, v1), v2, vs...);
     }
 
     template <typename T, typename... Ts>
-    forceinline T * & maxify(T * & min, T * const v1, T * const v2, Ts... vs)
+    finline T * & maxify(T * & min, T * const v1, T * const v2, Ts... vs)
     {
         return maxify(maxify(min, v1), v2, vs...);
     }
 
     template <Numeric T>
-    forceinline constexpr T clamp(const T v, const T min, const T max)
+    finline constexpr T clamp(const T v, const T min, const T max)
     {
         return qc::min(qc::max(v, min), max);
     }
 
     template <Numeric T>
-    forceinline T & clampify(T & v, const T min, const T max)
+    finline T & clampify(T & v, const T min, const T max)
     {
         return qc::minify(qc::maxify(v, min), max);
     }

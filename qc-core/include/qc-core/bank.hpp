@@ -36,7 +36,7 @@ namespace qc
 
         ~Bank();
 
-        nodisc forceinline explicit operator bool() const { return _size; }
+        nodisc finline explicit operator bool() const { return _size; }
 
         void reserve(u32 capacity);
 

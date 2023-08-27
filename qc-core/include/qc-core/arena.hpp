@@ -44,20 +44,20 @@ namespace qc
 
             ~Unq();
 
-            nodisc forceinline operator Unq<const T> &() & requires (!std::is_const_v<T>) { return reinterpret_cast<Unq<const T> &>(*this); }
-            nodisc forceinline operator const Unq<const T> &() const & requires (!std::is_const_v<T>) { return reinterpret_cast<const Unq<const T> &>(*this); }
+            nodisc finline operator Unq<const T> &() & requires (!std::is_const_v<T>) { return reinterpret_cast<Unq<const T> &>(*this); }
+            nodisc finline operator const Unq<const T> &() const & requires (!std::is_const_v<T>) { return reinterpret_cast<const Unq<const T> &>(*this); }
 
             void reset();
 
-            nodisc forceinline explicit operator bool() const { return _ptr; }
+            nodisc finline explicit operator bool() const { return _ptr; }
 
-            nodisc forceinline T & operator*() const { return *_ptr; }
+            nodisc finline T & operator*() const { return *_ptr; }
 
-            nodisc forceinline T * operator->() const { return _ptr; }
+            nodisc finline T * operator->() const { return _ptr; }
 
-            template <typename T_> requires EqualityComparable<T *, T_ *> nodisc forceinline bool operator==(const Unq<T_> & other) const { return _ptr == other._ptr; }
-            nodisc forceinline friend bool operator==(const Unq & a, const T * b) { return a._ptr == b; }
-            nodisc forceinline friend bool operator==(const T * a, const Unq & b) { return a == b._ptr; }
+            template <typename T_> requires EqualityComparable<T *, T_ *> nodisc finline bool operator==(const Unq<T_> & other) const { return _ptr == other._ptr; }
+            nodisc finline friend bool operator==(const Unq & a, const T * b) { return a._ptr == b; }
+            nodisc finline friend bool operator==(const T * a, const Unq & b) { return a == b._ptr; }
 
           private:
 
@@ -80,35 +80,35 @@ namespace qc
             Shr() = default;
 
             Shr(const Shr & other);
-            forceinline Shr(const Shr<_T> & other) requires (std::is_const_v<T>) : Shr{reinterpret_cast<const Shr &>(other)} {}
-            template <typename T_> requires std::is_base_of_v<T, T_> forceinline Shr(const Shr<T_> & other) : Shr{reinterpret_cast<const Shr &>(other)} {}
+            finline Shr(const Shr<_T> & other) requires (std::is_const_v<T>) : Shr{reinterpret_cast<const Shr &>(other)} {}
+            template <typename T_> requires std::is_base_of_v<T, T_> finline Shr(const Shr<T_> & other) : Shr{reinterpret_cast<const Shr &>(other)} {}
             Shr(Shr && other);
-            forceinline Shr(Shr<_T> && other) requires (std::is_const_v<T>) : Shr{reinterpret_cast<Shr &&>(other)} {}
-            template <typename T_> requires std::is_base_of_v<T, T_> forceinline Shr(Shr<T_> && other) : Shr{reinterpret_cast<Shr &&>(other)} {}
+            finline Shr(Shr<_T> && other) requires (std::is_const_v<T>) : Shr{reinterpret_cast<Shr &&>(other)} {}
+            template <typename T_> requires std::is_base_of_v<T, T_> finline Shr(Shr<T_> && other) : Shr{reinterpret_cast<Shr &&>(other)} {}
 
             Shr & operator=(const Shr & other);
-            forceinline Shr & operator=(const Shr<_T> & other) requires std::is_const_v<T> { return *this = reinterpret_cast<const Shr &>(other); }
-            template <typename T_> requires std::is_base_of_v<T, T_> forceinline Shr & operator=(const Shr<T_> & other) { return *this = reinterpret_cast<const Shr &>(other); }
+            finline Shr & operator=(const Shr<_T> & other) requires std::is_const_v<T> { return *this = reinterpret_cast<const Shr &>(other); }
+            template <typename T_> requires std::is_base_of_v<T, T_> finline Shr & operator=(const Shr<T_> & other) { return *this = reinterpret_cast<const Shr &>(other); }
             Shr & operator=(Shr && other);
-            forceinline Shr & operator=(Shr<_T> && other) requires std::is_const_v<T> { return *this = reinterpret_cast<Shr &&>(other); }
-            template <typename T_> requires std::is_base_of_v<T, T_> forceinline Shr & operator=(Shr<T_> && other) { return *this = reinterpret_cast<Shr &&>(other); }
+            finline Shr & operator=(Shr<_T> && other) requires std::is_const_v<T> { return *this = reinterpret_cast<Shr &&>(other); }
+            template <typename T_> requires std::is_base_of_v<T, T_> finline Shr & operator=(Shr<T_> && other) { return *this = reinterpret_cast<Shr &&>(other); }
 
             ~Shr();
 
-            nodisc forceinline operator Shr<const T> &() & requires (!std::is_const_v<T>) { return reinterpret_cast<Shr<const T> &>(*this); }
-            nodisc forceinline operator const Shr<const T> &() const & requires (!std::is_const_v<T>) { return reinterpret_cast<const Shr<const T> &>(*this); }
+            nodisc finline operator Shr<const T> &() & requires (!std::is_const_v<T>) { return reinterpret_cast<Shr<const T> &>(*this); }
+            nodisc finline operator const Shr<const T> &() const & requires (!std::is_const_v<T>) { return reinterpret_cast<const Shr<const T> &>(*this); }
 
             void reset();
 
-            nodisc forceinline explicit operator bool() const { return _ptr; }
+            nodisc finline explicit operator bool() const { return _ptr; }
 
-            nodisc forceinline T & operator*() const { return *_ptr; }
+            nodisc finline T & operator*() const { return *_ptr; }
 
-            nodisc forceinline T * operator->() const { return _ptr; }
+            nodisc finline T * operator->() const { return _ptr; }
 
-            template <typename T_> requires EqualityComparable<T *, T_ *> nodisc forceinline bool operator==(const Shr<T_> & other) const { return _ptr == other._ptr; }
-            nodisc forceinline friend bool operator==(const Shr & a, const T * b) { return a._ptr == b; }
-            nodisc forceinline friend bool operator==(const T * a, const Shr & b) { return a == b._ptr; }
+            template <typename T_> requires EqualityComparable<T *, T_ *> nodisc finline bool operator==(const Shr<T_> & other) const { return _ptr == other._ptr; }
+            nodisc finline friend bool operator==(const Shr & a, const T * b) { return a._ptr == b; }
+            nodisc finline friend bool operator==(const T * a, const Shr & b) { return a == b._ptr; }
 
           private:
 
@@ -141,9 +141,9 @@ namespace qc
 
         void shrinkToFit();
 
-        nodisc forceinline u64 capacity() const { return _capacity; }
+        nodisc finline u64 capacity() const { return _capacity; }
 
-        nodisc forceinline u64 size() const { return _size; }
+        nodisc finline u64 size() const { return _size; }
 
         nodisc bool empty() const;
 
@@ -182,7 +182,7 @@ namespace qc
 namespace qc
 {
     template <typename T>
-    forceinline Arena::Unq<T>::Unq(_T & v) :
+    finline Arena::Unq<T>::Unq(_T & v) :
         _ptr{&v}
     {
         u32 & refN{_refN()};
@@ -191,7 +191,7 @@ namespace qc
     }
 
     template <typename T>
-    forceinline Arena::Unq<T>::Unq(Unq && other) :
+    finline Arena::Unq<T>::Unq(Unq && other) :
         _ptr{other._ptr}
     {
         other._ptr = nullptr;
@@ -214,7 +214,7 @@ namespace qc
     }
 
     template <typename T>
-    forceinline Arena::Unq<T>::Unq::~Unq()
+    finline Arena::Unq<T>::Unq::~Unq()
     {
         reset();
     }
@@ -233,20 +233,20 @@ namespace qc
     }
 
     template <typename T>
-    forceinline u32 & Arena::Unq<T>::_refN()
+    finline u32 & Arena::Unq<T>::_refN()
     {
         return reinterpret_cast<u32 *>(_ptr)[-1];
     }
 
     template <typename T>
-    forceinline Arena::Shr<T>::Shr(_T & v) :
+    finline Arena::Shr<T>::Shr(_T & v) :
         _ptr{&v}
     {
         ++_refN();
     }
 
     template <typename T>
-    forceinline Arena::Shr<T>::Shr(const Shr & other) :
+    finline Arena::Shr<T>::Shr(const Shr & other) :
         _ptr{other._ptr}
     {
         if (_ptr)
@@ -256,7 +256,7 @@ namespace qc
     }
 
     template <typename T>
-    forceinline Arena::Shr<T>::Shr(Shr && other) :
+    finline Arena::Shr<T>::Shr(Shr && other) :
         _ptr{other._ptr}
     {
         other._ptr = nullptr;
@@ -299,7 +299,7 @@ namespace qc
     }
 
     template <typename T>
-    forceinline Arena::Shr<T>::Shr::~Shr()
+    finline Arena::Shr<T>::Shr::~Shr()
     {
         reset();
     }
@@ -321,7 +321,7 @@ namespace qc
     }
 
     template <typename T>
-    forceinline u32 & Arena::Shr<T>::_refN()
+    finline u32 & Arena::Shr<T>::_refN()
     {
         return reinterpret_cast<u32 *>(_ptr)[-1];
     }
@@ -384,19 +384,19 @@ namespace qc
     }
 
     template <typename T, typename... Args>
-    forceinline auto Arena::unq(Args &&... args) -> Unq<T>
+    finline auto Arena::unq(Args &&... args) -> Unq<T>
     {
         return Unq<T>{_create<std::remove_const_t<T>>(std::forward<Args>(args)...)};
     }
 
     template <typename T, typename... Args>
-    forceinline auto Arena::shr(Args &&... args) -> Shr<T>
+    finline auto Arena::shr(Args &&... args) -> Shr<T>
     {
         return Shr<T>{_create<std::remove_const_t<T>>(std::forward<Args>(args)...)};
     }
 
     template <typename T>
-    forceinline auto Arena::shrOf(T * const ptr) -> Shr<T>
+    finline auto Arena::shrOf(T * const ptr) -> Shr<T>
     {
         if (!ptr)
         {
@@ -461,12 +461,12 @@ namespace qc
         return bubble.pos == 0u && bubble.size * sizeof(_Chunk) == _capacity;
     }
 
-    forceinline u64 Arena::_pageN(const u64 capacity)
+    finline u64 Arena::_pageN(const u64 capacity)
     {
         return std::bit_ceil((capacity + (pageSize - 1u)) / pageSize);
     }
 
-    forceinline auto Arena::_header(void * const valPtr) -> _Chunk &
+    finline auto Arena::_header(void * const valPtr) -> _Chunk &
     {
         return reinterpret_cast<_Chunk *>(valPtr)[-1];
     }
