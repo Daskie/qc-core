@@ -20,15 +20,22 @@
 
 #define ABORT() ::std::abort()
 
-#define ABORT_IF(condition) if (condition) [[unlikely]] ::std::abort()
-
-#define DEBUG_ABORT() if constexpr (::qc::debug) ABORT()
-
-#define DEBUG_ABORT_IF(condition) if constexpr (::qc::debug) ABORT_IF(condition)
+#define ABORT_IF(condition) if (condition) [[unlikely]] ABORT()
 
 #define FAIL() do { if constexpr (::qc::debug) ::qc::failBreak(); return {}; } while (false)
 
-#define FAIL_IF(condition) if (condition) [[unlikely]] FAIL()
+#define FAIL_IF(condition) if (condition) FAIL()
+
+#define CHECK_RESULT(expr) ABORT_IF(!(expr))
+#define CHECK_RESULT_EXT(resultExpr, conditionExpr) do { const auto r{resultExpr}; CHECK_RESULT(conditionExpr); } while (false)
+
+#ifdef QC_DEBUG
+    #define CHECK_RESULT_DEBUG(expr) CHECK_RESULT(expr)
+    #define CHECK_RESULT_EXT_DEBUG(resultExpr, conditionExpr) CHECK_RESULT_EXT(resultExpr, conditionExpr)
+#else
+    #define CHECK_RESULT_DEBUG(expr) static_cast<void>(expr)
+    #define CHECK_RESULT_EXT_DEBUG(resultExpr, conditionExpr) static_cast<void>(resultExpr)
+#endif
 
 #define SERIALIZABLE(n) friend class ::qc::Serializer; friend class ::qc::Deserializer; static constexpr ::qc::u32 _serializableN{n}
 
@@ -478,8 +485,7 @@ namespace qc
             if constexpr (Floating<From>)
             {
                 const To v_{To(v)};
-                const From v__{From(v_)};
-                ABORT_IF(v__ != v);
+                ABORT_IF(From(v_) != v);
                 return v_;
             }
             else if constexpr (SignedIntegral<From>)

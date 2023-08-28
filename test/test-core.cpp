@@ -1146,6 +1146,39 @@ TEST(Core, fail)
     ASSERT_FALSE(failIf(true));
 }
 
+TEST(Core, checkResult)
+{
+    s32 v;
+    const auto doThing{[&v](const bool succeed) {++v; return succeed; }};
+
+    v = 0;
+    CHECK_RESULT(doThing(true));
+    ASSERT_EQ(v, 1);
+    ASSERT_DEATH(CHECK_RESULT(doThing(false)), "");
+
+    v = 0;
+    CHECK_RESULT_EXT(doThing(true), r);
+    ASSERT_EQ(v, 1);
+    ASSERT_DEATH(CHECK_RESULT_EXT(doThing(false), r), "");
+
+    v = 0;
+    CHECK_RESULT_DEBUG(doThing(true));
+    ASSERT_EQ(v, 1);
+    ASSERT_DEBUG_DEATH(CHECK_RESULT_DEBUG(doThing(false)), "");
+    if constexpr (!qc::debug)
+    {
+        ASSERT_EQ(v, 2);
+    }
+
+    v = 0;
+    CHECK_RESULT_EXT_DEBUG(doThing(true), r);
+    ASSERT_EQ(v, 1);
+    ASSERT_DEBUG_DEATH(CHECK_RESULT_EXT_DEBUG(doThing(false), r), "");
+    if constexpr (!qc::debug)
+    {
+        ASSERT_EQ(v, 2);
+    }
+}
 
 TEST(Core, scopeGuard)
 {
