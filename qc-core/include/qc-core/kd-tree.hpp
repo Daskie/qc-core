@@ -82,7 +82,7 @@ namespace qc
 
     inline fvec2 KdTree::nearest(const fvec2 point) const
     {
-        assert(_nodes);
+        ASSERT(_nodes);
 
         fvec2 nearestPoint{};
         float minDist2{std::numeric_limits<float>::infinity()};
@@ -182,8 +182,8 @@ namespace qc
         const View<u32> upperOrderedB{orderedB.view(lowerBN + 1u)};
 
         // Sanity check
-        assert(lowerOrderedA.size == lowerOrderedB.size);
-        assert(upperOrderedA.size == upperOrderedB.size);
+        ASSERT(lowerOrderedA.size == lowerOrderedB.size);
+        ASSERT(upperOrderedA.size == upperOrderedB.size);
 
         // Copy upper subspan from scratch back into main span
         std::copy_n(scratch.begin(), upperBN, upperOrderedB.begin());

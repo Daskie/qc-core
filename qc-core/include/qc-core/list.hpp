@@ -584,7 +584,7 @@ namespace qc
         static_assert(std::is_copy_constructible_v<T>);
         static constexpr bool destruct{!std::is_trivially_destructible_v<T> && !std::is_copy_assignable_v<T>};
 
-        assert(u64(pos - _data) <= _size); // Handles negative case
+        ASSERT(u64(pos - _data) <= _size); // Handles negative case
 
         T * const constructedEnd{_shift<destruct>(pos, n)};
         T * const unconstructedEnd{pos + n};
@@ -603,7 +603,7 @@ namespace qc
         static_assert(std::is_copy_constructible_v<T>);
         static constexpr bool destruct{!std::is_trivially_destructible_v<T> && !std::is_copy_assignable_v<T>};
 
-        assert(u64(pos - _data) <= _size); // Handles negative case
+        ASSERT(u64(pos - _data) <= _size); // Handles negative case
 
         const u32 n{assertCast<u32>(std::distance(first, last))};
 
@@ -643,7 +643,7 @@ namespace qc
     template <typename... Args>
     inline T * List<T>::emplace(T * pos, Args &&... args)
     {
-        assert(u64(pos - _data) <= _size); // Handles negative case
+        ASSERT(u64(pos - _data) <= _size); // Handles negative case
 
         _shift(pos);
 
@@ -663,7 +663,7 @@ namespace qc
     template <typename T>
     finline void List<T>::pop()
     {
-        assert(_size);
+        ASSERT(_size);
 
         _data[--_size].~T();
     }
@@ -671,7 +671,7 @@ namespace qc
     template <typename T>
     finline void List<T>::pop(T & dst)
     {
-        assert(_size);
+        ASSERT(_size);
 
         T & src{_data[--_size]};
         dst = std::move(src);
@@ -681,7 +681,7 @@ namespace qc
     template <typename T>
     inline void List<T>::pop(const u32 n)
     {
-        assert(_size >= n);
+        ASSERT(_size >= n);
 
         if constexpr (!std::is_trivially_destructible_v<T>)
         {
@@ -697,7 +697,7 @@ namespace qc
     template <typename T>
     inline void List<T>::pop(const View<T> dst)
     {
-        assert(dst.size <= _size);
+        ASSERT(dst.size <= _size);
 
         if constexpr (std::is_trivially_copyable_v<T>)
         {
@@ -731,7 +731,7 @@ namespace qc
             return first;
         }
 
-        assert(first >= _data && last <= _data + _size);
+        ASSERT(first >= _data && last <= _data + _size);
 
         if constexpr (std::is_trivially_copyable_v<T> && std::is_trivially_destructible_v<T>)
         {
@@ -859,7 +859,7 @@ namespace qc
     template <typename T>
     finline T & List<T>::operator[](const u32 i)
     {
-        assert(i < _size);
+        ASSERT(i < _size);
 
         return _data[i];
     }
@@ -867,7 +867,7 @@ namespace qc
     template <typename T>
     finline const T & List<T>::operator[](const u32 i) const
     {
-        assert(i < _size);
+        ASSERT(i < _size);
 
         return _data[i];
     }
@@ -924,7 +924,7 @@ namespace qc
     template <typename T>
     inline void List<T>::_expand(const u32 minNewCapacity, const u32 gapI, const u32 gapN)
     {
-        assert(minNewCapacity <= _maxCapacity);
+        ASSERT(minNewCapacity <= _maxCapacity);
 
         _newMemory(max(std::bit_ceil(minNewCapacity), 2u), gapI, gapN);
     }

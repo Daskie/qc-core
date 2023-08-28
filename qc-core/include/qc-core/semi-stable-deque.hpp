@@ -265,7 +265,7 @@ namespace qc
     template <typename T>
     inline void SemiStableDeque<T>::pop_back()
     {
-        assert(_tailI != _invalidI);
+        ASSERT(_tailI != _invalidI);
 
         pop(_tailI);
     }
@@ -273,7 +273,7 @@ namespace qc
     template <typename T>
     inline void SemiStableDeque<T>::pop_front()
     {
-        assert(_headI != _invalidI);
+        ASSERT(_headI != _invalidI);
 
         pop(_headI);
     }
@@ -319,7 +319,7 @@ namespace qc
     template <typename T>
     inline const T & SemiStableDeque<T>::front() const
     {
-        assert(_headI != _invalidI);
+        ASSERT(_headI != _invalidI);
 
         return _elements[_headI].value;
     }
@@ -333,7 +333,7 @@ namespace qc
     template <typename T>
     inline const T & SemiStableDeque<T>::back() const
     {
-        assert(_tailI != _invalidI);
+        ASSERT(_tailI != _invalidI);
 
         return _elements[_tailI].value;
     }

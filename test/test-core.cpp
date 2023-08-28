@@ -1136,6 +1136,12 @@ TEST(Core, abort)
     ASSERT_DEATH(ABORT_IF(true), "");
 }
 
+TEST(Core, assert)
+{
+    ASSERT(true);
+    ASSERT_DEBUG_DEATH(ASSERT(false), "");
+}
+
 TEST(Core, fail)
 {
     const auto fail{[]() -> bool { FAIL(); }};

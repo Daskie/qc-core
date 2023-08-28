@@ -186,7 +186,7 @@ namespace qc
         _ptr{&v}
     {
         u32 & refN{_refN()};
-        assert(!refN);
+        ASSERT(!refN);
         refN = 1u;
     }
 
@@ -225,7 +225,7 @@ namespace qc
         if (_ptr)
         {
             u32 & refN{_refN()};
-            assert(refN == 1u);
+            ASSERT(refN == 1u);
             refN = 0u;
             _destroy(*_ptr);
             _ptr = nullptr;
@@ -310,7 +310,7 @@ namespace qc
         if (_ptr)
         {
             u32 & refN{_refN()};
-            assert(refN >= 1u);
+            ASSERT(refN >= 1u);
 
             if (!--refN)
             {
@@ -377,7 +377,7 @@ namespace qc
         if (_capacity)
         {
             // Check for dangling references
-            assert(empty());
+            ASSERT(empty());
 
             freePages(_memory - 1, (sizeof(_Chunk) + _capacity) / pageSize);
         }
@@ -476,7 +476,7 @@ namespace qc
     {
         _Chunk & header{Arena::_header(&v)};
 
-        assert(!header.refN);
+        ASSERT(!header.refN);
 
         // Destruct value
         v.~T();

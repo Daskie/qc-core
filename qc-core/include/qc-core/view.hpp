@@ -14,9 +14,9 @@ namespace qc
 
         finline View() = default;
 
-        finline View(T * const data_, const u32 size_) : data{data_}, size{size_} { assert(data_ || !size_); }
+        finline View(T * const data_, const u32 size_) : data{data_}, size{size_} { ASSERT(data_ || !size_); }
 
-        finline View(T * const first, T * const last) : data{first}, size{u32(last - first)} { assert(u64(last - first) <= std::numeric_limits<u32>::max()); }
+        finline View(T * const first, T * const last) : data{first}, size{u32(last - first)} { ASSERT(u64(last - first) <= std::numeric_limits<u32>::max()); }
 
         template <u64 n> finline View(T (&arr)[n]) : data{arr}, size{n} {}
 
@@ -27,16 +27,16 @@ namespace qc
 
         nodisc finline explicit operator bool() const { return size; }
 
-        nodisc View view(const u32 offset) const { assert(offset <= size); return {data + offset, size - offset}; }
-        nodisc View view(const u32 offset, const u32 n) const { assert(offset + n <= size); return {data + offset, n}; }
+        nodisc View view(const u32 offset) const { ASSERT(offset <= size); return {data + offset, size - offset}; }
+        nodisc View view(const u32 offset, const u32 n) const { ASSERT(offset + n <= size); return {data + offset, n}; }
 
-        nodisc View viewFirst(const u32 n) const { assert(n <= size); return {data, n}; }
+        nodisc View viewFirst(const u32 n) const { ASSERT(n <= size); return {data, n}; }
 
-        nodisc View viewLast(const u32 n) const { assert(n <= size); return {data + size - n, n}; }
+        nodisc View viewLast(const u32 n) const { ASSERT(n <= size); return {data + size - n, n}; }
 
         nodisc finline View<const std::byte> bytes() const { return {reinterpret_cast<const std::byte *>(data), size * u32(sizeof(T))}; }
 
-        nodisc finline T & operator[](const u32 i) const { assert(i < size); return data[i]; }
+        nodisc finline T & operator[](const u32 i) const { ASSERT(i < size); return data[i]; }
 
         nodisc finline T & front() const { return *data; }
 

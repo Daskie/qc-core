@@ -1,6 +1,5 @@
 #pragma once
 
-#include <cassert>
 #include <cstdint>
 #include <cstdlib>
 
@@ -21,6 +20,8 @@
 #define ABORT() ::std::abort()
 
 #define ABORT_IF(condition) if (condition) [[unlikely]] ABORT()
+
+#define ASSERT(condition) if constexpr (::qc::debug) ABORT_IF(!(condition))
 
 #define FAIL() do { if constexpr (::qc::debug) ::qc::failBreak(); return {}; } while (false)
 
@@ -443,28 +444,28 @@ namespace qc
     template <typename T>
     finline T & Result<T>::operator*()
     {
-        assert(_success);
+        ASSERT(_success);
         return this->_val;
     }
 
     template <typename T>
     finline const T & Result<T>::operator*() const
     {
-        assert(_success);
+        ASSERT(_success);
         return this->_val;
     }
 
     template <typename T>
     finline T * Result<T>::operator->()
     {
-        assert(_success);
+        ASSERT(_success);
         return &this->_val;
     }
 
     template <typename T>
     finline const T * Result<T>::operator->() const
     {
-        assert(_success);
+        ASSERT(_success);
         return &this->_val;
     }
 

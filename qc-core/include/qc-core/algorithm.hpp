@@ -12,7 +12,7 @@ namespace qc
     {
         static thread_local List<T> buffer{};
 
-        assert(vs);
+        ASSERT(vs);
 
         buffer = vs;
 
@@ -42,7 +42,7 @@ namespace qc
     template <Numeric T>
     T medianOrdered(const CView<T> vs)
     {
-        assert(vs);
+        ASSERT(vs);
 
         const T * mid{vs.data + vs.size / 2u};
 

@@ -37,8 +37,8 @@ namespace qc
         template <u32 i> requires (i < n) nodisc finline constexpr       T && get()       && { return std::move(data[i]); }
         template <u32 i> requires (i < n) nodisc finline constexpr const T && get() const && { return std::move(data[i]); }
 
-        nodisc finline constexpr T & operator[](const u32 i) { assert(i < n); return data[i]; }
-        nodisc finline constexpr const T & operator[](const u32 i) const { assert(i < n); return data[i]; }
+        nodisc finline constexpr T & operator[](const u32 i) { ASSERT(i < n); return data[i]; }
+        nodisc finline constexpr const T & operator[](const u32 i) const { ASSERT(i < n); return data[i]; }
 
         nodisc finline constexpr T & front() { return *data; }
         nodisc finline constexpr const T & front() const { return *data; }

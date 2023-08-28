@@ -287,7 +287,7 @@ namespace qc
     finline Pool<T>::UnqT<constant>::UnqT(_Chunk * const chunk) :
         _chunk{chunk}
     {
-        assert(!_chunk->refN);
+        ASSERT(!_chunk->refN);
 
         _chunk->refN = 1u;
     }
@@ -330,7 +330,7 @@ namespace qc
     {
         if (_chunk)
         {
-            assert(_chunk->refN == 1u);
+            ASSERT(_chunk->refN == 1u);
             _chunk->refN = 0u;
             _destroy(_chunk);
             _chunk = nullptr;
@@ -415,7 +415,7 @@ namespace qc
     {
         if (_chunk)
         {
-            assert(_chunk->refN >= 1u);
+            ASSERT(_chunk->refN >= 1u);
 
             if (!--_chunk->refN)
             {
@@ -489,7 +489,7 @@ namespace qc
     template <typename T>
     inline Pool<T>::~Pool()
     {
-        assert(!_size);
+        ASSERT(!_size);
 
         // Free memory
         if (_chunksStart)
@@ -625,8 +625,8 @@ namespace qc
 
         _Chunk * const chunk{static_cast<_Chunk *>(reinterpret_cast<_ChunkMeta *>(ptr) - 1)};
 
-        assert(chunk >= _chunksStart && chunk < _chunksEnd);
-        assert(chunk->refN);
+        ASSERT(chunk >= _chunksStart && chunk < _chunksEnd);
+        ASSERT(chunk->refN);
 
         return Shr{chunk};
     }
@@ -671,7 +671,7 @@ namespace qc
     template <typename T>
     inline void Pool<T>::_destroy(_Chunk * const chunk)
     {
-        assert(!chunk->refN);
+        ASSERT(!chunk->refN);
 
         Pool & pool{chunk->pool()};
 
@@ -821,7 +821,7 @@ namespace qc
 
         _Chunk * const chunk{_firstBubble};
 
-        assert(!chunk->refN);
+        ASSERT(!chunk->refN);
 
         // If bubble has at least two slots, push head back
         if (_firstBubble->bubble.headTailOffset)
@@ -868,7 +868,7 @@ namespace qc
         // Reserve virtual memory if haven't done so already
         if (!_chunksStart)
         {
-            assert(_reservedPageN);
+            ASSERT(_reservedPageN);
 
             _chunksStart = static_cast<_Chunk *>(reservePages(_reservedPageN)) + 1;
             _chunksEnd = _chunksStart;
@@ -913,7 +913,7 @@ namespace qc
         _setupTailChunk();
 
         // Setup bubble
-        assert(!_firstBubble); // Should only be expanding if no empty slots
+        ASSERT(!_firstBubble); // Should only be expanding if no empty slots
         _firstBubble = newChunksStart;
         newChunksStart->bubble.ordinal = 0u;
         newChunksStart->bubble.headTailOffset = u32(_chunksEnd - 1 - newChunksStart);

@@ -268,7 +268,7 @@ namespace qc
     template <typename T>
     inline const T & RingDeque<T>::front() const
     {
-        assert(_size);
+        ASSERT(_size);
 
         return *_front;
     }
@@ -282,7 +282,7 @@ namespace qc
     template <typename T>
     inline const T & RingDeque<T>::back() const
     {
-        assert(_size);
+        ASSERT(_size);
 
         return _back[_back == _slots ? s64(_capacity) - 1 : -1];
     }
@@ -304,7 +304,7 @@ namespace qc
     template <typename T>
     inline void RingDeque<T>::pop_front()
     {
-        assert(_size);
+        ASSERT(_size);
 
         _front->~T();
         --_size;
@@ -319,7 +319,7 @@ namespace qc
     template <typename T>
     inline void RingDeque<T>::pop_back()
     {
-        assert(_size);
+        ASSERT(_size);
 
         if (_back == _slots)
         {
