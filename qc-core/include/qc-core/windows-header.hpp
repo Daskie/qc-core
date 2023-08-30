@@ -7,6 +7,7 @@
 #include <windows.h>
 #include <windowsx.h>
 #include <shellapi.h>
+#include <shlobj_core.h>
 #include <dwmapi.h>
 #undef near
 #undef far
