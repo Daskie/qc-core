@@ -471,13 +471,13 @@ namespace qc
     template <Floating T>
     finline constexpr T radians(const T degrees)
     {
-        return degrees * T(number::pi<T> / 180.0);
+        return degrees * (number::pi<T> / T(180.0));
     }
 
     template <Floating T>
     finline constexpr T degrees(const T radians)
     {
-        return radians * T(180.0 / number::pi<T>);
+        return radians * (T(180.0) / number::pi<T>);
     }
 
     template <Floating To, Floating From>
