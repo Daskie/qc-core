@@ -76,7 +76,7 @@ TEST(Core, primitives)
 template <Floating T>
 static void compileNumbersT()
 {
-    static_cast<void>(qc::number::infinity<T>);
+    static_cast<void>(qc::number::inf<T>);
     static_cast<void>(qc::number::nan<T>);
     static_cast<void>(qc::number::pi<T>);
     static_cast<void>(qc::number::e<T>);
@@ -84,6 +84,24 @@ static void compileNumbersT()
     static_cast<void>(qc::number::sqrt2<T>);
     static_cast<void>(qc::number::sqrt3<T>);
     static_cast<void>(qc::number::sqrt5<T>);
+
+    static_cast<void>(qc::number32::inf);
+    static_cast<void>(qc::number32::nan);
+    static_cast<void>(qc::number32::pi);
+    static_cast<void>(qc::number32::e);
+    static_cast<void>(qc::number32::phi);
+    static_cast<void>(qc::number32::sqrt2);
+    static_cast<void>(qc::number32::sqrt3);
+    static_cast<void>(qc::number32::sqrt5);
+
+    static_cast<void>(qc::number64::inf);
+    static_cast<void>(qc::number64::nan);
+    static_cast<void>(qc::number64::pi);
+    static_cast<void>(qc::number64::e);
+    static_cast<void>(qc::number64::phi);
+    static_cast<void>(qc::number64::sqrt2);
+    static_cast<void>(qc::number64::sqrt3);
+    static_cast<void>(qc::number64::sqrt5);
 }
 
 TEST(Core, numbers)

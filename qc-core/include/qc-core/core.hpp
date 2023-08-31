@@ -231,14 +231,38 @@ namespace qc
 
     namespace number
     {
-        template <Floating T> inline constexpr T infinity{std::numeric_limits<T>::infinity()};
-        template <Floating T> inline constexpr T nan{std::numeric_limits<T>::quiet_NaN()};
-        template <Floating T> inline constexpr T pi{T(3.141592653589793)};
-        template <Floating T> inline constexpr T e{T(2.718281828459045)};
-        template <Floating T> inline constexpr T phi{T(1.618033988749895)};
+        template <Floating T> inline constexpr T   inf{std::numeric_limits<T>::infinity()};
+        template <Floating T> inline constexpr T   nan{std::numeric_limits<T>::quiet_NaN()};
+        template <Floating T> inline constexpr T    pi{T(3.141592653589793)};
+        template <Floating T> inline constexpr T     e{T(2.718281828459045)};
+        template <Floating T> inline constexpr T   phi{T(1.618033988749895)};
         template <Floating T> inline constexpr T sqrt2{T(1.414213562373095)};
         template <Floating T> inline constexpr T sqrt3{T(1.732050807568877)};
         template <Floating T> inline constexpr T sqrt5{T(2.236067977499790)};
+    }
+
+    namespace number32
+    {
+        inline constexpr f32   inf{number::  inf<f32>};
+        inline constexpr f32   nan{number::  nan<f32>};
+        inline constexpr f32    pi{number::   pi<f32>};
+        inline constexpr f32     e{number::    e<f32>};
+        inline constexpr f32   phi{number::  phi<f32>};
+        inline constexpr f32 sqrt2{number::sqrt2<f32>};
+        inline constexpr f32 sqrt3{number::sqrt3<f32>};
+        inline constexpr f32 sqrt5{number::sqrt5<f32>};
+    }
+
+    namespace number64
+    {
+        inline constexpr f64   inf{number::  inf<f64>};
+        inline constexpr f64   nan{number::  nan<f64>};
+        inline constexpr f64    pi{number::   pi<f64>};
+        inline constexpr f64     e{number::    e<f64>};
+        inline constexpr f64   phi{number::  phi<f64>};
+        inline constexpr f64 sqrt2{number::sqrt2<f64>};
+        inline constexpr f64 sqrt3{number::sqrt3<f64>};
+        inline constexpr f64 sqrt5{number::sqrt5<f64>};
     }
 
     struct IKnowWhatImDoing {};
