@@ -48,7 +48,7 @@ namespace qc
         SERIALIZABLE(2);
 
         using Type = T;
-        static constexpr u32 n{2};
+        inline static constexpr u32 n{2};
 
         vec2<T> c1{T(1.0), T(0.0)};
         vec2<T> c2{T(0.0), T(1.0)};
@@ -89,7 +89,7 @@ namespace qc
     struct mat<T, 3>
     {
         using Type = T;
-        static constexpr u32 n{3u};
+        inline static constexpr u32 n{3u};
 
         SERIALIZABLE(3);
 
@@ -134,7 +134,7 @@ namespace qc
     struct mat<T, 4>
     {
         using Type = T;
-        static constexpr u32 n{4u};
+        inline static constexpr u32 n{4u};
 
         SERIALIZABLE(4);
 

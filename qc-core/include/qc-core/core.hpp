@@ -38,7 +38,7 @@
     #define CHECK_RESULT_EXT_DEBUG(resultExpr, conditionExpr) static_cast<void>(resultExpr)
 #endif
 
-#define SERIALIZABLE(n) friend class ::qc::Serializer; friend class ::qc::Deserializer; static constexpr ::qc::u32 _serializableN{n}
+#define SERIALIZABLE(n) friend class ::qc::Serializer; friend class ::qc::Deserializer; inline static constexpr ::qc::u32 _serializableN{n}
 
 #ifdef QC_MSVC
     #define MSVC_WARNING_PUSH __pragma(warning(push))
@@ -91,43 +91,43 @@ namespace qc
     static_assert(std::endian::native == std::endian::little);
 
     #ifdef QC_DEBUG
-        constexpr bool debug{true};
-        constexpr bool release{false};
+        inline constexpr bool debug{true};
+        inline constexpr bool release{false};
     #else
-        constexpr bool debug{false};
-        constexpr bool release{true};
+        inline constexpr bool debug{false};
+        inline constexpr bool release{true};
     #endif
 
     enum class Compiler { other, msvc, gcc };
 
     #if defined QC_MSVC
-        constexpr Compiler compiler{Compiler::msvc};
-        constexpr bool msvc{true};
-        constexpr bool gcc{false};
+        inline constexpr Compiler compiler{Compiler::msvc};
+        inline constexpr bool msvc{true};
+        inline constexpr bool gcc{false};
     #elif defined QC_GCC
-        constexpr Compiler compiler{Compiler::gcc};
-        constexpr bool msvc{false};
-        constexpr bool gcc{true};
+        inline constexpr Compiler compiler{Compiler::gcc};
+        inline constexpr bool msvc{false};
+        inline constexpr bool gcc{true};
     #else
-        constexpr Compiler compiler{Compiler::other};
-        constexpr bool msvc{false};
-        constexpr bool gcc{false};
+        inline constexpr Compiler compiler{Compiler::other};
+        inline constexpr bool msvc{false};
+        inline constexpr bool gcc{false};
     #endif
 
     enum class Platform { other, windows, linux };
 
     #if defined QC_WINDOWS
-        constexpr Platform platform{Platform::windows};
-        constexpr bool windows{true};
-        constexpr bool linux{false};
+        inline constexpr Platform platform{Platform::windows};
+        inline constexpr bool windows{true};
+        inline constexpr bool linux{false};
     #elif defined QC_LINUX
-        constexpr Platform platform{Platform::linux};
-        constexpr bool windows{false};
-        constexpr bool linux{true};
+        inline constexpr Platform platform{Platform::linux};
+        inline constexpr bool windows{false};
+        inline constexpr bool linux{true};
     #else
-        constexpr Platform platform{Platform::other};
-        constexpr bool msvc{false};
-        constexpr bool gcc{false};
+        inline constexpr Platform platform{Platform::other};
+        inline constexpr bool msvc{false};
+        inline constexpr bool gcc{false};
     #endif
 
     inline namespace primitives

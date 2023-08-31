@@ -9,7 +9,7 @@ namespace qc
     ///   Unix does not have this property, but we can easily simulate it
     /// Hardcoded for compile-time optimization; it is checked the first time pages are reserved and the program will
     ///   abort if the actual value differs
-    constexpr u64 pageSize{64u * 1024u};
+    inline constexpr u64 pageSize{64u * 1024u};
 
     ///
     /// Allocate a contiguous block of memory

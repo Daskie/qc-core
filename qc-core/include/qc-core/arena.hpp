@@ -156,9 +156,9 @@ namespace qc
             u32 refN;
         };
 
-        static constexpr u64 _maxPageN{1u << 16};
-        static constexpr u64 _maxCapacity{_maxPageN * pageSize - sizeof(_Chunk)};
-        static constexpr u64 _maxValChunkN{(1u << 16) - 1u};
+        inline static constexpr u64 _maxPageN{1u << 16};
+        inline static constexpr u64 _maxCapacity{_maxPageN * pageSize - sizeof(_Chunk)};
+        inline static constexpr u64 _maxValChunkN{(1u << 16) - 1u};
 
         static u64 _pageN(u64 capacity);
 

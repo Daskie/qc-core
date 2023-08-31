@@ -12,7 +12,7 @@ namespace qc
         template <typename E> concept CountableEnum = Enum<E> && Unsigned<std::underlying_type_t<E>> && std::to_underlying(E::_n) >= 1u;
     }
 
-    template <CountableEnum E> constexpr u64 enumN{u64(E::_n)};
+    template <CountableEnum E> inline constexpr u64 enumN{u64(E::_n)};
 
     namespace _private::enum_utils
     {
@@ -28,5 +28,5 @@ namespace qc
         }
     }
 
-    template <CountableEnum E> constexpr Array<E, enumN<E>> enumArray{_private::enum_utils::makeEnumArray<E>()};
+    template <CountableEnum E> inline constexpr Array<E, enumN<E>> enumArray{_private::enum_utils::makeEnumArray<E>()};
 }

@@ -64,18 +64,18 @@
 
 namespace qc::color
 {
-    template <Numeric T> constexpr vec3<T> black    {transnorm<T>(dvec3{0.00, 0.00, 0.00})};
-    template <Numeric T> constexpr vec3<T> darkGray {transnorm<T>(dvec3{0.25, 0.25, 0.25})};
-    template <Numeric T> constexpr vec3<T> gray     {transnorm<T>(dvec3{0.50, 0.50, 0.50})};
-    template <Numeric T> constexpr vec3<T> lightGray{transnorm<T>(dvec3{0.75, 0.75, 0.75})};
-    template <Numeric T> constexpr vec3<T> white    {transnorm<T>(dvec3{1.00, 1.00, 1.00})};
+    template <Numeric T> inline constexpr vec3<T> black    {transnorm<T>(dvec3{0.00, 0.00, 0.00})};
+    template <Numeric T> inline constexpr vec3<T> darkGray {transnorm<T>(dvec3{0.25, 0.25, 0.25})};
+    template <Numeric T> inline constexpr vec3<T> gray     {transnorm<T>(dvec3{0.50, 0.50, 0.50})};
+    template <Numeric T> inline constexpr vec3<T> lightGray{transnorm<T>(dvec3{0.75, 0.75, 0.75})};
+    template <Numeric T> inline constexpr vec3<T> white    {transnorm<T>(dvec3{1.00, 1.00, 1.00})};
 
-    template <Numeric T> constexpr vec3<T> red      {transnorm<T>(dvec3{1.00, 0.00, 0.00})};
-    template <Numeric T> constexpr vec3<T> yellow   {transnorm<T>(dvec3{1.00, 1.00, 0.00})};
-    template <Numeric T> constexpr vec3<T> green    {transnorm<T>(dvec3{0.00, 1.00, 0.00})};
-    template <Numeric T> constexpr vec3<T> cyan     {transnorm<T>(dvec3{0.00, 1.00, 1.00})};
-    template <Numeric T> constexpr vec3<T> blue     {transnorm<T>(dvec3{0.00, 0.00, 1.00})};
-    template <Numeric T> constexpr vec3<T> magenta  {transnorm<T>(dvec3{1.00, 0.00, 1.00})};
+    template <Numeric T> inline constexpr vec3<T> red      {transnorm<T>(dvec3{1.00, 0.00, 0.00})};
+    template <Numeric T> inline constexpr vec3<T> yellow   {transnorm<T>(dvec3{1.00, 1.00, 0.00})};
+    template <Numeric T> inline constexpr vec3<T> green    {transnorm<T>(dvec3{0.00, 1.00, 0.00})};
+    template <Numeric T> inline constexpr vec3<T> cyan     {transnorm<T>(dvec3{0.00, 1.00, 1.00})};
+    template <Numeric T> inline constexpr vec3<T> blue     {transnorm<T>(dvec3{0.00, 0.00, 1.00})};
+    template <Numeric T> inline constexpr vec3<T> magenta  {transnorm<T>(dvec3{1.00, 0.00, 1.00})};
 
     ///
     /// Converts a color from sRGB to lRGB

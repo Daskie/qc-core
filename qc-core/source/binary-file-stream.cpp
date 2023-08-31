@@ -14,7 +14,7 @@ namespace qc
     namespace
     {
         static_assert(_BinaryStreamCommon::bufferSize % pageSize == 0u);
-        constexpr u64 _bufferPageN{_BinaryStreamCommon::bufferSize / pageSize};
+        inline constexpr u64 _bufferPageN{_BinaryStreamCommon::bufferSize / pageSize};
 
         // Keep one buffer per thread around for reuse
         thread_local std::byte * _availableBuffer{};

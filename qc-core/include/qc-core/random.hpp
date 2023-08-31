@@ -84,7 +84,7 @@ namespace qc
       private:
 
         struct _Constants { int p, q, r; };
-        static constexpr _Constants _constants{
+        inline static constexpr _Constants _constants{
             Same<G,  u8> ? _Constants{ 3,  2, 1} :
             Same<G, u16> ? _Constants{ 4,  3, 2} :
             Same<G, u32> ? _Constants{21,  9, 3} :

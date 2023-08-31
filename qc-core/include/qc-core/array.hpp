@@ -11,7 +11,7 @@ namespace qc
     {
         static_assert(n > 0u);
 
-        static constexpr u32 size{n};
+        inline static constexpr u32 size{n};
 
         T data[n];
 
@@ -70,24 +70,24 @@ namespace qc
 {
     template <typename T, u32 n>
     template <typename T_> requires (n == 1u)
-    constexpr Array<T, n>::Array(T_ && val) :
+    inline constexpr Array<T, n>::Array(T_ && val) :
         data{std::forward<T_>(val)}
     {}
 
     template <typename T, u32 n>
     template <typename First, typename Second, typename... Rest> requires (sizeof...(Rest) == n - 2u)
-    constexpr Array<T, n>::Array(First && first, Second && second, Rest &&... rest) :
+    inline constexpr Array<T, n>::Array(First && first, Second && second, Rest &&... rest) :
        data{std::forward<First>(first), std::forward<Second>(second), std::forward<Rest>(rest)...}
     {}
 
     template <typename T, u32 n>
-    constexpr Array<T, n>::Array(FillTag, const T & v)
+    inline constexpr Array<T, n>::Array(FillTag, const T & v)
     {
         for (T & element : *this) element = v;
     }
 
     template <typename T, u32 n>
-    constexpr void Array<T, n>::fill(const T & v)
+    inline constexpr void Array<T, n>::fill(const T & v)
     {
         for (T & element : *this) element = v;
     }

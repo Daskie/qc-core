@@ -86,7 +86,7 @@ namespace qc
 
       private:
 
-        constexpr static u64 _minCapacity{16u}; // Must be power of two
+        inline constexpr static u64 _minCapacity{16u}; // Must be power of two
 
         T * _slots{};
         u64 _capacity{};

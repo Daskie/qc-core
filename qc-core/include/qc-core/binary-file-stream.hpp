@@ -22,13 +22,13 @@ namespace qc
     {
       public:
 
-        static constexpr u64 bufferSize{64u * 1024u};
+        inline static constexpr u64 bufferSize{64u * 1024u};
 
       protected:
 
         template <u64 n> struct _Bytes { std::byte bytes[n]; };
 
-        static constexpr u64 _maxDirectCopySize{64u};
+        inline static constexpr u64 _maxDirectCopySize{64u};
     };
 
     class BinaryOFStream : public _BinaryStreamCommon

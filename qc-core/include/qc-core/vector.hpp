@@ -83,7 +83,7 @@ namespace qc
     struct vec<T, 2>
     {
         using Type = T;
-        static constexpr u32 n{2u};
+        inline static constexpr u32 n{2u};
 
         SERIALIZABLE(2);
 
@@ -124,7 +124,7 @@ namespace qc
     struct vec<T, 3>
     {
         using Type = T;
-        static constexpr u32 n{3u};
+        inline static constexpr u32 n{3u};
 
         SERIALIZABLE(3);
 
@@ -174,7 +174,7 @@ namespace qc
     struct vec<T, 4>
     {
         using Type = T;
-        static constexpr u32 n{4u};
+        inline static constexpr u32 n{4u};
 
         SERIALIZABLE(4);
 
@@ -237,50 +237,50 @@ namespace qc
     //
     // ...
     //
-    template <typename T, u32 n> constexpr vec<T, n> px{};
-    template <typename T, u32 n> constexpr vec<T, n> nx{};
-    template <typename T, u32 n> constexpr vec<T, n> py{};
-    template <typename T, u32 n> constexpr vec<T, n> ny{};
-    template <typename T, u32 n> constexpr vec<T, n> pz{};
-    template <typename T, u32 n> constexpr vec<T, n> nz{};
-    template <typename T, u32 n> constexpr vec<T, n> pw{};
-    template <typename T, u32 n> constexpr vec<T, n> nw{};
-    template <typename T> constexpr vec2<T> px<T, 2>{T( 1), T( 0)};
-    template <typename T> constexpr vec2<T> nx<T, 2>{T(-1), T( 0)};
-    template <typename T> constexpr vec3<T> px<T, 3>{T( 1), T( 0), T( 0)};
-    template <typename T> constexpr vec3<T> nx<T, 3>{T(-1), T( 0), T( 0)};
-    template <typename T> constexpr vec4<T> px<T, 4>{T( 1), T( 0), T( 0), T( 0)};
-    template <typename T> constexpr vec4<T> nx<T, 4>{T(-1), T( 0), T( 0), T( 0)};
-    template <typename T> constexpr vec2<T> py<T, 2>{T( 0), T( 1)};
-    template <typename T> constexpr vec2<T> ny<T, 2>{T( 0), T(-1)};
-    template <typename T> constexpr vec3<T> py<T, 3>{T( 0), T( 1), T( 0)};
-    template <typename T> constexpr vec3<T> ny<T, 3>{T( 0), T(-1), T( 0)};
-    template <typename T> constexpr vec4<T> py<T, 4>{T( 0), T( 1), T( 0), T( 0)};
-    template <typename T> constexpr vec4<T> ny<T, 4>{T( 0), T(-1), T( 0), T( 0)};
-    template <typename T> constexpr vec3<T> pz<T, 3>{T( 0), T( 0), T( 1)};
-    template <typename T> constexpr vec3<T> nz<T, 3>{T( 0), T( 0), T(-1)};
-    template <typename T> constexpr vec4<T> pz<T, 4>{T( 0), T( 0), T( 1), T( 0)};
-    template <typename T> constexpr vec4<T> nz<T, 4>{T( 0), T( 0), T(-1), T( 0)};
-    template <typename T> constexpr vec4<T> pw<T, 4>{T( 0), T( 0), T( 0), T( 1)};
-    template <typename T> constexpr vec4<T> nw<T, 4>{T( 0), T( 0), T( 0), T(-1)};
-    template <typename T> constexpr vec2<T> px2 = px<T, 2>;
-    template <typename T> constexpr vec2<T> nx2 = nx<T, 2>;
-    template <typename T> constexpr vec3<T> px3 = px<T, 3>;
-    template <typename T> constexpr vec3<T> nx3 = nx<T, 3>;
-    template <typename T> constexpr vec4<T> px4 = px<T, 4>;
-    template <typename T> constexpr vec4<T> nx4 = nx<T, 4>;
-    template <typename T> constexpr vec2<T> py2 = py<T, 2>;
-    template <typename T> constexpr vec2<T> ny2 = ny<T, 2>;
-    template <typename T> constexpr vec3<T> py3 = py<T, 3>;
-    template <typename T> constexpr vec3<T> ny3 = ny<T, 3>;
-    template <typename T> constexpr vec4<T> py4 = py<T, 4>;
-    template <typename T> constexpr vec4<T> ny4 = ny<T, 4>;
-    template <typename T> constexpr vec3<T> pz3 = pz<T, 3>;
-    template <typename T> constexpr vec3<T> nz3 = nz<T, 3>;
-    template <typename T> constexpr vec4<T> pz4 = pz<T, 4>;
-    template <typename T> constexpr vec4<T> nz4 = nz<T, 4>;
-    template <typename T> constexpr vec4<T> pw4 = pw<T, 4>;
-    template <typename T> constexpr vec4<T> nw4 = nw<T, 4>;
+    template <typename T, u32 n> inline constexpr vec<T, n> px{};
+    template <typename T, u32 n> inline constexpr vec<T, n> nx{};
+    template <typename T, u32 n> inline constexpr vec<T, n> py{};
+    template <typename T, u32 n> inline constexpr vec<T, n> ny{};
+    template <typename T, u32 n> inline constexpr vec<T, n> pz{};
+    template <typename T, u32 n> inline constexpr vec<T, n> nz{};
+    template <typename T, u32 n> inline constexpr vec<T, n> pw{};
+    template <typename T, u32 n> inline constexpr vec<T, n> nw{};
+    template <typename T> inline constexpr vec2<T> px<T, 2>{T( 1), T( 0)};
+    template <typename T> inline constexpr vec2<T> nx<T, 2>{T(-1), T( 0)};
+    template <typename T> inline constexpr vec3<T> px<T, 3>{T( 1), T( 0), T( 0)};
+    template <typename T> inline constexpr vec3<T> nx<T, 3>{T(-1), T( 0), T( 0)};
+    template <typename T> inline constexpr vec4<T> px<T, 4>{T( 1), T( 0), T( 0), T( 0)};
+    template <typename T> inline constexpr vec4<T> nx<T, 4>{T(-1), T( 0), T( 0), T( 0)};
+    template <typename T> inline constexpr vec2<T> py<T, 2>{T( 0), T( 1)};
+    template <typename T> inline constexpr vec2<T> ny<T, 2>{T( 0), T(-1)};
+    template <typename T> inline constexpr vec3<T> py<T, 3>{T( 0), T( 1), T( 0)};
+    template <typename T> inline constexpr vec3<T> ny<T, 3>{T( 0), T(-1), T( 0)};
+    template <typename T> inline constexpr vec4<T> py<T, 4>{T( 0), T( 1), T( 0), T( 0)};
+    template <typename T> inline constexpr vec4<T> ny<T, 4>{T( 0), T(-1), T( 0), T( 0)};
+    template <typename T> inline constexpr vec3<T> pz<T, 3>{T( 0), T( 0), T( 1)};
+    template <typename T> inline constexpr vec3<T> nz<T, 3>{T( 0), T( 0), T(-1)};
+    template <typename T> inline constexpr vec4<T> pz<T, 4>{T( 0), T( 0), T( 1), T( 0)};
+    template <typename T> inline constexpr vec4<T> nz<T, 4>{T( 0), T( 0), T(-1), T( 0)};
+    template <typename T> inline constexpr vec4<T> pw<T, 4>{T( 0), T( 0), T( 0), T( 1)};
+    template <typename T> inline constexpr vec4<T> nw<T, 4>{T( 0), T( 0), T( 0), T(-1)};
+    template <typename T> inline constexpr vec2<T> px2 = px<T, 2>;
+    template <typename T> inline constexpr vec2<T> nx2 = nx<T, 2>;
+    template <typename T> inline constexpr vec3<T> px3 = px<T, 3>;
+    template <typename T> inline constexpr vec3<T> nx3 = nx<T, 3>;
+    template <typename T> inline constexpr vec4<T> px4 = px<T, 4>;
+    template <typename T> inline constexpr vec4<T> nx4 = nx<T, 4>;
+    template <typename T> inline constexpr vec2<T> py2 = py<T, 2>;
+    template <typename T> inline constexpr vec2<T> ny2 = ny<T, 2>;
+    template <typename T> inline constexpr vec3<T> py3 = py<T, 3>;
+    template <typename T> inline constexpr vec3<T> ny3 = ny<T, 3>;
+    template <typename T> inline constexpr vec4<T> py4 = py<T, 4>;
+    template <typename T> inline constexpr vec4<T> ny4 = ny<T, 4>;
+    template <typename T> inline constexpr vec3<T> pz3 = pz<T, 3>;
+    template <typename T> inline constexpr vec3<T> nz3 = nz<T, 3>;
+    template <typename T> inline constexpr vec4<T> pz4 = pz<T, 4>;
+    template <typename T> inline constexpr vec4<T> nz4 = nz<T, 4>;
+    template <typename T> inline constexpr vec4<T> pw4 = pw<T, 4>;
+    template <typename T> inline constexpr vec4<T> nw4 = nw<T, 4>;
 
     template <Numeric T, u32 n> vec<T, n> & operator++(vec<T, n> & v);
     template <Numeric T, u32 n> vec<T, n>   operator++(vec<T, n> & v, int);

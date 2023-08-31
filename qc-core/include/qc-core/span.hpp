@@ -88,7 +88,7 @@ namespace qc
     struct span<T *, 1>
     {
         using Type = T *;
-        static constexpr u32 n{1u};
+        inline static constexpr u32 n{1u};
 
         T * min;
         T * max;
@@ -119,7 +119,7 @@ namespace qc
     struct span<T, 1>
     {
         using Type = T;
-        static constexpr u32 n{1u};
+        inline static constexpr u32 n{1u};
 
         SERIALIZABLE(2);
 
@@ -154,7 +154,7 @@ namespace qc
     struct span<T, 2>
     {
         using Type = T;
-        static constexpr u32 n{2u};
+        inline static constexpr u32 n{2u};
 
         SERIALIZABLE(2);
 
@@ -196,7 +196,7 @@ namespace qc
     struct span<T, 3>
     {
         using Type = T;
-        static constexpr u32 n{3u};
+        inline static constexpr u32 n{3u};
 
         SERIALIZABLE(2);
 
@@ -244,7 +244,7 @@ namespace qc
     struct span<T, 4>
     {
         using Type = T;
-        static constexpr u32 n{4u};
+        inline static constexpr u32 n{4u};
 
         SERIALIZABLE(2);
 
@@ -298,17 +298,17 @@ namespace qc
     };
 
     MSVC_WARNING_SUPPRESS(4146)
-    template <Numeric T, u32 n> constexpr span<T, n> fullSpan{Floating<T> ? T(-std::numeric_limits<T>::infinity()) : std::numeric_limits<T>::min(), Floating<T> ? std::numeric_limits<T>::infinity() : std::numeric_limits<T>::max()};
-    template <Numeric T> constexpr span1<T> fullSpan1{fullSpan<T, 1>};
-    template <Numeric T> constexpr span2<T> fullSpan2{fullSpan<T, 2>};
-    template <Numeric T> constexpr span3<T> fullSpan3{fullSpan<T, 3>};
-    template <Numeric T> constexpr span4<T> fullSpan4{fullSpan<T, 4>};
+    template <Numeric T, u32 n> inline constexpr span<T, n> fullSpan{Floating<T> ? T(-std::numeric_limits<T>::infinity()) : std::numeric_limits<T>::min(), Floating<T> ? std::numeric_limits<T>::infinity() : std::numeric_limits<T>::max()};
+    template <Numeric T> inline constexpr span1<T> fullSpan1{fullSpan<T, 1>};
+    template <Numeric T> inline constexpr span2<T> fullSpan2{fullSpan<T, 2>};
+    template <Numeric T> inline constexpr span3<T> fullSpan3{fullSpan<T, 3>};
+    template <Numeric T> inline constexpr span4<T> fullSpan4{fullSpan<T, 4>};
 
-    template <Numeric T, u32 n> constexpr span<T, n> nullSpan{fullSpan<T, n>.max, fullSpan<T, n>.min};
-    template <Numeric T> constexpr span1<T> nullSpan1{nullSpan<T, 1>};
-    template <Numeric T> constexpr span2<T> nullSpan2{nullSpan<T, 2>};
-    template <Numeric T> constexpr span3<T> nullSpan3{nullSpan<T, 3>};
-    template <Numeric T> constexpr span4<T> nullSpan4{nullSpan<T, 4>};
+    template <Numeric T, u32 n> inline constexpr span<T, n> nullSpan{fullSpan<T, n>.max, fullSpan<T, n>.min};
+    template <Numeric T> inline constexpr span1<T> nullSpan1{nullSpan<T, 1>};
+    template <Numeric T> inline constexpr span2<T> nullSpan2{nullSpan<T, 2>};
+    template <Numeric T> inline constexpr span3<T> nullSpan3{nullSpan<T, 3>};
+    template <Numeric T> inline constexpr span4<T> nullSpan4{nullSpan<T, 4>};
 
     template <Numeric T1, InclusiveSubOf<T1> T2, u32 n> span<T1, n> & operator+=(span<T1, n> & s, T2 v);
     template <Pointer T, u32 n> span<T, n> & operator+=(span<T, n> & s, s64 v);

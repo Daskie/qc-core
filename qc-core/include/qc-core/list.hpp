@@ -181,7 +181,7 @@ namespace qc
 
       private:
 
-        static constexpr u32 _maxCapacity{1u << 31};
+        inline static constexpr u32 _maxCapacity{1u << 31};
 
         u32 _capacity{}; // Always a power of two
         u32 _size{};
