@@ -19,10 +19,10 @@ TEST(Algorithm, median)
     ASSERT_EQ(qc::median(qc::List<s32>{4, 1, 3, 2}.cview()), 2);
     ASSERT_EQ(qc::median(qc::List<s32>{5, 1, 4, 2}.cview()), 3);
 
-    ASSERT_EQ(qc::median(qc::List<float>{1.0f}.cview()), 1.0f);
-    ASSERT_EQ(qc::median(qc::List<float>{1.0f, 2.0f}.cview()), 1.5f);
-    ASSERT_EQ(qc::median(qc::List<float>{2.0f, 3.0f, 1.0f}.cview()), 2.0f);
-    ASSERT_EQ(qc::median(qc::List<float>{3.0f, 4.0f, 1.0f, 2.0f}.cview()), 2.5f);
+    ASSERT_EQ(qc::median(qc::List<f32>{1.0f}.cview()), 1.0f);
+    ASSERT_EQ(qc::median(qc::List<f32>{1.0f, 2.0f}.cview()), 1.5f);
+    ASSERT_EQ(qc::median(qc::List<f32>{2.0f, 3.0f, 1.0f}.cview()), 2.0f);
+    ASSERT_EQ(qc::median(qc::List<f32>{3.0f, 4.0f, 1.0f, 2.0f}.cview()), 2.5f);
 }
 
 TEST(Algorithm, medianOrdered)
@@ -36,8 +36,8 @@ TEST(Algorithm, medianOrdered)
     ASSERT_EQ(qc::medianOrdered(qc::List<s32>{1, 2, 3, 4}.cview()), 2);
     ASSERT_EQ(qc::medianOrdered(qc::List<s32>{1, 2, 4, 5}.cview()), 3);
 
-    ASSERT_EQ(qc::medianOrdered(qc::List<float>{1.0f}.cview()), 1.0f);
-    ASSERT_EQ(qc::medianOrdered(qc::List<float>{1.0f, 2.0f}.cview()), 1.5f);
-    ASSERT_EQ(qc::medianOrdered(qc::List<float>{1.0f, 2.0f, 3.0f}.cview()), 2.0f);
-    ASSERT_EQ(qc::medianOrdered(qc::List<float>{1.0f, 2.0f, 3.0f, 4.0f}.cview()), 2.5f);
+    ASSERT_EQ(qc::medianOrdered(qc::List<f32>{1.0f}.cview()), 1.0f);
+    ASSERT_EQ(qc::medianOrdered(qc::List<f32>{1.0f, 2.0f}.cview()), 1.5f);
+    ASSERT_EQ(qc::medianOrdered(qc::List<f32>{1.0f, 2.0f, 3.0f}.cview()), 2.0f);
+    ASSERT_EQ(qc::medianOrdered(qc::List<f32>{1.0f, 2.0f, 3.0f, 4.0f}.cview()), 2.5f);
 }

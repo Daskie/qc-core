@@ -22,15 +22,15 @@ namespace qc
         template <Floating T> using mat3 = mat<T, 3>;
         template <Floating T> using mat4 = mat<T, 4>;
 
-        template <u32 n> using fmat = mat<float, n>;
-        template <u32 n> using dmat = mat<double, n>;
+        template <u32 n> using fmat = mat<f32, n>;
+        template <u32 n> using dmat = mat<f64, n>;
 
-        using fmat2 = mat<float, 2>;
-        using fmat3 = mat<float, 3>;
-        using fmat4 = mat<float, 4>;
-        using dmat2 = mat<double, 2>;
-        using dmat3 = mat<double, 3>;
-        using dmat4 = mat<double, 4>;
+        using fmat2 = mat<f32, 2>;
+        using fmat3 = mat<f32, 3>;
+        using fmat4 = mat<f32, 4>;
+        using dmat2 = mat<f64, 2>;
+        using dmat3 = mat<f64, 3>;
+        using dmat4 = mat<f64, 4>;
     }
 
     inline namespace types

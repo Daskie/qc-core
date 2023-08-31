@@ -120,7 +120,7 @@ namespace qc
             #ifdef QC_MSVC
                 return ::CloseHandle(std::bit_cast<HANDLE>(fd));
             #else
-                return !::close(int(fd));
+                return !::close(s32(fd));
             #endif
         }
 

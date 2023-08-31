@@ -43,9 +43,9 @@ TEST(Color, colors)
 TEST(Color, srgbToHsl)
 {
     ASSERT_EQ(_truncate(fvec3{0.0f, 0.0f, 0.0f}), _truncate(qc::color::srgbToHsl(fvec3{0.0f, 0.0f, 0.0f})));
-    for (float v{0.25f}; v <= 1.0f; v += 0.25f)
+    for (f32 v{0.25f}; v <= 1.0f; v += 0.25f)
     {
-        const float l{v * 0.5f};
+        const f32 l{v * 0.5f};
         ASSERT_EQ(_truncate(fvec3{0.0f / 6.0f, 1.0f, l}), _truncate(qc::color::srgbToHsl(fvec3{v, 0.0f, 0.0f})));
         ASSERT_EQ(_truncate(fvec3{1.0f / 6.0f, 1.0f, l}), _truncate(qc::color::srgbToHsl(fvec3{v, v, 0.0f})));
         ASSERT_EQ(_truncate(fvec3{2.0f / 6.0f, 1.0f, l}), _truncate(qc::color::srgbToHsl(fvec3{0.0f, v, 0.0f})));
@@ -61,9 +61,9 @@ TEST(Color, srgbToHsl)
 TEST(Color, hslToSrgb)
 {
     ASSERT_EQ(_truncate(fvec3{0.0f, 0.0f, 0.0f}), _truncate(qc::color::hslToSrgb(fvec3{0.0f, 0.0f, 0.0f})));
-    for (float v{0.25f}; v <= 1.0f; v += 0.25f)
+    for (f32 v{0.25f}; v <= 1.0f; v += 0.25f)
     {
-        const float l{v * 0.5f};
+        const f32 l{v * 0.5f};
         ASSERT_EQ(_truncate(fvec3{v, 0.0f, 0.0f}), _truncate(qc::color::hslToSrgb(fvec3{0.0f / 6.0f, 1.0f, l})));
         ASSERT_EQ(_truncate(fvec3{v, v, 0.0f}), _truncate(qc::color::hslToSrgb(fvec3{1.0f / 6.0f, 1.0f, l})));
         ASSERT_EQ(_truncate(fvec3{0.0f, v, 0.0f}), _truncate(qc::color::hslToSrgb(fvec3{2.0f / 6.0f, 1.0f, l})));
@@ -84,7 +84,7 @@ TEST(Color, rgbToHslAndBack)
         {
             for (rgb.x = 0; rgb.x < 256; ++rgb.x)
             {
-                const fvec3 hsl{qc::color::srgbToHsl(qc::transnorm<float>(ucvec3{rgb}))};
+                const fvec3 hsl{qc::color::srgbToHsl(qc::transnorm<f32>(ucvec3{rgb}))};
                 const ivec3 rgbNew{qc::transnorm<u8>(qc::color::hslToSrgb(hsl))};
                 ASSERT_EQ(rgb, rgbNew);
             }

@@ -599,7 +599,7 @@ TEST(Pool, unique)
 {
     static thread_local bool destructed{false};
 
-    struct Obj { int v{0}; ~Obj() { destructed = true; } };
+    struct Obj { s32 v{0}; ~Obj() { destructed = true; } };
 
     qc::Pool<Obj> pool{100};
 
@@ -639,7 +639,7 @@ TEST(Pool, shared)
 {
     static thread_local bool destructed{false};
 
-    struct Obj { int v{0}; ~Obj() { destructed = true; } };
+    struct Obj { s32 v{0}; ~Obj() { destructed = true; } };
 
     qc::Pool<Obj> arena{100};
 

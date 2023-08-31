@@ -43,7 +43,7 @@ namespace qc
 
         template <bool axis> void _constructRecursive(const fvec2 * points, View<u32> orderedA, View<u32> orderedB, View<u32> scratch, _Node * node);
 
-        template <bool axis> void _nearestRecursive(fvec2 point, const _Node * node, fvec2 & nearestPoint, float & minDist2) const;
+        template <bool axis> void _nearestRecursive(fvec2 point, const _Node * node, fvec2 & nearestPoint, f32 & minDist2) const;
     };
 }
 
@@ -85,7 +85,7 @@ namespace qc
         ASSERT(_nodes);
 
         fvec2 nearestPoint{};
-        float minDist2{std::numeric_limits<float>::infinity()};
+        f32 minDist2{std::numeric_limits<f32>::infinity()};
 
         _nearestRecursive<0>(point, _nodes.data(), nearestPoint, minDist2);
 
@@ -194,11 +194,11 @@ namespace qc
     }
 
     template <bool axis>
-    inline void KdTree::_nearestRecursive(const fvec2 point, const _Node * const node, fvec2 & nearestPoint, float & minDist2) const
+    inline void KdTree::_nearestRecursive(const fvec2 point, const _Node * const node, fvec2 & nearestPoint, f32 & minDist2) const
     {
         const fvec2 delta{point - node->point};
         const fvec2 dists2{delta.x * delta.x, delta.y * delta.y};
-        const float dist2{dists2.x + dists2.y};
+        const f32 dist2{dists2.x + dists2.y};
 
         if (dist2 < minDist2)
         {

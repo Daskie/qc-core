@@ -425,7 +425,7 @@ namespace qc::color
         vec3 p = abs(fract(c.xxx + K.xyz) * 6.0f - K.www);
         return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
     }
-    vec3 hue2rgb(float h)
+    vec3 hue2rgb(f32 h)
     {
         vec3 p = abs(fract(h + vec3(1.0f, 2.0f / 3.0f, 1.0f / 3.0f)) * 6.0f - 3.0f);
         return clamp(p - 1.0f, 0.0, 1.0);

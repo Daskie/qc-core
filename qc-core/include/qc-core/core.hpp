@@ -167,7 +167,7 @@ namespace qc
         template <typename T> concept SignedIntegral = OneOf<T, signed char, short, int, long, long long>;
         template <typename T> concept UnsignedIntegral = OneOf<T, unsigned char, unsigned short, unsigned int, unsigned long, unsigned long long>;
         template <typename T> concept Integral = SignedIntegral<T> || UnsignedIntegral<T>;
-        template <typename T> concept Floating = OneOf<T, float, double>;
+        template <typename T> concept Floating = OneOf<T, f32, f64>;
         template <typename T> concept Numeric = Integral<T> || Floating<T>;
         template <typename T> concept Signed = SignedIntegral<T> || Floating<T>;
         template <typename T> concept Unsigned = UnsignedIntegral<T>;

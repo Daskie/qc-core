@@ -10,8 +10,8 @@ namespace qc
     {
         using qc::quat;
 
-        using fquat = quat<float>;
-        using dquat = quat<double>;
+        using fquat = quat<f32>;
+        using dquat = quat<f64>;
     }
 
     inline namespace types

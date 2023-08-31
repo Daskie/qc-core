@@ -62,8 +62,8 @@ static void compileClassesT()
 
 static void compileClasses()
 {
-    compileClassesT<float>();
-    compileClassesT<double>();
+    compileClassesT<f32>();
+    compileClassesT<f64>();
 }
 
 template <typename T>
@@ -100,7 +100,7 @@ static void compileFunctionsT()
 
 static void compileNonMatching()
 {
-    float _f{};
+    f32 _f{};
     fvec3 _fvec{};
     dvec3 _dvec{};
     fquat _fquat{};
@@ -137,8 +137,8 @@ static void compileNonMatching()
 
 static void compileFunctions()
 {
-    compileFunctionsT<float>();
-    compileFunctionsT<double>();
+    compileFunctionsT<f32>();
+    compileFunctionsT<f64>();
     compileNonMatching();
 }
 
@@ -160,8 +160,8 @@ static void testPropertiesT()
 
 static void testProperties()
 {
-    testPropertiesT<float>();
-    testPropertiesT<double>();
+    testPropertiesT<f32>();
+    testPropertiesT<f64>();
 }
 
 template <typename T1, typename T2>
@@ -173,14 +173,14 @@ static void compileCastsTT()
 template <typename T>
 static void compileCastsT()
 {
-    compileCastsTT<T, float>();
-    compileCastsTT<T, double>();
+    compileCastsTT<T, f32>();
+    compileCastsTT<T, f64>();
 }
 
 static void compileCasts()
 {
-    compileCastsT<float>();
-    compileCastsT<double>();
+    compileCastsT<f32>();
+    compileCastsT<f64>();
 }
 
 TEST(Quaternion, castExplicitness)
@@ -201,5 +201,5 @@ TEST(Quaternion, types)
 {
     static_assert(Quaternion<fquat>);
     static_assert(Quaternion<dquat>);
-    static_assert(!Quaternion<float>);
+    static_assert(!Quaternion<f32>);
 }

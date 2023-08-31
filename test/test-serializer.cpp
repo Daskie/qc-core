@@ -32,7 +32,7 @@ struct CustomB
 
     CustomB() = default;
 
-    CustomB(const CustomA & a, const CustomA & b, const double c) :
+    CustomB(const CustomA & a, const CustomA & b, const f64 c) :
         _a{a},
         _b{b},
         _c{c}
@@ -40,13 +40,13 @@ struct CustomB
 
     const CustomA & a() { return _a; }
     const CustomA & b() { return _b; }
-    double c() { return _c; }
+    f64 c() { return _c; }
 
   private:
 
     CustomA _a;
     CustomA _b;
-    double _c;
+    f64 _c;
 };
 
 struct CustomC
@@ -111,7 +111,7 @@ TEST(Serializer, primitives)
             ASSERT_EQ(v4, 4);
         }
         {
-            float v1{}; double v2{};
+            f32 v1{}; f64 v2{};
             deserializer >> v1 >> v2;
             ASSERT_EQ(v1, 1.0f);
             ASSERT_EQ(v2, 2.0);

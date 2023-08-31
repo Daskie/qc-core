@@ -176,7 +176,7 @@ TEST(Arena, unique)
 {
     static thread_local bool destructed{false};
 
-    struct Obj { int v{0}; ~Obj() { destructed = true; } };
+    struct Obj { s32 v{0}; ~Obj() { destructed = true; } };
 
     qc::Arena arena{100};
 
@@ -216,7 +216,7 @@ TEST(Arena, shared)
 {
     static thread_local bool destructed{false};
 
-    struct Obj { int v{0}; ~Obj() { destructed = true; } };
+    struct Obj { s32 v{0}; ~Obj() { destructed = true; } };
 
     qc::Arena arena{100};
 

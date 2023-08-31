@@ -41,8 +41,8 @@ namespace qc
 
     //
     // Returns `v` stripped of any fractional part.
-    // If `T` is a float, only works for values that can fit in an `s32`.
-    // If `T` is a double, only works for values that can fit in a `s64`.
+    // If `T` is a f32, only works for values that can fit in an `s32`.
+    // If `T` is a f64, only works for values that can fit in a `s64`.
     // If `T` is integral, simply returns `v`.
     //
     template <Numeric T> nodisc constexpr T trunc(T v);

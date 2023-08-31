@@ -227,8 +227,8 @@ static void compileClassesT()
 
 static void compileClasses()
 {
-    compileClassesT<float>();
-    compileClassesT<double>();
+    compileClassesT<f32>();
+    compileClassesT<f64>();
 }
 
 template <typename T>
@@ -316,7 +316,7 @@ static void compileFunctionsT()
 template <u32 n>
 static void compileNonMatching()
 {
-    float _f{};
+    f32 _f{};
     fvec<n> _fvec{};
     dvec<n> _dvec{};
     fmat<n> _fmat{};
@@ -388,8 +388,8 @@ static void compileNonMatching()
 
 static void compileFunctions()
 {
-    compileFunctionsT<float>();
-    compileFunctionsT<double>();
+    compileFunctionsT<f32>();
+    compileFunctionsT<f64>();
     compileNonMatching<2>();
     compileNonMatching<3>();
     compileNonMatching<4>();
@@ -421,8 +421,8 @@ static void testPropertiesT()
 
 static void testProperties()
 {
-    testPropertiesT<float>();
-    testPropertiesT<double>();
+    testPropertiesT<f32>();
+    testPropertiesT<f64>();
 }
 
 template <typename T1, typename T2>
@@ -436,14 +436,14 @@ static void compileCastsTT()
 template <typename T>
 static void compileCastsT()
 {
-    compileCastsTT<T, float>();
-    compileCastsTT<T, double>();
+    compileCastsTT<T, f32>();
+    compileCastsTT<T, f64>();
 }
 
 static void compileCasts()
 {
-    compileCastsT<float>();
-    compileCastsT<double>();
+    compileCastsT<f32>();
+    compileCastsT<f64>();
 }
 
 template <u32 n>
@@ -492,5 +492,5 @@ TEST(Matrix, types)
 {
     testMatrixConceptT<f32>();
     testMatrixConceptT<f64>();
-    static_assert(!Matrix<float>);
+    static_assert(!Matrix<f32>);
 }

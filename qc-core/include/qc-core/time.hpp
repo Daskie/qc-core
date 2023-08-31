@@ -24,7 +24,7 @@ namespace qc
         //
         // constructs clock with 1.0 sec period and 1.0 sec frequency
         //
-        explicit Clock(double frequency = 1.0f);
+        explicit Clock(f64 frequency = 1.0f);
 
         //
         // ...
@@ -37,7 +37,7 @@ namespace qc
         //
         // the fractional number of cycles since the clock started
         //
-        nodisc double age() const;
+        nodisc f64 age() const;
 
         //
         // the integral number or cycles since the clock started
@@ -47,25 +47,25 @@ namespace qc
         //
         // the fractional part of the current cycle
         //
-        nodisc double time() const;
+        nodisc f64 time() const;
 
         //
         // gets/sets the period
         //
-        nodisc double period() const;
-        void period(double period);
+        nodisc f64 period() const;
+        void period(f64 period);
 
         //
         // gets/sets the frequency
         //
-        nodisc double frequency() const;
-        void frequency(double frequency);
+        nodisc f64 frequency() const;
+        void frequency(f64 frequency);
 
       private:
 
         std::chrono::steady_clock::time_point _start;
-        double _period;
-        double _frequency;
+        f64 _period;
+        f64 _frequency;
     };
 }
 
@@ -78,7 +78,7 @@ namespace qc
         return std::chrono::nanoseconds(std::chrono::steady_clock::now().time_since_epoch()).count();
     }
 
-    finline Clock::Clock(const double frequency) :
+    finline Clock::Clock(const f64 frequency) :
         _start(),
         _period(1.0 / frequency),
         _frequency(frequency)
@@ -94,9 +94,9 @@ namespace qc
         _start = std::chrono::steady_clock::time_point(std::chrono::nanoseconds(t));
     }
 
-    finline double Clock::age() const
+    finline f64 Clock::age() const
     {
-        return std::chrono::duration<double>(std::chrono::steady_clock::now() - _start).count() * _frequency;
+        return std::chrono::duration<f64>(std::chrono::steady_clock::now() - _start).count() * _frequency;
     }
 
     finline u64 Clock::cycles() const
@@ -104,29 +104,29 @@ namespace qc
         return u64(age());
     }
 
-    finline double Clock::time() const
+    finline f64 Clock::time() const
     {
-        const double a(age());
-        return a - double(s64(a));
+        const f64 a(age());
+        return a - f64(s64(a));
     }
 
-    finline double Clock::period() const
+    finline f64 Clock::period() const
     {
         return _period;
     }
 
-    finline void Clock::period(const double period)
+    finline void Clock::period(const f64 period)
     {
         _period = period;
         _frequency = 1.0 / period;
     }
 
-    finline double Clock::frequency() const
+    finline f64 Clock::frequency() const
     {
         return _frequency;
     }
 
-    finline void Clock::frequency(const double frequency)
+    finline void Clock::frequency(const f64 frequency)
     {
         _frequency = frequency;
         _period = 1.0 / frequency;

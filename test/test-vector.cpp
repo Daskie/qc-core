@@ -1303,21 +1303,21 @@ static void testCastExplicitnessN()
     static_assert(std::is_convertible_v<uivec<n>, lvec<n>>);
     static_assert(!std::is_convertible_v<ulvec<n>, lvec<n>>);
 
-    static_assert(std::is_convertible_v<float, fvec<n>>);
+    static_assert(std::is_convertible_v<f32, fvec<n>>);
     static_assert(std::is_convertible_v<fvec2, fvec<n>> == (n == 2u));
     static_assert(std::is_convertible_v<fvec3, fvec<n>> == (n == 3u));
     static_assert(std::is_convertible_v<fvec4, fvec<n>> == (n == 4u));
-    static_assert(!std::is_convertible_v<double, fvec<n>>);
+    static_assert(!std::is_convertible_v<f64, fvec<n>>);
     static_assert(!std::is_convertible_v<dvec<n>, fvec<n>>);
 
-    static_assert(std::is_convertible_v<double, dvec<n>>);
+    static_assert(std::is_convertible_v<f64, dvec<n>>);
     static_assert(std::is_convertible_v<dvec2, dvec<n>> == (n == 2u));
     static_assert(std::is_convertible_v<dvec3, dvec<n>> == (n == 3u));
     static_assert(std::is_convertible_v<dvec4, dvec<n>> == (n == 4u));
-    static_assert(std::is_convertible_v<float, dvec<n>>);
+    static_assert(std::is_convertible_v<f32, dvec<n>>);
     static_assert(std::is_convertible_v<fvec<n>, dvec<n>>);
 
-    static_assert(!std::is_convertible_v<float, lvec<n>>);
+    static_assert(!std::is_convertible_v<f32, lvec<n>>);
     static_assert(!std::is_convertible_v<fvec<n>, lvec<n>>);
     static_assert(!std::is_convertible_v<s8, dvec<n>>);
     static_assert(!std::is_convertible_v<svec<n>, dvec<n>>);
@@ -1441,7 +1441,7 @@ TEST(Vector, types)
     testVectorConceptT<s64>();
     testVectorConceptT<u64>();
     testVectorConceptT<bool>();
-    static_assert(!Vector<float>);
+    static_assert(!Vector<f32>);
 
     testFloaterVectorConceptT<f32>();
     testFloaterVectorConceptT<f64>();

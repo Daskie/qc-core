@@ -26,7 +26,7 @@ namespace qc
         {
             _Regs regs;
             #ifdef QC_MSVC
-                ::__cpuidex(std::bit_cast<int *>(&regs.eax), int(id), 0);
+                ::__cpuidex(std::bit_cast<s32 *>(&regs.eax), s32(id), 0);
             #else
                 __cpuid_count(id, 0, regs.eax, regs.ebx, regs.ecx, regs.edx);
             #endif

@@ -83,7 +83,7 @@ namespace qc
 
       private:
 
-        struct _Constants { int p, q, r; };
+        struct _Constants { s32 p, q, r; };
         inline static constexpr _Constants _constants{
             Same<G,  u8> ? _Constants{ 3,  2, 1} :
             Same<G, u16> ? _Constants{ 4,  3, 2} :
@@ -150,11 +150,11 @@ namespace qc
         {
             if constexpr (sizeof(T) == 4u)
             {
-                return T(float(next<u32>() >> 8) * 0x1.0p-24f);
+                return T(f32(next<u32>() >> 8) * 0x1.0p-24f);
             }
             else if constexpr (sizeof(T) == 8u)
             {
-                return T(double(next<u64>() >> 11) * 0x1.0p-53);
+                return T(f64(next<u64>() >> 11) * 0x1.0p-53);
             }
         }
         else if constexpr (Boolean<T>)
@@ -177,7 +177,7 @@ namespace qc
             using U = std::make_unsigned_t<T>;
 
             const U umax{U(max)};
-            const int shift{std::countl_zero(U(umax - 1u))};
+            const s32 shift{std::countl_zero(U(umax - 1u))};
 
             // Sampling nearest larger power of two to avoid bias, retry if too large
             U v;
