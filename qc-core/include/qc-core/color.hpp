@@ -400,7 +400,7 @@ namespace qc::color
         return {
             luv.x,
             magnitude(luv.yz()),
-            theta * (T(1.0) / pi<T>) * T(0.5) + T(0.5)};
+            theta * (T(1.0) / number::pi<T>) * T(0.5) + T(0.5)};
     }
 
     ///
@@ -411,7 +411,7 @@ namespace qc::color
     template <Floating T>
     nodisc inline vec3<T> lchToLuv(const vec3<T> & lch)
     {
-        const T theta{(lch.z * T(2.0) - T(1.0)) * pi<T>};
+        const T theta{(lch.z * T(2.0) - T(1.0)) * number::pi<T>};
         return {
             lch.x,
             std::cos(theta) * lch.y,

@@ -76,14 +76,14 @@ TEST(Core, primitives)
 template <Floating T>
 static void compileNumbersT()
 {
-    static_cast<void>(qc::infinity<T>);
-    static_cast<void>(qc::nan<T>);
-    static_cast<void>(qc::pi<T>);
-    static_cast<void>(qc::e<T>);
-    static_cast<void>(qc::phi<T>);
-    static_cast<void>(qc::sqrt2<T>);
-    static_cast<void>(qc::sqrt3<T>);
-    static_cast<void>(qc::sqrt5<T>);
+    static_cast<void>(qc::number::infinity<T>);
+    static_cast<void>(qc::number::nan<T>);
+    static_cast<void>(qc::number::pi<T>);
+    static_cast<void>(qc::number::e<T>);
+    static_cast<void>(qc::number::phi<T>);
+    static_cast<void>(qc::number::sqrt2<T>);
+    static_cast<void>(qc::number::sqrt3<T>);
+    static_cast<void>(qc::number::sqrt5<T>);
 }
 
 TEST(Core, numbers)

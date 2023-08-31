@@ -229,7 +229,7 @@ namespace qc
         template <typename T1, typename T2> concept ExclusiveFloatingSubOf = Floating<T1> && Floating<T2> && sizeof(T1) < sizeof(T2);
     }
 
-    inline namespace numbers
+    namespace number
     {
         template <Floating T> inline constexpr T infinity{std::numeric_limits<T>::infinity()};
         template <Floating T> inline constexpr T nan{std::numeric_limits<T>::quiet_NaN()};
