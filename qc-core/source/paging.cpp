@@ -4,7 +4,9 @@
 #include <bit>
 
 #ifdef QC_MSVC
-    #include <qc-core/windows-header.hpp>
+    #include <qc-core/windows-header-prefix.hpp>
+    #include <windows.h>
+    #include <qc-core/windows-header-postfix.hpp>
 #else
     #include <sys/mman.h>
     #include <unistd.h>
