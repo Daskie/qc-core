@@ -16,11 +16,6 @@ namespace qc::memory
         u64 deallocations{};
     };
 
-    namespace _private::record_allocator
-    {
-        inline List<RecordAllocatorStats> statsList(1u);
-    }
-
     //
     // NOT THREAD SAFE!!!
     //
@@ -38,9 +33,9 @@ namespace qc::memory
         using is_always_equal = std::false_type;
 
         RecordAllocator() :
-            _listI{_private::record_allocator::statsList.size()}
+            _listI{_statsList.size()}
         {
-            _private::record_allocator::statsList.empush();
+            _statsList.empush();
         }
 
         RecordAllocator(const RecordAllocator &) = default;
@@ -94,17 +89,19 @@ namespace qc::memory
 
         RecordAllocatorStats & stats()
         {
-            return _private::record_allocator::statsList[_listI];
+            return _statsList[_listI];
         }
 
         const RecordAllocatorStats & stats() const
         {
-            return _private::record_allocator::statsList[_listI];
+            return _statsList[_listI];
         }
 
         bool operator==(const RecordAllocator &) const = default;
 
       private:
+
+        inline static List<RecordAllocatorStats> _statsList{};
 
         u32 _listI{};
     };

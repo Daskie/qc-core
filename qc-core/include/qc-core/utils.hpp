@@ -23,7 +23,7 @@ namespace qc::utils
         return pairwiseSum(n >> 1, vals) + pairwiseSum((n + 1u) >> 1, vals + (n >> 1));
     }
 
-    namespace _private::utils
+    namespace _private
     {
         // TODO: Version that maps file to memory for bulk transfers, non-sequential access, or both reading and writing
         // TODO: Once have our own string class, return some kind of dynamic array result instead to avoid 4GB list limit
@@ -59,7 +59,7 @@ namespace qc::utils
     ///
     nodisc inline Result<List<u8>> readFile(const std::filesystem::path & path)
     {
-        return _private::utils::readFile<List<u8>>(path);
+        return _private::readFile<List<u8>>(path);
     }
 
     ///
@@ -67,7 +67,7 @@ namespace qc::utils
     ///
     nodisc inline Result<std::string> readTextFile(const std::filesystem::path & path)
     {
-        return _private::utils::readFile<std::string>(path);
+        return _private::readFile<std::string>(path);
     }
 
     /// @return whether the file was successfully written

@@ -196,7 +196,7 @@ namespace qc
         template <typename T, typename U> using ConstAs = ConstIf<T, std::is_const_v<U>>;
     }
 
-    namespace _private::core
+    namespace _private
     {
         template <Numeric T1, Numeric T2> struct CommonHelper;
         template <Floating T1, Floating T2> struct CommonHelper<T1, T2> { using Type = LargerOf<T1, T2>; };
@@ -208,7 +208,7 @@ namespace qc
 
     inline namespace types
     {
-        template <typename T1, typename T2> using Common = _private::core::CommonHelper<T1, T2>::Type;
+        template <typename T1, typename T2> using Common = _private::CommonHelper<T1, T2>::Type;
         template <typename T1, typename T2> concept CommonExists = requires { typename Common<T1, T2>; };
 
         template <typename T1, typename T2> concept InclusiveSuperOf = Same<T1, Common<T1, T2>>;
