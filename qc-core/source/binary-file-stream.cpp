@@ -3,9 +3,9 @@
 #include <qc-core/paging.hpp>
 
 #ifdef QC_MSVC
-    #include <qc-core/windows-header-prefix.hpp>
+    #include <qc-core/windows-includes-pre.hpp>
     #include <windows.h>
-    #include <qc-core/windows-header-postfix.hpp>
+    #include <qc-core/windows-includes-post.hpp>
 #else
     #include <fcntl.h>
     #include <unistd.h>
