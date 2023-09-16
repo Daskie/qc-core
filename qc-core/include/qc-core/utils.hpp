@@ -3,10 +3,7 @@
 #include <cmath>
 
 #include <fstream>
-#include <codecvt>
 #include <string>
-#include <sstream>
-#include <iomanip>
 #include <filesystem>
 
 #include <qc-core/core.hpp>
